@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html ng-app="app" ng-strict-di="true">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Shipyard</title>
+  <link rel="shortcut icon" href="images/favicon.png"/>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<shipyard-menu></shipyard-menu>
+
+<div id="main" ng-view></div>
+
+<footer>
+  <div class="right">Version <%= version %> - <%= date %></div>
+  <div class="left">
+    E:D Shipyard was created using assets and imagery from Elite: Dangerous, with the permission of Frontier Developments plc, for non-commercial purposes.<br>
+    It is not endorsed by nor reflects the views or opinions of Frontier Developments and no employee of Frontier Developments was involved in the making of it.
+  </div>
+</footer>
+
+<script src="lib.js" type="text/javascript"></script>
+<script src="app.js" type="text/javascript"></script>
+</body>
+</html>

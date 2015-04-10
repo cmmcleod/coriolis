@@ -1,0 +1,404 @@
+{
+  "Shield Cell Bank": {
+    "50": {
+      "group": "sb",
+      "class": 1,
+      "rating": "C",
+      "cost": 3231,
+      "mass": 1.3,
+      "power": 0.69,
+      "capacity": 3,
+      "rate": "D"
+    },
+    "51": {
+      "group": "sb",
+      "class": 1,
+      "rating": "D",
+      "cost": 1293,
+      "mass": 0.5,
+      "power": 0.55,
+      "capacity": 2,
+      "rate": "E"
+    },
+    "52": {
+      "group": "sb",
+      "class": 1,
+      "rating": "E",
+      "cost": 517,
+      "mass": 1.3,
+      "power": 0.41,
+      "capacity": 4,
+      "rate": "E"
+    },
+    "53": {
+      "group": "sb",
+      "class": 2,
+      "rating": "A",
+      "cost": 56547,
+      "mass": 2.5,
+      "power": 1.18,
+      "capacity": 4,
+      "rate": "C"
+    },
+    "54": {
+      "group": "sb",
+      "class": 2,
+      "rating": "B",
+      "cost": 22619,
+      "mass": 4,
+      "power": 1.01,
+      "capacity": 5,
+      "rate": "D"
+    },
+    "55": {
+      "group": "sb",
+      "class": 2,
+      "rating": "C",
+      "cost": 9048,
+      "mass": 2.5,
+      "power": 0.84,
+      "capacity": 4,
+      "rate": "D"
+    },
+    "56": {
+      "group": "sb",
+      "class": 2,
+      "rating": "D",
+      "cost": 3619,
+      "mass": 1,
+      "power": 0.67,
+      "capacity": 3,
+      "rate": "D"
+    },
+    "57": {
+      "group": "sb",
+      "class": 2,
+      "rating": "E",
+      "cost": 1448,
+      "mass": 2.5,
+      "power": 0.5,
+      "capacity": 5,
+      "rate": "E"
+    },
+    "58": {
+      "group": "sb",
+      "class": 3,
+      "rating": "A",
+      "cost": 158331,
+      "mass": 5,
+      "power": 1.43,
+      "capacity": 4,
+      "rate": "C"
+    },
+    "59": {
+      "group": "sb",
+      "class": 3,
+      "rating": "B",
+      "cost": 63333,
+      "mass": 8,
+      "power": 1.22,
+      "capacity": 5,
+      "rate": "C"
+    },
+    "60": {
+      "group": "sb",
+      "class": 7,
+      "rating": "E",
+      "cost": 249137,
+      "mass": 80,
+      "power": 1.24,
+      "capacity": 6,
+      "rate": "D"
+    },
+    "61": {
+      "group": "sb",
+      "class": 8,
+      "rating": "A",
+      "cost": 27249391,
+      "mass": 160,
+      "power": 3.36,
+      "capacity": 5,
+      "rate": "A"
+    },
+    "62": {
+      "group": "sb",
+      "class": 8,
+      "rating": "B",
+      "cost": 10899756,
+      "mass": 256,
+      "power": 2.88,
+      "capacity": 6,
+      "rate": "A"
+    },
+    "63": {
+      "group": "sb",
+      "class": 8,
+      "rating": "C",
+      "cost": 4359903,
+      "mass": 160,
+      "power": 2.4,
+      "capacity": 5,
+      "rate": "B"
+    },
+    "64": {
+      "group": "sb",
+      "class": 8,
+      "rating": "D",
+      "cost": 1743961,
+      "mass": 64,
+      "power": 1.92,
+      "capacity": 4,
+      "rate": "C"
+    },
+    "65": {
+      "group": "sb",
+      "class": 8,
+      "rating": "E",
+      "cost": 697584,
+      "mass": 160,
+      "power": 1.44,
+      "capacity": 6,
+      "rate": "C"
+    },
+    "4u": {
+      "group": "sb",
+      "class": 1,
+      "rating": "A",
+      "cost": 20195,
+      "mass": 1.3,
+      "power": 0.97,
+      "capacity": 3,
+      "rate": "D"
+    },
+    "4v": {
+      "group": "sb",
+      "class": 1,
+      "rating": "B",
+      "cost": 8078,
+      "mass": 2,
+      "power": 0.83,
+      "capacity": 4,
+      "rate": "D"
+    },
+    "5a": {
+      "group": "sb",
+      "class": 3,
+      "rating": "C",
+      "cost": 25333,
+      "mass": 5,
+      "power": 1.02,
+      "capacity": 4,
+      "rate": "D"
+    },
+    "5b": {
+      "group": "sb",
+      "class": 3,
+      "rating": "D",
+      "cost": 10133,
+      "mass": 2,
+      "power": 0.82,
+      "capacity": 3,
+      "rate": "D"
+    },
+    "5c": {
+      "group": "sb",
+      "class": 3,
+      "rating": "E",
+      "cost": 4053,
+      "mass": 5,
+      "power": 0.61,
+      "capacity": 5,
+      "rate": "D"
+    },
+    "5d": {
+      "group": "sb",
+      "class": 4,
+      "rating": "A",
+      "cost": 443328,
+      "mass": 10,
+      "power": 1.72,
+      "capacity": 4,
+      "rate": "B"
+    },
+    "5e": {
+      "group": "sb",
+      "class": 4,
+      "rating": "B",
+      "cost": 177331,
+      "mass": 16,
+      "power": 1.48,
+      "capacity": 5,
+      "rate": "C"
+    },
+    "5f": {
+      "group": "sb",
+      "class": 4,
+      "rating": "C",
+      "cost": 70932,
+      "mass": 10,
+      "power": 1.23,
+      "capacity": 4,
+      "rate": "C"
+    },
+    "5g": {
+      "group": "sb",
+      "class": 4,
+      "rating": "D",
+      "cost": 28373,
+      "mass": 4,
+      "power": 0.98,
+      "capacity": 3,
+      "rate": "D"
+    },
+    "5h": {
+      "group": "sb",
+      "class": 4,
+      "rating": "E",
+      "cost": 11349,
+      "mass": 10,
+      "power": 0.74,
+      "capacity": 5,
+      "rate": "D"
+    },
+    "5i": {
+      "group": "sb",
+      "class": 5,
+      "rating": "A",
+      "cost": 1241317,
+      "mass": 20,
+      "power": 2.1,
+      "capacity": 4,
+      "rate": "B"
+    },
+    "5j": {
+      "group": "sb",
+      "class": 5,
+      "rating": "B",
+      "cost": 496527,
+      "mass": 32,
+      "power": 1.8,
+      "capacity": 5,
+      "rate": "B"
+    },
+    "5k": {
+      "group": "sb",
+      "class": 5,
+      "rating": "C",
+      "cost": 198611,
+      "mass": 20,
+      "power": 1.5,
+      "capacity": 4,
+      "rate": "C"
+    },
+    "5l": {
+      "group": "sb",
+      "class": 5,
+      "rating": "D",
+      "cost": 79444,
+      "mass": 8,
+      "power": 1.2,
+      "capacity": 3,
+      "rate": "C"
+    },
+    "5m": {
+      "group": "sb",
+      "class": 5,
+      "rating": "E",
+      "cost": 31778,
+      "mass": 20,
+      "power": 0.9,
+      "capacity": 5,
+      "rate": "D"
+    },
+    "5n": {
+      "group": "sb",
+      "class": 6,
+      "rating": "A",
+      "cost": 3475688,
+      "mass": 40,
+      "power": 2.48,
+      "capacity": 5,
+      "rate": "A"
+    },
+    "5o": {
+      "group": "sb",
+      "class": 6,
+      "rating": "B",
+      "cost": 1390275,
+      "mass": 64,
+      "power": 2.12,
+      "capacity": 6,
+      "rate": "B"
+    },
+    "5p": {
+      "group": "sb",
+      "class": 6,
+      "rating": "C",
+      "cost": 556110,
+      "mass": 40,
+      "power": 1.77,
+      "capacity": 5,
+      "rate": "C"
+    },
+    "5q": {
+      "group": "sb",
+      "class": 6,
+      "rating": "D",
+      "cost": 222444,
+      "mass": 16,
+      "power": 1.42,
+      "capacity": 4,
+      "rate": "C"
+    },
+    "5r": {
+      "group": "sb",
+      "class": 6,
+      "rating": "E",
+      "cost": 88978,
+      "mass": 40,
+      "power": 1.06,
+      "capacity": 6,
+      "rate": "D"
+    },
+    "5s": {
+      "group": "sb",
+      "class": 7,
+      "rating": "A",
+      "cost": 9731925,
+      "mass": 80,
+      "power": 2.9,
+      "capacity": 5,
+      "rate": "A"
+    },
+    "5t": {
+      "group": "sb",
+      "class": 7,
+      "rating": "B",
+      "cost": 3892770,
+      "mass": 128,
+      "power": 2.48,
+      "capacity": 6,
+      "rate": "B"
+    },
+    "5u": {
+      "group": "sb",
+      "class": 7,
+      "rating": "C",
+      "cost": 1557108,
+      "mass": 80,
+      "power": 2.07,
+      "capacity": 5,
+      "rate": "B"
+    },
+    "5v": {
+      "group": "sb",
+      "class": 7,
+      "rating": "D",
+      "cost": 622843,
+      "mass": 32,
+      "power": 1.66,
+      "capacity": 4,
+      "rate": "?"
+    }
+  }
+}

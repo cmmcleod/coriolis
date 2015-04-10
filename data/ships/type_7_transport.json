@@ -1,0 +1,78 @@
+{
+  "type_7_transport": {
+    "group": "fr",
+    "name": "Type-7 Transport",
+    "manufacturer": "Lakon",
+    "class": 3,
+    "cost": 16881511,
+    "speed": 180,
+    "boost": 300,
+    "agility": 2,
+    "shields": 120,
+    "armour": 120,
+    "fuelcost": 50,
+    "componentCapacity": {
+      "common": [
+        4,
+        5,
+        5,
+        4,
+        3,
+        3,
+        5
+      ],
+      "hardpoints": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        6,
+        6,
+        5,
+        5,
+        4,
+        4,
+        2,
+        2
+      ]
+    },
+    "defaultComponents": {
+      "common": [
+        "4E",
+        "5E",
+        "5E",
+        "4E",
+        "3E",
+        "3E",
+        "5C"
+      ],
+      "hardpoints": [
+        17,
+        17,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "mass": 420
+  }
+}

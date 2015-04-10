@@ -1,0 +1,81 @@
+{
+  "type_9_heavy": {
+    "group": "fr",
+    "name": "Type-9 Heavy",
+    "manufacturer": "Lakon",
+    "class": 3,
+    "cost": 73255168,
+    "speed": 130,
+    "boost": 200,
+    "agility": 0,
+    "shields": 240,
+    "armour": 240,
+    "fuelcost": 50,
+    "componentCapacity": {
+      "common": [
+        6,
+        7,
+        6,
+        5,
+        6,
+        4,
+        6
+      ],
+      "hardpoints": [
+        2,
+        2,
+        2,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        7,
+        6,
+        5,
+        4,
+        4,
+        3,
+        3,
+        2
+      ]
+    },
+    "defaultComponents": {
+      "common": [
+        "6E",
+        "7E",
+        "6E",
+        "5E",
+        "6E",
+        "4E",
+        "6C"
+      ],
+      "hardpoints": [
+        17,
+        17,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "mass": 1000
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "asp": {
+    "group": "ex",
+    "name": "Asp",
+    "manufacturer": "Lakon",
+    "class": 2,
+    "cost": 6135658,
+    "speed": 250,
+    "boost": 340,
+    "agility": 6,
+    "shields": 140,
+    "armour": 210,
+    "fuelcost": 50,
+    "componentCapacity": {
+      "common": [
+        5,
+        5,
+        5,
+        4,
+        4,
+        5,
+        5
+      ],
+      "hardpoints": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2
+      ],
+      "internal": [
+        6,
+        5,
+        3,
+        3,
+        3,
+        2,
+        2
+      ]
+    },
+    "defaultComponents": {
+      "common": [
+        "5E",
+        "5E",
+        "5E",
+        "4E",
+        "4E",
+        "5E",
+        "5C"
+      ],
+      "hardpoints": [
+        0,
+        0,
+        0,
+        0,
+        17,
+        17,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "mass": 280
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "sidewinder": {
+    "group": "mp",
+    "name": "Sidewinder",
+    "class": 1,
+    "cost": 12887,
+    "speed": 220,
+    "boost": 320,
+    "agility": 8,
+    "shields": 40,
+    "armour": 60,
+    "fuelcost": 50,
+    "componentCapacity": {
+      "common": [
+        2,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1
+      ],
+      "hardpoints": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "internal": [
+        2,
+        2,
+        1
+      ]
+    },
+    "defaultComponents": {
+      "common": [
+        "2E",
+        "2E",
+        "2E",
+        "1E",
+        "1E",
+        "1E",
+        "1C"
+      ],
+      "hardpoints": [
+        17,
+        17,
+        0,
+        0
+      ],
+      "internal": [
+        0,
+        0,
+        0
+      ]
+    },
+    "mass": 25
+  }
+}

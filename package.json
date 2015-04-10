@@ -1,0 +1,28 @@
+{
+  "name": "ed_shipyard",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cmmcleod/ed-shipyard"
+  },
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "async": "^0.9.0",
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-angular-templatecache": "^1.6.0",
+    "gulp-concat": "^2.5.2",
+    "gulp-htmlmin": "^1.1.1",
+    "gulp-jshint": "^1.10.0",
+    "gulp-less": "^3.0.2",
+    "gulp-minify-css": "^1.0.0",
+    "gulp-sourcemaps": "^1.5.1",
+    "gulp-template": "^3.0.0",
+    "gulp-uglify": "^1.2.0",
+    "json-concat": "0.0.0",
+    "main-bower-files": "^2.6.2",
+    "run-sequence": "^1.0.2",
+    "uglify-js": "^2.4.19"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "type_6_transporter": {
+    "group": "fr",
+    "name": "Type-6 Transporter",
+    "manufacturer": "Lakon",
+    "class": 2,
+    "cost": 865782,
+    "speed": 220,
+    "boost": 350,
+    "agility": 3,
+    "shields": 90,
+    "armour": 90,
+    "fuelcost": 50,
+    "componentCapacity": {
+      "common": [
+        3,
+        4,
+        4,
+        2,
+        3,
+        2,
+        4
+      ],
+      "hardpoints": [
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        5,
+        5,
+        4,
+        4,
+        3,
+        2,
+        2
+      ]
+    },
+    "defaultComponents": {
+      "common": [
+        "3E",
+        "4E",
+        "4E",
+        "2E",
+        "3E",
+        "2E",
+        "4C"
+      ],
+      "hardpoints": [
+        17,
+        17,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "mass": 155
+  }
+}

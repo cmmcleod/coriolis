@@ -1,0 +1,120 @@
+
+.component-group {
+  border: 2px solid @border;
+  .border-radius(5px);
+  margin: 5px;
+  float: left;
+  padding: 0 5px 5px;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+
+  legend {
+    text-transform: uppercase;
+    padding: 0 5px;
+    color: @warning;
+  }
+
+  .component {
+    text-transform: uppercase;
+    float: left;
+    margin: 1%;
+    border: 1px solid orange;
+    .border-radius(2px);
+    width: 250px;
+    position: relative;
+    padding-top: 3px;
+
+    color: #BBB;
+    font-size: 0.8em;
+
+    .lbl,.cla {
+      color: #666;
+    }
+
+    .lbl {
+      float: left;
+      margin-left: 5px;
+    }
+
+    .cla {
+      float: right;
+      margin-right: 5px;
+    }
+
+    .clear {
+      clear: both;
+    }
+
+    .select {
+      z-index: 1;
+      top: 100%;
+      padding-top: 10px;
+      display: none;
+      position: absolute;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      border-left: 1px solid teal;
+      border-bottom: 1px solid teal;
+      border-right: 1px solid teal;
+      .border-bottom-radius(5px);
+      left: -1px;
+      max-height: 600px;
+      overflow-y: scroll;
+    }
+
+    .select-group {
+      clear: both;
+      border-top: 1px solid grey;
+      border-bottom: 1px solid grey;
+      padding-left: 5px;
+    }
+
+    .c {
+      cursor: pointer;
+      .border-radius(3px);
+      display: block;
+      float:left;
+      margin: 5px;
+      padding: 0;
+      height: 20px;
+      line-height: 20px;
+      background-color: #666;
+      color: #BBB;
+
+      &:hover {
+        background-color: teal;
+        color: #FFF;
+      }
+    }
+
+    li.c {
+      width: 25px;
+      text-align: center;
+
+      &:nth-child(5n +1) {
+        clear: left;
+      }
+    }
+
+    ul {
+      margin: 0;
+      list-style: none;
+    }
+
+    &:hover {
+      border: 1px solid teal;
+      color: #FFF;
+      .lbl,.cla {
+        color: #999;
+      }
+      .select {
+        display: block;
+      }
+    }
+
+  }
+}

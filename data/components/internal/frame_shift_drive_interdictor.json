@@ -1,0 +1,184 @@
+{
+  "Frame Shift Drive Interdictor": {
+    "66": {
+      "group": "fi",
+      "class": 1,
+      "rating": "A",
+      "cost": 972000,
+      "mass": 1.3,
+      "power": 0.32,
+      "range": "C"
+    },
+    "67": {
+      "group": "fi",
+      "class": 1,
+      "rating": "B",
+      "cost": 324000,
+      "mass": 2,
+      "power": 0.28,
+      "range": "D"
+    },
+    "68": {
+      "group": "fi",
+      "class": 1,
+      "rating": "C",
+      "cost": 108000,
+      "mass": 1.3,
+      "power": 0.23,
+      "range": "D"
+    },
+    "69": {
+      "group": "fi",
+      "class": 1,
+      "rating": "D",
+      "cost": 36000,
+      "mass": 0.5,
+      "power": 0.18,
+      "range": "D"
+    },
+    "6a": {
+      "group": "fi",
+      "class": 1,
+      "rating": "E",
+      "cost": 12000,
+      "mass": 1.3,
+      "power": 0.14,
+      "range": "E"
+    },
+    "6b": {
+      "group": "fi",
+      "class": 2,
+      "rating": "A",
+      "cost": 2721600,
+      "mass": 2.5,
+      "power": 0.39,
+      "range": "B"
+    },
+    "6c": {
+      "group": "fi",
+      "class": 2,
+      "rating": "B",
+      "cost": 907200,
+      "mass": 4,
+      "power": 0.34,
+      "range": "C"
+    },
+    "6d": {
+      "group": "fi",
+      "class": 2,
+      "rating": "C",
+      "cost": 302400,
+      "mass": 2.5,
+      "power": 0.28,
+      "range": "C"
+    },
+    "6e": {
+      "group": "fi",
+      "class": 2,
+      "rating": "D",
+      "cost": 100800,
+      "mass": 1,
+      "power": 0.22,
+      "range": "C"
+    },
+    "6f": {
+      "group": "fi",
+      "class": 2,
+      "rating": "E",
+      "cost": 33600,
+      "mass": 2.5,
+      "power": 0.17,
+      "range": "D"
+    },
+    "6g": {
+      "group": "fi",
+      "class": 3,
+      "rating": "A",
+      "cost": 7620480,
+      "mass": 5,
+      "power": 0.48,
+      "range": "A"
+    },
+    "6h": {
+      "group": "fi",
+      "class": 3,
+      "rating": "B",
+      "cost": 2540160,
+      "mass": 8,
+      "power": 0.41,
+      "range": "B"
+    },
+    "6i": {
+      "group": "fi",
+      "class": 3,
+      "rating": "C",
+      "cost": 846720,
+      "mass": 5,
+      "power": 0.34,
+      "range": "B"
+    },
+    "6j": {
+      "group": "fi",
+      "class": 3,
+      "rating": "D",
+      "cost": 282240,
+      "mass": 2,
+      "power": 0.27,
+      "range": "B"
+    },
+    "6k": {
+      "group": "fi",
+      "class": 3,
+      "rating": "E",
+      "cost": 94080,
+      "mass": 5,
+      "power": 0.2,
+      "range": "C"
+    },
+    "6l": {
+      "group": "fi",
+      "class": 4,
+      "rating": "A",
+      "cost": 21337344,
+      "mass": 10,
+      "power": 0.57,
+      "range": "A"
+    },
+    "6m": {
+      "group": "fi",
+      "class": 4,
+      "rating": "B",
+      "cost": 7112448,
+      "mass": 16,
+      "power": 0.49,
+      "range": "A"
+    },
+    "6n": {
+      "group": "fi",
+      "class": 4,
+      "rating": "C",
+      "cost": 2370816,
+      "mass": 10,
+      "power": 0.41,
+      "range": "A"
+    },
+    "6o": {
+      "group": "fi",
+      "class": 4,
+      "rating": "D",
+      "cost": 790272,
+      "mass": 4,
+      "power": 0.33,
+      "range": "A"
+    },
+    "6p": {
+      "group": "fi",
+      "class": 4,
+      "rating": "E",
+      "cost": 263424,
+      "mass": 10,
+      "power": 0.25,
+      "range": "B"
+    }
+  }
+}

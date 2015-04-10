@@ -1,0 +1,57 @@
+{
+  "0e": {
+    "group": "us",
+    "name": "Frame Shift Wake Scanner",
+    "class": 0,
+    "rating": "A",
+    "cost": 1097095,
+    "mass": 1.3,
+    "power": 3.2,
+    "range": 4,
+    "time": 10
+  },
+  "0f": {
+    "group": "us",
+    "name": "Frame Shift Wake Scanner",
+    "class": 0,
+    "rating": "B",
+    "cost": 365698,
+    "mass": 1.3,
+    "power": 1.6,
+    "range": 3.5,
+    "time": 10
+  },
+  "0g": {
+    "group": "us",
+    "name": "Frame Shift Wake Scanner",
+    "class": 0,
+    "rating": "C",
+    "cost": 121899,
+    "mass": 1.3,
+    "power": 0.8,
+    "range": 3,
+    "time": 10
+  },
+  "0h": {
+    "group": "us",
+    "name": "Frame Shift Wake Scanner",
+    "class": 0,
+    "rating": "D",
+    "cost": 40633,
+    "mass": 1.3,
+    "power": 0.4,
+    "range": 2.5,
+    "time": 10
+  },
+  "0i": {
+    "group": "us",
+    "name": "Frame Shift Wake Scanner",
+    "class": 0,
+    "rating": "E",
+    "cost": 13544,
+    "mass": 1.3,
+    "power": 0.2,
+    "range": 2,
+    "time": 10
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "Cargo Rack": {
+    "00": {
+      "group": "cr",
+      "name": "Cargo Rack (Capacity: 2)",
+      "class": 1,
+      "rating": "E",
+      "cost": 1000,
+      "capacity": 2
+    },
+    "01": {
+      "group": "cr",
+      "name": "Cargo Rack (Capacity: 4)",
+      "class": 2,
+      "rating": "E",
+      "cost": 3250,
+      "capacity": 4
+    },
+    "02": {
+      "group": "cr",
+      "name": "Cargo Rack (Capacity: 8)",
+      "class": 3,
+      "rating": "E",
+      "cost": 10563,
+      "capacity": 8
+    },
+    "03": {
+      "group": "cr",
+      "name": "Cargo Rack (Capacity: 16)",
+      "class": 4,
+      "rating": "E",
+      "cost": 34328,
+      "capacity": 16
+    },
+    "04": {
+      "group": "cr",
+      "name": "Cargo Rack (Capacity: 32)",
+      "class": 5,
+      "rating": "E",
+      "cost": 111566,
+      "capacity": 32
+    },
+    "05": {
+      "group": "cr",
+      "name": "Cargo Rack (Capacity: 64)",
+      "class": 6,
+      "rating": "E",
+      "cost": 362591,
+      "capacity": 64
+    },
+    "06": {
+      "group": "cr",
+      "name": "Cargo Rack (Capacity: 128)",
+      "class": 7,
+      "rating": "E",
+      "cost": 1178420,
+      "capacity": 128
+    },
+    "07": {
+      "group": "cr",
+      "name": "Cargo Rack (Capacity: 256)",
+      "class": 8,
+      "rating": "E",
+      "cost": 3829866,
+      "capacity": 256
+    }
+  }
+}

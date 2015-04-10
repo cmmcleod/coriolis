@@ -1,0 +1,60 @@
+{
+  "hauler": {
+    "group": "fr",
+    "name": "Hauler",
+    "manufacturer": "Zorgon Peterson",
+    "class": 1,
+    "cost": 29807,
+    "speed": 200,
+    "boost": 300,
+    "agility": 6,
+    "shields": 50,
+    "armour": 50,
+    "fuelcost": 50,
+    "componentCapacity": {
+      "common": [
+        2,
+        2,
+        2,
+        1,
+        1,
+        1,
+        2
+      ],
+      "hardpoints": [
+        1,
+        0,
+        0
+      ],
+      "internal": [
+        3,
+        3,
+        2,
+        1
+      ]
+    },
+    "defaultComponents": {
+      "common": [
+        "2E",
+        "2E",
+        "2E",
+        "1E",
+        "1E",
+        "1E",
+        "2C"
+      ],
+      "hardpoints": [
+        17,
+        0,
+        0
+      ],
+      "internal": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "mass": 14
+  }
+}

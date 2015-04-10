@@ -1,0 +1,78 @@
+{
+  "federal_dropship": {
+    "group": "mp",
+    "name": "Federal Dropship",
+    "manufacturer": "Core Dynamics",
+    "class": 2,
+    "cost": 18969990,
+    "speed": 180,
+    "boost": 300,
+    "agility": 0,
+    "shields": 200,
+    "armour": 300,
+    "fuelcost": 50,
+    "componentCapacity": {
+      "common": [
+        6,
+        6,
+        5,
+        5,
+        6,
+        4,
+        4
+      ],
+      "hardpoints": [
+        0,
+        0,
+        0,
+        0,
+        2,
+        2,
+        3,
+        2,
+        2
+      ],
+      "internal": [
+        6,
+        5,
+        5,
+        4,
+        3,
+        3,
+        2
+      ]
+    },
+    "defaultComponents": {
+      "common": [
+        "6E",
+        "6E",
+        "5E",
+        "5E",
+        "6E",
+        "4E",
+        "4C"
+      ],
+      "hardpoints": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        17,
+        17
+      ],
+      "internal": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "mass": 580
+  }
+}

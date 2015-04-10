@@ -1,0 +1,9 @@
+
+<a href="#/{{id}}" class="ship" ng-repeat="(id,s) in ships">
+  <h2>{{s.name}}<small>{{s.manufacturer}}</small></h2>
+  <div class="subtitle">
+    <div class="size">Class {{s.class}} / {{SZ[s.class]}}</div>
+    <div class="purpose">{{SP[s.group]}}</div>
+  </div>
+  {{credits(s.cost)}} Credits
+</a>

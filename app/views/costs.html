@@ -1,0 +1,18 @@
+<div class="list-item" ng-class="{enabled:ship.incCost}" ng-click="toggle(ship)">
+  <div class="lbl">{{ship.name}}</div><div class="val">{{$r.credits(ship.cost)}}</div>
+</div>
+<div class="list-item" ng-class="{enabled:ship.bulkheads.incCost}" ng-click="toggle(ship.bulkheads)" ng-if="ship.bulkheads.c.cost">
+  <div class="lbl">{{ship.bulkheads.c.name}}</div><div class="val">{{$r.credits(ship.bulkheads.c.cost)}}</div>
+</div>
+<div ng-repeat="c in ship.common" ng-if="c.c.cost" class="list-item common" ng-class="{enabled:c.incCost}" ng-click="toggle(c)">
+  <div class="lbl">{{c.c.class}}{{c.c.rating}} {{$r.CArr[$index]}}</div><div class="val">{{$r.credits(c.c.cost)}}</div>
+</div>
+<div ng-repeat="c in ship.hardpoints" ng-if="c.c.cost" class="list-item hardpoints" ng-class="{enabled:c.incCost}" ng-click="toggle(c)">
+  <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name}}</div><div class="val">{{$r.credits(c.c.cost)}}</div>
+</div>
+<div ng-repeat="c in ship.internal" ng-if="c.c.cost" class="list-item internal" ng-class="{enabled:c.incCost}" ng-click="toggle(c)">
+  <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || $r.igMap[c.c.group]}}</div><div class="val">{{$r.credits(c.c.cost)}}</div>
+</div>
+<div class="list-item">
+  <div class="lbl">Total</div><div class="val">{{$r.credits(ship.totalCost)}}</div>
+</div>

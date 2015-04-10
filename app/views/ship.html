@@ -1,0 +1,55 @@
+
+<fieldset id="overview">
+  <legend>{{ship.name}}</legend>
+  <div>Class: {{ship.class}}</div>
+  <div>Mass: {{ship.unladenMass}} - {{ship.ladenMass}} [{{ship.mass}}]T</div>
+  <div>Speed: {{ship.speed}} <span class="boost">[{{ship.boost}}] M/s</span></div>
+  <div>Agility: {{ship.agility}}</div>
+  <div>Shields: {{ship.shields}}</div>
+  <div>Armour: {{ship.armour}}</div>
+  <div>Fuel: {{ship.fuelCapacity}}T</div>
+  <div>Cargo: {{ship.cargoCapacity}}T</div>
+  <div>Armour: {{ship.armour}}</div>
+  <div>Pad Size: {{['','Small','Medium','Large'][ship.class]}}</div>
+</fieldset>
+
+<fieldset id="standard" class="component-group">
+  <legend>Standard</legend>
+  <div class="component">
+    <div class="lbl">Bulkheads</div>
+    <div class="clear">{{ship.bulkheads.c.name}}
+      <div class="cla">{{ship.bulkheads.c.mass}}T</div>
+    </div>
+    <div class="select">
+      <div class="c" ng-repeat="b in availCS.bulkheads" ng-click="ship.use(ship.bulkheads,$index,b)">{{b.name}}</div>
+    </div>
+  </div>
+  <div  class="component" ng-repeat="c in ship.common">
+    <component-details c="c" lbl="CArr[$index]"></component-details>
+    <div component-select class="select" c="c" ship="ship" opts="availCS.common[$index]"></div>
+  </div>
+</fieldset>
+
+<fieldset id="hardpoints" class="component-group">
+  <legend>HardPoints</legend>
+  <div class="component" ng-repeat="h in ship.hardpoints">
+    <component-details c="h" lbl="HPC[h.maxClass]"></component-details>
+    <div component-select class="select" c="h" ship="ship" opts="availCS.getHps(h.maxClass)"></div>
+  </div>
+</fieldset>
+
+<fieldset id="internal" class="component-group">
+  <legend>Internal Compartments</legend>
+  <div class="component" ng-repeat="i in ship.internal">
+    <component-details c="i" lbl="'FIX'"></component-details>
+    <div class="select">
+      <div  ng-repeat="(grp, data) in availCS.getInts(i.maxClass)">
+        <div class="select-group">{{grp}}</div>
+        <div component-select c="i" ship="ship" opts="data"></div>
+      </div>
+    </div>
+  </div>
+</fieldset>
+
+<div class="list" id="power-list" power-list ship="ship"></div>
+<div class="list" id="cost-list" cost-list ship="ship"></div>

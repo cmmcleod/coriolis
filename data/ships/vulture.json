@@ -1,0 +1,68 @@
+{
+  "vulture": {
+    "group": "co",
+    "name": "Vulture",
+    "manufacturer": "Core Dynamics",
+    "class": 1,
+    "cost": 4689629,
+    "speed": 210,
+    "boost": 340,
+    "agility": 9,
+    "shields": 240,
+    "armour": 160,
+    "fuelcost": 50,
+    "componentCapacity": {
+      "common": [
+        4,
+        5,
+        4,
+        3,
+        5,
+        4,
+        3
+      ],
+      "hardpoints": [
+        3,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        5,
+        4,
+        2,
+        1,
+        1
+      ]
+    },
+    "defaultComponents": {
+      "common": [
+        "4E",
+        "5E",
+        "4E",
+        "3E",
+        "5E",
+        "4E",
+        "3C"
+      ],
+      "hardpoints": [
+        17,
+        17,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "mass": 230
+  }
+}

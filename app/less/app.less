@@ -1,0 +1,77 @@
+@import 'colors';
+@import 'fonts';
+@import 'utilities';
+@import 'logos';
+
+@import 'shipyard';
+@import 'list';
+@import 'components';
+@import 'ship';
+
+html, body {
+  min-height: 100%;
+}
+
+body {
+  color: #FFF;
+  background-color: #000;
+  margin: 0;
+  padding: 0;
+  font-family: @standardFamily;
+  overflow-x: hidden;
+}
+
+#main {
+  min-height: 90%;
+  clear: both;
+}
+
+header {
+  background-color: @fg;
+  margin: 0;
+  height: 40px;
+  line-height: 40px;
+  font-family: @titleFamily;
+  vertical-align: middle;
+
+  a {
+    vertical-align: middle;
+    color: @border;
+
+    &:visited {
+      color: @border;
+    }
+    &:hover {
+      color: teal;
+    }
+  }
+
+  .title {
+    font-size: 1.3em;
+    display: inline-block;
+    margin:0px;
+    text-transform: uppercase;
+  }
+}
+
+
+footer {
+  font-size: 0.3em;
+  color: #999;
+  padding: 10px 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+header, footer {
+  .right {
+    float: right;
+    text-align: right;
+    margin-right: 10px;
+  }
+  .left {
+    float: left;
+    text-align: left;
+    margin-left: 10px;
+  }
+}

@@ -1,0 +1,53 @@
+.list {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  float: left;
+
+  .list-item {
+    cursor: pointer;
+    clear: both;
+    overflow: hidden;
+    margin: 3px 0px;
+  }
+
+  .val {
+    float:right;
+    text-align: right;
+  }
+
+  .lbl {
+    float: left;
+  }
+
+}
+
+
+#cost-list {
+  color: grey;
+  width: 300px;
+
+  .enabled {
+    color: #FFF;
+  }
+}
+
+
+#power-list {
+  color: grey;
+  width: 300px;
+
+  .enabled {
+    color: #FFF;
+  }
+
+  .consumer.enabled {
+    color: @fg;
+  }
+
+  .common, .internal, .hardpoints {
+
+  }
+
+}

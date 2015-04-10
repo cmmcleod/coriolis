@@ -1,0 +1,76 @@
+{
+  "orca": {
+    "group": "pa",
+    "name": "Orca",
+    "manufacturer": "Saud Kruger",
+    "class": 3,
+    "cost": 47798079,
+    "speed": 300,
+    "boost": 380,
+    "agility": 2,
+    "shields": 220,
+    "armour": 220,
+    "fuelcost": 50,
+    "componentCapacity": {
+      "common": [
+        5,
+        6,
+        5,
+        6,
+        5,
+        4,
+        4
+      ],
+      "hardpoints": [
+        3,
+        2,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        6,
+        5,
+        5,
+        5,
+        4,
+        3,
+        2,
+        2
+      ]
+    },
+    "defaultComponents": {
+      "common": [
+        "5E",
+        "6E",
+        "5E",
+        "6E",
+        "5E",
+        "4E",
+        "4C"
+      ],
+      "hardpoints": [
+        0,
+        17,
+        17,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "mass": 580
+  }
+}

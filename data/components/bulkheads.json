@@ -1,0 +1,631 @@
+{
+  "sidewinder": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 25600,
+      "mass": 2
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 80320,
+      "mass": 4
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 132064,
+      "mass": 4
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 139424,
+      "mass": 4
+    }
+  ],
+  "cobra_mk_iii": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 151887,
+      "mass": 14
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 341746,
+      "mass": 27
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 797407,
+      "mass": 27
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 894995,
+      "mass": 27
+    }
+  ],
+  "imperial_clipper": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 8918344,
+      "mass": 30
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 20066274,
+      "mass": 60
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 47423294,
+      "mass": 60
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 52551342,
+      "mass": 60
+    }
+  ],
+  "federal_dropship": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 7925682,
+      "mass": 44
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 17832784,
+      "mass": 87
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 42144814,
+      "mass": 87
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 46702081,
+      "mass": 87
+    }
+  ],
+  "python": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 22791271,
+      "mass": 26
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 51280361,
+      "mass": 53
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 121192586,
+      "mass": 53
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 134297567,
+      "mass": 53
+    }
+  ],
+  "anaconda": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 58787780,
+      "mass": 30
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 132272505,
+      "mass": 60
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 312604021,
+      "mass": 60
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 346406995,
+      "mass": 60
+    }
+  ],
+  "eagle": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 26880,
+      "mass": 4
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 90048,
+      "mass": 8
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 140089,
+      "mass": 8
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 150393,
+      "mass": 8
+    }
+  ],
+  "viper": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 57172,
+      "mass": 5
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 128637,
+      "mass": 9
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 304014,
+      "mass": 9
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 336888,
+      "mass": 9
+    }
+  ],
+  "vulture": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 1970246,
+      "mass": 17
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 4433054,
+      "mass": 35
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 10476783,
+      "mass": 35
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 11609675,
+      "mass": 35
+    }
+  ],
+  "fer_de_lance": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 20626816,
+      "mass": 19
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 46410336,
+      "mass": 38
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 109683094,
+      "mass": 38
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 121543513,
+      "mass": 38
+    }
+  ],
+  "hauler": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 42176,
+      "mass": 1
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 185047,
+      "mass": 2
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 270295,
+      "mass": 2
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 282421,
+      "mass": 2
+    }
+  ],
+  "type_6_transporter": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 418378,
+      "mass": 12
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 941350,
+      "mass": 23
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 2224725,
+      "mass": 23
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 2465292,
+      "mass": 23
+    }
+  ],
+  "type_7_transport": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 6988901,
+      "mass": 32
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 15725027,
+      "mass": 63
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 37163481,
+      "mass": 63
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 41182099,
+      "mass": 63
+    }
+  ],
+  "type_9_heavy": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 30622336,
+      "mass": 75
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 68900257,
+      "mass": 150
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 162834275,
+      "mass": 150
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 180442119,
+      "mass": 150
+    }
+  ],
+  "adder": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 35123,
+      "mass": 3
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 79027,
+      "mass": 5
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 186767,
+      "mass": 5
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 206963,
+      "mass": 5
+    }
+  ],
+  "asp": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 2664461,
+      "mass": 21
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 5995038,
+      "mass": 42
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 14168273,
+      "mass": 42
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 15700338,
+      "mass": 42
+    }
+  ],
+  "orca": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 19415954,
+      "mass": 21
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 43685898,
+      "mass": 87
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 103244339,
+      "mass": 87
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 114408513,
+      "mass": 87
+    }
+  ]
+}

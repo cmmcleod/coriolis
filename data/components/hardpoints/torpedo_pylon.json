@@ -1,0 +1,32 @@
+{
+  "2h": {
+    "group": "so",
+    "name": "Torpedo Pylon",
+    "class": 1,
+    "rating": "I",
+    "cost": 11200,
+    "mass": 2,
+    "power": 0.4,
+    "mode": "F",
+    "armourpen": "C",
+    "thermload": 10,
+    "clip": 1,
+    "ammo": 1,
+    "missile": "S"
+  },
+  "2i": {
+    "group": "mo",
+    "name": "Torpedo Pylon",
+    "class": 2,
+    "rating": "I",
+    "cost": 44800,
+    "mass": 4,
+    "power": 0.4,
+    "mode": "F",
+    "armourpen": "C",
+    "thermload": 10,
+    "clip": 2,
+    "ammo": 1,
+    "missile": "S"
+  }
+}

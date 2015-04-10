@@ -1,0 +1,30 @@
+{
+  "2l": {
+    "group": "so",
+    "name": "Mining Laser",
+    "class": 1,
+    "rating": "D",
+    "cost": 6800,
+    "mass": 2,
+    "power": 0.5,
+    "mode": "F",
+    "armourpen": "D",
+    "thermload": 3,
+    "clip": 1,
+    "ammo": 1
+  },
+  "2m": {
+    "group": "mo",
+    "name": "Mining Laser",
+    "class": 2,
+    "rating": "D",
+    "cost": 22576,
+    "mass": 2,
+    "power": 0.75,
+    "mode": "F",
+    "armourpen": "D",
+    "thermload": 5,
+    "clip": 1,
+    "ammo": 1
+  }
+}

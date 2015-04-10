@@ -1,0 +1,44 @@
+{
+  "Scanners": {
+    "2f": {
+      "group": "sc",
+      "name": "Advanced Discovery Scanner",
+      "class": 1,
+      "rating": "C",
+      "cost": 1545000,
+      "mass": 2,
+      "power": 0,
+      "range": null
+    },
+    "2g": {
+      "group": "sc",
+      "name": "Intermediate Discovery Scanner",
+      "class": 1,
+      "rating": "D",
+      "cost": 505000,
+      "mass": 2,
+      "power": 0,
+      "range": 1000
+    },
+    "2h": {
+      "group": "sc",
+      "name": "Basic Discovery Scanner",
+      "class": 1,
+      "rating": "E",
+      "cost": 1000,
+      "mass": 2,
+      "power": 0,
+      "range": 500
+    },
+    "2i": {
+      "group": "sc",
+      "name": "Detailed Surface Scanner",
+      "class": 1,
+      "rating": "C",
+      "cost": 250000,
+      "mass": 1.3,
+      "power": 0.6,
+      "range": 0.33
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "fer_de_lance": {
+    "group": "co",
+    "name": "Fer-de-Lance",
+    "manufacturer": "Zorgon Peterson",
+    "class": 2,
+    "cost": 51232230,
+    "speed": 260,
+    "boost": 350,
+    "agility": 6,
+    "shields": 300,
+    "armour": 225,
+    "fuelcost": 50,
+    "componentCapacity": {
+      "common": [
+        5,
+        5,
+        4,
+        4,
+        6,
+        4,
+        3
+      ],
+      "hardpoints": [
+        4,
+        2,
+        2,
+        2,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        5,
+        4,
+        4,
+        2,
+        1
+      ]
+    },
+    "defaultComponents": {
+      "common": [
+        "5E",
+        "5E",
+        "4E",
+        "4E",
+        "6E",
+        "4E",
+        "3C"
+      ],
+      "hardpoints": [
+        0,
+        17,
+        17,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "mass": 250
+  }
+}

@@ -1,0 +1,8 @@
+node_modules
+bower_components
+bower_components/*
+build
+.DS_Store
+*.log
+app/js/db.js
+nginx.pid

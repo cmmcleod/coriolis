@@ -1,0 +1,17 @@
+<div ng-repeat="c in ship.common" ng-if="c.c.power || c.c.pGen" class="list-item common" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="toggle(c)">
+  <div class="lbl">{{c.c.class}}{{c.c.rating}} {{$r.CArr[$index]}}</div><div class="val">{{$r.power(c.c.power || c.c.pGen)}}</div>
+</div>
+<div class="list-item common consumer" ng-class="{enabled:ship.cargoScoop.enabled}" ng-click="toggle(ship.cargoScoop)">
+  <div class="lbl">1H Cargo Scoop</div><div class="val">{{$r.power(ship.cargoScoop.c.power)}}</div>
+</div>
+
+<div ng-repeat="c in ship.hardpoints" ng-if="c.c.power" class="list-item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="toggle(c)">
+  <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name}}</div><div class="val">{{$r.power(c.c.power)}}</div>
+</div>
+
+<div ng-repeat="c in ship.internal" ng-if="c.c.power" class="list-item internal" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="toggle(c)">
+  <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || $r.igMap[c.c.group]}}</div><div class="val">{{$r.power(c.c.power)}}</div>
+</div>
+
+<div>Retracted: {{$r.power(ship.powerRetracted)}} ({{$r.percent(ship.powerRetracted/ship.powerAvailable)}})</div>
+<div>Deployed: {{$r.power(ship.powerDeployed)}} ({{$r.percent(ship.powerDeployed/ship.powerAvailable)}})</div>
