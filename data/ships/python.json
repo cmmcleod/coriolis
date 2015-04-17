@@ -11,7 +11,7 @@
     "shields": 260,
     "armour": 260,
     "fuelcost": 50,
-    "componentCapacity": {
+    "slotCap": {
       "common": [
         7,
         6,

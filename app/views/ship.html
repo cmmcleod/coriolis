@@ -13,9 +13,9 @@
   <div>Pad Size: {{['','Small','Medium','Large'][ship.class]}}</div>
 </fieldset>
 
-<fieldset id="standard" class="component-group">
+<fieldset id="standard" class="slot-group">
   <legend>Standard</legend>
-  <div class="component">
+  <div class="slot">
     <div class="lbl">Bulkheads</div>
     <div class="clear">{{ship.bulkheads.c.name}}
       <div class="cla">{{ship.bulkheads.c.mass}}T</div>
@@ -24,24 +24,24 @@
       <div class="c" ng-repeat="b in availCS.bulkheads" ng-click="ship.use(ship.bulkheads,$index,b)">{{b.name}}</div>
     </div>
   </div>
-  <div  class="component" ng-repeat="c in ship.common">
-    <component-details c="c" lbl="CArr[$index]"></component-details>
+  <div  class="slot" ng-repeat="c in ship.common">
+    <div slot-details c="c" lbl="CArr[$index]"></div>
     <div component-select class="select" c="c" ship="ship" opts="availCS.common[$index]"></div>
   </div>
 </fieldset>
 
-<fieldset id="hardpoints" class="component-group">
+<fieldset id="hardpoints" class="slot-group">
   <legend>HardPoints</legend>
-  <div class="component" ng-repeat="h in ship.hardpoints">
-    <component-details c="h" lbl="HPC[h.maxClass]"></component-details>
+  <div class="slot" ng-repeat="h in ship.hardpoints">
+    <div slot-details c="h" lbl="HPC[h.maxClass]"></div>
     <div component-select class="select" c="h" ship="ship" opts="availCS.getHps(h.maxClass)"></div>
   </div>
 </fieldset>
 
-<fieldset id="internal" class="component-group">
+<fieldset id="internal" class="slot-group">
   <legend>Internal Compartments</legend>
-  <div class="component" ng-repeat="i in ship.internal">
-    <component-details c="i" lbl="'FIX'"></component-details>
+  <div class="slot" ng-repeat="i in ship.internal">
+    <div slot-details c="i" lbl="'FIX'"></div>
     <div class="select">
       <div  ng-repeat="(grp, data) in availCS.getInts(i.maxClass)">
         <div class="select-group">{{grp}}</div>

@@ -15,7 +15,7 @@ angular.module('shipyard').factory('ShipFactory', ['components', 'lodash', funct
     angular.forEach(shipData,function(o,k){
       if(typeof o != 'object') {
         this[k] = o;
-      } else if (k == 'componentCapacity') {
+      } else if (k == 'slotCap') {
         angular.forEach(o,function(arr,g){
           this[g] = [];
           for(var i = 0; i < arr.length; i++){

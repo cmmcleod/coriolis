@@ -2,5 +2,5 @@
 <div class="cla">{{c.maxClass}}</div>
 <div class="clear">
   {{c.c.class}}{{c.c.rating}}
-  <div class="cla">{{c.c.mass || c.c.capacity}}T</div>
+  <div class="cla" ng-if="c.c">{{c.c.mass || c.c.capacity}}T</div>
 </div>

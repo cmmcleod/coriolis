@@ -9,8 +9,8 @@ angular.module('app')
       link: function (scope, element, attributes) {
         scope.$r = $r;
 
-        scope.toggle = function(component) {
-          component.enabled = !component.enabled;
+        scope.toggle = function(slot) {
+          slot.enabled = !slot.enabled;
           scope.ship.updateTotals();
         }
       }

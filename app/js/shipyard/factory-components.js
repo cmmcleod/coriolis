@@ -1,29 +1,30 @@
-angular.module('shipyard').factory('components', ['lodash', 'commonMap','commonArray', function (_, CMap) {
+angular.module('shipyard').factory('components', ['lodash', function (_) {
   var C = DB.components;
 
   function ComponentSet(shipId) {
     var ship = DB.ships[shipId];
-    var maxInternal = ship.componentCapacity.internal[0];
+    var maxInternal = ship.slotCap.internal[0];
 
     this.mass = ship.mass;
     this.common = {};
     this.internal = {};
-    this.hardpoints = filter(C.hardpoints, ship.componentCapacity.hardpoints[0], 0, ship.mass);
+    this.hardpoints = filter(C.hardpoints, ship.slotCap.hardpoints[0], 0, ship.mass);
     this.bulkheads = C.bulkheads[shipId];
     this.hpClass = {};
     this.intClass = {};
 
     for (var i = 0; i < C.common.length; i ++) {
-      var max = ship.componentCapacity.common[i];
+      var max = ship.slotCap.common[i];
       switch (i) {
+        // Slots where component class must be equal to slot class
         case 3: // Life Support
         case 5: // Sensors
           this.common[i] = filter(C.common[i], max, max, ship.mass);
           break;
+        // Other slots can have a component of class lower than the slot class
         default:
           this.common[i] = filter(C.common[i], max, 0, ship.mass);
       }
-
     }
 
     for(var g in C.internal) {
@@ -54,9 +55,7 @@ angular.module('shipyard').factory('components', ['lodash', 'commonMap','commonA
   function filter (data, maxClass, minClass, mass) {
     var set = {};
     _.forEach(data, function (c,id) {
-      if (c.class <= maxClass && c.class >= minClass
-          && (c.maxmass === undefined || mass <= c.maxmass) ) {
-          //&& (c.minmass === undefined || mass  >= c.minmass) ) { // Min mass needs fixed
+      if (c.class <= maxClass && c.class >= minClass && (c.maxmass === undefined || mass <= c.maxmass) ) {
         set[id] = c;
       }
     });

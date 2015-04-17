@@ -4,7 +4,6 @@ angular.module('app')
   $scope.ship = ShipFactory($scope.shipId, DB.ships[$scope.shipId]);
   $scope.availCS = Components.forShip($scope.shipId);
 
-
   // for debugging
   window.ship = $scope.ship;
   window.availcs = $scope.availCS;
