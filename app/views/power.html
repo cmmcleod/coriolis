@@ -16,5 +16,5 @@
   <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || $r.igMap[c.c.group]}}</div><div class="val">{{$r.fPwr(c.c.power)}}</div>
 </div>
 
-<div>Retracted: {{$r.fPwr(ship.powerRetracted)}} ({{$r.percent(ship.powerRetracted/ship.powerAvailable)}})</div>
-<div>Deployed: {{$r.fPwr(ship.powerDeployed)}} ({{$r.percent(ship.powerDeployed/ship.powerAvailable)}})</div>
+<div>Retracted: {{$r.fPwr(ship.powerRetracted)}} ({{$r.fPct(ship.powerRetracted/ship.powerAvailable)}})</div>
+<div>Deployed: {{$r.fPwr(ship.powerDeployed)}} ({{$r.fPct(ship.powerDeployed/ship.powerAvailable)}})</div>
