@@ -190,12 +190,8 @@ angular.module('shipyard').factory('ShipFactory', ['components', 'lodash', funct
         }
         this.sgSI = slotIndex;
       }
-    } else {
-      // Deselect current component
-      slot.id = null;
-      slot.c = null;
+      this.updateTotals();
     }
-    this.updateTotals();
   };
 
   /**
