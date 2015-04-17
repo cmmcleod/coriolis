@@ -16,7 +16,12 @@ var gulp = require('gulp'),
 
 gulp.task('less', function() {
   return gulp.src('app/less/app.less')
-    .pipe(less({paths: ['less/app.less']}))
+    .pipe(less({paths: ['less/app.less']}).on('error',function(e){
+      console.log('File:', e.fileName);
+      console.log('Line:', e.lineNumber);
+      console.log('Message:', e.message);
+      this.emit('end');
+    }))
     .pipe(minifyCSS())
     .pipe(gulp.dest('build'));
 });
@@ -84,6 +89,7 @@ gulp.task('js', function() {
       console.log('File:', e.fileName);
       console.log('Line:', e.lineNumber);
       console.log('Message:', e.message);
+      this.emit('end');
     }))
     .pipe(concat('app.js'))
     .pipe(sourcemaps.write('.'))
