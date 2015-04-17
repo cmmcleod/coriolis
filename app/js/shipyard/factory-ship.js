@@ -10,7 +10,8 @@ angular.module('shipyard').factory('ShipFactory', ['components', 'lodash', funct
     this.id = id;
     this.defaults = shipData.defaultComponents;
     this.incCost = true;
-    this.cargoScoop = { enabled: true, c: { name: 'Cargo Scoop', class: 1, rating: 'H', power: .6} };
+    this.cargoScoop = { enabled: true, c: { name: 'Cargo Scoop', class: 1, rating: 'H', power: 0.6} };
+    this.sgSI = null; // Shield Generator Slot Index
 
     angular.forEach(shipData,function(o,k){
       if(typeof o != 'object') {
@@ -25,7 +26,7 @@ angular.module('shipyard').factory('ShipFactory', ['components', 'lodash', funct
               maxClass: arr[i]
             });
           }
-        }.bind(this))
+        }.bind(this));
       }
     }.bind(this));
   }
@@ -55,29 +56,30 @@ angular.module('shipyard').factory('ShipFactory', ['components', 'lodash', funct
     var availCommon = DB.components.common;
     var availHardPoints = DB.components.hardpoints;
     var availInternal = DB.components.internal;
+    var i,l;
 
     this.bulkheads = { incCost: true, id: comps.bulkheads || 0, c: DB.components.bulkheads[this.id][comps.bulkheads || 0] };
 
-    for(var i = 0, l = comps.common.length; i < l; i++) {
+    for(i = 0, l = comps.common.length; i < l; i++) {
       common[i].id = comps.common[i];
       common[i].c = availCommon[i][comps.common[i]];
     }
 
-    for(var i = 0, l = comps.hardpoints.length; i < l; i++) {
+    for(i = 0, l = comps.hardpoints.length; i < l; i++) {
       if(comps.hardpoints[i] !== 0) {
         hps[i].id = comps.hardpoints[i];
         hps[i].c = availHardPoints[comps.hardpoints[i]];
       }
     }
 
-    for(var i = 0, l = comps.internal.length; i < l; i++) {
+    for(i = 0, l = comps.internal.length; i < l; i++) {
       if(comps.internal[i] !== 0) {
         internal[i].id = comps.internal[i];
         internal[i].c = availInternal[comps.internal[i]];
       }
     }
     this.updateTotals();
-  }
+  };
 
   /**
    * Serializes the selected components for all slots to a URL friendly string.
@@ -103,7 +105,7 @@ angular.module('shipyard').factory('ShipFactory', ['components', 'lodash', funct
    * @return {string}      The id of the selected component or '-' if none selected
    */
   function idToStr(slot) {
-    return o.id === undefined? '-' : o.id;
+    return slot.id === undefined? '-' : slot.id;
   }
 
   /**
@@ -128,9 +130,9 @@ angular.module('shipyard').factory('ShipFactory', ['components', 'lodash', funct
         if (c < commonCount) {
           comps.common[c] = code.substring(i, i + 2);
         } else if (c < hpCount) {
-          comps.hardpoints[c - commonCount] = code.substring(i, i + 2)
+          comps.hardpoints[c - commonCount] = code.substring(i, i + 2);
         } else {
-          comps.internal[c - hpCount] = code.substring(i, i + 2)
+          comps.internal[c - hpCount] = code.substring(i, i + 2);
         }
         i++;
       }
@@ -138,7 +140,7 @@ angular.module('shipyard').factory('ShipFactory', ['components', 'lodash', funct
     }
 
     this.defaults = comps;
-    this.buildWidth(data);
+    this.buildWidth(comps);
   };
 
   /**
@@ -159,32 +161,37 @@ angular.module('shipyard').factory('ShipFactory', ['components', 'lodash', funct
     this.powerDeployed = this.powerRetracted + h.power;
 
     // TODO: range
+    this.calcShieldStrength = this.sgSI !== null? calcShieldStrength(this.mass, this.shields, this.internal[this.sgSI], 1) : 0;
     this.armourAdded = 0; // internal.armoradd TODO: Armour (reinforcement, bulkheads)
     this.armorTotal = this.armourAdded + this.armour;
-
-  }
+  };
 
   /**
    * Update a slot with a the component if the id is different from the current id for this slot.
    * Frees the slot of the current component if the id matches the current id for the slot.
    *
-   * @param {object} slot          The component slot
-   * @param {string} id            Unique ID for the selected component
-   * @param {object} componentData Properties for the selected component
+   * @param {object} slot      The component slot
+   * @param {string} id        Unique ID for the selected component
+   * @param {object} component Properties for the selected component
    */
-  Ship.prototype.use = function(slot, id, componentData) {
-    if (slot.id != id) { // Selecting a different option
+  Ship.prototype.use = function(slot, id, component) {
+    if (slot.id != id) { // Selecting a different component
       slot.id = id;
-      slot.c = componentData;
+      slot.c = component;
 
-      // New componnent is a Shield Generator
-      if(componentData.group == 'sg') {
+      // Selected componnent is a Shield Generator
+      if(component.group == 'sg') {
+        var slotIndex = this.internal.indexOf(slot);
         // You can only have one shield Generator
-        // TODO: find shield generator that is not this one
-        // set c.id = null, c.c = null;
+        if (this.sgSI !== null && this.sgSI != slotIndex) {
+          // A shield generator is already selected in a different slot
+          this.internal[this.sgSI].id = null;
+          this.internal[this.sgSI].c = null;
+        }
+        this.sgSI = slotIndex;
       }
-    // Deselecting current option
     } else {
+      // Deselect current component
       slot.id = null;
       slot.c = null;
     }
@@ -212,7 +219,7 @@ angular.module('shipyard').factory('ShipFactory', ['components', 'lodash', funct
       return shields * multiplier * (sg.optmul + (mass - sg.optmass) / (sg.maxmass - sg.optmass) * (sg.maxmul - sg.optmul));
     }
     return shields * multiplier * sg.maxmul;
-  };
+  }
 
   /**
    * Utilify function for summing the components properties

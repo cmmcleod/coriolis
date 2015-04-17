@@ -1,14 +1,11 @@
-angular.module('app').directive('costList', ['$rootScope', 'lodash', function ($r, _) {
+angular.module('app').directive('costList', ['$rootScope', function ($r) {
   return {
     restrict: 'A',
     scope: {
       ship: '='
     },
     templateUrl: 'views/costs.html',
-    link: function (scope, element, attributes) {
-      scope.hps = ship.hardpoints;
-      scope.ints = ship.internal;
-      scope.com = ship.common;
+    link: function (scope) {
       scope.$r = $r;
       scope.insuranceOptions = {
         Alpha: 0.975,
@@ -20,7 +17,7 @@ angular.module('app').directive('costList', ['$rootScope', 'lodash', function ($
       scope.toggle = function(item) {
         item.incCost = !item.incCost;
         scope.ship.updateTotals();
-      }
+      };
     }
   };
 }]);

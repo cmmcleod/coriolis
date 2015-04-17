@@ -5,6 +5,6 @@ angular.module('app')
   $scope.availCS = Components.forShip($scope.shipId);
 
   // for debugging
-  window.ship = $scope.ship;
-  window.availcs = $scope.availCS;
+  //window.ship = $scope.ship;
+  //window.availcs = $scope.availCS;
 }]);

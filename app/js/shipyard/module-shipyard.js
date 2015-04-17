@@ -69,8 +69,6 @@ angular.module('shipyard', [])
         case 'u':
           l.push('Utility');
           break;
-        default:
-          console.error('Invalid group size', grp);
       }
       switch(a[1]) {
         case 'o':
@@ -91,8 +89,6 @@ angular.module('shipyard', [])
         case 'm':
           l.push('Mount');
           break;
-        default:
-          console.error('Invalid group category', grp);
       }
       return l.join(' ');
     }

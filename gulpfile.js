@@ -23,7 +23,12 @@ gulp.task('less', function() {
 
 gulp.task('lint', function() {
   return gulp.src('app/js/**/*.js')
-    .pipe(jshint())
+    .pipe(jshint({
+      undef: true,
+      unused: true,
+      curly: true,
+      predef: [ "angular",'DB','d3' ]
+    }))
     .pipe(jshint.reporter('default'));
 });
 
@@ -121,6 +126,7 @@ gulp.task('watch', function() {
   gulp.watch('app/less/*.less', ['less']);
   gulp.watch('app/views/**/*', ['html2js']);
   gulp.watch('app/js/**/*.js', ['js']);
+  gulp.watch('data/**/*.json', ['jsonToDB']);
 });
 
 gulp.task('clean', function (done) { del(['build'], done); });

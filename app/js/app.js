@@ -1,9 +1,9 @@
 angular.module('app', ['ngRoute','shipyard','ngLodash','app.templates'])
-.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+.config(['$routeProvider', function($routeProvider) {
   //$locationProvider.html5Mode(true);
   $routeProvider
     .when('/:ship', { templateUrl: 'views/ship.html', controller: 'ShipController' })
-    .when('/', { templateUrl: 'views/ships.html', controller: 'ShipyardController' })
+    .when('/', { templateUrl: 'views/ships.html', controller: 'ShipyardController' });
 
 }])
 .run(['$rootScope','commonArray','shipPurpose', 'shipSize', 'hardPointClass', 'internalGroupMap', function ($rootScope, CArr, shipPurpose, sz, hpc, igMap) {
@@ -23,7 +23,7 @@ angular.module('app', ['ngRoute','shipyard','ngLodash','app.templates'])
   $rootScope.fPct = d3.format(',.2%');
 
   $rootScope.calcJumpRange = function(mass, fsd, fuel) {
-    return Math.pow( (fuel || fsd.maxfuel) / fds.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass;
+    return Math.pow( (fuel || fsd.maxfuel) / fsd.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass;
   };
 
   // TODO: Load Saved Ships List from Local Storage
