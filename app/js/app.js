@@ -17,9 +17,10 @@ angular.module('app', ['ngRoute','shipyard','ngLodash','app.templates'])
   $rootScope.ships = DB.ships;
 
   // Formatters
-  $rootScope.credits = d3.format(',.0f');
-  $rootScope.power = d3.format(',.2f');
-  $rootScope.percent = d3.format(',.2%');
+  $rootScope.fCrd = d3.format(',.0f');
+  $rootScope.fPwr = d3.format(',.2f');
+  $rootScope.fMass = d3.format(',.2r');
+  $rootScope.fPct = d3.format(',.2%');
 
   $rootScope.calcJumpRange = function(mass, fsd, fuel) {
     return Math.pow( (fuel || fsd.maxfuel) / fds.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass;
