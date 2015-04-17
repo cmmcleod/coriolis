@@ -2,6 +2,7 @@
   "sidewinder": {
     "group": "mp",
     "name": "Sidewinder",
+    "manufacturer": "Faulcon DeLacy",
     "class": 1,
     "cost": 12887,
     "speed": 220,

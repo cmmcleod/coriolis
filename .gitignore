@@ -6,3 +6,4 @@ build
 *.log
 app/js/db.js
 nginx.pid
+template_cache.js

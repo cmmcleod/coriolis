@@ -2,38 +2,43 @@
 a.ship {
   display: block;
   float: left;
-  width: 30%;
+  width: 22%;
   height: 30%;
   margin: 1% 1%;
   background-color: #222;
   padding: 0.5%;
   text-decoration: none;
   color: #FFF;
+  font-family: @standardFamily;
 
   &:hover {
-    background-color: orange;
+    background-color: @fg;
   }
 
   h2 {
     width: 100%;
     text-transform: uppercase;
     margin: 0;
+    font-family: @titleFamily;
+  }
 
-    small {
-      float: right;
-      font-size: 0.5em;
-    }
+  small {
+    color: @warning;
+    font-family: @titleFamily;
+    float: left;
+    font-size: 0.8em;
   }
 
   .subtitle {
     overflow: hidden;
+    margin-bottom: 20px;
   }
 
   .size {
     float: left;
     font-size: 0.8em;
   }
-  .category {
+  .purpose {
     text-transform: uppercase;
     font-size: 0.7em;
     float: right;
