@@ -2,15 +2,14 @@ angular.module('app').directive('componentSelect', [ function() {
   return {
     restrict: 'A',
     scope:{
-      opts: '=',
-      c: '=',
-      ship: '='
+      opts: '=',                  // Component Options object
+      slot: '=',                  // Slot Object
+      selectComponent: '&sc'      // Select Component function
     },
     templateUrl: 'views/component_select.html',
     link: function (scope) {
-      scope.use = function(id, componentData) {
-        scope.ship.use(scope.c, id, componentData);
-        // hide this shit;
+      scope.use = function(id, component) {
+        scope.selectComponent({s: scope.slot, id: id, c: component});
       };
     }
   };

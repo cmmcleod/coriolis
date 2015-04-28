@@ -2,7 +2,6 @@ var fs = require('fs');
 var UglifyJS = require('uglify-js');
 var jsonConcat = require('json-concat');
 var async = require('async');
-
 var db_filename = './app/js/db.js';
 
 async.parallel([
@@ -27,28 +26,34 @@ async.parallel([
 function done(err, json) { this(err,json); }
 
 function writeDB(err, arr) {
-  var db = {
-    ships: arr[0],
-    components: {
-      common: arr[1],
-      hardpoints: arr[2],
-      internal: arr[3],
-      bulkheads: arr[4]
-    }
-  };
+  try {
+    var db = {
+      ships: arr[0],
+      components: {
+        common: arr[1],
+        hardpoints: arr[2],
+        internal: arr[3],
+        bulkheads: arr[4]
+      }
+    };
+  }
+  catch (e) {
+    console.error(arguments);
+    exit(0);
+  }
 
   var ast = UglifyJS.parse('var DB = ' + JSON.stringify(db));
   var code = ast.print_to_string({beautify: true, indent_level: 2});
 
   fs.open(db_filename, 'w', function() {
-    fs.writeFile(db_filename, code, function(err) {
-    });
+    fs.writeFile(db_filename, code, function(err) {});
   });
+
+  if (!fs.existsSync('./build')){
+    fs.mkdirSync('./build');
+  }
 
   fs.open('./build/db.json', 'w', function() {
-    fs.writeFile('./build/db.json', JSON.stringify(db), function(err) {
-    });
+    fs.writeFile('./build/db.json', JSON.stringify(db), function(err) {});
   });
-
 }
-

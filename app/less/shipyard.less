@@ -5,26 +5,29 @@ a.ship {
   width: 22%;
   height: 30%;
   margin: 1% 1%;
-  background-color: #222;
+  background-color: @bg;
   padding: 0.5%;
   text-decoration: none;
-  color: #FFF;
-  font-family: @standardFamily;
+  color: @fg;
+  font-family: @fStandard;
+  text-align: right;
+  .user-select-none();
 
   &:hover {
-    background-color: @fg;
+    background-color: @secondary-bg;
   }
 
   h2 {
     width: 100%;
     text-transform: uppercase;
     margin: 0;
-    font-family: @titleFamily;
+    font-family: @fTitle;
+    text-align: left;
   }
 
   small {
     color: @warning;
-    font-family: @titleFamily;
+    font-family: @fTitle;
     float: left;
     font-size: 0.8em;
   }

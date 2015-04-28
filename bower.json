@@ -1,10 +1,10 @@
 {
-  "name": "shipyard",
-  "version": "0.0.0",
+  "name": "coriolis_shipyard",
+  "version": "0.1.0",
   "authors": [
     "Colin McLeod <colin@mcleod.eu>"
   ],
-  "description": "Elite Dangerous Shipyard",
+  "description": "Coriolis Shipyard for Elite Dangerous",
   "main": "app/app.js",
   "moduleType": [
     "amd"
@@ -25,15 +25,13 @@
   "dependencies": {
     "d3": "~3.5.5",
     "ng-lodash": "~0.2.0",
-    "nvd3": "~1.7.1",
-    "angularjs-nvd3-directives": "~0.0.7",
-    "angular-route": "~1.3.15"
+    "angular-route": "~1.3.15",
+    "n3-line-chart": "~1.1.6"
   },
   "overrides": {
     "nvd3": {
-      "ignore": true,
       "main": [
-        "**/*css"
+        "build/nv.d3.js"
       ]
     }
   }

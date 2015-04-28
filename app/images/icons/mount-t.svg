@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
+ <g>
+  <title>Layer 1</title>
+  <line id="svg_11" y2="154" x2="160" y1="154" x1="10" fill-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="6" stroke="#000000" fill="none"/>
+  <path d="m13,138l144,0l0,-50l-27,-40l-90,0l-27,40l0,50z" id="svg_12" fill-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="6" stroke="#000000" fill="none"/>
+  <line id="svg_1" y2="91" x2="200" y1="91" x1="159" fill-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="6" stroke="#000000" fill="none"/>
+ </g>
+</svg>

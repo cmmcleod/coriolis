@@ -1,18 +1,18 @@
-var gulp = require('gulp'),
-    less = require('gulp-less'),
-    jshint = require('gulp-jshint'),
-    minifyCSS = require('gulp-minify-css'),
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
-    sourcemaps = require('gulp-sourcemaps'),
-    templateCache = require('gulp-angular-templatecache'),
-    htmlmin = require('gulp-htmlmin'),
-    template = require('gulp-template'),
-    mainBowerFiles = require('main-bower-files'),
-    del = require('del'),
-    runSequence = require('run-sequence'),
-    exec = require('child_process').exec
-    pkg = require('./package.json');
+var gulp            = require('gulp'),
+    less            = require('gulp-less'),
+    jshint          = require('gulp-jshint'),
+    minifyCSS       = require('gulp-minify-css'),
+    concat          = require('gulp-concat'),
+    uglify          = require('gulp-uglify'),
+    sourcemaps      = require('gulp-sourcemaps'),
+    templateCache   = require('gulp-angular-templatecache'),
+    htmlmin         = require('gulp-htmlmin'),
+    template        = require('gulp-template'),
+    mainBowerFiles  = require('main-bower-files'),
+    del             = require('del'),
+    runSequence     = require('run-sequence'),
+    exec            = require('child_process').exec
+    pkg             = require('./package.json');
 
 gulp.task('less', function() {
   return gulp.src('app/less/app.less')
@@ -107,6 +107,19 @@ gulp.task('generateIndexHTML', function() {
       version: pkg.version,
       date : (new Date()).toLocaleDateString()
     }))
+    .pipe(htmlmin({
+      'collapseBooleanAttributes': true,
+      'collapseWhitespace': true,
+      'removeAttributeQuotes': true,
+      'removeComments': true,
+      'removeEmptyAttributes': true,
+      'removeRedundantAttributes': true,
+      'removeScriptTypeAttributes': true,
+      'removeStyleLinkTypeAttributes': true
+    }).on('error',function(e){
+      console.log('File:', e.fileName);
+      console.log('Message:',e.message);
+    }))
     .pipe(gulp.dest('build'));
 });
 
@@ -138,4 +151,5 @@ gulp.task('watch', function() {
 gulp.task('clean', function (done) { del(['build'], done); });
 gulp.task('build', function (done) { runSequence('clean', ['html2js','jsonToDB'], ['generateIndexHTML','bower','js','less','copy'], done); });
 gulp.task('dev', function (done) { runSequence('build', 'serve','watch', done); });
+gulp.task('default', ['dev']);
 

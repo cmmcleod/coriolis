@@ -1,4 +1,4 @@
-angular.module('app').directive('slotDetails', function () {
+angular.module('app').directive('slotDetails', ['$rootScope', function ($r) {
   return {
     restrict: 'A',
     scope:{
@@ -6,6 +6,9 @@ angular.module('app').directive('slotDetails', function () {
       lbl: '=',
       opts: '='
     },
-    templateUrl: 'views/slot.html'
+    templateUrl: 'views/slot.html',
+    link: function(scope) {
+      scope.$r = $r;
+    }
  };
-});
+}]);

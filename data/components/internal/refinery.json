@@ -6,7 +6,7 @@
       "rating": "B",
       "cost": 1500282,
       "power": 0.49,
-      "capacity": 9
+      "bins": 9
     },
     "21": {
       "group": "rf",
@@ -14,7 +14,7 @@
       "rating": "C",
       "cost": 500094,
       "power": 0.41,
-      "capacity": 7
+      "bins": 7
     },
     "22": {
       "group": "rf",
@@ -22,7 +22,7 @@
       "rating": "D",
       "cost": 166698,
       "power": 0.33,
-      "capacity": 5
+      "bins": 5
     },
     "23": {
       "group": "rf",
@@ -30,7 +30,7 @@
       "rating": "E",
       "cost": 55566,
       "power": 0.25,
-      "capacity": 4
+      "bins": 4
     },
     "1g": {
       "group": "rf",
@@ -38,7 +38,7 @@
       "rating": "A",
       "cost": 486000,
       "power": 0.32,
-      "capacity": 4
+      "bins": 4
     },
     "1h": {
       "group": "rf",
@@ -46,7 +46,7 @@
       "rating": "B",
       "cost": 162000,
       "power": 0.28,
-      "capacity": 3
+      "bins": 3
     },
     "1i": {
       "group": "rf",
@@ -54,7 +54,7 @@
       "rating": "C",
       "cost": 54000,
       "power": 0.23,
-      "capacity": 2
+      "bins": 2
     },
     "1j": {
       "group": "rf",
@@ -62,7 +62,7 @@
       "rating": "D",
       "cost": 18000,
       "power": 0.18,
-      "capacity": 1
+      "bins": 1
     },
     "1k": {
       "group": "rf",
@@ -70,7 +70,7 @@
       "rating": "E",
       "cost": 6000,
       "power": 0.14,
-      "capacity": 1
+      "bins": 1
     },
     "1l": {
       "group": "rf",
@@ -78,7 +78,7 @@
       "rating": "A",
       "cost": 1020600,
       "power": 0.39,
-      "capacity": 6
+      "bins": 6
     },
     "1m": {
       "group": "rf",
@@ -86,7 +86,7 @@
       "rating": "B",
       "cost": 340200,
       "power": 0.34,
-      "capacity": 5
+      "bins": 5
     },
     "1n": {
       "group": "rf",
@@ -94,7 +94,7 @@
       "rating": "C",
       "cost": 113400,
       "power": 0.28,
-      "capacity": 4
+      "bins": 4
     },
     "1o": {
       "group": "rf",
@@ -102,7 +102,7 @@
       "rating": "D",
       "cost": 37800,
       "power": 0.22,
-      "capacity": 3
+      "bins": 3
     },
     "1p": {
       "group": "rf",
@@ -110,7 +110,7 @@
       "rating": "E",
       "cost": 12600,
       "power": 0.17,
-      "capacity": 2
+      "bins": 2
     },
     "1q": {
       "group": "rf",
@@ -118,7 +118,7 @@
       "rating": "A",
       "cost": 2143260,
       "power": 0.48,
-      "capacity": 8
+      "bins": 8
     },
     "1r": {
       "group": "rf",
@@ -126,7 +126,7 @@
       "rating": "B",
       "cost": 714420,
       "power": 0.41,
-      "capacity": 7
+      "bins": 7
     },
     "1s": {
       "group": "rf",
@@ -134,7 +134,7 @@
       "rating": "C",
       "cost": 238140,
       "power": 0.34,
-      "capacity": 6
+      "bins": 6
     },
     "1t": {
       "group": "rf",
@@ -142,7 +142,7 @@
       "rating": "D",
       "cost": 79380,
       "power": 0.27,
-      "capacity": 4
+      "bins": 4
     },
     "1u": {
       "group": "rf",
@@ -150,7 +150,7 @@
       "rating": "E",
       "cost": 26460,
       "power": 0.2,
-      "capacity": 3
+      "bins": 3
     },
     "1v": {
       "group": "rf",
@@ -158,7 +158,7 @@
       "rating": "A",
       "cost": 4500846,
       "power": 0.57,
-      "capacity": 10
+      "bins": 10
     }
   }
 }

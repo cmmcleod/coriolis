@@ -2,7 +2,6 @@
   "Fuel Scoops": {
     "30": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 3,
       "rating": "D",
       "cost": 14109,
@@ -11,7 +10,6 @@
     },
     "31": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 3,
       "rating": "E",
       "cost": 3386,
@@ -20,7 +18,6 @@
     },
     "32": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 4,
       "rating": "A",
       "cost": 2862364,
@@ -29,7 +26,6 @@
     },
     "33": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 4,
       "rating": "B",
       "cost": 715591,
@@ -38,7 +34,6 @@
     },
     "34": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 4,
       "rating": "C",
       "cost": 178898,
@@ -47,7 +42,6 @@
     },
     "35": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 4,
       "rating": "D",
       "cost": 44724,
@@ -56,7 +50,6 @@
     },
     "36": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 4,
       "rating": "E",
       "cost": 10734,
@@ -65,7 +58,6 @@
     },
     "37": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 5,
       "rating": "A",
       "cost": 9073694,
@@ -74,7 +66,6 @@
     },
     "38": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 5,
       "rating": "B",
       "cost": 2268424,
@@ -83,7 +74,6 @@
     },
     "39": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 5,
       "rating": "C",
       "cost": 567106,
@@ -92,7 +82,6 @@
     },
     "2j": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 1,
       "rating": "A",
       "cost": 82270,
@@ -101,7 +90,6 @@
     },
     "2k": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 1,
       "rating": "B",
       "cost": 20568,
@@ -110,7 +98,6 @@
     },
     "2l": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 1,
       "rating": "C",
       "cost": 5142,
@@ -119,7 +106,6 @@
     },
     "2m": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 1,
       "rating": "D",
       "cost": 1285,
@@ -128,7 +114,6 @@
     },
     "2n": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 1,
       "rating": "E",
       "cost": 309,
@@ -137,7 +122,6 @@
     },
     "2o": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 2,
       "rating": "A",
       "cost": 284844,
@@ -146,7 +130,6 @@
     },
     "2p": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 2,
       "rating": "B",
       "cost": 71211,
@@ -155,7 +138,6 @@
     },
     "2q": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 2,
       "rating": "C",
       "cost": 17803,
@@ -164,7 +146,6 @@
     },
     "2r": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 2,
       "rating": "D",
       "cost": 4451,
@@ -173,7 +154,6 @@
     },
     "2s": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 2,
       "rating": "E",
       "cost": 1068,
@@ -182,7 +162,6 @@
     },
     "2t": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 3,
       "rating": "A",
       "cost": 902954,
@@ -191,7 +170,6 @@
     },
     "2u": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 3,
       "rating": "B",
       "cost": 225738,
@@ -200,7 +178,6 @@
     },
     "2v": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 3,
       "rating": "C",
       "cost": 56435,
@@ -209,7 +186,6 @@
     },
     "3a": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 5,
       "rating": "D",
       "cost": 141776,
@@ -218,7 +194,6 @@
     },
     "3b": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 5,
       "rating": "E",
       "cost": 34026,
@@ -227,7 +202,6 @@
     },
     "3c": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 6,
       "rating": "A",
       "cost": 28763610,
@@ -236,7 +210,6 @@
     },
     "3d": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 6,
       "rating": "B",
       "cost": 7190903,
@@ -245,7 +218,6 @@
     },
     "3e": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 6,
       "rating": "C",
       "cost": 1797726,
@@ -254,7 +226,6 @@
     },
     "3f": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 6,
       "rating": "D",
       "cost": 449431,
@@ -263,7 +234,6 @@
     },
     "3g": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 6,
       "rating": "E",
       "cost": 107864,
@@ -272,7 +242,6 @@
     },
     "3h": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 7,
       "rating": "A",
       "cost": 91180644,
@@ -281,7 +250,6 @@
     },
     "3i": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 7,
       "rating": "B",
       "cost": 22795161,
@@ -290,7 +258,6 @@
     },
     "3j": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 7,
       "rating": "C",
       "cost": 5698790,
@@ -299,7 +266,6 @@
     },
     "3k": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 7,
       "rating": "D",
       "cost": 1424698,
@@ -308,7 +274,6 @@
     },
     "3l": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 7,
       "rating": "E",
       "cost": 341927,
@@ -317,7 +282,6 @@
     },
     "3m": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 8,
       "rating": "A",
       "cost": 289042541,
@@ -326,7 +290,6 @@
     },
     "3n": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 8,
       "rating": "B",
       "cost": 72260660,
@@ -335,7 +298,6 @@
     },
     "3o": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 8,
       "rating": "C",
       "cost": 18065165,
@@ -344,7 +306,6 @@
     },
     "3p": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 8,
       "rating": "D",
       "cost": 4516291,
@@ -353,7 +314,6 @@
     },
     "3q": {
       "group": "fs",
-      "name": "Fuel Scoop",
       "class": 8,
       "rating": "E",
       "cost": 1083910,

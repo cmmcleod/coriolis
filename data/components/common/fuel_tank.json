@@ -1,27 +1,9 @@
 {
-  "1C": {
-    "class": 1,
+  "6C": {
+    "class": 6,
     "rating": "C",
-    "cost": 1000,
-    "capacity": 2
-  },
-  "2C": {
-    "class": 2,
-    "rating": "C",
-    "cost": 3750,
-    "capacity": 4
-  },
-  "3C": {
-    "class": 3,
-    "rating": "C",
-    "cost": 7063,
-    "capacity": 8
-  },
-  "4C": {
-    "class": 4,
-    "rating": "C",
-    "cost": 24734,
-    "capacity": 16
+    "cost": 341577,
+    "capacity": 64
   },
   "5C": {
     "class": 5,
@@ -29,10 +11,29 @@
     "cost": 97754,
     "capacity": 32
   },
-  "6C": {
-    "class": 6,
+  "4C": {
+    "class": 4,
     "rating": "C",
-    "cost": 341577,
-    "capacity": 64
+    "cost": 24734,
+    "capacity": 16
+  },
+  "3C": {
+    "class": 3,
+    "rating": "C",
+    "cost": 7063,
+    "capacity": 8
+  },
+  "2C": {
+    "class": 2,
+    "rating": "C",
+    "cost": 3750,
+    "capacity": 4
+  },
+  "1C": {
+    "class": 1,
+    "rating": "C",
+    "cost": 1000,
+    "capacity": 2
   }
+
 }

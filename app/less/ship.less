@@ -14,13 +14,61 @@
 }
 
 #hardpoints {
-  width: 525px;
+  .slot:nth-child(2n) {
+    clear: left;
+    margin-right: 10px;
+  }
 }
 
 #standard {
-  width: 265px;
+  .slot {
+    clear: left;
+  }
 }
 
 #internal {
-  width: 525px;
+ .slot {
+    clear: left;
+  }
 }
+
+#summary {
+  .user-select-none();
+  float: right;
+  width: 40%;
+  border-top: 2px solid @primary;
+  border-bottom: 2px solid @primary;
+  background-color: @primary-bg;
+}
+
+legend {
+  text-transform: uppercase;
+  padding: 0 5px;
+  color: @warning;
+  font-family: @fTitle;
+}
+
+fieldset {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  cursor: default;
+  border: 2px solid @warning-bg;
+  .border-radius(5px);
+  margin: 5px;
+  padding: 1px 5px 5px;
+}
+
+.toggle {
+  cursor: pointer;
+}
+
+.expandable {
+  display: none;
+
+  &.expanded {
+    display: block;
+  }
+}
+

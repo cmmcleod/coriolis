@@ -1,10 +1,9 @@
 
-<a href="#/{{id}}" class="ship" ng-repeat="(id,s) in ships">
+<a ng-href="{{id}}" class="ship" ng-repeat="(id,s) in ships">
   <h2>{{s.name}}</h2>
   <small>{{s.manufacturer}}</small>
   <div class="subtitle">
-    
     <div class="purpose">{{SP[s.group]}}</div>
   </div>
-  {{fCrd(s.cost)}} C
+  {{fCrd(s.cost)}} CR
 </a>

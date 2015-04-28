@@ -1,3 +1,20 @@
-@fg: #FF8C0D;   // Light Orange
+@fg: #fff;
+@bg: #333;
+@primary: #FF8C0D; // Light Orange
+@secondary: #32DBDB;  // Light blue
 @warning: #FF3B00;  // Dark Orange
-@border: rgba(201,34,2,0.50); // Dark Red
+
+@bgDarken: 40%;
+@disabledDarken: 15%;
+@bgTransparency: 10%;
+
+@disabled: #888;
+@primary-disabled: darken(@primary, @disabledDarken);
+@secondary-disabled: darken(@primary, @disabledDarken);
+@warning-disabled: darken(@primary, @disabledDarken);
+
+@bgBlack: rgba(0,0,0,0.6);
+
+@primary-bg: fadeout(darken(@primary, 45%), 30%);
+@secondary-bg: fadeout(darken(@secondary, @bgDarken), @bgTransparency); // Brown background
+@warning-bg: fadeout(darken(@warning, @bgDarken), @bgTransparency); // Dark Red

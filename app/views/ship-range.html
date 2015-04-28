@@ -1,0 +1,15 @@
+<div class="header toggle" ng-click="toggleExpand()">Jump Range</div>
+<div class="expandable items" ng-class="{expanded: expanded}">
+  <!---<linechart data="data" options="options" mode="" width="" height=""></linechart>/-->
+  Stuff!
+</div>
+<div class="summary toggle" ng-click="toggleExpand()">
+  <div class="item">
+    <div class="lbl">Laden</div>
+    <div class="val">{{$r.fRound(ship.ladenJumpRange)}} Ly</div>
+  </div>
+  <div class="item">
+    <div class="lbl">Unladen</div>
+    <div class="val">{{$r.fRound(ship.unladenJumpRange)}} Ly</div>
+  </div>
+</div>

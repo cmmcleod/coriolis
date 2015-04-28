@@ -8,7 +8,7 @@
     "mass": 3.5,
     "power": 1.2,
     "passive": 1,
-    "shieldmul": 1.2
+    "shieldmul": 0.2
   },
   "05": {
     "group": "ub",
@@ -19,7 +19,7 @@
     "mass": 3,
     "power": 1,
     "passive": 1,
-    "shieldmul": 1.16
+    "shieldmul": 0.16
   },
   "06": {
     "group": "ub",
@@ -30,7 +30,7 @@
     "mass": 2,
     "power": 0.7,
     "passive": 1,
-    "shieldmul": 1.12
+    "shieldmul": 0.12
   },
   "07": {
     "group": "ub",
@@ -41,7 +41,7 @@
     "mass": 1,
     "power": 0.5,
     "passive": 1,
-    "shieldmul": 1.08
+    "shieldmul": 0.08
   },
   "08": {
     "group": "ub",
@@ -52,6 +52,6 @@
     "mass": 0.5,
     "power": 0.2,
     "passive": 1,
-    "shieldmul": 1.04
+    "shieldmul": 0.04
   }
 }

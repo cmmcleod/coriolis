@@ -65,6 +65,12 @@ angular.module('shipyard').factory('components', ['lodash', function (_) {
   return {
     forShip: function (shipId) {
       return new ComponentSet(shipId);
+    },
+    findInternal: function(id) {
+      var c = _.find(C.internal, function(o) {
+        return o[id];
+      })
+      return c[id];
     }
   };
 

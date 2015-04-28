@@ -7,7 +7,12 @@ angular.module('app')
       },
       templateUrl: 'views/power.html',
       link: function (scope) {
+        scope.expanded = false;
         scope.$r = $r;
+
+        scope.toggleExpand = function() {
+          scope.expanded = !scope.expanded;
+        }
 
         scope.toggle = function(slot) {
           slot.enabled = !slot.enabled;

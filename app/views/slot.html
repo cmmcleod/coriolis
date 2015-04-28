@@ -1,6 +1,15 @@
-<div class="lbl">{{lbl}}</div>
-<div class="cla">{{c.maxClass}}</div>
-<div class="clear">
-  {{c.c.class}}{{c.c.rating}}
-  <div class="cla" ng-if="c.c">{{c.c.mass || c.c.capacity}}T</div>
+<div class="sz">{{c.maxClass}}</div>
+<div class="empty" ng-if="!c.c">EMPTY</div>
+<div ng-if="c.c">
+  <div class="l">{{c.c.name || lbl}}</div>
+  <div class="r">{{c.c.class}}{{c.c.rating}}</div>
+  <div class="cb"></div>
+  <div class="l" ng-if="c.c.optmass">Opt: {{c.c.optmass}} T</div>
+  <div class="l" ng-if="c.c.maxmass">Max: {{c.c.optmass}} T</div>
+  <div class="l" ng-if="c.c.bins">{{c.c.bins}} Bins</div>
+  <div class="l" ng-if="c.c.range">{{c.c.range}} KM</div>
+  <div class="r cr">{{c.c.mass || '0'}} T</div>
+  <!-- Armour add /-->
+  <!-- Capacity add /-->
+  <!-- Rate add /-->
 </div>
