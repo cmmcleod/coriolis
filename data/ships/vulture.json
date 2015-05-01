@@ -1,17 +1,20 @@
 {
   "vulture": {
-    "group": "co",
-    "name": "Vulture",
-    "manufacturer": "Core Dynamics",
-    "class": 1,
-    "cost": 4689629,
-    "speed": 210,
-    "boost": 340,
-    "agility": 9,
-    "shields": 240,
-    "armour": 160,
-    "fuelcost": 50,
-    "slotCap": {
+    "properties": {
+      "group": "co",
+      "name": "Vulture",
+      "manufacturer": "Core Dynamics",
+      "class": 1,
+      "cost": 4689629,
+      "speed": 210,
+      "boost": 340,
+      "agility": 9,
+      "shields": 240,
+      "armour": 160,
+      "fuelcost": 50,
+      "mass": 230
+    },
+    "slots": {
       "common": [
         4,
         5,
@@ -37,7 +40,7 @@
         1
       ]
     },
-    "defaultComponents": {
+    "defaults": {
       "common": [
         "4E",
         "5E",
@@ -62,7 +65,6 @@
         0,
         "2h"
       ]
-    },
-    "mass": 230
+    }
   }
 }

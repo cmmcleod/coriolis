@@ -1,25 +1,45 @@
-angular.module('app', ['ngRoute', 'shipyard', 'ngLodash', 'n3-line-chart', 'app.templates'])
-.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+angular.module('app', ['ui.router', 'shipyard', 'ngLodash', 'app.templates'])
+.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
-  $routeProvider
-    .when('/:ship', { templateUrl: 'views/ship.html', controller: 'ShipController' })
-    .when('/:ship/:code', { templateUrl: 'views/ship.html', controller: 'ShipController' })
-    .when('/', { templateUrl: 'views/ships.html', controller: 'ShipyardController' });
+  $stateProvider
+    .state('outfit', {
+      url: '/outfit/:shipId/:code?bn',
+      params: {
+        // TODO: fix below, default, squash false not working
+        //shipId: { value: 'sidewinder', squash: false }, // Allow 'shipId' parameter to default to
+        code: { value: null, squash: true } // Allow 'code' parameter to be empty/optional
+      },
+      templateUrl: 'views/page-outfit.html',
+      controller: 'OutfitController',
+      resolve: {
+        shipId: ['$stateParams',function ($p) { // Ensure ship exists before loading controller
+          if (!DB.ships[$p.shipId]) {
+            throw { type: 404, message: 'Ship "' + $p.shipId  + '" does not exist'};
+          }
+        }]
+      }
+    })
+    .state('shipyard', { url: '/', templateUrl: 'views/page-shipyard.html', controller: 'ShipyardController' })
+    .state('error', { params: {type:null, message:null, details: null }, templateUrl: 'views/page-error.html', controller: 'ErrorController' })
+    .state('notfound', { url: '*path', templateUrl: 'views/page-error.html', controller: 'ErrorController' });
 
 }])
-.run(['$rootScope','$document','$location','$route','commonArray','shipPurpose','shipSize','hardPointClass','internalGroupMap', function ($rootScope, $doc, $loc, $route, CArr, shipPurpose, sz, hpc, igMap) {
-  // Allow URL changes without reloading controllers/view
-  var original = $loc.path;
-  $loc.path = function (path, reload) {
-      if (reload === false) {
-          var lastRoute = $route.current;
-          var un = $rootScope.$on('$locationChangeSuccess', function () {
-              $route.current = lastRoute;
-              un();
-          });
-      }
-      return original.apply($loc, [path]);
-  };
+.config(['$provide',function($provide) {
+  // Global Error Handler, redirects uncaught errors to the error page
+  $provide.decorator('$exceptionHandler', ['$delegate', '$injector', function ($delegate, $injector) {
+    return function(exception, cause) {
+      $injector.get('$state').go('error', { details: exception }, {location:false, reload:true});  // Go to error state, reload the controller, keep the current URL
+      $delegate(exception, cause);
+    };
+  }]);
+}])
+.run(['$rootScope','$document','$state','commonArray','shipPurpose','shipSize','hardPointClass','internalGroupMap','hardpointsGroupMap', function ($rootScope, $doc, $state, CArr, shipPurpose, sz, hpc, igMap, hgMap) {
+
+  // Redirect any state transition errors to the error controller/state
+  $rootScope.$on('$stateChangeError', function(e, toState, toParams, fromState, fromParams, error){
+    e.preventDefault();
+    $state.go('error',error, {location:false, reload:true});  // Go to error state, reload the controller, keep the current URL
+  });
 
   // Global Reference variables
   $rootScope.CArr = CArr;
@@ -27,7 +47,9 @@ angular.module('app', ['ngRoute', 'shipyard', 'ngLodash', 'n3-line-chart', 'app.
   $rootScope.SZ = sz;
   $rootScope.HPC = hpc;
   $rootScope.igMap = igMap;
+  window.hgmap = $rootScope.hgMap = hgMap;
   $rootScope.ships = DB.ships;
+  $rootScope.title = 'Coriolis';
 
   // Formatters
   $rootScope.fCrd = d3.format(',.0f');

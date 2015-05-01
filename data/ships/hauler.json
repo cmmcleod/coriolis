@@ -1,17 +1,20 @@
 {
   "hauler": {
-    "group": "fr",
-    "name": "Hauler",
-    "manufacturer": "Zorgon Peterson",
-    "class": 1,
-    "cost": 29807,
-    "speed": 200,
-    "boost": 300,
-    "agility": 6,
-    "shields": 50,
-    "armour": 50,
-    "fuelcost": 50,
-    "slotCap": {
+    "properties": {
+      "group": "fr",
+      "name": "Hauler",
+      "manufacturer": "Zorgon Peterson",
+      "class": 1,
+      "cost": 29807,
+      "speed": 200,
+      "boost": 300,
+      "agility": 6,
+      "shields": 50,
+      "armour": 50,
+      "fuelcost": 50,
+      "mass": 14
+    },
+    "slots": {
       "common": [
         2,
         2,
@@ -33,7 +36,7 @@
         1
       ]
     },
-    "defaultComponents": {
+    "defaults": {
       "common": [
         "2E",
         "2E",
@@ -54,7 +57,6 @@
         "3v",
         "2h"
       ]
-    },
-    "mass": 14
+    }
   }
 }

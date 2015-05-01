@@ -1,17 +1,20 @@
 {
   "type_9_heavy": {
-    "group": "fr",
-    "name": "Type-9 Heavy",
-    "manufacturer": "Lakon",
-    "class": 3,
-    "cost": 73255168,
-    "speed": 130,
-    "boost": 200,
-    "agility": 0,
-    "shields": 240,
-    "armour": 240,
-    "fuelcost": 50,
-    "slotCap": {
+    "properties": {
+      "group": "fr",
+      "name": "Type-9 Heavy",
+      "manufacturer": "Lakon",
+      "class": 3,
+      "cost": 73255168,
+      "speed": 130,
+      "boost": 200,
+      "agility": 0,
+      "shields": 240,
+      "armour": 240,
+      "fuelcost": 50,
+      "mass": 1000
+    },
+    "slots": {
       "common": [
         6,
         7,
@@ -44,7 +47,7 @@
         2
       ]
     },
-    "defaultComponents": {
+    "defaults": {
       "common": [
         "6E",
         "7E",
@@ -76,7 +79,6 @@
         0,
         "2h"
       ]
-    },
-    "mass": 1000
+    }
   }
 }

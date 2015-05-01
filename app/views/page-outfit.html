@@ -2,8 +2,14 @@
 <div id="hardpoints" class="slot-group">
   <h1>HardPoints</h1>
   <div class="slot" ng-repeat="h in ship.hardpoints" ng-click="selectSlot($event, h)" ng-class="{selected: selectedSlot==h}">
-    <div class="details" hardpoint hp="h" size="HPC[h.maxClass]"></div>
-    <div component-select class="select" slot="h" sc="selectComponent(s,id,c)" opts="availCS.getHps(h.maxClass)" ng-show="selectedSlot==h" ng-click="$event.stopPropagation()"></div>
+    <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="hgMap[h.c.grp]"></div>
+    <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
+      <div class="empty-c" id="empty" ng-click="select(null, h, $event)">EMPTY</div>
+      <div ng-repeat="(grp, data) in availCS.getHps(h.maxClass)">
+        <div class="select-group">{{grp}}</div>
+        <div component-select opts="data"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -16,17 +22,17 @@
       <div class="cl l">{{ship.bulkheads.c.name}}</div>
       <div class="r cr">{{ship.bulkheads.c.mass}} T</div>
     </div>
-    <div class="select" ng-show="selectedSlot==ship.bulkheads" ng-click="$event.stopPropagation()"><ul>
-      <li class="lc" ng-click="ship.useBulkhead(0);hideMenus();">Lightweight Alloy</li>
-      <li class="lc" ng-click="ship.useBulkhead(1);hideMenus();">Reinforced Alloy</li>
-      <li class="lc" ng-click="ship.useBulkhead(2);hideMenus();">Military Grade Composite</li>
-      <li class="lc" ng-click="ship.useBulkhead(3);hideMenus();">Mirrored Surface Composite</li>
-      <li class="lc" ng-click="ship.useBulkhead(4);hideMenus();">Reactive Surface Composite</li>
+    <div class="select" ng-if="selectedSlot==ship.bulkheads" ng-click="select('b',ship.bulkheads,$event)"><ul>
+      <li class="lc" id="0">Lightweight Alloy</li>
+      <li class="lc" id="1">Reinforced Alloy</li>
+      <li class="lc" id="2">Military Grade Composite</li>
+      <li class="lc" id="3">Mirrored Surface Composite</li>
+      <li class="lc" id="4">Reactive Surface Composite</li>
     </ul></div>
   </div>
   <div class="slot" ng-click="selectSlot($event, pp)" ng-class="{selected: selectedSlot==pp}">
     <div class="details">
-      <div class="sz">{{pp.maxClass}}</div>
+      <div class="sz">{{::pp.maxClass}}</div>
       <div class="l">Power Plant</div>
       <div class="r">{{pp.id}}</div>
       <div class="cb"></div>
@@ -34,11 +40,11 @@
       <div class="l">Power: {{pp.c.pGen}} MW</div>
       <div class="r">{{pp.c.mass}} T</div>
     </div>
-    <div component-select class="select" slot="pp" sc="selectComponent(s,id,c)" opts="availCS.common[0]" ng-show="selectedSlot==pp" ng-click="$event.stopPropagation()"></div>
+    <div component-select class="select" opts="availCS.common[0]" ng-if="selectedSlot==pp" ng-click="select('c',pp,$event)"></div>
   </div>
   <div class="slot" ng-click="selectSlot($event, th)" ng-class="{selected: selectedSlot==th}">
     <div class="details">
-      <div class="sz">{{th.maxClass}}</div>
+      <div class="sz">{{::th.maxClass}}</div>
       <div class="l">Thrusters</div>
       <div class="r">{{th.id}}</div>
       <div class="cb"></div>
@@ -46,11 +52,11 @@
       <div class="l">Max: {{th.c.optmass}} T</div>
       <div class="r">{{th.c.mass}} T</div>
     </div>
-    <div component-select class="select" slot="th" sc="selectComponent(s,id,c)" opts="availCS.common[1]" ng-show="selectedSlot==th" ng-click="$event.stopPropagation()"></div>
+    <div component-select class="select" opts="availCS.common[1]" ng-if="selectedSlot==th" ng-click="select('c',th,$event)"></div>
   </div>
   <div class="slot" ng-click="selectSlot($event, fsd)" ng-class="{selected: selectedSlot==fsd}">
     <div class="details">
-      <div class="sz">{{fsd.maxClass}}</div>
+      <div class="sz">{{::fsd.maxClass}}</div>
       <div class="l">Frame Shift Drive</div>
       <div class="r">{{fsd.id}}</div>
       <div class="cb"></div>
@@ -58,64 +64,73 @@
       <div class="l">Max Fuel: {{fsd.c.maxfuel}} T</div>
       <div class="r cr">{{fsd.c.mass}} T</div>
     </div>
-    <div component-select class="select" slot="fsd" sc="selectComponent(s,id,c)" opts="availCS.common[2]" ng-show="selectedSlot==fsd" ng-click="$event.stopPropagation()"></div>
+    <div component-select class="select" opts="availCS.common[2]" ng-if="selectedSlot==fsd" ng-click="select('c',fsd,$event)"></div>
   </div>
   <div class="slot" ng-click="selectSlot($event, ls)" ng-class="{selected: selectedSlot==ls}">
     <div class="details">
-      <div class="sz">{{ls.maxClass}}</div>
+      <div class="sz">{{::ls.maxClass}}</div>
       <div class="l">Life Support</div>
       <div class="r">{{ls.id}}</div>
       <div class="cb"></div>
       <div class="l">Time: {{fTime(ls.c.time)}}</div>
       <div class="r cr">{{ls.c.mass}} T</div>
     </div>
-    <div component-select class="select" slot="ls" sc="selectComponent(s,id,c)" opts="availCS.common[3]" ng-show="selectedSlot==ls" ng-click="$event.stopPropagation()"></div>
+    <div component-select class="select" opts="availCS.common[3]" ng-if="selectedSlot==ls" ng-click="select('c',ls,$event)"></div>
   </div>
   <div class="slot" ng-click="selectSlot($event, pd)" ng-class="{selected: selectedSlot==pd}">
     <div class="details">
-      <div class="sz">{{pd.maxClass}}</div>
+      <div class="sz">{{::pd.maxClass}}</div>
       <div class="l">Power Distributor</div>
       <div class="r">{{pd.id}}</div>
       <div class="cb"></div>
       <!-- TODO: add power distributor stuff /-->
       <div class="r cr">{{pd.c.mass}} T</div>
     </div>
-    <div component-select class="select" slot="pd" sc="selectComponent(s,id,c)" opts="availCS.common[4]" ng-show="selectedSlot==pd" ng-click="$event.stopPropagation()"></div>
+    <div component-select class="select" opts="availCS.common[4]" ng-if="selectedSlot==pd" ng-click="select('c',pd,$event)"></div>
   </div>
   <div class="slot" ng-click="selectSlot($event, ss)" ng-class="{selected: selectedSlot==ss}">
     <div class="details">
-      <div class="sz">{{ss.maxClass}}</div>
+      <div class="sz">{{::ss.maxClass}}</div>
       <div class="l">Sensors</div>
       <div class="r">{{ss.id}}</div>
       <div class="cb"></div>
       <div class="l">{{ss.c.range}} KM</div>
       <div class="r cr">{{ss.c.mass}} T</div>
     </div>
-    <div component-select class="select" slot="ss" sc="selectComponent(s,id,c)" opts="availCS.common[5]" ng-show="selectedSlot==ss" ng-click="$event.stopPropagation()"></div>
+    <div component-select class="select" opts="availCS.common[5]" ng-if="selectedSlot==ss" ng-click="select('c',ss,$event)"></div>
   </div>
   <div class="slot" ng-click="selectSlot($event, ft)" ng-class="{selected: selectedSlot==ft}">
-    <div class="details" lbl="CArr[0]">
-      <div class="sz">{{ft.maxClass}}</div>
+    <div class="details">
+      <div class="sz">{{::ft.maxClass}}</div>
       <div class="l">Fuel Tank</div>
       <div class="r">{{ft.id}}</div>
       <div class="r cr">{{ft.c.capacity}} T</div>
     </div>
-    <div component-select class="select" slot="ft" sc="selectComponent(s,id,c)" opts="availCS.common[6]" ng-show="selectedSlot==ft" ng-click="$event.stopPropagation()"></div>
+    <div component-select class="select" opts="availCS.common[6]" ng-if="selectedSlot==ft" ng-click="select('c',ft,$event)"></div>
   </div>
 </div>
 
 <div id="internal" class="slot-group">
   <h1>Internal Compartments</h1>
   <div class="slot" ng-repeat="i in ship.internal" ng-click="selectSlot($event, i)" ng-class="{selected: selectedSlot==i}">
-    <div class="details" slot-details c="i" lbl="igMap[i.c.group]"></div>
-    <div class="select" ng-show="selectedSlot==i" ng-click="$event.stopPropagation()">
-      <div class="empty-c" ng-click="selectComponent(i, null,null)">EMPTY</div>
+    <div slot-internal class="details" slot="i" lbl="igMap[i.c.group]"></div>
+    <div class="select" ng-if="selectedSlot==i" ng-click="select('i',i,$event)">
+      <div class="empty-c" id="empty" ng-click="select(null, i, $event)">EMPTY</div>
       <div ng-repeat="(grp, data) in availCS.getInts(i.maxClass)">
         <div class="select-group">{{grp}}</div>
-        <div component-select slot="i"  sc="selectComponent(s,id,c)" opts="data"></div>
+        <div component-select opts="data"></div>
       </div>
     </div>
   </div>
+</div>
+
+<div id="build">
+  <h1 ng-bind="ship.name"></h1>
+  <input ng-model="buildName" placeholder="Build Name" />
+  <button ng-click="saveBuild()" ng-disabled="code == lastSaveCode">Save</button>
+  <button ng-click="reloadBuild()" ng-disabled="!lastSaveCode || code == lastSaveCode">Reload</button>
+  <button ui-sref="outfit({shipId: ship.id,code:null})" ng-disabled="!code">Clear</button>
+  <button ng-click="deleteBuild()" ng-disabled="!lastSaveCode">Delete</button>
 </div>
 
 <div id="summary">

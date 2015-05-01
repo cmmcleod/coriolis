@@ -1,17 +1,20 @@
 {
   "imperial_clipper": {
-    "group": "mp",
-    "name": "Imperial Clipper",
-    "manufacturer": "Gutamaya",
-    "class": 3,
-    "cost": 21077784,
-    "speed": 300,
-    "boost": 380,
-    "agility": 2,
-    "shields": 180,
-    "armour": 270,
-    "fuelcost": 50,
-    "slotCap": {
+    "properties": {
+      "group": "mp",
+      "name": "Imperial Clipper",
+      "manufacturer": "Gutamaya",
+      "class": 3,
+      "cost": 21077784,
+      "speed": 300,
+      "boost": 380,
+      "agility": 2,
+      "shields": 180,
+      "armour": 270,
+      "fuelcost": 50,
+      "mass": 400
+    },
+    "slots": {
       "common": [
         6,
         6,
@@ -42,7 +45,7 @@
         2
       ]
     },
-    "defaultComponents": {
+    "defaults": {
       "common": [
         "6E",
         "6E",
@@ -72,7 +75,6 @@
         "00",
         "2h"
       ]
-    },
-    "mass": 400
+    }
   }
 }

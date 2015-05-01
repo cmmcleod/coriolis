@@ -1,40 +1,45 @@
-angular.module('shipyard').factory('components', ['lodash', function (_) {
-  var C = DB.components;
+angular.module('shipyard').factory('ComponentSet', ['lodash', function (_) {
 
-  function ComponentSet(shipId) {
-    var ship = DB.ships[shipId];
-    var maxInternal = ship.slotCap.internal[0];
-
-    this.mass = ship.mass;
+  function ComponentSet(components, mass, maxCommonArr, maxInternal, maxHardPoint) {
+    this.mass = mass;
     this.common = {};
     this.internal = {};
-    this.hardpoints = filter(C.hardpoints, ship.slotCap.hardpoints[0], 0, ship.mass);
-    this.bulkheads = C.bulkheads[shipId];
+    this.hardpoints = {};
     this.hpClass = {};
     this.intClass = {};
 
-    for (var i = 0; i < C.common.length; i ++) {
-      var max = ship.slotCap.common[i];
+    for (var i = 0; i < components.common.length; i ++) {
+      var max = maxCommonArr[i];
       switch (i) {
         // Slots where component class must be equal to slot class
         case 3: // Life Support
         case 5: // Sensors
-          this.common[i] = filter(C.common[i], max, max, ship.mass);
+          this.common[i] = filter(components.common[i], max, max, this.mass);
           break;
         // Other slots can have a component of class lower than the slot class
         default:
-          this.common[i] = filter(C.common[i], max, 0, ship.mass);
+          this.common[i] = filter(components.common[i], max, 0, this.mass);
       }
     }
 
-    for(var g in C.internal) {
-      this.internal[g] = filter(C.internal[g], maxInternal, 0, ship.mass);
+    for(var h in components.hardpoints) {
+      this.hardpoints[h] = filter(components.hardpoints[h], maxHardPoint, 0, this.mass);
+    }
+
+    for(var g in components.internal) {
+      this.internal[g] = filter(components.internal[g], maxInternal, 0, this.mass);
     }
   }
 
   ComponentSet.prototype.getHps = function(c) {
     if(!this.hpClass[c]) {
-      this.hpClass[c] = filter(this.hardpoints, c, c? 1 : 0, this.mass);
+      var o = this.hpClass[c] =  {};
+      for(var key in this.hardpoints) {
+        var data = filter(this.hardpoints[key], c, c? 1 : 0, this.mass);
+        if(Object.keys(data).length) {  // If group is not empty
+          o[key] = data;
+        }
+      }
     }
     return this.hpClass[c];
   };
@@ -44,7 +49,7 @@ angular.module('shipyard').factory('components', ['lodash', function (_) {
       var o = this.intClass[c] =  {};
       for(var key in this.internal) {
         var data = filter(this.internal[key], c, 0, this.mass);
-        if(Object.keys(data).length) {
+        if(Object.keys(data).length) {  // If group is not empty
           o[key] = data;
         }
       }
@@ -62,16 +67,6 @@ angular.module('shipyard').factory('components', ['lodash', function (_) {
     return set;
   }
 
-  return {
-    forShip: function (shipId) {
-      return new ComponentSet(shipId);
-    },
-    findInternal: function(id) {
-      var c = _.find(C.internal, function(o) {
-        return o[id];
-      })
-      return c[id];
-    }
-  };
+  return ComponentSet;
 
 }]);

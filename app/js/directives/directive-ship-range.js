@@ -1,4 +1,4 @@
-angular.module('app').directive('shipRange', ['$rootScope','CalcJumpRange', function ($r, calcJumpRange) {
+angular.module('app').directive('shipRange', ['$rootScope','calcJumpRange', function ($r, calcJumpRange) {
 
   return {
     restrict: 'A',

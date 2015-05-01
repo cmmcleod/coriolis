@@ -1,17 +1,20 @@
 {
   "cobra_mk_iii": {
-    "group": "mp",
-    "name": "Cobra Mk III",
-    "manufacturer": "Faulcon DeLacy",
-    "class": 1,
-    "cost": 235787,
-    "speed": 280,
-    "boost": 400,
-    "agility": 6,
-    "shields": 80,
-    "armour": 120,
-    "fuelcost": 50,
-    "slotCap": {
+    "properties": {
+      "group": "mp",
+      "name": "Cobra Mk III",
+      "manufacturer": "Faulcon DeLacy",
+      "class": 1,
+      "cost": 235787,
+      "speed": 280,
+      "boost": 400,
+      "agility": 6,
+      "shields": 80,
+      "armour": 120,
+      "fuelcost": 50,
+      "mass": 180
+    },
+    "slots": {
       "common": [
         4,
         4,
@@ -38,7 +41,7 @@
         2
       ]
     },
-    "defaultComponents": {
+    "defaults": {
       "common": [
         "4E",
         "4E",
@@ -64,7 +67,6 @@
         0,
         "2h"
       ]
-    },
-    "mass": 180
+    }
   }
 }

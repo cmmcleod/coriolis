@@ -1,46 +1,29 @@
-angular.module('shipyard').factory('ShipFactory', ['components', 'CalcShieldStrength', 'CalcJumpRange', 'lodash', function (Components, calcShieldStrength, calcJumpRange, _) {
+angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 'calcJumpRange', 'lodash', function (Components, calcShieldStrength, calcJumpRange, _) {
 
   /**
    * Ship model used to track all ship components and properties.
    *
-   * @param {string} id       Unique ship Id / Key
-   * @param {object} shipData Data/defaults from the Ship database.
+   * @param {string} id         Unique ship Id / Key
+   * @param {object} properties Basic ship properties such as name, manufacturer, mass, etc
+   * @param {object} slots      Collection of slot groups (standard/common, internal, hardpoints) with their max class size.
    */
-  function Ship(id, shipData) {
+  function Ship(id, properties, slots) {
     this.id = id;
-    this.defaults = shipData.defaultComponents;
     this.incCost = true;
-    this.cargoScoop = { enabled: true, c: { name: 'Cargo Scoop', class: 1, rating: 'H', power: 0.6} };
-    this.sgSI = null; // Shield Generator Slot Index
+    this.cargoScoop = { enabled: true, c: Components.cargoScoop() };
+    this.bulkheads = { incCost: true, maxClass: 8 };
+    this.sgSI = null;    // Shield Generator Index
 
-    // Copy all base properties from shipData
-    angular.forEach(shipData,function(o,k){
-      if(typeof o != 'object') {
-        this[k] = o;
-      }
-    }.bind(this));
+    for (p in properties) { this[p] = properties[p]; }  // Copy all base properties from shipData
 
-    angular.forEach(shipData.slotCap, function (slots, slotGroup) {   // Initialize all slots
-      this[slotGroup] = [];   // Initialize Slot group (Common, Hardpoints, Internal)
-      for(var i = 0; i < slots.length; i++){
-        this[slotGroup].push({id: null, c: null, enabled: true, incCost: true, maxClass: slots[i]});
+    for (groupName in slots) {   // Initialize all slots
+      var slotGroup = slots[groupName];
+      var group = this[groupName] = [];   // Initialize Slot group (Common, Hardpoints, Internal)
+      for(var i = 0; i < slotGroup.length; i++){
+        group.push({id: null, c: null, enabled: true, incCost: true, maxClass: slotGroup[i]});
       }
-    }.bind(this));
+    }
   }
-
-  /**
-   * Reset the ship to the original 'manufacturer' defaults.
-   */
-  Ship.prototype.clear = function() {
-    this.buildWith(DB.ships[this.id].defaultComponents);
-  };
-
-  /**
-   * Reset the current build to the previously used default
-   */
-  Ship.prototype.reset = function() {
-    this.buildWith(this.defaults);
-  };
 
   /**
    * Builds/Updates the ship instance with the components[comps] passed in.
@@ -50,98 +33,37 @@ angular.module('shipyard').factory('ShipFactory', ['components', 'CalcShieldStre
     var internal = this.internal;
     var common = this.common;
     var hps = this.hardpoints;
-    var availCommon = DB.components.common;
-    var availHardPoints = DB.components.hardpoints;
-    var availInternal = DB.components.internal;
     var i,l;
 
-    this.bulkheads = { incCost: true, maxClass: 8, id: comps.bulkheads || 0, c: DB.components.bulkheads[this.id][comps.bulkheads || 0] };
+    this.bulkheads.id = comps.bulkheads || 0;
+    this.bulkheads.c = Components.bulkheads(this.id, this.bulkheads.id);
 
     for(i = 0, l = comps.common.length; i < l; i++) {
       common[i].id = comps.common[i];
-      common[i].c = availCommon[i][comps.common[i]];
+      common[i].c = Components.common(i, comps.common[i]);
     }
 
     for(i = 0, l = comps.hardpoints.length; i < l; i++) {
-      if(comps.hardpoints[i] !== 0) {
+      if (comps.hardpoints[i] !== 0) {
         hps[i].id = comps.hardpoints[i];
-        hps[i].c = availHardPoints[comps.hardpoints[i]];
+        hps[i].c = Components.hardpoints(comps.hardpoints[i]);
+      } else {
+        hps[i].c = hps[i].id = null;
       }
     }
 
     for(i = 0, l = comps.internal.length; i < l; i++) {
-      if(comps.internal[i] !== 0) {
+      if (comps.internal[i] !== 0) {
         internal[i].id = comps.internal[i];
-        internal[i].c = Components.findInternal(comps.internal[i]);
-        if(internal[i].c.group == 'sg') {
+        internal[i].c = Components.internal(comps.internal[i]);
+        if (internal[i].c.group == 'sg') {
           this.sgSI = i;
         }
-      }
-    }
-    this.code = this.toCode();
-    this.updateTotals();
-  };
-
-  /**
-   * Serializes the selected components for all slots to a URL friendly string.
-   * @return {string} Encoded string of components
-   */
-  Ship.prototype.toCode = function() {
-    var data = [
-      this.bulkheads.id,
-      _.map(this.common, idToStr),
-      _.map(this.hardpoints, idToStr),
-      _.map(this.internal, idToStr),
-    ];
-
-    return _.flatten(data).join('');
-  };
-
-  /**
-   * Utility function to retrieve a safe string for selected component for a slot.
-   * Used for serialization to code only.
-   *
-   * @private
-   * @param  {object} slot The slot object.
-   * @return {string}      The id of the selected component or '-' if none selected
-   */
-  function idToStr(slot) {
-    return (slot.id === null)? '-' : slot.id;
-  }
-
-  /**
-   * Updates the current ship instance's slots with components determined by the
-   * code.
-   *
-   * @param {string} code [description]
-   */
-  Ship.prototype.buildFromCode = function (code) {
-    var commonCount = this.common.length;
-    var hpCount = commonCount + this.hardpoints.length;
-    var comps = {
-      bulkheads: code.charAt(0) * 1,
-      common: new Array(this.common.length),
-      hardpoints: new Array(this.hardpoints.length),
-      internal: new Array(this.internal.length)
-    };
-
-    // TODO: improve...
-    for (var i = 1, c = 0, l = code.length; i < l; i++) {
-      var isNull = code.charAt(i) == '-';
-      if (c < commonCount) {
-        comps.common[c] = isNull? 0 : code.substring(i, i + 2);
-      } else if (c < hpCount) {
-        comps.hardpoints[c - commonCount] = isNull? 0 : code.substring(i, i + 2);
       } else {
-        comps.internal[c - hpCount] = isNull? 0 : code.substring(i, i + 2);
+          internal[i].id = internal[i].c = null;
       }
-      if (!isNull) {
-        i++;
-      }
-      c++;
     }
-    this.defaults = comps;
-    this.buildWith(comps);
+    this.updateTotals();
   };
 
   /**
@@ -171,7 +93,6 @@ angular.module('shipyard').factory('ShipFactory', ['components', 'CalcShieldStre
     // TODO: shield recharge rate
     // TODO: armor bonus / damage reduction for bulkheads
     // TODO: thermal load and weapon recharge rate
-    this.code = this.toCode();
   };
 
   /**
@@ -193,6 +114,10 @@ angular.module('shipyard').factory('ShipFactory', ['components', 'CalcShieldStre
       sum.armouradd += c.armouradd || 0;
     }
     return sum;
+  }
+
+  function findInternal(slots, group) {
+
   }
 
   Ship.prototype.useBulkhead = function(index) {
@@ -238,21 +163,5 @@ angular.module('shipyard').factory('ShipFactory', ['components', 'CalcShieldStre
     }
   };
 
-  /**
-   * Ship Factory function. Created a new instance of a ship based on the ship type.
-   *
-   * @param  {string} id       Id/Key for the Ship type
-   * @param  {object} shipData [description]
-   * @param  {string} code     [optional] Code to build the ship with
-   * @return {Ship}            A new Ship instance
-   */
-  return function (id, shipData, code) {
-    var s = new Ship(id, shipData);
-    if (code) {
-      s.buildFromCode(code);
-    } else {
-      s.clear();
-    }
-    return s;
-  };
+  return Ship;
 }]);

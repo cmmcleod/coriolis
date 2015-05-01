@@ -1,17 +1,20 @@
 {
   "federal_dropship": {
-    "group": "mp",
-    "name": "Federal Dropship",
-    "manufacturer": "Core Dynamics",
-    "class": 2,
-    "cost": 18969990,
-    "speed": 180,
-    "boost": 300,
-    "agility": 0,
-    "shields": 200,
-    "armour": 300,
-    "fuelcost": 50,
-    "slotCap": {
+    "properties": {
+      "group": "mp",
+      "name": "Federal Dropship",
+      "manufacturer": "Core Dynamics",
+      "class": 2,
+      "cost": 18969990,
+      "speed": 180,
+      "boost": 300,
+      "agility": 0,
+      "shields": 200,
+      "armour": 300,
+      "fuelcost": 50,
+      "mass": 580
+    },
+    "slots": {
       "common": [
         6,
         6,
@@ -42,7 +45,7 @@
         2
       ]
     },
-    "defaultComponents": {
+    "defaults": {
       "common": [
         "6E",
         "6E",
@@ -72,7 +75,6 @@
         0,
         "2h"
       ]
-    },
-    "mass": 580
+    }
   }
 }

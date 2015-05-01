@@ -1,17 +1,20 @@
 {
   "orca": {
-    "group": "pa",
-    "name": "Orca",
-    "manufacturer": "Saud Kruger",
-    "class": 3,
-    "cost": 47798079,
-    "speed": 300,
-    "boost": 380,
-    "agility": 2,
-    "shields": 220,
-    "armour": 220,
-    "fuelcost": 50,
-    "slotCap": {
+    "properties": {
+      "group": "pa",
+      "name": "Orca",
+      "manufacturer": "Saud Kruger",
+      "class": 3,
+      "cost": 47798079,
+      "speed": 300,
+      "boost": 380,
+      "agility": 2,
+      "shields": 220,
+      "armour": 220,
+      "fuelcost": 50,
+      "mass": 580
+    },
+    "slots": {
       "common": [
         5,
         6,
@@ -41,7 +44,7 @@
         2
       ]
     },
-    "defaultComponents": {
+    "defaults": {
       "common": [
         "5E",
         "6E",
@@ -70,7 +73,6 @@
         0,
         "2h"
       ]
-    },
-    "mass": 580
+    }
   }
 }

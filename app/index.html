@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <base href="/">
-  <title>Coriolis Shipyard</title>
+  <title ng-bind="title">Coriolis</title>
   <link rel="stylesheet" href="app.css">
   <link rel="apple-touch-icon" sizes="76x76" href="images/logo/apple-touch-icon-76x76.png">
   <link rel="apple-touch-icon" sizes="114x114" href="images/logo/apple-touch-icon-114x114.png">
@@ -24,7 +24,7 @@
 <body>
   <div id="bg"></div>
   <shipyard-menu></shipyard-menu>
-  <div id="main" ng-view ng-click="bgClicked($event)"></div>
+  <div id="main" ui-view ng-click="bgClicked($event)"></div>
 
   <footer>
     <div class="right">Version <%= version %> - <%= date %></div>

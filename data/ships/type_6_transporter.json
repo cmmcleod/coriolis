@@ -1,17 +1,20 @@
 {
   "type_6_transporter": {
-    "group": "fr",
-    "name": "Type-6 Transporter",
-    "manufacturer": "Lakon",
-    "class": 2,
-    "cost": 865782,
-    "speed": 220,
-    "boost": 350,
-    "agility": 3,
-    "shields": 90,
-    "armour": 90,
-    "fuelcost": 50,
-    "slotCap": {
+    "properties": {
+      "group": "fr",
+      "name": "Type-6 Transporter",
+      "manufacturer": "Lakon",
+      "class": 2,
+      "cost": 865782,
+      "speed": 220,
+      "boost": 350,
+      "agility": 3,
+      "shields": 90,
+      "armour": 90,
+      "fuelcost": 50,
+      "mass": 155
+    },
+    "slots": {
       "common": [
         3,
         4,
@@ -38,7 +41,7 @@
         2
       ]
     },
-    "defaultComponents": {
+    "defaults": {
       "common": [
         "3E",
         "4E",
@@ -64,7 +67,6 @@
         "00",
         "2h"
       ]
-    },
-    "mass": 155
+    }
   }
 }

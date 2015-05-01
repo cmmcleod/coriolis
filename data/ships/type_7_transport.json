@@ -1,17 +1,20 @@
 {
   "type_7_transport": {
-    "group": "fr",
-    "name": "Type-7 Transport",
-    "manufacturer": "Lakon",
-    "class": 3,
-    "cost": 16881511,
-    "speed": 180,
-    "boost": 300,
-    "agility": 2,
-    "shields": 120,
-    "armour": 120,
-    "fuelcost": 50,
-    "slotCap": {
+    "properties": {
+      "group": "fr",
+      "name": "Type-7 Transport",
+      "manufacturer": "Lakon",
+      "class": 3,
+      "cost": 16881511,
+      "speed": 180,
+      "boost": 300,
+      "agility": 2,
+      "shields": 120,
+      "armour": 120,
+      "fuelcost": 50,
+      "mass": 420
+    },
+    "slots": {
       "common": [
         4,
         5,
@@ -42,7 +45,7 @@
         2
       ]
     },
-    "defaultComponents": {
+    "defaults": {
       "common": [
         "4E",
         "5E",
@@ -72,7 +75,6 @@
         0,
         "2h"
       ]
-    },
-    "mass": 420
+    }
   }
 }

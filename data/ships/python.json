@@ -1,17 +1,20 @@
 {
   "python": {
-    "group": "mp",
-    "name": "Python",
-    "manufacturer": "Faulcon DeLacy",
-    "class": 2,
-    "cost": 55171395,
-    "speed": 230,
-    "boost": 280,
-    "agility": 6,
-    "shields": 260,
-    "armour": 260,
-    "fuelcost": 50,
-    "slotCap": {
+    "properties": {
+      "group": "mp",
+      "name": "Python",
+      "manufacturer": "Faulcon DeLacy",
+      "class": 2,
+      "cost": 55171395,
+      "speed": 230,
+      "boost": 280,
+      "agility": 6,
+      "shields": 260,
+      "armour": 260,
+      "fuelcost": 50,
+      "mass": 350
+    },
+    "slots": {
       "common": [
         7,
         6,
@@ -44,7 +47,7 @@
         2
       ]
     },
-    "defaultComponents": {
+    "defaults": {
       "common": [
         "7E",
         "6E",
@@ -76,7 +79,6 @@
         "00",
         "2h"
       ]
-    },
-    "mass": 350
+    }
   }
 }

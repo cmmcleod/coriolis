@@ -1,3 +1,9 @@
+/**
+ * This module contains all of the logic and models corresponding to
+ * information or behavoir in Elite Dangerous.
+ *
+ * This file contains values and functions that can be reused across the app.
+ */
 angular.module('shipyard', [])
   .value('commonArray', [
     'Power Plant',
@@ -13,13 +19,32 @@ angular.module('shipyard', [])
     sc:'Scanners',
     am:'Auto Field-Maintenance Unit',
     cr:'Cargo Racks',
-    fi:'Frame Shift Drive Interdictor',
-    hb:'Hatch Breaker Limpet Controller',
+    fi:'FSD Interdictor',
+    hb:'Hatch Breaker Limpet Ctrl',
     hr:'Hull Reinforcement Package',
     rf:'Refinery',
     sb:'Shield Cell Bank',
     sg:'Shield Generator',
     dc:'Docking Computer'
+  })
+  .value('hardpointsGroupMap', {
+    'bl': "Beam Laser",
+    'ul': "Burst Laser",
+    'c': "Cannon",
+    'cs': "Cargo Scanner",
+    'cm': "Countermeasure",
+    'fc': "Fragment Cannon",
+    'fs': "Frame Shift Wake Scanner",
+    'kw': "Kill Warrant Scanner",
+    'nl': "Mine Launcher",
+    'ml': "Mining Laser",
+    'mr': "Missile Rack",
+    'pa': "Plasma Accelerator",
+    'mc': "Multi-cannon",
+    'pl': "Pulse Laser",
+    'rg': "Rail Gun",
+    'sb': "Shield Booster",
+    'tp': "Torpedo Pylon"
   })
   .value('shipPurpose', {
     mp: 'Multi Purpose',
@@ -35,13 +60,6 @@ angular.module('shipyard', [])
     'Large',
     'Capital',
   ])
-  .factory('commonMap', ['commonArray', function (commonArray) {
-    var commonMap = {};
-    for(var i = 0; i < commonArray.length; i++) {
-      commonMap[commonArray[i]] = i;
-    }
-    return commonMap;
-  }])
   .value('hardPointClass', [
     'Utility',
     'Small',
@@ -49,53 +67,7 @@ angular.module('shipyard', [])
     'Large',
     'Huge'
   ])
-  .factory('hardpointGroup', function () {
-    function groupToLabel (grp) {
-      var a = grp.toLowerCase().split('');
-      var l = [];
-      switch(a[0]) {
-        case 's':
-          l.push('Small');
-          break;
-        case 'm':
-          l.push('Medium');
-          break;
-        case 'l':
-          l.push('Large');
-          break;
-        case 'h':
-          l.push('Huge');
-          break;
-        case 'u':
-          l.push('Utility');
-          break;
-      }
-      switch(a[1]) {
-        case 'o':
-          l.push('Other');
-          break;
-        case 'k':
-          l.push('Kinetic');
-          break;
-        case 't':
-          l.push('Thermal');
-          break;
-        case 's':
-          l.push('Scanner');
-          break;
-        case 'b':
-          l.push('Booster');
-          break;
-        case 'm':
-          l.push('Mount');
-          break;
-      }
-      return l.join(' ');
-    }
-
-    return  groupToLabel;
-  })
-  .factory('CalcJumpRange', function() {
+  .factory('calcJumpRange', function() {
     /**
      * Calculate the maximum single jump range based on mass and a specific FSD
      * @param  {number} mass Mass of a ship: laden, unlanden, partially laden, etc
@@ -107,7 +79,7 @@ angular.module('shipyard', [])
       return Math.pow(Math.min(fuel || Infinity, fsd.maxfuel) / fsd.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass;
     };
   })
-  .factory('CalcShieldStrength', function() {
+  .factory('calcShieldStrength', function() {
      /**
      * Calculate the a ships shield strength based on mass, shield generator and shield boosters used.
      *
@@ -119,6 +91,9 @@ angular.module('shipyard', [])
      * @return {number}            Approximate shield strengh in MJ
      */
     return function (mass, shields, sg, multiplier) {
+      if (!sg) {
+        return 0;
+      }
       if (mass <= sg.minmass) {
         return shields * multiplier * sg.minmul;
       }

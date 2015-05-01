@@ -1,5 +1,5 @@
 {
-  "Frame Shift Drive Interdictor": {
+  "FSD Interdictors": {
     "66": {
       "group": "fi",
       "class": 1,
@@ -7,7 +7,7 @@
       "cost": 972000,
       "mass": 1.3,
       "power": 0.32,
-      "range": "C"
+      "rangeRating": "C"
     },
     "67": {
       "group": "fi",
@@ -16,7 +16,7 @@
       "cost": 324000,
       "mass": 2,
       "power": 0.28,
-      "range": "D"
+      "rangeRating": "D"
     },
     "68": {
       "group": "fi",
@@ -25,7 +25,7 @@
       "cost": 108000,
       "mass": 1.3,
       "power": 0.23,
-      "range": "D"
+      "rangeRating": "D"
     },
     "69": {
       "group": "fi",
@@ -34,7 +34,7 @@
       "cost": 36000,
       "mass": 0.5,
       "power": 0.18,
-      "range": "D"
+      "rangeRating": "D"
     },
     "6a": {
       "group": "fi",
@@ -43,7 +43,7 @@
       "cost": 12000,
       "mass": 1.3,
       "power": 0.14,
-      "range": "E"
+      "rangeRating": "E"
     },
     "6b": {
       "group": "fi",
@@ -52,7 +52,7 @@
       "cost": 2721600,
       "mass": 2.5,
       "power": 0.39,
-      "range": "B"
+      "rangeRating": "B"
     },
     "6c": {
       "group": "fi",
@@ -61,7 +61,7 @@
       "cost": 907200,
       "mass": 4,
       "power": 0.34,
-      "range": "C"
+      "rangeRating": "C"
     },
     "6d": {
       "group": "fi",
@@ -70,7 +70,7 @@
       "cost": 302400,
       "mass": 2.5,
       "power": 0.28,
-      "range": "C"
+      "rangeRating": "C"
     },
     "6e": {
       "group": "fi",
@@ -79,7 +79,7 @@
       "cost": 100800,
       "mass": 1,
       "power": 0.22,
-      "range": "C"
+      "rangeRating": "C"
     },
     "6f": {
       "group": "fi",
@@ -88,7 +88,7 @@
       "cost": 33600,
       "mass": 2.5,
       "power": 0.17,
-      "range": "D"
+      "rangeRating": "D"
     },
     "6g": {
       "group": "fi",
@@ -97,7 +97,7 @@
       "cost": 7620480,
       "mass": 5,
       "power": 0.48,
-      "range": "A"
+      "rangeRating": "A"
     },
     "6h": {
       "group": "fi",
@@ -106,7 +106,7 @@
       "cost": 2540160,
       "mass": 8,
       "power": 0.41,
-      "range": "B"
+      "rangeRating": "B"
     },
     "6i": {
       "group": "fi",
@@ -115,7 +115,7 @@
       "cost": 846720,
       "mass": 5,
       "power": 0.34,
-      "range": "B"
+      "rangeRating": "B"
     },
     "6j": {
       "group": "fi",
@@ -124,7 +124,7 @@
       "cost": 282240,
       "mass": 2,
       "power": 0.27,
-      "range": "B"
+      "rangeRating": "B"
     },
     "6k": {
       "group": "fi",
@@ -133,7 +133,7 @@
       "cost": 94080,
       "mass": 5,
       "power": 0.2,
-      "range": "C"
+      "rangeRating": "C"
     },
     "6l": {
       "group": "fi",
@@ -142,7 +142,7 @@
       "cost": 21337344,
       "mass": 10,
       "power": 0.57,
-      "range": "A"
+      "rangeRating": "A"
     },
     "6m": {
       "group": "fi",
@@ -151,7 +151,7 @@
       "cost": 7112448,
       "mass": 16,
       "power": 0.49,
-      "range": "A"
+      "rangeRating": "A"
     },
     "6n": {
       "group": "fi",
@@ -160,7 +160,7 @@
       "cost": 2370816,
       "mass": 10,
       "power": 0.41,
-      "range": "A"
+      "rangeRating": "A"
     },
     "6o": {
       "group": "fi",
@@ -169,7 +169,7 @@
       "cost": 790272,
       "mass": 4,
       "power": 0.33,
-      "range": "A"
+      "rangeRating": "A"
     },
     "6p": {
       "group": "fi",
@@ -178,7 +178,7 @@
       "cost": 263424,
       "mass": 10,
       "power": 0.25,
-      "range": "B"
+      "rangeRating": "B"
     }
   }
 }

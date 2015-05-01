@@ -1,4 +1,4 @@
 angular.module('app')
-.controller('ShipyardController', function () {
-
-});
+.controller('ShipyardController', ['$rootScope', function ($rootScope) {
+  $rootScope.title = 'Coriolis - Shipyard';
+}]);

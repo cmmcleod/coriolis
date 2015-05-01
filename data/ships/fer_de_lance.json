@@ -1,17 +1,20 @@
 {
   "fer_de_lance": {
-    "group": "co",
-    "name": "Fer-de-Lance",
-    "manufacturer": "Zorgon Peterson",
-    "class": 2,
-    "cost": 51232230,
-    "speed": 260,
-    "boost": 350,
-    "agility": 6,
-    "shields": 300,
-    "armour": 225,
-    "fuelcost": 50,
-    "slotCap": {
+    "properties": {
+      "group": "co",
+      "name": "Fer-de-Lance",
+      "manufacturer": "Zorgon Peterson",
+      "class": 2,
+      "cost": 51232230,
+      "speed": 260,
+      "boost": 350,
+      "agility": 6,
+      "shields": 300,
+      "armour": 225,
+      "fuelcost": 50,
+      "mass": 250
+    },
+    "slots": {
       "common": [
         5,
         5,
@@ -42,7 +45,7 @@
         1
       ]
     },
-    "defaultComponents": {
+    "defaults": {
       "common": [
         "5E",
         "5E",
@@ -72,7 +75,6 @@
         0,
         "2h"
       ]
-    },
-    "mass": 250
+    }
   }
 }

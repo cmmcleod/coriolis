@@ -1,17 +1,20 @@
 {
   "anaconda": {
-    "group": "mp",
-    "name": "Anaconda",
-    "manufacturer": "Faulcon DeLacy",
-    "class": 3,
-    "cost": 141889932,
-    "speed": 180,
-    "boost": 240,
-    "agility": 2,
-    "shields": 350,
-    "armour": 525,
-    "fuelcost": 50,
-    "slotCap": {
+    "properties": {
+      "group": "mp",
+      "name": "Anaconda",
+      "manufacturer": "Faulcon DeLacy",
+      "class": 3,
+      "cost": 141889932,
+      "speed": 180,
+      "boost": 240,
+      "agility": 2,
+      "shields": 350,
+      "armour": 525,
+      "fuelcost": 50,
+      "mass": 400
+    },
+    "slots": {
       "common": [
         8,
         7,
@@ -53,7 +56,7 @@
         2
       ]
     },
-    "defaultComponents": {
+    "defaults": {
       "common": [
         "8E",
         "7E",
@@ -94,7 +97,6 @@
         "2h",
         "00"
       ]
-    },
-    "mass": 400
+    }
   }
 }

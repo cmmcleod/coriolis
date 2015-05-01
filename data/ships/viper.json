@@ -1,17 +1,20 @@
 {
   "viper": {
-    "group": "co",
-    "name": "Viper",
-    "manufacturer": "Faulcon DeLacy",
-    "class": 1,
-    "cost": 95893,
-    "speed": 320,
-    "boost": 400,
-    "agility": 6,
-    "shields": 105,
-    "armour": 70,
-    "fuelcost": 50,
-    "slotCap": {
+    "properties": {
+      "group": "co",
+      "name": "Viper",
+      "manufacturer": "Faulcon DeLacy",
+      "class": 1,
+      "cost": 95893,
+      "speed": 320,
+      "boost": 400,
+      "agility": 6,
+      "shields": 105,
+      "armour": 70,
+      "fuelcost": 50,
+      "mass": 60
+    },
+    "slots": {
       "common": [
         3,
         3,
@@ -36,7 +39,7 @@
         1
       ]
     },
-    "defaultComponents": {
+    "defaults": {
       "common": [
         "3E",
         "3E",
@@ -60,7 +63,6 @@
         0,
         "2h"
       ]
-    },
-    "mass": 60
+    }
   }
 }

@@ -1,17 +1,20 @@
 {
   "asp": {
-    "group": "ex",
-    "name": "Asp",
-    "manufacturer": "Lakon",
-    "class": 2,
-    "cost": 6135658,
-    "speed": 250,
-    "boost": 340,
-    "agility": 6,
-    "shields": 140,
-    "armour": 210,
-    "fuelcost": 50,
-    "slotCap": {
+    "properties": {
+      "group": "ex",
+      "name": "Asp",
+      "manufacturer": "Lakon",
+      "class": 2,
+      "cost": 6135658,
+      "speed": 250,
+      "boost": 340,
+      "agility": 6,
+      "shields": 140,
+      "armour": 210,
+      "fuelcost": 50,
+      "mass": 280
+    },
+    "slots": {
       "common": [
         5,
         5,
@@ -43,7 +46,7 @@
         2
       ]
     },
-    "defaultComponents": {
+    "defaults": {
       "common": [
         "5E",
         "5E",
@@ -74,7 +77,6 @@
         "00",
         "2h"
       ]
-    },
-    "mass": 280
+    }
   }
 }

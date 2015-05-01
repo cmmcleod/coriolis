@@ -1,12 +1,12 @@
-angular.module('app').directive('slotDetails', ['$rootScope', function ($r) {
+angular.module('app').directive('slotInternal', ['$rootScope', function ($r) {
   return {
     restrict: 'A',
     scope:{
-      c: '=',
+      c: '=slot',
       lbl: '=',
       opts: '='
     },
-    templateUrl: 'views/slot.html',
+    templateUrl: 'views/slot-internal.html',
     link: function(scope) {
       scope.$r = $r;
     }
