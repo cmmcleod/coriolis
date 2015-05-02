@@ -1,0 +1,21 @@
+<header>
+  <div class="l" style="margin-right: 2em;"><a ui-sref="shipyard" class="logo shipyard"></a></div>
+
+  <div class="l menu">
+    <div class="menu-header" ng-class="{selected: openedMenu=='b', disabled: !bs.hasBuilds}" ng-click="openMenu('b')">Builds</div>
+    <div class="menu-list" ng-if="openedMenu=='b'">
+      <ul class="left" ng-repeat="(shipId,builds) in allBuilds">
+        {{ships[shipId].properties.name}}
+        <li ng-repeat="(name, build) in builds">
+          <a ui-sref-active="active" ui-sref="outfit({shipId:shipId, code:build, bn:name})" ng-bind="name"></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+    <div class="r">
+      <a class="logo github" href="https://github.com/cmmcleod/ed-shipyard" target="_blank" title="Shipyard Github Project"></a>
+      <a class="logo reddit" href="#" target="_blank" title="Reddit Thread"></a>
+    </div>
+
+</header>

@@ -1,12 +1,14 @@
+<div class="error">
+  <h1>
+    <span ng-if="msgPre">{{msgPre}}</span>
+    <small ng-if="msgHighlight">{{msgHighlight}}</small>
+    <span ng-if="msgPost">{{msgPost}}</span>
+  </h1>
 
+  <!-- TODO: add awesome relevant SVG based on code /-->
 
-<div>
-<h1>Error {{type}}</h1>
-<h2 ng-bind="message"></h2>
-
-<p ng-if="path" ng-bind="path"></p>
+  <p ng-if="path" ng-bind="path"></p>
+  <p ng-if="type" ng-bind="type"></p>
 </div>
 
-<!-- TODO: formatting /-->
-<!-- TODO: add awesome relevant SVG based on code /-->
 <!-- TODO: Add github issue link /-->

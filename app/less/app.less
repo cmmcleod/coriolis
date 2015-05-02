@@ -2,14 +2,15 @@
 @import 'fonts';
 @import 'utilities';
 @import 'icons';
-
+@import 'header';
 @import 'shipyard';
 @import 'list';
 @import 'slot';
-@import 'ship';
+@import 'outfit';
 @import 'select';
 @import 'charts';
 @import 'meters';
+@import 'error';
 
 
 html, body {
@@ -65,44 +66,19 @@ body {
   clear: both;
 }
 
-header {
-  background-color: @bg;
-  margin: 0;
-  height: 55px;
-  line-height: 55px;
-  font-family: @fTitle;
-  vertical-align: middle;
-
-  a {
-    vertical-align: middle;
-    color: @warning;
-
-    &:visited {
-      color: @warning;
-    }
-    &:hover {
-      color: teal;
-    }
-  }
-
-  .title {
-    font-size: 1.3em;
-    display: inline-block;
-    margin:0px;
-    text-transform: uppercase;
-  }
+a, a:visited {
+  color: @fg;
 }
 
-
 footer {
-  font-size: 0.3em;
+  font-size: 0.6em;
   color: #999;
   padding: 10px 0;
   width: 100%;
   overflow: hidden;
 }
 
-header, footer {
+footer {
   .right {
     float: right;
     text-align: right;

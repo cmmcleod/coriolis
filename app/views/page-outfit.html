@@ -124,16 +124,16 @@
   </div>
 </div>
 
-<div id="build">
-  <h1 ng-bind="ship.name"></h1>
-  <input ng-model="buildName" placeholder="Build Name" />
-  <button ng-click="saveBuild()" ng-disabled="code == lastSaveCode">Save</button>
-  <button ng-click="reloadBuild()" ng-disabled="!lastSaveCode || code == lastSaveCode">Reload</button>
-  <button ui-sref="outfit({shipId: ship.id,code:null})" ng-disabled="!code">Clear</button>
-  <button ng-click="deleteBuild()" ng-disabled="!lastSaveCode">Delete</button>
-</div>
-
 <div id="summary">
+  <div id="overview" class="list">
+    <h1 ng-bind="ship.name"></h1>
+    <div id="build">
+      <input ng-model="buildName" placeholder="Enter Build Name" />
+      <button ng-click="saveBuild()" ng-disabled="code == savedCode">Save</button>
+      <button ng-click="reloadBuild()" ng-disabled="!savedCode || code == savedCode">Reload</button>
+      <button ui-sref="outfit({shipId: ship.id,code:null})" ng-disabled="!code">Clear</button>
+    </div>
+  </div>
   <div class="list">
     <div class="header">Maneuverability</div>
     <div class="summary">

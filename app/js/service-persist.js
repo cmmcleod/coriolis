@@ -1,3 +1,6 @@
+/**
+ * [description]
+ */
 angular.module('app').service('Persist', ['lodash', function (_) {
   var LS_KEY = 'builds';
 
@@ -9,6 +12,9 @@ angular.module('app').service('Persist', ['lodash', function (_) {
     this.builds = {};
   }
 
+  this.state = {
+    hasBuilds: Object.keys(this.builds).length > 0
+  }
   /**
    * Persist a ship build in local storage.
    *
@@ -22,7 +28,9 @@ angular.module('app').service('Persist', ['lodash', function (_) {
     }
 
     this.builds[shipId][name] = code;
-    localStorage.setItem(LS_KEY, angular.toJson(this.builds));  // Persist updated build collection to localstorage
+    this.state.hasBuilds = true;
+    // Persist updated build collection to localstorage
+    localStorage.setItem(LS_KEY, angular.toJson(this.builds));
   }
 
   /**
@@ -48,11 +56,15 @@ angular.module('app').service('Persist', ['lodash', function (_) {
    * @param  {string} name   The name of the build
    */
   this.deleteBuild = function (shipId, name) {
-    delete build[shipId][name];
-    if (Object.keys(build[shipId]).length == 0) {
-      delete build[shipId];
+    if(this.builds[shipId][name]) {
+      delete this.builds[shipId][name];
+      if (Object.keys(this.builds[shipId]).length == 0) {
+        delete this.builds[shipId];
+        this.state.hasBuilds = Object.keys(this.builds).length > 0;
+      }
+      // Persist updated build collection to localstorage
+      localStorage.setItem(LS_KEY, angular.toJson(this.builds));
     }
   }
-
 
 }]);
