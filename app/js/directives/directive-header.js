@@ -9,7 +9,6 @@ angular.module('app').directive('shipyardHeader', ['$rootScope', 'Persist', func
       scope.ships = DB.ships;
       scope.allBuilds = Persist.builds;
       scope.bs = Persist.state;
-      console.log(scope);
 
       $rootScope.$on('$stateChangeStart',function(){
         scope.openedMenu = null;

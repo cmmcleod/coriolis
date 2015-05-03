@@ -2,6 +2,7 @@
 @import 'fonts';
 @import 'utilities';
 @import 'icons';
+@import 'background-images';
 @import 'header';
 @import 'shipyard';
 @import 'list';
@@ -25,19 +26,9 @@ body {
   overflow-x: hidden;
   background-image: none;
   background-repeat: no-repeat;
-  background-position: center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   background-size: cover;
-
-  &.deep-space {
-     background-image: url(images/deep-space.jpg);
-  }
-
-  &.docking-bay {
-    background-image: url(images/bay-1920x1080.jpg);
-  }
 }
 
 #main {
