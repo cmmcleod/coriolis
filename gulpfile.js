@@ -13,6 +13,8 @@ var gulp            = require('gulp'),
     runSequence     = require('run-sequence'),
     exec            = require('child_process').exec,
     RevAll          = require('gulp-rev-all'),
+    ftp             = require( 'vinyl-ftp' ),
+    gutil           = require( 'gulp-util' ),
     pkg             = require('./package.json');
 
 gulp.task('less', function() {
@@ -168,12 +170,20 @@ gulp.task('cache-bust', function(done) {
     del(arr, done);     // Delete all originals files the were not busted/renamed
   });
   stream.on('error', done);
-
 });
 
-gulp.task('upload', function(done) {
-  // Does nothing yet :P
-  done();
+gulp.task('upload', function() {
+  var conn = ftp.create({
+    host:     'ftp.coriolis.io',
+    user:     process.env.CORIOLIS_FTP_USER,
+    password: process.env.CORIOLIS_FTP_PASS,
+    parallel: 5,
+    log:      gutil.log
+  });
+
+  return gulp.src(['build/**'], { base: 'build', buffer: true })
+    .pipe(conn.dest('/'));
+
 });
 
 gulp.task('clean', function (done) { del(['build'], done); });
