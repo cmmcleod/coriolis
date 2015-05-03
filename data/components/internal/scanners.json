@@ -2,7 +2,7 @@
   "Scanners": {
     "2f": {
       "group": "sc",
-      "name": "Advanced Discovery Scanner",
+      "name": "Adv. Discovery Scanner",
       "class": 1,
       "rating": "C",
       "cost": 1545000,
@@ -12,7 +12,7 @@
     },
     "2g": {
       "group": "sc",
-      "name": "Intermediate Discovery Scanner",
+      "name": "Inter. Discovery Scanner",
       "class": 1,
       "rating": "D",
       "cost": 505000,

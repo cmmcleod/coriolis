@@ -9,7 +9,6 @@
 @import 'outfit';
 @import 'select';
 @import 'charts';
-@import 'meters';
 @import 'error';
 
 
@@ -24,24 +23,26 @@ body {
   padding: 0;
   font-family: @fStandard;
   overflow-x: hidden;
-}
-
-#bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  opacity: 0.3;
-  background-image: url(images/docking-bay.jpg);
+  background-image: none;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
+
+  &.deep-space {
+     background-image: url(images/deep-space.jpg);
+  }
+
+  &.docking-bay {
+    background-image: url(images/bay-1920x1080.jpg);
+  }
 }
 
 #main {
-  margin: 10px;
+  margin: 0;
+  padding: 0.5em 0.25em;
   min-height: 800px;
   clear: both;
 }
@@ -71,22 +72,14 @@ a, a:visited {
 }
 
 footer {
+  clear: both;
   font-size: 0.6em;
   color: #999;
-  padding: 10px 0;
-  width: 100%;
+  padding: 1em;
   overflow: hidden;
-}
 
-footer {
   .right {
     float: right;
     text-align: right;
-    margin-right: 10px;
-  }
-  .left {
-    float: left;
-    text-align: left;
-    margin-left: 10px;
   }
 }

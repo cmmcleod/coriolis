@@ -14,7 +14,7 @@
   </div>
 
   <div ng-repeat="c in ship.hardpoints" ng-if="c.c.power" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="toggle(c)">
-    <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name}}</div><div class="val">{{$r.fPwr(c.c.power)}}</div>
+    <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || $r.hgMap[c.c.grp]}}</div><div class="val">{{$r.fPwr(c.c.power)}}</div>
   </div>
 
   <div ng-repeat="c in ship.internal" ng-if="c.c.power" class="item internal" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="toggle(c)">
@@ -24,14 +24,14 @@
 <div class="summary toggle" ng-click="toggleExpand()">
   <div class="item">
     <div class="lbl">Available</div>
-    <div class="val">{{$r.fPwr(ship.powerAvailable)}} MW</div>
+    <div class="val">{{$r.fPwr(ship.powerAvailable)}} <u>MW</u></div>
   </div>
   <div class="item">
     <div class="lbl">Deployed</div>
-    <div class="val">{{$r.fPwr(ship.powerDeployed)}} MW ({{$r.fPct(ship.powerDeployed/ship.powerAvailable)}})</div>
+    <div class="val">{{$r.fPwr(ship.powerDeployed)}} <u>MW</u> ({{$r.fPct(ship.powerDeployed/ship.powerAvailable)}})</div>
   </div>
   <div class="item">
     <div class="lbl">Retracted</div>
-    <div class="val">{{$r.fPwr(ship.powerRetracted)}} MW ({{$r.fPct(ship.powerRetracted/ship.powerAvailable)}})</div>
+    <div class="val">{{$r.fPwr(ship.powerRetracted)}} <u>MW</u> ({{$r.fPct(ship.powerRetracted/ship.powerAvailable)}})</div>
   </div>
 </div>

@@ -11,7 +11,6 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
   }
 
   $scope.buildName = $p.bn;
-  $rootScope.title = ship.name + ($scope.buildName? ' - ' + $scope.buildName: '');
   $scope.ship = ship;
   $scope.pp = ship.common[0];   // Power Plant
   $scope.th = ship.common[1];   // Thruster
@@ -25,6 +24,8 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
   $scope.availCS = Components.forShip(ship.id);
   $scope.selectedSlot = null;
   $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
+  $rootScope.title = ship.name + ($scope.buildName? ' - ' + $scope.buildName: '');
+  $rootScope.bodyClass = 'docking-bay';
 
   // for debugging
   window.myScope = $scope;
@@ -62,7 +63,7 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
       } else if (type == 'i') {
         ship.use(slot, e.srcElement.id, Components.internal(e.srcElement.id));
       } else if (type == 'b') {
-        ship.useBulkhead(slot, e.srcElement.id);
+        ship.useBulkhead(e.srcElement.id);
       } else {
         ship.use(slot, null, null);
       }
@@ -88,9 +89,11 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
    * for this ship & with the exact name.
    */
   $scope.saveBuild = function() {
-    if($scope.code != $scope.savedCode) {
+    if($scope.buildName && $scope.code != $scope.savedCode) {
       Persist.saveBuild(ship.id, $scope.buildName, $scope.code);
       $scope.savedCode = $scope.code;
+      // Edge case TODO: comment more
+      $state.go('outfit', {shipId: ship.id, code: $scope.savedCode, bn: $scope.buildName}, {location:'replace', notify:false});
     }
   }
 
@@ -102,6 +105,10 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
     Persist.deleteBuild(ship.id, $scope.buildName);
     $rootScope.$broadcast('buildDeleted', $scope.saveName, ship.id);
     $state.go('outfit', {shipId: ship.id, code: null, bn: null}, {location:'replace', reload:true});
+  }
+
+  $scope.bnChange = function(){
+    $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
   }
 
   $rootScope.$on('keyup', function (e, keyEvent) {

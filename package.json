@@ -17,6 +17,7 @@
     "gulp-jshint": "^1.10.0",
     "gulp-less": "^3.0.2",
     "gulp-minify-css": "^1.0.0",
+    "gulp-rev-all": "^0.8.18",
     "gulp-sourcemaps": "^1.5.1",
     "gulp-template": "^3.0.0",
     "gulp-uglify": "^1.2.0",

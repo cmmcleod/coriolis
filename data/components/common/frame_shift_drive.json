@@ -164,6 +164,17 @@
     "fuelmul": 0.011,
     "fuelpower": 2.3
   },
+  "5A": {
+    "class": 5,
+    "rating": "A",
+    "cost": 5103953,
+    "mass": 20,
+    "power": 0.6,
+    "optmass": 1050,
+    "maxfuel": 5,
+    "fuelmul": 0.012,
+    "fuelpower": 2.45
+  },
   "5B": {
     "class": 5,
     "rating": "B",
@@ -262,16 +273,5 @@
     "maxfuel": 5.3,
     "fuelmul": 0.011,
     "fuelpower": 2.6
-  },
-  "5A": {
-    "class": 5,
-    "rating": "A",
-    "cost": 5103953,
-    "mass": 20,
-    "power": 0.6,
-    "optmass": 1050,
-    "maxfuel": 5,
-    "fuelmul": 0.012,
-    "fuelpower": 2.45
   }
 }

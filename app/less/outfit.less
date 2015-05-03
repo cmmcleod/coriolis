@@ -1,8 +1,13 @@
 
+#outfit {
+  //width: 62em;
+  //margin: 0 auto;
+}
+
 #overview {
   h1 {
     font-family: @fTitle;
-    margin: 5px 0;
+    margin: 0.2em 0;
     color: @primary;
     float: left;
   }
@@ -14,18 +19,22 @@
 
   input {
     background: @primary-bg;
-    color: @fg;
+    color: @secondary;
+    outline: none;
     border: none;
     font-size: 0.8em;
     line-height: 2em;
-    text-transform: uppercase;
+    text-align: right;
+    &:hover, &:focus {
+      background-color: @secondary-bg;
+    }
   }
 }
 
 #hardpoints {
   .slot:nth-child(2n) {
     clear: left;
-    margin-right: 10px;
+    margin-right: 0.5em;
   }
 }
 
@@ -41,32 +50,19 @@
   }
 }
 
+u { // Unit (Mj, Km, etc)
+  font-size: 0.8em;
+  text-decoration: none;
+}
+
 #summary {
   .user-select-none();
   float: right;
-  width: 40%;
+  min-width: 40em;
+  margin: 0.25em;
   border-top: 2px solid @primary;
   border-bottom: 2px solid @primary;
   background-color: @primary-bg;
-}
-
-legend {
-  text-transform: uppercase;
-  padding: 0 5px;
-  color: @warning;
-  font-family: @fTitle;
-}
-
-fieldset {
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  cursor: default;
-  border: 2px solid @warning-bg;
-  .border-radius(5px);
-  margin: 5px;
-  padding: 1px 5px 5px;
 }
 
 .toggle {

@@ -10,7 +10,7 @@
     <div class="lbl">{{c.c.class}}{{c.c.rating}} {{$r.CArr[$index]}}</div><div class="val">{{$r.fCrd(c.c.cost)}}</div>
   </div>
   <div ng-repeat="c in ship.hardpoints" ng-if="c.c.cost" class="item hardpoints" ng-class="{enabled:c.incCost}" ng-click="toggle(c)">
-    <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name}}</div><div class="val">{{$r.fCrd(c.c.cost)}}</div>
+    <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || $r.hgMap[c.c.grp]}}</div><div class="val">{{$r.fCrd(c.c.cost)}}</div>
   </div>
   <div ng-repeat="c in ship.internal" ng-if="c.c.cost" class="item internal" ng-class="{enabled:c.incCost}" ng-click="toggle(c)">
     <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || $r.igMap[c.c.group]}}</div><div class="val">{{$r.fCrd(c.c.cost)}}</div>
@@ -20,10 +20,10 @@
 <div class="summary toggle" ng-click="toggleExpand()">
   <div class="item">
     <div class="lbl">Total</div>
-    <div class="val">{{$r.fCrd(ship.totalCost)}} CR</div>
+    <div class="val">{{$r.fCrd(ship.totalCost)}} <u>CR</u></div>
   </div>
   <div class="item">
     <div class="lbl">Insurance</div>
-    <div class="val">{{$r.fCrd(ship.totalCost * (1-insurance))}} CR</div>
+    <div class="val">{{$r.fCrd(ship.totalCost * (1-insurance))}} <u>CR</u></div>
   </div>
 </div>

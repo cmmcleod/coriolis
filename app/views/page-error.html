@@ -7,8 +7,10 @@
 
   <!-- TODO: add awesome relevant SVG based on code /-->
 
-  <p ng-if="path" ng-bind="path"></p>
-  <p ng-if="type" ng-bind="type"></p>
+  <p ng-if="path" >Path: {{path}}</p>
+  <p ng-if="type">Error: {{type}}</p>
+  <p ng-if="details">Details: {{details | json}}</p>
+  <p>Browser: {{browser}}</p>
 </div>
 
 <!-- TODO: Add github issue link /-->

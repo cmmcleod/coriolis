@@ -1,20 +1,21 @@
-@fg: #fff;
-@bg: #333;
-@primary: #FF8C0D; // Light Orange
-@secondary: #32DBDB;  // Light blue
-@warning: #FF3B00;  // Dark Orange
-
+// Constants for calculations
 @bgDarken: 40%;
 @disabledDarken: 15%;
 @bgTransparency: 10%;
 
-@disabled: #888;
+// Foreground colors
+@fg: #fff;
+@primary: #FF8C0D; // Light Orange
+@secondary: #1FB0FF;  // Light blue
+@warning: #FF3B00;  // Dark Orange
+@disabled: #888;    // Light grey
 @primary-disabled: darken(@primary, @disabledDarken);
 @secondary-disabled: darken(@secondary, @disabledDarken);
 @warning-disabled: darken(@warning, @disabledDarken);
 
+// Background colors
+@bg: rgba(70,70,70,0.95);
 @bgBlack: rgba(0,0,0,0.9);
-
-@primary-bg: fadeout(darken(@primary, 45%), 30%);
+@primary-bg: fadeout(darken(@primary, 45%), 20%);
 @secondary-bg: fadeout(darken(@secondary, @bgDarken), @bgTransparency); // Brown background
 @warning-bg: fadeout(darken(@warning, @bgDarken), @bgTransparency); // Dark Red

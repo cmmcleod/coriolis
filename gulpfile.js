@@ -11,7 +11,8 @@ var gulp            = require('gulp'),
     mainBowerFiles  = require('main-bower-files'),
     del             = require('del'),
     runSequence     = require('run-sequence'),
-    exec            = require('child_process').exec
+    exec            = require('child_process').exec,
+    RevAll          = require('gulp-rev-all'),
     pkg             = require('./package.json');
 
 gulp.task('less', function() {
@@ -148,8 +149,36 @@ gulp.task('watch', function() {
   gulp.watch('data/**/*.json', ['jsonToDB']);
 });
 
+gulp.task('cache-bust', function(done) {
+  var revAll = new RevAll({ dontRenameFile: ['.html','db.json'] });
+  var stream = gulp.src('build/**')
+    .pipe(revAll.revision())
+    .pipe(gulp.dest('build'))
+    .pipe(revAll.manifestFile())
+    .pipe(gulp.dest('build'));
+
+  stream.on('end', function() {
+    var manifest = require('./build/rev-manifest.json');
+    var arr = [];
+    for(var origFileName in manifest) {
+      if(origFileName != manifest[origFileName]) { // For all files busted/renamed
+        arr.push('./build/' + origFileName);       // Add the original filename to the list
+      }
+    }
+    del(arr, done);     // Delete all originals files the were not busted/renamed
+  });
+  stream.on('error', done);
+
+});
+
+gulp.task('upload', function(done) {
+  // Does nothing yet :P
+  done();
+});
+
 gulp.task('clean', function (done) { del(['build'], done); });
 gulp.task('build', function (done) { runSequence('clean', ['html2js','jsonToDB'], ['generateIndexHTML','bower','js','less','copy'], done); });
+gulp.task('deploy', function (done) { runSequence('build','cache-bust', 'upload', done); });
 gulp.task('dev', function (done) { runSequence('build', 'serve','watch', done); });
 gulp.task('default', ['dev']);
 

@@ -13,7 +13,7 @@ angular.module('app').config(['$provide','$stateProvider', '$urlRouterProvider',
       params: {
         // TODO: Squash:false not working due to UI-router issue
         shipId: { value: 'sidewinder', squash: false}, // Allow 'shipId' parameter to default to
-        code: { value: undefined, squash: true } // Allow 'code' parameter to be empty/optional
+        code: { value: null, squash: true } // Allow 'code' parameter to be empty/optional
       },
       templateUrl: 'views/page-outfit.html',
       controller: 'OutfitController',

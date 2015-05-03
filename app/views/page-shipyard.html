@@ -1,4 +1,4 @@
-
+<div id="shipyard">
 <a ui-sref="outfit({shipId:id})" class="ship" ng-repeat="(id,s) in ships">
   <h2 ng-bind="s.properties.name"></h2>
   <small ng-bind="s.properties.manufacturer"></small>
@@ -7,3 +7,4 @@
   </div>
   {{fCrd(s.properties.cost)}} CR
 </a>
+</div>
