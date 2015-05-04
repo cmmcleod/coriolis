@@ -92,7 +92,6 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.armourTotal = this.armourAdded + this.armour;
     // TODO: shield recharge rate
     // TODO: armor bonus / damage reduction for bulkheads
-    // TODO: thermal load and weapon recharge rate
   };
 
   /**

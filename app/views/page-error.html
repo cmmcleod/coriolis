@@ -5,12 +5,15 @@
     <span ng-if="msgPost">{{msgPost}}</span>
   </h1>
 
-  <!-- TODO: add awesome relevant SVG based on code /-->
-
-  <p ng-if="path" >Path: {{path}}</p>
-  <p ng-if="type">Error: {{type}}</p>
-  <p ng-if="details">Details: {{details | json}}</p>
-  <p>Browser: {{browser}}</p>
+  <div style="text-align:left; font-size:0.8em; width: 43em; margin:0 auto;" >
+    <a href="https://github.com/cmmcleod/ed-shipyard" target="_blank" title="Coriolis Github Project">Create an issue on Github</a>
+    if you this if this keeps happening. <a href="#" ng-click="showDetails = !showDetails">Add these details</a>
+    <div style="margin-top: 2em;" ng-show="showDetails">
+      <div>Browser:<br>{{browser}}</div>
+      <div ng-if="path" >Path:<br>{{path}}</div>
+      <div ng-if="type">Error:<br>{{type}}</div>
+      <div ng-if="errorMessage">Message:<br>{{errorMessage}}</div>
+      <div ng-if="details">Details:<br><pre>{{details}}<pre></div>
+    </div>
+  </div>
 </div>
-
-<!-- TODO: Add github issue link /-->

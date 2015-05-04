@@ -27,6 +27,10 @@
     &:hover {
       color: @warning;
     }
+    &.disabled {
+      cursor: not-allowed;
+      color: @disabled;
+    }
   }
 
   @optionSpacing: 1.8em;
@@ -69,6 +73,10 @@
 
     &:nth-child(5n +1) {
       clear: left;
+    }
+
+    &.disabled {
+      border:1px solid @disabled;
     }
   }
 

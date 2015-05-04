@@ -46,10 +46,10 @@ angular.module('app').config(['$provide','$stateProvider', '$urlRouterProvider',
    *
    */
   $provide.decorator('$exceptionHandler', ['$delegate', '$injector', function ($delegate, $injector) {
-    return function(exception, cause) {
+    return function(err, cause) {
       // Go to error state, reload the controller, keep the current URL
-      $injector.get('$state').go('error', { details: exception }, {location:false, reload:true});
-      $delegate(exception, cause);
+      $injector.get('$state').go('error', {type:null, message: err.message, details: err.stack }, {location:false, reload:true});
+      $delegate(err, cause);
     };
   }]);
 
