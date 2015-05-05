@@ -108,7 +108,8 @@ gulp.task('generateIndexHTML', function() {
   return gulp.src('app/index.html')
     .pipe(template({
       version: pkg.version,
-      date : (new Date()).toLocaleDateString()
+      date : (new Date()).toLocaleDateString(),
+      uaTracking: process.env.CORIOLIS_UA_TRACKING
     }))
     .pipe(htmlmin({
       'collapseBooleanAttributes': true,

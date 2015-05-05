@@ -1,9 +1,14 @@
 angular.module('app', ['ui.router', 'shipyard', 'ngLodash', 'app.templates'])
-.run(['$rootScope','$document','$state','commonArray','shipPurpose','shipSize','hardPointClass','internalGroupMap','hardpointsGroupMap', function ($rootScope, $doc, $state, CArr, shipPurpose, sz, hpc, igMap, hgMap) {
+.run(['$rootScope', '$location', '$window', '$document','$state','commonArray','shipPurpose','shipSize','hardPointClass','internalGroupMap','hardpointsGroupMap', function ($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hpc, igMap, hgMap) {
   // Redirect any state transition errors to the error controller/state
   $rootScope.$on('$stateChangeError', function(e, toState, toParams, fromState, fromParams, error){
     e.preventDefault();
     $state.go('error', error, {location:false, reload:true});  // Go to error state, reload the controller, keep the current URL
+  });
+
+  // Track on Google analytics if available
+  $rootScope.$on('$stateChangeSuccess', function() {
+    if ($window.ga) ga('send', 'pageview', {page: $location.path()});
   });
 
   // Global Reference variables
