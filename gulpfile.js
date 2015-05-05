@@ -109,7 +109,7 @@ gulp.task('generateIndexHTML', function() {
     .pipe(template({
       version: pkg.version,
       date : (new Date()).toLocaleDateString(),
-      uaTracking: process.env.CORIOLIS_UA_TRACKING
+      uaTracking: process.env.CORIOLIS_UA_TRACKING || false
     }))
     .pipe(htmlmin({
       'collapseBooleanAttributes': true,
