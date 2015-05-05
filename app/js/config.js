@@ -1,7 +1,7 @@
 /**
  * Sets up the routes and handlers before the Angular app is kicked off.
  */
-angular.module('app').config(['$provide','$stateProvider', '$urlRouterProvider', '$locationProvider', function ($provide, $stateProvider, $urlRouterProvider, $locationProvider) {
+angular.module('app').config(['$provide','$stateProvider', '$urlRouterProvider', '$locationProvider', 'ShipsDB', function ($provide, $stateProvider, $urlRouterProvider, $locationProvider, ships) {
   // Use HTML5 push and replace state if possible
   $locationProvider.html5Mode(true);
   /**
@@ -19,7 +19,7 @@ angular.module('app').config(['$provide','$stateProvider', '$urlRouterProvider',
       controller: 'OutfitController',
       resolve: {
         shipId: ['$stateParams',function ($p) { // Ensure ship exists before loading controller
-          if (!DB.ships[$p.shipId]) {
+          if (!ships[$p.shipId]) {
             throw { type: 'no-ship', message: $p.shipId };
           }
         }]

@@ -7,6 +7,9 @@
  * @requires ngLodash is a dependency of this module.
  */
 angular.module('shipyard', ['ngLodash'])
+  // Create 'angularized' references to DB.This will aid testing
+  .constant('ShipsDB', DB.ships)
+  .constant('ComponentsDB', DB.components)
   .value('commonArray', [
     'Power Plant',
     'Thrusters',

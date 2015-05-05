@@ -1,4 +1,4 @@
-angular.module('app').directive('shipyardHeader', ['lodash','$rootScope', 'Persist', function (_, $rootScope, Persist) {
+angular.module('app').directive('shipyardHeader', ['lodash','$rootScope', 'Persist', 'ShipsDB', function (_, $rootScope, Persist, ships) {
 
   return {
     restrict: 'E',
@@ -6,7 +6,7 @@ angular.module('app').directive('shipyardHeader', ['lodash','$rootScope', 'Persi
     scope: true,
     link: function (scope) {
       scope.openedMenu = null;
-      scope.ships = DB.ships;
+      scope.ships = ships;
       scope.allBuilds = Persist.builds;
       scope.bs = Persist.state;
 

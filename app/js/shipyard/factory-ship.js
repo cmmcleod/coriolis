@@ -117,7 +117,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
 
   Ship.prototype.useBulkhead = function(index) {
     this.bulkheads.id = index;
-    this.bulkheads.c = DB.components.bulkheads[this.id][index];
+    this.bulkheads.c = Components.bulkheads(this.id, index);
     this.updateTotals();  // Update mass, range, shield strength, armor
   }
 

@@ -13,7 +13,6 @@ angular.module('app', ['ui.router', 'shipyard', 'ngLodash', 'app.templates'])
   $rootScope.HPC = hpc;
   $rootScope.igMap = igMap;
   $rootScope.hgMap = hgMap;
-  $rootScope.ships = DB.ships;
   $rootScope.title = 'Coriolis';
 
   // Formatters

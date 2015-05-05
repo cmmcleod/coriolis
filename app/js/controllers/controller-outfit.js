@@ -1,5 +1,5 @@
-angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$state', '$stateParams', 'Ship', 'Components', 'Serializer', 'Persist', function ($rootScope, $scope, $state, $p, Ship, Components, Serializer, Persist) {
-  var data = DB.ships[$p.shipId];   // Retrieve the basic ship properties, slots and defaults
+angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', function ($rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist) {
+  var data = Ships[$p.shipId];   // Retrieve the basic ship properties, slots and defaults
   var ship = new Ship($p.shipId, data.properties, data.slots); // Create a new Ship instance
 
   //  Update the ship instance with the code (if provided) or the 'factory' defaults.

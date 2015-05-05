@@ -1,5 +1,4 @@
-angular.module('shipyard').service('Components', ['lodash', 'ComponentSet', function (_, ComponentSet) {
-  var C = DB.components;
+angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'ShipsDB', 'ComponentSet', function (_, C, Ships, ComponentSet) {
 
   this.cargoScoop = function() {
     return { name: 'Cargo Scoop', class: 1, rating: 'H', power: 0.6};
@@ -38,7 +37,7 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentSet', func
   };
 
   this.forShip = function (shipId) {
-    var ship = DB.ships[shipId];
+    var ship = Ships[shipId];
     return new ComponentSet(C, ship.properties.mass, ship.slots.common, ship.slots.internal[0], ship.slots.hardpoints[0]);
   };
 
