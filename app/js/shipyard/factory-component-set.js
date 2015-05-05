@@ -58,7 +58,7 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function (_) {
   };
 
   function filter (data, maxClass, minClass, mass) {
-    return _.filter(data, function (c) {
+    return _.filter(data, function (c, index, collection) {
       return c.class <= maxClass && c.class >= minClass && (c.maxmass === undefined || mass <= c.maxmass)
     });
   }
