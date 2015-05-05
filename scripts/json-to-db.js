@@ -26,13 +26,43 @@ async.parallel([
 function done(err, json) { this(err,json); }
 
 function writeDB(err, arr) {
+  var internal = {}, hardpoints = {};
+  var internalOrder = Object.keys(arr[3]).sort();
+  var hpOrder = [
+    "Pulse Lasers",
+    "Burst Lasers",
+    "Beam Lasers",
+    "Multi-cannons",
+    "Cannons",
+    "Fragment Cannons",
+    "Rail Guns",
+    "Plasma Accelerators",
+    "Missile Racks",
+    "Torpedo Pylons",
+    "Mine Launchers",
+    "Mining Lasers",
+    "Shield Boosters",
+    "Countermeasures",
+    "Kill Warrant Scanners",
+    "Frame Shift Wake Scanners",
+    "Cargo Scanners"
+  ];
+
+  for (var i = 0; i < internalOrder.length; i++) {
+    internal[internalOrder[i]] = arr[3][internalOrder[i]];
+  }
+
+  for (var j = 0; j < hpOrder.length; j++) {
+    hardpoints[hpOrder[j]] = arr[2][hpOrder[j]];
+  }
+
   try {
     var db = {
       ships: arr[0],
       components: {
         common: arr[1],
-        hardpoints: arr[2],
-        internal: arr[3],
+        hardpoints: hardpoints,
+        internal: internal,
         bulkheads: arr[4]
       }
     };
