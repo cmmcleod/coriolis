@@ -1,6 +1,7 @@
 {
-  "FSD Interdictors": {
-    "66": {
+  "FSD Interdictors": [
+    {
+      "id": "66",
       "grp": "fi",
       "class": 1,
       "rating": "A",
@@ -9,7 +10,8 @@
       "power": 0.32,
       "rangeRating": "C"
     },
-    "67": {
+    {
+      "id": "67",
       "grp": "fi",
       "class": 1,
       "rating": "B",
@@ -18,7 +20,8 @@
       "power": 0.28,
       "rangeRating": "D"
     },
-    "68": {
+    {
+      "id": "68",
       "grp": "fi",
       "class": 1,
       "rating": "C",
@@ -27,7 +30,8 @@
       "power": 0.23,
       "rangeRating": "D"
     },
-    "69": {
+    {
+      "id": "69",
       "grp": "fi",
       "class": 1,
       "rating": "D",
@@ -36,7 +40,8 @@
       "power": 0.18,
       "rangeRating": "D"
     },
-    "6a": {
+    {
+      "id": "6a",
       "grp": "fi",
       "class": 1,
       "rating": "E",
@@ -45,7 +50,8 @@
       "power": 0.14,
       "rangeRating": "E"
     },
-    "6b": {
+    {
+      "id": "6b",
       "grp": "fi",
       "class": 2,
       "rating": "A",
@@ -54,7 +60,8 @@
       "power": 0.39,
       "rangeRating": "B"
     },
-    "6c": {
+    {
+      "id": "6c",
       "grp": "fi",
       "class": 2,
       "rating": "B",
@@ -63,7 +70,8 @@
       "power": 0.34,
       "rangeRating": "C"
     },
-    "6d": {
+    {
+      "id": "6d",
       "grp": "fi",
       "class": 2,
       "rating": "C",
@@ -72,7 +80,8 @@
       "power": 0.28,
       "rangeRating": "C"
     },
-    "6e": {
+    {
+      "id": "6e",
       "grp": "fi",
       "class": 2,
       "rating": "D",
@@ -81,7 +90,8 @@
       "power": 0.22,
       "rangeRating": "C"
     },
-    "6f": {
+    {
+      "id": "6f",
       "grp": "fi",
       "class": 2,
       "rating": "E",
@@ -90,7 +100,8 @@
       "power": 0.17,
       "rangeRating": "D"
     },
-    "6g": {
+    {
+      "id": "6g",
       "grp": "fi",
       "class": 3,
       "rating": "A",
@@ -99,7 +110,8 @@
       "power": 0.48,
       "rangeRating": "A"
     },
-    "6h": {
+    {
+      "id": "6h",
       "grp": "fi",
       "class": 3,
       "rating": "B",
@@ -108,7 +120,8 @@
       "power": 0.41,
       "rangeRating": "B"
     },
-    "6i": {
+    {
+      "id": "6i",
       "grp": "fi",
       "class": 3,
       "rating": "C",
@@ -117,7 +130,8 @@
       "power": 0.34,
       "rangeRating": "B"
     },
-    "6j": {
+    {
+      "id": "6j",
       "grp": "fi",
       "class": 3,
       "rating": "D",
@@ -126,7 +140,8 @@
       "power": 0.27,
       "rangeRating": "B"
     },
-    "6k": {
+    {
+      "id": "6k",
       "grp": "fi",
       "class": 3,
       "rating": "E",
@@ -135,7 +150,8 @@
       "power": 0.2,
       "rangeRating": "C"
     },
-    "6l": {
+    {
+      "id": "6l",
       "grp": "fi",
       "class": 4,
       "rating": "A",
@@ -144,7 +160,8 @@
       "power": 0.57,
       "rangeRating": "A"
     },
-    "6m": {
+    {
+      "id": "6m",
       "grp": "fi",
       "class": 4,
       "rating": "B",
@@ -153,7 +170,8 @@
       "power": 0.49,
       "rangeRating": "A"
     },
-    "6n": {
+    {
+      "id": "6n",
       "grp": "fi",
       "class": 4,
       "rating": "C",
@@ -162,7 +180,8 @@
       "power": 0.41,
       "rangeRating": "A"
     },
-    "6o": {
+    {
+      "id": "6o",
       "grp": "fi",
       "class": 4,
       "rating": "D",
@@ -171,7 +190,8 @@
       "power": 0.33,
       "rangeRating": "A"
     },
-    "6p": {
+    {
+      "id": "6p",
       "grp": "fi",
       "class": 4,
       "rating": "E",
@@ -180,5 +200,5 @@
       "power": 0.25,
       "rangeRating": "B"
     }
-  }
+  ]
 }

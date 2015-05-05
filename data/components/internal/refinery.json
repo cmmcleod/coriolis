@@ -1,38 +1,7 @@
 {
-  "Refineries": {
-    "20": {
-      "grp": "rf",
-      "class": 4,
-      "rating": "B",
-      "cost": 1500282,
-      "power": 0.49,
-      "bins": 9
-    },
-    "21": {
-      "grp": "rf",
-      "class": 4,
-      "rating": "C",
-      "cost": 500094,
-      "power": 0.41,
-      "bins": 7
-    },
-    "22": {
-      "grp": "rf",
-      "class": 4,
-      "rating": "D",
-      "cost": 166698,
-      "power": 0.33,
-      "bins": 5
-    },
-    "23": {
-      "grp": "rf",
-      "class": 4,
-      "rating": "E",
-      "cost": 55566,
-      "power": 0.25,
-      "bins": 4
-    },
-    "1g": {
+  "Refineries": [
+    {
+      "id": "1g",
       "grp": "rf",
       "class": 1,
       "rating": "A",
@@ -40,7 +9,8 @@
       "power": 0.32,
       "bins": 4
     },
-    "1h": {
+    {
+      "id": "1h",
       "grp": "rf",
       "class": 1,
       "rating": "B",
@@ -48,7 +18,8 @@
       "power": 0.28,
       "bins": 3
     },
-    "1i": {
+    {
+      "id": "1i",
       "grp": "rf",
       "class": 1,
       "rating": "C",
@@ -56,7 +27,8 @@
       "power": 0.23,
       "bins": 2
     },
-    "1j": {
+    {
+      "id": "1j",
       "grp": "rf",
       "class": 1,
       "rating": "D",
@@ -64,7 +36,8 @@
       "power": 0.18,
       "bins": 1
     },
-    "1k": {
+    {
+      "id": "1k",
       "grp": "rf",
       "class": 1,
       "rating": "E",
@@ -72,7 +45,8 @@
       "power": 0.14,
       "bins": 1
     },
-    "1l": {
+    {
+      "id": "1l",
       "grp": "rf",
       "class": 2,
       "rating": "A",
@@ -80,7 +54,8 @@
       "power": 0.39,
       "bins": 6
     },
-    "1m": {
+    {
+      "id": "1m",
       "grp": "rf",
       "class": 2,
       "rating": "B",
@@ -88,7 +63,8 @@
       "power": 0.34,
       "bins": 5
     },
-    "1n": {
+    {
+      "id": "1n",
       "grp": "rf",
       "class": 2,
       "rating": "C",
@@ -96,7 +72,8 @@
       "power": 0.28,
       "bins": 4
     },
-    "1o": {
+    {
+      "id": "1o",
       "grp": "rf",
       "class": 2,
       "rating": "D",
@@ -104,7 +81,8 @@
       "power": 0.22,
       "bins": 3
     },
-    "1p": {
+    {
+      "id": "1p",
       "grp": "rf",
       "class": 2,
       "rating": "E",
@@ -112,7 +90,8 @@
       "power": 0.17,
       "bins": 2
     },
-    "1q": {
+    {
+      "id": "1q",
       "grp": "rf",
       "class": 3,
       "rating": "A",
@@ -120,7 +99,8 @@
       "power": 0.48,
       "bins": 8
     },
-    "1r": {
+    {
+      "id": "1r",
       "grp": "rf",
       "class": 3,
       "rating": "B",
@@ -128,7 +108,8 @@
       "power": 0.41,
       "bins": 7
     },
-    "1s": {
+    {
+      "id": "1s",
       "grp": "rf",
       "class": 3,
       "rating": "C",
@@ -136,7 +117,8 @@
       "power": 0.34,
       "bins": 6
     },
-    "1t": {
+    {
+      "id": "1t",
       "grp": "rf",
       "class": 3,
       "rating": "D",
@@ -144,7 +126,8 @@
       "power": 0.27,
       "bins": 4
     },
-    "1u": {
+    {
+      "id": "1u",
       "grp": "rf",
       "class": 3,
       "rating": "E",
@@ -152,13 +135,50 @@
       "power": 0.2,
       "bins": 3
     },
-    "1v": {
+    {
+      "id": "1v",
       "grp": "rf",
       "class": 4,
       "rating": "A",
       "cost": 4500846,
       "power": 0.57,
       "bins": 10
+    },
+    {
+      "id": "20",
+      "grp": "rf",
+      "class": 4,
+      "rating": "B",
+      "cost": 1500282,
+      "power": 0.49,
+      "bins": 9
+    },
+    {
+      "id": "21",
+      "grp": "rf",
+      "class": 4,
+      "rating": "C",
+      "cost": 500094,
+      "power": 0.41,
+      "bins": 7
+    },
+    {
+      "id": "22",
+      "grp": "rf",
+      "class": 4,
+      "rating": "D",
+      "cost": 166698,
+      "power": 0.33,
+      "bins": 5
+    },
+    {
+      "id": "23",
+      "grp": "rf",
+      "class": 4,
+      "rating": "E",
+      "cost": 55566,
+      "power": 0.25,
+      "bins": 4
     }
-  }
+  ]
 }

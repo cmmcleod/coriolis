@@ -1,6 +1,7 @@
 {
-  "Burst Lasers": {
-    "11": {
+  "Burst Lasers": [
+    {
+      "id": "11",
       "grp": "ul",
       "class": 1,
       "rating": "F",
@@ -15,7 +16,8 @@
       "dps": 3,
       "thermload": 1
     },
-    "12": {
+    {
+      "id": "12",
       "grp": "ul",
       "class": 1,
       "rating": "G",
@@ -30,7 +32,8 @@
       "dps": 3,
       "thermload": 1
     },
-    "13": {
+    {
+      "id": "13",
       "grp": "ul",
       "class": 1,
       "rating": "G",
@@ -45,7 +48,8 @@
       "dps": 2,
       "thermload": 1
     },
-    "14": {
+    {
+      "id": "14",
       "grp": "ul",
       "class": 3,
       "rating": "D",
@@ -60,7 +64,8 @@
       "dps": 4,
       "thermload": 1
     },
-    "15": {
+    {
+      "id": "15",
       "grp": "ul",
       "class": 3,
       "rating": "E",
@@ -75,7 +80,8 @@
       "dps": 4,
       "thermload": 1
     },
-    "16": {
+    {
+      "id": "16",
       "grp": "ul",
       "class": 3,
       "rating": "E",
@@ -90,5 +96,5 @@
       "dps": 4,
       "thermload": 1
     }
-  }
+  ]
 }

@@ -1,6 +1,7 @@
 {
-  "Cargo Scanners": {
-    "09": {
+  "Cargo Scanners": [
+    {
+      "id": "09",
       "grp": "cs",
       "class": 0,
       "rating": "A",
@@ -10,7 +11,8 @@
       "range": 4,
       "time": 10
     },
-    "0a": {
+    {
+      "id": "0a",
       "grp": "cs",
       "class": 0,
       "rating": "B",
@@ -20,7 +22,8 @@
       "range": 3.5,
       "time": 10
     },
-    "0b": {
+    {
+      "id": "0b",
       "grp": "cs",
       "class": 0,
       "rating": "C",
@@ -30,7 +33,8 @@
       "range": 3,
       "time": 10
     },
-    "0c": {
+    {
+      "id": "0c",
       "grp": "cs",
       "class": 0,
       "rating": "D",
@@ -40,7 +44,8 @@
       "range": 2.5,
       "time": 10
     },
-    "0d": {
+    {
+      "id": "0d",
       "grp": "cs",
       "class": 0,
       "rating": "E",
@@ -50,5 +55,5 @@
       "range": 2,
       "time": 10
     }
-  }
+  ]
 }

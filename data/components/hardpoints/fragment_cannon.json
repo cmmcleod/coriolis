@@ -1,6 +1,7 @@
 {
-  "Fragment Cannons": {
-    "20": {
+  "Fragment Cannons": [
+    {
+      "id": "20",
       "grp": "fc",
       "class": 1,
       "rating": "E",
@@ -18,7 +19,8 @@
       "clip": 3,
       "ammo": 30
     },
-    "21": {
+    {
+      "id": "21",
       "grp": "fc",
       "class": 1,
       "rating": "E",
@@ -36,7 +38,8 @@
       "clip": 3,
       "ammo": 30
     },
-    "22": {
+    {
+      "id": "22",
       "grp": "fc",
       "class": 1,
       "rating": "E",
@@ -54,7 +57,8 @@
       "clip": 3,
       "ammo": 30
     },
-    "1s": {
+    {
+      "id": "1s",
       "grp": "fc",
       "class": 2,
       "rating": "A",
@@ -72,7 +76,8 @@
       "clip": 3,
       "ammo": 30
     },
-    "1t": {
+    {
+      "id": "1t",
       "grp": "fc",
       "class": 3,
       "rating": "C",
@@ -90,7 +95,8 @@
       "clip": 3,
       "ammo": 30
     },
-    "1u": {
+    {
+      "id": "1u",
       "grp": "fc",
       "class": 3,
       "rating": "C",
@@ -108,7 +114,8 @@
       "clip": 3,
       "ammo": 30
     },
-    "1v": {
+    {
+      "id": "1v",
       "grp": "fc",
       "class": 3,
       "rating": "C",
@@ -126,5 +133,5 @@
       "clip": 3,
       "ammo": 30
     }
-  }
+  ]
 }

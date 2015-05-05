@@ -1,6 +1,7 @@
 {
-  "Torpedo Pylons": {
-    "2h": {
+  "Torpedo Pylons": [
+    {
+      "id": "2h",
       "grp": "tp",
       "class": 1,
       "rating": "I",
@@ -15,7 +16,8 @@
       "ammo": 1,
       "missile": "S"
     },
-    "2i": {
+    {
+      "id": "2i",
       "grp": "tp",
       "class": 2,
       "rating": "I",
@@ -30,5 +32,5 @@
       "ammo": 1,
       "missile": "S"
     }
-  }
+  ]
 }

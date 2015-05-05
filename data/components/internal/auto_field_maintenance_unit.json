@@ -1,96 +1,7 @@
 {
-  "Auto Field-Maintenance Units": {
-    "10": {
-      "grp": "am",
-      "class": 5,
-      "rating": "E",
-      "cost": 104976,
-      "power": 1.17,
-      "ammo": 6100,
-      "repair": 73.2
-    },
-    "11": {
-      "grp": "am",
-      "class": 6,
-      "rating": "A",
-      "cost": 15305501,
-      "power": 3.26,
-      "ammo": 8100,
-      "repair": 226.8
-    },
-    "12": {
-      "grp": "am",
-      "class": 6,
-      "rating": "B",
-      "cost": 5101834,
-      "power": 2.67,
-      "ammo": 8900,
-      "repair": 204.7
-    },
-    "13": {
-      "grp": "am",
-      "class": 6,
-      "rating": "C",
-      "cost": 1700611,
-      "power": 2.33,
-      "ammo": 7400,
-      "repair": 148
-    },
-    "14": {
-      "grp": "am",
-      "class": 6,
-      "rating": "D",
-      "cost": 566870,
-      "power": 1.86,
-      "ammo": 6700,
-      "repair": 107.2
-    },
-    "15": {
-      "grp": "am",
-      "class": 6,
-      "rating": "E",
-      "cost": 188957,
-      "power": 1.4,
-      "ammo": 7400,
-      "repair": 88.8
-    },
-    "16": {
-      "grp": "am",
-      "class": 7,
-      "rating": "A",
-      "cost": 27549901,
-      "power": 3.68,
-      "ammo": 9600,
-      "repair": 268.8
-    },
-    "17": {
-      "grp": "am",
-      "class": 7,
-      "rating": "B",
-      "cost": 9183300,
-      "power": 3.02,
-      "ammo": 10400,
-      "repair": 239.2
-    },
-    "18": {
-      "grp": "am",
-      "class": 7,
-      "rating": "C",
-      "cost": 3061100,
-      "power": 2.63,
-      "ammo": 8700,
-      "repair": 174
-    },
-    "19": {
-      "grp": "am",
-      "class": 7,
-      "rating": "D",
-      "cost": 1020367,
-      "power": 2.1,
-      "ammo": 7800,
-      "repair": 124.8
-    },
-    "08": {
+  "Auto Field-Maintenance Units": [
+    {
+      "id": "08",
       "grp": "am",
       "class": 1,
       "rating": "A",
@@ -99,7 +10,8 @@
       "ammo": 1100,
       "repair": 30.8
     },
-    "09": {
+    {
+      "id": "09",
       "grp": "am",
       "class": 1,
       "rating": "B",
@@ -108,7 +20,8 @@
       "ammo": 1200,
       "repair": 27.6
     },
-    "0a": {
+    {
+      "id": "0a",
       "grp": "am",
       "class": 1,
       "rating": "C",
@@ -117,7 +30,8 @@
       "ammo": 1000,
       "repair": 20
     },
-    "0b": {
+    {
+      "id": "0b",
       "grp": "am",
       "class": 1,
       "rating": "D",
@@ -126,7 +40,8 @@
       "ammo": 900,
       "repair": 14.4
     },
-    "0c": {
+    {
+      "id": "0c",
       "grp": "am",
       "class": 1,
       "rating": "E",
@@ -135,7 +50,8 @@
       "ammo": 1000,
       "repair": 12
     },
-    "0d": {
+    {
+      "id": "0d",
       "grp": "am",
       "class": 2,
       "rating": "A",
@@ -144,7 +60,8 @@
       "ammo": 2500,
       "repair": 70
     },
-    "0e": {
+    {
+      "id": "0e",
       "grp": "am",
       "class": 2,
       "rating": "B",
@@ -153,7 +70,8 @@
       "ammo": 2800,
       "repair": 64.4
     },
-    "0f": {
+    {
+      "id": "0f",
       "grp": "am",
       "class": 2,
       "rating": "C",
@@ -162,7 +80,8 @@
       "ammo": 2300,
       "repair": 46
     },
-    "0g": {
+    {
+      "id": "0g",
       "grp": "am",
       "class": 2,
       "rating": "D",
@@ -171,7 +90,8 @@
       "ammo": 2100,
       "repair": 33.6
     },
-    "0h": {
+    {
+      "id": "0h",
       "grp": "am",
       "class": 2,
       "rating": "E",
@@ -180,7 +100,8 @@
       "ammo": 2300,
       "repair": 27.6
     },
-    "0i": {
+    {
+      "id": "0i",
       "grp": "am",
       "class": 3,
       "rating": "A",
@@ -189,7 +110,8 @@
       "ammo": 4000,
       "repair": 112
     },
-    "0j": {
+    {
+      "id": "0j",
       "grp": "am",
       "class": 3,
       "rating": "B",
@@ -198,7 +120,8 @@
       "ammo": 4300,
       "repair": 98.9
     },
-    "0k": {
+    {
+      "id": "0k",
       "grp": "am",
       "class": 3,
       "rating": "C",
@@ -207,7 +130,8 @@
       "ammo": 3600,
       "repair": 72
     },
-    "0l": {
+    {
+      "id": "0l",
       "grp": "am",
       "class": 3,
       "rating": "D",
@@ -216,7 +140,8 @@
       "ammo": 3200,
       "repair": 51.2
     },
-    "0m": {
+    {
+      "id": "0m",
       "grp": "am",
       "class": 3,
       "rating": "E",
@@ -225,7 +150,8 @@
       "ammo": 3600,
       "repair": 43.2
     },
-    "0n": {
+    {
+      "id": "0n",
       "grp": "am",
       "class": 4,
       "rating": "A",
@@ -234,7 +160,8 @@
       "ammo": 5400,
       "repair": 151.2
     },
-    "0o": {
+    {
+      "id": "0o",
       "grp": "am",
       "class": 4,
       "rating": "B",
@@ -243,7 +170,8 @@
       "ammo": 5900,
       "repair": 135.7
     },
-    "0p": {
+    {
+      "id": "0p",
       "grp": "am",
       "class": 4,
       "rating": "C",
@@ -252,7 +180,8 @@
       "ammo": 4900,
       "repair": 98
     },
-    "0q": {
+    {
+      "id": "0q",
       "grp": "am",
       "class": 4,
       "rating": "D",
@@ -261,7 +190,8 @@
       "ammo": 4400,
       "repair": 70.4
     },
-    "0r": {
+    {
+      "id": "0r",
       "grp": "am",
       "class": 4,
       "rating": "E",
@@ -270,7 +200,8 @@
       "ammo": 4900,
       "repair": 58.8
     },
-    "0s": {
+    {
+      "id": "0s",
       "grp": "am",
       "class": 5,
       "rating": "A",
@@ -279,7 +210,8 @@
       "ammo": 6700,
       "repair": 187.6
     },
-    "0t": {
+    {
+      "id": "0t",
       "grp": "am",
       "class": 5,
       "rating": "B",
@@ -288,7 +220,8 @@
       "ammo": 7300,
       "repair": 167.9
     },
-    "0u": {
+    {
+      "id": "0u",
       "grp": "am",
       "class": 5,
       "rating": "C",
@@ -297,7 +230,8 @@
       "ammo": 6100,
       "repair": 122
     },
-    "0v": {
+    {
+      "id": "0v",
       "grp": "am",
       "class": 5,
       "rating": "D",
@@ -306,7 +240,108 @@
       "ammo": 5500,
       "repair": 88
     },
-    "1a": {
+    {
+      "id": "10",
+      "grp": "am",
+      "class": 5,
+      "rating": "E",
+      "cost": 104976,
+      "power": 1.17,
+      "ammo": 6100,
+      "repair": 73.2
+    },
+    {
+      "id": "11",
+      "grp": "am",
+      "class": 6,
+      "rating": "A",
+      "cost": 15305501,
+      "power": 3.26,
+      "ammo": 8100,
+      "repair": 226.8
+    },
+    {
+      "id": "12",
+      "grp": "am",
+      "class": 6,
+      "rating": "B",
+      "cost": 5101834,
+      "power": 2.67,
+      "ammo": 8900,
+      "repair": 204.7
+    },
+    {
+      "id": "13",
+      "grp": "am",
+      "class": 6,
+      "rating": "C",
+      "cost": 1700611,
+      "power": 2.33,
+      "ammo": 7400,
+      "repair": 148
+    },
+    {
+      "id": "14",
+      "grp": "am",
+      "class": 6,
+      "rating": "D",
+      "cost": 566870,
+      "power": 1.86,
+      "ammo": 6700,
+      "repair": 107.2
+    },
+    {
+      "id": "15",
+      "grp": "am",
+      "class": 6,
+      "rating": "E",
+      "cost": 188957,
+      "power": 1.4,
+      "ammo": 7400,
+      "repair": 88.8
+    },
+    {
+      "id": "16",
+      "grp": "am",
+      "class": 7,
+      "rating": "A",
+      "cost": 27549901,
+      "power": 3.68,
+      "ammo": 9600,
+      "repair": 268.8
+    },
+    {
+      "id": "17",
+      "grp": "am",
+      "class": 7,
+      "rating": "B",
+      "cost": 9183300,
+      "power": 3.02,
+      "ammo": 10400,
+      "repair": 239.2
+    },
+    {
+      "id": "18",
+      "grp": "am",
+      "class": 7,
+      "rating": "C",
+      "cost": 3061100,
+      "power": 2.63,
+      "ammo": 8700,
+      "repair": 174
+    },
+    {
+      "id": "19",
+      "grp": "am",
+      "class": 7,
+      "rating": "D",
+      "cost": 1020367,
+      "power": 2.1,
+      "ammo": 7800,
+      "repair": 124.8
+    },
+    {
+      "id": "1a",
       "grp": "am",
       "class": 7,
       "rating": "E",
@@ -315,7 +350,8 @@
       "ammo": 8700,
       "repair": 104.4
     },
-    "1b": {
+    {
+      "id": "1b",
       "grp": "am",
       "class": 8,
       "rating": "A",
@@ -324,7 +360,8 @@
       "ammo": 11000,
       "repair": 308
     },
-    "1c": {
+    {
+      "id": "1c",
       "grp": "am",
       "class": 8,
       "rating": "B",
@@ -333,7 +370,8 @@
       "ammo": 12000,
       "repair": 276
     },
-    "1d": {
+    {
+      "id": "1d",
       "grp": "am",
       "class": 8,
       "rating": "C",
@@ -342,7 +380,8 @@
       "ammo": 10000,
       "repair": 200
     },
-    "1e": {
+    {
+      "id": "1e",
       "grp": "am",
       "class": 8,
       "rating": "D",
@@ -351,7 +390,8 @@
       "ammo": 9000,
       "repair": 144
     },
-    "1f": {
+    {
+      "id": "1f",
       "grp": "am",
       "class": 8,
       "rating": "E",
@@ -360,5 +400,5 @@
       "ammo": 10000,
       "repair": 120
     }
-  }
+  ]
 }

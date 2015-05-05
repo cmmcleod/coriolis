@@ -1,6 +1,7 @@
 {
-  "Countermeasures": {
-    "00": {
+  "Countermeasures": [
+    {
+      "id": "00",
       "name": "Chaff Launcher",
       "class": 0,
       "rating": "I",
@@ -13,7 +14,8 @@
       "clip": 1,
       "ammo": 10
     },
-    "01": {
+    {
+      "id": "01",
       "name": "Electronic Countermeasure",
       "class": 0,
       "rating": "F",
@@ -25,7 +27,8 @@
       "activepower": 4,
       "cooldown": 10
     },
-    "02": {
+    {
+      "id": "02",
       "name": "Heat Sink Launcher",
       "class": 0,
       "rating": "I",
@@ -38,7 +41,8 @@
       "clip": 1,
       "ammo": 3
     },
-    "03": {
+    {
+      "id": "03",
       "name": "Point Defence",
       "class": 0,
       "rating": "I",
@@ -51,5 +55,5 @@
       "clip": 50,
       "ammo": 10000
     }
-  }
+  ]
 }

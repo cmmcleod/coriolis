@@ -1,86 +1,7 @@
 {
-  "Fuel Scoops": {
-    "30": {
-      "grp": "fs",
-      "class": 3,
-      "rating": "D",
-      "cost": 14109,
-      "power": 0.27,
-      "rate": 100
-    },
-    "31": {
-      "grp": "fs",
-      "class": 3,
-      "rating": "E",
-      "cost": 3386,
-      "power": 0.2,
-      "rate": 75
-    },
-    "32": {
-      "grp": "fs",
-      "class": 4,
-      "rating": "A",
-      "cost": 2862364,
-      "power": 0.57,
-      "rate": 342
-    },
-    "33": {
-      "grp": "fs",
-      "class": 4,
-      "rating": "B",
-      "cost": 715591,
-      "power": 0.49,
-      "rate": 294
-    },
-    "34": {
-      "grp": "fs",
-      "class": 4,
-      "rating": "C",
-      "cost": 178898,
-      "power": 0.41,
-      "rate": 245
-    },
-    "35": {
-      "grp": "fs",
-      "class": 4,
-      "rating": "D",
-      "cost": 44724,
-      "power": 0.33,
-      "rate": 196
-    },
-    "36": {
-      "grp": "fs",
-      "class": 4,
-      "rating": "E",
-      "cost": 10734,
-      "power": 0.25,
-      "rate": 147
-    },
-    "37": {
-      "grp": "fs",
-      "class": 5,
-      "rating": "A",
-      "cost": 9073694,
-      "power": 0.7,
-      "rate": 577
-    },
-    "38": {
-      "grp": "fs",
-      "class": 5,
-      "rating": "B",
-      "cost": 2268424,
-      "power": 0.6,
-      "rate": 494
-    },
-    "39": {
-      "grp": "fs",
-      "class": 5,
-      "rating": "C",
-      "cost": 567106,
-      "power": 0.5,
-      "rate": 412
-    },
-    "2j": {
+  "Fuel Scoops": [
+    {
+      "id": "2j",
       "grp": "fs",
       "class": 1,
       "rating": "A",
@@ -88,7 +9,8 @@
       "power": 0.32,
       "rate": 42
     },
-    "2k": {
+    {
+      "id": "2k",
       "grp": "fs",
       "class": 1,
       "rating": "B",
@@ -96,7 +18,8 @@
       "power": 0.28,
       "rate": 36
     },
-    "2l": {
+    {
+      "id": "2l",
       "grp": "fs",
       "class": 1,
       "rating": "C",
@@ -104,7 +27,8 @@
       "power": 0.23,
       "rate": 30
     },
-    "2m": {
+    {
+      "id": "2m",
       "grp": "fs",
       "class": 1,
       "rating": "D",
@@ -112,7 +36,8 @@
       "power": 0.18,
       "rate": 24
     },
-    "2n": {
+    {
+      "id": "2n",
       "grp": "fs",
       "class": 1,
       "rating": "E",
@@ -120,7 +45,8 @@
       "power": 0.14,
       "rate": 18
     },
-    "2o": {
+    {
+      "id": "2o",
       "grp": "fs",
       "class": 2,
       "rating": "A",
@@ -128,7 +54,8 @@
       "power": 0.39,
       "rate": 75
     },
-    "2p": {
+    {
+      "id": "2p",
       "grp": "fs",
       "class": 2,
       "rating": "B",
@@ -136,7 +63,8 @@
       "power": 0.34,
       "rate": 65
     },
-    "2q": {
+    {
+      "id": "2q",
       "grp": "fs",
       "class": 2,
       "rating": "C",
@@ -144,7 +72,8 @@
       "power": 0.28,
       "rate": 54
     },
-    "2r": {
+    {
+      "id": "2r",
       "grp": "fs",
       "class": 2,
       "rating": "D",
@@ -152,7 +81,8 @@
       "power": 0.22,
       "rate": 43
     },
-    "2s": {
+    {
+      "id": "2s",
       "grp": "fs",
       "class": 2,
       "rating": "E",
@@ -160,7 +90,8 @@
       "power": 0.17,
       "rate": 32
     },
-    "2t": {
+    {
+      "id": "2t",
       "grp": "fs",
       "class": 3,
       "rating": "A",
@@ -168,7 +99,8 @@
       "power": 0.48,
       "rate": 176
     },
-    "2u": {
+    {
+      "id": "2u",
       "grp": "fs",
       "class": 3,
       "rating": "B",
@@ -176,7 +108,8 @@
       "power": 0.41,
       "rate": 151
     },
-    "2v": {
+    {
+      "id": "2v",
       "grp": "fs",
       "class": 3,
       "rating": "C",
@@ -184,7 +117,98 @@
       "power": 0.34,
       "rate": 126
     },
-    "3a": {
+    {
+      "id": "30",
+      "grp": "fs",
+      "class": 3,
+      "rating": "D",
+      "cost": 14109,
+      "power": 0.27,
+      "rate": 100
+    },
+    {
+      "id": "31",
+      "grp": "fs",
+      "class": 3,
+      "rating": "E",
+      "cost": 3386,
+      "power": 0.2,
+      "rate": 75
+    },
+    {
+      "id": "32",
+      "grp": "fs",
+      "class": 4,
+      "rating": "A",
+      "cost": 2862364,
+      "power": 0.57,
+      "rate": 342
+    },
+    {
+      "id": "33",
+      "grp": "fs",
+      "class": 4,
+      "rating": "B",
+      "cost": 715591,
+      "power": 0.49,
+      "rate": 294
+    },
+    {
+      "id": "34",
+      "grp": "fs",
+      "class": 4,
+      "rating": "C",
+      "cost": 178898,
+      "power": 0.41,
+      "rate": 245
+    },
+    {
+      "id": "35",
+      "grp": "fs",
+      "class": 4,
+      "rating": "D",
+      "cost": 44724,
+      "power": 0.33,
+      "rate": 196
+    },
+    {
+      "id": "36",
+      "grp": "fs",
+      "class": 4,
+      "rating": "E",
+      "cost": 10734,
+      "power": 0.25,
+      "rate": 147
+    },
+    {
+      "id": "37",
+      "grp": "fs",
+      "class": 5,
+      "rating": "A",
+      "cost": 9073694,
+      "power": 0.7,
+      "rate": 577
+    },
+    {
+      "id": "38",
+      "grp": "fs",
+      "class": 5,
+      "rating": "B",
+      "cost": 2268424,
+      "power": 0.6,
+      "rate": 494
+    },
+    {
+      "id": "39",
+      "grp": "fs",
+      "class": 5,
+      "rating": "C",
+      "cost": 567106,
+      "power": 0.5,
+      "rate": 412
+    },
+    {
+      "id": "3a",
       "grp": "fs",
       "class": 5,
       "rating": "D",
@@ -192,7 +216,8 @@
       "power": 0.4,
       "rate": 330
     },
-    "3b": {
+    {
+      "id": "3b",
       "grp": "fs",
       "class": 5,
       "rating": "E",
@@ -200,7 +225,8 @@
       "power": 0.3,
       "rate": 247
     },
-    "3c": {
+    {
+      "id": "3c",
       "grp": "fs",
       "class": 6,
       "rating": "A",
@@ -208,7 +234,8 @@
       "power": 0.83,
       "rate": 878
     },
-    "3d": {
+    {
+      "id": "3d",
       "grp": "fs",
       "class": 6,
       "rating": "B",
@@ -216,7 +243,8 @@
       "power": 0.71,
       "rate": 752
     },
-    "3e": {
+    {
+      "id": "3e",
       "grp": "fs",
       "class": 6,
       "rating": "C",
@@ -224,7 +252,8 @@
       "power": 0.59,
       "rate": 627
     },
-    "3f": {
+    {
+      "id": "3f",
       "grp": "fs",
       "class": 6,
       "rating": "D",
@@ -232,7 +261,8 @@
       "power": 0.47,
       "rate": 502
     },
-    "3g": {
+    {
+      "id": "3g",
       "grp": "fs",
       "class": 6,
       "rating": "E",
@@ -240,7 +270,8 @@
       "power": 0.35,
       "rate": 376
     },
-    "3h": {
+    {
+      "id": "3h",
       "grp": "fs",
       "class": 7,
       "rating": "A",
@@ -248,7 +279,8 @@
       "power": 0.97,
       "rate": 1245
     },
-    "3i": {
+    {
+      "id": "3i",
       "grp": "fs",
       "class": 7,
       "rating": "B",
@@ -256,7 +288,8 @@
       "power": 0.83,
       "rate": 1068
     },
-    "3j": {
+    {
+      "id": "3j",
       "grp": "fs",
       "class": 7,
       "rating": "C",
@@ -264,7 +297,8 @@
       "power": 0.69,
       "rate": 890
     },
-    "3k": {
+    {
+      "id": "3k",
       "grp": "fs",
       "class": 7,
       "rating": "D",
@@ -272,7 +306,8 @@
       "power": 0.55,
       "rate": 712
     },
-    "3l": {
+    {
+      "id": "3l",
       "grp": "fs",
       "class": 7,
       "rating": "E",
@@ -280,7 +315,8 @@
       "power": 0.41,
       "rate": 534
     },
-    "3m": {
+    {
+      "id": "3m",
       "grp": "fs",
       "class": 8,
       "rating": "A",
@@ -288,7 +324,8 @@
       "power": 1.12,
       "rate": 1680
     },
-    "3n": {
+    {
+      "id": "3n",
       "grp": "fs",
       "class": 8,
       "rating": "B",
@@ -296,7 +333,8 @@
       "power": 0.96,
       "rate": 1440
     },
-    "3o": {
+    {
+      "id": "3o",
       "grp": "fs",
       "class": 8,
       "rating": "C",
@@ -304,7 +342,8 @@
       "power": 0.8,
       "rate": 1200
     },
-    "3p": {
+    {
+      "id": "3p",
       "grp": "fs",
       "class": 8,
       "rating": "D",
@@ -312,7 +351,8 @@
       "power": 0.64,
       "rate": 960
     },
-    "3q": {
+    {
+      "id": "3q",
       "grp": "fs",
       "class": 8,
       "rating": "E",
@@ -320,5 +360,5 @@
       "power": 0.48,
       "rate": 720
     }
-  }
+  ]
 }

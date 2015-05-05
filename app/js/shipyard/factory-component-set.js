@@ -36,7 +36,7 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function (_) {
       var o = this.hpClass[c] =  {};
       for(var key in this.hardpoints) {
         var data = filter(this.hardpoints[key], c, c? 1 : 0, this.mass);
-        if(Object.keys(data).length) {  // If group is not empty
+        if(data.length) {  // If group is not empty
           o[key] = data;
         }
       }
@@ -49,7 +49,7 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function (_) {
       var o = this.intClass[c] =  {};
       for(var key in this.internal) {
         var data = filter(this.internal[key], c, 0, this.mass);
-        if(Object.keys(data).length) {  // If group is not empty
+        if(data.length) {  // If group is not empty
           o[key] = data;
         }
       }
@@ -58,13 +58,9 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function (_) {
   };
 
   function filter (data, maxClass, minClass, mass) {
-    var set = {};
-    _.forEach(data, function (c,id) {
-      if (c.class <= maxClass && c.class >= minClass && (c.maxmass === undefined || mass <= c.maxmass) ) {
-        set[id] = c;
-      }
+    return _.filter(data, function (c) {
+      return c.class <= maxClass && c.class >= minClass && (c.maxmass === undefined || mass <= c.maxmass)
     });
-    return set;
   }
 
   return ComponentSet;

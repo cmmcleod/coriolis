@@ -1,6 +1,7 @@
 {
-  "Frame Shift Wake Scanners": {
-    "0e": {
+  "Frame Shift Wake Scanners": [
+    {
+      "id": "0e",
       "grp": "fs",
       "class": 0,
       "rating": "A",
@@ -10,7 +11,8 @@
       "range": 4,
       "time": 10
     },
-    "0f": {
+    {
+      "id": "0f",
       "grp": "fs",
       "class": 0,
       "rating": "B",
@@ -20,7 +22,8 @@
       "range": 3.5,
       "time": 10
     },
-    "0g": {
+    {
+      "id": "0g",
       "grp": "fs",
       "class": 0,
       "rating": "C",
@@ -30,7 +33,8 @@
       "range": 3,
       "time": 10
     },
-    "0h": {
+    {
+      "id": "0h",
       "grp": "fs",
       "class": 0,
       "rating": "D",
@@ -40,7 +44,8 @@
       "range": 2.5,
       "time": 10
     },
-    "0i": {
+    {
+      "id": "0i",
       "grp": "fs",
       "class": 0,
       "rating": "E",
@@ -50,5 +55,5 @@
       "range": 2,
       "time": 10
     }
-  }
+  ]
 }

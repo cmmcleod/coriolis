@@ -1,6 +1,7 @@
 {
-  "Plasma Accelerators": {
-    "1g": {
+  "Plasma Accelerators": [
+    {
+      "id": "1g",
       "grp": "pa",
       "class": 2,
       "rating": "C",
@@ -18,7 +19,8 @@
       "clip": 5,
       "ammo": 100
     },
-    "2b": {
+    {
+      "id": "2b",
       "grp": "pa",
       "class": 3,
       "rating": "B",
@@ -36,7 +38,8 @@
       "clip": 5,
       "ammo": 100
     },
-    "2c": {
+    {
+      "id": "2c",
       "grp": "pa",
       "class": 4,
       "rating": "A",
@@ -54,5 +57,5 @@
       "clip": 5,
       "ammo": 100
     }
-  }
+  ]
 }

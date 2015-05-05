@@ -1,6 +1,7 @@
 {
- "Beam Lasers" : {
-    "10": {
+ "Beam Lasers" : [
+    {
+      "id": "10",
       "grp": "bl",
       "class": 1,
       "rating": "E",
@@ -15,7 +16,8 @@
       "dps": 3,
       "thermload": 3
     },
-    "0p": {
+    {
+      "id": "0p",
       "grp": "bl",
       "class": 1,
       "rating": "E",
@@ -30,7 +32,8 @@
       "dps": 3,
       "thermload": 3
     },
-    "0q": {
+    {
+      "id": "0q",
       "grp": "bl",
       "class": 1,
       "rating": "F",
@@ -45,7 +48,8 @@
       "dps": 3,
       "thermload": 2
     },
-    "0r": {
+    {
+      "id": "0r",
       "grp": "bl",
       "class": 2,
       "rating": "D",
@@ -60,7 +64,8 @@
       "dps": 4,
       "thermload": 4
     },
-    "0s": {
+    {
+      "id": "0s",
       "grp": "bl",
       "class": 2,
       "rating": "D",
@@ -75,7 +80,8 @@
       "dps": 4,
       "thermload": 4
     },
-    "0t": {
+    {
+      "id": "0t",
       "grp": "bl",
       "class": 2,
       "rating": "E",
@@ -90,7 +96,8 @@
       "dps": 3,
       "thermload": 3
     },
-    "0u": {
+    {
+      "id": "0u",
       "grp": "bl",
       "class": 3,
       "rating": "C",
@@ -105,7 +112,8 @@
       "dps": 5,
       "thermload": 5
     },
-    "0v": {
+    {
+      "id": "0v",
       "grp": "bl",
       "class": 3,
       "rating": "C",
@@ -120,7 +128,8 @@
       "dps": 4,
       "thermload": 6
     },
-    "0o": {
+    {
+      "id": "0o",
       "grp": "bl",
       "class": 3,
       "rating": "D",
@@ -135,5 +144,5 @@
       "dps": 4,
       "thermload": 4
     }
-  }
+  ]
 }

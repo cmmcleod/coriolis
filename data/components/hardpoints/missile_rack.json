@@ -1,6 +1,7 @@
 {
-  "Missile Racks": {
-    "2d": {
+  "Missile Racks": [
+    {
+      "id": "2d",
       "grp": "mr",
       "class": 1,
       "rating": "B",
@@ -19,7 +20,8 @@
       "ammo": 16,
       "missile": "D"
     },
-    "2e": {
+    {
+      "id": "2e",
       "grp": "mr",
       "class": 1,
       "rating": "B",
@@ -38,7 +40,8 @@
       "ammo": 6,
       "missile": "S"
     },
-    "2f": {
+    {
+      "id": "2f",
       "grp": "mr",
       "class": 2,
       "rating": "B",
@@ -57,7 +60,8 @@
       "ammo": 24,
       "missile": "D"
     },
-    "2g": {
+    {
+      "id": "2g",
       "grp": "mr",
       "class": 2,
       "rating": "B",
@@ -76,5 +80,5 @@
       "ammo": 18,
       "missile": "S"
     }
-  }
+  ]
 }

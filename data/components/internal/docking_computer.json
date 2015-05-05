@@ -1,6 +1,7 @@
 {
-  "Docking Computers": {
-    "24": {
+  "Docking Computers": [
+    {
+      "id": "24",
       "grp": "dc",
       "name": "Standard Docking Computer",
       "class": 1,
@@ -8,5 +9,5 @@
       "cost": 4500,
       "power": 0.39
     }
-  }
+  ]
 }

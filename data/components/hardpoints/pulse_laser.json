@@ -1,6 +1,7 @@
 {
-  "Pulse Lasers": {
-    "17": {
+  "Pulse Lasers": [
+    {
+      "id": "17",
       "grp": "pl",
       "class": 1,
       "rating": "F",
@@ -15,7 +16,8 @@
       "dps": 3,
       "thermload": 1
     },
-    "18": {
+    {
+      "id": "18",
       "grp": "pl",
       "class": 1,
       "rating": "F",
@@ -30,7 +32,8 @@
       "dps": 3,
       "thermload": 1
     },
-    "19": {
+    {
+      "id": "19",
       "grp": "pl",
       "class": 1,
       "rating": "G",
@@ -45,7 +48,8 @@
       "dps": 2,
       "thermload": 1
     },
-    "1a": {
+    {
+      "id": "1a",
       "grp": "pl",
       "class": 2,
       "rating": "E",
@@ -60,7 +64,8 @@
       "dps": 3,
       "thermload": 1
     },
-    "1b": {
+    {
+      "id": "1b",
       "grp": "pl",
       "class": 2,
       "rating": "F",
@@ -75,7 +80,8 @@
       "dps": 3,
       "thermload": 1
     },
-    "1c": {
+    {
+      "id": "1c",
       "grp": "pl",
       "class": 2,
       "rating": "F",
@@ -90,7 +96,8 @@
       "dps": 3,
       "thermload": 1
     },
-    "1d": {
+    {
+      "id": "1d",
       "grp": "pl",
       "class": 3,
       "rating": "D",
@@ -105,7 +112,8 @@
       "dps": 4,
       "thermload": 1
     },
-    "1e": {
+    {
+      "id": "1e",
       "grp": "pl",
       "class": 3,
       "rating": "E",
@@ -120,7 +128,8 @@
       "dps": 4,
       "thermload": 1
     },
-    "1f": {
+    {
+      "id": "1f",
       "grp": "pl",
       "class": 3,
       "rating": "F",
@@ -135,5 +144,5 @@
       "dps": 3,
       "thermload": 1
     }
-  }
+  ]
 }

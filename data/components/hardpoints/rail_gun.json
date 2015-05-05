@@ -1,6 +1,7 @@
 {
-  "Rail Guns": {
-    "29": {
+  "Rail Guns": [
+    {
+      "id": "29",
       "grp": "rg",
       "class": 1,
       "rating": "D",
@@ -18,7 +19,8 @@
       "clip": 1,
       "ammo": 30
     },
-    "2a": {
+    {
+      "id": "2a",
       "grp": "rg",
       "class": 2,
       "rating": "B",
@@ -36,5 +38,5 @@
       "clip": 1,
       "ammo": 30
     }
-  }
+  ]
 }

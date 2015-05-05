@@ -1,6 +1,7 @@
 {
-  "Shield Generators": {
-    "3r": {
+  "Shield Generators": [
+    {
+      "id": "3r",
       "grp": "sg",
       "class": 2,
       "rating": "A",
@@ -14,7 +15,8 @@
       "optmul": 1.2,
       "maxmul": 0.7
     },
-    "3s": {
+    {
+      "id": "3s",
       "grp": "sg",
       "class": 2,
       "rating": "B",
@@ -28,7 +30,8 @@
       "optmul": 1.1,
       "maxmul": 0.6
     },
-    "3t": {
+    {
+      "id": "3t",
       "grp": "sg",
       "class": 2,
       "rating": "C",
@@ -42,7 +45,8 @@
       "optmul": 1,
       "maxmul": 0.5
     },
-    "3u": {
+    {
+      "id": "3u",
       "grp": "sg",
       "class": 2,
       "rating": "D",
@@ -56,7 +60,8 @@
       "optmul": 0.9,
       "maxmul": 0.4
     },
-    "3v": {
+    {
+      "id": "3v",
       "grp": "sg",
       "class": 2,
       "rating": "E",
@@ -70,7 +75,8 @@
       "optmul": 0.8,
       "maxmul": 0.3
     },
-    "40": {
+    {
+      "id": "40",
       "grp": "sg",
       "class": 3,
       "rating": "A",
@@ -84,7 +90,8 @@
       "optmul": 1.2,
       "maxmul": 0.7
     },
-    "41": {
+    {
+      "id": "41",
       "grp": "sg",
       "class": 3,
       "rating": "B",
@@ -98,7 +105,8 @@
       "optmul": 1.1,
       "maxmul": 0.6
     },
-    "42": {
+    {
+      "id": "42",
       "grp": "sg",
       "class": 3,
       "rating": "C",
@@ -112,7 +120,8 @@
       "optmul": 1,
       "maxmul": 0.5
     },
-    "43": {
+    {
+      "id": "43",
       "grp": "sg",
       "class": 3,
       "rating": "D",
@@ -126,7 +135,8 @@
       "optmul": 0.9,
       "maxmul": 0.4
     },
-    "44": {
+    {
+      "id": "44",
       "grp": "sg",
       "class": 3,
       "rating": "E",
@@ -140,7 +150,8 @@
       "optmul": 0.8,
       "maxmul": 0.3
     },
-    "45": {
+    {
+      "id": "45",
       "grp": "sg",
       "class": 4,
       "rating": "A",
@@ -154,7 +165,8 @@
       "optmul": 1.2,
       "maxmul": 0.7
     },
-    "46": {
+    {
+      "id": "46",
       "grp": "sg",
       "class": 4,
       "rating": "B",
@@ -168,7 +180,8 @@
       "optmul": 1.1,
       "maxmul": 0.6
     },
-    "47": {
+    {
+      "id": "47",
       "grp": "sg",
       "class": 4,
       "rating": "C",
@@ -182,7 +195,8 @@
       "optmul": 1,
       "maxmul": 0.5
     },
-    "48": {
+    {
+      "id": "48",
       "grp": "sg",
       "class": 4,
       "rating": "D",
@@ -196,7 +210,8 @@
       "optmul": 0.9,
       "maxmul": 0.4
     },
-    "49": {
+    {
+      "id": "49",
       "grp": "sg",
       "class": 4,
       "rating": "E",
@@ -210,7 +225,8 @@
       "optmul": 0.8,
       "maxmul": 0.3
     },
-    "4a": {
+    {
+      "id": "4a",
       "grp": "sg",
       "class": 5,
       "rating": "A",
@@ -224,7 +240,8 @@
       "optmul": 1.2,
       "maxmul": 0.7
     },
-    "4b": {
+    {
+      "id": "4b",
       "grp": "sg",
       "class": 5,
       "rating": "B",
@@ -238,7 +255,8 @@
       "optmul": 1.1,
       "maxmul": 0.6
     },
-    "4c": {
+    {
+      "id": "4c",
       "grp": "sg",
       "class": 5,
       "rating": "C",
@@ -252,7 +270,8 @@
       "optmul": 1,
       "maxmul": 0.5
     },
-    "4d": {
+    {
+      "id": "4d",
       "grp": "sg",
       "class": 5,
       "rating": "D",
@@ -266,7 +285,8 @@
       "optmul": 0.9,
       "maxmul": 0.4
     },
-    "4e": {
+    {
+      "id": "4e",
       "grp": "sg",
       "class": 5,
       "rating": "E",
@@ -280,7 +300,8 @@
       "optmul": 0.8,
       "maxmul": 0.3
     },
-    "4f": {
+    {
+      "id": "4f",
       "grp": "sg",
       "class": 6,
       "rating": "A",
@@ -294,7 +315,8 @@
       "optmul": 1.2,
       "maxmul": 0.7
     },
-    "4g": {
+    {
+      "id": "4g",
       "grp": "sg",
       "class": 6,
       "rating": "B",
@@ -308,7 +330,8 @@
       "optmul": 1.1,
       "maxmul": 0.6
     },
-    "4h": {
+    {
+      "id": "4h",
       "grp": "sg",
       "class": 6,
       "rating": "C",
@@ -322,7 +345,8 @@
       "optmul": 1,
       "maxmul": 0.5
     },
-    "4i": {
+    {
+      "id": "4i",
       "grp": "sg",
       "class": 6,
       "rating": "D",
@@ -336,7 +360,8 @@
       "optmul": 0.9,
       "maxmul": 0.4
     },
-    "4j": {
+    {
+      "id": "4j",
       "grp": "sg",
       "class": 6,
       "rating": "E",
@@ -350,7 +375,8 @@
       "optmul": 0.8,
       "maxmul": 0.3
     },
-    "4k": {
+    {
+      "id": "4k",
       "grp": "sg",
       "class": 7,
       "rating": "A",
@@ -364,7 +390,8 @@
       "optmul": 1.2,
       "maxmul": 0.7
     },
-    "4l": {
+    {
+      "id": "4l",
       "grp": "sg",
       "class": 7,
       "rating": "B",
@@ -378,7 +405,8 @@
       "optmul": 1.1,
       "maxmul": 0.6
     },
-    "4m": {
+    {
+      "id": "4m",
       "grp": "sg",
       "class": 7,
       "rating": "C",
@@ -392,7 +420,8 @@
       "optmul": 1,
       "maxmul": 0.5
     },
-    "4n": {
+    {
+      "id": "4n",
       "grp": "sg",
       "class": 7,
       "rating": "D",
@@ -406,7 +435,8 @@
       "optmul": 0.9,
       "maxmul": 0.4
     },
-    "4o": {
+    {
+      "id": "4o",
       "grp": "sg",
       "class": 7,
       "rating": "E",
@@ -420,7 +450,8 @@
       "optmul": 0.8,
       "maxmul": 0.3
     },
-    "4p": {
+    {
+      "id": "4p",
       "grp": "sg",
       "class": 8,
       "rating": "A",
@@ -434,7 +465,8 @@
       "optmul": 1.2,
       "maxmul": 0.7
     },
-    "4q": {
+    {
+      "id": "4q",
       "grp": "sg",
       "class": 8,
       "rating": "B",
@@ -448,7 +480,8 @@
       "optmul": 1.1,
       "maxmul": 0.6
     },
-    "4r": {
+    {
+      "id": "4r",
       "grp": "sg",
       "class": 8,
       "rating": "C",
@@ -462,7 +495,8 @@
       "optmul": 1,
       "maxmul": 0.5
     },
-    "4s": {
+    {
+      "id": "4s",
       "grp": "sg",
       "class": 8,
       "rating": "D",
@@ -476,7 +510,8 @@
       "optmul": 0.9,
       "maxmul": 0.4
     },
-    "4t": {
+    {
+      "id": "4t",
       "grp": "sg",
       "class": 8,
       "rating": "E",
@@ -490,5 +525,5 @@
       "optmul": 0.8,
       "maxmul": 0.3
     }
-  }
+  ]
 }

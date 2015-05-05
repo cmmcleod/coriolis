@@ -1,6 +1,7 @@
 {
-  "Scanners": {
-    "2f": {
+  "Scanners": [
+    {
+      "id": "2f",
       "grp": "sc",
       "name": "Adv. Discovery Scanner",
       "class": 1,
@@ -10,7 +11,8 @@
       "power": 0,
       "range": null
     },
-    "2g": {
+    {
+      "id": "2g",
       "grp": "sc",
       "name": "Inter. Discovery Scanner",
       "class": 1,
@@ -20,7 +22,8 @@
       "power": 0,
       "range": 1000
     },
-    "2h": {
+    {
+      "id": "2h",
       "grp": "sc",
       "name": "Basic Discovery Scanner",
       "class": 1,
@@ -30,7 +33,8 @@
       "power": 0,
       "range": 500
     },
-    "2i": {
+    {
+      "id": "2i",
       "grp": "sc",
       "name": "Detailed Surface Scanner",
       "class": 1,
@@ -40,5 +44,5 @@
       "power": 0.6,
       "range": 0.33
     }
-  }
+  ]
 }

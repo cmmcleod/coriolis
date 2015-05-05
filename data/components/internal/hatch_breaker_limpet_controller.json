@@ -1,106 +1,7 @@
 {
-  "Hatch Breaker Limpet Controllers": {
-    "70": {
-      "grp": "hb",
-      "class": 3,
-      "rating": "B",
-      "cost": 43200,
-      "power": 0.36,
-      "range": 3.24,
-      "maximum": 4,
-      "time": 21
-    },
-    "71": {
-      "grp": "hb",
-      "class": 3,
-      "rating": "C",
-      "cost": 21600,
-      "power": 0.3,
-      "range": 2.7,
-      "maximum": 3,
-      "time": 26
-    },
-    "72": {
-      "grp": "hb",
-      "class": 3,
-      "rating": "D",
-      "cost": 10800,
-      "power": 0.24,
-      "range": 2.16,
-      "maximum": 3,
-      "time": 31
-    },
-    "73": {
-      "grp": "hb",
-      "class": 3,
-      "rating": "E",
-      "cost": 5400,
-      "power": 0.18,
-      "range": 1.62,
-      "maximum": 4,
-      "time": 36
-    },
-    "74": {
-      "grp": "hb",
-      "class": 5,
-      "rating": "A",
-      "cost": 777600,
-      "power": 0.7,
-      "range": 4.62,
-      "maximum": 6,
-      "time": 13
-    },
-    "75": {
-      "grp": "hb",
-      "class": 5,
-      "rating": "B",
-      "cost": 388800,
-      "power": 0.6,
-      "range": 3.96,
-      "maximum": 9,
-      "time": 18
-    },
-    "76": {
-      "grp": "hb",
-      "class": 5,
-      "rating": "C",
-      "cost": 194400,
-      "power": 0.5,
-      "range": 3.3,
-      "maximum": 7,
-      "time": 22
-    },
-    "77": {
-      "grp": "hb",
-      "class": 5,
-      "rating": "D",
-      "cost": 97200,
-      "power": 0.4,
-      "range": 2.64,
-      "maximum": 6,
-      "time": 26
-    },
-    "78": {
-      "grp": "hb",
-      "class": 5,
-      "rating": "E",
-      "cost": 48600,
-      "power": 0.3,
-      "range": 1.98,
-      "maximum": 9,
-      "time": 31
-    },
-    "79": {
-      "grp": "hb",
-      "class": 7,
-      "rating": "A",
-      "cost": 6998400,
-      "power": 0.98,
-      "range": 6.02,
-      "maximum": 12,
-      "time": 11
-    },
-    "6q": {
+  "Hatch Breaker Limpet Controllers": [
+    {
+      "id": "6q",
       "grp": "hb",
       "class": 1,
       "rating": "A",
@@ -110,7 +11,8 @@
       "maximum": 1,
       "time": 18
     },
-    "6r": {
+    {
+      "id": "6r",
       "grp": "hb",
       "class": 1,
       "rating": "B",
@@ -120,7 +22,8 @@
       "maximum": 2,
       "time": 24
     },
-    "6s": {
+    {
+      "id": "6s",
       "grp": "hb",
       "class": 1,
       "rating": "C",
@@ -130,7 +33,8 @@
       "maximum": 1,
       "time": 30
     },
-    "6t": {
+    {
+      "id": "6t",
       "grp": "hb",
       "class": 1,
       "rating": "D",
@@ -140,7 +44,8 @@
       "maximum": 1,
       "time": 36
     },
-    "6u": {
+    {
+      "id": "6u",
       "grp": "hb",
       "class": 1,
       "rating": "E",
@@ -150,7 +55,8 @@
       "maximum": 2,
       "time": 42
     },
-    "6v": {
+    {
+      "id": "6v",
       "grp": "hb",
       "class": 3,
       "rating": "A",
@@ -160,7 +66,118 @@
       "maximum": 3,
       "time": 16
     },
-    "7a": {
+    {
+      "id": "70",
+      "grp": "hb",
+      "class": 3,
+      "rating": "B",
+      "cost": 43200,
+      "power": 0.36,
+      "range": 3.24,
+      "maximum": 4,
+      "time": 21
+    },
+    {
+      "id": "71",
+      "grp": "hb",
+      "class": 3,
+      "rating": "C",
+      "cost": 21600,
+      "power": 0.3,
+      "range": 2.7,
+      "maximum": 3,
+      "time": 26
+    },
+    {
+      "id": "72",
+      "grp": "hb",
+      "class": 3,
+      "rating": "D",
+      "cost": 10800,
+      "power": 0.24,
+      "range": 2.16,
+      "maximum": 3,
+      "time": 31
+    },
+    {
+      "id": "73",
+      "grp": "hb",
+      "class": 3,
+      "rating": "E",
+      "cost": 5400,
+      "power": 0.18,
+      "range": 1.62,
+      "maximum": 4,
+      "time": 36
+    },
+    {
+      "id": "74",
+      "grp": "hb",
+      "class": 5,
+      "rating": "A",
+      "cost": 777600,
+      "power": 0.7,
+      "range": 4.62,
+      "maximum": 6,
+      "time": 13
+    },
+    {
+      "id": "75",
+      "grp": "hb",
+      "class": 5,
+      "rating": "B",
+      "cost": 388800,
+      "power": 0.6,
+      "range": 3.96,
+      "maximum": 9,
+      "time": 18
+    },
+    {
+      "id": "76",
+      "grp": "hb",
+      "class": 5,
+      "rating": "C",
+      "cost": 194400,
+      "power": 0.5,
+      "range": 3.3,
+      "maximum": 7,
+      "time": 22
+    },
+    {
+      "id": "77",
+      "grp": "hb",
+      "class": 5,
+      "rating": "D",
+      "cost": 97200,
+      "power": 0.4,
+      "range": 2.64,
+      "maximum": 6,
+      "time": 26
+    },
+    {
+      "id": "78",
+      "grp": "hb",
+      "class": 5,
+      "rating": "E",
+      "cost": 48600,
+      "power": 0.3,
+      "range": 1.98,
+      "maximum": 9,
+      "time": 31
+    },
+    {
+      "id": "79",
+      "grp": "hb",
+      "class": 7,
+      "rating": "A",
+      "cost": 6998400,
+      "power": 0.98,
+      "range": 6.02,
+      "maximum": 12,
+      "time": 11
+    },
+    {
+      "id": "7a",
       "grp": "hb",
       "class": 7,
       "rating": "B",
@@ -170,7 +187,8 @@
       "maximum": 18,
       "time": 14
     },
-    "7b": {
+    {
+      "id": "7b",
       "grp": "hb",
       "class": 7,
       "rating": "C",
@@ -180,7 +198,8 @@
       "maximum": 15,
       "time": 18
     },
-    "7c": {
+    {
+      "id": "7c",
       "grp": "hb",
       "class": 7,
       "rating": "D",
@@ -190,7 +209,8 @@
       "maximum": 12,
       "time": 22
     },
-    "7d": {
+    {
+      "id": "7d",
       "grp": "hb",
       "class": 7,
       "rating": "E",
@@ -200,5 +220,5 @@
       "maximum": 18,
       "time": 25
     }
-  }
+  ]
 }

@@ -1,6 +1,7 @@
 {
-  "Multi-cannons": {
-    "23": {
+  "Multi-cannons": [
+    {
+      "id": "23",
       "grp": "mc",
       "class": 1,
       "rating": "F",
@@ -18,7 +19,8 @@
       "clip": 90,
       "ammo": 2100
     },
-    "24": {
+    {
+      "id": "24",
       "grp": "mc",
       "class": 1,
       "rating": "G",
@@ -36,7 +38,8 @@
       "clip": 90,
       "ammo": 2100
     },
-    "25": {
+    {
+      "id": "25",
       "grp": "mc",
       "class": 1,
       "rating": "G",
@@ -54,7 +57,8 @@
       "clip": 90,
       "ammo": 2100
     },
-    "26": {
+    {
+      "id": "26",
       "grp": "mc",
       "class": 2,
       "rating": "E",
@@ -72,7 +76,8 @@
       "clip": 90,
       "ammo": 2100
     },
-    "27": {
+    {
+      "id": "27",
       "grp": "mc",
       "class": 2,
       "rating": "F",
@@ -90,7 +95,8 @@
       "clip": 90,
       "ammo": 2100
     },
-    "28": {
+    {
+      "id": "28",
       "grp": "mc",
       "class": 2,
       "rating": "F",
@@ -108,5 +114,5 @@
       "clip": 90,
       "ammo": 2100
     }
-  }
+  ]
 }

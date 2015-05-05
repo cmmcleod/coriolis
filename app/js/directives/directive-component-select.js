@@ -5,12 +5,12 @@ angular.module('app').directive('componentSelect', function() {
   function appendGroup(list, opts, cid, mass) {
     var prevClass = null, prevRating = null;
     var count = Object.keys(opts).length;
-    for (id in opts) {
-      var o = opts[id];
+    for (var i = 0; i < opts.length; i++) {
+      var o = opts[i];
       list.push('<li class="', o.name? 'lc' : 'c');
       if(o.class != prevClass && count > 6) list.push(' cl');
-      if (cid == id) list.push(' active');
-      list.push((o.maxmass && mass > o.maxmass)? ' disabled"' : '" cpid="', id, '">', o.class, o.rating);
+      if (cid == o.id) list.push(' active');
+      list.push((o.maxmass && mass > o.maxmass)? ' disabled"' : '" cpid="', o.id, '">', o.class, o.rating);
       if(o.mode) {
         list.push('/' + o.mode);
         if(o.missile) {
