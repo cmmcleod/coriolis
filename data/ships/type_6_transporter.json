@@ -1,7 +1,7 @@
 {
   "type_6_transporter": {
     "properties": {
-      "group": "fr",
+      "grp": "fr",
       "name": "Type-6 Transporter",
       "manufacturer": "Lakon",
       "class": 2,

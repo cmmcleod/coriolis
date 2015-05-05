@@ -1,147 +1,7 @@
 {
   "Shield Generators": {
-    "40": {
-      "group": "sg",
-      "class": 3,
-      "rating": "A",
-      "cost": 507912,
-      "mass": 5,
-      "power": 2.52,
-      "minmass": 83,
-      "optmass": 165,
-      "maxmass": 413,
-      "minmul": 1.7,
-      "optmul": 1.2,
-      "maxmul": 0.7
-    },
-    "41": {
-      "group": "sg",
-      "class": 3,
-      "rating": "B",
-      "cost": 169304,
-      "mass": 8,
-      "power": 2.16,
-      "minmass": 83,
-      "optmass": 165,
-      "maxmass": 413,
-      "minmul": 1.6,
-      "optmul": 1.1,
-      "maxmul": 0.6
-    },
-    "42": {
-      "group": "sg",
-      "class": 3,
-      "rating": "C",
-      "cost": 56435,
-      "mass": 5,
-      "power": 1.8,
-      "minmass": 83,
-      "optmass": 165,
-      "maxmass": 413,
-      "minmul": 1.5,
-      "optmul": 1,
-      "maxmul": 0.5
-    },
-    "43": {
-      "group": "sg",
-      "class": 3,
-      "rating": "D",
-      "cost": 18812,
-      "mass": 2,
-      "power": 1.44,
-      "minmass": 83,
-      "optmass": 165,
-      "maxmass": 413,
-      "minmul": 1.4,
-      "optmul": 0.9,
-      "maxmul": 0.4
-    },
-    "44": {
-      "group": "sg",
-      "class": 3,
-      "rating": "E",
-      "cost": 6271,
-      "mass": 5,
-      "power": 1.08,
-      "minmass": 83,
-      "optmass": 165,
-      "maxmass": 413,
-      "minmul": 1.3,
-      "optmul": 0.8,
-      "maxmul": 0.3
-    },
-    "45": {
-      "group": "sg",
-      "class": 4,
-      "rating": "A",
-      "cost": 1610080,
-      "mass": 10,
-      "power": 3.08,
-      "minmass": 143,
-      "optmass": 285,
-      "maxmass": 713,
-      "minmul": 1.7,
-      "optmul": 1.2,
-      "maxmul": 0.7
-    },
-    "46": {
-      "group": "sg",
-      "class": 4,
-      "rating": "B",
-      "cost": 536693,
-      "mass": 16,
-      "power": 2.64,
-      "minmass": 143,
-      "optmass": 285,
-      "maxmass": 713,
-      "minmul": 1.6,
-      "optmul": 1.1,
-      "maxmul": 0.6
-    },
-    "47": {
-      "group": "sg",
-      "class": 4,
-      "rating": "C",
-      "cost": 178898,
-      "mass": 10,
-      "power": 2.2,
-      "minmass": 143,
-      "optmass": 285,
-      "maxmass": 713,
-      "minmul": 1.5,
-      "optmul": 1,
-      "maxmul": 0.5
-    },
-    "48": {
-      "group": "sg",
-      "class": 4,
-      "rating": "D",
-      "cost": 59633,
-      "mass": 4,
-      "power": 1.76,
-      "minmass": 143,
-      "optmass": 285,
-      "maxmass": 713,
-      "minmul": 1.4,
-      "optmul": 0.9,
-      "maxmul": 0.4
-    },
-    "49": {
-      "group": "sg",
-      "class": 4,
-      "rating": "E",
-      "cost": 19878,
-      "mass": 10,
-      "power": 1.32,
-      "minmass": 143,
-      "optmass": 285,
-      "maxmass": 713,
-      "minmul": 1.3,
-      "optmul": 0.8,
-      "maxmul": 0.3
-    },
     "3r": {
-      "group": "sg",
+      "grp": "sg",
       "class": 2,
       "rating": "A",
       "cost": 160224,
@@ -155,7 +15,7 @@
       "maxmul": 0.7
     },
     "3s": {
-      "group": "sg",
+      "grp": "sg",
       "class": 2,
       "rating": "B",
       "cost": 53408,
@@ -169,7 +29,7 @@
       "maxmul": 0.6
     },
     "3t": {
-      "group": "sg",
+      "grp": "sg",
       "class": 2,
       "rating": "C",
       "cost": 17803,
@@ -183,7 +43,7 @@
       "maxmul": 0.5
     },
     "3u": {
-      "group": "sg",
+      "grp": "sg",
       "class": 2,
       "rating": "D",
       "cost": 5934,
@@ -197,7 +57,7 @@
       "maxmul": 0.4
     },
     "3v": {
-      "group": "sg",
+      "grp": "sg",
       "class": 2,
       "rating": "E",
       "cost": 1978,
@@ -210,8 +70,148 @@
       "optmul": 0.8,
       "maxmul": 0.3
     },
+    "40": {
+      "grp": "sg",
+      "class": 3,
+      "rating": "A",
+      "cost": 507912,
+      "mass": 5,
+      "power": 2.52,
+      "minmass": 83,
+      "optmass": 165,
+      "maxmass": 413,
+      "minmul": 1.7,
+      "optmul": 1.2,
+      "maxmul": 0.7
+    },
+    "41": {
+      "grp": "sg",
+      "class": 3,
+      "rating": "B",
+      "cost": 169304,
+      "mass": 8,
+      "power": 2.16,
+      "minmass": 83,
+      "optmass": 165,
+      "maxmass": 413,
+      "minmul": 1.6,
+      "optmul": 1.1,
+      "maxmul": 0.6
+    },
+    "42": {
+      "grp": "sg",
+      "class": 3,
+      "rating": "C",
+      "cost": 56435,
+      "mass": 5,
+      "power": 1.8,
+      "minmass": 83,
+      "optmass": 165,
+      "maxmass": 413,
+      "minmul": 1.5,
+      "optmul": 1,
+      "maxmul": 0.5
+    },
+    "43": {
+      "grp": "sg",
+      "class": 3,
+      "rating": "D",
+      "cost": 18812,
+      "mass": 2,
+      "power": 1.44,
+      "minmass": 83,
+      "optmass": 165,
+      "maxmass": 413,
+      "minmul": 1.4,
+      "optmul": 0.9,
+      "maxmul": 0.4
+    },
+    "44": {
+      "grp": "sg",
+      "class": 3,
+      "rating": "E",
+      "cost": 6271,
+      "mass": 5,
+      "power": 1.08,
+      "minmass": 83,
+      "optmass": 165,
+      "maxmass": 413,
+      "minmul": 1.3,
+      "optmul": 0.8,
+      "maxmul": 0.3
+    },
+    "45": {
+      "grp": "sg",
+      "class": 4,
+      "rating": "A",
+      "cost": 1610080,
+      "mass": 10,
+      "power": 3.08,
+      "minmass": 143,
+      "optmass": 285,
+      "maxmass": 713,
+      "minmul": 1.7,
+      "optmul": 1.2,
+      "maxmul": 0.7
+    },
+    "46": {
+      "grp": "sg",
+      "class": 4,
+      "rating": "B",
+      "cost": 536693,
+      "mass": 16,
+      "power": 2.64,
+      "minmass": 143,
+      "optmass": 285,
+      "maxmass": 713,
+      "minmul": 1.6,
+      "optmul": 1.1,
+      "maxmul": 0.6
+    },
+    "47": {
+      "grp": "sg",
+      "class": 4,
+      "rating": "C",
+      "cost": 178898,
+      "mass": 10,
+      "power": 2.2,
+      "minmass": 143,
+      "optmass": 285,
+      "maxmass": 713,
+      "minmul": 1.5,
+      "optmul": 1,
+      "maxmul": 0.5
+    },
+    "48": {
+      "grp": "sg",
+      "class": 4,
+      "rating": "D",
+      "cost": 59633,
+      "mass": 4,
+      "power": 1.76,
+      "minmass": 143,
+      "optmass": 285,
+      "maxmass": 713,
+      "minmul": 1.4,
+      "optmul": 0.9,
+      "maxmul": 0.4
+    },
+    "49": {
+      "grp": "sg",
+      "class": 4,
+      "rating": "E",
+      "cost": 19878,
+      "mass": 10,
+      "power": 1.32,
+      "minmass": 143,
+      "optmass": 285,
+      "maxmass": 713,
+      "minmul": 1.3,
+      "optmul": 0.8,
+      "maxmul": 0.3
+    },
     "4a": {
-      "group": "sg",
+      "grp": "sg",
       "class": 5,
       "rating": "A",
       "cost": 5103953,
@@ -225,7 +225,7 @@
       "maxmul": 0.7
     },
     "4b": {
-      "group": "sg",
+      "grp": "sg",
       "class": 5,
       "rating": "B",
       "cost": 1701318,
@@ -239,7 +239,7 @@
       "maxmul": 0.6
     },
     "4c": {
-      "group": "sg",
+      "grp": "sg",
       "class": 5,
       "rating": "C",
       "cost": 567106,
@@ -253,7 +253,7 @@
       "maxmul": 0.5
     },
     "4d": {
-      "group": "sg",
+      "grp": "sg",
       "class": 5,
       "rating": "D",
       "cost": 189035,
@@ -267,7 +267,7 @@
       "maxmul": 0.4
     },
     "4e": {
-      "group": "sg",
+      "grp": "sg",
       "class": 5,
       "rating": "E",
       "cost": 63012,
@@ -281,7 +281,7 @@
       "maxmul": 0.3
     },
     "4f": {
-      "group": "sg",
+      "grp": "sg",
       "class": 6,
       "rating": "A",
       "cost": 16179531,
@@ -295,7 +295,7 @@
       "maxmul": 0.7
     },
     "4g": {
-      "group": "sg",
+      "grp": "sg",
       "class": 6,
       "rating": "B",
       "cost": 5393177,
@@ -309,7 +309,7 @@
       "maxmul": 0.6
     },
     "4h": {
-      "group": "sg",
+      "grp": "sg",
       "class": 6,
       "rating": "C",
       "cost": 1797726,
@@ -323,7 +323,7 @@
       "maxmul": 0.5
     },
     "4i": {
-      "group": "sg",
+      "grp": "sg",
       "class": 6,
       "rating": "D",
       "cost": 599242,
@@ -337,7 +337,7 @@
       "maxmul": 0.4
     },
     "4j": {
-      "group": "sg",
+      "grp": "sg",
       "class": 6,
       "rating": "E",
       "cost": 199747,
@@ -351,7 +351,7 @@
       "maxmul": 0.3
     },
     "4k": {
-      "group": "sg",
+      "grp": "sg",
       "class": 7,
       "rating": "A",
       "cost": 51289112,
@@ -365,7 +365,7 @@
       "maxmul": 0.7
     },
     "4l": {
-      "group": "sg",
+      "grp": "sg",
       "class": 7,
       "rating": "B",
       "cost": 17096371,
@@ -379,7 +379,7 @@
       "maxmul": 0.6
     },
     "4m": {
-      "group": "sg",
+      "grp": "sg",
       "class": 7,
       "rating": "C",
       "cost": 5698790,
@@ -393,7 +393,7 @@
       "maxmul": 0.5
     },
     "4n": {
-      "group": "sg",
+      "grp": "sg",
       "class": 7,
       "rating": "D",
       "cost": 1899597,
@@ -407,7 +407,7 @@
       "maxmul": 0.4
     },
     "4o": {
-      "group": "sg",
+      "grp": "sg",
       "class": 7,
       "rating": "E",
       "cost": 633199,
@@ -421,7 +421,7 @@
       "maxmul": 0.3
     },
     "4p": {
-      "group": "sg",
+      "grp": "sg",
       "class": 8,
       "rating": "A",
       "cost": 162586486,
@@ -435,7 +435,7 @@
       "maxmul": 0.7
     },
     "4q": {
-      "group": "sg",
+      "grp": "sg",
       "class": 8,
       "rating": "B",
       "cost": 54195495,
@@ -449,7 +449,7 @@
       "maxmul": 0.6
     },
     "4r": {
-      "group": "sg",
+      "grp": "sg",
       "class": 8,
       "rating": "C",
       "cost": 18065165,
@@ -463,7 +463,7 @@
       "maxmul": 0.5
     },
     "4s": {
-      "group": "sg",
+      "grp": "sg",
       "class": 8,
       "rating": "D",
       "cost": 6021722,
@@ -477,7 +477,7 @@
       "maxmul": 0.4
     },
     "4t": {
-      "group": "sg",
+      "grp": "sg",
       "class": 8,
       "rating": "E",
       "cost": 2007241,

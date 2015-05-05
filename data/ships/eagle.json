@@ -1,7 +1,7 @@
 {
   "eagle": {
     "properties": {
-      "group": "co",
+      "grp": "co",
       "name": "Eagle",
       "manufacturer": "Core Dynamics",
       "class": 1,

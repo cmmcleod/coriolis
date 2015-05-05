@@ -1,7 +1,7 @@
 {
   "Cargo Racks": {
     "00": {
-      "group": "cr",
+      "grp": "cr",
       "name": "Cargo Rack (Capacity: 2)",
       "class": 1,
       "rating": "E",
@@ -9,7 +9,7 @@
       "capacity": 2
     },
     "01": {
-      "group": "cr",
+      "grp": "cr",
       "name": "Cargo Rack (Capacity: 4)",
       "class": 2,
       "rating": "E",
@@ -17,7 +17,7 @@
       "capacity": 4
     },
     "02": {
-      "group": "cr",
+      "grp": "cr",
       "name": "Cargo Rack (Capacity: 8)",
       "class": 3,
       "rating": "E",
@@ -25,7 +25,7 @@
       "capacity": 8
     },
     "03": {
-      "group": "cr",
+      "grp": "cr",
       "name": "Cargo Rack (Capacity: 16)",
       "class": 4,
       "rating": "E",
@@ -33,7 +33,7 @@
       "capacity": 16
     },
     "04": {
-      "group": "cr",
+      "grp": "cr",
       "name": "Cargo Rack (Capacity: 32)",
       "class": 5,
       "rating": "E",
@@ -41,7 +41,7 @@
       "capacity": 32
     },
     "05": {
-      "group": "cr",
+      "grp": "cr",
       "name": "Cargo Rack (Capacity: 64)",
       "class": 6,
       "rating": "E",
@@ -49,7 +49,7 @@
       "capacity": 64
     },
     "06": {
-      "group": "cr",
+      "grp": "cr",
       "name": "Cargo Rack (Capacity: 128)",
       "class": 7,
       "rating": "E",
@@ -57,7 +57,7 @@
       "capacity": 128
     },
     "07": {
-      "group": "cr",
+      "grp": "cr",
       "name": "Cargo Rack (Capacity: 256)",
       "class": 8,
       "rating": "E",

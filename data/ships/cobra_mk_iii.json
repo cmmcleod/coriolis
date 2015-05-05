@@ -1,7 +1,7 @@
 {
   "cobra_mk_iii": {
     "properties": {
-      "group": "mp",
+      "grp": "mp",
       "name": "Cobra Mk III",
       "manufacturer": "Faulcon DeLacy",
       "class": 1,

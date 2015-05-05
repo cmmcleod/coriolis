@@ -4,11 +4,8 @@
     <div class="slot" ng-repeat="h in ship.hardpoints" ng-click="selectSlot($event, h)" ng-class="{selected: selectedSlot==h}">
       <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="hgMap[h.c.grp]"></div>
       <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
-        <div class="empty-c" id="empty" ng-click="select(null, h, $event)">EMPTY</div>
-        <div ng-repeat="(grp, data) in availCS.getHps(h.maxClass)">
-          <div class="select-group">{{grp}}</div>
-          <div component-select opts="data"></div>
-        </div>
+        <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
+      </div>
       </div>
     </div>
   </div>
@@ -23,11 +20,11 @@
         <div class="r cr">{{ship.bulkheads.c.mass}} <u>T</u></div>
       </div>
       <div class="select" ng-if="selectedSlot==ship.bulkheads" ng-click="select('b',ship.bulkheads,$event)"><ul>
-        <li class="lc" id="0">Lightweight Alloy</li>
-        <li class="lc" id="1">Reinforced Alloy</li>
-        <li class="lc" id="2">Military Grade Composite</li>
-        <li class="lc" id="3">Mirrored Surface Composite</li>
-        <li class="lc" id="4">Reactive Surface Composite</li>
+        <li class="lc" ng-class="{active: ship.bulkheads.id=='0'}" cpid="0">Lightweight Alloy</li>
+        <li class="lc" ng-class="{active: ship.bulkheads.id=='1'}" cpid="1">Reinforced Alloy</li>
+        <li class="lc" ng-class="{active: ship.bulkheads.id=='2'}" cpid="2">Military Grade Composite</li>
+        <li class="lc" ng-class="{active: ship.bulkheads.id=='3'}" cpid="3">Mirrored Surface Composite</li>
+        <li class="lc" ng-class="{active: ship.bulkheads.id=='4'}" cpid="4">Reactive Surface Composite</li>
       </ul></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, pp)" ng-class="{selected: selectedSlot==pp}">
@@ -40,7 +37,7 @@
         <div class="l">Power: {{pp.c.pGen}} <u>MW</span></div>
         <div class="r">{{pp.c.mass}} <u><u>T</u></span></div>
       </div>
-      <div component-select class="select" opts="availCS.common[0]" ng-if="selectedSlot==pp" ng-click="select('c',pp,$event)"></div>
+      <div component-select class="select" s="pp" opts="availCS.common[0]" ng-if="selectedSlot==pp" ng-click="select('c',pp,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, th)" ng-class="{selected: selectedSlot==th}">
       <div class="details">
@@ -52,7 +49,7 @@
         <div class="l">Max: {{th.c.maxmass}} <u>T</u></div>
         <div class="r">{{th.c.mass}} <u>T</u></div>
       </div>
-      <div component-select class="select" mass="ship.unladenMass" opts="availCS.common[1]" ng-if="selectedSlot==th" ng-click="select('c',th,$event)"></div>
+      <div component-select class="select" s="th" mass="ship.unladenMass" opts="availCS.common[1]" ng-if="selectedSlot==th" ng-click="select('c',th,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, fsd)" ng-class="{selected: selectedSlot==fsd}">
       <div class="details">
@@ -64,7 +61,7 @@
         <div class="l">Max Fuel: {{fsd.c.maxfuel}} <u>T</u></div>
         <div class="r cr">{{fsd.c.mass}} <u>T</u></div>
       </div>
-      <div component-select class="select" opts="availCS.common[2]" ng-if="selectedSlot==fsd" ng-click="select('c',fsd,$event)"></div>
+      <div component-select class="select" s="fsd" opts="availCS.common[2]" ng-if="selectedSlot==fsd" ng-click="select('c',fsd,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, ls)" ng-class="{selected: selectedSlot==ls}">
       <div class="details">
@@ -75,7 +72,7 @@
         <div class="l">Time: {{fTime(ls.c.time)}}</div>
         <div class="r cr">{{ls.c.mass}} <u>T</u></div>
       </div>
-      <div component-select class="select" opts="availCS.common[3]" ng-if="selectedSlot==ls" ng-click="select('c',ls,$event)"></div>
+      <div component-select class="select" s="ls" opts="availCS.common[3]" ng-if="selectedSlot==ls" ng-click="select('c',ls,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, pd)" ng-class="{selected: selectedSlot==pd}">
       <div class="details">
@@ -88,7 +85,7 @@
         <div class="l">Eng: {{pd.c.enginecapacity}} <u>Mj</u> {{pd.c.enginerecharge}}<u>Mj/s</u></div>
         <div class="r cr">{{pd.c.mass}} <u>T</u></div>
       </div>
-      <div component-select class="select" opts="availCS.common[4]" ng-if="selectedSlot==pd" ng-click="select('c',pd,$event)"></div>
+      <div component-select class="select" s="pd" opts="availCS.common[4]" ng-if="selectedSlot==pd" ng-click="select('c',pd,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, ss)" ng-class="{selected: selectedSlot==ss}">
       <div class="details">
@@ -99,7 +96,7 @@
         <div class="l">{{ss.c.range}} <u>KM</u></div>
         <div class="r cr">{{ss.c.mass}} <u>T</u></div>
       </div>
-      <div component-select class="select" opts="availCS.common[5]" ng-if="selectedSlot==ss" ng-click="select('c',ss,$event)"></div>
+      <div component-select class="select" s="ss" opts="availCS.common[5]" ng-if="selectedSlot==ss" ng-click="select('c',ss,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, ft)" ng-class="{selected: selectedSlot==ft}">
       <div class="details">
@@ -108,20 +105,16 @@
         <div class="r">{{ft.id}}</div>
         <div class="r cr">{{ft.c.capacity}} <u>T</u></div>
       </div>
-      <div component-select class="select" opts="availCS.common[6]" ng-if="selectedSlot==ft" ng-click="select('c',ft,$event)"></div>
+      <div component-select class="select" s="ft" opts="availCS.common[6]" ng-if="selectedSlot==ft" ng-click="select('c',ft,$event)"></div>
     </div>
   </div>
 
   <div id="internal" class="slot-group">
     <h1>Internal Compartments</h1>
     <div class="slot" ng-repeat="i in ship.internal" ng-click="selectSlot($event, i)" ng-class="{selected: selectedSlot==i}">
-      <div slot-internal class="details" slot="i" lbl="igMap[i.c.group]"></div>
+      <div slot-internal class="details" slot="i" lbl="igMap[i.c.grp]"></div>
       <div class="select" ng-if="selectedSlot==i" ng-click="select('i',i,$event)">
-        <div class="empty-c" id="empty" ng-click="select(null, i, $event)">EMPTY</div>
-        <div ng-repeat="(grp, data) in availCS.getInts(i.maxClass)">
-          <div class="select-group">{{grp}}</div>
-          <div component-select opts="data"></div>
-        </div>
+        <div component-select s="i" groups="availCS.getInts(i.maxClass)"></div>
       </div>
     </div>
   </div>
@@ -131,12 +124,13 @@
       <h1 ng-bind="ship.name"></h1>
       <div id="build">
         <input ng-model="buildName" ng-change="bnChange()" placeholder="Enter Build Name" />
-        <button ng-click="saveBuild()" ng-disabled="!buildName && code == savedCode">Save</button>
-        <button ng-click="reloadBuild()" ng-disabled="!savedCode && code == savedCode">Reload</button>
+        <button ng-click="saveBuild()" ng-disabled="!buildName || savedCode && code == savedCode">Save</button>
+        <button ng-click="reloadBuild()" ng-disabled="!savedCode || code == savedCode">Reload</button>
         <button ng-click="deleteBuild()" ng-disabled="!savedCode">Delete</button>
-        <button ui-sref="outfit({shipId: ship.id,code:null})" ng-disabled="!code">Reset</button>
+        <button ui-sref="outfit({shipId: ship.id,code:null, bn: buildName})" ng-disabled="!code">Reset</button>
       </div>
     </div>
+
     <div class="list">
       <div class="header">Maneuverability</div>
       <div class="summary">
@@ -145,6 +139,7 @@
         <div class="item"><div class="lbl">Agility</div><div class="val">{{ship.agility}} / 10</div></div>
       </div>
     </div>
+
     <div class="list">
       <div class="header">Shields</div>
       <div class="summary">
@@ -155,6 +150,7 @@
         <div class="item"><div class="lbl">Multiplier</div><div class="val">{{fRPct(ship.shieldMultiplier)}}</div></div>
       </div>
     </div>
+
     <div class="list">
       <div class="header">Armor</div>
       <div class="summary">
@@ -163,6 +159,7 @@
         <div class="item"><div class="lbl">Base</div><div class="val">{{ship.armour}}</div></div>
       </div>
     </div>
+
     <div class="list">
       <div class="header">Mass</div>
       <div class="summary">
@@ -171,7 +168,46 @@
         <div class="item"><div class="lbl">Unladen</div><div class="val">{{fRound(ship.unladenMass)}} <u>T</u></div></div>
       </div>
     </div>
-    <div class="list" power-list ship="ship"></div>
+
+    <div class="list" ship="ship">
+      <div class="header toggle" ng-click="powerExp = !powerExp">Power Use</div>
+      <div class="items" ng-if="powerExp">
+        <div ng-if="pp.c.pGen" class="item common enabled untoggleable">
+          <div class="lbl">{{pp.c.class}}{{pp.c.rating}} Power Plant</div><div class="val">{{fPwr(pp.c.pGen)}}</div>
+        </div>
+
+        <div ng-repeat="c in ship.common" ng-if="c.c.power" class="item common" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwr(c)">
+          <div class="lbl">{{c.c.class}}{{c.c.rating}} {{CArr[$index]}}</div><div class="val">{{fPwr(c.c.power)}}</div>
+        </div>
+
+        <div class="item common consumer" ng-class="{enabled:ship.cargoScoop.enabled}" ng-click="togglePwr(ship.cargoScoop)">
+          <div class="lbl">1H Cargo Scoop</div><div class="val">{{fPwr(ship.cargoScoop.c.power)}}</div>
+        </div>
+
+        <div ng-repeat="c in ship.hardpoints" ng-if="c.c.power" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwr(c)">
+          <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || hgMap[c.c.grp]}}</div><div class="val">{{fPwr(c.c.power)}}</div>
+        </div>
+
+        <div ng-repeat="c in ship.internal" ng-if="c.c.power" class="item internal" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwrtogglePwr(c)">
+          <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || igMap[c.c.grp]}}</div><div class="val">{{fPwr(c.c.power)}}</div>
+        </div>
+      </div>
+      <div class="summary toggle" ng-click="powerExp = !powerExp">
+        <div class="item">
+          <div class="lbl">Available</div>
+          <div class="val">{{fPwr(ship.powerAvailable)}} <u>MW</u></div>
+        </div>
+        <div class="item">
+          <div class="lbl">Deployed</div>
+          <div class="val">{{fPwr(ship.powerDeployed)}} <u>MW</u> ({{fPct(ship.powerDeployed/ship.powerAvailable)}})</div>
+        </div>
+        <div class="item">
+          <div class="lbl">Retracted</div>
+          <div class="val">{{fPwr(ship.powerRetracted)}} <u>MW</u> ({{fPct(ship.powerRetracted/ship.powerAvailable)}})</div>
+        </div>
+      </div>
+    </div>
+
       <div class="list">
       <div class="header">Capacity</div>
         <div class="summary">
@@ -179,8 +215,55 @@
           <div class="item"><div class="lbl">Fuel</div><div class="val">{{fRound(ship.fuelCapacity)}} <u>T</u></div></div>
         </div>
     </div>
-    <div class="list" ship-range ship="ship"></div>
-    <div class="list" cost-list ship="ship"></div>
+
+    <div class="list">
+      <div class="header toggle" ng-click="rangeExp = !rangeExp">Jump Range</div>
+      <div class="items" ng-if="rangeExp">
+        <!---<linechart data="data" options="options" mode="" width="" height=""></linechart>/-->
+        Stuff!
+      </div>
+      <div class="summary toggle" ng-click="rangeExp = !rangeExp">
+        <div class="item">
+          <div class="lbl">Laden</div>
+          <div class="val">{{fRound(ship.ladenJumpRange)}} <u>LY</u></div>
+        </div>
+        <div class="item">
+          <div class="lbl">Unladen</div>
+          <div class="val">{{fRound(ship.unladenJumpRange)}} <u>LY</u></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list">
+      <div class="header toggle" ng-click="costsExpanded = !costsExpanded">Costs</div>
+      <div class="items" ng-if="costsExpanded">
+        <div class="item" ng-class="{enabled:ship.incCost}" ng-click="toggleCost()">
+          <div class="lbl">{{ship.name}}</div><div class="val">{{fCrd(ship.cost)}}</div>
+        </div>
+        <div class="item" ng-class="{enabled:ship.bulkheads.incCost}" ng-click="toggleCost()" ng-if="ship.bulkheads.c.cost">
+          <div class="lbl">{{ship.bulkheads.c.name}}</div><div class="val">{{fCrd(ship.bulkheads.c.cost)}}</div>
+        </div>
+        <div ng-repeat="c in ship.common" ng-if="c.c.cost" class="item common" ng-class="{enabled:c.incCost}" ng-click="toggleCost(c)">
+          <div class="lbl">{{c.c.class}}{{c.c.rating}} {{CArr[$index]}}</div><div class="val">{{fCrd(c.c.cost)}}</div>
+        </div>
+        <div ng-repeat="c in ship.hardpoints" ng-if="c.c.cost" class="item hardpoints" ng-class="{enabled:c.incCost}" ng-click="toggleCost(c)">
+          <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || hgMap[c.c.grp]}}</div><div class="val">{{fCrd(c.c.cost)}}</div>
+        </div>
+        <div ng-repeat="c in ship.internal" ng-if="c.c.cost" class="item internal" ng-class="{enabled:c.incCost}" ng-click="toggleCost(c)">
+          <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || igMap[c.c.grp]}}</div><div class="val">{{fCrd(c.c.cost)}}</div>
+        </div>
+      </div>
+      <div class="summary toggle" ng-click="costsExpanded = !costsExpanded">
+        <div class="item">
+          <div class="lbl">Total</div>
+          <div class="val">{{fCrd(ship.totalCost)}} <u>CR</u></div>
+        </div>
+        <div class="item">
+          <div class="lbl">Insurance</div>
+          <div class="val">{{fCrd(ship.totalCost * insurance.current.pct)}} <u>CR</u></div>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>

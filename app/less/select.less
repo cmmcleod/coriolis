@@ -31,6 +31,9 @@
       cursor: not-allowed;
       color: @disabled;
     }
+    &.active {
+      color: @secondary;
+    }
   }
 
   @optionSpacing: 1.8em;
@@ -48,12 +51,12 @@
   &.hardpoint {
     .c {
       width: 4em;
-      &:nth-child(3n + 1) {
+     /* &:nth-child(3n + 1) {
         clear: left;
       }
       &:nth-child(5n +1) {
         clear: none;
-      }
+      }*/
     }
   }
 
@@ -71,12 +74,15 @@
       border:1px solid @warning;
     }
 
-    &:nth-child(5n +1) {
+    /*&:nth-child(5n +1) {
       clear: left;
-    }
+    }*/
 
     &.disabled {
       border:1px solid @disabled;
+    }
+    &.active {
+      border:1px solid @secondary;
     }
   }
 
@@ -87,6 +93,4 @@
     list-style: none;
     overflow: hidden;
   }
-
-
 }

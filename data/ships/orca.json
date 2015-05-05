@@ -1,7 +1,7 @@
 {
   "orca": {
     "properties": {
-      "group": "pa",
+      "grp": "pa",
       "name": "Orca",
       "manufacturer": "Saud Kruger",
       "class": 3,

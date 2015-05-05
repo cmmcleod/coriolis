@@ -3,17 +3,15 @@
 <div ng-if="hp.c">
   <div class="l">{{hp.c.name || lbl}}</div><div class="r">{{hp.c.class}}{{hp.c.rating}}<span ng-if="hp.c.mode">/{{hp.c.mode}}{{hp.c.missile}}</span></div>
   <div class="cb">
-    <div class="cb meters" ng-if="hp.c.damage" >
-      <div class="l">Damage: {{hp.c.damage}}</div>
-      <div class="l">DPS: {{hp.c.dps}}</div>
-      <div class="l">T-Load: {{hp.c.thermload}}</div>
-    </div>
-    <div class="l" ng-if="hp.c.ammo">Ammo: {{$r.fCrd(hp.c.clip)}}/{{$r.fCrd(hp.c.ammo)}}</div>
+    <div class="l" ng-if="hp.c.damage">DMG: {{hp.c.damage}}</div>
+    <div class="l" ng-if="hp.c.dps">DPS: {{hp.c.dps}}</div>
+    <div class="l"  ng-if="hp.c.thermload">T-Load: {{hp.c.thermload}}</div>
+    <div class="l" ng-if="hp.c.type">Type: {{hp.c.type}}</div>
     <div class="l" ng-if="hp.c.rof">ROF: {{hp.c.rof}}<u>/s</u></div>
     <div class="l" ng-if="hp.c.armourpen">Pen: {{hp.c.armourpen}}</div>
-    <div class="l" ng-if="hp.c.type">Type: {{hp.c.type}}</div>
     <div class="l" ng-if="hp.c.shieldmul">+{{$r.fRPct(hp.c.shieldmul)}}</div>
     <div class="l" ng-if="hp.c.range">{{hp.c.range}} <u>KM</u></div>
+    <div class="l" ng-if="hp.c.ammo">Ammo: {{$r.fCrd(hp.c.clip)}}/{{$r.fCrd(hp.c.ammo)}}</div>
     <div class="r">{{hp.c.mass}} <u>T</u></div>
   </div>
 </div>

@@ -1,7 +1,7 @@
 {
   "anaconda": {
     "properties": {
-      "group": "mp",
+      "grp": "mp",
       "name": "Anaconda",
       "manufacturer": "Faulcon DeLacy",
       "class": 3,

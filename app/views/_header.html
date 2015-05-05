@@ -2,20 +2,37 @@
   <div class="l" style="margin-right: 2em;"><a ui-sref="shipyard" class="icon icon-xl shipyard"></a></div>
 
   <div class="l menu">
-    <div class="menu-header" ng-class="{selected: openedMenu=='s'}" ng-click="openMenu('s')">Ships</div>
-    <div class="menu-list" ng-if="openedMenu=='s'">
+    <div class="menu-header" ng-class="{selected: openedMenu=='s'}" ng-click="openMenu($event,'s')">Ships</div>
+    <div class="menu-list sm" ng-if="openedMenu=='s'">
       <a class="block" ng-repeat="(shipId,ship) in ships" ui-sref-active="active" ui-sref="outfit({shipId:shipId, code:null, bn:null})">{{::ship.properties.name}}</a>
     </div>
   </div>
 
   <div class="l menu">
-    <div class="menu-header" ng-class="{selected: openedMenu=='b', disabled: !bs.hasBuilds}" ng-click="openMenu('b')">Builds</div>
-    <div class="menu-list" ng-if="openedMenu=='b'">
+    <div class="menu-header" ng-class="{selected: openedMenu=='b', disabled: !bs.hasBuilds}" ng-click="openMenu($event,'b')">Builds</div>
+    <div class="menu-list" ng-if="openedMenu=='b'" ng-click="$event.stopPropagation();">
       <ul class="l" ng-repeat="(shipId,builds) in allBuilds">
         {{ships[shipId].properties.name}}
         <li ng-repeat="(name, build) in builds">
           <a ui-sref-active="active" ui-sref="outfit({shipId:shipId, code:build, bn:name})" ng-bind="name"></a>
         </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="r menu">
+    <div class="menu-header" ng-class="{selected: openedMenu=='settings'}" ng-click="openMenu($event,'settings')">
+      <span class="ico ico-cog"></span>
+    </div>
+    <div class="menu-list sm" ng-if="openedMenu=='settings'" ng-click="$event.stopPropagation();">
+      <ul class="">
+        Insurance
+        <li><select ng-model="insurance.current" ng-options="ins.name for (i,ins) in insurance.opts" ng-change="updateInsurance()"></select></li>
+      </ul>
+      <ul class="">
+        Builds
+        <li>Export All</li>
+        <li>Import</li>
       </ul>
     </div>
   </div>

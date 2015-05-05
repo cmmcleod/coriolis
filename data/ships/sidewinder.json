@@ -1,7 +1,7 @@
 {
   "sidewinder": {
     "properties": {
-      "group": "mp",
+      "grp": "mp",
       "name": "Sidewinder",
       "manufacturer": "Faulcon DeLacy",
       "class": 1,

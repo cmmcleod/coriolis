@@ -1,7 +1,7 @@
 {
   "Auto Field-Maintenance Units": {
     "10": {
-      "group": "am",
+      "grp": "am",
       "class": 5,
       "rating": "E",
       "cost": 104976,
@@ -10,7 +10,7 @@
       "repair": 73.2
     },
     "11": {
-      "group": "am",
+      "grp": "am",
       "class": 6,
       "rating": "A",
       "cost": 15305501,
@@ -19,7 +19,7 @@
       "repair": 226.8
     },
     "12": {
-      "group": "am",
+      "grp": "am",
       "class": 6,
       "rating": "B",
       "cost": 5101834,
@@ -28,7 +28,7 @@
       "repair": 204.7
     },
     "13": {
-      "group": "am",
+      "grp": "am",
       "class": 6,
       "rating": "C",
       "cost": 1700611,
@@ -37,7 +37,7 @@
       "repair": 148
     },
     "14": {
-      "group": "am",
+      "grp": "am",
       "class": 6,
       "rating": "D",
       "cost": 566870,
@@ -46,7 +46,7 @@
       "repair": 107.2
     },
     "15": {
-      "group": "am",
+      "grp": "am",
       "class": 6,
       "rating": "E",
       "cost": 188957,
@@ -55,7 +55,7 @@
       "repair": 88.8
     },
     "16": {
-      "group": "am",
+      "grp": "am",
       "class": 7,
       "rating": "A",
       "cost": 27549901,
@@ -64,7 +64,7 @@
       "repair": 268.8
     },
     "17": {
-      "group": "am",
+      "grp": "am",
       "class": 7,
       "rating": "B",
       "cost": 9183300,
@@ -73,7 +73,7 @@
       "repair": 239.2
     },
     "18": {
-      "group": "am",
+      "grp": "am",
       "class": 7,
       "rating": "C",
       "cost": 3061100,
@@ -82,7 +82,7 @@
       "repair": 174
     },
     "19": {
-      "group": "am",
+      "grp": "am",
       "class": 7,
       "rating": "D",
       "cost": 1020367,
@@ -91,7 +91,7 @@
       "repair": 124.8
     },
     "08": {
-      "group": "am",
+      "grp": "am",
       "class": 1,
       "rating": "A",
       "cost": 810000,
@@ -100,7 +100,7 @@
       "repair": 30.8
     },
     "09": {
-      "group": "am",
+      "grp": "am",
       "class": 1,
       "rating": "B",
       "cost": 270000,
@@ -109,7 +109,7 @@
       "repair": 27.6
     },
     "0a": {
-      "group": "am",
+      "grp": "am",
       "class": 1,
       "rating": "C",
       "cost": 90000,
@@ -118,7 +118,7 @@
       "repair": 20
     },
     "0b": {
-      "group": "am",
+      "grp": "am",
       "class": 1,
       "rating": "D",
       "cost": 30000,
@@ -127,7 +127,7 @@
       "repair": 14.4
     },
     "0c": {
-      "group": "am",
+      "grp": "am",
       "class": 1,
       "rating": "E",
       "cost": 10000,
@@ -136,7 +136,7 @@
       "repair": 12
     },
     "0d": {
-      "group": "am",
+      "grp": "am",
       "class": 2,
       "rating": "A",
       "cost": 1458000,
@@ -145,7 +145,7 @@
       "repair": 70
     },
     "0e": {
-      "group": "am",
+      "grp": "am",
       "class": 2,
       "rating": "B",
       "cost": 486000,
@@ -154,7 +154,7 @@
       "repair": 64.4
     },
     "0f": {
-      "group": "am",
+      "grp": "am",
       "class": 2,
       "rating": "C",
       "cost": 162000,
@@ -163,7 +163,7 @@
       "repair": 46
     },
     "0g": {
-      "group": "am",
+      "grp": "am",
       "class": 2,
       "rating": "D",
       "cost": 54000,
@@ -172,7 +172,7 @@
       "repair": 33.6
     },
     "0h": {
-      "group": "am",
+      "grp": "am",
       "class": 2,
       "rating": "E",
       "cost": 18000,
@@ -181,7 +181,7 @@
       "repair": 27.6
     },
     "0i": {
-      "group": "am",
+      "grp": "am",
       "class": 3,
       "rating": "A",
       "cost": 2624400,
@@ -190,7 +190,7 @@
       "repair": 112
     },
     "0j": {
-      "group": "am",
+      "grp": "am",
       "class": 3,
       "rating": "B",
       "cost": 874800,
@@ -199,7 +199,7 @@
       "repair": 98.9
     },
     "0k": {
-      "group": "am",
+      "grp": "am",
       "class": 3,
       "rating": "C",
       "cost": 291600,
@@ -208,7 +208,7 @@
       "repair": 72
     },
     "0l": {
-      "group": "am",
+      "grp": "am",
       "class": 3,
       "rating": "D",
       "cost": 97200,
@@ -217,7 +217,7 @@
       "repair": 51.2
     },
     "0m": {
-      "group": "am",
+      "grp": "am",
       "class": 3,
       "rating": "E",
       "cost": 32400,
@@ -226,7 +226,7 @@
       "repair": 43.2
     },
     "0n": {
-      "group": "am",
+      "grp": "am",
       "class": 4,
       "rating": "A",
       "cost": 4723920,
@@ -235,7 +235,7 @@
       "repair": 151.2
     },
     "0o": {
-      "group": "am",
+      "grp": "am",
       "class": 4,
       "rating": "B",
       "cost": 1574640,
@@ -244,7 +244,7 @@
       "repair": 135.7
     },
     "0p": {
-      "group": "am",
+      "grp": "am",
       "class": 4,
       "rating": "C",
       "cost": 524880,
@@ -253,7 +253,7 @@
       "repair": 98
     },
     "0q": {
-      "group": "am",
+      "grp": "am",
       "class": 4,
       "rating": "D",
       "cost": 174960,
@@ -262,7 +262,7 @@
       "repair": 70.4
     },
     "0r": {
-      "group": "am",
+      "grp": "am",
       "class": 4,
       "rating": "E",
       "cost": 58320,
@@ -271,7 +271,7 @@
       "repair": 58.8
     },
     "0s": {
-      "group": "am",
+      "grp": "am",
       "class": 5,
       "rating": "A",
       "cost": 8503056,
@@ -280,7 +280,7 @@
       "repair": 187.6
     },
     "0t": {
-      "group": "am",
+      "grp": "am",
       "class": 5,
       "rating": "B",
       "cost": 2834352,
@@ -289,7 +289,7 @@
       "repair": 167.9
     },
     "0u": {
-      "group": "am",
+      "grp": "am",
       "class": 5,
       "rating": "C",
       "cost": 944784,
@@ -298,7 +298,7 @@
       "repair": 122
     },
     "0v": {
-      "group": "am",
+      "grp": "am",
       "class": 5,
       "rating": "D",
       "cost": 314928,
@@ -307,7 +307,7 @@
       "repair": 88
     },
     "1a": {
-      "group": "am",
+      "grp": "am",
       "class": 7,
       "rating": "E",
       "cost": 340122,
@@ -316,7 +316,7 @@
       "repair": 104.4
     },
     "1b": {
-      "group": "am",
+      "grp": "am",
       "class": 8,
       "rating": "A",
       "cost": 49589823,
@@ -325,7 +325,7 @@
       "repair": 308
     },
     "1c": {
-      "group": "am",
+      "grp": "am",
       "class": 8,
       "rating": "B",
       "cost": 16529941,
@@ -334,7 +334,7 @@
       "repair": 276
     },
     "1d": {
-      "group": "am",
+      "grp": "am",
       "class": 8,
       "rating": "C",
       "cost": 5509980,
@@ -343,7 +343,7 @@
       "repair": 200
     },
     "1e": {
-      "group": "am",
+      "grp": "am",
       "class": 8,
       "rating": "D",
       "cost": 1836660,
@@ -352,7 +352,7 @@
       "repair": 144
     },
     "1f": {
-      "group": "am",
+      "grp": "am",
       "class": 8,
       "rating": "E",
       "cost": 612220,

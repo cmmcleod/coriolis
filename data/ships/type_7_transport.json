@@ -1,7 +1,7 @@
 {
   "type_7_transport": {
     "properties": {
-      "group": "fr",
+      "grp": "fr",
       "name": "Type-7 Transport",
       "manufacturer": "Lakon",
       "class": 3,

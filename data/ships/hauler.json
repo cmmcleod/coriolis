@@ -1,7 +1,7 @@
 {
   "hauler": {
     "properties": {
-      "group": "fr",
+      "grp": "fr",
       "name": "Hauler",
       "manufacturer": "Zorgon Peterson",
       "class": 1,

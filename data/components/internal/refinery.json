@@ -1,7 +1,7 @@
 {
   "Refineries": {
     "20": {
-      "group": "rf",
+      "grp": "rf",
       "class": 4,
       "rating": "B",
       "cost": 1500282,
@@ -9,7 +9,7 @@
       "bins": 9
     },
     "21": {
-      "group": "rf",
+      "grp": "rf",
       "class": 4,
       "rating": "C",
       "cost": 500094,
@@ -17,7 +17,7 @@
       "bins": 7
     },
     "22": {
-      "group": "rf",
+      "grp": "rf",
       "class": 4,
       "rating": "D",
       "cost": 166698,
@@ -25,7 +25,7 @@
       "bins": 5
     },
     "23": {
-      "group": "rf",
+      "grp": "rf",
       "class": 4,
       "rating": "E",
       "cost": 55566,
@@ -33,7 +33,7 @@
       "bins": 4
     },
     "1g": {
-      "group": "rf",
+      "grp": "rf",
       "class": 1,
       "rating": "A",
       "cost": 486000,
@@ -41,7 +41,7 @@
       "bins": 4
     },
     "1h": {
-      "group": "rf",
+      "grp": "rf",
       "class": 1,
       "rating": "B",
       "cost": 162000,
@@ -49,7 +49,7 @@
       "bins": 3
     },
     "1i": {
-      "group": "rf",
+      "grp": "rf",
       "class": 1,
       "rating": "C",
       "cost": 54000,
@@ -57,7 +57,7 @@
       "bins": 2
     },
     "1j": {
-      "group": "rf",
+      "grp": "rf",
       "class": 1,
       "rating": "D",
       "cost": 18000,
@@ -65,7 +65,7 @@
       "bins": 1
     },
     "1k": {
-      "group": "rf",
+      "grp": "rf",
       "class": 1,
       "rating": "E",
       "cost": 6000,
@@ -73,7 +73,7 @@
       "bins": 1
     },
     "1l": {
-      "group": "rf",
+      "grp": "rf",
       "class": 2,
       "rating": "A",
       "cost": 1020600,
@@ -81,7 +81,7 @@
       "bins": 6
     },
     "1m": {
-      "group": "rf",
+      "grp": "rf",
       "class": 2,
       "rating": "B",
       "cost": 340200,
@@ -89,7 +89,7 @@
       "bins": 5
     },
     "1n": {
-      "group": "rf",
+      "grp": "rf",
       "class": 2,
       "rating": "C",
       "cost": 113400,
@@ -97,7 +97,7 @@
       "bins": 4
     },
     "1o": {
-      "group": "rf",
+      "grp": "rf",
       "class": 2,
       "rating": "D",
       "cost": 37800,
@@ -105,7 +105,7 @@
       "bins": 3
     },
     "1p": {
-      "group": "rf",
+      "grp": "rf",
       "class": 2,
       "rating": "E",
       "cost": 12600,
@@ -113,7 +113,7 @@
       "bins": 2
     },
     "1q": {
-      "group": "rf",
+      "grp": "rf",
       "class": 3,
       "rating": "A",
       "cost": 2143260,
@@ -121,7 +121,7 @@
       "bins": 8
     },
     "1r": {
-      "group": "rf",
+      "grp": "rf",
       "class": 3,
       "rating": "B",
       "cost": 714420,
@@ -129,7 +129,7 @@
       "bins": 7
     },
     "1s": {
-      "group": "rf",
+      "grp": "rf",
       "class": 3,
       "rating": "C",
       "cost": 238140,
@@ -137,7 +137,7 @@
       "bins": 6
     },
     "1t": {
-      "group": "rf",
+      "grp": "rf",
       "class": 3,
       "rating": "D",
       "cost": 79380,
@@ -145,7 +145,7 @@
       "bins": 4
     },
     "1u": {
-      "group": "rf",
+      "grp": "rf",
       "class": 3,
       "rating": "E",
       "cost": 26460,
@@ -153,7 +153,7 @@
       "bins": 3
     },
     "1v": {
-      "group": "rf",
+      "grp": "rf",
       "class": 4,
       "rating": "A",
       "cost": 4500846,

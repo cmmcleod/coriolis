@@ -1,7 +1,7 @@
 {
   "adder": {
     "properties": {
-      "group": "ex",
+      "grp": "ex",
       "name": "Adder",
       "manufacturer": "Zorgon Peterson",
       "class": 1,

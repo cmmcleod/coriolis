@@ -1,7 +1,7 @@
 {
   "FSD Interdictors": {
     "66": {
-      "group": "fi",
+      "grp": "fi",
       "class": 1,
       "rating": "A",
       "cost": 972000,
@@ -10,7 +10,7 @@
       "rangeRating": "C"
     },
     "67": {
-      "group": "fi",
+      "grp": "fi",
       "class": 1,
       "rating": "B",
       "cost": 324000,
@@ -19,7 +19,7 @@
       "rangeRating": "D"
     },
     "68": {
-      "group": "fi",
+      "grp": "fi",
       "class": 1,
       "rating": "C",
       "cost": 108000,
@@ -28,7 +28,7 @@
       "rangeRating": "D"
     },
     "69": {
-      "group": "fi",
+      "grp": "fi",
       "class": 1,
       "rating": "D",
       "cost": 36000,
@@ -37,7 +37,7 @@
       "rangeRating": "D"
     },
     "6a": {
-      "group": "fi",
+      "grp": "fi",
       "class": 1,
       "rating": "E",
       "cost": 12000,
@@ -46,7 +46,7 @@
       "rangeRating": "E"
     },
     "6b": {
-      "group": "fi",
+      "grp": "fi",
       "class": 2,
       "rating": "A",
       "cost": 2721600,
@@ -55,7 +55,7 @@
       "rangeRating": "B"
     },
     "6c": {
-      "group": "fi",
+      "grp": "fi",
       "class": 2,
       "rating": "B",
       "cost": 907200,
@@ -64,7 +64,7 @@
       "rangeRating": "C"
     },
     "6d": {
-      "group": "fi",
+      "grp": "fi",
       "class": 2,
       "rating": "C",
       "cost": 302400,
@@ -73,7 +73,7 @@
       "rangeRating": "C"
     },
     "6e": {
-      "group": "fi",
+      "grp": "fi",
       "class": 2,
       "rating": "D",
       "cost": 100800,
@@ -82,7 +82,7 @@
       "rangeRating": "C"
     },
     "6f": {
-      "group": "fi",
+      "grp": "fi",
       "class": 2,
       "rating": "E",
       "cost": 33600,
@@ -91,7 +91,7 @@
       "rangeRating": "D"
     },
     "6g": {
-      "group": "fi",
+      "grp": "fi",
       "class": 3,
       "rating": "A",
       "cost": 7620480,
@@ -100,7 +100,7 @@
       "rangeRating": "A"
     },
     "6h": {
-      "group": "fi",
+      "grp": "fi",
       "class": 3,
       "rating": "B",
       "cost": 2540160,
@@ -109,7 +109,7 @@
       "rangeRating": "B"
     },
     "6i": {
-      "group": "fi",
+      "grp": "fi",
       "class": 3,
       "rating": "C",
       "cost": 846720,
@@ -118,7 +118,7 @@
       "rangeRating": "B"
     },
     "6j": {
-      "group": "fi",
+      "grp": "fi",
       "class": 3,
       "rating": "D",
       "cost": 282240,
@@ -127,7 +127,7 @@
       "rangeRating": "B"
     },
     "6k": {
-      "group": "fi",
+      "grp": "fi",
       "class": 3,
       "rating": "E",
       "cost": 94080,
@@ -136,7 +136,7 @@
       "rangeRating": "C"
     },
     "6l": {
-      "group": "fi",
+      "grp": "fi",
       "class": 4,
       "rating": "A",
       "cost": 21337344,
@@ -145,7 +145,7 @@
       "rangeRating": "A"
     },
     "6m": {
-      "group": "fi",
+      "grp": "fi",
       "class": 4,
       "rating": "B",
       "cost": 7112448,
@@ -154,7 +154,7 @@
       "rangeRating": "A"
     },
     "6n": {
-      "group": "fi",
+      "grp": "fi",
       "class": 4,
       "rating": "C",
       "cost": 2370816,
@@ -163,7 +163,7 @@
       "rangeRating": "A"
     },
     "6o": {
-      "group": "fi",
+      "grp": "fi",
       "class": 4,
       "rating": "D",
       "cost": 790272,
@@ -172,7 +172,7 @@
       "rangeRating": "A"
     },
     "6p": {
-      "group": "fi",
+      "grp": "fi",
       "class": 4,
       "rating": "E",
       "cost": 263424,

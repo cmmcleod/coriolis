@@ -55,21 +55,22 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
    */
   $scope.select = function(type, slot, e) {
     e.stopPropagation();
-    if (e.srcElement.id) {
-      if(type == 'h') {
-        ship.use(slot, e.srcElement.id, Components.hardpoints(e.srcElement.id));
-      } else if (type == 'c') {
-        ship.use(slot, e.srcElement.id, Components.common(ship.common.indexOf(slot), e.srcElement.id));
-      } else if (type == 'i') {
-        ship.use(slot, e.srcElement.id, Components.internal(e.srcElement.id));
-      } else if (type == 'b') {
-        ship.useBulkhead(e.srcElement.id);
-      } else {
+    var id = angular.element(e.srcElement).attr('cpid');  // Get component ID
+    if (id) {
+      if (id == 'empty') {
         ship.use(slot, null, null);
+      } else if(type == 'h') {
+        ship.use(slot, id, Components.hardpoints(id));
+      } else if (type == 'c') {
+        ship.use(slot, id, Components.common(ship.common.indexOf(slot), id));
+      } else if (type == 'i') {
+        ship.use(slot, id, Components.internal(id));
+      } else if (type == 'b') {
+        ship.useBulkhead(id);
       }
       $scope.selectedSlot = null;
       $scope.code = Serializer.fromShip(ship);
-      $state.go('outfit', {shipId: ship.id, code: $scope.code, bn: $scope.buildName}, {location:'replace', notify:false});
+      updateState();
     }
   }
 
@@ -80,7 +81,7 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
     if ($scope.buildName && $scope.savedCode) {
       Serializer.toShip(ship, $scope.savedCode);  // Repopulate with components from last save
       $scope.code = $scope.savedCode;
-      $state.go('outfit', {shipId: ship.id, code: $scope.savedCode, bn: $scope.buildName}, {location:'replace', notify:false});
+      updateState();
     }
   };
 
@@ -89,11 +90,18 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
    * for this ship & with the exact name.
    */
   $scope.saveBuild = function() {
-    if($scope.buildName && $scope.code != $scope.savedCode) {
+    if (!$scope.buildName) {
+      return;
+    }
+    // No change hav been made, i.e. save ship default build under a name
+    if (!$scope.code) {
+      $scope.code = Serializer.fromShip(ship);
+    }
+    // Only save if there a build name and a change has been made or the build has never been saved
+    if ($scope.code != $scope.savedCode) {
       Persist.saveBuild(ship.id, $scope.buildName, $scope.code);
       $scope.savedCode = $scope.code;
-      // Edge case TODO: comment more
-      $state.go('outfit', {shipId: ship.id, code: $scope.savedCode, bn: $scope.buildName}, {location:'replace', notify:false});
+      updateState();
     }
   }
 
@@ -111,6 +119,22 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
     $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
   }
 
+  $scope.toggleCost = function(item) {
+    item.incCost = !item.incCost;
+    ship.updateTotals();
+  };
+
+  $scope.togglePwr = function(item) {
+    item.enabled = !item.enabled;
+    ship.updateTotals();
+  };
+
+  // Utilify functions
+  function updateState() {
+    $state.go('outfit', {shipId: ship.id, code: $scope.code, bn: $scope.buildName}, {location:'replace', notify:false});
+  }
+
+  // Event listeners
   $rootScope.$on('keyup', function (e, keyEvent) {
     // CTRL + S or CMD + S will override the default and save the build is possible
     if (keyEvent.keycode == 83 && keyEvent.ctrlKey) {

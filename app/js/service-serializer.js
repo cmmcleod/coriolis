@@ -15,7 +15,7 @@ angular.module('app').service('Serializer', ['lodash', function (_) {
       _.map(ship.hardpoints, idToStr),
       _.map(ship.internal, idToStr),
     ];
-
+    console.log('code',_.flatten(data).join(''));
     return _.flatten(data).join('');
   };
 

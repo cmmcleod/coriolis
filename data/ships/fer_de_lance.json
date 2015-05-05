@@ -1,7 +1,7 @@
 {
   "fer_de_lance": {
     "properties": {
-      "group": "co",
+      "grp": "co",
       "name": "Fer-de-Lance",
       "manufacturer": "Zorgon Peterson",
       "class": 2,

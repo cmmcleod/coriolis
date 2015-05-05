@@ -1,7 +1,7 @@
 {
   "Docking Computers": {
     "24": {
-      "group": "dc",
+      "grp": "dc",
       "name": "Standard Docking Computer",
       "class": 1,
       "rating": "E",

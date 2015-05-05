@@ -1,7 +1,7 @@
 {
   "imperial_clipper": {
     "properties": {
-      "group": "mp",
+      "grp": "mp",
       "name": "Imperial Clipper",
       "manufacturer": "Gutamaya",
       "class": 3,

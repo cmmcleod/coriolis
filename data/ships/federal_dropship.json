@@ -1,7 +1,7 @@
 {
   "federal_dropship": {
     "properties": {
-      "group": "mp",
+      "grp": "mp",
       "name": "Federal Dropship",
       "manufacturer": "Core Dynamics",
       "class": 2,

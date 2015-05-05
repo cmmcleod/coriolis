@@ -16,9 +16,9 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
 
     for (p in properties) { this[p] = properties[p]; }  // Copy all base properties from shipData
 
-    for (groupName in slots) {   // Initialize all slots
-      var slotGroup = slots[groupName];
-      var group = this[groupName] = [];   // Initialize Slot group (Common, Hardpoints, Internal)
+    for (slotType in slots) {   // Initialize all slots
+      var slotGroup = slots[slotType];
+      var group = this[slotType] = [];   // Initialize Slot group (Common, Hardpoints, Internal)
       for(var i = 0; i < slotGroup.length; i++){
         group.push({id: null, c: null, enabled: true, incCost: true, maxClass: slotGroup[i]});
       }
@@ -115,10 +115,6 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     return sum;
   }
 
-  function findInternal(slots, group) {
-
-  }
-
   Ship.prototype.useBulkhead = function(index) {
     this.bulkheads.id = index;
     this.bulkheads.c = DB.components.bulkheads[this.id][index];
@@ -145,7 +141,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
         }
       } else {
         // Selected component is a Shield Generator
-        if(component.group == 'sg') {
+        if(component.grp == 'sg') {
           // You can only have one shield Generator
           if (this.sgSI !== null && this.sgSI != slotIndex) {
             // A shield generator is already selected in a different slot

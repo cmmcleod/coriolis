@@ -1,7 +1,7 @@
 {
   "Scanners": {
     "2f": {
-      "group": "sc",
+      "grp": "sc",
       "name": "Adv. Discovery Scanner",
       "class": 1,
       "rating": "C",
@@ -11,7 +11,7 @@
       "range": null
     },
     "2g": {
-      "group": "sc",
+      "grp": "sc",
       "name": "Inter. Discovery Scanner",
       "class": 1,
       "rating": "D",
@@ -21,7 +21,7 @@
       "range": 1000
     },
     "2h": {
-      "group": "sc",
+      "grp": "sc",
       "name": "Basic Discovery Scanner",
       "class": 1,
       "rating": "E",
@@ -31,7 +31,7 @@
       "range": 500
     },
     "2i": {
-      "group": "sc",
+      "grp": "sc",
       "name": "Detailed Surface Scanner",
       "class": 1,
       "rating": "C",

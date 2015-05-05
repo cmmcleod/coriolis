@@ -6,7 +6,7 @@ angular.module('app').directive('slotHardpoint', ['$rootScope', function ($r) {
       size: '=',
       lbl: '=',
     },
-    templateUrl: 'views/slot-hardpoint.html',
+    templateUrl: 'views/_slot-hardpoint.html',
     link: function (scope) {
       scope.$r = $r;
     }

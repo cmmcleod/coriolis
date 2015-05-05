@@ -6,7 +6,7 @@ angular.module('app').directive('slotInternal', ['$rootScope', function ($r) {
       lbl: '=',
       opts: '='
     },
-    templateUrl: 'views/slot-internal.html',
+    templateUrl: 'views/_slot-internal.html',
     link: function(scope) {
       scope.$r = $r;
     }
