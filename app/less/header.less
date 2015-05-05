@@ -46,13 +46,18 @@ header {
     width: 25em;
     font-family: @fStandard;
     position: absolute;
-    padding: 0 0 1em 1em;
+    padding: 1em 1em;
     overflow: hidden;
     background-color: @bgBlack;
     font-size: 0.8em;
 
     &.sm {
-      width: 15em;
+      width: auto;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid @disabled;
     }
 
   }

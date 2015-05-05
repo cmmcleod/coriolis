@@ -26,6 +26,7 @@ angular.module('app').config(['$provide','$stateProvider', '$urlRouterProvider',
       }
     })
     .state('shipyard', { url: '/', templateUrl: 'views/page-shipyard.html', controller: 'ShipyardController' })
+    .state('comparison', { url: '/comparison', templateUrl: 'views/page-comparison.html', controller: 'ComparisonController' })
     .state('error', { params: {type:null, message:null, details: null }, templateUrl: 'views/page-error.html', controller: 'ErrorController' })
 
   // Redirects

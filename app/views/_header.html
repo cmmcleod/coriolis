@@ -20,20 +20,35 @@
     </div>
   </div>
 
+  <div class="l menu">
+    <div class="menu-header" ng-class="{selected: openedMenu=='comp', disabled: !bs.hasBuilds}" ng-click="openMenu($event,'comp')">Comparison</div>
+    <div class="menu-list" ng-if="openedMenu=='comp'" ng-click="$event.stopPropagation();">
+      <ul>
+      <li>No Comparisons created</li>
+       <!-- TODO: comparison links /-->
+      </ul>
+      <hr />
+      <a ui-sref="comparison" class="block">Create New</a>
+    </div>
+  </div>
+
   <div class="r menu">
     <div class="menu-header" ng-class="{selected: openedMenu=='settings'}" ng-click="openMenu($event,'settings')">
       <span class="ico ico-cog"></span>
     </div>
     <div class="menu-list sm" ng-if="openedMenu=='settings'" ng-click="$event.stopPropagation();">
-      <ul class="">
+      <ul>
         Insurance
         <li><select ng-model="insurance.current" ng-options="ins.name for (i,ins) in insurance.opts" ng-change="updateInsurance()"></select></li>
       </ul>
-      <ul class="">
+      <hr />
+      <ul>
         Builds
         <li>Export All</li>
         <li>Import</li>
       </ul>
+      <hr />
+      <a href="#" class="block" ng-click="about($event)">About</a>
     </div>
   </div>
 

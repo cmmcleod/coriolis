@@ -56,7 +56,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       if (comps.internal[i] !== 0) {
         internal[i].id = comps.internal[i];
         internal[i].c = Components.internal(comps.internal[i]);
-        if (internal[i].c.group == 'sg') {
+        if (internal[i].c.grp == 'sg') {
           this.sgSI = i;
         }
       } else {

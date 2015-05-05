@@ -29,6 +29,7 @@ angular.module('app').directive('shipyardHeader', ['lodash','$rootScope', 'Persi
 
       $rootScope.$on('close', function () {
         scope.openedMenu = null;
+        $rootScope.showAbout = false;
       });
 
       scope.updateInsurance = function(){
@@ -48,6 +49,17 @@ angular.module('app').directive('shipyardHeader', ['lodash','$rootScope', 'Persi
         }
         scope.openedMenu = menu;
       };
+
+      scope.about = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        scope.openedMenu = null;
+        $rootScope.showAbout = true;
+      };
+
+      $rootScope.hideAbout = function (){
+        $rootScope.showAbout = false;
+      }
 
     }
   };
