@@ -15,6 +15,8 @@ var gulp            = require('gulp'),
     RevAll          = require('gulp-rev-all'),
     ftp             = require( 'vinyl-ftp' ),
     gutil           = require( 'gulp-util' ),
+    svgstore        = require( 'gulp-svgstore' ),
+    svgmin          = require( 'gulp-svgmin' ),
     pkg             = require('./package.json');
 
 gulp.task('less', function() {
@@ -100,31 +102,40 @@ gulp.task('js', function() {
 });
 
 gulp.task('copy', function() {
-  return gulp.src(['app/images/**','app/fonts/**'], {base: 'app/'})
+  return gulp.src(['app/images/**','app/fonts/**','app/.htaccess'], {base: 'app/'})
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('generateIndexHTML', function() {
-  return gulp.src('app/index.html')
-    .pipe(template({
-      version: pkg.version,
-      date : (new Date()).toLocaleDateString(),
-      uaTracking: process.env.CORIOLIS_UA_TRACKING || false
-    }))
-    .pipe(htmlmin({
-      'collapseBooleanAttributes': true,
-      'collapseWhitespace': true,
-      'removeAttributeQuotes': true,
-      'removeComments': true,
-      'removeEmptyAttributes': true,
-      'removeRedundantAttributes': true,
-      'removeScriptTypeAttributes': true,
-      'removeStyleLinkTypeAttributes': true
-    }).on('error',function(e){
-      console.log('File:', e.fileName);
-      console.log('Message:',e.message);
-    }))
-    .pipe(gulp.dest('build'));
+gulp.task('generateIndexHTML', function(done) {
+  // Generate minified inline svg of all icons for svg spriting
+  gulp.src('app/images/icons/*.svg')
+    .pipe(svgmin())
+    .pipe(svgstore({ inlineSvg: true }))
+    .pipe(gutil.buffer(function(err, files) {
+      var svgIconsContent = files[0].contents.toString();
+      gulp.src('app/index.html')
+        .pipe(template({
+          version: pkg.version,
+          date : (new Date()).toLocaleDateString(),
+          uaTracking: process.env.CORIOLIS_UA_TRACKING || false,
+          svgContent: svgIconsContent
+        }))
+        .pipe(htmlmin({
+          'collapseBooleanAttributes': true,
+          'collapseWhitespace': true,
+          'removeAttributeQuotes': true,
+          'removeComments': true,
+          'removeEmptyAttributes': true,
+          'removeRedundantAttributes': true,
+          'removeScriptTypeAttributes': true,
+          'removeStyleLinkTypeAttributes': true
+        }).on('error',function(e){
+          console.log('File:', e.fileName);
+          console.log('Message:',e.message);
+        }))
+        .pipe(gulp.dest('build'));
+        done();
+      }));
 });
 
 gulp.task('serve', function(cb) {
@@ -144,8 +155,8 @@ gulp.task('serve-stop', function(cb) {
 });
 
 gulp.task('watch', function() {
-  gulp.watch('app/index.html', ['generateIndexHTML']);
-  gulp.watch(['app/images/**','app/fonts/**'], ['copy']);
+  gulp.watch(['app/index.html','app/images/icons/*.svg'], ['generateIndexHTML']);
+  gulp.watch(['app/images/**','app/fonts/**', 'app/.htaccess'], ['copy']);
   gulp.watch('app/less/*.less', ['less']);
   gulp.watch('app/views/**/*', ['html2js']);
   gulp.watch('app/js/**/*.js', ['js']);

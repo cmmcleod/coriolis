@@ -3,44 +3,53 @@
 
   <table>
     <thead>
-      <tr>
-        <th rowspan="2">Ship</th>
-        <th rowspan="2">Build</th>
-        <th rowspan="2">Agility</th>
-        <th rowspan="2">Speed</th>
-        <th rowspan="2">Boost</th>
-        <th rowspan="2">Shield<br>Strength</th>
-        <th rowspan="2">Armour</th>
+      <tr class="main">
+        <th rowspan="2" ng-click="sort('ship.name')">Ship</th>
+        <th rowspan="2" ng-click="sort('buildName')">Build</th>
+        <!-- <th rowspan="2" ng-click="sort('ship.agility')">Agility</th> /-->
+        <!-- <th rowspan="2" ng-click="sort('ship.speed')">Speed</th> /-->
+        <!-- <th rowspan="2" ng-click="sort('ship.boost')">Boost</th> -->
+        <th rowspan="2" ng-click="sort('ship.shieldStrength')">Shields</th>
+        <th rowspan="2" ng-click="sort('ship.armour')">Armour</th>
         <th colspan="2">Mass</th>
-        <th colspan="5">Power</th>
-        <th rowspan="2">Fuel</th>
-        <th rowspan="2">Cargo</th>
+        <th colspan="3">Power</th>
+        <!-- <th rowspan="2" ng-click="sort('ship.fuelCapacity')">Fuel</th> -->
+        <th rowspan="2" ng-click="sort('ship.cargoCapacity')">Cargo</th>
         <th colspan="2">Jump Range</th>
-        <th rowspan="2">Cost</th>
+        <th rowspan="2" ng-click="sort('ship.totalCost')">Cost</th>
       </tr>
       <tr>
-        <th>Unladen</th><th>Laden</th>
-        <th>Retracted</th><th>%</th><th>Deployed</th><th>%</th><th>Available</th>
-        <th>Unladen</th><th>Laden</th>
+        <!-- Mass /-->
+        <th class="lft" ng-click="sort('ship.unladenMass')">Unladen</th>
+        <th class="rgt"  ng-click="sort('ship.ladenMass')">Laden</th>
+        <!-- Power /-->
+        <th class="lft" ng-click="sort('ship.powerRetracted')">Retracted</th>
+        <!-- <th ng-click="sort('pctRetracted')">%</th> -->
+        <th ng-click="sort('ship.powerDeployed')">Deployed</th>
+        <!-- <th ng-click="sort('pctDeployed')">%</th> -->
+        <th class="rgt" ng-click="sort('ship.powerAvailable')">Available</th>
+        <!-- Jump Range /-->
+        <th class="lft" ng-click="sort('ship.unladenJumpRange')">Unladen</th>
+        <th class="rgt" ng-click="sort('ship.ladenJumpRange')">Laden</th>
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat='b in comparison'>
-        <td><a ui-sref="outfit({shipId: b.shipId, code: b.code, bn: b.buildName})" ng-bind="b.ship.name"></a></td>
-        <td><a ui-sref="outfit({shipId: b.shipId, code: b.code, bn: b.buildName})" ng-bind="b.buildName"></a></td>
-        <td ng-bind="b.ship.agility"></td>
-        <td>{{b.ship.speed}} <u>M/s</u></td>
-        <td>{{b.ship.boost}} <u>M/s</u></td>
+      <tr  class="tr" ng-repeat="b in comparison | orderBy:predicate:desc">
+        <td class="tl"><a ui-sref="outfit({shipId: b.shipId, code: b.code, bn: b.buildName})" ng-bind="b.ship.name"></a></td>
+        <td class="tl"><a ui-sref="outfit({shipId: b.shipId, code: b.code, bn: b.buildName})" ng-bind="b.buildName"></a></td>
+        <!-- <td class="tc" ng-bind="b.ship.agility"></td> -->
+        <!-- <td>{{b.ship.speed}} <u>M/s</u></td> -->
+        <!-- <td>{{b.ship.boost}} <u>M/s</u></td> -->
         <td>{{fRound(b.ship.shieldStrength)}} <u>Mj</u></td>
         <td ng-bind="b.ship.armourTotal"></td>
         <td>{{fRound(b.ship.unladenMass)}} <u>T</u></td>
         <td>{{fRound(b.ship.ladenMass)}} <u>T</u></td>
         <td>{{fPwr(b.ship.powerRetracted)}} <u>MW</u></td>
-        <td>{{fPct(b.ship.powerRetracted/b.ship.powerAvailable)}}</td>
+        <!-- <td>{{fPct(b.pctRetracted)}}</td> -->
         <td>{{fPwr(b.ship.powerDeployed)}} <u>MW</u></td>
-        <td>{{fPct(b.ship.powerDeployed/b.ship.powerAvailable)}}</td>
+        <!-- <td>{{fPct(b.pctDeployed)}}</td> -->
         <td>{{fPwr(b.ship.powerAvailable)}} <u>MW</u></td>
-        <td>{{fRound(b.ship.fuelCapacity)}} <u>T</u></td>
+        <!-- <td>{{fRound(b.ship.fuelCapacity)}} <u>T</u></td> -->
         <td>{{fRound(b.ship.cargoCapacity)}} <u>T</u></td>
         <td>{{fRound(b.ship.unladenJumpRange)}} <u>LY</u></td>
         <td>{{fRound(b.ship.ladenJumpRange)}} <u>LY</u></td>

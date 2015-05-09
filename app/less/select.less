@@ -23,16 +23,21 @@
     cursor: pointer;
 
     color: @primary-disabled;
+    stroke-width: 1em;
+    stroke: @primary-disabled;
 
     &:hover {
       color: @warning;
+      stroke: @warning;
     }
     &.disabled {
       cursor: not-allowed;
       color: @disabled;
+      stroke: @disabled;
     }
     &.active {
       color: @secondary;
+      stroke: @secondary;
     }
   }
 
@@ -48,17 +53,6 @@
     text-align: center;
   }
 
-  &.hardpoint {
-    .c {
-      width: 4em;
-     /* &:nth-child(3n + 1) {
-        clear: left;
-      }
-      &:nth-child(5n +1) {
-        clear: none;
-      }*/
-    }
-  }
 
   .c {
     border:1px solid @primary-disabled;
@@ -73,10 +67,6 @@
     &:hover {
       border:1px solid @warning;
     }
-
-    /*&:nth-child(5n +1) {
-      clear: left;
-    }*/
 
     &.disabled {
       border:1px solid @disabled;
@@ -93,4 +83,15 @@
     list-style: none;
     overflow: hidden;
   }
+
+  &.hardpoint {
+    .c {
+      width: auto;
+      padding: 0.1em 0.5em;
+    }
+    ul {
+      margin-left: 1em;
+    }
+  }
+
 }

@@ -1,9 +1,4 @@
-<?xml version="1.0"?>
-<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
- <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
- <g>
-  <title>Layer 1</title>
-  <ellipse ry="25" rx="95" id="svg_8" cy="100" cx="100" fill-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="#000000"/>
-  <ellipse id="svg_10" ry="95" rx="25" cy="100" cx="100" fill-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="#000000"/>
- </g>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <ellipse ry="25" rx="95" cy="100" cx="100" fill-opacity="0" stroke-width="5" />
+  <ellipse ry="95" rx="25" cy="100" cx="100" fill-opacity="0" stroke-width="5" />
 </svg>

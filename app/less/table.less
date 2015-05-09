@@ -4,8 +4,10 @@ table {
   background-color: @primary-bg;
   border-spacing: 0;
   font-size: 0.8em;
+  cursor: default;
 
-  a {
+  a, a:visited {
+    color: @primary;
     text-decoration: none;
   }
 }
@@ -13,22 +15,61 @@ table {
 thead {
   color: @bgBlack;
   background-color: @primary-disabled;
+  .user-select-none();
+
+  .main th {
+    border-left: 1px solid @primary-bg;
+
+    &:first-child {
+      border-left: none;
+    }
+  }
+
+  th {
+    
+    padding: 0 0.75em;
+
+    &[ng-click] {
+      cursor: pointer;
+      &:hover {
+        color: @primary;
+      }
+    }
+
+    &.lft {
+      border-left: 1px solid @primary-bg;
+    }
+  }
 }
 
 
 tbody tr {
 
-  &:hover {
-    color: #000;
-    background-color: @secondary;
-  }
-}
+  &.tr {
+    color: @disabled;
+    text-align: right;
 
-th {
-  padding: 0.1em 0.5em;
+    &:hover {
+      color: @fg;
+      background-color: @warning-bg;
+    }
+
+    td {
+      padding: 0 0.7em;
+    }
+  }
+
 }
 
 td {
-  padding-left: 0.5em;
   font-size: 0.9em;
+
+  &.tl {
+    text-align: left;
+    padding-left: 0.7em;
+  }
+
+  &.tc {
+    text-align: center;
+  }
 }

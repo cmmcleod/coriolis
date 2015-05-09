@@ -12,7 +12,6 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.incCost = true;
     this.cargoScoop = { enabled: true, c: Components.cargoScoop() };
     this.bulkheads = { incCost: true, maxClass: 8 };
-    this.sgSI = null;    // Shield Generator Index
 
     for (p in properties) { this[p] = properties[p]; }  // Copy all base properties from shipData
 
@@ -56,9 +55,6 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       if (comps.internal[i] !== 0) {
         internal[i].id = comps.internal[i];
         internal[i].c = Components.internal(comps.internal[i]);
-        if (internal[i].c.grp == 'sg') {
-          this.sgSI = i;
-        }
       } else {
           internal[i].id = internal[i].c = null;
       }
@@ -70,28 +66,30 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    * Updates the ship totals based on the components for every slot.
    */
   Ship.prototype.updateTotals = function() {
-    var c = _.reduce(this.common, optsSum, {cost: 0, power: 0, mass: 0, capacity: 0});
+    var c = _.reduce(this.common, optsSum, {cost: 0, power: 0, mass: 0});
     var i = _.reduce(this.internal, optsSum, {cost: 0, power: 0, mass: 0, capacity: 0, armouradd: 0});
-    var h = _.reduce(this.hardpoints, optsSum, {cost: 0, power: 0, mass: 0, shieldmul: 1});
-    var fsd = this.common[2].c;   // Frame Shift Drive;
+    var h = _.reduce(this.hardpoints, hpSum, {cost: 0, active: 0, passive: 0, mass: 0, shieldmul: 1});
+    var fsd = this.common[2].c;                     // Frame Shift Drive;
+    var sgSI = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
 
     this.totalCost = c.cost + i.cost + h.cost + (this.incCost? this.cost : 0) + (this.bulkheads.incCost? this.bulkheads.c.cost : 0);
     this.unladenMass = c.mass + i.mass + h.mass + this.mass + this.bulkheads.c.mass;
-    this.powerAvailable = this.common[0].c.pGen;
+    this.powerAvailable = this.common[0].c.pGen;    // Power Plant
     this.fuelCapacity = this.common[6].c.capacity;
-    this.maxMass = this.common[1].c.maxmass;
+    this.maxMass = this.common[1].c.maxmass;        // Thrusters Max Mass
     this.cargoCapacity = i.capacity;
     this.ladenMass = this.unladenMass + this.cargoCapacity + this.fuelCapacity;
-    this.powerRetracted = c.power + i.power + (this.cargoScoop.enabled? this.cargoScoop.c.power : 0);
-    this.powerDeployed = this.powerRetracted + h.power;
+    this.powerRetracted = c.power + i.power + h.passive + (this.cargoScoop.enabled? this.cargoScoop.c.power : 0);
+    this.powerDeployed = this.powerRetracted + h.active;
     this.armourAdded = i.armouradd;
     this.shieldMultiplier = h.shieldmul;
     this.unladenJumpRange = calcJumpRange(this.unladenMass + fsd.maxfuel, fsd); // Include fuel weight for jump
     this.ladenJumpRange = calcJumpRange(this.ladenMass, fsd);
-    this.shieldStrength = this.sgSI !== null? calcShieldStrength(this.mass, this.shields, this.internal[this.sgSI].c, this.shieldMultiplier) : 0;
+    this.shieldStrength = sgSI != -1? calcShieldStrength(this.mass, this.shields, this.internal[sgSI].c, this.shieldMultiplier) : 0;
     this.armourTotal = this.armourAdded + this.armour;
-    // TODO: shield recharge rate
+    // TODO: shield recharge rate based pips, shield generator, power distributor
     // TODO: armor bonus / damage reduction for bulkheads
+    // TODO: Damage / DPS total (for all weapons)
   };
 
   /**
@@ -104,13 +102,31 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    */
   function optsSum(sum, slot) {
     var c = slot.c
-    if (c) { // The slot has a component mounted
+    if (c) { // The slot has a component installed
       sum.cost += (slot.incCost && c.cost)? c.cost : 0;
       sum.power += (slot.enabled && c.power)? c.power : 0;
       sum.mass += c.mass || 0;
       sum.capacity += c.capacity || 0;
-      sum.shieldmul += c.shieldmul || 0;
       sum.armouradd += c.armouradd || 0;
+    }
+    return sum;
+  }
+
+    /**
+   * Utilify function for summing the hardpoint properties
+   *
+   * @private
+   * @param  {object} sum     Sum of cost, power, etc
+   * @param  {object} slot    Slot object
+   * @return {object}         The mutated sum object
+   */
+  function hpSum(sum, slot) {
+    var c = slot.c
+    if (c) { // The slot has a component installed
+      sum.cost += (slot.incCost && c.cost)? c.cost : 0;
+      sum[c.passive? 'passive': 'active'] += slot.enabled? c.power : 0;
+      sum.mass += c.mass || 0;
+      sum.shieldmul += c.shieldmul || 0;
     }
     return sum;
   }
@@ -123,39 +139,43 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
 
   /**
    * Update a slot with a the component if the id is different from the current id for this slot.
-   * Frees the slot of the current component if the id matches the current id for the slot.
+   * Has logic handling components that you may only have 1 of (Shield Generator or Refinery).
    *
    * @param {object} slot      The component slot
    * @param {string} id        Unique ID for the selected component
    * @param {object} component Properties for the selected component
    */
   Ship.prototype.use = function(slot, id, component) {
-    // TODO: only single refinery allowed
     if (slot.id != id) { // Selecting a different component
-      slot.id = id;
-      slot.c = component;
       var slotIndex = this.internal.indexOf(slot);
-      if(slot.id == null) { // Slot has been emptied
-        if(this.sgSI == slotIndex) {  // The slot containing the shield generator was emptied
-          this.sgSI = null;
-        }
-      } else {
-        // Selected component is a Shield Generator
-        if(component.grp == 'sg') {
-          // You can only have one shield Generator
-          if (this.sgSI !== null && this.sgSI != slotIndex) {
-            // A shield generator is already selected in a different slot
-            this.internal[this.sgSI].id = null;
-            this.internal[this.sgSI].c = null;
-          }
-          this.sgSI = slotIndex;
-        // Replacing a shield generator with something else
-        } else if (this.sgSI == slotIndex) {
-          this.sgSI = null;
+      // Slot is an internal slot, is not being emptied, and the selected component group/type must be of unique
+      if(slotIndex != -1 && component && (component.grp == 'sg' || component.grp || 'rf')) {
+        // Find another internal slot that already has this type/group installed
+        var similarSlotIndex = this.findInternalByGroup(component.grp);
+        // If another slot has an installed component with of the same type
+        if (similarSlotIndex != -1 && similarSlotIndex != slotIndex) {
+          // Empty the slot
+          this.internal[similarSlotIndex].id = null;
+          this.internal[similarSlotIndex].c = null;
         }
       }
+      // Update slot with selected component (or empty)
+      slot.id = id;
+      slot.c = component;
       this.updateTotals();
     }
+  };
+
+  /**
+   * Find an internal slot that has an installed component of the specific group.
+   *
+   * @param  {string} group Component group/type
+   * @return {number}       The index of the slot in ship.internal
+   */
+  Ship.prototype.findInternalByGroup = function(group) {
+    return _.findIndex(this.internal, function (slot) {
+      return slot.c && slot.c.grp == group;
+    });
   };
 
   return Ship;

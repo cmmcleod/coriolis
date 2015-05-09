@@ -8,12 +8,17 @@
   left: 0;
   right: 0;
   background-color: rgba(0,0,0,0.5);
+  .user-select-none();
 }
 
 .modal {
-  width: 50%;
+  position: absolute;
+  left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  -webkit-transform:translate(-50%,-50%);
+
+  max-width: 75%;
   padding: 3em;
-  margin: 10em auto 0;
   background-color: @bgBlack;
   border: 1px solid @primary;
 
@@ -24,13 +29,34 @@
   h2 {
     margin: 0;
   }
+  p {
+    text-align: justify;
+  }
+}
+
+textarea {
+  background: @primary-bg;
+  border: none;
+  outline: none;
+  color: @primary-disabled;
+
+  &.json {
+    display:block;
+    width:40em;
+    height: 10em;
+    resize: vertical;
+    margin:2em 0;
+  }
+}
+
+
+input {
+  background: @primary-bg;
+  border: 1px solid @primary-disabled;
+  color: @secondary-disabled;
+  outline: none;
 }
 
 .dismiss {
-  outline: none;
   background-color: @primary-bg;
-  font-family: @fStandard;
-  color: @primary;
-  line-height: 1.5em;
-  border: 1px solid @primary;
 }

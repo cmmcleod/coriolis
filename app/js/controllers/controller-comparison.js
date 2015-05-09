@@ -15,9 +15,19 @@ angular.module('app').controller('ComparisonController', ['$rootScope', '$scope'
         shipId: shipId,
         buildName: buildName,
         ship: ship,
-        code: code
+        code: code,
+        pctRetracted: ship.powerRetracted / ship.powerAvailable,
+        pctDeployed: ship.powerDeployed / ship.powerAvailable,
       });
     }
+  }
+
+  $scope.predicate = 'ship.name';
+  $scope.desc = false;
+
+  $scope.sort = function (key) {
+    $scope.desc =  ($scope.predicate == key)? !$scope.desc : $scope.desc;
+    $scope.predicate = key;
   }
 
 

@@ -43,7 +43,7 @@ angular.module('app').directive('shipyardHeader', ['lodash','$rootScope', 'Persi
           return;
         }
 
-        if (menu == 'b' && !scope.bs.hasBuilds) {
+        if ((menu == 'comp' || menu == 'b') && !scope.bs.hasBuilds) {
           scope.openedMenu = null;
           return;
         }

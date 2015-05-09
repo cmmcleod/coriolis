@@ -1,0 +1,25 @@
+button {
+  .border-radius(0);
+  color: @primary;
+  fill: @primary;
+  border: 1px solid @primary;
+  font-family: @fStandard;
+  border: 1px solid;
+  padding: 0.5em;
+  cursor: pointer;
+  background: none;
+  outline: none;
+
+  &.danger {
+    color: red;
+    fill: red;
+    border: 1px solid red;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: @disabled;
+    fill: @disabled;
+    border: 1px solid @disabled;
+  }
+}

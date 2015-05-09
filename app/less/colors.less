@@ -19,3 +19,23 @@
 @primary-bg: fadeout(darken(@primary, 45%), 20%);
 @secondary-bg: fadeout(darken(@secondary, @bgDarken), @bgTransparency); // Brown background
 @warning-bg: fadeout(darken(@warning, @bgDarken), @bgTransparency); // Dark Red
+
+.disabled {
+  color: @disabled;
+  fill: @disabled;
+}
+
+.primary {
+  color: @primary;
+  fill: @primary;
+}
+
+.warning {
+  color: @warning;
+  fill: @warning;
+}
+
+.warning-disabled {
+  color: @warning-disabled;
+  fill: @warning-disabled;
+}

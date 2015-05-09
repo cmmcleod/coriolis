@@ -135,7 +135,7 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
   }
 
   // Event listeners
-  $rootScope.$on('keyup', function (e, keyEvent) {
+  $scope.$on('keyup', function (e, keyEvent) {
     // CTRL + S or CMD + S will override the default and save the build is possible
     if (keyEvent.keycode == 83 && keyEvent.ctrlKey) {
       e.preventDefault();
@@ -144,12 +144,12 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
   });
 
   // Hide any open menu/slot/etc if escape key is pressed
-  $rootScope.$on('escape', function (e, keyEvent) {
+  $scope.$on('escape', function (e, keyEvent) {
     $scope.selectedSlot = null;
     $scope.$apply();
   });
   // Hide any open menu/slot/etc if the background is clicked
-  $rootScope.$on('close', function (e, keyEvent) {
+  $scope.$on('close', function (e, keyEvent) {
     $scope.selectedSlot = null;
   });
 

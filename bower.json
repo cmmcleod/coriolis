@@ -1,14 +1,10 @@
 {
   "name": "coriolis_shipyard",
-  "version": "0.2.0",
   "authors": [
     "Colin McLeod <colin@mcleod.eu>"
   ],
   "description": "Coriolis Shipyard for Elite Dangerous",
   "main": "app/app.js",
-  "moduleType": [
-    "amd"
-  ],
   "keywords": [
     "elite",
     "shipyard"
@@ -25,7 +21,15 @@
   "dependencies": {
     "d3": "~3.5.5",
     "ng-lodash": "~0.2.0",
+    "ui-router-extras": "~0.0.13",
     "angular-ui-router": "^0.2.14"
   },
-  "overrides": {}
+  "overrides": {
+    "ui-router-extras": {
+      "main": [
+        "release/modular/ct-ui-router-extras.core.min.js",
+        "release/modular/ct-ui-router-extras.sticky.min.js"
+      ]
+    }
+  }
 }

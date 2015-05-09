@@ -2,8 +2,8 @@ header {
   background-color: @bg;
   margin: 0;
   padding: 0 1em;
-  height: 4em;
-  line-height: 4em;
+  height: 3em;
+  line-height: 3em;
   font-family: @fTitle;
   vertical-align: middle;
   position: relative;
@@ -43,7 +43,6 @@ header {
   }
 
   .menu-list {
-    width: 25em;
     font-family: @fStandard;
     position: absolute;
     padding: 1em 1em;
@@ -51,8 +50,12 @@ header {
     background-color: @bgBlack;
     font-size: 0.8em;
 
-    &.sm {
-      width: auto;
+    &.dbl {
+      width: 22.5em;
+      ul {
+        float: left;
+        width: 10em;
+      }
     }
 
     hr {
@@ -66,6 +69,7 @@ header {
     margin: 0.5em 1em 0 0;
     padding: 0;
     line-height: 2em;
+    white-space: nowrap;
   }
 
   li {
@@ -79,6 +83,10 @@ header {
     color: @warning;
     text-decoration: none;
     white-space: nowrap;
+
+    &.build-name {
+      font-family: Helvetica, sans-serif;
+    }
 
     &:visited {
       color: @warning;

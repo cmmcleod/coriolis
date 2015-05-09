@@ -1,59 +1,65 @@
 <header>
-  <div class="l" style="margin-right: 2em;"><a ui-sref="shipyard" class="icon icon-xl shipyard"></a></div>
+  <a class="l" ui-sref="shipyard" style="margin-right: 1em;" title="Ships"><svg class="icon xl"><use xlink:href="#coriolis"></use></svg></a>
 
   <div class="l menu">
-    <div class="menu-header" ng-class="{selected: openedMenu=='s'}" ng-click="openMenu($event,'s')">Ships</div>
-    <div class="menu-list sm" ng-if="openedMenu=='s'">
+    <div class="menu-header" ng-class="{selected: openedMenu=='s'}" ng-click="openMenu($event,'s')">
+      <svg class="icon warning"><use xlink:href="#rocket"></use></svg> Ships
+    </div>
+    <div class="menu-list" ng-if="openedMenu=='s'">
       <a class="block" ng-repeat="(shipId,ship) in ships" ui-sref-active="active" ui-sref="outfit({shipId:shipId, code:null, bn:null})">{{::ship.properties.name}}</a>
     </div>
   </div>
 
   <div class="l menu">
-    <div class="menu-header" ng-class="{selected: openedMenu=='b', disabled: !bs.hasBuilds}" ng-click="openMenu($event,'b')">Builds</div>
-    <div class="menu-list" ng-if="openedMenu=='b'" ng-click="$event.stopPropagation();">
+    <div class="menu-header" ng-class="{selected: openedMenu=='b', disabled: !bs.hasBuilds}" ng-click="openMenu($event,'b')">
+      <svg class="icon warning" ng-class="{'warning-disabled': !bs.hasBuilds}"><use xlink:href="#hammer"></use></svg> Builds
+    </div>
+    <div class="menu-list dbl" ng-if="openedMenu=='b'" ng-click="$event.stopPropagation();">
       <ul class="l" ng-repeat="(shipId,builds) in allBuilds">
         {{ships[shipId].properties.name}}
         <li ng-repeat="(name, build) in builds">
-          <a ui-sref-active="active" ui-sref="outfit({shipId:shipId, code:build, bn:name})" ng-bind="name"></a>
+          <a ui-sref-active="active" class="build-name" ui-sref="outfit({shipId:shipId, code:build, bn:name})" ng-bind="name"></a>
         </li>
       </ul>
     </div>
   </div>
 
   <div class="l menu">
-    <div class="menu-header" ng-class="{selected: openedMenu=='comp', disabled: !bs.hasBuilds}" ng-click="openMenu($event,'comp')">Comparison</div>
+    <div class="menu-header" ng-class="{selected: openedMenu=='comp', disabled: !bs.hasBuilds}" ng-click="openMenu($event,'comp')">
+      <svg class="icon warning" ng-class="{'warning-disabled': !bs.hasBuilds}"><use xlink:href="#stats-bars"></use></svg> Comparison
+    </div>
     <div class="menu-list" ng-if="openedMenu=='comp'" ng-click="$event.stopPropagation();">
       <ul>
-      <li>No Comparisons created</li>
+      <li>Custom Comarisons</li>
+      <li>Coming soon!</li>
        <!-- TODO: comparison links /-->
       </ul>
       <hr />
-      <a ui-sref="comparison" class="block">Create New</a>
+      <a ui-sref="comparison" class="block">Compare All</a>
     </div>
   </div>
 
   <div class="r menu">
     <div class="menu-header" ng-class="{selected: openedMenu=='settings'}" ng-click="openMenu($event,'settings')">
-      <span class="ico ico-cog"></span>
+      <svg class="icon xl warning"><use xlink:href="#cogs"></use></svg>
     </div>
-    <div class="menu-list sm" ng-if="openedMenu=='settings'" ng-click="$event.stopPropagation();">
+    <div class="menu-list" ng-if="openedMenu=='settings'" ng-click="$event.stopPropagation();">
       <ul>
         Insurance
         <li><select ng-model="insurance.current" ng-options="ins.name for (i,ins) in insurance.opts" ng-change="updateInsurance()"></select></li>
       </ul>
       <hr />
       <ul>
-        Builds
-        <li>Export All</li>
-        <li>Import</li>
+        Builds & Comparisons
+        <li><a href="#" class="block" ui-sref="modal.export">Export</a></li>
+        <li><a href="#" class="block" ui-sref="modal.import">Import</a></li>
+        <li><a href="#" class="block" ui-sref="modal.delete">Delete All</a></li>
       </ul>
       <hr />
-      <a href="#" class="block" ng-click="about($event)">About</a>
+      <a href="#" ui-sref="modal.about" class="block">About</a>
     </div>
   </div>
 
-  <div class="r">
-    <a class="icon icon-xl reddit" href="#" target="_blank" title="Reddit Thread"></a>
-  </div>
+  <a href="#" class="r" target="_blank" title="Reddit Thread"><svg class="icon xl"><use xlink:href="#reddit"></use></svg></a>
 
 </header>

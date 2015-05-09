@@ -124,10 +124,18 @@
       <h1 ng-bind="ship.name"></h1>
       <div id="build">
         <input ng-model="buildName" ng-change="bnChange()" placeholder="Enter Build Name" />
-        <button ng-click="saveBuild()" ng-disabled="!buildName || savedCode && code == savedCode">Save</button>
-        <button ng-click="reloadBuild()" ng-disabled="!savedCode || code == savedCode">Reload</button>
-        <button ng-click="deleteBuild()" ng-disabled="!savedCode">Delete</button>
-        <button ui-sref="outfit({shipId: ship.id,code:null, bn: buildName})" ng-disabled="!code">Reset</button>
+        <button ng-click="saveBuild()" ng-disabled="!buildName || savedCode && code == savedCode">
+        <svg class="icon lg "><use xlink:href="#floppy-disk"></use></svg> Save
+        </button>
+        <button ng-click="reloadBuild()" ng-disabled="!savedCode || code == savedCode">
+          <svg class="icon lg"><use xlink:href="#spinner11"></use></svg> Load
+        </button>
+        <button class="danger" ng-click="deleteBuild()" ng-disabled="!savedCode">
+          <svg class="icon lg"><use xlink:href="#bin"></use></svg>
+        </button>
+        <button ui-sref="outfit({shipId: ship.id,code:null, bn: buildName})" ng-disabled="!code">
+          <svg class="icon lg"><use xlink:href="#switch"></use></svg> Reset
+        </button>
       </div>
     </div>
 
@@ -188,7 +196,7 @@
           <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || hgMap[c.c.grp]}}</div><div class="val">{{fPwr(c.c.power)}}</div>
         </div>
 
-        <div ng-repeat="c in ship.internal" ng-if="c.c.power" class="item internal" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwrtogglePwr(c)">
+        <div ng-repeat="c in ship.internal" ng-if="c.c.power" class="item internal" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwr(c)">
           <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || igMap[c.c.grp]}}</div><div class="val">{{fPwr(c.c.power)}}</div>
         </div>
       </div>

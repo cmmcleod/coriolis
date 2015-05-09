@@ -1,0 +1,20 @@
+ RewriteEngine on
+    RewriteCond %{REQUEST_FILENAME} -s [OR]
+    RewriteCond %{REQUEST_FILENAME} -l [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^.*$ - [NC,L]
+
+    RewriteRule ^(.*) /index.html [NC,L]
+
+<IfModule mod_expires.c>
+    # Activate mod_expires for this directory
+    ExpiresActive on
+
+    ExpiresDefault                  "access plus 365 days"
+    ExpiresByType text/html         "access"
+    ExpiresByType application/json  "access"
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header add Access-Control-Allow-Origin "*"
+</IfModule>

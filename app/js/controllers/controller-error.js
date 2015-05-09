@@ -25,7 +25,7 @@ angular.module('app')
       break;
     default:
       $rootScope.bodyClass = 'thargoid'; // TODO: create background imag for this
-      $scope.msgPre = "Uh, this is bad..";
+      $scope.msgPre = "Uh, Jameson, we have a problem..";
       $scope.errorMessage = $p.message;
       $scope.details = $p.details;
   }

@@ -2,12 +2,13 @@
  * [description]
  */
 angular.module('app').service('Persist', ['lodash', function (_) {
-  var LS_KEY = 'builds';
+  var LS_KEY_BUILDS = 'builds';
+  var LS_KEY_COMPARISONS = 'comparisons';
 
-  var buildJson = localStorage.getItem(LS_KEY);
+  var buildJson = localStorage.getItem(LS_KEY_BUILDS);
 
   if (buildJson) {
-    this.builds = angular.fromJson(localStorage.getItem(LS_KEY));
+    this.builds = angular.fromJson(localStorage.getItem(LS_KEY_BUILDS));
   } else {
     this.builds = {};
   }
@@ -29,8 +30,8 @@ angular.module('app').service('Persist', ['lodash', function (_) {
 
     this.builds[shipId][name] = code;
     this.state.hasBuilds = true;
-    // Persist updated build collection to localstorage
-    localStorage.setItem(LS_KEY, angular.toJson(this.builds));
+    // Persist updated build collection to localStorage
+    localStorage.setItem(LS_KEY_BUILDS, angular.toJson(this.builds));
   }
 
   /**
@@ -62,9 +63,20 @@ angular.module('app').service('Persist', ['lodash', function (_) {
         delete this.builds[shipId];
         this.state.hasBuilds = Object.keys(this.builds).length > 0;
       }
-      // Persist updated build collection to localstorage
-      localStorage.setItem(LS_KEY, angular.toJson(this.builds));
+      // Persist updated build collection to localStorage
+      localStorage.setItem(LS_KEY_BUILDS, angular.toJson(this.builds));
     }
+  }
+
+  /**
+   * Delete all builds and comparisons from localStorage
+   */
+  this.deleteAll = function() {
+    angular.copy({}, this.builds); // Empty object but keep original instance
+    angular.copy({}, this.comparisons);
+    this.state.hasBuilds = false;
+    localStorage.removeItem(LS_KEY_BUILDS);
+    localStorage.removeItem(LS_KEY_COMPARISONS);
   }
 
 }]);

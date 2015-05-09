@@ -16,15 +16,20 @@
   line-height: 2em;
 
   input {
-    background: @primary-bg;
-    color: @secondary;
+    background: none;
+    color: @secondary-disabled;
     outline: none;
-    border: none;
     font-size: 0.8em;
     line-height: 2em;
-    text-align: right;
+    text-align: center;
+    border: 1px solid @secondary-disabled;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5em;
     &:hover, &:focus {
-      background-color: @secondary-bg;
+      border: 1px solid @secondary;
+      color: @secondary;
     }
   }
 }
@@ -48,10 +53,6 @@
   }
 }
 
-u { // Unit (Mj, Km, etc)
-  font-size: 0.8em;
-  text-decoration: none;
-}
 
 #summary {
   .user-select-none();

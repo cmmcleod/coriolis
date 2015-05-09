@@ -23,11 +23,20 @@ angular.module('app').config(['$provide','$stateProvider', '$urlRouterProvider',
             throw { type: 'no-ship', message: $p.shipId };
           }
         }]
-      }
+      },
+      sticky: true
     })
-    .state('shipyard', { url: '/', templateUrl: 'views/page-shipyard.html', controller: 'ShipyardController' })
-    .state('comparison', { url: '/comparison', templateUrl: 'views/page-comparison.html', controller: 'ComparisonController' })
-    .state('error', { params: {type:null, message:null, details: null }, templateUrl: 'views/page-error.html', controller: 'ErrorController' })
+    .state('shipyard', { url: '/', templateUrl: 'views/page-shipyard.html', controller: 'ShipyardController', sticky: true })
+    .state('comparison', { url: '/comparison', templateUrl: 'views/page-comparison.html', controller: 'ComparisonController', sticky: true })
+    .state('error', { params: {type:null, message:null, details: null }, templateUrl: 'views/page-error.html', controller: 'ErrorController', sticky: true })
+
+    // Modal States and views
+    .state('modal', { abstract: true, views:{ "modal": { templateUrl: "views/_modal.html", controller: 'ModalController' } } })
+    .state('modal.about', { views: { "modal-content": { templateUrl: "views/modal-about.html" } } })
+    .state('modal.export', { views: { "modal-content": { templateUrl: "views/modal-export.html", controller: 'ExportController' } } })
+    .state('modal.import', { views: { "modal-content": { templateUrl: "views/modal-import.html", controller: 'ImportController' } } })
+    .state('modal.delete', { views: { "modal-content": { templateUrl: "views/modal-delete.html", controller: 'DeleteController' } } });
+
 
   // Redirects
   $urlRouterProvider.when('/outfit','/outfit/sidewinder/');

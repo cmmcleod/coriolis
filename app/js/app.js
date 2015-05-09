@@ -1,4 +1,4 @@
-angular.module('app', ['ui.router', 'shipyard', 'ngLodash', 'app.templates'])
+angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'shipyard', 'ngLodash', 'app.templates'])
 .run(['$rootScope', '$location', '$window', '$document','$state','commonArray','shipPurpose','shipSize','hardPointClass','internalGroupMap','hardpointsGroupMap', function ($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hpc, igMap, hgMap) {
   // Redirect any state transition errors to the error controller/state
   $rootScope.$on('$stateChangeError', function(e, toState, toParams, fromState, fromParams, error){
@@ -7,8 +7,11 @@ angular.module('app', ['ui.router', 'shipyard', 'ngLodash', 'app.templates'])
   });
 
   // Track on Google analytics if available
-  $rootScope.$on('$stateChangeSuccess', function() {
-    if ($window.ga) ga('send', 'pageview', {page: $location.path()});
+  $rootScope.$on('$stateChangeSuccess', function(e, to, toParams, from, fromParams) {
+    $rootScope.prevState = { name: from.name, params: fromParams };
+    if(to.url) { // Only track states that have a URL
+      if ($window.ga) ga('send', 'pageview', {page: $location.path()});
+    }
   });
 
   // Global Reference variables
@@ -24,6 +27,7 @@ angular.module('app', ['ui.router', 'shipyard', 'ngLodash', 'app.templates'])
   $rootScope.fCrd = d3.format(',.0f');
   $rootScope.fPwr = d3.format(',.2f');
   $rootScope.fRound = function(d) { return d3.round(d, 2) };
+  $rootScope.fRound4 = function(d) { return d3.round(d, 4) };
   $rootScope.fPct = d3.format('.2%');
   $rootScope.fRPct = d3.format('%');
   $rootScope.fTime = function(d) { return Math.floor(d/60) + ":" + ("00" + (d%60)).substr(-2,2); };
