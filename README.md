@@ -16,7 +16,7 @@ All such requests are managed and tracked through [issues](https://github.com/cm
 
 ## Development
 
-See the [Developer's Guide](https://github.com/cmmcleod/coriolis/issues) in the wiki.
+See the [Developer's Guide](https://github.com/cmmcleod/coriolis/wiki/Developer's-Guide) in the wiki.
 
 
 ### Ship and Component Database
