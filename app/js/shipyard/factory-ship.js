@@ -149,7 +149,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     if (slot.id != id) { // Selecting a different component
       var slotIndex = this.internal.indexOf(slot);
       // Slot is an internal slot, is not being emptied, and the selected component group/type must be of unique
-      if(slotIndex != -1 && component && (component.grp == 'sg' || component.grp || 'rf')) {
+      if(slotIndex != -1 && component && (component.grp == 'sg' || component.grp == 'rf')) {
         // Find another internal slot that already has this type/group installed
         var similarSlotIndex = this.findInternalByGroup(component.grp);
         // If another slot has an installed component with of the same type
