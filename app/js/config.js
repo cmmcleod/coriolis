@@ -3,7 +3,7 @@
  */
 angular.module('app').config(['$provide','$stateProvider', '$urlRouterProvider', '$locationProvider', 'ShipsDB', function ($provide, $stateProvider, $urlRouterProvider, $locationProvider, ships) {
   // Use HTML5 push and replace state if possible
-  $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode({enabled: true, requireBase: false});
   /**
    * Set up all states and their routes.
    */

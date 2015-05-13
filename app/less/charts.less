@@ -1,8 +1,40 @@
 
-svg.chart {
+.chart {
   .user-select-none();
-  display: block;
-  width:100%;
-  height:100%;
+  display: inline-block;
+  margin: 1em;
+  //width:100%;
+  //height:100%;
+  cursor: default;
+
+  h3 {
+    text-align: center;
+
+    &[ng-click] {
+      cursor: pointer;
+    }
+  }
+
+  svg {
+    .axis {
+
+      line, path {
+        fill: none;
+        stroke: @primary-disabled;
+      }
+
+      text {
+        font-size: 0.75em;
+        fill: @primary-disabled;
+      }
+
+      &.y {
+        text tspan:first-child {
+          fill: @primary;
+        }
+      }
+
+    }
+  }
 }
 

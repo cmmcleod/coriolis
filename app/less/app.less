@@ -8,16 +8,19 @@
 @import 'list';
 @import 'slot';
 @import 'outfit';
+@import 'comparison';
 @import 'table';
 @import 'select';
 @import 'modal';
 @import 'charts';
+@import 'chart-tooltip';
 @import 'buttons';
 @import 'error';
 
 
 html, body {
   min-height: 100%;
+  text-rendering: optimizeLegibility;
 }
 
 body {
@@ -64,11 +67,21 @@ body {
 h1 {
   font-family: @fTitle;
   color: @primary;
+  font-size: 1.6em;
 }
 
 h2 {
   text-transform: uppercase;
   font-family: @fTitle;
+  font-size: 1.2em;
+}
+
+h3 {
+  text-transform: uppercase;
+  font-family: @fTitle;
+  font-size: 1em;
+  margin: 0.2em 0;
+  color: @primary;
 }
 
 u { // Unit (Mj, Km, etc)

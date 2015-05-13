@@ -90,7 +90,7 @@ gulp.task('js', function() {
       'app/js/**/*.js'
     ])
     .pipe(sourcemaps.init())
-    .pipe(uglify({mangle: false}).on('error',function(e){
+    .pipe(uglify({mangle: true}).on('error',function(e){
       console.log('File:', e.fileName);
       console.log('Line:', e.lineNumber);
       console.log('Message:', e.message);

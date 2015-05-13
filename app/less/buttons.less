@@ -1,7 +1,9 @@
 button {
   .border-radius(0);
   color: @primary;
-  fill: @primary;
+  svg {
+    fill: @primary;
+  }
   border: 1px solid @primary;
   font-family: @fStandard;
   border: 1px solid;
@@ -12,14 +14,18 @@ button {
 
   &.danger {
     color: red;
-    fill: red;
+    svg {
+      fill: red;
+    }
     border: 1px solid red;
   }
 
   &:disabled {
     cursor: not-allowed;
     color: @disabled;
-    fill: @disabled;
+    svg {
+      fill: @disabled;
+    }
     border: 1px solid @disabled;
   }
 }

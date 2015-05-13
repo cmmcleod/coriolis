@@ -4,7 +4,7 @@
  *
  * This file contains values and functions that can be reused across the app.
  *
- * @requires ngLodash is a dependency of this module.
+ * @requires ngLodash
  */
 angular.module('shipyard', ['ngLodash'])
   // Create 'angularized' references to DB.This will aid testing
@@ -71,6 +71,78 @@ angular.module('shipyard', ['ngLodash'])
     'Medium',
     'Large',
     'Huge'
+  ])
+  /**
+   * Array of all Ship properties (facets) organized into groups
+   * used for ship comparisons.
+   *
+   * @type {Array}
+   */
+  .value('ShipFacets', [
+    {
+      title: 'Agility',
+      prop: 'agility',
+      unit: '',
+      fmt: 'fCrd'
+    },
+    {
+      title: 'Speed',
+      props: ['speed', 'boost'],
+      lbls: ['Thrusters', 'Boost'],
+      unit: 'M/s',
+      fmt: 'fRound'
+    },
+    {
+      title: 'Armour',
+      prop: 'armour',
+      unit: '',
+      fmt: 'fCrd'
+    },
+    {
+      title: 'Shields',
+      prop: 'shieldStrength',
+      unit: 'Mj',
+      fmt: 'fRound'
+    },
+    {
+      title: 'Jump Range',
+      props: ['unladenJumpRange', 'ladenJumpRange'],
+      lbls: ['Unladen', 'Laden'],
+      unit: 'LY',
+      fmt: 'fRound'
+    },
+    {
+      title: 'Mass',
+      props: ['unladenMass', 'ladenMass'],
+      lbls: ['Unladen', 'Laden'],
+      unit: 'T',
+      fmt: 'fRound'
+    },
+    {
+      title: 'Cargo',
+      prop: 'cargoCapacity',
+      unit: 'T',
+      fmt: 'fRound'
+    },
+    {
+      title: 'Fuel',
+      prop: 'fuelCapacity',
+      unit: 'T',
+      fmt: 'fRound'
+    },
+    {
+      title: 'Power',
+      props: ['powerRetracted','powerDeployed','powerAvailable'],
+      lbls: ['Retracted', 'Deployed', 'Available'],
+      unit: 'MW',
+      fmt: 'fPwr'
+    },
+    {
+      title: 'Cost',
+      prop: 'totalCost',
+      unit: 'CR',
+      fmt: 'fCrd'
+    }
   ])
   /**
    * Calculate the maximum single jump range based on mass and a specific FSD

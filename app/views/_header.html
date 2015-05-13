@@ -1,9 +1,9 @@
 <header>
-  <a class="l" ui-sref="shipyard" style="margin-right: 1em;" title="Ships"><svg class="icon xl"><use xlink:href="#coriolis"></use></svg></a>
+  <a class="l" ui-sref="shipyard" style="margin-right: 1em;" title="Ships"><svg class="icon xl"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#coriolis"></use></svg></a>
 
   <div class="l menu">
     <div class="menu-header" ng-class="{selected: openedMenu=='s'}" ng-click="openMenu($event,'s')">
-      <svg class="icon warning"><use xlink:href="#rocket"></use></svg> Ships
+      <svg class="icon warning"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rocket"></use></svg> Ships
     </div>
     <div class="menu-list" ng-if="openedMenu=='s'">
       <a class="block" ng-repeat="(shipId,ship) in ships" ui-sref-active="active" ui-sref="outfit({shipId:shipId, code:null, bn:null})">{{::ship.properties.name}}</a>
@@ -30,7 +30,7 @@
     </div>
     <div class="menu-list" ng-if="openedMenu=='comp'" ng-click="$event.stopPropagation();">
       <ul>
-      <li>Custom Comarisons</li>
+      <li>Custom Comparisons</li>
       <li>Coming soon!</li>
        <!-- TODO: comparison links /-->
       </ul>
@@ -60,6 +60,6 @@
     </div>
   </div>
 
-  <a href="#" class="r" target="_blank" title="Reddit Thread"><svg class="icon xl"><use xlink:href="#reddit"></use></svg></a>
+  <!-- <a href="#" class="r" target="_blank" title="Reddit Thread"><svg class="icon xl"><use xlink:href="#reddit"></use></svg></a> -->
 
 </header>

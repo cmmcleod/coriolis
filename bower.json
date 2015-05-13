@@ -22,7 +22,8 @@
     "d3": "~3.5.5",
     "ng-lodash": "~0.2.0",
     "ui-router-extras": "~0.0.13",
-    "angular-ui-router": "^0.2.14"
+    "angular-ui-router": "^0.2.14",
+    "d3-tip": "~0.6.7"
   },
   "overrides": {
     "ui-router-extras": {
