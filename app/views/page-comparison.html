@@ -45,7 +45,7 @@
   <div class="modal" ui-view="modal-content" ng-click="$event.stopPropagation()">
     <h3>Select Builds to Compare</h3>
     <div id="build-select">
-      <table class="l">
+      <table>
         <thead><tr><th colspan="2">Available</th></tr></thead>
         <tbody>
           <tr ng-repeat="b in unusedBuilds | orderBy:'[0]'" ng-click="addBuild(b.id, b.buildName)">
@@ -53,8 +53,8 @@
           </tr>
         </tbody>
       </table>
-      <h1 class="l">⇆</h1>
-      <table class="l">
+      <h1>⇆</h1>
+      <table>
         <tbody>
           <thead><tr><th colspan="2">Added</th></tr></thead>
           <tr ng-repeat="b in builds | orderBy:'name'" ng-click="removeBuild(b.id, b.buildName)">

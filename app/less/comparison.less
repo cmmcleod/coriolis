@@ -78,14 +78,24 @@
   clear: both;
   margin: 1em 0 0;
   height: 8.5em;
+  white-space: nowrap;
   overflow:hidden;
 
   h1 {
+    display: inline-block;
     margin: 0 0.7em;
+    vertical-align: top;
   }
 
   table {
+    display: inline-block;
     width: 20em;
+    vertical-align: top;
+
+    thead {
+      display: block;
+      text-align: center;
+    }
 
     tbody {
       display: block;
