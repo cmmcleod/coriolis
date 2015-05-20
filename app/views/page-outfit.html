@@ -123,7 +123,7 @@
     <div id="overview" class="list">
       <h1 ng-bind="ship.name"></h1>
       <div id="build">
-        <input ng-model="buildName" ng-change="bnChange()" placeholder="Enter Build Name" />
+        <input ng-model="buildName" ng-change="bnChange()" placeholder="Enter Build Name" maxlength="50" />
         <button ng-click="saveBuild()" ng-disabled="!buildName || savedCode && code == savedCode">
         <svg class="icon lg "><use xlink:href="#floppy-disk"></use></svg> Save
         </button>
@@ -171,15 +171,22 @@
     <div class="list">
       <div class="header">Mass</div>
       <div class="summary">
-        <div class="item"><div class="lbl">Max</div><div class="val">{{fRound(ship.maxMass)}} <u>T</u></div></div>
         <div class="item"><div class="lbl">Laden</div><div class="val">{{fRound(ship.ladenMass)}} <u>T</u></div></div>
         <div class="item"><div class="lbl">Unladen</div><div class="val">{{fRound(ship.unladenMass)}} <u>T</u></div></div>
       </div>
     </div>
 
+    <div class="list">
+      <div class="header">Capacity</div>
+        <div class="summary">
+          <div class="item"><div class="lbl">Cargo</div><div class="val">{{fRound(ship.cargoCapacity)}} <u>T</u></div></div>
+          <div class="item"><div class="lbl">Fuel</div><div class="val">{{fRound(ship.fuelCapacity)}} <u>T</u></div></div>
+        </div>
+    </div>
+
     <div class="list" ship="ship">
       <div class="header toggle" ng-click="powerExp = !powerExp">Power Use</div>
-      <div class="items" ng-if="powerExp">
+      <div class="items" ng-if="!powerExp">
         <div ng-if="pp.c.pGen" class="item common enabled untoggleable">
           <div class="lbl">{{pp.c.class}}{{pp.c.rating}} Power Plant</div><div class="val">{{fPwr(pp.c.pGen)}}</div>
         </div>
@@ -216,19 +223,10 @@
       </div>
     </div>
 
-      <div class="list">
-      <div class="header">Capacity</div>
-        <div class="summary">
-          <div class="item"><div class="lbl">Cargo</div><div class="val">{{fRound(ship.cargoCapacity)}} <u>T</u></div></div>
-          <div class="item"><div class="lbl">Fuel</div><div class="val">{{fRound(ship.fuelCapacity)}} <u>T</u></div></div>
-        </div>
-    </div>
-
     <div class="list">
       <div class="header toggle" ng-click="rangeExp = !rangeExp">Jump Range</div>
-      <div class="items" ng-if="rangeExp">
-        <!---<linechart data="data" options="options" mode="" width="" height=""></linechart>/-->
-        Stuff!
+      <div class="items cen" ng-if="!rangeExp">
+        <div class="chart" area-chart config="jrChart" series="jrSeries" width="500" height="250"></div>
       </div>
       <div class="summary toggle" ng-click="rangeExp = !rangeExp">
         <div class="item">
@@ -244,11 +242,11 @@
 
     <div class="list">
       <div class="header toggle" ng-click="costsExpanded = !costsExpanded">Costs</div>
-      <div class="items" ng-if="costsExpanded">
-        <div class="item" ng-class="{enabled:ship.incCost}" ng-click="toggleCost()">
+      <div class="items" ng-if="!costsExpanded">
+        <div class="item" ng-class="{enabled:ship.incCost}" ng-click="toggleCost(ship)">
           <div class="lbl">{{ship.name}}</div><div class="val">{{fCrd(ship.cost)}}</div>
         </div>
-        <div class="item" ng-class="{enabled:ship.bulkheads.incCost}" ng-click="toggleCost()" ng-if="ship.bulkheads.c.cost">
+        <div class="item" ng-class="{enabled:ship.bulkheads.incCost}" ng-click="toggleCost(ship.bulkheads)" ng-if="ship.bulkheads.c.cost">
           <div class="lbl">{{ship.bulkheads.c.name}}</div><div class="val">{{fCrd(ship.bulkheads.c.cost)}}</div>
         </div>
         <div ng-repeat="c in ship.common" ng-if="c.c.cost" class="item common" ng-class="{enabled:c.incCost}" ng-click="toggleCost(c)">

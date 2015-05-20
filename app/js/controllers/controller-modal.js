@@ -1,5 +1,5 @@
 angular.module('app').controller('ModalController', ['$rootScope','$scope', '$state', function ($rootScope, $scope, $state) {
-  var dismissListener;
+
   $scope.dismiss = function() {
     if ($rootScope.prevState) {
       var state = $rootScope.prevState;
@@ -7,7 +7,7 @@ angular.module('app').controller('ModalController', ['$rootScope','$scope', '$st
     } else {
       $state.go('shipyard');
     }
-  }
+  };
 
   $scope.$on('close', $scope.dismiss);
 

@@ -1,4 +1,4 @@
-angular.module('app').directive('shipyardHeader', ['lodash','$rootScope', 'Persist', 'ShipsDB', function (_, $rootScope, Persist, ships) {
+angular.module('app').directive('shipyardHeader', ['lodash','$window','$rootScope', 'Persist', 'ShipsDB', function (_, $window, $rootScope, Persist, ships) {
 
   return {
     restrict: 'E',
@@ -8,6 +8,7 @@ angular.module('app').directive('shipyardHeader', ['lodash','$rootScope', 'Persi
       scope.openedMenu = null;
       scope.ships = ships;
       scope.allBuilds = Persist.builds;
+      scope.allComparisons = Persist.comparisons;
       scope.bs = Persist.state;
 
       // Insurance options and management here for now.
@@ -17,9 +18,9 @@ angular.module('app').directive('shipyardHeader', ['lodash','$rootScope', 'Persi
           { name:'Alpha', pct: 0.025 },
           { name:'Beta', pct: 0.035 }
         ]
-      }
+      };
 
-      var insIndex = _.findIndex($rootScope.insurance.opts, 'name', localStorage.getItem('insurance'));
+      var insIndex = _.findIndex($rootScope.insurance.opts, 'name', $window.localStorage.getItem('insurance'));
       $rootScope.insurance.current = $rootScope.insurance.opts[insIndex != -1? insIndex : 0];
 
       // Close menus if a navigation change event occurs
@@ -33,8 +34,8 @@ angular.module('app').directive('shipyardHeader', ['lodash','$rootScope', 'Persi
       });
 
       scope.updateInsurance = function(){
-        localStorage.setItem('insurance', $rootScope.insurance.current.name);
-      }
+        $window.localStorage.setItem('insurance', $rootScope.insurance.current.name);
+      };
 
       scope.openMenu = function (e, menu) {
         e.stopPropagation();
@@ -59,8 +60,7 @@ angular.module('app').directive('shipyardHeader', ['lodash','$rootScope', 'Persi
 
       $rootScope.hideAbout = function (){
         $rootScope.showAbout = false;
-      }
-
+      };
     }
   };
 }]);

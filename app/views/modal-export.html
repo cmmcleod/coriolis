@@ -1,5 +1,5 @@
-<h2>Export</h2>
+<h2 ng-bind="title"></h2>
 <div>
-  <textarea class="cb json">{{builds | json}}</textarea>
+  <textarea class="cb json" ng-focus="onTextClick($event)" ng-bind="export"></textarea>
 </div>
 <button class="r dismiss" ng-click="dismiss()">Close</button>

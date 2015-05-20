@@ -13,9 +13,9 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.cargoScoop = { enabled: true, c: Components.cargoScoop() };
     this.bulkheads = { incCost: true, maxClass: 8 };
 
-    for (p in properties) { this[p] = properties[p]; }  // Copy all base properties from shipData
+    for (var p in properties) { this[p] = properties[p]; }  // Copy all base properties from shipData
 
-    for (slotType in slots) {   // Initialize all slots
+    for (var slotType in slots) {   // Initialize all slots
       var slotGroup = slots[slotType];
       var group = this[slotType] = [];   // Initialize Slot group (Common, Hardpoints, Internal)
       for(var i = 0; i < slotGroup.length; i++){
@@ -101,7 +101,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    * @return {object}         The mutated sum object
    */
   function optsSum(sum, slot) {
-    var c = slot.c
+    var c = slot.c;
     if (c) { // The slot has a component installed
       sum.cost += (slot.incCost && c.cost)? c.cost : 0;
       sum.power += (slot.enabled && c.power)? c.power : 0;
@@ -121,7 +121,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    * @return {object}         The mutated sum object
    */
   function hpSum(sum, slot) {
-    var c = slot.c
+    var c = slot.c;
     if (c) { // The slot has a component installed
       sum.cost += (slot.incCost && c.cost)? c.cost : 0;
       sum[c.passive? 'passive': 'active'] += slot.enabled? c.power : 0;
@@ -135,7 +135,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.bulkheads.id = index;
     this.bulkheads.c = Components.bulkheads(this.id, index);
     this.updateTotals();  // Update mass, range, shield strength, armor
-  }
+  };
 
   /**
    * Update a slot with a the component if the id is different from the current id for this slot.
@@ -164,6 +164,15 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       slot.c = component;
       this.updateTotals();
     }
+  };
+
+  /**
+   * [jumpRange description]
+   * @param  {number} mass [description]
+   * @return {number}      Jump range in Light Years
+   */
+  Ship.prototype.jumpRangeWithMass = function (mass) {
+    return calcJumpRange(mass, this.common[2].c);
   };
 
   /**

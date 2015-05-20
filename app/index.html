@@ -21,7 +21,7 @@
   <meta name="theme-color" content="#000000">
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 </head>
-<body ng-class="bodyClass" ng-click="bgClicked($event)">
+<body  ng-click="bgClicked($event)">
   <div style="height: 0; width: 0; overflow:hidden"><%= svgContent %></div>
   <shipyard-header></shipyard-header>
   <div id="main" ui-view></div>
@@ -47,6 +47,7 @@
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
       ga('create', '<%= uaTracking %> ', 'auto');
+      var GAPI_KEY = '<%= gapiKey %>';
     </script>
   <% } %>
 

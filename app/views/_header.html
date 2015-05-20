@@ -3,9 +3,9 @@
 
   <div class="l menu">
     <div class="menu-header" ng-class="{selected: openedMenu=='s'}" ng-click="openMenu($event,'s')">
-      <svg class="icon warning"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rocket"></use></svg> Ships
+      <svg class="icon warning"><use xlink:href="#rocket"></use></svg> Ships
     </div>
-    <div class="menu-list" ng-if="openedMenu=='s'">
+    <div class="menu-list no-wrap" ng-if="openedMenu=='s'">
       <a class="block" ng-repeat="(shipId,ship) in ships" ui-sref-active="active" ui-sref="outfit({shipId:shipId, code:null, bn:null})">{{::ship.properties.name}}</a>
     </div>
   </div>
@@ -18,7 +18,7 @@
       <ul class="l" ng-repeat="(shipId,builds) in allBuilds">
         {{ships[shipId].properties.name}}
         <li ng-repeat="(name, build) in builds">
-          <a ui-sref-active="active" class="build-name" ui-sref="outfit({shipId:shipId, code:build, bn:name})" ng-bind="name"></a>
+          <a ui-sref-active="active" class="name" ui-sref="outfit({shipId:shipId, code:build, bn:name})" ng-bind="name"></a>
         </li>
       </ul>
     </div>
@@ -29,13 +29,11 @@
       <svg class="icon warning" ng-class="{'warning-disabled': !bs.hasBuilds}"><use xlink:href="#stats-bars"></use></svg> Comparison
     </div>
     <div class="menu-list" ng-if="openedMenu=='comp'" ng-click="$event.stopPropagation();">
-      <ul>
-      <li>Custom Comparisons</li>
-      <li>Coming soon!</li>
-       <!-- TODO: comparison links /-->
-      </ul>
+      <span ng-if="!bs.hasComparisons">None Created</span>
+      <a ng-repeat="(name, comp) in allComparisons" ui-sref-active="active" class="block name" ui-sref="compare({name:name})" ng-bind="name"></a>
       <hr />
-      <a ui-sref="comparison" class="block">Compare All</a>
+      <a ui-sref="compare({name: 'all'})" class="block">Compare All</a>
+      <a ui-sref="compare({name: null})" class="block">Create New</a>
     </div>
   </div>
 
@@ -43,7 +41,7 @@
     <div class="menu-header" ng-class="{selected: openedMenu=='settings'}" ng-click="openMenu($event,'settings')">
       <svg class="icon xl warning"><use xlink:href="#cogs"></use></svg>
     </div>
-    <div class="menu-list" ng-if="openedMenu=='settings'" ng-click="$event.stopPropagation();">
+    <div class="menu-list no-wrap" ng-if="openedMenu=='settings'" ng-click="$event.stopPropagation();">
       <ul>
         Insurance
         <li><select ng-model="insurance.current" ng-options="ins.name for (i,ins) in insurance.opts" ng-change="updateInsurance()"></select></li>
@@ -51,7 +49,7 @@
       <hr />
       <ul>
         Builds & Comparisons
-        <li><a href="#" class="block" ui-sref="modal.export">Export</a></li>
+        <li><a href="#" class="block" ui-sref="modal.export({data: allBuilds})">Export</a></li>
         <li><a href="#" class="block" ui-sref="modal.import">Import</a></li>
         <li><a href="#" class="block" ui-sref="modal.delete">Delete All</a></li>
       </ul>

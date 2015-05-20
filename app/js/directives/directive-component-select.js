@@ -1,4 +1,4 @@
-angular.module('app').directive('componentSelect', function() {
+angular.module('app').directive('componentSelect', function () {
 
   // Generting the HTML in this manner is MUCH faster than using an angular template.
 
@@ -8,20 +8,34 @@ angular.module('app').directive('componentSelect', function() {
       var o = opts[i];
       var id = o.id || (o.class + o.rating);  // Common components' ID is their class and rating
       list.push('<li class="', o.name? 'lc' : 'c');
-      if(wrap && o.class != prevClass) list.push(' cl');
-      if (cid == o.id) list.push(' active');
+
+      if(wrap && o.class != prevClass) {
+        list.push(' cl');
+      }
+
+      if (cid == o.id) {
+        list.push(' active');
+      }
+
       list.push((o.maxmass && mass > o.maxmass)? ' disabled"' : '" cpid="', id, '">');
+
       if(o.mode) {
         list.push('<svg cpid="', id, '" class="icon lg"><use xlink:href="#mount-', o.mode , '"></use></svg> ');
       }
+
       list.push(o.class, o.rating);
+
       if(o.mode) {
         list.push('/' + o.mode);
         if(o.missile) {
           list.push(o.missile);
         }
       }
-      if(o.name) list.push(' ' + o.name);
+
+      if(o.name) {
+        list.push(' ' + o.name);
+      }
+
       list.push('</li>');
       prevClass = o.class;
       prevRating= o.rating;
@@ -49,7 +63,7 @@ angular.module('app').directive('componentSelect', function() {
       if(groups) {
         // At present time slots with grouped options (Hardpoints and Internal) can be empty
         list.push('<div class="empty-c" cpid="empty">EMPTY</div>');
-        for (g in groups) {
+        for (var g in groups) {
           var grp = groups[g];
           var grpCode = grp[Object.keys(grp)[0]].grp; // Nasty operation to get the grp property of the first/any single component
           list.push('<div id="', grpCode ,'" class="select-group">', g, '</div><ul>');

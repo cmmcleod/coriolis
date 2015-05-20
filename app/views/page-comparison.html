@@ -1,33 +1,68 @@
-<div id="comparison">
 
-<!-- TODO: Select builds -->
-<!-- TODO: Save Comparison -->
-<!-- TODO: Permalink for comparison -->
-<!-- TODO: Select faceset -->
+<table id="comparison">
+  <tr ng-show="compareMode">
+    <td class="head">Comparison</td>
+    <td>
+      <input ng-model="name" ng-change="nameChange()" placeholder="Enter Comparison Name"  maxlength="50" />
+    </td>
+    <td>
+      <button ng-click="save()" ng-disabled="!name || name == 'all' || saved"><svg class="icon lg "><use xlink:href="#floppy-disk"></use></svg> Save</button>
+      <button ng-click="delete()" ng-disabled="name == 'all' || !saved"><svg class="icon lg warning "><use xlink:href="#bin"></use></svg></button>
+      <button ng-click="selectBuilds(true, $event)"><svg class="icon lg "><use xlink:href="#rocket"></use></svg> Builds</button>
+      <button class="r" ng-click="permalink($event)" ng-disabled="builds.length == 0"><svg class="icon lg "><use xlink:href="#link"></use></svg> Permalink</button>
+      <button class="r" ng-click="embed($event)" ng-disabled="builds.length == 0"><svg class="icon lg "><use xlink:href="#embed"></use></svg> Forum</button>
+    </td>
+  </tr>
+  <tr ng-show="!compareMode">
+    <td class="head">Comparison</td>
+    <td colspan="2">
+      <h3 ng-bind="name"></h3>
+      <button class="r" ui-sref="modal.import({obj:importObj})"><svg class="icon lg "><use xlink:href="#download"></use></svg> Import Builds</button>
+    </td>
+  </tr>
+  <tr>
+    <td class="head">Compare</td>
+    <td colspan="2">
+      <ul id="facet-container" as-sortable="facetSortOpts" ng-model="facets" class="sortable" update="tblUpdate">
+        <li ng-repeat="(i,f) in facets" as-sortable-item class="facet" ng-class="{active: f.active}" ng-click="toggleFacet(i)">
+          <div as-sortable-item-handle>
+            <svg class="icon move"><use xlink:href="{{f.active? '#checkmark' : '#checkmark2'}}"></use></svg>
+            <span ng-bind="f.title"></span>
+          </div>
+        </li>
+      </ul>
+    </td>
+    </tr>
+</table>
 
-  <table>
-    <thead  ng-click="sortProperty($event)">
-      <tr class="main">
-        <th rowspan="2" class="prop" prop="name">Ship</th>
-        <th rowspan="2" class="prop" prop="buildName">Build</th>
-        <th ng-repeat="f in facets" rowspan="{{f.prop? 2 : 1}}" colspan="{{f.prop? 1: f.props.length}}" prop="{{f.prop}}" ng-class="{prop: f.prop}" ng-bind="f.title"></th>
-      </tr>
-      <tr>
-        <th ng-repeat="f in subFacets | filter:{sub:true}" class="prop" prop="{{f.prop}}" ng-class="{lft: f.start}" test="{{f.start}}" ng-bind="f.label"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr  class="tr" ng-repeat="b in comparison">
-        <td class="tl"><a ui-sref="outfit({shipId: b.id, code: b.code, bn: b.buildName})" ng-bind="b.name"></a></td>
-        <td class="tl"><a ui-sref="outfit({shipId: b.id, code: b.code, bn: b.buildName})" ng-bind="b.buildName"></a></td>
-        <td ng-repeat="f in subFacets">{{f.fmt(b[f.prop])}} <u>{{f.unit}}</u></td>
+<table id="comp-tbl" comparison-table ng-click="handleClick($event)"></table>
 
-      </tr>
-      </tbody>
-  </table>
+<div ng-repeat="f in facets | filter:{active:true}" ng-if="builds.length > 0" class="chart" bar-chart width="500" facet="f" data="builds">
+  <h3 ng-click="sort(f.props[0])" >{{f.title}}</h3>
+</div>
 
-  <div ng-repeat="f in facets" class="chart" bar-chart width="500" height="chartHeight" facet="f" data="comparison">
-    <h3 ng-click="sort(f.prop || f.props[0])" >{{f.title}}</h3>
+<div class="modal-bg" ng-show="showBuilds" ng-click="selectBuilds(false, $event)">
+  <div class="modal" ui-view="modal-content" ng-click="$event.stopPropagation()">
+    <h3>Select Builds to Compare</h3>
+    <div id="build-select">
+      <table class="l">
+        <thead><tr><th colspan="2">Available</th></tr></thead>
+        <tbody>
+          <tr ng-repeat="b in unusedBuilds | orderBy:'[0]'" ng-click="addBuild(b.id, b.buildName)">
+            <td class="tl" ng-bind="b.name"></td><td class="tl" ng-bind="b.buildName"></td>
+          </tr>
+        </tbody>
+      </table>
+      <h1 class="l">⇆</h1>
+      <table class="l">
+        <tbody>
+          <thead><tr><th colspan="2">Added</th></tr></thead>
+          <tr ng-repeat="b in builds | orderBy:'name'" ng-click="removeBuild(b.id, b.buildName)">
+            <td class="tl" ng-bind="b.name"></td><td class="tl" ng-bind="b.buildName"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="r dismiss" ng-click="selectBuilds(false, $event)">Done</button>
   </div>
-
 </div>

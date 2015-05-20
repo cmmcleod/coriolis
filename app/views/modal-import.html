@@ -13,14 +13,14 @@
         <td>{{ships[shipId].properties.name}}</td>
         <td><input type="text" ng-model="b.useName"/></td>
         <td ng-class="{warning: hasBuild(shipId, b.useName) == true, disabled: b.useName == ''}">
-          <span ng-if="b.useName">{{ hasBuild(shipId, b.useName)? 'Overwrite' : 'Create' }}</span>
-          <span ng-if="b.useName == ''">Skip</span>
+          <span ng-show="b.useName">{{ hasBuild(shipId, b.useName)? 'Overwrite' : 'Create' }}</span>
+          <span ng-show="b.useName == ''">Skip</span>
         </td>
       </tr>
     </tbody>
   </table>
   <button class="cl l" ng-click="import()"><svg class="icon"><use xlink:href="#download"></use></svg> Import</button>
-  <button class="l" style="margin-left: 2em;" ng-click="processed = false">Edit JSON</button>
+  <button class="l" style="margin-left: 2em;" ng-click="processed = false" ng-show="canEdit">Edit JSON</button>
 </div>
 
 <button class="r dismiss" ng-click="dismiss()">Cancel</button>

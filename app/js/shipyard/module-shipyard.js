@@ -79,67 +79,67 @@ angular.module('shipyard', ['ngLodash'])
    * @type {Array}
    */
   .value('ShipFacets', [
-    {
+    {                   // 0
       title: 'Agility',
-      prop: 'agility',
+      props: ['agility'],
       unit: '',
       fmt: 'fCrd'
     },
-    {
+    {                   // 1
       title: 'Speed',
       props: ['speed', 'boost'],
       lbls: ['Thrusters', 'Boost'],
       unit: 'M/s',
       fmt: 'fRound'
     },
-    {
+    {                   // 2
       title: 'Armour',
-      prop: 'armour',
+      props: ['armour'],
       unit: '',
       fmt: 'fCrd'
     },
-    {
+    {                   // 3
       title: 'Shields',
-      prop: 'shieldStrength',
+      props: ['shieldStrength'],
       unit: 'Mj',
       fmt: 'fRound'
     },
-    {
+    {                   // 4
       title: 'Jump Range',
       props: ['unladenJumpRange', 'ladenJumpRange'],
       lbls: ['Unladen', 'Laden'],
       unit: 'LY',
       fmt: 'fRound'
     },
-    {
+    {                   // 5
       title: 'Mass',
       props: ['unladenMass', 'ladenMass'],
       lbls: ['Unladen', 'Laden'],
       unit: 'T',
       fmt: 'fRound'
     },
-    {
+    {                   // 6
       title: 'Cargo',
-      prop: 'cargoCapacity',
+      props: ['cargoCapacity'],
       unit: 'T',
       fmt: 'fRound'
     },
-    {
+    {                   // 7
       title: 'Fuel',
-      prop: 'fuelCapacity',
+      props: ['fuelCapacity'],
       unit: 'T',
       fmt: 'fRound'
     },
-    {
+    {                   // 8
       title: 'Power',
       props: ['powerRetracted','powerDeployed','powerAvailable'],
       lbls: ['Retracted', 'Deployed', 'Available'],
       unit: 'MW',
       fmt: 'fPwr'
     },
-    {
+    {                   // 9
       title: 'Cost',
-      prop: 'totalCost',
+      props: ['totalCost'],
       unit: 'CR',
       fmt: 'fCrd'
     }

@@ -11,9 +11,8 @@ angular.module('app').config(['$provide','$stateProvider', '$urlRouterProvider',
     .state('outfit', {
       url: '/outfit/:shipId/:code?bn',
       params: {
-        // TODO: Squash:false not working due to UI-router issue
-        shipId: { value: 'sidewinder', squash: false}, // Allow 'shipId' parameter to default to
-        code: { value: null, squash: true } // Allow 'code' parameter to be empty/optional
+        shipId: { value: 'sidewinder', squash: false}, // Allow 'shipId' parameter to default to sidewinder
+        code: { value: null, squash: true }           // Allow 'code' parameter to be empty/optional
       },
       templateUrl: 'views/page-outfit.html',
       controller: 'OutfitController',
@@ -26,20 +25,35 @@ angular.module('app').config(['$provide','$stateProvider', '$urlRouterProvider',
       },
       sticky: true
     })
+    .state('compare', {
+      url: '/compare/:name',
+      params: {
+        name: {value: null, squash: true }
+      },
+      templateUrl: 'views/page-comparison.html',
+      controller: 'ComparisonController',
+      sticky: true
+    })
+    .state('comparison', {
+      url: '/comparison/:code',
+      templateUrl: 'views/page-comparison.html',
+      controller: 'ComparisonController',
+      sticky: true
+    })
     .state('shipyard', { url: '/', templateUrl: 'views/page-shipyard.html', controller: 'ShipyardController', sticky: true })
-    .state('comparison', { url: '/comparison', templateUrl: 'views/page-comparison.html', controller: 'ComparisonController', sticky: true })
     .state('error', { params: {type:null, message:null, details: null }, templateUrl: 'views/page-error.html', controller: 'ErrorController', sticky: true })
 
     // Modal States and views
     .state('modal', { abstract: true, views:{ "modal": { templateUrl: "views/_modal.html", controller: 'ModalController' } } })
     .state('modal.about', { views: { "modal-content": { templateUrl: "views/modal-about.html" } } })
-    .state('modal.export', { views: { "modal-content": { templateUrl: "views/modal-export.html", controller: 'ExportController' } } })
-    .state('modal.import', { views: { "modal-content": { templateUrl: "views/modal-import.html", controller: 'ImportController' } } })
+    .state('modal.export', { params: {title:null, data: null, promise: null}, views: { "modal-content": { templateUrl: "views/modal-export.html", controller: 'ExportController' } } })
+    .state('modal.import', { params: {obj:null}, views: { "modal-content": { templateUrl: "views/modal-import.html", controller: 'ImportController' } } })
+    .state('modal.link', { params: {url:null}, views: { "modal-content": { templateUrl: "views/modal-link.html", controller: 'LinkController' } } })
     .state('modal.delete', { views: { "modal-content": { templateUrl: "views/modal-delete.html", controller: 'DeleteController' } } });
 
 
   // Redirects
-  $urlRouterProvider.when('/outfit','/outfit/sidewinder/');
+  $urlRouterProvider.when('/outfit','/outfit/sidewinder');
 
   /**
    * 404 Handler - Keep current URL/ do not redirect, change to error state.

@@ -16,10 +16,10 @@
 @import 'chart-tooltip';
 @import 'buttons';
 @import 'error';
-
+@import 'sortable';
 
 html, body {
-  min-height: 100%;
+  height: 100%;
   text-rendering: optimizeLegibility;
 }
 
@@ -33,15 +33,16 @@ body {
   background-image: none;
   background-repeat: no-repeat;
   background-position: center;
-  background-attachment: fixed;
+  background-attachment: scroll;
   background-size: cover;
 }
 
 #main {
   margin: 0;
   padding: 0.5em 0.25em;
-  min-height: 800px;
+  min-height: 90%;
   clear: both;
+  text-align: center;
 }
 
 .l {
@@ -62,6 +63,10 @@ body {
 
 .cb {
   clear: both;
+}
+
+.cen {
+  text-align: center;
 }
 
 h1 {
@@ -91,6 +96,13 @@ u { // Unit (Mj, Km, etc)
 
 a, a:visited {
   color: @fg;
+}
+
+input {
+  background: @primary-bg;
+  border: 1px solid @primary-disabled;
+  color: @primary-disabled;
+  outline: none;
 }
 
 footer {

@@ -11,6 +11,7 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
   }
 
   $scope.buildName = $p.bn;
+  $rootScope.title = ship.name + ($scope.buildName? ' - ' + $scope.buildName : '');
   $scope.ship = ship;
   $scope.pp = ship.common[0];   // Power Plant
   $scope.th = ship.common[1];   // Thruster
@@ -24,11 +25,25 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
   $scope.availCS = Components.forShip(ship.id);
   $scope.selectedSlot = null;
   $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
-  $rootScope.title = ship.name + ($scope.buildName? ' - ' + $scope.buildName: '');
-  $rootScope.bodyClass = 'docking-bay';
 
-  // for debugging
-  window.myScope = $scope;
+  $scope.jrSeries = {
+    xMin: ship.unladenMass,
+    xMax: ship.ladenMass,
+    func: ship.jumpRangeWithMass.bind(ship)
+  };
+  $scope.jrChart = {
+    labels: {
+      xAxis: {
+        title:'Ship Mass',
+        unit: 'T'
+      },
+      yAxis: {
+        title:'Jump Range',
+        unit: 'LY'
+      }
+    },
+    watch: $scope.fsd
+  };
 
   /**
    * 'Opens' a select for component selection.
@@ -72,7 +87,7 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
       $scope.code = Serializer.fromShip(ship);
       updateState();
     }
-  }
+  };
 
   /**
    * Reload the build from the last save.
@@ -103,7 +118,7 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
       $scope.savedCode = $scope.code;
       updateState();
     }
-  }
+  };
 
   /**
    * Permanently delete the current build and redirect/reload this controller
@@ -111,13 +126,12 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
    */
   $scope.deleteBuild = function() {
     Persist.deleteBuild(ship.id, $scope.buildName);
-    $rootScope.$broadcast('buildDeleted', $scope.saveName, ship.id);
     $state.go('outfit', {shipId: ship.id, code: null, bn: null}, {location:'replace', reload:true});
-  }
+  };
 
   $scope.bnChange = function(){
     $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
-  }
+  };
 
   $scope.toggleCost = function(item) {
     item.incCost = !item.incCost;
@@ -132,24 +146,17 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
   // Utilify functions
   function updateState() {
     $state.go('outfit', {shipId: ship.id, code: $scope.code, bn: $scope.buildName}, {location:'replace', notify:false});
+    $scope.jrSeries.xMin = ship.unladenMass;
+    $scope.jrSeries.xMax = ship.ladenMass;
   }
 
-  // Event listeners
-  $scope.$on('keyup', function (e, keyEvent) {
-    // CTRL + S or CMD + S will override the default and save the build is possible
-    if (keyEvent.keycode == 83 && keyEvent.ctrlKey) {
-      e.preventDefault();
-      $scope.saveBuild();
-    }
-  });
-
   // Hide any open menu/slot/etc if escape key is pressed
-  $scope.$on('escape', function (e, keyEvent) {
+  $scope.$on('escape', function () {
     $scope.selectedSlot = null;
     $scope.$apply();
   });
   // Hide any open menu/slot/etc if the background is clicked
-  $scope.$on('close', function (e, keyEvent) {
+  $scope.$on('close', function () {
     $scope.selectedSlot = null;
   });
 

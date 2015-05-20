@@ -37,7 +37,7 @@ gulp.task('lint', function() {
       undef: true,
       unused: true,
       curly: true,
-      predef: [ "angular",'DB','d3' ]
+      predef: [ 'angular','DB','d3', 'ga', 'GAPI_KEY', 'document' ]
     }))
     .pipe(jshint.reporter('default'));
 });
@@ -90,7 +90,7 @@ gulp.task('js', function() {
       'app/js/**/*.js'
     ])
     .pipe(sourcemaps.init())
-    .pipe(uglify({mangle: true}).on('error',function(e){
+    .pipe(uglify({mangle: false}).on('error',function(e){
       console.log('File:', e.fileName);
       console.log('Line:', e.lineNumber);
       console.log('Message:', e.message);
@@ -108,7 +108,7 @@ gulp.task('copy', function() {
 
 gulp.task('generateIndexHTML', function(done) {
   // Generate minified inline svg of all icons for svg spriting
-  gulp.src('app/images/icons/*.svg')
+  gulp.src('app/icons/*.svg')
     .pipe(svgmin())
     .pipe(svgstore({ inlineSvg: true }))
     .pipe(gutil.buffer(function(err, files) {
@@ -118,7 +118,8 @@ gulp.task('generateIndexHTML', function(done) {
           version: pkg.version,
           date : (new Date()).toLocaleDateString(),
           uaTracking: process.env.CORIOLIS_UA_TRACKING || false,
-          svgContent: svgIconsContent
+          svgContent: svgIconsContent,
+          gapiKey: process.env.CORIOLIS_GAPI_KEY
         }))
         .pipe(htmlmin({
           'collapseBooleanAttributes': true,
@@ -155,7 +156,7 @@ gulp.task('serve-stop', function(cb) {
 });
 
 gulp.task('watch', function() {
-  gulp.watch(['app/index.html','app/images/icons/*.svg'], ['generateIndexHTML']);
+  gulp.watch(['app/index.html','app/icons/*.svg'], ['generateIndexHTML']);
   gulp.watch(['app/images/**','app/fonts/**', 'app/.htaccess'], ['copy']);
   gulp.watch('app/less/*.less', ['less']);
   gulp.watch('app/views/**/*', ['html2js']);
@@ -186,7 +187,7 @@ gulp.task('cache-bust', function(done) {
 
 gulp.task('upload', function() {
   var conn = ftp.create({
-    host:     'ftp.coriolis.io',
+    host:     process.env.CORIOLIS_FTP_HOST,
     user:     process.env.CORIOLIS_FTP_USER,
     password: process.env.CORIOLIS_FTP_PASS,
     parallel: 5,

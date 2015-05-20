@@ -1,4 +1,105 @@
 
 #comparison {
-  text-align: center;
+  display: inline-block;
+  text-align: left;
+  border-collapse: collapse;
+
+  td {
+    border: 1px solid @primary-disabled;
+    padding: 0;
+
+    h3 {
+      margin: 0 1em;
+      line-height: 2em;
+      display: inline-block;
+    }
+  }
+
+  input {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    padding-left: 1em;
+  }
+
+  .head {
+    background-color: @primary-disabled;
+    color: @primary-bg;
+    padding: 0 0.5em;
+    text-align: right;
+  }
+}
+
+#facet-container {
+  display: block;
+  .user-select-none();
+  cursor: default;
+  overflow: hidden;
+  font-size: 0.75em;
+  margin: 0;
+  padding: 0;
+
+  .as-sortable-placeholder {
+    background-color: @primary-bg;
+  }
+  .as-sortable-dragging {
+    cursor: ew-resize;
+  }
+}
+
+.facet {
+  cursor: pointer;
+  background-color: @primary-bg;
+  margin: 0;
+  padding: 0.5em 1em;
+  list-style: none;
+  white-space: nowrap;
+  color: @disabled;
+
+  svg {
+    fill: @disabled;
+  }
+
+  .move {
+    cursor: ew-resize;
+  }
+
+  &.active {
+    color: @warning;
+    svg {
+      fill: @warning;
+    }
+    background-color: @warning-bg;
+  }
+}
+
+#build-select {
+  clear: both;
+  margin: 1em 0 0;
+  height: 8.5em;
+  overflow:hidden;
+
+  h1 {
+    margin: 0 0.7em;
+  }
+
+  table {
+    width: 20em;
+
+    tbody {
+      display: block;
+      overflow-x: hidden;
+      overflow-y: auto;
+      max-height: 8em;
+    }
+  }
+
+  td {
+    cursor: pointer;
+  }
+}
+
+#comp-tbl {
+  margin: 1em auto;
 }

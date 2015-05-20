@@ -1,7 +1,9 @@
-angular.module('app').controller('ImportController', ['$scope', 'ShipsDB', 'Ship', 'Persist', 'Serializer', function ($scope, Ships, Ship, Persist, Serializer) {
+angular.module('app').controller('ImportController', ['$scope', '$stateParams', 'ShipsDB', 'Ship', 'Persist', 'Serializer', function ($scope, $stateParams, Ships, Ship, Persist, Serializer) {
   $scope.jsonValid = false;
   $scope.importData = null;
   $scope.errorMsg = null;
+  $scope.canEdit = true;
+  $scope.builds = $stateParams.obj || null;
 
   $scope.validateJson = function() {
     var importObj = null;
@@ -10,7 +12,7 @@ angular.module('app').controller('ImportController', ['$scope', 'ShipsDB', 'Ship
     $scope.builds = null;
     $scope.ships = Ships;
 
-    if(!$scope.importData) return;
+    if (!$scope.importData) { return; }
 
     try {
       importObj = angular.fromJson($scope.importData);
@@ -24,15 +26,15 @@ angular.module('app').controller('ImportController', ['$scope', 'ShipsDB', 'Ship
       return;
     }
 
-    if ((!importObj.builds || !Object.keys(importObj.builds).length) && (!importObj.comparisons || !Object.keys(importObj.comparisons).length)) {
-      $scope.errorMsg = 'No builds or comparisons in data';
+    if ((!importObj.builds || !Object.keys(importObj.builds).length)) {
+      $scope.errorMsg = 'No builds in data';
       return;
     }
 
     for (var shipId in importObj.builds) {
       var shipData = Ships[shipId];
       if (shipData) {
-        for (buildName in importObj.builds[shipId]) {
+        for (var buildName in importObj.builds[shipId]) {
           if (typeof importObj.builds[shipId][buildName] != 'string') {
             $scope.errorMsg = shipData.properties.name + ' build "' + buildName + '" must be a string!';
             return;
@@ -41,7 +43,6 @@ angular.module('app').controller('ImportController', ['$scope', 'ShipsDB', 'Ship
             // Actually build the ship with the code to ensure it's valid
             Serializer.toShip(new Ship(shipId, shipData.properties, shipData.slots), importObj.builds[shipId][buildName]);
           } catch (e) {
-            console.log(e);
             $scope.errorMsg = shipData.properties.name + ' build "' + buildName + '" is not valid!';
             return;
           }
@@ -53,15 +54,12 @@ angular.module('app').controller('ImportController', ['$scope', 'ShipsDB', 'Ship
       $scope.builds = importObj.builds;
     }
 
-    // Check for comparison object
-    // if (importObj.comparisons)
-
     $scope.jsonValid = true;
   };
 
   $scope.hasBuild = function (shipId, name) {
-    return Persist.getBuild(shipId, name) != null;
-  }
+    return Persist.getBuild(shipId, name) !== null;
+  };
 
   $scope.process = function() {
     var builds = $scope.builds;
@@ -75,7 +73,6 @@ angular.module('app').controller('ImportController', ['$scope', 'ShipsDB', 'Ship
         };
       }
     }
-
     $scope.processed = true;
   };
 
@@ -92,5 +89,13 @@ angular.module('app').controller('ImportController', ['$scope', 'ShipsDB', 'Ship
     }
     $scope.$parent.dismiss();
   };
+
+  /* Initialization */
+
+  if ($scope.builds) {  // If import is passed an build object
+    $scope.canEdit = false;
+    $scope.process();
+  }
+
 
 }]);

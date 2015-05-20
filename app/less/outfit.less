@@ -6,7 +6,7 @@
 
 #overview {
   h1 {
-    margin: 0.2em 0;
+    margin: 0;
     float: left;
   }
 }
@@ -17,19 +17,17 @@
 
   input {
     background: none;
-    color: @secondary-disabled;
+    color: @primary-disabled;
     outline: none;
+    line-height: 1.5em;
     font-size: 0.8em;
-    line-height: 2em;
-    text-align: center;
-    border: 1px solid @secondary-disabled;
+    border: 1px solid @primary-disabled;
     box-sizing: border-box;
-    display: block;
-    width: 100%;
-    margin-bottom: 0.5em;
+    display: inline-block;
+    padding: 0.5em;
     &:hover, &:focus {
-      border: 1px solid @secondary;
-      color: @secondary;
+      border: 1px solid @primary;
+      color: @primary;
     }
   }
 }
@@ -62,6 +60,7 @@
   border-top: 2px solid @primary;
   border-bottom: 2px solid @primary;
   background-color: @primary-bg;
+  text-align: left;
 }
 
 .toggle {

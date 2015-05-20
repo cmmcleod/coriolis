@@ -34,12 +34,9 @@ header {
     &.disabled {
       color: @warning-disabled;
       cursor: default;
-      &:hover {
-        background-color: transparent;
-      }
     }
 
-    &:hover, &.selected {
+    &.selected {
         background-color: @bgBlack;
     }
   }
@@ -48,30 +45,27 @@ header {
     font-family: @fStandard;
     position: absolute;
     padding: 1em 1em;
-    overflow: hidden;
+    box-sizing: border-box;
+    min-width: 100%;
+    overflow-x: hidden;
     background-color: @bgBlack;
     font-size: 0.8em;
+    overflow-y: auto;
+    max-height: 400px;
 
     &.dbl {
-      width: 22.5em;
+      width: 22em;
       ul {
         float: left;
         width: 10em;
       }
     }
-
-    hr {
-      border: none;
-      border-top: 1px solid @disabled;
-    }
-
   }
 
   ul {
-    margin: 0.5em 1em 0 0;
+    margin: 0 0 0.5em 0;
     padding: 0;
-    line-height: 2em;
-    white-space: nowrap;
+    line-height: 1.3em;
   }
 
   li {
@@ -84,9 +78,8 @@ header {
     vertical-align: middle;
     color: @warning;
     text-decoration: none;
-    white-space: nowrap;
 
-    &.build-name {
+    &.name {
       font-family: Helvetica, sans-serif;
     }
 
@@ -99,6 +92,15 @@ header {
     &.active {
       color: @primary;
     }
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid @disabled;
+  }
+
+  .no-wrap {
+    white-space: nowrap;
   }
 
   .block {

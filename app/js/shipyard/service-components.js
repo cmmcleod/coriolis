@@ -2,7 +2,7 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
 
   this.cargoScoop = function() {
     return { name: 'Cargo Scoop', class: 1, rating: 'H', power: 0.6};
-  }
+  };
 
   this.common = function (typeIndex, componentId) {
     return C.common[typeIndex][componentId];

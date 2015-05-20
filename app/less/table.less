@@ -3,7 +3,7 @@ table {
   margin: 0 auto;
   background-color: @primary-bg;
   border-spacing: 0;
-  font-size: 0.9em;
+  font-size: 0.8em;
   cursor: default;
 
   a, a:visited {
@@ -16,7 +16,6 @@ thead {
   color: @bgBlack;
   background-color: @primary-disabled;
   .user-select-none();
-  font-size: 0.8em;
 
   .main th {
     border-left: 1px solid @primary-bg;
@@ -48,11 +47,17 @@ tbody tr {
 
   &.tr {
     color: @disabled;
+    fill: @disabled;
     text-align: right;
 
     &:hover {
       color: @fg;
+      fill: @warning;
       background-color: @warning-bg;
+    }
+
+    svg {
+      cursor: pointer;
     }
 
     td {
@@ -63,8 +68,6 @@ tbody tr {
 }
 
 td {
-  font-size: 0.9em;
-
   &.tl {
     text-align: left;
     padding-left: 0.7em;

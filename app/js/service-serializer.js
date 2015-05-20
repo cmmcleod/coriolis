@@ -15,6 +15,7 @@ angular.module('app').service('Serializer', ['lodash', function (_) {
       _.map(ship.hardpoints, idToStr),
       _.map(ship.internal, idToStr),
     ];
+
     return _.flatten(data).join('');
   };
 
@@ -52,6 +53,26 @@ angular.module('app').service('Serializer', ['lodash', function (_) {
     }
     ship.buildWith(comps);
   };
+
+  this.fromComparison = function (name, builds, facets, predicate, desc) {
+    var shipBuilds = [];
+
+    builds.forEach(function (b) {
+      shipBuilds.push({s: b.id, n: b.buildName, c: this.fromShip(b)});
+    }.bind(this));
+
+    return LZString.compressToBase64(angular.toJson({
+      n: name,
+      b: shipBuilds,
+      f: facets,
+      p: predicate,
+      d: desc? 1 : 0
+    })).replace(/\//g,'-');
+  }
+
+  this.toComparison = function (code) {
+    return angular.fromJson(LZString.decompressFromBase64(code.replace(/-/g,'/')));
+  }
 
   /**
    * Utility function to retrieve a safe string for selected component for a slot.
