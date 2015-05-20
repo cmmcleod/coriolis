@@ -1,4 +1,4 @@
-[![Stories in Ready](https://badge.waffle.io/cmmcleod/coriolis.png?label=ready&title=Ready)](https://waffle.io/cmmcleod/coriolis)
+[![Tasks in Ready](https://badge.waffle.io/cmmcleod/coriolis.png?label=ready&title=Ready)](https://waffle.io/cmmcleod/coriolis) [![Tasks in Progress](https://badge.waffle.io/cmmcleod/coriolis.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/cmmcleod/coriolis)
 
 ## About
 
