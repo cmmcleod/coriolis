@@ -17,6 +17,7 @@ var gulp            = require('gulp'),
     gutil           = require( 'gulp-util' ),
     svgstore        = require( 'gulp-svgstore' ),
     svgmin          = require( 'gulp-svgmin' ),
+    jsonlint        = require("gulp-jsonlint"),
     pkg             = require('./package.json');
 
 gulp.task('less', function() {
@@ -31,7 +32,9 @@ gulp.task('less', function() {
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('lint', function() {
+gulp.task('lint', ['js-lint, json-lint']);
+
+gulp.task('js-lint', function() {
   return gulp.src('app/js/**/*.js')
     .pipe(jshint({
       undef: true,
@@ -40,6 +43,12 @@ gulp.task('lint', function() {
       predef: [ 'angular','DB','d3', 'ga', 'GAPI_KEY', 'document' ]
     }))
     .pipe(jshint.reporter('default'));
+});
+
+gulp.task('json-lint', function() {
+  return gulp.src('data/**/*.json')
+    .pipe(jsonlint())
+    .pipe(jsonlint.reporter());
 });
 
 gulp.task('bower', function(){
