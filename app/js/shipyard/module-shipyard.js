@@ -94,7 +94,7 @@ angular.module('shipyard', ['ngLodash'])
     },
     {                   // 2
       title: 'Armour',
-      props: ['armour'],
+      props: ['armourTotal'],
       unit: '',
       fmt: 'fCrd'
     },
