@@ -11,7 +11,6 @@ angular.module('app').controller('ImportController', ['$scope', '$stateParams', 
     $scope.jsonValid = false;
     $scope.errorMsg = null;
     $scope.builds = null;
-    
 
     if (!$scope.importData) { return; }
 
