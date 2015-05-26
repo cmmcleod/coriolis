@@ -12,12 +12,12 @@ angular.module('app').factory('Utils', ['$state','$http', function ($state, $htt
   }
 
   function comparisonBBCode(facets, builds, link) {
-    var colCount = 2, i,j,k, l = [];
+    var colCount = 2, b, i, j, k, f, fl, p, pl, l = [];
 
     for (i = 0; i < facets.length; i++) {
       if (facets[i].active) {
-        var f = facets[i];
-        var p = f.props;
+        f = facets[i];
+        p = f.props;
 
         if (p.length == 1) {
           l.push('[th][B][COLOR=#FF8C0D]', f.title, '[/COLOR][/B][/th]');
@@ -33,15 +33,15 @@ angular.module('app').factory('Utils', ['$state','$http', function ($state, $htt
     l.push('[/tr]\n');
 
     for (i = 0; i < builds.length; i++) {
-      var b = builds[i];
+      b = builds[i];
       //var href = $state.href('outfit',{shipId: b.id, code: b.code, bn: b.buildName}, {absolute: true});
       l.push('[tr][td]', b.name,'[/td][td]', b.buildName ,'[/td]');
 
       for (j = 0, fl = facets.length; j < fl; j++) {
         if (facets[j].active) {
-          var f = facets[j];
-          var p = f.props;
-          for (var k = 0, pl = p.length; k < pl; k++) {
+          f = facets[j];
+          p = f.props;
+          for (k = 0, pl = p.length; k < pl; k++) {
             l.push('[td="align: right"]', f.fmt(b[p[k]]), ' [size=-2]', f.unit, '[/size][/td]');
           }
         }

@@ -1,4 +1,5 @@
 var gulp            = require('gulp'),
+    exec            = require('gulp-exec'),
     less            = require('gulp-less'),
     jshint          = require('gulp-jshint'),
     minifyCSS       = require('gulp-minify-css'),
@@ -13,12 +14,14 @@ var gulp            = require('gulp'),
     runSequence     = require('run-sequence'),
     exec            = require('child_process').exec,
     RevAll          = require('gulp-rev-all'),
-    ftp             = require( 'vinyl-ftp' ),
+    scp             = require( 'gulp-scp2' ),
     gutil           = require( 'gulp-util' ),
     svgstore        = require( 'gulp-svgstore' ),
     svgmin          = require( 'gulp-svgmin' ),
     jsonlint        = require("gulp-jsonlint"),
     pkg             = require('./package.json');
+
+var cdnHostStr = '';
 
 gulp.task('less', function() {
   return gulp.src('app/less/app.less')
@@ -32,15 +35,13 @@ gulp.task('less', function() {
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('lint', ['js-lint, json-lint']);
-
 gulp.task('js-lint', function() {
   return gulp.src('app/js/**/*.js')
     .pipe(jshint({
       undef: true,
       unused: true,
       curly: true,
-      predef: [ 'angular','DB','d3', 'ga', 'GAPI_KEY', 'document' ]
+      predef: [ 'angular','DB','d3', 'ga', 'GAPI_KEY', 'document' , 'LZString' ]
     }))
     .pipe(jshint.reporter('default'));
 });
@@ -174,7 +175,7 @@ gulp.task('watch', function() {
 });
 
 gulp.task('cache-bust', function(done) {
-  var revAll = new RevAll({ dontRenameFile: ['.html','db.json'] });
+  var revAll = new RevAll({ prefix: cdnHostStr, dontRenameFile: ['.html','db.json'] });
   var stream = gulp.src('build/**')
     .pipe(revAll.revision())
     .pipe(gulp.dest('build'))
@@ -194,23 +195,22 @@ gulp.task('cache-bust', function(done) {
   stream.on('error', done);
 });
 
-gulp.task('upload', function() {
-  var conn = ftp.create({
-    host:     process.env.CORIOLIS_FTP_HOST,
-    user:     process.env.CORIOLIS_FTP_USER,
-    password: process.env.CORIOLIS_FTP_PASS,
-    parallel: 5,
-    log:      gutil.log
-  });
-
-  return gulp.src(['build/**'], { base: 'build', buffer: true })
-    .pipe(conn.dest('/'));
-
+gulp.task('upload', function(done) {
+  exec([
+      "rsync -e 'ssh -i ", process.env.CORIOLIS_PEM, "' -a --delete build/ ", process.env.CORIOLIS_USER, "@", process.env.CORIOLIS_HOST, ":~/www"
+    ].join(''),
+    done
+  );
 });
 
+gulp.task('lint', ['js-lint', 'json-lint']);
 gulp.task('clean', function (done) { del(['build'], done); });
 gulp.task('build', function (done) { runSequence('clean', ['html2js','jsonToDB'], ['generateIndexHTML','bower','js','less','copy'], done); });
-gulp.task('deploy', function (done) { runSequence('build','cache-bust', 'upload', done); });
+
+gulp.task('deploy', function (done) {
+  cdnHostStr = '//cdn.' + process.env.CORIOLIS_HOST;
+  runSequence('build','cache-bust', 'upload', done);
+});
 gulp.task('dev', function (done) { runSequence('build', 'serve','watch', done); });
 gulp.task('default', ['dev']);
 

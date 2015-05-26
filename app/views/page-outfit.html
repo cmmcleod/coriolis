@@ -1,11 +1,62 @@
 <div id="outfit">
+
+  <div id="overview" class="list">
+    <h1 ng-bind="ship.name"></h1>
+    <div id="build">
+      <input ng-model="buildName" ng-change="bnChange()" placeholder="Enter Build Name" maxlength="50" />
+      <button ng-click="saveBuild()" ng-disabled="!buildName || savedCode && code == savedCode">
+        <svg class="icon lg "><use xlink:href="#floppy-disk"></use></svg> Save
+      </button>
+      <button ng-click="reloadBuild()" ng-disabled="!savedCode || code == savedCode">
+        <svg class="icon lg"><use xlink:href="#spinner11"></use></svg> Reload
+      </button>
+      <button class="danger" ng-click="deleteBuild()" ng-disabled="!savedCode">
+        <svg class="icon lg"><use xlink:href="#bin"></use></svg>
+      </button>
+      <button ui-sref="outfit({shipId: ship.id,code:null, bn: buildName})" ng-disabled="!code">
+        <svg class="icon lg"><use xlink:href="#switch"></use></svg> Reset
+      </button>
+      <button ng-disabled="!code">
+        <svg class="icon lg"><use xlink:href="#embed"></use></svg> Forum
+      </button>
+    </div>
+  </div>
+
+  <table id="summary">
+    <thead>
+      <tr class="main">
+        <th colspan="3">Manuverability</th><th colspan="2">Mass</th><th rowspan="2">Cargo</th><th rowspan="2">Fuel</th>
+        <th rowspan="2">Armour</th><th rowspan="2">Shields</th><th colspan="2">Jump Range</th><th rowspan="2">Insurance</th><th rowspan="2">Cost</th>
+      </tr>
+      <tr>
+        <th>Agility</th><th>Thrusters</th><th>Boost</th><th class="lft">Unladen</th><th>Laden</th><th>Unladen</th><th>Laden</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ship.agility}}/10</td>
+        <td>{{fRound(ship.speed)}} <u>m/s</u></td>
+        <td>{{fRound(ship.boost)}} <u>m/s</u></td>
+        <td>{{fRound(ship.unladenMass)}} <u>T</u></td>
+        <td>{{fRound(ship.ladenMass)}} <u>T</u></td>
+        <td>{{fRound(ship.cargoCapacity)}} <u>T</u></td>
+        <td>{{fRound(ship.fuelCapacity)}} <u>T</u></td>
+        <td>{{ship.armourTotal}} ({{ship.armour}} + {{ship.armourAdded}})</td>
+        <td>{{fRound(ship.shieldStrength)}} <u>Mj</u> ({{fRPct(ship.shieldMultiplier)}})</td>
+        <td>{{fRound(ship.unladenJumpRange)}} <u>LY</u></td>
+        <td>{{fRound(ship.ladenJumpRange)}} <u>LY</u></td>
+        <td>{{fCrd(ship.totalCost * insurance.current.pct)}} <u>CR</u></td>
+        <td>{{fCrd(ship.totalCost)}} <u>CR</u></td>
+      </tr>
+    </tbody>
+  </table>
+
   <div id="hardpoints" class="slot-group">
-    <h1>HardPoints</h1>
+    <h1 class="vertical">HardPoints</h1>
     <div class="slot" ng-repeat="h in ship.hardpoints" ng-click="selectSlot($event, h)" ng-class="{selected: selectedSlot==h}">
       <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="hgMap[h.c.grp]"></div>
       <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
         <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
-      </div>
       </div>
     </div>
   </div>
@@ -80,9 +131,9 @@
         <div class="l">Power Distributor</div>
         <div class="r">{{pd.id}}</div>
         <div class="cb"></div>
-        <div class="l">Sys: {{pd.c.weaponcapacity}} <u>Mj</u> {{pd.c.weaponrecharge}} <u>Mj/s</u></div>
-        <div class="l">Wep: {{pd.c.systemcapacity}} <u>Mj</u> {{pd.c.systemrecharge}} <u>Mj/s</u></div>
-        <div class="l">Eng: {{pd.c.enginecapacity}} <u>Mj</u> {{pd.c.enginerecharge}}<u>Mj/s</u></div>
+        <div class="l">Sys: {{pd.c.weaponcapacity}} <u>Mj</u> / {{pd.c.weaponrecharge}} <u>MW</u></div>
+        <div class="l">Wep: {{pd.c.systemcapacity}} <u>Mj</u> / {{pd.c.systemrecharge}} <u>MW</u></div>
+        <div class="l">Eng: {{pd.c.enginecapacity}} <u>Mj</u> / {{pd.c.enginerecharge}} <u>MW</u></div>
         <div class="r cr">{{pd.c.mass}} <u>T</u></div>
       </div>
       <div component-select class="select" s="pd" opts="availCS.common[4]" ng-if="selectedSlot==pd" ng-click="select('c',pd,$event)"></div>
@@ -119,71 +170,7 @@
     </div>
   </div>
 
-  <div id="summary">
-    <div id="overview" class="list">
-      <h1 ng-bind="ship.name"></h1>
-      <div id="build">
-        <input ng-model="buildName" ng-change="bnChange()" placeholder="Enter Build Name" maxlength="50" />
-        <button ng-click="saveBuild()" ng-disabled="!buildName || savedCode && code == savedCode">
-        <svg class="icon lg "><use xlink:href="#floppy-disk"></use></svg> Save
-        </button>
-        <button ng-click="reloadBuild()" ng-disabled="!savedCode || code == savedCode">
-          <svg class="icon lg"><use xlink:href="#spinner11"></use></svg> Load
-        </button>
-        <button class="danger" ng-click="deleteBuild()" ng-disabled="!savedCode">
-          <svg class="icon lg"><use xlink:href="#bin"></use></svg>
-        </button>
-        <button ui-sref="outfit({shipId: ship.id,code:null, bn: buildName})" ng-disabled="!code">
-          <svg class="icon lg"><use xlink:href="#switch"></use></svg> Reset
-        </button>
-      </div>
-    </div>
-
-    <div class="list">
-      <div class="header">Maneuverability</div>
-      <div class="summary">
-        <div class="item"><div class="lbl">Boost</div><div class="val">{{fRound(ship.boost)}} <u>m/s</u></div></div>
-        <div class="item"><div class="lbl">Speed</div><div class="val">{{fRound(ship.speed)}} <u>m/s</u></div></div>
-        <div class="item"><div class="lbl">Agility</div><div class="val">{{ship.agility}} / 10</div></div>
-      </div>
-    </div>
-
-    <div class="list">
-      <div class="header">Shields</div>
-      <div class="summary">
-        <!-- TODO: Implement Shield Recharge rate
-        <div class="item"><div class="lbl">Recharge Rate</div><div class="val">{{fRound(0)}} <u>Mj/s</u></div></div>
-        /-->
-        <div class="item"><div class="lbl">Strength</div><div class="val">{{fRound(ship.shieldStrength)}} <u>Mj</u></div></div>
-        <div class="item"><div class="lbl">Multiplier</div><div class="val">{{fRPct(ship.shieldMultiplier)}}</div></div>
-      </div>
-    </div>
-
-    <div class="list">
-      <div class="header">Armor</div>
-      <div class="summary">
-        <div class="item"><div class="lbl">Total</div><div class="val">{{ship.armourTotal}}</div></div>
-        <div class="item"><div class="lbl">Added</div><div class="val">{{ship.armourAdded}}</div></div>
-        <div class="item"><div class="lbl">Base</div><div class="val">{{ship.armour}}</div></div>
-      </div>
-    </div>
-
-    <div class="list">
-      <div class="header">Mass</div>
-      <div class="summary">
-        <div class="item"><div class="lbl">Laden</div><div class="val">{{fRound(ship.ladenMass)}} <u>T</u></div></div>
-        <div class="item"><div class="lbl">Unladen</div><div class="val">{{fRound(ship.unladenMass)}} <u>T</u></div></div>
-      </div>
-    </div>
-
-    <div class="list">
-      <div class="header">Capacity</div>
-        <div class="summary">
-          <div class="item"><div class="lbl">Cargo</div><div class="val">{{fRound(ship.cargoCapacity)}} <u>T</u></div></div>
-          <div class="item"><div class="lbl">Fuel</div><div class="val">{{fRound(ship.fuelCapacity)}} <u>T</u></div></div>
-        </div>
-    </div>
-
+  <div class="cb">
     <div class="list" ship="ship">
       <div class="header toggle" ng-click="powerExp = !powerExp">Power Use</div>
       <div class="items" ng-if="!powerExp">
@@ -224,22 +211,11 @@
     </div>
 
     <div class="list">
-      <div class="header toggle" ng-click="rangeExp = !rangeExp">Jump Range</div>
-      <div class="items cen" ng-if="!rangeExp">
+      <div class="header toggle">Jump Range</div>
+      <div class="items cen">
         <div class="chart" area-chart config="jrChart" series="jrSeries" width="500" height="250"></div>
       </div>
-      <div class="summary toggle" ng-click="rangeExp = !rangeExp">
-        <div class="item">
-          <div class="lbl">Laden</div>
-          <div class="val">{{fRound(ship.ladenJumpRange)}} <u>LY</u></div>
-        </div>
-        <div class="item">
-          <div class="lbl">Unladen</div>
-          <div class="val">{{fRound(ship.unladenJumpRange)}} <u>LY</u></div>
-        </div>
-      </div>
     </div>
-
     <div class="list">
       <div class="header toggle" ng-click="costsExpanded = !costsExpanded">Costs</div>
       <div class="items" ng-if="!costsExpanded">

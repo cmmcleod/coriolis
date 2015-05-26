@@ -13,6 +13,7 @@
     "gulp": "^3.8.11",
     "gulp-angular-templatecache": "^1.6.0",
     "gulp-concat": "^2.5.2",
+    "gulp-exec": "^2.1.1",
     "gulp-htmlmin": "^1.1.1",
     "gulp-jshint": "^1.10.0",
     "gulp-jsonlint": "^1.0.2",
@@ -28,7 +29,6 @@
     "json-concat": "0.0.0",
     "main-bower-files": "^2.6.2",
     "run-sequence": "^1.0.2",
-    "uglify-js": "^2.4.19",
-    "vinyl-ftp": "^0.4.1"
+    "uglify-js": "^2.4.19"
   }
 }

@@ -10,7 +10,7 @@
     # Activate mod_expires for this directory
     ExpiresActive on
 
-    ExpiresDefault                  "access plus 365 days"
+    ExpiresDefault                  "access"
     ExpiresByType text/html         "access"
     ExpiresByType application/json  "access"
 </IfModule>

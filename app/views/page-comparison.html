@@ -48,7 +48,7 @@
       <table>
         <thead><tr><th colspan="2">Available</th></tr></thead>
         <tbody>
-          <tr ng-repeat="b in unusedBuilds | orderBy:'[0]'" ng-click="addBuild(b.id, b.buildName)">
+          <tr ng-repeat="b in unusedBuilds | orderBy:'name'" ng-click="addBuild(b.id, b.buildName)">
             <td class="tl" ng-bind="b.name"></td><td class="tl" ng-bind="b.buildName"></td>
           </tr>
         </tbody>

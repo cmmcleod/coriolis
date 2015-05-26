@@ -17,15 +17,13 @@
 
   input {
     background: none;
-    color: @primary-disabled;
-    outline: none;
     line-height: 1.5em;
     font-size: 0.8em;
-    border: 1px solid @primary-disabled;
     box-sizing: border-box;
     display: inline-block;
     padding: 0.5em;
-    &:hover, &:focus {
+
+    &:focus {
       border: 1px solid @primary;
       color: @primary;
     }
@@ -54,13 +52,12 @@
 
 #summary {
   .user-select-none();
-  float: right;
-  min-width: 40em;
-  margin: 0.25em;
-  border-top: 2px solid @primary;
-  border-bottom: 2px solid @primary;
-  background-color: @primary-bg;
-  text-align: left;
+  margin: 0;
+  border-collapse: collapse;
+
+  tbody td {
+    padding: 0 0.5em;
+  }
 }
 
 .toggle {

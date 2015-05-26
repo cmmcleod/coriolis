@@ -68,11 +68,11 @@ angular.module('app').service('Serializer', ['lodash', function (_) {
       p: predicate,
       d: desc? 1 : 0
     })).replace(/\//g,'-');
-  }
+  };
 
   this.toComparison = function (code) {
     return angular.fromJson(LZString.decompressFromBase64(code.replace(/-/g,'/')));
-  }
+  };
 
   /**
    * Utility function to retrieve a safe string for selected component for a slot.

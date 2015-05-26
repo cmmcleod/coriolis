@@ -1,4 +1,4 @@
-angular.module('app').directive('barChart', ['$rootScope', function ($rootScope) {
+angular.module('app').directive('barChart', function () {
 
   function bName (build) {
     return build.buildName + '\n' + build.name;
@@ -118,4 +118,4 @@ angular.module('app').directive('barChart', ['$rootScope', function ($rootScope)
 
     }
   };
-}]);
+});

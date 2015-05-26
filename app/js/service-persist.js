@@ -90,10 +90,10 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
     this.comparisons[name] = {
       facets: facets,
       builds: _.map(builds, function (b) { return {shipId: b.id, buildName: b.buildName }; })
-    }
+    };
     localStorage.setItem(LS_KEY_COMPARISONS, angular.toJson(this.comparisons));
     this.state.hasComparisons = true;
-  }
+  };
 
   /**
    * [getComparison description]
@@ -105,7 +105,7 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
       return this.comparisons[name];
     }
     return null;
-  }
+  };
 
   /**
    * Removes the comparison from localstorage.
@@ -117,7 +117,7 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
       localStorage.setItem(LS_KEY_COMPARISONS, angular.toJson(this.comparisons));
       this.state.hasComparisons = Object.keys(this.comparisons).length > 0;
     }
-  }
+  };
 
   /**
    * Delete all builds and comparisons from localStorage

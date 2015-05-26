@@ -18,7 +18,7 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
    */
   $scope.addBuild = function (shipId, buildName, code) {
     var data = Ships[shipId];   // Get ship properties
-    var code = code? code : Persist.builds[shipId][buildName]; // Retrieve build code if not passed
+    code = code? code : Persist.builds[shipId][buildName]; // Retrieve build code if not passed
     var b = new Ship(shipId, data.properties, data.slots); // Create a new Ship instance
     Serializer.toShip(b, code);  // Populate components from code
     // Extend ship instance and add properties below
@@ -153,7 +153,7 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
       $scope.desc
     );
     return $state.href('comparison', {code: code}, {absolute:true});
-  };
+  }
 
   /* Event listeners */
   $scope.$on('close', function() {
@@ -161,20 +161,21 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
   });
 
   /* Initialization */
+  var shipId, buildName, comparisonData;
   if ($scope.compareMode) {
     if ($scope.name == 'all') {
-      for (var shipId in Persist.builds) {
-        for (var buildName in Persist.builds[shipId]) {
+      for (shipId in Persist.builds) {
+        for (buildName in Persist.builds[shipId]) {
           $scope.addBuild(shipId, buildName);
         }
       }
     } else {
-      for (var shipId in Persist.builds) {
-        for (var buildName in Persist.builds[shipId]) {
+      for (shipId in Persist.builds) {
+        for (buildName in Persist.builds[shipId]) {
           $scope.unusedBuilds.push({id: shipId, buildName: buildName, name: Ships[shipId].properties.name});
         }
       }
-      var comparisonData = Persist.getComparison($scope.name);
+      comparisonData = Persist.getComparison($scope.name);
       if (comparisonData) {
         defaultFacets = comparisonData.facets;
         comparisonData.builds.forEach(function (b) {
@@ -185,9 +186,9 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
     }
   } else {
     try {
-      var comparisonData = Serializer.toComparison($stateParams.code);
+      comparisonData = Serializer.toComparison($stateParams.code);
       defaultFacets = comparisonData.f;
-      $scope.name = comparisonData.n
+      $scope.name = comparisonData.n;
       $scope.predicate = comparisonData.p;
       $scope.desc = comparisonData.d;
       comparisonData.b.forEach(function (build) {
