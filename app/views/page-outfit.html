@@ -75,7 +75,7 @@
         <div class="l">{{pp.id}} Power Plant</div>
         <div class="r">{{pp.c.mass}} <u>T</u></div>
         <div class="cb"></div>
-        <div class="l">Eff: {{pp.c.eff}}</div>
+        <div class="l">Efficiency: {{pp.c.eff}}</div>
         <div class="l">Power: {{pp.c.pGen}} <u>MW</u></div>
       </div>
       <div component-select class="select" s="pp" opts="availCS.common[0]" ng-if="selectedSlot==pp" ng-click="select('c',pp,$event)"></div>

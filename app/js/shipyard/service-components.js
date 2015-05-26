@@ -1,7 +1,7 @@
 angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'ShipsDB', 'ComponentSet', function (_, C, Ships, ComponentSet) {
 
   this.cargoScoop = function() {
-    return { name: 'Cargo Scoop', class: 1, rating: 'H', power: 0.6};
+    return { name: 'Cargo Hatch', class: 1, rating: 'H', power: 0.6};
   };
 
   this.common = function (typeIndex, componentId) {
