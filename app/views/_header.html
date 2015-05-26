@@ -26,7 +26,7 @@
 
   <div class="l menu">
     <div class="menu-header" ng-class="{selected: openedMenu=='comp', disabled: !bs.hasBuilds}" ng-click="openMenu($event,'comp')">
-      <svg class="icon warning" ng-class="{'warning-disabled': !bs.hasBuilds}"><use xlink:href="#stats-bars"></use></svg> Comparison
+      <svg class="icon warning" ng-class="{'warning-disabled': !bs.hasBuilds}"><use xlink:href="#stats-bars"></use></svg> Compare
     </div>
     <div class="menu-list" ng-if="openedMenu=='comp'" ng-click="$event.stopPropagation();">
       <span ng-if="!bs.hasComparisons">None Created</span>
