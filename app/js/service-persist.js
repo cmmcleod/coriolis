@@ -82,6 +82,7 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
           }
         }
       }
+      localStorage.setItem(LS_KEY_COMPARISONS, angular.toJson(this.comparisons));
     }
   };
 
