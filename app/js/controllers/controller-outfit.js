@@ -130,15 +130,26 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
     $state.go('outfit', {shipId: ship.id, code: null, bn: null}, {location:'replace', reload:true});
   };
 
+  /**
+   * On build name change, retrieve the existing saved code if there is one
+   */
   $scope.bnChange = function(){
     $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
   };
 
+  /**
+   * Toggle cost of the selected component
+   * @param  {object} item The component being toggled
+   */
   $scope.toggleCost = function(item) {
     item.incCost = !item.incCost;
     ship.updateTotals();
   };
 
+  /**
+   * Toggle the power on/off for the selected component
+   * @param  {object} item The component being toggled
+   */
   $scope.togglePwr = function(item) {
     item.enabled = !item.enabled;
     ship.updateTotals();

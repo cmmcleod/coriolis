@@ -1,7 +1,7 @@
 angular.module('app').controller('ComparisonController', ['lodash', '$rootScope', '$filter', '$scope', '$state', '$stateParams', 'Utils', 'ShipFacets', 'ShipsDB', 'Ship', 'Persist', 'Serializer', function (_, $rootScope, $filter, $scope, $state, $stateParams, Utils, ShipFacets, Ships, Ship, Persist, Serializer) {
   $rootScope.title = 'Coriolis - Compare';
-  $scope.predicate = 'ship.name'; // Sort by ship name as default
-  $scope.desc = true;
+  $scope.predicate = 'name'; // Sort by ship name as default
+  $scope.desc = false;
   $scope.facetSortOpts = { containment: '#facet-container', orderChanged: function () { $scope.saved = false; } };
   $scope.builds = [];
   $scope.unusedBuilds = [];
@@ -99,7 +99,7 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
       }
     });
     Persist.saveComparison($scope.name, $scope.builds, selectedFacets);
-    $state.go('compare', {name: $scope.name}, {location:'replace', reload:false});
+    $state.go('compare', {name: $scope.name}, {location:'replace', notify:false});
     $scope.saved = true;
   };
 
@@ -111,22 +111,41 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
     $state.go('compare', {name: null}, {location:'replace', reload:true});
   };
 
+  /**
+   * Set saved to false when the name of the comparison is changed.
+   */
   $scope.nameChange = function() {
     $scope.saved = false;
   };
 
+  /**
+   * Hide/Show the select builds menu
+   * @param  {boolean} s  Show true/false
+   * @param  {Event}   e  Event Object
+   */
   $scope.selectBuilds = function(s, e) {
     e.stopPropagation();
     $scope.showBuilds = s;
   };
 
+  /**
+   * Show the permalink modal
+   * @param  {Event} e  Event object
+   */
   $scope.permalink = function(e) {
     e.stopPropagation();
     $state.go('modal.link', {url:  genPermalink()});
   };
 
+  /**
+   * Generate the forum embed code for the comparison
+   * and show the export modal.
+   *
+   * @param  {Event} e  Event object
+   */
   $scope.embed = function(e) {
     e.stopPropagation();
+    // Make a request to goo.gl to shorten the URL, returns a promise
     var promise = Utils.shortenUrl( genPermalink()).then(
       function (shortUrl) {
         return Utils.comparisonBBCode(facets, $scope.builds, shortUrl);
@@ -138,6 +157,10 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
     $state.go('modal.export', {promise: promise, title:'Forum BBCode'});
   };
 
+  /**
+   * Generates the long permalink URL
+   * @return {string} The long permalink URL
+   */
   function genPermalink() {
     var selectedFacets = [];
     facets.forEach(function(f) {
@@ -202,11 +225,10 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
       throw { type: 'bad-comparison', message: e.message, details: e };
     }
   }
-
   // Replace fmt with actual format function as defined in rootScope and retain original index
   facets.forEach(function(f,i) { f.fmt = $rootScope[f.fmt]; f.index = i; });
   // Remove default facets, mark as active, and add them back in selected order
   _.pullAt(facets, defaultFacets).forEach(function (f) { f.active = true; facets.unshift(f); });
-
+  $scope.builds = $filter('orderBy')($scope.builds, $scope.predicate, $scope.desc);
 
 }]);

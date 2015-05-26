@@ -12,18 +12,15 @@ angular.module('app')
         $scope.msgPost = 'Not Found';
       break;
     case 'no-ship':
-        //$rootScope.bodyClass = 'docking-bay';
         $scope.msgPre = 'Ship';
         $scope.msgHighlight = $p.message;
         $scope.msgPost = 'does not exist';
       break;
     case 'build-fail':
-        //$rootScope.bodyClass = 'ship-explode';  // TODO: create background imag for this
         $scope.msgPre = 'Build Failure!';
         $scope.details = $p.details;
       break;
     default:
-      //$rootScope.bodyClass = 'thargoid'; // TODO: create background imag for this
       $scope.msgPre = "Uh, Jameson, we have a problem..";
       $scope.errorMessage = $p.message;
       $scope.details = $p.details;

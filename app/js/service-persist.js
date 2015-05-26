@@ -72,7 +72,16 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
       }
       // Persist updated build collection to localStorage
       localStorage.setItem(LS_KEY_BUILDS, angular.toJson(this.builds));
-      // TODO: Check if build exists in comparisons
+      // Check if the build was used in existing comparisons
+      var comps = this.comparisons;
+      for (var c in comps) {
+        for (var i = 0; i < comps[c].builds.length; i++) {  // For all builds in the current comparison
+          if(comps[c].builds[i].shipId == shipId && comps[c].builds[i].buildName == name) {
+            comps[c].builds.splice(i,1);
+            break;  // A build is unique ber comparison
+          }
+        }
+      }
     }
   };
 

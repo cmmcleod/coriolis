@@ -28,11 +28,15 @@ angular.module('app').directive('shipyardHeader', ['lodash','$window','$rootScop
         scope.openedMenu = null;
       });
 
+      // Listen to close event to close opened menus or modals
       $rootScope.$on('close', function () {
         scope.openedMenu = null;
         $rootScope.showAbout = false;
       });
 
+      /**
+       * Save selected insurance option in localstorage
+       */
       scope.updateInsurance = function(){
         $window.localStorage.setItem('insurance', $rootScope.insurance.current.name);
       };
