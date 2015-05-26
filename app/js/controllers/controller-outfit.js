@@ -70,7 +70,8 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
    */
   $scope.select = function(type, slot, e) {
     e.stopPropagation();
-    var id = angular.element(e.srcElement).attr('cpid');  // Get component ID
+    var id = angular.element(e.target).attr('cpid');  // Get component ID
+
     if (id) {
       if (id == 'empty') {
         ship.use(slot, null, null);
