@@ -2,7 +2,7 @@ angular.module('app').directive('componentSelect', function () {
 
   // Generting the HTML in this manner is MUCH faster than using an angular template.
 
-  function appendGroup(list, opts, cid, mass, wrap) {
+  function appendGroup(list, opts, cid, mass) {
     var prevClass = null, prevRating = null;
     for (var i = 0; i < opts.length; i++) {
       var o = opts[i];
@@ -47,8 +47,7 @@ angular.module('app').directive('componentSelect', function () {
       opts: '=',    // Component Options object
       groups: '=',  // Groups of Component Options
       mass: '=',    // Current ship unladen mass
-      s: '=',       // Current Slot
-      wrap: '@'     // Wrap on class
+      s: '='       // Current Slot
     },
     link: function(scope, element) {
       var list = [];
@@ -57,7 +56,6 @@ angular.module('app').directive('componentSelect', function () {
       var opts = scope.opts;
       var groups = scope.groups;
       var mass = scope.mass || 0;
-      var wrap = scope.wrap;
 
       if(groups) {
         // At present time slots with grouped options (Hardpoints and Internal) can be empty
@@ -66,12 +64,12 @@ angular.module('app').directive('componentSelect', function () {
           var grp = groups[g];
           var grpCode = grp[Object.keys(grp)[0]].grp; // Nasty operation to get the grp property of the first/any single component
           list.push('<div id="', grpCode ,'" class="select-group">', g, '</div><ul>');
-          appendGroup(list, grp, cid, mass, wrap);
+          appendGroup(list, grp, cid, mass);
           list.push('</ul>');
         }
       } else {
         list.push('<ul>');
-        appendGroup(list, opts, cid, mass, wrap);
+        appendGroup(list, opts, cid, mass);
         list.push('</ul>');
       }
 

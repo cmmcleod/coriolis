@@ -92,7 +92,7 @@
         <div class="l">Opt: {{th.c.optmass}} <u>T</u></div>
         <div class="l">Max: {{th.c.maxmass}} <u>T</u></div>
       </div>
-      <div component-select class="select" s="th" mass="ship.unladenMass" wrap="true" opts="availCS.common[1]" ng-if="selectedSlot==th" ng-click="select('c',th,$event)"></div>
+      <div component-select class="select" s="th" mass="ship.unladenMass" opts="availCS.common[1]" ng-if="selectedSlot==th" ng-click="select('c',th,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, fsd)" ng-class="{selected: selectedSlot==fsd}">
       <div class="details">

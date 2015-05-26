@@ -10,7 +10,6 @@ angular.module('app').directive('areaChart', function () {
       width: '='
     },
     link: function(scope, element) {
-      console.log(element[0].parentElement);
       var width = element[0].parentElement.offsetWidth,
           height = width * 0.6,
           series = scope.series,
