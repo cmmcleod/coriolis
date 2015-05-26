@@ -13,6 +13,7 @@
   <div class="l" ng-if="c.c.recharge">Recharge: {{c.c.recharge}} <u>Mj</u></div>
   <div class="l" ng-if="c.c.repair">Repair: {{c.c.repair}}</div>
   <div class="l" ng-if="c.c.rangeLS">{{c.c.rangeLS}} <u>LS</u></div>
+  <div class="l" ng-if="c.c.rangeLS === null"><svg class="icon"><use xlink:href="#infinite"></use></svg> <u>LS</u></div>
   <div class="l" ng-if="c.c.rangeRating">Range: {{c.c.rangeRating}}</div>
   <div class="l" ng-if="c.c.armouradd">+{{c.c.armouradd}} <u>Armour</u></div>
 </div>
