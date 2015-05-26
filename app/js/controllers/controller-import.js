@@ -4,13 +4,14 @@ angular.module('app').controller('ImportController', ['$scope', '$stateParams', 
   $scope.errorMsg = null;
   $scope.canEdit = true;
   $scope.builds = $stateParams.obj || null;
+  $scope.ships = Ships;
 
   $scope.validateJson = function() {
     var importObj = null;
     $scope.jsonValid = false;
     $scope.errorMsg = null;
     $scope.builds = null;
-    $scope.ships = Ships;
+    
 
     if (!$scope.importData) { return; }
 
