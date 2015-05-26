@@ -7,11 +7,12 @@ angular.module('app').directive('componentSelect', function () {
     for (var i = 0; i < opts.length; i++) {
       var o = opts[i];
       var id = o.id || (o.class + o.rating);  // Common components' ID is their class and rating
-      list.push('<li class="', o.name? 'lc' : 'c');
 
-      if(wrap && o.class != prevClass) {
-        list.push(' cl');
+      if(i > 0 && opts.length > 3 && o.class != prevClass && (o.rating != prevRating || o.mode)) {
+        list.push('<br/>');
       }
+
+      list.push('<li class="', o.name? 'lc' : 'c');
 
       if (cid == o.id) {
         list.push(' active');
@@ -25,12 +26,10 @@ angular.module('app').directive('componentSelect', function () {
 
       list.push(o.class, o.rating);
 
-      if(o.mode) {
-        list.push('/' + o.mode);
-        if(o.missile) {
-          list.push(o.missile);
-        }
+      if(o.missile) {
+        list.push('/' + o.missile);
       }
+
 
       if(o.name) {
         list.push(' ' + o.name);

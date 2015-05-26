@@ -2,18 +2,20 @@
   color: @primary-disabled;
   position: absolute;
   left: -1px;
-  padding: 5px 0;
+  padding: 0.5em 0;
   width: 100%;
   margin: 0;
   max-height: 300px;
   overflow-y: auto;
+  overflow-x: hidden;
   background-color: @bg;
   border: 1px solid @primary;
   white-space: nowrap;
+  text-align: center;
 
   .select-group {
-    clear: both;
-    margin: 5px 0;
+    text-align: left;
+    margin: 0.5em 0;
     padding-left: 5px;
     border-top: 1px solid @primary-disabled;
     border-bottom: 1px solid @primary-disabled;
@@ -44,8 +46,8 @@
   @optionSpacing: 1.8em;
 
   .lc {
-    padding-left: 5px;
     line-height:@optionSpacing;
+    text-align: left;
   }
 
   .empty-c {
@@ -56,10 +58,9 @@
 
   .c {
     border:1px solid @primary-disabled;
-    display: block;
-    float:left;
-    padding: 0;
-    margin: 0.5em;
+    display: inline-block;
+    padding: 0.1em;
+    margin: 0.3em;
     width: 2em;
     line-height: @optionSpacing;
     text-align: center;
@@ -77,20 +78,21 @@
   }
 
   ul {
-    margin: 0;
-    margin-left: 1.5em;
+    display: inline-block;
+    text-align: left;
+    min-width: 15em;
+    margin: 0 auto;
     padding: 0;
     list-style: none;
-    overflow: hidden;
   }
 
   &.hardpoint {
     .c {
-      width: auto;
+      width: 4em;
       padding: 0.1em 0.5em;
     }
     ul {
-      margin-left: 0.5em;
+      width: 17em;
     }
   }
 

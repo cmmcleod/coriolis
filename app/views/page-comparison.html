@@ -37,7 +37,7 @@
 
 <table id="comp-tbl" comparison-table ng-click="handleClick($event)"></table>
 
-<div ng-repeat="f in facets | filter:{active:true}" ng-if="builds.length > 0" class="chart" bar-chart width="500" facet="f" data="builds">
+<div ng-repeat="f in facets | filter:{active:true}" ng-if="builds.length > 0" class="chart" bar-chart width="480" facet="f" data="builds">
   <h3 ng-click="sort(f.props[0])" >{{f.title}}</h3>
 </div>
 
