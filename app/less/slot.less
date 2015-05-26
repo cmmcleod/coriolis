@@ -1,7 +1,6 @@
 
 .slot-group {
-  float: left;
-  margin: 0.25em;
+  margin: 1em 0;
   .user-select-none();
   cursor: default;
 
@@ -13,13 +12,15 @@
     margin: 0.1em 0;
     font-size: 0.8em;
     padding-left: 0.5em;
+    font-weight: normal;
   }
 }
 
 .slot {
   float: left;
   text-align: left;
-  width: 20.5em;
+  width: 21em;
+  min-height: 2.75em;
   font-size: 0.75em;
   margin-top: 0.5em;
   position: relative;
@@ -64,7 +65,7 @@
     color: lighten(@primary-bg, 12%);
     text-align: center;
     letter-spacing: 0.1em;
-    line-height: 1.8em;
+    line-height: 1.7em;
   }
 
   &:hover{

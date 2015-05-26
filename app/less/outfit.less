@@ -1,7 +1,7 @@
 
 #outfit {
-  //width: 62em;
-  //margin: 0 auto;
+  width: 64em;
+  margin: 0 auto;
 }
 
 #overview {
@@ -9,11 +9,25 @@
     margin: 0;
     float: left;
   }
+  overflow: hidden;
+}
+
+#summary {
+  .user-select-none();
+  width: 100%;
+  margin-top: 1em;
+  font-size: 0.8em;
+  border-collapse: collapse;
+
+  tbody td {
+    padding: 0 0.5em;
+  }
 }
 
 #build {
   float: right;
   line-height: 2em;
+  font-size: 0.8em;
 
   input {
     background: none;
@@ -38,6 +52,7 @@
 }
 
 #standard {
+  margin-right: 0.3em;
   .slot {
     clear: left;
   }
@@ -48,19 +63,3 @@
     clear: left;
   }
 }
-
-
-#summary {
-  .user-select-none();
-  margin: 0;
-  border-collapse: collapse;
-
-  tbody td {
-    padding: 0 0.5em;
-  }
-}
-
-.toggle {
-  cursor: pointer;
-}
-
