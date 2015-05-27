@@ -160,7 +160,6 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
       localStorage.removeItem(LS_KEY_BUILDS);
       localStorage.removeItem(LS_KEY_COMPARISONS);
     }
-
   };
 
   this.getInsurance = function () {
