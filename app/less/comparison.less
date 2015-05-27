@@ -3,7 +3,6 @@
   display: inline-block;
   text-align: left;
   border-collapse: collapse;
-  //font-size:0.85em;
 
   td {
     border: 1px solid @primary-disabled;
@@ -37,9 +36,12 @@
   .user-select-none();
   cursor: default;
   overflow: hidden;
-  font-size: 0.75em;
   margin: 0;
   padding: 0;
+
+  .tablet({
+    font-size: 0.8em;
+  });
 
   .as-sortable-placeholder {
     background-color: @primary-bg;
@@ -113,5 +115,7 @@
 
 #comp-tbl {
   margin: 1em auto;
-  font-size: 0.85em;
+  .tablet({
+    font-size: 0.85em;
+  });
 }
