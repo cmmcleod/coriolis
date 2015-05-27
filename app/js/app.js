@@ -30,7 +30,7 @@ angular.module('app', ['ngTouch', 'ui.router', 'ct.ui.router.extras.sticky', 'ui
   $rootScope.fRound4 = function(d) { return d3.round(d, 4); };
   $rootScope.fPct = d3.format('.2%');
   $rootScope.fRPct = d3.format('%');
-  $rootScope.fTime = function(d) { return Math.floor(d/60) + ":" + ("00" + (d%60)).substr(-2,2); };
+  $rootScope.fTime = function(d) { return Math.floor(d/60) + ":" + ("00" + Math.floor(d%60)).substr(-2,2); };
 
   // Global Event Listeners
   $doc.bind('keyup', function (e) {

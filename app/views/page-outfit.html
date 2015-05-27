@@ -146,7 +146,17 @@
 
   <div id="hardpoints" class="slot-group l">
     <h1>HardPoints</h1>
-    <div class="slot" ng-repeat="h in ship.hardpoints" ng-click="selectSlot($event, h)" ng-class="{selected: selectedSlot==h}">
+    <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '!0'}" ng-click="selectSlot($event, h)" ng-class="{selected: selectedSlot==h}">
+      <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="hgMap[h.c.grp]"></div>
+      <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
+        <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="utility" class="slot-group l">
+    <h1>Utility Mounts</h1>
+    <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '0'}" ng-click="selectSlot($event, h)" ng-class="{selected: selectedSlot==h}">
       <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="hgMap[h.c.grp]"></div>
       <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
         <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
@@ -157,7 +167,7 @@
   <div id="internal" class="slot-group r">
     <h1>Internal Compartments</h1>
     <div class="slot" ng-repeat="i in ship.internal" ng-click="selectSlot($event, i)" ng-class="{selected: selectedSlot==i}">
-      <div slot-internal class="details" slot="i" lbl="igMap[i.c.grp]"></div>
+      <div slot-internal class="details" slot="i" lbl="igMap[i.c.grp]" ft="ft"></div>
       <div class="select" ng-if="selectedSlot==i" ng-click="select('i',i,$event)">
         <div component-select s="i" groups="availCS.getInts(i.maxClass)"></div>
       </div>
