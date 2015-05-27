@@ -3,12 +3,12 @@ angular.module('app').directive('componentSelect', function () {
   // Generting the HTML in this manner is MUCH faster than using an angular template.
 
   function appendGroup(list, opts, cid, mass) {
-    var prevClass = null;
+    var prevClass = null, prevRating = null;
     for (var i = 0; i < opts.length; i++) {
       var o = opts[i];
       var id = o.id || (o.class + o.rating);  // Common components' ID is their class and rating
 
-      if(i > 0 && opts.length > 3 && o.class != prevClass && o.grp != 'cr') {
+      if(i > 0 && opts.length > 3 && o.class != prevClass && (!o.grp || o.rating != prevRating || o.mode)) {
         list.push('<br/>');
       }
 
@@ -37,6 +37,7 @@ angular.module('app').directive('componentSelect', function () {
 
       list.push('</li>');
       prevClass = o.class;
+      prevRating= o.rating;
     }
   }
 
