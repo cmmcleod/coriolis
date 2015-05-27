@@ -1,5 +1,6 @@
-angular.module('app', ['ngTouch', 'ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable', 'shipyard', 'ngLodash', 'app.templates'])
+angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable', 'shipyard', 'ngLodash', 'app.templates'])
 .run(['$rootScope', '$location', '$window', '$document','$state','commonArray','shipPurpose','shipSize','hardPointClass','internalGroupMap','hardpointsGroupMap', function ($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hpc, igMap, hgMap) {
+
   // Redirect any state transition errors to the error controller/state
   $rootScope.$on('$stateChangeError', function(e, toState, toParams, fromState, fromParams, error){
     e.preventDefault();

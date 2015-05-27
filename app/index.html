@@ -19,10 +19,10 @@
   <meta name="msapplication-config" content="/images/logo/browserconfig.xml">
   <meta name="theme-color" content="#000000">
 </head>
-<body  ng-click="bgClicked($event)">
+<body>
   <div style="height: 0; width: 0; overflow:hidden"><%= svgContent %></div>
   <shipyard-header></shipyard-header>
-  <div id="main" ui-view></div>
+  <div id="main" ui-view ng-click="bgClicked($event)"></div>
 
   <div ui-view="modal"></div>
 
