@@ -4,7 +4,7 @@
     <h1 ng-bind="ship.name"></h1>
     <div id="build">
       <input ng-model="buildName" ng-change="bnChange()" placeholder="Enter Build Name" maxlength="50" />
-      <button ng-click="saveBuild()" ng-disabled="!buildName || savedCode && code == savedCode">
+      <button ng-click="saveBuild()" ng-disabled="!buildName || savedCode && code == savedCode || !canSave">
         <svg class="icon lg "><use xlink:href="#floppy-disk"></use></svg> Save
       </button>
       <button ng-click="reloadBuild()" ng-disabled="!savedCode || code == savedCode">

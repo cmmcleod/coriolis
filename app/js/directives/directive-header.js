@@ -1,4 +1,4 @@
-angular.module('app').directive('shipyardHeader', ['lodash','$window','$rootScope', 'Persist', 'ShipsDB', function (_, $window, $rootScope, Persist, ships) {
+angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', 'Persist', 'ShipsDB', function (_, $rootScope, Persist, ships) {
 
   return {
     restrict: 'E',
@@ -20,7 +20,7 @@ angular.module('app').directive('shipyardHeader', ['lodash','$window','$rootScop
         ]
       };
 
-      var insIndex = _.findIndex($rootScope.insurance.opts, 'name', $window.localStorage.getItem('insurance'));
+      var insIndex = _.findIndex($rootScope.insurance.opts, 'name', Persist.getInsurance());
       $rootScope.insurance.current = $rootScope.insurance.opts[insIndex != -1? insIndex : 0];
 
       // Close menus if a navigation change event occurs
@@ -35,10 +35,10 @@ angular.module('app').directive('shipyardHeader', ['lodash','$window','$rootScop
       });
 
       /**
-       * Save selected insurance option in localstorage
+       * Save selected insurance option
        */
       scope.updateInsurance = function(){
-        $window.localStorage.setItem('insurance', $rootScope.insurance.current.name);
+        Persist.setInsurance($rootScope.insurance.current.name);
       };
 
       scope.openMenu = function (e, menu) {

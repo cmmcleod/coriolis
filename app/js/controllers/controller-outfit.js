@@ -25,6 +25,7 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
   $scope.availCS = Components.forShip(ship.id);
   $scope.selectedSlot = null;
   $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
+  $scope.canSave = Persist.isEnabled();
 
   $scope.jrSeries = {
     xMin: ship.unladenMass,

@@ -5,12 +5,22 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
   var LS_KEY_BUILDS = 'builds';
   var LS_KEY_COMPARISONS = 'comparisons';
   var localStorage = $window.localStorage;
-  var buildJson = localStorage.getItem(LS_KEY_BUILDS);
-  var comparisonJson = localStorage.getItem(LS_KEY_COMPARISONS);
+  var buildJson = null;
+  var comparisonJson = null;
+
+  // Safe check to determine if localStorage is enabled
+  try {
+    localStorage.setItem('s', 1);
+    localStorage.removeItem('s');
+    buildJson = localStorage.getItem(LS_KEY_BUILDS);
+    comparisonJson = localStorage.getItem(LS_KEY_COMPARISONS);
+    this.lsEnabled = true;
+  } catch(e) {
+    this.lsEnabled = false;
+  }
 
   this.builds = buildJson? angular.fromJson(buildJson) : {};
   this.comparisons = comparisonJson? angular.fromJson(comparisonJson) : {};
-
   var buildCount = Object.keys(this.builds).length;
 
   this.state = {
@@ -26,6 +36,10 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
    * @param  {string} code   The serialized code
    */
   this.saveBuild = function (shipId, name, code) {
+    if (!this.lsEnabled) {
+      return;
+    }
+
     if (!this.builds[shipId]) {
       this.builds[shipId] = {};
     }
@@ -63,7 +77,7 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
    * @param  {string} name   The name of the build
    */
   this.deleteBuild = function (shipId, name) {
-    if(this.builds[shipId][name]) {
+    if(this.lsEnabled && this.builds[shipId][name]) {
       delete this.builds[shipId][name];
       if (Object.keys(this.builds[shipId]).length === 0) {
         delete this.builds[shipId];
@@ -94,6 +108,10 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
    * @param  {array} facets  Array of facet indices
    */
   this.saveComparison = function (name, builds, facets){
+    if (!this.lsEnabled) {
+      return;
+    }
+
     if (!this.comparisons[name]) {
       this.comparisons[name] = {};
     }
@@ -122,7 +140,7 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
    * @param  {string} name Comparison name
    */
   this.deleteComparison = function (name) {
-    if (this.comparisons[name]) {
+    if (this.lsEnabled && this.comparisons[name]) {
       delete this.comparisons[name];
       localStorage.setItem(LS_KEY_COMPARISONS, angular.toJson(this.comparisons));
       this.state.hasComparisons = Object.keys(this.comparisons).length > 0;
@@ -137,8 +155,29 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
     angular.copy({}, this.comparisons);
     this.state.hasBuilds = false;
     this.state.buildCount = 0;
-    localStorage.removeItem(LS_KEY_BUILDS);
-    localStorage.removeItem(LS_KEY_COMPARISONS);
+
+    if (this.lsEnabled) {
+      localStorage.removeItem(LS_KEY_BUILDS);
+      localStorage.removeItem(LS_KEY_COMPARISONS);
+    }
+
+  };
+
+  this.getInsurance = function () {
+    if (this.lsEnabled) {
+      return localStorage.getItem('insurance');
+    }
+    return null;
+  };
+
+  this.setInsurance = function (name) {
+    if (this.lsEnabled) {
+      return localStorage.setItem('insurance', name);
+    }
+  };
+
+  this.isEnabled = function() {
+    return this.lsEnabled;
   };
 
 }]);
