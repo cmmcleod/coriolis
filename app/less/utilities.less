@@ -30,9 +30,10 @@
   user-select: none;
 }
 
-// 1024 x 768 typical tablet resolution
+// Screens less than 1024 wide
+// More will be added over time to support mobile devices better
 .tablet(@rules) {
-  @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  @media only screen and (min-width: 300px) and (max-width: 1024px) {
     @rules();
   }
 }
