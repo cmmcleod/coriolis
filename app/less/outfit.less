@@ -1,17 +1,15 @@
 
 #outfit {
   font-size: 1.1em;
-
-  // iPads  Landscape
-  .tablet({
-    & {
-      font-size: 0.95em;
-    }
-  });
-
-  width: 64em;
+  max-width: 1200px;
   margin: 0 auto;
   .user-select-none();
+
+  .tablet({
+    min-width: 760px;
+    font-size: 0.8em;
+  });
+
 }
 
 #overview {
@@ -25,7 +23,7 @@
 #summary {
   .user-select-none();
   width: 100%;
-  margin-top: 1em;
+  margin: 1em 0;
   font-size: 0.8em;
   border-collapse: collapse;
 
@@ -56,7 +54,7 @@
 
 
 #hardpoints, #utility, #standard {
-  margin-right: 0.3em;
+  padding-right: 0.3em;
   .slot {
     clear: left;
   }
