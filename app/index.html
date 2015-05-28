@@ -1,30 +1,69 @@
 <!DOCTYPE html>
-<html ng-app="app" ng-strict-di="true">
+<html ng-app="app" ng-strict-di="true" manifest="coriolis.appcache">
 <head>
   <title ng-bind="title">Coriolis</title>
   <link rel="stylesheet" href="/app.css">
+
+  <!-- Standard headers -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+  <link rel="manifest" href="/images/logo/manifest.json">
+  <link rel="icon" sizes="96x96" type="image/png" href="/images/logo/favicon-96x96.png">
+  <link rel="icon" sizes="194x194" type="image/png" href="/images/logo/favicon-194x194.png">
+  <link rel="icon" sizes="192x192" type="image/png" href="/images/logo/android-chrome-192x192.png">
+  <link rel="shortcut icon" href="/images/logo/favicon.ico">
+
+  <!-- Apple/iOS headers -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Coriolis">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="apple-touch-icon" sizes="76x76" href="/images/logo/apple-touch-icon-76x76.png">
   <link rel="apple-touch-icon" sizes="114x114" href="/images/logo/apple-touch-icon-114x114.png">
   <link rel="apple-touch-icon" sizes="120x120" href="/images/logo/apple-touch-icon-120x120.png">
   <link rel="apple-touch-icon" sizes="144x144" href="/images/logo/apple-touch-icon-144x144.png">
   <link rel="apple-touch-icon" sizes="152x152" href="/images/logo/apple-touch-icon-152x152.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/logo/apple-touch-icon-180x180.png">
-  <link rel="icon" sizes="96x96" type="image/png" href="/images/logo/favicon-96x96.png">
-  <link rel="icon" sizes="194x194" type="image/png" href="/images/logo/favicon-194x194.png">
-  <link rel="icon" sizes="192x192" type="image/png" href="/images/logo/android-chrome-192x192.png">
-  <link rel="manifest" href="/images/logo/manifest.json">
-  <link rel="shortcut icon" href="/images/logo/favicon.ico">
+   <!-- iPhone, iPod Touch, portrait -->
+    <link href="/images/splash/320x460.png" media="(device-width: 320px) and (device-height: 480px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+    <!-- iPhone, iPod Touch, landscape -->
+    <link href="/images/splash/480x320.png" media="(device-width: 320px) and (device-height: 480px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+    <!-- iPhone 4, 4S, portrait -->
+    <link href="/images/splash/640x920.png" media="(device-width: 320px) and (device-height: 480px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+    <!-- iPhone 4, 4S, landscape -->
+    <link href="/images/splash/960x640.png" media="(device-width: 320px) and (device-height: 480px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+    <!-- iPhone 5, 5S, 5C, portrait -->
+    <link href="/images/splash/640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+    <!-- iPhone 5, 5S, 5C, landscape -->
+    <link href="/images/splash/1136x640.png" media="(device-width: 320px) and (device-height: 568px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+    <!-- iPhone 6, portrait -->
+    <link href="/images/splash/750x1294.png" media="(device-width: 375px) and (device-height: 667px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+    <!-- iPhone 6, landscape -->
+    <link href="/images/splash/1334x750.png" media="(device-width: 375px) and (device-height: 667px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+    <!-- iPhone 6+, portrait -->
+    <link href="/images/splash/1242x2148.png" media="(device-width: 414px) and (device-height: 736px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image">
+    <!-- iPhone 6+, landscape -->
+    <link href="/images/splash/2208x1242.png" media="(device-width: 414px) and (device-height: 736px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image">
+    <!-- iPad 1, 2, Mini, portrait -->
+    <link href="/images/splash/768x1004.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+    <!-- iPad 1, 2, Mini, landscape -->
+    <link href="/images/splash/1024x748.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+    <!-- iPad 3, 4, Air, Air 2, Mini 2, Mini 3, portrait -->
+    <link href="/images/splash/1536x2008.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+    <!-- iPad 3, 4, Air, Air 2, Mini 2, Mini 3, landscape -->
+    <link href="/images/splash/2048x1496.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+
+  <!-- Microsoft Windows Phone/Tablet headers -->
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="msapplication-TileImage" content="/images/logo/mstile-144x144.png">
   <meta name="msapplication-config" content="/images/logo/browserconfig.xml">
   <meta name="theme-color" content="#000000">
 </head>
-<body>
+<body style="background-color:#000;">
   <div style="height: 0; width: 0; overflow:hidden"><%= svgContent %></div>
   <shipyard-header></shipyard-header>
   <div id="main" ui-view ng-click="bgClicked($event)"></div>
 
-  <div ui-view="modal"></div>
+  <div ui-view="modal" ng-click="bgClicked($event)"></div>
 
   <footer>
     <div class="right">

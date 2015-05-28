@@ -1,14 +1,18 @@
 /**
  * BBCode Generator functions for embedding in the Elite Dangerous Forums
  */
-angular.module('app').factory('Utils', ['$state','$http', function ($state, $http) {
+angular.module('app').factory('Utils', ['$window','$state','$http', '$q', function ($window, $state, $http, $q) {
 
   var shortenAPI = 'https://www.googleapis.com/urlshortener/v1/url?key=';
 
   function shortenUrl(url) {
-    return $http.post(shortenAPI + GAPI_KEY, {longUrl:url}).then(function(response) {
-      return response.data.id;
-    });
+    if ($window.navigator.onLine) {
+      return $http.post(shortenAPI + GAPI_KEY, {longUrl:url}).then(function(response) {
+        return response.data.id;
+      });
+    } else {
+      return $q.reject({statusText: 'Not Online'});
+    }
   }
 
   function comparisonBBCode(facets, builds, link) {

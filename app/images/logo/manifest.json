@@ -1,5 +1,6 @@
 {
-	"name": "Shipyard",
+	"name": "Coriolis.io",
+	"short_name": "Coriolis",
 	"icons": [
 		{
 			"src": "images\/logo\/android-chrome-36x36.png",

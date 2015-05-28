@@ -1,5 +1,4 @@
 var gulp            = require('gulp'),
-    exec            = require('gulp-exec'),
     less            = require('gulp-less'),
     jshint          = require('gulp-jshint'),
     minifyCSS       = require('gulp-minify-css'),
@@ -19,6 +18,7 @@ var gulp            = require('gulp'),
     svgstore        = require( 'gulp-svgstore' ),
     svgmin          = require( 'gulp-svgmin' ),
     jsonlint        = require("gulp-jsonlint"),
+    appCache        = require("gulp-manifest"),
     pkg             = require('./package.json');
 
 var cdnHostStr = '';
@@ -167,11 +167,12 @@ gulp.task('serve-stop', function(cb) {
 
 gulp.task('watch', function() {
   gulp.watch(['app/index.html','app/icons/*.svg'], ['generateIndexHTML']);
-  gulp.watch(['app/images/**','app/fonts/**', 'app/.htaccess'], ['copy']);
+  gulp.watch(['app/images/**','app/fonts/**'], ['copy']);
   gulp.watch('app/less/*.less', ['less']);
   gulp.watch('app/views/**/*', ['html2js']);
   gulp.watch('app/js/**/*.js', ['js']);
   gulp.watch('data/**/*.json', ['jsonToDB']);
+  gulp.watch(['build/**', '!**/*.appcache'], ['appcache']);
 });
 
 gulp.task('cache-bust', function(done) {
@@ -195,6 +196,29 @@ gulp.task('cache-bust', function(done) {
   stream.on('error', done);
 });
 
+gulp.task('appcache', function(done) {
+  // Since using a CDN manually build file list rather than using appCache mechanisms
+  gulp.src(['build/**', '!build/index.html', '!**/*.json', '!**/logo/*', '!**/*.map','!**/*.appcache'])
+    .pipe(gutil.buffer(function(err, stream) {
+      var files = [];
+      for (var i = 0; i < stream.length; i++) {
+        if (!stream[i].isNull()) {
+          files.push(cdnHostStr + '/' + stream[i].relative);
+        }
+      }
+
+      gulp.src([])
+        .pipe(appCache({
+          preferOnline: true,
+          cache: files,
+          filename: 'coriolis.appcache',
+          timestamp: true
+         }))
+        .pipe(gulp.dest('build'))
+        .on('end', done);
+    }));
+});
+
 gulp.task('upload', function(done) {
   exec([
       "rsync -e 'ssh -i ", process.env.CORIOLIS_PEM, "' -a --delete build/ ", process.env.CORIOLIS_USER, "@", process.env.CORIOLIS_HOST, ":~/www"
@@ -206,11 +230,11 @@ gulp.task('upload', function(done) {
 gulp.task('lint', ['js-lint', 'json-lint']);
 gulp.task('clean', function (done) { del(['build'], done); });
 gulp.task('build', function (done) { runSequence('clean', ['html2js','jsonToDB'], ['generateIndexHTML','bower','js','less','copy'], done); });
-
+gulp.task('build-cache', function (done) { runSequence('build', 'appcache', done); });
+gulp.task('dev', function (done) { runSequence('build-cache', 'serve','watch', done); });
 gulp.task('deploy', function (done) {
   cdnHostStr = '//cdn.' + process.env.CORIOLIS_HOST;
-  runSequence('lint', 'build','cache-bust', 'upload', done);
+  runSequence('lint', 'build','cache-bust', 'appcache', 'upload', done);
 });
-gulp.task('dev', function (done) { runSequence('build', 'serve','watch', done); });
 gulp.task('default', ['dev']);
 
