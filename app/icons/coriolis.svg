@@ -1,8 +1,8 @@
-<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-  <rect transform="rotate(45 200,200) " height="266" width="266" y="67" x="67" stroke-width="10" stroke="#ff3b00" fill="#000000"/>
-  <rect height="26" width="83" y="187" x="158" fill-opacity="0" stroke-width="15" stroke="#ff3b00" fill="#000000"/>
-  <path stroke="#ff3b00" transform="rotate(45 314,85)" d="m181,114l134,-58l134,59l-268,0z" stroke-width="10" fill="#000000"/>
-  <path stroke="#ff3b00" transform="rotate(135 314,314) " d="m181,344l134,-59l134,59l-268,0z" stroke-width="10" fill="#000000"/>
-  <path stroke="#ff3b00" transform="rotate(-45 85,85) " d="m-49,114l134-59l134,59l-268,0z" stroke-width="10" fill="#000000"/>
-  <path stroke="#ff3b00" transform="rotate(-135 85,314) "  d="m-49,344l134,-59l134,59l-268,0z" stroke-width="10" fill="#000000"/>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+
+  <g transform="translate(1,1)">
+    <path stroke="#ff3b00" transform="rotate(45 15 15)" d="m4,4 l 11,-4 l 11,4 l 4,11 l -4,11 l -11,4 l -11,-4 l -4,-11 l 4,-11 l 22,0 l 0,22 l -22,0 z" stroke-width="1" fill="#000000"/>
+    <rect height="3" width="10" y="13.5" x="10" stroke-width="1" stroke="#ff3b00" />
+  </g>
+
 </svg>
