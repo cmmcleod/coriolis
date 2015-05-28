@@ -15,8 +15,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
           labels = config.labels,
           margin = {top: 15, right: 15, bottom: 35, left: 50},
           fmt = d3.format('.3r'),
-          fmtLong = d3.format('.2f'),
-          x, y;
+          fmtLong = d3.format('.2f');
 
       // Create chart
       var svg = d3.select(element[0]).append("svg");
