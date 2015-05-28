@@ -3,7 +3,7 @@ angular.module('app')
   $rootScope.title = 'Error';
   $scope.path = $location.path();
   $scope.type = $p.type || 'unknown';
-  $scope.browser = $window.navigator.appVersion;
+  $scope.browser = $window.navigator.userAgent;
 
   switch ($scope.type) {
     case 404:
