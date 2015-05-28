@@ -1,0 +1,72 @@
+{
+  "diamondback": {
+    "properties": {
+      "grp": "ex",
+      "name": "Diamondback",
+      "manufacturer": "Lakon",
+      "class": 1,
+      "cost": 564300,
+      "speed": 283,
+      "boost": 384,
+      "agility": 3,
+      "shields": 93,
+      "armour": 216,
+      "fuelcost": 50,
+      "mass": 170
+    },
+    "slots": {
+      "common": [
+        4,
+        4,
+        4,
+        2,
+        3,
+        2,
+        4
+      ],
+      "hardpoints": [
+        2,
+        2,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        3,
+        3,
+        3,
+        2
+      ]
+    },
+    "defaults": {
+      "common": [
+        "4E",
+        "4E",
+        "4E",
+        "2E",
+        "3E",
+        "2E",
+        "4C"
+      ],
+      "hardpoints": [
+        17,
+        17,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        "44",
+        0,
+        0,
+        "2h"
+      ]
+    }
+  }
+}

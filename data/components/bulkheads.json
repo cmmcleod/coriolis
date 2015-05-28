@@ -36,6 +36,80 @@
       "mass": 4
     }
   ],
+  "diamondback": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 225700,
+      "mass": 13
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 507900,
+      "mass": 26
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 1185100,
+      "mass": 26
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 1330100,
+      "mass": 26
+    }
+  ],
+  "imperial_courier": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 1017200,
+      "mass": 4
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 2288600,
+      "mass": 8
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 5408800,
+      "mass": 8
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 5993700,
+      "mass": 8
+    }
+  ],
   "cobra_mk_iii": [
     {
       "name": "Lightweight Alloy",

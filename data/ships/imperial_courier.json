@@ -1,0 +1,74 @@
+{
+  "imperial_courier": {
+    "properties": {
+      "grp": "mp",
+      "name": "Imperial Courier",
+      "manufacturer": "Gutamaya",
+      "class": 1,
+      "cost": 2479400,
+      "speed": 277,
+      "boost": 380,
+      "agility": 6,
+      "shields": 230,
+      "armour": 144,
+      "fuelcost": 50,
+      "mass": 35
+    },
+    "slots": {
+      "common": [
+        4,
+        3,
+        3,
+        1,
+        3,
+        2,
+        3
+      ],
+      "hardpoints": [
+        2,
+        2,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        3,
+        3,
+        2,
+        2,
+        2,
+        1
+      ]
+    },
+    "defaults": {
+      "common": [
+        "4E",
+        "3E",
+        "3E",
+        "1E",
+        "3E",
+        "2E",
+        "3C"
+      ],
+      "hardpoints": [
+        17,
+        17,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        "02",
+        "44",
+        "01",
+        0,
+        0,
+        "2h"
+      ]
+    }
+  }
+}
