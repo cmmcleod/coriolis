@@ -13,7 +13,6 @@ var gulp            = require('gulp'),
     runSequence     = require('run-sequence'),
     exec            = require('child_process').exec,
     RevAll          = require('gulp-rev-all'),
-    scp             = require( 'gulp-scp2' ),
     gutil           = require( 'gulp-util' ),
     svgstore        = require( 'gulp-svgstore' ),
     svgmin          = require( 'gulp-svgmin' ),
@@ -54,7 +53,7 @@ gulp.task('json-lint', function() {
 
 gulp.task('bower', function(){
   return gulp.src(mainBowerFiles())
-    .pipe(uglify({mangle: false}).on('error',function(e){
+    .pipe(uglify({mangle: false, compress: false}).on('error',function(e){
       console.log('Bower File:', e.fileName);
       console.log('Line:', e.lineNumber);
       console.log('Message:', e.message);
