@@ -159,6 +159,17 @@ gulp.task('serve', function(cb) {
   });
 });
 
+// Windows command to launch nginx serv
+gulp.task('serve-win', function(cb) {
+  exec('nginx -p %cd% -c nginx.conf', function (err, stdout, stderr) {
+    if (stderr) {
+      console.warn(stderr);
+      console.warn('Is NGINX already running?\n');
+    }
+    cb();
+  });
+});
+
 gulp.task('serve-stop', function(cb) {
   exec('kill -QUIT $(cat nginx.pid)', function (err, stdout, stderr) {
     if (stderr) console.log(stderr); else cb(err);
