@@ -251,4 +251,49 @@
     </table>
   </div>
 
+  <div class="list l" style="width : 30%">
+      <div class="header">Power Grid</div>
+      <div class="items">
+        <div class="primary-disabled">Standard</div>
+          <div ng-repeat="c in ship.common" ng-if="c.c.power" class="item common untoggleable enabled" ng-init="c.c.priority = 1 ; c.c.status = 'ENABLED'">
+            <div class="lbl"><div class="activator">[■]</div> {{c.c.class}}{{c.c.rating}} {{CArr[$index]}}</div>
+            <div class="priority">
+              <span class="value">
+                <span class="less">-</span> {{c.c.priority}} <span class="more">+</span>
+              </span>
+              <span class="status">{{c.c.status}}</span>
+            </div>
+          </div>
+          <div class="item common untoggleable enabled" ng-init="c.c.priority = 1 ; c.c.status = 'ENABLED'">
+            <div class="lbl"><div class="activator">[■]</div> 1H Cargo Scoop</div>
+            <div class="priority">
+              <span class="value">
+                <span class="less">-</span> {{c.c.priority}} <span class="more">+</span>
+              </span>
+              <span class="status">{{c.c.status}}</span>
+            </div>
+          </div>
+        <div class="primary-disabled">Hardpoints</div>
+          <div ng-repeat="c in ship.hardpoints" ng-if="c.c.power" class="item hardpoints untoggleable enabled" ng-init="c.c.priority = 1 ; c.c.status = 'ENABLED'">
+            <div class="lbl"><div class="activator">[■]</div> {{c.c.class}}{{c.c.rating}} {{c.c.name || hgMap[c.c.grp]}}</div>
+            <div class="priority">
+              <span class="value">
+                <span class="less">-</span> {{c.c.priority}} <span class="more">+</span>
+              </span>
+              <span class="status">{{c.c.status}}</span>
+            </div>
+          </div>
+        <div class="primary-disabled">Internal</div>
+          <div ng-repeat="c in ship.internal" ng-if="c.c.power" class="item internal untoggleable enabled" ng-init="c.c.priority = 1 ; c.c.status = 'ENABLED'">
+            <div class="lbl"><div class="activator">[■]</div> {{c.c.class}}{{c.c.rating}} {{c.c.name || igMap[c.c.grp]}}</div>
+            <div class="priority">
+              <span class="value">
+                <span class="less">-</span> {{c.c.priority}} <span class="more">+</span>
+              </span>
+              <span class="status">{{c.c.status}}</span>
+            </div>
+          </div>
+      </div>
+  </div>
+
 </div>
