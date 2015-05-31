@@ -293,8 +293,8 @@
               <span class="status enabled" ng-show="ship.cargoScoop.status == 2">ENABLED</span>
             </div>
           </div>
-        <div class="primary-disabled">Hardpoints</div>
-          <div ng-repeat="c in ship.hardpoints" ng-if="c.c.power" class="item hardpoints untoggleable enabled" ng-init="c.priority = 1 ; c.status = 2">
+        <div class="primary-disabled hardpoint-toogle" ng-click="toggleHardpoint()">Hardpoints <span ng-show="ship.deployed">DEPLOYED</span><span ng-show="!ship.deployed">RETRACTED</span></div>
+          <div ng-repeat="c in ship.hardpoints" ng-if="c.c.power" class="item hardpoints untoggleable enabled" ng-init="c.priority = 1 ; c.status = 3 ; c.deployed = false ; c.hardpoint = true">
             <div class="lbl">
               <div class="activator" ng-click="togglePwr(c)">
                 <span class="before">[</span><div class="center"><span class="square" ng-class="{enabled:c.enabled}">■</span></div><span class="after">]</span>
@@ -310,6 +310,7 @@
               <span class="status shutdown" ng-show="c.status == 0">SHUTDOWN</span>
               <span class="status disabled" ng-show="c.status == 1">DISABLED</span>
               <span class="status enabled" ng-show="c.status == 2">ENABLED</span>
+              <span class="status shutdown" ng-show="c.status == 3">RETRACTED</span>
             </div>
           </div>
         <div class="primary-disabled">Internal</div>

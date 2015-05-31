@@ -153,11 +153,35 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
    */
   $scope.togglePwr = function(item) {
     item.enabled = !item.enabled;
-    if (item.enabled)
+    if (item.hardpoint) {
+      if (item.deployed && item.enabled)
+        item.status = 2;
+      else if (!item.enabled)
+        item.status = 0;
+      else
+        item.status = 3
+    }
+    else if (item.enabled)
       item.status = 2;
     else
       item.status = 0;
     ship.updateTotals();
+  };
+
+  $scope.toggleHardpoint = function () {
+    ship.deployed = !ship.deployed;
+
+    for (var i = ship.hardpoints.length - 1; i >= 0; i--) {
+      var item = ship.hardpoints[i];
+
+       item.deployed = ship.deployed;
+       if (item.enabled && item.deployed)
+         item.status = 2;
+       else if (!item.enabled)
+          item.status = 0;
+       else
+         item.status = 3;
+    };
   };
 
   $scope.upPriority = function (item) {
@@ -170,6 +194,10 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
     if (item.priority == 1)
       return;
     item.priority -= 1;
+  }
+
+  function updatePriority() {
+
   }
 
   // Utilify functions
