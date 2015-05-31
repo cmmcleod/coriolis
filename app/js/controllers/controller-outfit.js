@@ -153,14 +153,31 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
    */
   $scope.togglePwr = function(item) {
     item.enabled = !item.enabled;
+    if (item.enabled)
+      item.status = 2;
+    else
+      item.status = 0;
     ship.updateTotals();
   };
+
+  $scope.upPriority = function (item) {
+    if (item.priority == 5)
+      return;
+    item.priority += 1;
+  }
+
+  $scope.downPriority = function (item) {
+    if (item.priority == 1)
+      return;
+    item.priority -= 1;
+  }
 
   // Utilify functions
   function updateState() {
     $state.go('outfit', {shipId: ship.id, code: $scope.code, bn: $scope.buildName}, {location:'replace', notify:false});
     $scope.jrSeries.xMin = ship.unladenMass;
     $scope.jrSeries.xMax = ship.ladenMass;
+    // Entry point 1
   }
 
   // Hide any open menu/slot/etc if escape key is pressed

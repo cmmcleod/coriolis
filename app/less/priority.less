@@ -4,17 +4,59 @@
 
 	.status {
 		margin-left: 10px;
+		width: 75px;
+		display: inline-block;
+	}
+
+	.status.shutdown {
+		color: #888888;
+	}
+
+	.status.enabled {
+		color: #556627;
+	}
+
+	.status.disabled {
+		color: #B1221C;
 	}
 
 	.value {
         margin-right: 10px;
+        font-size: 15px;
+        display: inline-block;
+        width: 55px;
+        text-align: center;
+
+        .more, .less {
+        	font-family: monospace;
+        	font-weight: bold;
+        	margin-left: 5px;
+        	margin-right: 5px;
+        	width: 10px;
+  			height: 18px;
+  			cursor: pointer;
+        }
 	}
 }
 
 .activator {
+	color: #F9A41E;
 	display: inline-block;
 	margin-right: 10px;
-	font-size: 17px;
-	width: 21px;
-	height: 21px;
+	cursor: pointer;
+
+	.center {
+		display: inline-block;
+		font-size: 17px;
+		width: 12px;
+		text-align: center;
+	}
+
+	.square.enabled {
+		visibility: visible;
+	}
+
+	.square {
+		visibility: hidden;
+	}
 }
