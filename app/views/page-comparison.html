@@ -25,10 +25,7 @@
     <td colspan="2">
       <ul id="facet-container" as-sortable="facetSortOpts" ng-model="facets" class="sortable" update="tblUpdate">
         <li ng-repeat="(i,f) in facets" as-sortable-item class="facet" ng-class="{active: f.active}" ng-click="toggleFacet(i)">
-          <div as-sortable-item-handle>
-            <svg class="icon move"><use xlink:href="{{f.active? '#checkmark' : '#checkmark2'}}"></use></svg>
-            <span ng-bind="f.title"></span>
-          </div>
+          <div as-sortable-item-handle><span ng-bind="f.title"></span></div>
         </li>
       </ul>
     </td>
