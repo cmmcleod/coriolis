@@ -125,8 +125,8 @@
         <div class="l">{{pd.id}} Power Distributor</div>
         <div class="r">{{pd.c.mass}} <u>T</u></div>
         <div class="cb"></div>
-        <div class="l">Sys: {{pd.c.weaponcapacity}} <u>Mj</u> / {{pd.c.weaponrecharge}} <u>MW</u></div>
-        <div class="l">Wep: {{pd.c.systemcapacity}} <u>Mj</u> / {{pd.c.systemrecharge}} <u>MW</u></div>
+        <div class="l">Wep: {{pd.c.weaponcapacity}} <u>Mj</u> / {{pd.c.weaponrecharge}} <u>MW</u></div>
+        <div class="l">Sys: {{pd.c.systemcapacity}} <u>Mj</u> / {{pd.c.systemrecharge}} <u>MW</u></div>
         <div class="l">Eng: {{pd.c.enginecapacity}} <u>Mj</u> / {{pd.c.enginerecharge}} <u>MW</u></div>
       </div>
       <div component-select class="select" s="pd" opts="availCS.common[4]" ng-if="selectedSlot==pd" ng-click="select('c',pd,$event)"></div>
