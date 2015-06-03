@@ -153,7 +153,7 @@ angular.module('shipyard', ['ngLodash'])
    * @return {number}      Distance in Light Years
    */
   .value('calcJumpRange', function(mass, fsd, fuel) {
-      return Math.pow(Math.min(fuel || Infinity, fsd.maxfuel) / fsd.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass;
+      return Math.pow(Math.min(fuel === undefined? fsd.maxfuel : fuel, fsd.maxfuel) / fsd.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass;
   })
    /**
    * Calculate the a ships shield strength based on mass, shield generator and shield boosters used.
