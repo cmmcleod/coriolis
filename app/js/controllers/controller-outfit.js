@@ -1,4 +1,4 @@
-angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', function ($rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist) {
+angular.module('app').controller('OutfitController', ['$window','$rootScope','$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', function ($window, $rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist) {
   var data = Ships[$p.shipId];   // Retrieve the basic ship properties, slots and defaults
   var ship = new Ship($p.shipId, data.properties, data.slots); // Create a new Ship instance
 
@@ -26,16 +26,22 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
   $scope.selectedSlot = null;
   $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
   $scope.canSave = Persist.isEnabled();
+  $scope.fuel = 0;
 
   $scope.jrSeries = {
-    xMin: ship.unladenMass,
-    xMax: ship.ladenMass,
-    func: ship.jumpRangeWithMass.bind(ship)
+    xMin: 0,
+    xMax: ship.cargoCapacity,
+    // Slightly higher than actual based bacuse components are excluded
+    yMax: ship.jumpRangeWithMass(ship.unladenMass),
+    yMin: 0,
+    func: function(cargo) { // X Axis is Cargo
+      return ship.jumpRangeWithMass(ship.unladenMass + $scope.fuel + cargo, $scope.fuel);
+    }
   };
   $scope.jrChart = {
     labels: {
       xAxis: {
-        title:'Ship Mass',
+        title:'Cargo',
         unit: 'T'
       },
       yAxis: {
@@ -156,11 +162,17 @@ angular.module('app').controller('OutfitController', ['$rootScope','$scope', '$s
     ship.updateTotals();
   };
 
+  $scope.fuelChange = function (fuel) {
+    $scope.fuel = fuel;
+    angular.element($window).triggerHandler('render');
+  }
+
   // Utilify functions
   function updateState() {
     $state.go('outfit', {shipId: ship.id, code: $scope.code, bn: $scope.buildName}, {location:'replace', notify:false});
-    $scope.jrSeries.xMin = ship.unladenMass;
-    $scope.jrSeries.xMax = ship.ladenMass;
+    $scope.jrSeries.xMax = ship.cargoCapacity;
+    $scope.jrSeries.yMax = ship.jumpRangeWithMass(ship.unladenMass);
+    $scope.jrSeries.mass = ship.unladenMass;
   }
 
   // Hide any open menu/slot/etc if escape key is pressed

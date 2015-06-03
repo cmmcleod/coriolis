@@ -220,6 +220,9 @@
     <div class="header">Jump Range</div>
     <div class="cen">
       <div class="chart" area-chart config="jrChart" series="jrSeries"></div>
+      <div slider max="ship.fuelCapacity" unit="'T'" on-change="::fuelChange(val)" style="position:relative; margin: 0 auto;">
+        <svg class="icon xl primary-disabled" style="position:absolute;height: 100%;"><use xlink:href="#fuel"></use></svg>
+      </div>
     </div>
   </div>
 

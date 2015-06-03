@@ -1,0 +1,42 @@
+
+.slider-axis {
+  line, path {
+    fill: none;
+    stroke: @primary-disabled;
+  }
+
+  text {
+    font-size: 0.8em;
+    fill: @primary-disabled;
+  }
+
+
+  .domain {
+    fill: none;
+    stroke: @primary;
+    stroke-opacity: .3;
+    stroke-width: 0.7em;
+    stroke-linecap: round;
+  }
+
+}
+
+.slider {
+
+  text {
+    dominant-baseline: central;
+    fill: @primary;
+  }
+
+  .filled {
+    stroke-width: 0.3em;
+    stroke-linecap: round;
+    stroke: @primary-disabled;
+  }
+
+  .handle {
+    fill: @primary;
+    stroke-opacity: .5;
+    cursor: crosshair;
+  }
+}

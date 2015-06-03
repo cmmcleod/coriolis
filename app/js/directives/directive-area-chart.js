@@ -5,9 +5,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
     restrict: 'A',
     scope:{
       config: '=',
-      series: '=',
-      height: '=',
-      width: '='
+      series: '='
     },
     link: function(scope, element) {
       var series = scope.series,
@@ -15,15 +13,17 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
           labels = config.labels,
           margin = {top: 15, right: 15, bottom: 35, left: 50},
           fmt = d3.format('.3r'),
-          fmtLong = d3.format('.2f');
+          fmtLong = d3.format('.2f'),
+          // Define Axes
+          xAxis = d3.svg.axis().outerTickSize(0).orient("bottom").tickFormat(d3.format('.2r')),
+          yAxis = d3.svg.axis().outerTickSize(0).orient("left").tickFormat(fmt)
+          x = d3.scale.linear(),
+          y = d3.scale.linear();
 
       // Create chart
       var svg = d3.select(element[0]).append("svg");
       var vis = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      // Define Axes
-      var xAxis = d3.svg.axis().outerTickSize(0).orient("bottom").tickFormat(fmt);
-      var yAxis = d3.svg.axis().outerTickSize(0).orient("left").tickFormat(fmt);
       // Define Area
       var area = d3.svg.area();
 
@@ -60,43 +60,47 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
 
       // Create and Add tooltip
       var tip = vis.append("g").style("display", "none");
+      tip.append("rect").attr("width","4em").attr("height", "2em").attr("x", "0.5em").attr("y","-1em").attr("class","tip");
       tip.append("circle")
         .attr("class", "marker")
         .attr("r", 4);
-      tip.append("text").attr("class", 'label x').attr("y", -2);
+      tip.append("text").attr("class", 'label x').attr("y", "-0.1em");
       tip.append("text").attr("class", 'label y').attr("y", '0.7em');
 
       /**
        * Watch for changes in the series data (mass changes, etc)
        */
       scope.$watchCollection('series', render);
-      scope.$watchCollection('config.watch', render);
-      angular.element($window).bind('resize', render);
+      angular.element($window).bind('resize render', render);
 
       function render() {
         var width = element[0].parentElement.offsetWidth,
             height = width * 0.6,
             w = width - margin.left - margin.right,
             h = height - margin.top - margin.bottom,
-            x = d3.scale.linear().range([0, w]),
-            y = d3.scale.linear().range([h, 0]),
             data = [],
             func = series.func;
 
-        for (var d = series.xMin; d <= series.xMax; d++) {
-          data.push([ d, func(d) ]);
+        if (series.xMax == series.xMin) {
+          var yVal = func(series.xMin);
+          data.push([ series.xMin, yVal ]);
+          data.push([ series.xMin, yVal ]);
+          area.x(function(d,i) { return i *  w; }).y0(h).y1(function(d) { return y(d[1]); });
+        } else {
+          for (var d = series.xMin; d <= series.xMax; d += 1) {
+            data.push([ d, func(d) ]);
+          }
+          area.x(function(d) { return x(d[0]); }).y0(h).y1(function(d) { return y(d[1]); });
         }
 
         // Update Chart Size
         svg.attr("width", width).attr("height", height);
-        area.x(function(d) { return x(d[0]); }).y0(h).y1(function(d) { return y(d[1]); });
-
         // Update domain and scale for axes;
-        x.domain([series.xMin, series.xMax]);
+        x.range([0, w]).domain([series.xMin, series.xMax]);
         xAxis.scale(x);
         xLbl.attr("transform", "translate(0," + h + ")");
         xTxt.attr("x", w/2);
-        y.domain([data[data.length - 1][1], data[0][1]]);
+        y.range([h, 0]).domain([series.yMin, series.yMax]);
         yAxis.scale(y);
         yTxt.attr("x", -h/2);
         vis.selectAll(".y.axis").call(yAxis);
@@ -114,8 +118,9 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
           .on("mouseout", function() { tip.style("display", "none"); })
           .on('mousemove', function() {
             var xPos = d3.mouse(this)[0], x0 = x.invert(xPos), y0 = func(x0), flip = (xPos > w * 0.75);
-            tip.attr("transform", "translate(" + x(x0) + "," + y(y0) + ")");
-            tip.selectAll('text.label').attr("x", flip? -10 : 10).style("text-anchor", flip? 'end' : 'start');
+            tip.attr("transform", "translate(" + xPos + "," + y(y0) + ")");
+            tip.selectAll('rect').attr("x", flip? '-4.5em' : "0.5em").style("text-anchor", flip? 'end' : 'start');
+            tip.selectAll('text.label').attr("x", flip? "-1em" : "1em").style("text-anchor", flip? 'end' : 'start');
             tip.select('text.label.x').text(fmtLong(x0) + ' ' + labels.xAxis.unit);
             tip.select('text.label.y').text(fmtLong(y0) + ' ' + labels.yAxis.unit);
           });

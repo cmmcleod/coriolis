@@ -12,37 +12,44 @@
       cursor: pointer;
     }
   }
+}
 
-  svg {
+svg {
 
-    .axis {
+  .axis {
 
-      line, path {
-        fill: none;
-        stroke: @primary-disabled;
-      }
-
-      text {
-        font-size: 0.8em;
-        fill: @primary-disabled;
-      }
-
-      &.y {
-        text tspan:first-child {
-          fill: @primary;
-        }
-      }
-
+    line, path {
+      fill: none;
+      stroke: @primary-disabled;
     }
 
-    .marker {
-      fill: @secondary;
+    text {
+      font-size: 0.8em;
+      fill: @primary-disabled;
     }
 
-    .label {
-      font-size: 0.9em;
-      fill: @fg;
+    &.y {
+      text tspan:first-child {
+        fill: @primary;
+      }
     }
+
+  }
+
+  .marker {
+    fill: @secondary;
+  }
+
+  .label {
+    font-size: 0.9em;
+    fill: @fg;
+  }
+
+  .tip {
+    fill: @bgBlack;
+    stroke: @secondary;
+    stroke-width: 1px;
   }
 }
+
 
