@@ -73,6 +73,43 @@
       "mass": 26
     }
   ],
+  "diamondback_explorer": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 800000,
+      "mass": 23
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 1800000,
+      "mass": 47
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 4200000,
+      "mass": 26
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 4714000,
+      "mass": 47
+    }
+  ],
   "imperial_courier": [
     {
       "name": "Lightweight Alloy",
