@@ -44,7 +44,7 @@ header {
   .menu-list {
     font-family: @fStandard;
     position: absolute;
-    padding: 1em 1em;
+    padding: 0.5em 1em;
     box-sizing: border-box;
     min-width: 100%;
     overflow-x: hidden;
@@ -56,16 +56,17 @@ header {
     max-height: 400px;
 
     &.dbl {
-      width: 22em;
+      -webkit-column-count: 2; /* Chrome, Safari, Opera */
+      -moz-column-count: 2; /* Firefox */
+      column-count: 2;
       ul {
-        float: left;
         width: 10em;
       }
     }
   }
 
   ul {
-    margin: 0 0 0.5em 0;
+    margin: 0 0 0.5em;
     padding: 0;
     line-height: 1.3em;
   }

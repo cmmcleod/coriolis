@@ -15,7 +15,7 @@
       <svg class="icon warning" ng-class="{'warning-disabled': !bs.hasBuilds}"><use xlink:href="#hammer"></use></svg> Builds
     </div>
     <div class="menu-list dbl" ng-if="openedMenu=='b'" ng-click="$event.stopPropagation();">
-      <ul class="l" ng-repeat="shipId in buildsList">
+      <ul ng-repeat="shipId in buildsList">
         {{ships[shipId].properties.name}}
         <li ng-repeat="(name, build) in allBuilds[shipId]">
           <a ui-sref-active="active" class="name" ui-sref="outfit({shipId:shipId, code:build, bn:name})" ng-bind="name"></a>
