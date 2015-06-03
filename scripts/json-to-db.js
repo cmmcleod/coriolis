@@ -26,7 +26,8 @@ async.parallel([
 function done(err, json) { this(err,json); }
 
 function writeDB(err, arr) {
-  var internal = {}, hardpoints = {};
+  var ships = {}, internal = {}, hardpoints = {};
+  var shipOrder = Object.keys(arr[0]).sort();
   var internalOrder = Object.keys(arr[3]).sort();
   var hpOrder = [
     "Pulse Lasers",
@@ -56,9 +57,13 @@ function writeDB(err, arr) {
     hardpoints[hpOrder[j]] = arr[2][hpOrder[j]];
   }
 
+  for (var s = 0; s < shipOrder.length; s++) {
+    ships[shipOrder[s]] = arr[0][shipOrder[s]];
+  }
+
   try {
     var db = {
-      ships: arr[0],
+      ships: ships,
       components: {
         common: arr[1],
         hardpoints: hardpoints,
