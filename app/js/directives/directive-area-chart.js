@@ -71,7 +71,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
        * Watch for changes in the series data (mass changes, etc)
        */
       scope.$watchCollection('series', render);
-      angular.element($window).bind('resize render', render);
+      angular.element($window).bind('orientationchange resize render', render);
 
       function render() {
         var width = element[0].parentElement.offsetWidth,
