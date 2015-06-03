@@ -226,7 +226,7 @@
     </div>
   </div>
 
-  <div class="list r">
+  <div class="list l">
     <div class="header">Costs</div>
     <div class="items">
       <div class="item" ng-class="{enabled:ship.incCost}" ng-click="toggleCost(ship)">
@@ -253,5 +253,91 @@
       </tr></tbody>
     </table>
   </div>
+
+  <div class="cb"></div>
+
+  <div class="list l" style="width : 45%">
+    <div class="header">Power Grid</div>
+    <div class="items">
+      <div class="primary-disabled">Standard</div>
+        <div ng-repeat="c in ship.common" ng-if="c.c.power" class="item common untoggleable enabled" ng-init="c.priority = 1 ; c.status = 2 ; updatePriority()">
+          <div class="lbl">
+            <div class="activator" ng-click="togglePwr(c)">
+              <span class="before">[</span><div class="center"><span class="square" ng-class="{enabled:c.enabled}">■</span></div><span class="after">]</span>
+            </div>
+            {{c.c.class}}{{c.c.rating}} {{CArr[$index]}}
+          </div>
+          <div class="priority">
+            <span class="value">
+              <span class="less" ng-click="downPriority(c)">-</span>
+              {{c.priority}}
+              <span class="more" ng-click="upPriority(c)">+</span>
+            </span>
+            <span class="status shutdown" ng-show="c.status == 0">SHUTDOWN</span>
+            <span class="status disabled" ng-show="c.status == 1">DISABLED</span>
+            <span class="status enabled" ng-show="c.status == 2">ENABLED</span>
+          </div>
+        </div>
+        <div class="item common untoggleable enabled" ng-init="ship.cargoScoop.priority = 1 ; ship.cargoScoop.status = 2 ; updatePriority()">
+          <div class="lbl">
+            <div class="activator" ng-click="togglePwr(ship.cargoScoop)">
+              <span class="before">[</span><div class="center"><span class="square" ng-class="{enabled:ship.cargoScoop.enabled}">■</span></div><span class="after">]</span>
+            </div>
+            1H Cargo Scoop
+          </div>
+          <div class="priority">
+            <span class="value">
+              <span class="less" ng-click="downPriority(ship.cargoScoop)">-</span>
+              {{ship.cargoScoop.priority}}
+              <span class="more" ng-click="upPriority(ship.cargoScoop)">+</span>
+            </span>
+            <span class="status shutdown" ng-show="ship.cargoScoop.status == 0">SHUTDOWN</span>
+            <span class="status disabled" ng-show="ship.cargoScoop.status == 1">DISABLED</span>
+            <span class="status enabled" ng-show="ship.cargoScoop.status == 2">ENABLED</span>
+          </div>
+        </div>
+      <div class="primary-disabled hardpoint-toogle" ng-click="toggleHardpoint()">Hardpoints <span ng-show="ship.deployed">DEPLOYED</span><span ng-show="!ship.deployed">RETRACTED</span></div>
+        <div ng-repeat="c in ship.hardpoints" ng-if="c.c.power" class="item hardpoints untoggleable enabled" ng-init="c.priority = 1 ; c.status = 3 ; c.deployed = false ; c.hardpoint = true ; updatePriority()">
+          <div class="lbl">
+            <div class="activator" ng-click="togglePwr(c)">
+              <span class="before">[</span><div class="center"><span class="square" ng-class="{enabled:c.enabled}">■</span></div><span class="after">]</span>
+            </div>
+            {{c.c.class}}{{c.c.rating}} {{c.c.name || hgMap[c.c.grp]}}
+          </div>
+          <div class="priority">
+            <span class="value">
+              <span class="less" ng-click="downPriority(c)">-</span>
+              {{c.priority}}
+              <span class="more" ng-click="upPriority(c)">+</span>
+            </span>
+            <span class="status shutdown" ng-show="c.status == 0">SHUTDOWN</span>
+            <span class="status disabled" ng-show="c.status == 1">DISABLED</span>
+            <span class="status enabled" ng-show="c.status == 2">ENABLED</span>
+            <span class="status shutdown" ng-show="c.status == 3">RETRACTED</span>
+          </div>
+        </div>
+      <div class="primary-disabled">Internal</div>
+        <div ng-repeat="c in ship.internal" ng-if="c.c.power" class="item internal untoggleable enabled" ng-init="c.priority = 1 ; c.status = 2 ; updatePriority()">
+          <div class="lbl">
+            <div class="activator" ng-click="togglePwr(c)">
+              <span class="before">[</span><div class="center"><span class="square" ng-class="{enabled:c.enabled}">■</span></div><span class="after">]</span>
+            </div>
+            {{c.c.class}}{{c.c.rating}} {{c.c.name || igMap[c.c.grp]}}
+          </div>
+          <div class="priority">
+            <span class="value">
+              <span class="less" ng-click="downPriority(c)">-</span>
+              {{c.priority}}
+              <span class="more" ng-click="upPriority(c)">+</span>
+            </span>
+            <span class="status shutdown" ng-show="c.status == 0">SHUTDOWN</span>
+            <span class="status disabled" ng-show="c.status == 1">DISABLED</span>
+            <span class="status enabled" ng-show="c.status == 2">ENABLED</span>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="cb"></div>
 
 </div>
