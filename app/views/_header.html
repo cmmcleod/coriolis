@@ -7,8 +7,8 @@
 
   <div class="l menu">
     <div class="menu-header" ng-class="{selected: openedMenu=='s'}" ng-click="openMenu($event,'s')">
-      <svg class="icon warning"><use xlink:href="#rocket"></use></svg> Ships
-    </div>
+      <svg class="icon warning"><use xlink:href="#rocket"></use></svg><span class="menu-item-label"> Ships</span>
+</div>
     <div class="menu-list no-wrap" ng-if="openedMenu=='s'">
       <a class="block" ng-repeat="(shipId,ship) in ships" ui-sref-active="active" ui-sref="outfit({shipId:shipId, code:null, bn:null})">{{::ship.properties.name}}</a>
     </div>
@@ -16,7 +16,7 @@
 
   <div class="l menu">
     <div class="menu-header" ng-class="{selected: openedMenu=='b', disabled: !bs.hasBuilds}" ng-click="openMenu($event,'b')">
-      <svg class="icon warning" ng-class="{'warning-disabled': !bs.hasBuilds}"><use xlink:href="#hammer"></use></svg> Builds
+      <svg class="icon warning" ng-class="{'warning-disabled': !bs.hasBuilds}"><use xlink:href="#hammer"></use></svg><span class="menu-item-label"> Builds</span>
     </div>
     <div class="menu-list dbl" ng-if="openedMenu=='b'" ng-click="$event.stopPropagation();">
       <ul ng-repeat="shipId in buildsList">
@@ -30,8 +30,8 @@
 
   <div class="l menu">
     <div class="menu-header" ng-class="{selected: openedMenu=='comp', disabled: !bs.hasBuilds}" ng-click="openMenu($event,'comp')">
-      <svg class="icon warning" ng-class="{'warning-disabled': !bs.hasBuilds}"><use xlink:href="#stats-bars"></use></svg> Compare
-    </div>
+      <svg class="icon warning" ng-class="{'warning-disabled': !bs.hasBuilds}"><use xlink:href="#stats-bars"></use></svg><span class="menu-item-label"> Compare</span>
+</div>
     <div class="menu-list" ng-if="openedMenu=='comp'" ng-click="$event.stopPropagation();" style="white-space: nowrap;">
       <span ng-if="!bs.hasComparisons">None Created</span>
       <a ng-repeat="(name, comp) in allComparisons" ui-sref-active="active" class="block name" ui-sref="compare({name:name})" ng-bind="name"></a>
