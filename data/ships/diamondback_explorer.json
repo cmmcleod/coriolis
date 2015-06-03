@@ -1,0 +1,72 @@
+{
+  "diamondback_explorer": {
+    "properties": {
+      "grp": "ex",
+      "name": "Diamondback Explorer",
+      "manufacturer": "Lakon",
+      "class": 1,
+      "cost": 2000000,
+      "speed": 242,
+      "boost": 316,
+      "agility": 5,
+      "shields": 115,
+      "armour": 270,
+      "fuelcost": 50,
+      "mass": 298
+    },
+    "slots": {
+      "common": [
+        4,
+        4,
+        5,
+        3,
+        4,
+        3,
+        5
+      ],
+      "hardpoints": [
+        3,
+        2,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        4,
+        4,
+        3,
+        3,
+        2
+      ]
+    },
+    "defaults": {
+      "common": [
+        "4E",
+        "4E",
+        "5E",
+        "3E",
+        "4E",
+        "3E",
+        "5C"
+      ],
+      "hardpoints": [
+        0,
+        17,
+        17,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        "49",
+        "02",
+        "01",
+        0,
+        "2h"
+      ]
+    }
+  }
+}
