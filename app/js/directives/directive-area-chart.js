@@ -16,7 +16,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
           fmtLong = d3.format('.2f'),
           // Define Axes
           xAxis = d3.svg.axis().outerTickSize(0).orient("bottom").tickFormat(d3.format('.2r')),
-          yAxis = d3.svg.axis().outerTickSize(0).orient("left").tickFormat(fmt)
+          yAxis = d3.svg.axis().outerTickSize(0).orient("left").tickFormat(fmt),
           x = d3.scale.linear(),
           y = d3.scale.linear();
 

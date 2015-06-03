@@ -49,8 +49,8 @@ angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable',
 
   if ($window.applicationCache) {
     // Listen for appcache updated event, present refresh to update view
-     $window.applicationCache.addEventListener('updateready', function(e) {
-      if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+     $window.applicationCache.addEventListener('updateready', function() {
+      if ($window.applicationCache.status == $window.applicationCache.UPDATEREADY) {
         // Browser downloaded a new app cache.
         $rootScope.appCacheUpdate = true;
         $rootScope.$apply();
