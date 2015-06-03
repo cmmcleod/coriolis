@@ -31,7 +31,7 @@
   box-sizing: border-box;
   background-color: @primary-bg;
   border: 1px solid @primary-disabled;
-  color: @disabled;
+  color: @fg;
   fill: @disabled;
 
   .details {
@@ -47,7 +47,7 @@
   }
 
   .l {
-    margin-right: 1em;
+    margin-right: 0.8em;
   }
 
   .sz {
@@ -69,17 +69,6 @@
     text-align: center;
     letter-spacing: 0.1em;
     line-height: 1.7em;
-  }
-
-  &:hover{
-    color: @fg;
-    fill: @fg;
-    border: 1px solid @primary;
-
-    .sz {
-      color: @primary;
-      border-right: 1px solid @primary;
-    }
   }
 
   &.selected {
