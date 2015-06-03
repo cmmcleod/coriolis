@@ -167,12 +167,14 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
   };
 
   /**
-   * [jumpRange description]
-   * @param  {number} mass [description]
+   * Calculate jump range using the installed FSD and the
+   * specified mass which can be more or less than ships actual mass
+   * @param  {number} mass Mass in tons
+   * @param  {number} fuel Fuel available in tons
    * @return {number}      Jump range in Light Years
    */
-  Ship.prototype.jumpRangeWithMass = function (mass) {
-    return calcJumpRange(mass, this.common[2].c);
+  Ship.prototype.jumpRangeWithMass = function (mass, fuel) {
+    return calcJumpRange(mass, this.common[2].c, fuel);
   };
 
   /**
