@@ -175,7 +175,6 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
     $scope.updatePriority();
   };
 
-<<<<<<< HEAD
   $scope.fuelChange = function (fuel) {
     $scope.fuel = fuel;
     angular.element($window).triggerHandler('render');
