@@ -1,6 +1,6 @@
 {
   "Pulse Lasers": [
-      {
+    {
       "id": "1d",
       "grp": "pl",
       "class": 3,
@@ -14,6 +14,9 @@
       "armourpen": "A",
       "rof": 3,
       "dps": 4,
+      "mjdps" : 21.62,
+      "mjeps" : 2.86,
+      "ssdam" : 7.07,
       "thermload": 1
     },
     {
@@ -30,6 +33,9 @@
       "armourpen": "A",
       "rof": 3.2,
       "dps": 4,
+      "mjdps" : 18.28,
+      "mjeps" : 2.98,
+      "ssdam" : 5.59,
       "thermload": 1
     },
     {
@@ -46,6 +52,9 @@
       "armourpen": "A",
       "rof": 2.3,
       "dps": 3,
+      "mjdps" : 7.05,
+      "mjeps" : 1.24,
+      "ssdam" : 3.15,
       "thermload": 1
     },
     {
@@ -62,6 +71,9 @@
       "armourpen": "A",
       "rof": 3.4,
       "dps": 3,
+      "mjdps" : 14.29,
+      "mjeps" : 1.89,
+      "ssdam" : 4.20,
       "thermload": 1
     },
     {
@@ -78,6 +90,9 @@
       "armourpen": "A",
       "rof": 3.6,
       "dps": 3,
+      "mjdps" : 11.62,
+      "mjeps" : 1.89,
+      "ssdam" : 3.24,
       "thermload": 1
     },
     {
@@ -94,6 +109,9 @@
       "armourpen": "A",
       "rof": 2.5,
       "dps": 3,
+      "mjdps" : 4.72,
+      "mjeps" : 0.83,
+      "ssdam" : 1.86,
       "thermload": 1
     },
     {
@@ -110,6 +128,9 @@
       "armourpen": "A",
       "rof": 3.8,
       "dps": 3,
+      "mjdps" : 9.35,
+      "mjeps" : 1.24,
+      "ssdam" : 2.48,
       "thermload": 1
     },
     {
@@ -126,6 +147,9 @@
       "armourpen": "A",
       "rof": 4,
       "dps": 3,
+      "mjdps" : 7.30,
+      "mjeps" : 1.19,
+      "ssdam" : 1.88,
       "thermload": 1
     },
     {
@@ -142,6 +166,9 @@
       "armourpen": "A",
       "rof": 2.8,
       "dps": 2,
+      "mjdps" : 2.90,
+      "mjeps" : 0.51,
+      "ssdam" : 1.07,
       "thermload": 1
     }
   ]

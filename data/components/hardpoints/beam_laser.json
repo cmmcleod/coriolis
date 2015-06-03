@@ -14,6 +14,8 @@
       "armourpen": "A",
       "rof": null,
       "dps": 5,
+      "mjdps" : 30.33,
+      "mjeps" : 5.65,
       "thermload": 5
     },
     {
@@ -30,6 +32,8 @@
       "armourpen": "A",
       "rof": null,
       "dps": 4,
+      "mjdps" : 24.00,
+      "mjeps" : 5.59,
       "thermload": 6
     },
     {
@@ -46,6 +50,8 @@
       "armourpen": "A",
       "rof": null,
       "dps": 4,
+      "mjdps" : 14.44,
+      "mjeps" : 3.54,
       "thermload": 4
     },
     {
@@ -62,6 +68,8 @@
       "armourpen": "A",
       "rof": null,
       "dps": 4,
+      "mjdps" : 19.38,
+      "mjeps" : 3.42,
       "thermload": 4
     },
     {
@@ -78,6 +86,8 @@
       "armourpen": "A",
       "rof": null,
       "dps": 4,
+      "mjdps" : 13.85,
+      "mjeps" : 3.26,
       "thermload": 4
     },
     {
@@ -94,6 +104,8 @@
       "armourpen": "A",
       "rof": null,
       "dps": 3,
+      "mjdps" : 8.95,
+      "mjeps" : 2.10,
       "thermload": 3
     },
     {
@@ -110,6 +122,8 @@
       "armourpen": "A",
       "rof": null,
       "dps": 3,
+      "mjdps" : 11.61,
+      "mjeps" : 2.16,
       "thermload": 3
     },
     {
@@ -126,6 +140,8 @@
       "armourpen": "A",
       "rof": null,
       "dps": 3,
+      "mjdps" : 8.70,
+      "mjeps" : 2.05,
       "thermload": 3
     },
     {
@@ -142,6 +158,8 @@
       "armourpen": "A",
       "rof": null,
       "dps": 3,
+      "mjdps" : 5.49,
+      "mjeps" : 1.29,
       "thermload": 2
     }
   ]

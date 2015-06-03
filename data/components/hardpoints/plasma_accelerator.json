@@ -17,6 +17,8 @@
       "thermload": 10,
       "grp": "pa",
       "clip": 5,
+      "mjdps" : 6.89,
+      "ssdam" : 27.85,
       "ammo": 100
     },
     {
@@ -36,6 +38,8 @@
       "thermload": 8,
       "grp": "pa",
       "clip": 5,
+      "mjdps" : 20.98,
+      "ssdam" : 92.82,
       "ammo": 100
     },
     {
@@ -55,6 +59,8 @@
       "thermload": 10,
       "grp": "pa",
       "clip": 5,
+      "mjdps" : 25.55,
+      "ssdam" : 123.76,
       "ammo": 100
     }
   ]

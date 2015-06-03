@@ -17,6 +17,8 @@
       "thermload": 7,
       "grp": "rg",
       "clip": 1,
+      "mjdps" : 13.75,
+      "ssdam" : 24.75,
       "ammo": 30
     },
     {
@@ -36,6 +38,8 @@
       "thermload": 10,
       "grp": "rg",
       "clip": 1,
+      "mjdps" : 21.66,
+      "ssdam" : 43.32,
       "ammo": 30
     }
   ]
