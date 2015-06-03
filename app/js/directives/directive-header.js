@@ -8,6 +8,7 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', 'Pers
       scope.openedMenu = null;
       scope.ships = ships;
       scope.allBuilds = Persist.builds;
+      scope.buildsList = Object.keys(scope.allBuilds).sort();
       scope.allComparisons = Persist.comparisons;
       scope.bs = Persist.state;
 
@@ -65,6 +66,10 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', 'Pers
       $rootScope.hideAbout = function (){
         $rootScope.showAbout = false;
       };
+
+      scope.$watchCollection('allBuilds', function() {
+        scope.buildsList = Object.keys(scope.allBuilds).sort();
+      });
     }
   };
 }]);
