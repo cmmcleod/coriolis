@@ -56,6 +56,18 @@ header {
     &.selected {
         background-color: @bgBlack;
     }
+
+    .menu-item-label {
+        @media screen and (min-width: 541px) {
+            margin-left: 1em;
+        }
+        @media screen and (max-width: 540px) {
+            margin-left: 0.5em;
+        }
+        @media screen and (max-width: 520px) {
+            display: none;
+        }
+    }
   }
 
   .menu-list {
