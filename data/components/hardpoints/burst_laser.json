@@ -14,6 +14,9 @@
       "armourpen": "B",
       "rof": 1,
       "dps": 4,
+      "mjdps" : 24.97,
+      "mjeps" : 3.52,
+      "ssdam" : 27.85,
       "thermload": 1
     },
     {
@@ -30,6 +33,9 @@
       "armourpen": "A",
       "rof": 1.2,
       "dps": 4,
+      "mjdps" : 18.56,
+      "mjeps" : 3.27,
+      "ssdam" : 18.56,
       "thermload": 1
     },
     {
@@ -46,6 +52,9 @@
       "armourpen": "A",
       "rof": 0.9,
       "dps": 4,
+      "mjdps" : 8.78,
+      "mjeps" : 1.69,
+      "ssdam" : 9.45,
       "thermload": 1
     },
     {
@@ -110,6 +119,9 @@
       "armourpen": "A",
       "rof": 1.6,
       "dps": 3,
+      "mjdps" : 9.94,
+      "mjeps" : 1.40,
+      "ssdam" : 6.45,
       "thermload": 1
     },
     {
@@ -126,6 +138,9 @@
       "armourpen": "A",
       "rof": 1.7,
       "dps": 3,
+      "mjdps" : 7.95,
+      "mjeps" : 1.40,
+      "ssdam" : 4.53,
       "thermload": 1
     },
     {
@@ -142,6 +157,9 @@
       "armourpen": "B",
       "rof": 1.3,
       "dps": 2,
+      "mjdps" : 2.98,
+      "mjeps" : 0.63,
+      "ssdam" : 2.24,
       "thermload": 1
     }
   ]
