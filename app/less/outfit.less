@@ -39,6 +39,10 @@
         width: 100%;
         border-collapse: collapse;
         font-size: 0.8em;
+
+        tbody td {
+            padding: 0 0.5em;
+        }
     }
 }
 
@@ -58,6 +62,11 @@
     &:focus {
       border: 1px solid @primary;
       color: @primary;
+    }
+  }
+  @media screen and (max-width: 340px) {
+    button {
+      padding: 0.25em;
     }
   }
 }
