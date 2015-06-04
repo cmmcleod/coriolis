@@ -227,16 +227,6 @@
         </table>
     </div>
 
-    <div class="list l" style="width: 50%;padding: 0 0.5em;">
-        <div class="header">Jump Range</div>
-        <div class="cen">
-            <div class="chart" area-chart config="jrChart" series="jrSeries"></div>
-            <div slider max="ship.fuelCapacity" unit="'T'" on-change="::fuelChange(val)" style="position:relative; margin: 0 auto;">
-                <svg class="icon xl primary-disabled" style="position:absolute;height: 100%;"><use xlink:href="#fuel"></use></svg>
-            </div>
-        </div>
-    </div>
-
     <div class="list r">
         <div class="header">Costs</div>
         <div class="items">
@@ -265,6 +255,16 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="list l" id="jumpRange">
+        <div class="header">Jump Range</div>
+        <div class="cen">
+            <div class="chart" area-chart config="jrChart" series="jrSeries"></div>
+            <div slider max="ship.fuelCapacity" unit="'T'" on-change="::fuelChange(val)" style="position:relative; margin: 0 auto;">
+                <svg class="icon xl primary-disabled" style="position:absolute;height: 100%;"><use xlink:href="#fuel"></use></svg>
+            </div>
+        </div>
     </div>
 
 </div>

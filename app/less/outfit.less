@@ -11,6 +11,14 @@
     //font-size: 0.8em;
   });
 
+  &>.list {
+    @media screen and (max-width: 1000px) {
+      width: 49%;
+    }
+    @media screen and (max-width: 600px) {
+      width: 100%;
+    }
+  }
 }
 
 #overview {
@@ -73,5 +81,17 @@
 
     @media screen and (max-width: 640px) {
         display: none;
+    }
+}
+
+#jumpRange {
+    width: 50%;
+    padding: 0 0.5em;
+
+    @media screen and (max-width: 1000px) {
+        float: right;
+        clear: both;
+        display: block;
+        width: 100% !important;
     }
 }
