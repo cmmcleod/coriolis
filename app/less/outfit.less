@@ -7,8 +7,8 @@
 
   .tablet({
     width: 100%;
-    min-width: 750px;
-    font-size: 0.8em;
+    //min-width: 750px;
+    //font-size: 0.8em;
   });
 
 }
@@ -22,15 +22,16 @@
 }
 
 #summary {
-  .user-select-none();
-  width: 100%;
-  margin: 1em 0;
-  font-size: 0.8em;
-  border-collapse: collapse;
+    overflow-x: auto;
+    width: 100%;
+    margin: 1em 0 2em 0;
 
-  tbody td {
-    padding: 0 0.5em;
-  }
+    #summaryTable {
+        .user-select-none();
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.8em;
+    }
 }
 
 #build {
@@ -65,4 +66,12 @@
  .slot {
     clear: left;
   }
+}
+
+.outfit-button-label {
+    margin-left: 0.5em;
+
+    @media screen and (max-width: 640px) {
+        display: none;
+    }
 }
