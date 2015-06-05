@@ -59,7 +59,7 @@
     },
     {
       "id": "7h",
-      "group": "ul",
+      "grp": "ul",
       "class":2,
       "rating":"E",
       "cost": 23000,
@@ -75,7 +75,7 @@
     },
     {
       "id": "7i",
-      "group": "ul",
+      "grp": "ul",
       "class":2,
       "rating":"F",
       "cost": 48500,
@@ -91,7 +91,7 @@
     },
     {
       "id": "7j",
-      "group": "ul",
+      "grp": "ul",
       "class":2,
       "rating":"F",
       "cost": 162800,
