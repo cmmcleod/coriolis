@@ -7,6 +7,8 @@
 
   .tablet({
     width: 100%;
+    font-size: 1.2em;
+    max-width: 1600px;
   });
 
   &>.list {
@@ -21,6 +23,10 @@
 }
 
 #overview {
+  .tablet({
+      font-size: 0.9em;
+  });
+
   h1 {
     margin: 0;
     float: left;
@@ -31,7 +37,8 @@
 #summary {
   overflow-x: auto;
   width: 100%;
-  margin: 1em 0 2em 0;
+  margin: 1em 0 1em 0;
+  padding-bottom: 1em;
   
   #summaryTable {
     .user-select-none();
@@ -87,7 +94,7 @@
 .outfit-button-label {
   margin-left: 0.5em;
 
-  .largePhone({
+  .smallTablet({
     display: none;
   });
 }
