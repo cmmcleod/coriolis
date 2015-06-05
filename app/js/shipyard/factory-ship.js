@@ -11,6 +11,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.id = id;
     this.incCost = true;
     this.cargoScoop = { enabled: true, c: Components.cargoScoop() };
+    this.deployed = false;
     this.bulkheads = { incCost: true, maxClass: 8 };
 
     for (var p in properties) { this[p] = properties[p]; }  // Copy all base properties from shipData

@@ -159,7 +159,20 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
    */
   $scope.togglePwr = function(item) {
     item.enabled = !item.enabled;
+    if (item.hardpoint) {
+      if (item.deployed && item.enabled)
+        item.status = 2;
+      else if (!item.enabled)
+        item.status = 0;
+      else
+        item.status = 3
+    }
+    else if (item.enabled)
+      item.status = 2;
+    else
+      item.status = 0;
     ship.updateTotals();
+    $scope.updatePriority();
   };
 
   $scope.fuelChange = function (fuel) {
@@ -173,6 +186,109 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
     $scope.jrSeries.xMax = ship.cargoCapacity;
     $scope.jrSeries.yMax = ship.jumpRangeWithMass(ship.unladenMass);
     $scope.jrSeries.mass = ship.unladenMass;
+    $scope.updatePriority();
+  }
+
+  $scope.toggleHardpoint = function () {
+    $scope.ship.deployed = !$scope.ship.deployed;
+
+    for (var i = 0; i < $scope.ship.hardpoints.length; i++) {
+      var item = $scope.ship.hardpoints[i];
+
+       item.deployed = $scope.ship.deployed;
+       if (item.enabled && item.deployed)
+         item.status = 2;
+       else if (!item.enabled)
+          item.status = 0;
+       else
+         item.status = 3;
+    };
+
+    $scope.updatePriority();
+  };
+
+  $scope.upPriority = function (item) {
+    if (item.priority == 5)
+      return;
+    item.priority += 1;
+    $scope.updatePriority();
+  }
+
+  $scope.downPriority = function (item) {
+    if (item.priority == 1)
+      return;
+    item.priority -= 1;
+    $scope.updatePriority();
+  }
+
+  function collectPowered() {
+    var items = [];
+
+    // STANDARD
+    for (var i = 0; i < $scope.ship.common.length; i++) {
+      var item = $scope.ship.common[i];
+
+      if (item.enabled && item.c.power) {
+        items.push(item);
+      }
+    };
+
+    // CARGO SCOOP
+    if ($scope.ship.cargoScoop.enabled)
+      items.push($scope.ship.cargoScoop);
+
+    // HARDPOINTS
+    for (var i = 0; i < $scope.ship.hardpoints.length; i++) {
+      var item = $scope.ship.hardpoints[i];
+
+      if (item.enabled && item.hardpoint == true && item.deployed == true && item.c.power)
+        items.push(item);
+    };
+
+    // INTERNAL
+    for (var i = 0; i < $scope.ship.internal.length; i++) {
+      var item = $scope.ship.internal[i];
+
+      if (item.enabled && item.c.power)
+        items.push(item);
+    };
+
+    return items;
+  }
+
+  $scope.updatePriority = function () {
+    var priorityArray = [0, 0, 0, 0, 0];
+    var poweredArray = collectPowered();
+    var minimal = 0;
+
+    for (var i = 0; i < poweredArray.length; i++) {
+      var item = poweredArray[i];
+
+      priorityArray[item.priority - 1] += item.c.power;
+    };
+
+    priorityArray[1] += priorityArray[0];
+    priorityArray[2] += priorityArray[1];
+    priorityArray[3] += priorityArray[2];
+    priorityArray[4] += priorityArray[3];
+
+    for (var i = 0; i < priorityArray.length; i++) {
+      if (priorityArray[i] <= $scope.pp.c.pGen)
+        minimal = i + 1;
+      else
+        break;
+    };
+
+    for (var i = 0; i < poweredArray.length; i++) {
+      var item = poweredArray[i];
+
+      if (item.priority > minimal)
+        item.status = 1;
+      else
+        item.status = 2;
+    };
+
+    console.log(priorityArray);
   }
 
   // Hide any open menu/slot/etc if escape key is pressed
@@ -184,5 +300,4 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
   $scope.$on('close', function () {
     $scope.selectedSlot = null;
   });
-
 }]);
