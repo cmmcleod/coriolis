@@ -29,20 +29,20 @@
 }
 
 #summary {
-    overflow-x: auto;
+  overflow-x: auto;
+  width: 100%;
+  margin: 1em 0 2em 0;
+  
+  #summaryTable {
+    .user-select-none();
     width: 100%;
-    margin: 1em 0 2em 0;
+    border-collapse: collapse;
+    font-size: 0.8em;
 
-    #summaryTable {
-        .user-select-none();
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.8em;
-
-        tbody td {
-            padding: 0 0.5em;
-        }
+    tbody td {
+        padding: 0 0.5em;
     }
+  }
 }
 
 #build {
