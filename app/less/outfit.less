@@ -7,17 +7,16 @@
 
   .tablet({
     width: 100%;
-    //min-width: 750px;
-    //font-size: 0.8em;
   });
 
   &>.list {
-    @media screen and (max-width: 1000px) {
+    .tablet({
       width: 49%;
-    }
-    @media screen and (max-width: 600px) {
+    });
+
+    .largePhone({
       width: 100%;
-    }
+    });
   }
 }
 
@@ -64,10 +63,10 @@
       color: @primary;
     }
   }
-  @media screen and (max-width: 340px) {
-    button {
+  button {
+    .smallPhone({
       padding: 0.25em;
-    }
+    });
   }
 }
 
@@ -86,21 +85,21 @@
 }
 
 .outfit-button-label {
-    margin-left: 0.5em;
+  margin-left: 0.5em;
 
-    @media screen and (max-width: 640px) {
-        display: none;
-    }
+  .largePhone({
+    display: none;
+  });
 }
 
 #jumpRange {
-    width: 50%;
-    padding: 0 0.5em;
+  width: 50%;
+  padding: 0 0.5em;
 
-    @media screen and (max-width: 1000px) {
-        float: right;
-        clear: both;
-        display: block;
-        width: 100% !important;
-    }
+  .tablet({
+    float: right;
+    clear: both;
+    display: block;
+    width: 100% !important;
+  });
 }
