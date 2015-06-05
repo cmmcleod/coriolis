@@ -47,26 +47,21 @@ header {
     color: @warning;
     // Less than 600px screen width: hide text
 
-
     &.disabled {
       color: @warning-disabled;
       cursor: default;
     }
 
     &.selected {
-        background-color: @bgBlack;
+      background-color: @bgBlack;
     }
 
     .menu-item-label {
-        @media screen and (min-width: 541px) {
-            margin-left: 1em;
-        }
-        @media screen and (max-width: 540px) {
-            margin-left: 0.5em;
-        }
-        @media screen and (max-width: 520px) {
-            display: none;
-        }
+      margin-left: 1em;
+
+      .medPhone({
+        display: none;
+      });
     }
   }
 
@@ -83,6 +78,15 @@ header {
     z-index: 0;
     -webkit-overflow-scrolling: touch;
     max-height: 400px;
+
+    .tablet({
+      font-size: 1.1em;
+      max-height: 800px;
+
+      a {
+        padding: 0.3em 0;
+      }
+    });
 
     &.dbl {
       -webkit-column-count: 2; /* Chrome, Safari, Opera */
