@@ -14,6 +14,9 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
           margin = {top: 15, right: 15, bottom: 35, left: 50},
           fmt = d3.format('.3r'),
           fmtLong = d3.format('.2f'),
+          func = series.func,
+          drag = d3.behavior.drag(),
+          dragging = false;
           // Define Axes
           xAxis = d3.svg.axis().outerTickSize(0).orient("bottom").tickFormat(d3.format('.2r')),
           yAxis = d3.svg.axis().outerTickSize(0).orient("left").tickFormat(fmt),
@@ -78,8 +81,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
             height = width * 0.6,
             w = width - margin.left - margin.right,
             h = height - margin.top - margin.bottom,
-            data = [],
-            func = series.func;
+            data = [];
 
         if (series.xMax == series.xMin) {
           var yVal = func(series.xMin);
@@ -96,7 +98,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
         // Update Chart Size
         svg.attr("width", width).attr("height", height);
         // Update domain and scale for axes;
-        x.range([0, w]).domain([series.xMin, series.xMax]);
+        x.range([0, w]).domain([series.xMin, series.xMax]).clamp(true);
         xAxis.scale(x);
         xLbl.attr("transform", "translate(0," + h + ")");
         xTxt.attr("x", w/2);
@@ -109,21 +111,46 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
         // Remove existing elements
         vis.selectAll('path.area').remove();
 
-        vis.insert("path",':first-child')   // Area/Path to appear behind everything else
+        var path = vis.insert("path",':first-child')   // Area/Path to appear behind everything else
           .datum(data)
           .attr("class", "area")
           .attr('fill', 'url(#gradient)')
           .attr("d", area)
-          .on("mouseover", function() { tip.style("display", null); })
-          .on("mouseout", function() { tip.style("display", "none"); })
-          .on('mousemove', function() {
-            var xPos = d3.mouse(this)[0], x0 = x.invert(xPos), y0 = func(x0), flip = (xPos > w * 0.75);
-            tip.attr("transform", "translate(" + xPos + "," + y(y0) + ")");
-            tip.selectAll('rect').attr("x", flip? '-4.5em' : "0.5em").style("text-anchor", flip? 'end' : 'start');
-            tip.selectAll('text.label').attr("x", flip? "-1em" : "1em").style("text-anchor", flip? 'end' : 'start');
-            tip.select('text.label.x').text(fmtLong(x0) + ' ' + labels.xAxis.unit);
-            tip.select('text.label.y').text(fmtLong(y0) + ' ' + labels.yAxis.unit);
-          });
+          .on('mouseover', showTip)
+          .on('mouseout', hideTip)
+          .on('mousemove', moveTip)
+          .call(drag);
+
+        drag
+          .on('dragstart', function() {
+            dragging = true;
+            moveTip.call(this);
+            showTip();
+          })
+          .on("dragend", function() {
+            dragging = false;
+            hideTip();
+          })
+          .on('drag', moveTip)
+      }
+
+      function showTip() {
+       tip.style("display", null);
+      }
+
+      function hideTip() {
+        if (!dragging) {
+          tip.style("display", "none");
+        }
+      }
+
+      function moveTip() {
+        var xPos = d3.mouse(this)[0], x0 = x.invert(xPos), y0 = func(x0), flip = (x0 / x.domain()[1] > 0.75);
+        tip.attr("transform", "translate(" + x(x0) + "," + y(y0) + ")");
+        tip.selectAll('rect').attr("x", flip? '-4.5em' : "0.5em").style("text-anchor", flip? 'end' : 'start');
+        tip.selectAll('text.label').attr("x", flip? "-1em" : "1em").style("text-anchor", flip? 'end' : 'start');
+        tip.select('text.label.x').text(fmtLong(x0) + ' ' + labels.xAxis.unit);
+        tip.select('text.label.y').text(fmtLong(y0) + ' ' + labels.yAxis.unit);
       }
 
     }
