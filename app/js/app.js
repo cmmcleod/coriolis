@@ -49,6 +49,8 @@ angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable',
     // If a previous state has been stored, load that state
     if (state && state.name && state.params) {
       $state.go(state.name, state.params, {location:'replace'});
+    } else {
+      $state.go('shipyard', null, {location:'replace'}); // Default to home page
     }
   }
 
