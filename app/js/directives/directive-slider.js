@@ -50,6 +50,7 @@ angular.module('app').directive('slider', ['$window', function ($window) {
             .scale(x)
             .orient("bottom")
             .tickFormat(function(d) { return d + unit; })
+            .ticks(5)
             .tickSize(0)
             .tickPadding(12))
         .select(".domain");
