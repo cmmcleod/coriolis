@@ -1,5 +1,7 @@
 angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable', 'shipyard', 'ngLodash', 'app.templates'])
-.run(['$rootScope', '$location', '$window', '$document','$state','commonArray','shipPurpose','shipSize','hardPointClass','internalGroupMap','hardpointsGroupMap', function ($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hpc, igMap, hgMap) {
+.run(['$rootScope', '$location', '$window', '$document','$state','commonArray','shipPurpose','shipSize','hardPointClass','internalGroupMap','hardpointsGroupMap', 'Persist', '$state', function ($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hpc, igMap, hgMap, Persist, $state) {
+  // App is running as a standalone web app on tablet/mobile
+  var isStandAlone = $window.navigator.standalone || ($window.external && $window.external.msIsSiteMode && $window.external.msIsSiteMode());
 
   // Redirect any state transition errors to the error controller/state
   $rootScope.$on('$stateChangeError', function(e, toState, toParams, fromState, fromParams, error){
@@ -10,8 +12,17 @@ angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable',
   // Track on Google analytics if available
   $rootScope.$on('$stateChangeSuccess', function(e, to, toParams, from, fromParams) {
     $rootScope.prevState = { name: from.name, params: fromParams };
-    if(to.url && $window.ga) { // Only track states that have a URL
-      ga('send', 'pageview', {page: $location.path()});
+
+    if (to.url) { // Only track states that have a URL
+
+      if ($window.ga) {
+        ga('send', 'pageview', {page: $location.path()});
+      }
+
+      if (isStandAlone) {
+        // Persist the current state
+        Persist.setState({name: to.name, params: toParams});
+      }
     }
   });
 
@@ -32,6 +43,14 @@ angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable',
   $rootScope.fPct = d3.format('.2%');
   $rootScope.fRPct = d3.format('%');
   $rootScope.fTime = function(d) { return Math.floor(d/60) + ":" + ("00" + Math.floor(d%60)).substr(-2,2); };
+
+  if (isStandAlone) {
+    var state = Persist.getState();
+    // If a previous state has been stored, load that state
+    if (state && state.name && state.params) {
+      $state.go(state.name, state.params, {location:'replace'});
+    }
+  }
 
   // Global Event Listeners
   $doc.bind('keyup', function (e) {

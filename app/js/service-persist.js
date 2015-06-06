@@ -162,6 +162,10 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
     }
   };
 
+  /**
+   * Get the saved insurance type
+   * @return {string} The name of the saved insurance type of null
+   */
   this.getInsurance = function () {
     if (this.lsEnabled) {
       return localStorage.getItem('insurance');
@@ -169,12 +173,45 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
     return null;
   };
 
+  /**
+   * Persist selected insurance type
+   * @param {string} name Insurance type name
+   */
   this.setInsurance = function (name) {
     if (this.lsEnabled) {
       return localStorage.setItem('insurance', name);
     }
   };
 
+  /**
+   * Retrieve the last router state from local storage
+   * @param {object} state State object containing state name and params
+   */
+  this.getState = function () {
+    if (this.lsEnabled) {
+      var state  = localStorage.getItem('state');
+      if (state) {
+        return angular.fromJson(state);
+      }
+    }
+    return null;
+  };
+
+  /**
+   * Save the current router state to localstorage
+   * @param {object} state State object containing state name and params
+   */
+  this.setState = function (state) {
+    if (this.lsEnabled) {
+      console.log('Stand Alone state update:', state);
+      localStorage.setItem('state',angular.toJson(state));
+    }
+  };
+
+  /**
+   * Check if localStorage is enabled/active
+   * @return {Boolean} True if localStorage is enabled
+   */
   this.isEnabled = function() {
     return this.lsEnabled;
   };
