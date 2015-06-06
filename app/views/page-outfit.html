@@ -24,24 +24,25 @@
       <thead>
         <tr class="main">
           <th rowspan="2">Size</th>
-          <th colspan="3">Maneouverability</th>
+          <th rowspan="2">Agility</th>
+          <th rowspan="2">Speed</th>
+          <th rowspan="2">Boost</th>
+          <th rowspan="2">Armour</th>
+          <th rowspan="2">Shields</th>
           <th colspan="2">Mass</th>
           <th rowspan="2">Cargo</th>
           <th rowspan="2">Fuel</th>
-          <th rowspan="2">Armour</th>
-          <th rowspan="2">Shields</th>
-          <th colspan="2">Power</th>
-          <th colspan="2">Jump Range</th>
+          <th colspan="3">Jump Range</th>
+          <th colspan="3">Total Range</th>
         </tr>
         <tr>
-          <th>Agility</th>
-          <th>Speed</th>
-          <th>Boost</th>
           <th class="lft">Unladen</th>
           <th>Laden</th>
-          <th class="lft">Retracted</th>
-          <th>Deployed</th>
-          <th class="lft">Unladen</th>
+          <th class="lft">Max</th>
+          <th>Full Tank</th>
+          <th>Laden</th>
+          <th class="lft">Jumps</th>
+          <th>Unladen</th>
           <th>Laden</th>
         </tr>
       </thead>
@@ -51,22 +52,24 @@
           <td>{{ship.agility}}/10</td>
           <td>{{fRound(ship.speed)}} <u>m/s</u></td>
           <td>{{fRound(ship.boost)}} <u>m/s</u></td>
+          <td>{{ship.armourTotal}} <span ng-if="ship.armourAdded">({{ship.armour}} + {{ship.armourAdded}})</span></td>
+          <td>{{fRound(ship.shieldStrength)}} <u>Mj</u> <span ng-if="ship.shieldMultiplier > 1">({{fRPct(ship.shieldMultiplier)}})</span></td>
           <td>{{fRound(ship.unladenMass)}} <u>T</u></td>
           <td>{{fRound(ship.ladenMass)}} <u>T</u></td>
           <td>{{fRound(ship.cargoCapacity)}} <u>T</u></td>
           <td>{{fRound(ship.fuelCapacity)}} <u>T</u></td>
-          <td>{{ship.armourTotal}} <span ng-if="ship.armourAdded">({{ship.armour}} + {{ship.armourAdded}})</span></td>
-          <td>{{fRound(ship.shieldStrength)}} <u>Mj</u> <span ng-if="ship.shieldMultiplier > 1">({{fRPct(ship.shieldMultiplier)}})</span></td>
-          <td>{{fPwr(ship.powerRetracted)}} <u>MW ({{fPct(ship.powerRetracted/ship.powerAvailable)}})</u></td>
-          <td>{{fPwr(ship.powerDeployed)}} <u>MW ({{fPct(ship.powerDeployed/ship.powerAvailable)}})</u></td>
-          <td>{{fRound(ship.unladenJumpRange)}} <u>LY</u></td>
-          <td>{{fRound(ship.ladenJumpRange)}} <u>LY</u></td>
+          <td>{{fRound(ship.unladenRange)}} <u>LY</u></td>
+          <td>{{fRound(ship.fullTankRange)}} <u>LY</u></td>
+          <td>{{fRound(ship.ladenRange)}} <u>LY</u></td>
+          <td>{{fRound(ship.maxJumpCount)}}</td>
+          <td>{{fRound(ship.unladenTotalRange)}} <u>LY</u></td>
+          <td>{{fRound(ship.ladenTotalRange)}} <u>LY</u></td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div id="standard" class="slot-group l">
+  <div id="standard" class="slot-group">
     <h1>Standard</h1>
     <div class="slot" ng-click="selectSlot($event, ship.bulkheads)" ng-class="{selected: selectedSlot==ship.bulkheads}">
       <div class="details">
@@ -160,7 +163,7 @@
     </div>
   </div>
 
-  <div id="hardpoints" class="slot-group l">
+  <div id="hardpoints" class="slot-group">
     <h1>HardPoints</h1>
     <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '!0'}" ng-click="selectSlot($event, h)" ng-class="{selected: selectedSlot==h}">
       <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="hgMap[h.c.grp]"></div>
@@ -170,7 +173,7 @@
     </div>
   </div>
 
-  <div id="utility" class="slot-group l">
+  <div id="utility" class="slot-group">
     <h1>Utility Mounts</h1>
     <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '0'}" ng-click="selectSlot($event, h)" ng-class="{selected: selectedSlot==h}">
       <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="hgMap[h.c.grp]"></div>
@@ -180,7 +183,7 @@
     </div>
   </div>
 
-  <div id="internal" class="slot-group l">
+  <div id="internal" class="slot-group">
     <h1>Internal Compartments</h1>
     <div class="slot" ng-repeat="i in ship.internal" ng-click="selectSlot($event, i)" ng-class="{selected: selectedSlot==i}">
       <div slot-internal class="details" slot="i" lbl="igMap[i.c.grp]" ft="ft"></div>

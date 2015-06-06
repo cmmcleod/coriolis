@@ -67,27 +67,44 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    */
   Ship.prototype.updateTotals = function() {
     var c = _.reduce(this.common, optsSum, {cost: 0, power: 0, mass: 0});
-    var i = _.reduce(this.internal, optsSum, {cost: 0, power: 0, mass: 0, capacity: 0, armouradd: 0});
+    var i = _.reduce(this.internal, optsSum, {cost: 0, power: 0, mass: 0, fuel: 0, cargo: 0, armouradd: 0});
     var h = _.reduce(this.hardpoints, hpSum, {cost: 0, active: 0, passive: 0, mass: 0, shieldmul: 1});
     var fsd = this.common[2].c;                     // Frame Shift Drive;
     var sgSI = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
 
     this.totalCost = c.cost + i.cost + h.cost + (this.incCost? this.cost : 0) + (this.bulkheads.incCost? this.bulkheads.c.cost : 0);
     this.unladenMass = c.mass + i.mass + h.mass + this.mass + this.bulkheads.c.mass;
-    this.powerAvailable = this.common[0].c.pGen;    // Power Plant
-    this.fuelCapacity = this.common[6].c.capacity;
-    this.maxMass = this.common[1].c.maxmass;        // Thrusters Max Mass
-    this.cargoCapacity = i.capacity;
+    this.powerAvailable = this.common[0].c.pGen;            // Power Plant
+    this.fuelCapacity = this.common[6].c.capacity + i.fuel; // Fuel Tank + Internal Fuel Tanks
+    this.maxMass = this.common[1].c.maxmass;                // Thrusters Max Mass
+    this.cargoCapacity = i.cargo;
     this.ladenMass = this.unladenMass + this.cargoCapacity + this.fuelCapacity;
     this.powerRetracted = c.power + i.power + h.passive + (this.cargoScoop.enabled? this.cargoScoop.c.power : 0);
     this.powerDeployed = this.powerRetracted + h.active;
     this.armourAdded = i.armouradd;
     this.shieldMultiplier = h.shieldmul;
-    this.unladenJumpRange = calcJumpRange(this.unladenMass + fsd.maxfuel, fsd); // Include fuel weight for jump
-    this.ladenJumpRange = calcJumpRange(this.ladenMass, fsd);
     this.shieldStrength = sgSI != -1? calcShieldStrength(this.mass, this.shields, this.internal[sgSI].c, this.shieldMultiplier) : 0;
     this.armourTotal = this.armourAdded + this.armour;
-    // TODO: shield recharge rate based pips, shield generator, power distributor
+
+    // Jump Range and total range calculations
+    var fuelRemaining = this.fuelCapacity % fsd.maxfuel;  // Fuel left after making N max jumps
+    var jumps = this.fuelCapacity / fsd.maxfuel;
+    this.unladenRange = calcJumpRange(this.unladenMass + fsd.maxfuel, fsd, this.fuelCapacity); // Include fuel weight for jump
+    this.fullTankRange = calcJumpRange(this.unladenMass + this.fuelCapacity, fsd, this.fuelCapacity); // Full Tanke
+    this.ladenRange = calcJumpRange(this.ladenMass, fsd, this.fuelCapacity);
+    this.maxJumpCount = Math.ceil(jumps);  // Number of full fuel jumps + final jump to empty tank
+
+    // Going backwards, start with the last jump using the remaining fuel
+    this.unladenTotalRange = fuelRemaining > 0? calcJumpRange(this.unladenMass + fuelRemaining, fsd, fuelRemaining): 0;
+    this.ladenTotalRange = fuelRemaining > 0? calcJumpRange(this.unladenMass + this.cargoCapacity + fuelRemaining, fsd, fuelRemaining): 0;
+
+    // For each max fuel jump, calculate the max jump range based on fuel left in the tank
+    for (var j = 0, jumps = Math.floor(jumps); j < jumps; j++) {
+      fuelRemaining += fsd.maxfuel;
+      this.unladenTotalRange += calcJumpRange(this.unladenMass + fuelRemaining, fsd);
+      this.ladenTotalRange += calcJumpRange(this.unladenMass + this.cargoCapacity + fuelRemaining, fsd);
+    }
+
     // TODO: armor bonus / damage reduction for bulkheads
     // TODO: Damage / DPS total (for all weapons)
   };
@@ -106,7 +123,12 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       sum.cost += (slot.incCost && c.cost)? c.cost : 0;
       sum.power += (slot.enabled && c.power)? c.power : 0;
       sum.mass += c.mass || 0;
-      sum.capacity += c.capacity || 0;
+      if (c.grp == 'ft') {  // Internal Fuel Tank
+        sum.fuel += c.capacity;
+      }
+      else if (c.grp == 'cr') { // Internal Cargo Rack
+        sum.cargo += c.capacity;
+      }
       sum.armouradd += c.armouradd || 0;
     }
     return sum;

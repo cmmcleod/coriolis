@@ -53,7 +53,7 @@ angular.module('app').directive('slider', ['$window', function ($window) {
             .tickSize(0)
             .tickPadding(12))
         .select(".domain");
-        lbl.attr('x', w + 20).text(fmt(val) + ' ' +  unit + ' (' + pct(val / scope.max) + ')');
+        lbl.attr('x', w + 20);
         slider.call(brush.extent([val, val])).call(brush.event);
         slider.selectAll(".extent,.resize").remove();
       }
@@ -64,7 +64,7 @@ angular.module('app').directive('slider', ['$window', function ($window) {
           val = x.invert(d3.mouse(this)[0]);
           brush.extent([val, val]);
         }
-        lbl.text(fmt(val) + ' ' +  unit + ' (' + pct(val / scope.max) + ')');
+        lbl.text(fmt(val) + ' ' +  unit + ' ' + pct(val / scope.max));
         scope.change({val: val});
         handle.attr("cx", x(val));
         filled.attr("d", "M0,0V0H" + x(val) + "V0");

@@ -158,6 +158,8 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
    * @param  {object} item The component being toggled
    */
   $scope.togglePwr = function(item) {
+    // Update serialize code
+    // updateState();
     item.enabled = !item.enabled;
     ship.updateTotals();
   };

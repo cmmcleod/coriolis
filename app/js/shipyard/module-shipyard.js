@@ -21,6 +21,7 @@ angular.module('shipyard', ['ngLodash'])
   ])
   .value('internalGroupMap', {
     fs:'Fuel Scoop',
+    ft:'Fuel Tank',
     sc:'Scanners',
     am:'Auto Field-Maintenance Unit',
     cr:'Cargo Racks',
@@ -106,7 +107,7 @@ angular.module('shipyard', ['ngLodash'])
     },
     {                   // 4
       title: 'Jump Range',
-      props: ['unladenJumpRange', 'ladenJumpRange'],
+      props: ['unladenRange', 'ladenRange'],
       lbls: ['Unladen', 'Laden'],
       unit: 'LY',
       fmt: 'fRound'
