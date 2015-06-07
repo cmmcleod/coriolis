@@ -11,7 +11,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
       var series = scope.series,
           config = scope.config,
           labels = config.labels,
-          margin = {top: 15, right: 15, bottom: 35, left: 50},
+          margin = {top: 15, right: 15, bottom: 35, left: 60},
           fmt = d3.format('.3r'),
           fmtLong = d3.format('.2f'),
           func = series.func,
@@ -49,7 +49,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
       var yTxt = vis.append("g").attr("class", "y axis")
         .append("text")
           .attr("transform", "rotate(-90)")
-          .attr("y", -40)
+          .attr("y", -50)
           .attr("dy", ".1em")
           .style("text-anchor", "middle")
           .text(labels.yAxis.title + ' (' + labels.yAxis.unit + ')');
@@ -67,8 +67,8 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
       tip.append("circle")
         .attr("class", "marker")
         .attr("r", 4);
-      tip.append("text").attr("class", 'label x').attr("y", "-0.1em");
-      tip.append("text").attr("class", 'label y').attr("y", '0.7em');
+      tip.append("text").attr("class", 'label x').attr("y", "-0.25em");
+      tip.append("text").attr("class", 'label y').attr("y", '0.85em');
 
       /**
        * Watch for changes in the series data (mass changes, etc)
@@ -152,6 +152,10 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
         tip.select('text.label.x').text(fmtLong(x0) + ' ' + labels.xAxis.unit);
         tip.select('text.label.y').text(fmtLong(y0) + ' ' + labels.yAxis.unit);
       }
+
+      scope.$on('$destroy', function() {
+        angular.element($window).unbind('orientationchange resize render', render);
+      });
 
     }
   };
