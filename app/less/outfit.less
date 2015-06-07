@@ -1,25 +1,12 @@
 
 #outfit {
-  font-size: 1.1em;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   .user-select-none();
 
   .tablet({
     width: 100%;
-    font-size: 1.2em;
-    max-width: 1600px;
   });
-
-  &>.list {
-    .tablet({
-      width: 49%;
-    });
-
-    .largePhone({
-      width: 100%;
-    });
-  }
 }
 
 #overview {
@@ -36,19 +23,18 @@
 
 #summary {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
   width: 100%;
-  margin: 1em 0 1em 0;
-  padding-bottom: 1em;
-  
+  padding: 0.5em 0.2em;
+
   #summaryTable {
     .user-select-none();
     width: 100%;
+    white-space: nowrap;
     border-collapse: collapse;
     font-size: 0.8em;
 
-    tbody td {
-        padding: 0 0.5em;
-    }
   }
 }
 
@@ -61,6 +47,7 @@
     background: none;
     line-height: 1.5em;
     font-size: 0.8em;
+    width: 20em;
     box-sizing: border-box;
     display: inline-block;
     padding: 0.5em;
@@ -75,38 +62,51 @@
       padding: 0.25em;
     });
   }
-}
 
-
-#hardpoints, #utility, #standard {
-  padding-right: 0.3em;
-  .slot {
+  .largePhone({
+    float: left;
     clear: left;
-  }
-}
-
-#internal {
- .slot {
-    clear: left;
-  }
-}
-
-.outfit-button-label {
-  margin-left: 0.5em;
-
-  .smallTablet({
-    display: none;
   });
 }
 
-#jumpRange {
-  width: 50%;
-  padding: 0 0.5em;
+.group {
+  width: 25%;
+  padding: 0.5em 0.2em;
+  vertical-align: top;
+  box-sizing: border-box;
+  display: inline-block;
+  .user-select-none();
+  cursor: default;
+
+  h1 {
+    font-family: @fStandard;
+    color: @bgBlack;
+    background-color: @primary-disabled;
+    text-transform: uppercase;
+    margin: 0;
+    font-size: 1em;
+    line-height: 1.3em;
+    font-weight: normal;
+  }
 
   .tablet({
-    float: right;
-    clear: both;
-    display: block;
-    width: 100% !important;
+    font-size: 0.9em;
   });
+
+  .smallTablet({
+    width: 50%;
+  });
+
+  .largePhone({
+    width: 100%;
+  });
+
+  &.dbl {
+    width: 50%;
+
+    .smallTablet({
+      width: 100% !important;
+    });
+  }
+
 }

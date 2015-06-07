@@ -18,7 +18,7 @@
 header {
   background-color: @bg;
   margin: 0;
-  padding: 0 1em;
+  padding: 0 0 0 1em;
   height: 3em;
   line-height: 3em;
   font-family: @fTitle;
@@ -37,6 +37,10 @@ header {
         right: 0;
       }
     }
+
+    .smallTablet({
+      position: initial;
+    });
   }
 
   .menu-header {
@@ -73,20 +77,27 @@ header {
     min-width: 100%;
     overflow-x: hidden;
     background-color: @bgBlack;
-    font-size: 0.8em;
+    font-size: 0.9em;
     overflow-y: auto;
     z-index: 0;
     -webkit-overflow-scrolling: touch;
-    max-height: 400px;
+    max-height: 500px;
+
+    .smallTablet({
+      max-height: 400px;
+      left: 0;
+      right: 0;
+      border-bottom: 1px solid @bg;
+    });
+
 
     .tablet({
-      font-size: 1.1em;
-      max-height: 800px;
-
       a {
         padding: 0.3em 0;
       }
     });
+
+
 
     &.dbl {
       -webkit-column-count: 2; /* Chrome, Safari, Opera */
@@ -99,12 +110,14 @@ header {
   }
 
   ul {
+    white-space: nowrap;
     margin: 0 0 0.5em;
     padding: 0;
     line-height: 1.3em;
   }
 
   li {
+    white-space: normal;
     list-style: none;
     margin-left: 1em;
     line-height: 1.1em;
@@ -114,10 +127,6 @@ header {
     vertical-align: middle;
     color: @warning;
     text-decoration: none;
-
-    &.name {
-      font-family: Helvetica, Arial, sans-serif;
-    }
 
     &:visited {
       color: @warning;

@@ -3,6 +3,8 @@
   display: inline-block;
   text-align: left;
   border-collapse: collapse;
+  text-transform: uppercase;
+  font-size: 0.9em;
 
   td {
     border: 1px solid @primary-disabled;
@@ -13,6 +15,10 @@
       line-height: 2em;
       display: inline-block;
     }
+
+    .tablet({
+      font-size: 0.8em;
+    });
   }
 
   input {
@@ -38,10 +44,6 @@
   overflow: hidden;
   margin: 0;
   padding: 0;
-
-  .tablet({
-    font-size: 0.8em;
-  });
 
   .as-sortable-placeholder {
     background-color: @primary-bg;
@@ -80,9 +82,7 @@
 #build-select {
   clear: both;
   margin: 1em 0 0;
-  height: 10em;
-  white-space: nowrap;
-  overflow:hidden;
+  overflow-y:auto;
 
   h1 {
     display: inline-block;
@@ -91,21 +91,25 @@
   }
 
   table {
+    box-sizing: border-box;
     display: inline-block;
-    width: 20em;
+    width: 40%;
     vertical-align: top;
+
+    .smallTablet({
+      width: 100%;
+    });
 
     thead {
       display: block;
-      text-align: center;
     }
 
     tbody {
       display: block;
-      overflow-x: hidden;
       overflow-y: auto;
       z-index: 0;
       -webkit-overflow-scrolling: touch;
+      height: 8em;
       max-height: 8em;
     }
   }
@@ -117,7 +121,10 @@
 
 #comp-tbl {
   margin: 1em auto;
+  white-space: nowrap;
+  font-size: 0.8em;
+
   .tablet({
-    font-size: 0.85em;
+    font-size: 0.7em;
   });
 }

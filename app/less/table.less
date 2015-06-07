@@ -13,6 +13,8 @@ table {
 thead {
   color: @bgBlack;
   background-color: @primary-disabled;
+  text-transform: uppercase;
+  line-height: 1.4em;
   .user-select-none();
 
   .main th {
@@ -52,14 +54,11 @@ tbody tr {
       fill: @warning;
       background-color: @warning-bg;
     }
+  }
 
-    svg {
-      cursor: pointer;
-    }
-
-    td {
-      padding: 0 0.7em;
-    }
+  td {
+    line-height: 1.4em;
+    padding: 0 0.7em;
   }
 
 }

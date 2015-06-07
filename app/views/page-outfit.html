@@ -3,18 +3,18 @@
   <div id="overview">
     <h1 ng-bind="ship.name"></h1>
     <div id="build">
-      <input ng-model="buildName" ng-change="bnChange()" placeholder="Enter Build Name" maxlength="50" />
+      <input ng-model="buildName" ng-change="bnChange()" placeholder="Enter Build Name" maxsize="50" />
       <button ng-click="saveBuild()" ng-disabled="!buildName || savedCode && code == savedCode || !canSave">
-        <svg class="icon lg "><use xlink:href="#floppy-disk"></use></svg><span class="outfit-button-label">Save</span>
+        <svg class="icon lg "><use xlink:href="#floppy-disk"></use></svg><span class="button-lbl">Save</span>
       </button>
       <button ng-click="reloadBuild()" ng-disabled="!savedCode || code == savedCode">
-        <svg class="icon lg"><use xlink:href="#spinner11"></use></svg><span class="outfit-button-label">Reload</span>
+        <svg class="icon lg"><use xlink:href="#spinner11"></use></svg><span class="button-lbl">Reload</span>
       </button>
       <button class="danger" ng-click="deleteBuild()" ng-disabled="!savedCode">
         <svg class="icon lg"><use xlink:href="#bin"></use></svg>
       </button>
       <button ui-sref="outfit({shipId: ship.id,code:null, bn: buildName})" ng-disabled="!code">
-        <svg class="icon lg"><use xlink:href="#switch"></use></svg><span class="outfit-button-label">Reset</span>
+        <svg class="icon lg"><use xlink:href="#switch"></use></svg><span class="button-lbl">Reset</span>
       </button>
     </div>
   </div>
@@ -69,7 +69,7 @@
     </table>
   </div>
 
-  <div id="standard" class="slot-group">
+  <div id="standard" class="group">
     <h1>Standard</h1>
     <div class="slot" ng-click="selectSlot($event, ship.bulkheads)" ng-class="{selected: selectedSlot==ship.bulkheads}">
       <div class="details">
@@ -105,8 +105,8 @@
         <div class="l">{{th.id}} Thrusters</div>
         <div class="r">{{th.c.mass}} <u>T</u></div>
         <div class="cb"></div>
-        <div class="l">Opt: {{th.c.optmass}} <u>T</u></div>
-        <div class="l">Max: {{th.c.maxmass}} <u>T</u></div>
+        <div class="l">Optimal Mass: {{th.c.optmass}} <u>T</u></div>
+        <div class="l">Max Mass: {{th.c.maxmass}} <u>T</u></div>
       </div>
       <div component-select class="select" s="th" mass="ship.unladenMass" opts="availCS.common[1]" ng-if="selectedSlot==th" ng-click="select('c',th,$event)"></div>
     </div>
@@ -116,7 +116,7 @@
         <div class="l">{{fsd.id}} Frame Shift Drive</div>
         <div class="r cr">{{fsd.c.mass}} <u>T</u></div>
         <div class="cb"></div>
-        <div class="l">Opt: {{fsd.c.optmass}} <u>T</u></div>
+        <div class="l">Optimal Mass: {{fsd.c.optmass}} <u>T</u></div>
         <div class="l">Max Fuel: {{fsd.c.maxfuel}} <u>T</u></div>
       </div>
       <div component-select class="select" s="fsd" opts="availCS.common[2]" ng-if="selectedSlot==fsd" ng-click="select('c',fsd,$event)"></div>
@@ -149,7 +149,7 @@
         <div class="l">{{ss.id}} Sensors</div>
         <div class="r">{{ss.c.mass}} <u>T</u></div>
         <div class="cb"></div>
-        <div class="l">{{ss.c.range}} <u>KM</u></div>
+        <div class="l">Range: {{ss.c.range}} <u>KM</u></div>
       </div>
       <div component-select class="select" s="ss" opts="availCS.common[5]" ng-if="selectedSlot==ss" ng-click="select('c',ss,$event)"></div>
     </div>
@@ -163,7 +163,17 @@
     </div>
   </div>
 
-  <div id="hardpoints" class="slot-group">
+  <div id="internal" class="group">
+    <h1>Internal Compartments</h1>
+    <div class="slot" ng-repeat="i in ship.internal" ng-click="selectSlot($event, i)" ng-class="{selected: selectedSlot==i}">
+      <div slot-internal class="details" slot="i" lbl="igMap[i.c.grp]" fuel="ship.fuelCapacity"></div>
+      <div class="select" ng-if="selectedSlot==i" ng-click="select('i',i,$event)">
+        <div component-select s="i" groups="availCS.getInts(i.maxClass)"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="hardpoints" class="group">
     <h1>HardPoints</h1>
     <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '!0'}" ng-click="selectSlot($event, h)" ng-class="{selected: selectedSlot==h}">
       <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="hgMap[h.c.grp]"></div>
@@ -173,7 +183,7 @@
     </div>
   </div>
 
-  <div id="utility" class="slot-group">
+  <div id="utility" class="group">
     <h1>Utility Mounts</h1>
     <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '0'}" ng-click="selectSlot($event, h)" ng-class="{selected: selectedSlot==h}">
       <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="hgMap[h.c.grp]"></div>
@@ -183,20 +193,8 @@
     </div>
   </div>
 
-  <div id="internal" class="slot-group">
-    <h1>Internal Compartments</h1>
-    <div class="slot" ng-repeat="i in ship.internal" ng-click="selectSlot($event, i)" ng-class="{selected: selectedSlot==i}">
-      <div slot-internal class="details" slot="i" lbl="igMap[i.c.grp]" ft="ft"></div>
-      <div class="select" ng-if="selectedSlot==i" ng-click="select('i',i,$event)">
-        <div component-select s="i" groups="availCS.getInts(i.maxClass)"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="cb"></div>
-
-  <div class="list l">
-    <div class="header">Power Use</div>
+  <div class="group dbl">
+    <h1>Power Use</h1>
     <div class="items">
       <div class="primary-disabled">Generated</div>
       <div ng-if="pp.c.pGen" class="item common enabled untoggleable">
@@ -230,8 +228,8 @@
     </table>
   </div>
 
-  <div class="list r">
-    <div class="header">Costs</div>
+  <div class="group dbl">
+    <h1>Costs</h1>
     <div class="items">
       <div class="item" ng-class="{enabled:ship.incCost}" ng-click="toggleCost(ship)">
         <div class="lbl">{{ship.name}}</div><div class="val">{{fCrd(ship.cost)}}</div>
@@ -260,10 +258,10 @@
     </table>
   </div>
 
-  <div class="list l" id="jumpRange">
-    <div class="header">Jump Range</div>
+  <div class="group dbl">
+    <h1>Jump Range</h1>
     <div class="cen">
-      <div class="chart" area-chart config="jrChart" series="jrSeries"></div>
+      <div area-chart config="jrChart" series="jrSeries"></div>
       <div slider max="ship.fuelCapacity" unit="'T'" on-change="::fuelChange(val)" style="position:relative; margin: 0 auto;">
         <svg class="icon xl primary-disabled" style="position:absolute;height: 100%;"><use xlink:href="#fuel"></use></svg>
       </div>

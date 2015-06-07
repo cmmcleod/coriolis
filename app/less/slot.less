@@ -1,41 +1,10 @@
 
-.slot-group {
-  width: 25%;
-  margin: 0;
-  box-sizing: border-box;
-  display: inline-block;
-  .user-select-none();
-  cursor: default;
-
-  h1 {
-    font-family: @fStandard;
-    color: @bgBlack;
-    background-color: @primary-disabled;
-    text-transform: uppercase;
-    margin: 0.1em 0;
-    font-size: 0.8em;
-    padding-left: 0.5em;
-    font-weight: normal;
-  }
-
-  .tablet({
-    width: 50%;
-    h1 {
-        margin: 1em 0 0 0;
-    }
-  });
-
-  .largePhone({
-    width: 100%;
-  });
-}
-
 .slot {
   float: left;
   text-align: left;
   width: 100%;
-  font-size: 0.75em;
-  margin-top: 0.5em;
+  font-size: 0.85em;
+  margin-top: 0.25em;
   position: relative;
   z-index: 0;
   padding-right: 0.4em;
@@ -44,10 +13,12 @@
   background-color: @primary-bg;
   border: 1px solid @primary-disabled;
   color: @fg;
-  fill: @disabled;
+  fill: @fg;
 
   .details {
     min-height: 2.5em;
+    padding: 0.25em 0;
+    box-sizing: border-box;
     overflow: hidden;
     height: 100%;
     cursor: pointer;
@@ -73,6 +44,7 @@
     color: @primary-disabled;
     border-right: 1px solid @primary-disabled;
     box-sizing: border-box;
+    padding-top: 0.2em;
   }
 
   .empty {
@@ -85,6 +57,7 @@
 
   &.selected {
     color: @primary-bg;
+    fill: @primary-bg;
     background-color: @primary;
     border: 1px solid @primary;
     z-index: 1;
