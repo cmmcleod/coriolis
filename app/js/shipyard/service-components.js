@@ -1,11 +1,16 @@
-angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'ShipsDB', 'ComponentSet', function (_, C, Ships, ComponentSet) {
+angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'ShipsDB', 'ComponentSet', 'Utils',  function (_, C, Ships, ComponentSet, Utils) {
 
   this.cargoScoop = function() {
-    return { name: 'Cargo Hatch', class: 1, rating: 'H', power: 0.6};
+    return { name: 'Cargo Hatch', class: 1, rating: 'H', power: 0.6, priority: 1};
   };
 
   this.common = function (typeIndex, componentId) {
-    return C.common[typeIndex][componentId];
+    var item = Utils.clone(C.common[typeIndex][componentId]);
+
+    if (item.power) {
+      item["priority"] = 1;
+    }
+    return item;
   };
 
   this.hardpoints = function(id) {
@@ -13,7 +18,12 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
       var group = C.hardpoints[n];
       for (var i = 0; i < group.length; i++) {
         if (group[i].id == id) {
-          return group[i];
+          var item = Utils.clone(group[i]);
+          if (item.power) {
+            item["priority"] = 1;
+          }
+          //console.log(item); DEBUG
+          return item;
         }
       }
     }
@@ -25,7 +35,12 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
       var group = C.internal[n];
       for (var i = 0; i < group.length; i++) {
         if (group[i].id == id) {
-          return group[i];
+          var item = Utils.clone(group[i]);
+          if (item.power) {
+            item["priority"] = 1;
+          }
+          //console.log(item); DEBUG
+          return item;
         }
       }
     }
