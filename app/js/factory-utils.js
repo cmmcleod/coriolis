@@ -13,7 +13,7 @@ angular.module('app').factory('Utils', ['$window','$state','$http', '$q', functi
     } else {
       return $q.reject({statusText: 'Not Online'});
     }
-  }
+  };
 
   function comparisonBBCode(facets, builds, link) {
     var colCount = 2, b, i, j, k, f, fl, p, pl, l = [];
@@ -55,11 +55,24 @@ angular.module('app').factory('Utils', ['$window','$state','$http', '$q', functi
     l.push('[tr][td="align: center, colspan:',colCount,'"][size=-3]\n[url=', link,']Interactive Comparison at Coriolis.io[/url][/td][/tr]\n[/size][/table]');
     l.unshift('[table="width:', colCount * 90,',align: center"]\n[tr][th][B][COLOR=#FF8C0D]Ship[/COLOR][/B][/th][th][B][COLOR="#FF8C0D"]Build[/COLOR][/B][/th]');
     return l.join('');
-  }
+  };
+
+  function clone(obj) {
+    if (null === obj || "object" != typeof obj)
+      return obj;
+    //console.log("Make a clone"); DEBUG
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr))
+          copy[attr] = obj[attr];
+    }
+    return copy;
+  };
 
   return {
     comparisonBBCode: comparisonBBCode,
-    shortenUrl: shortenUrl
+    shortenUrl: shortenUrl,
+    clone: clone
   };
 
 }]);
