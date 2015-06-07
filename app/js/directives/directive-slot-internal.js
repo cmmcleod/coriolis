@@ -4,8 +4,7 @@ angular.module('app').directive('slotInternal', ['$rootScope', function ($r) {
     scope:{
       c: '=slot',
       lbl: '=',
-      ft: '=',
-
+      fuel: '='
     },
     templateUrl: 'views/_slot-internal.html',
     link: function(scope) {
