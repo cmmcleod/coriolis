@@ -25,7 +25,6 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
             item["status"] = 1;
             if (!item.passive) {
               item["hardpoint"] = true;
-              item["deployed"] = false;
               item.status = 3;
             }
           }
