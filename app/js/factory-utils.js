@@ -57,6 +57,7 @@ angular.module('app').factory('Utils', ['$window','$state','$http', '$q', functi
     return l.join('');
   };
 
+  // The most sexiest way to clone an object in javascript
   function clone(obj) {
     if (null === obj || "object" != typeof obj)
       return obj;
@@ -69,10 +70,17 @@ angular.module('app').factory('Utils', ['$window','$state','$http', '$q', functi
     return copy;
   };
 
+  // Used to correct the trailing number float issue
+  // ex: 0.1 + 0.2 = 0.30000000000004
+  function addFloat(f1, f2) {
+    return ((f1 * 100 + f2 * 100) / 100);
+  }
+
   return {
     comparisonBBCode: comparisonBBCode,
     shortenUrl: shortenUrl,
-    clone: clone
+    clone: clone,
+    addFloat: addFloat
   };
 
 }]);
