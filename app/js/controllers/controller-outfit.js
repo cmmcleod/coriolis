@@ -27,6 +27,8 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
   $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
   $scope.canSave = Persist.isEnabled();
   $scope.fuel = 0;
+  $scope.priority = [0, 0, 0, 0, 0];
+  $scope.totalPriority = [0, 0, 0, 0];
 
   $scope.jrSeries = {
     xMin: 0,
@@ -34,7 +36,7 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
     // Slightly higher than actual based bacuse components are excluded
     yMax: ship.jumpRangeWithMass(ship.unladenMass),
     yMin: 0,
-    func: function(cargo) { // X Axis is Cargo
+    func: function (cargo) { // X Axis is Cargo
       return ship.jumpRangeWithMass(ship.unladenMass + $scope.fuel + cargo, $scope.fuel);
     }
   };
@@ -52,13 +54,15 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
     watch: $scope.fsd
   };
 
+  updatePriority();
+
   /**
    * 'Opens' a select for component selection.
    *
    * @param  {[type]} e    The event object
    * @param  {[type]} slot The slot that is being 'opened' for selection
    */
-  $scope.selectSlot = function(e, slot) {
+  $scope.selectSlot = function (e, slot) {
     e.stopPropagation();
     if ($scope.selectedSlot == slot) {
       $scope.selectedSlot = null;
@@ -75,7 +79,7 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
    * @param  {[type]} slot The slot object belonging to the ship instance
    * @param  {[type]} e    The event object
    */
-  $scope.select = function(type, slot, e) {
+  $scope.select = function (type, slot, e) {
     e.stopPropagation();
     var id = angular.element(e.target).attr('cpid');  // Get component ID
 
@@ -140,7 +144,7 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
   /**
    * On build name change, retrieve the existing saved code if there is one
    */
-  $scope.bnChange = function(){
+  $scope.bnChange = function() {
     $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
   };
 
@@ -148,7 +152,7 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
    * Toggle cost of the selected component
    * @param  {object} item The component being toggled
    */
-  $scope.toggleCost = function(item) {
+  $scope.toggleCost = function (item) {
     item.incCost = !item.incCost;
     ship.updateTotals();
   };
@@ -157,12 +161,63 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
    * Toggle the power on/off for the selected component
    * @param  {object} item The component being toggled
    */
-  $scope.togglePwr = function(item) {
+  $scope.togglePwr = function (item) {
     // Update serialize code
     // updateState();
+    var c = item.c;
+
     item.enabled = !item.enabled;
+    if (item.enabled) {
+      if (c.hardpoint && !$scope.ship.deployed)
+        c.status = 3;
+      else
+        c.status = 1;
+    }
+    else
+      c.status = 0;
+
     ship.updateTotals();
+    updatePriority();
   };
+
+  $scope.toggleHardpoints = function() {
+    $scope.ship.deployed = !$scope.ship.deployed;
+
+    for (var i = 0; i < ship.hardpoints.length; i++) {
+      var item = ship.hardpoints[i];
+      var c = item.c;
+
+      if (c.passive)
+        continue;
+
+      if (!item.enabled)
+        c.status = 0;
+      else if ($scope.ship.deployed && item.enabled)
+        c.status = 1;
+      else
+        c.status = 3;
+    };
+
+    updatePriority();
+  }
+
+  $scope.downPriority = function (c) {
+    if (c.priority) {
+      if (c.priority > 1)
+        --c.priority;
+    }
+
+    updatePriority();
+  }
+
+  $scope.upPriority = function (c) {
+    if (c.priority) {
+      if (c.priority < 5)
+        ++c.priority;
+    }
+
+    updatePriority();
+  }
 
   $scope.fuelChange = function (fuel) {
     $scope.fuel = fuel;
@@ -175,6 +230,101 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
     $scope.jrSeries.xMax = ship.cargoCapacity;
     $scope.jrSeries.yMax = ship.jumpRangeWithMass(ship.unladenMass);
     $scope.jrSeries.mass = ship.unladenMass;
+
+    updatePriority();
+  }
+
+  function updatePriority() {
+    var poweredItems = collectPowered();
+
+    $scope.totalPriority[0] = $scope.priority[0];
+    $scope.totalPriority[1] = $scope.totalPriority[0] + $scope.priority[1];
+    $scope.totalPriority[2] = $scope.totalPriority[1] + $scope.priority[2];
+    $scope.totalPriority[3] = $scope.totalPriority[2] + $scope.priority[3];
+    $scope.totalPriority[4] = $scope.totalPriority[3] + $scope.priority[4];
+    floatTable($scope.totalPriority);
+
+    var minimal = (function () {
+      for (var i = $scope.totalPriority.length - 1; i >= 0; i--) {
+        if ($scope.totalPriority[i] > $scope.ship.powerAvailable)
+          continue;
+        else
+          return (i + 1);
+      };
+      return 0;
+    })();
+
+    for (var i = 0; i < poweredItems.length; i++) {
+      var item = poweredItems[i];
+      var c = item.c;
+
+      if (c.priority > minimal)
+        c.status = 2;
+      else
+        c.status = 1;
+    };
+  }
+
+  function collectPowered() {
+    var items = [];
+    $scope.priority = [0, 0, 0, 0, 0];
+
+    // Standard
+    for (var i = 0; i < $scope.ship.common.length; i++) {
+      var item = $scope.ship.common[i];
+      var c = item.c;
+
+      if (item.enabled) {
+        $scope.priority[c.priority - 1] = $scope.priority[c.priority - 1] + c.power;
+        items.push(item);
+      }
+    };
+    // Cargo scoop
+    if ($scope.ship.cargoScoop.enabled) {
+      $scope.priority[$scope.ship.cargoScoop.c.priority - 1] = $scope.priority[$scope.ship.cargoScoop.c.priority - 1] + $scope.ship.cargoScoop.c.power;
+      items.push($scope.ship.cargoScoop);
+    }
+    // Hardpoints && Utility
+    for (var i = 0; i < $scope.ship.hardpoints.length; i++) {
+      var item = $scope.ship.hardpoints[i];
+
+      if (item.c == null)
+        continue;
+
+      var c = item.c;
+
+      if (item.enabled) {
+        if ((c.hardpoint && $scope.ship.deployed) || !c.hardpoint) {
+          $scope.priority[c.priority - 1] = $scope.priority[c.priority - 1] + c.power;
+          items.push(item);
+        }
+      }
+    };
+    // Internal
+    for (var i = 0; i < $scope.ship.internal.length; i++) {
+      var item = $scope.ship.internal[i];
+
+      if (item.c == null)
+        continue;
+
+      var c = item.c;
+
+      if (item.enabled) {
+        $scope.priority[c.priority - 1] = $scope.priority[c.priority - 1] + c.power;
+        items.push(item);
+      }
+    };
+
+    floatTable($scope.priority);
+
+    return items;
+  }
+
+  function floatTable (table) {
+    for (var i = 0; i < table.length; i++) {
+      table[i] = (table[i]).toFixed(2);
+      table[i] = parseFloat(table[i]);
+    };
   }
 
   // Hide any open menu/slot/etc if escape key is pressed

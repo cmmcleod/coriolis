@@ -1,0 +1,124 @@
+#powerMng {
+  width: 50%;
+  padding: 0 1em 0 0;
+
+  table {
+    background: none;
+    text-align: left;
+
+    td, th, tr {
+      cursor: default;
+    }
+
+    thead.summary, tbody.summary {
+      td, th {
+        padding-left: 5px;
+      }
+
+      td {
+        background-color: rgba(28, 15, 0, .85);
+
+        span.exceded {
+          color: #B1221C;
+        }
+      }
+    }
+
+    td, th {
+      padding: 0;
+      text-align: left;
+      float: none;
+    }
+
+    td.primary-disabled {
+    }
+
+    td.hardpoints {
+      cursor: pointer;
+    }
+
+    td.activator {
+      width: 2em;
+      color: #F9A41E;
+      font-size: 1em;
+      cursor: pointer;
+
+      .before, .after {
+        display: inline-block;
+        width: 0.1em;
+        font-weight: bold;
+      }
+
+      .center {
+        display: inline-block;
+        width: 0.4em;
+      }
+
+      .square.enabled {
+        visibility: visible;
+      }
+
+      .square {
+        visibility: hidden;
+      }
+
+    }
+
+    td.lbl {
+      width: 20em;
+    }
+
+    td.val {
+      width: 4em;
+      text-align: right;
+      color: #ccc;
+    }
+
+    td.priority {
+      text-align: center;
+      font-size: 1.3em;
+      position: relative;
+      left: 1em;
+      padding: 0 3em;
+      width: 1em;
+      color: #ccc;
+
+      .less, .more {
+        font-family: monospace;
+        font-weight: bold;
+        cursor: pointer;
+        display: inline-block;
+        width: 0.7em;
+        height: 1.4em;
+        position: absolute;
+      }
+
+      .less {
+        left: 2.5em;
+      }
+
+      .more {
+        right: 2.5em;
+      }
+
+    }
+
+    td.status {
+      text-align: right;
+
+      .retracted {
+        color: #555;
+      }
+
+      .online {
+        color: #556627;
+      }
+
+      .offline {
+        color: #B1221C;
+      }
+    }
+
+  }
+
+}

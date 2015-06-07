@@ -195,33 +195,152 @@
 
   <div class="cb"></div>
 
-  <div class="list l">
-    <div class="header">Power Use</div>
+  <div class="list l" id="powerMng">
+    <div class="header">Power Management</div>
     <div class="items">
-      <div class="primary-disabled">Generated</div>
-      <div ng-if="pp.c.pGen" class="item common enabled untoggleable">
-        <div class="lbl">{{pp.c.class}}{{pp.c.rating}} Power Plant</div><div class="val">{{fPwr(pp.c.pGen)}}</div>
-      </div>
-      <div class="primary-disabled">Standard</div>
-      <div ng-repeat="c in ship.common" ng-if="c.c.power" class="item common" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwr(c)">
-        <div class="lbl">{{c.c.class}}{{c.c.rating}} {{CArr[$index]}}</div><div class="val">{{fPwr(c.c.power)}}</div>
-      </div>
-      <div class="item common consumer" ng-class="{enabled:ship.cargoScoop.enabled}" ng-click="togglePwr(ship.cargoScoop)">
-        <div class="lbl">1H Cargo Scoop</div><div class="val">{{fPwr(ship.cargoScoop.c.power)}}</div>
-      </div>
-      <div class="primary-disabled">Hardpoints</div>
-      <div ng-repeat="c in ship.hardpoints" ng-if="c.c.power" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwr(c)">
-        <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || hgMap[c.c.grp]}}</div><div class="val">{{fPwr(c.c.power)}}</div>
-      </div>
-      <div class="primary-disabled">Internal</div>
-      <div ng-repeat="c in ship.internal" ng-if="c.c.power" class="item internal" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwr(c)">
-        <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || igMap[c.c.grp]}}</div><div class="val">{{fPwr(c.c.power)}}</div>
-      </div>
+      <table>
+        <!-- START Power Plant -->
+        <tr>
+          <td class="primary-disabled" colspan="5">Generated</td>
+        </tr>
+        <tr ng-if="pp.c.pGen" class="item common enabled untoggleable">
+          <td class="activator">
+            <span class="before">[</span>
+            <span class="center">
+              <span class="square enabled">■</span>
+            </span>
+            <span class="after">]</span>
+          </td>
+          <td class="lbl">{{pp.c.class}}{{pp.c.rating}} Power Plant</td><td class="val">{{fPwr(pp.c.pGen)}}</td>
+        </tr>
+        <!-- END Power Plant -->
+        <!-- START Standard -->
+        <tr>
+          <td class="primary-disabled" colspan="5">Standard</td>
+        </tr>
+        <tr ng-repeat="c in ship.common" ng-if="c.c.power" class="item common" ng-class="{enabled:c.enabled, consumer:c.c.power}">
+          <td class="activator" ng-click="togglePwr(c)">
+            <span class="before">[</span>
+            <span class="center">
+              <span class="square" ng-class="{enabled:c.enabled}">■</span>
+            </span>
+            <span class="after">]</span>
+          </td>
+          <td class="lbl">{{c.c.class}}{{c.c.rating}} {{CArr[$index]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
+          <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
+          <td class="status">
+            <span class="shutdown" ng-if="c.c.status == 0">SHUTDOWN</span>
+            <span class="online" ng-if="c.c.status == 1">ONLINE</span>
+            <span class="offline" ng-if="c.c.status == 2">OFFLINE</span>
+          </td>
+        </tr>
+        <!-- END Standard -->
+        <!-- SART Cargo Scoop -->
+        <tr class="item common consumer" ng-class="{enabled:ship.cargoScoop.enabled}">
+          <td class="activator" ng-click="togglePwr(ship.cargoScoop)">
+            <span class="before">[</span>
+            <span class="center">
+              <span class="square" ng-class="{enabled:ship.cargoScoop.enabled}">■</span>
+            </span>
+            <span class="after">]</span>
+          </td>
+          <td class="lbl">1H Cargo Scoop</td><td class="val">{{fPwr(ship.cargoScoop.c.power)}}</td>
+          <td class="priority"><span class="less" ng-click="downPriority(ship.cargoScoop.c)">–</span>{{ship.cargoScoop.c.priority}}<span class="more" ng-click="upPriority(ship.cargoScoop.c)">+</span></td>
+          <td class="status">
+            <span class="shutdown" ng-if="ship.cargoScoop.c.status == 0">SHUTDOWN</span>
+            <span class="online" ng-if="ship.cargoScoop.c.status == 1">ONLINE</span>
+            <span class="offline" ng-if="ship.cargoScoop.c.status == 2">OFFLINE</span>
+          </td>
+        </tr>
+        <!-- END Cargo Scoop -->
+        <!-- START Hardpoints -->
+        <tr>
+          <td class="primary-disabled hardpoints" colspan="5" ng-click="toggleHardpoints()">Hardpoints <span ng-if="ship.deployed">Deployed</span><span ng-if="!ship.deployed">Retracted</span></td>
+        </tr>
+        <tr ng-repeat="c in ship.hardpoints" ng-if="c.c.power && !c.c.passive" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}">
+          <td class="activator" ng-click="togglePwr(c)">
+            <span class="before">[</span>
+            <span class="center">
+              <span class="square" ng-class="{enabled:c.enabled}">■</span>
+            </span>
+            <span class="after">]</span>
+          </td>
+          <td class="lbl">{{c.c.class}}{{c.c.rating}}/{{c.c.mode}} {{c.c.name || hgMap[c.c.grp]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
+          <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
+          <td class="status">
+            <span class="shutdown" ng-if="c.c.status == 0">SHUTDOWN</span>
+            <span class="online" ng-if="c.c.status == 1">ONLINE</span>
+            <span class="offline" ng-if="c.c.status == 2">OFFLINE</span>
+            <span class="retracted" ng-if="c.c.status == 3">RETRACTED</span>
+          </td>
+        </tr>
+        <!-- END Hardpoints -->
+        <!-- START Utility -->
+        <tr>
+          <td class="primary-disabled" colspan="5">Utility</td>
+        </tr>
+        <tr ng-repeat="c in ship.hardpoints" ng-if="c.c.power && c.c.passive" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}">
+          <td class="activator" ng-click="togglePwr(c)">
+            <span class="before">[</span>
+            <span class="center">
+              <span class="square" ng-class="{enabled:c.enabled}">■</span>
+            </span>
+            <span class="after">]</span>
+          </td>
+          <td class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || hgMap[c.c.grp]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
+          <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
+          <td class="status">
+            <span class="shutdown" ng-if="c.c.status == 0">SHUTDOWN</span>
+            <span class="online" ng-if="c.c.status == 1">ONLINE</span>
+            <span class="offline" ng-if="c.c.status == 2">OFFLINE</span>
+          </td>
+        </tr>
+        <!-- END Utility -->
+        <!-- START Internal -->
+        <tr>
+          <td class="primary-disabled" colspan="5">Internal</td>
+        </tr>
+        <tr ng-repeat="c in ship.internal" ng-if="c.c.power" class="item internal" ng-class="{enabled:c.enabled, consumer:c.c.power}">
+          <td class="activator" ng-click="togglePwr(c)">
+            <span class="before">[</span>
+            <span class="center">
+              <span class="square" ng-class="{enabled:c.enabled}">■</span>
+            </span>
+            <span class="after">]</span>
+          </td>
+          <td class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || igMap[c.c.grp]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
+          <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
+          <td class="status">
+            <span class="shutdown" ng-if="c.c.status == 0">SHUTDOWN</span>
+            <span class="online" ng-if="c.c.status == 1">ONLINE</span>
+            <span class="offline" ng-if="c.c.status == 2">OFFLINE</span>
+          </td>
+        </tr>
+        <!-- END Internal -->
+      </table>
     </div>
 
     <table>
-      <thead><tr><td>Retracted</td><td>Deployed</td></tr></thead>
-      <tbody>
+      <thead class="summary"><tr><th ng-repeat="p in priority track by $index">Priority {{$index + 1}}</th></tr></thead>
+      <tbody class="summary">
+        <tr>
+          <td ng-repeat="p in priority track by $index">{{priority[$index]}} <u>MW</u></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead class="summary"><tr><th ng-repeat="p in totalPriority track by $index">Priority T{{$index + 1}}</th></thead>
+      <tbody class="summary">
+        <tr>
+          <td ng-repeat="p in priority track by $index"><span ng:class="{true:'exceded', false:''}[totalPriority[$index]>ship.powerAvailable]">{{totalPriority[$index]}} <u>MW</u></span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead class="summary"><tr><th>Retracted</th><th>Deployed</th></tr></thead>
+      <tbody class="summary">
         <tr>
           <td>{{fPwr(ship.powerRetracted)}} <u>MW</u> ({{fPct(ship.powerRetracted/ship.powerAvailable)}})</td>
           <td>{{fPwr(ship.powerDeployed)}} <u>MW</u> ({{fPct(ship.powerDeployed/ship.powerAvailable)}})</td>
@@ -230,7 +349,7 @@
     </table>
   </div>
 
-  <div class="list r">
+  <div class="list r" id="costs">
     <div class="header">Costs</div>
     <div class="items">
       <div class="item" ng-class="{enabled:ship.incCost}" ng-click="toggleCost(ship)">
@@ -243,7 +362,7 @@
         <div class="lbl">{{c.c.class}}{{c.c.rating}} {{CArr[$index]}}</div><div class="val">{{fCrd(c.c.cost)}}</div>
       </div>
       <div ng-repeat="c in ship.hardpoints" ng-if="c.c.cost" class="item hardpoints" ng-class="{enabled:c.incCost}" ng-click="toggleCost(c)">
-        <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || hgMap[c.c.grp]}}</div><div class="val">{{fCrd(c.c.cost)}}</div>
+        <div class="lbl">{{c.c.class}}{{c.c.rating}}<span ng-if="c.c.mode">/{{c.c.mode}}</span> {{c.c.name || hgMap[c.c.grp]}}</div><div class="val">{{fCrd(c.c.cost)}}</div>
       </div>
       <div ng-repeat="c in ship.internal" ng-if="c.c.cost" class="item internal" ng-class="{enabled:c.incCost}" ng-click="toggleCost(c)">
         <div class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || igMap[c.c.grp]}}</div><div class="val">{{fCrd(c.c.cost)}}</div>
@@ -259,6 +378,8 @@
       </tbody>
     </table>
   </div>
+
+  <div class="cb"></div>
 
   <div class="list l" id="jumpRange">
     <div class="header">Jump Range</div>
