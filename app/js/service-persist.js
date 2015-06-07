@@ -203,7 +203,6 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
    */
   this.setState = function (state) {
     if (this.lsEnabled) {
-      console.log('Stand Alone state update:', state);
       localStorage.setItem('state',angular.toJson(state));
     }
   };
