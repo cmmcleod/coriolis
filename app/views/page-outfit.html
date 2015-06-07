@@ -218,8 +218,8 @@
         <tr>
           <td class="primary-disabled" colspan="4">Standard</td>
         </tr>
-        <tr ng-repeat="c in ship.common" ng-if="c.c.power" class="item common" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwr(c)">
-          <td class="activator">
+        <tr ng-repeat="c in ship.common" ng-if="c.c.power" class="item common" ng-class="{enabled:c.enabled, consumer:c.c.power}">
+          <td class="activator" ng-click="togglePwr(c)">
             <span class="before">[</span>
             <span class="center">
               <span class="square" ng-class="{enabled:c.enabled}">■</span>
@@ -231,8 +231,8 @@
         </tr>
         <!-- END Standard -->
         <!-- SART Cargo Scoop -->
-        <tr class="item common consumer" ng-class="{enabled:ship.cargoScoop.enabled}" ng-click="togglePwr(ship.cargoScoop)">
-          <td class="activator">
+        <tr class="item common consumer" ng-class="{enabled:ship.cargoScoop.enabled}">
+          <td class="activator" ng-click="togglePwr(ship.cargoScoop)">
             <span class="before">[</span>
             <span class="center">
               <span class="square" ng-class="{enabled:ship.cargoScoop.enabled}">■</span>
@@ -240,15 +240,15 @@
             <span class="after">]</span>
           </td>
           <td class="lbl">1H Cargo Scoop</td><td class="val">{{fPwr(ship.cargoScoop.c.power)}}</td>
-          <td class="priority"><span class="less" ng-click="downPriority(ship.cargoScoop)">–</span>{{ship.cargoScoop.c.priority}}<span class="more" ng-click="upPriority(ship.cargoScoop)">+</span></td>
+          <td class="priority"><span class="less" ng-click="downPriority(ship.cargoScoop.c)">–</span>{{ship.cargoScoop.c.priority}}<span class="more" ng-click="upPriority(ship.cargoScoop.c)">+</span></td>
         </tr>
         <!-- END Cargo Scoop -->
         <!-- START Hardpoints -->
         <tr>
           <td class="primary-disabled" colspan="4">Hardpoints</td>
         </tr>
-        <tr ng-repeat="c in ship.hardpoints" ng-if="c.c.power && !c.c.passive" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwr(c)">
-          <td class="activator">
+        <tr ng-repeat="c in ship.hardpoints" ng-if="c.c.power && !c.c.passive" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}">
+          <td class="activator" ng-click="togglePwr(c)">
             <span class="before">[</span>
             <span class="center">
               <span class="square" ng-class="{enabled:c.enabled}">■</span>
@@ -263,8 +263,8 @@
         <tr>
           <td class="primary-disabled" colspan="3">Utility</td>
         </tr>
-        <tr ng-repeat="c in ship.hardpoints" ng-if="c.c.power && c.c.passive" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwr(c)">
-          <td class="activator">
+        <tr ng-repeat="c in ship.hardpoints" ng-if="c.c.power && c.c.passive" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}">
+          <td class="activator" ng-click="togglePwr(c)">
             <span class="before">[</span>
             <span class="center">
               <span class="square" ng-class="{enabled:c.enabled}">■</span>
@@ -279,8 +279,8 @@
         <tr>
           <td class="primary-disabled" colspan="3">Internal</td>
         </tr>
-        <tr ng-repeat="c in ship.internal" ng-if="c.c.power" class="item internal" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwr(c)">
-          <td class="activator">
+        <tr ng-repeat="c in ship.internal" ng-if="c.c.power" class="item internal" ng-class="{enabled:c.enabled, consumer:c.c.power}">
+          <td class="activator" ng-click="togglePwr(c)">
             <span class="before">[</span>
             <span class="center">
               <span class="square" ng-class="{enabled:c.enabled}">■</span>

@@ -6,6 +6,10 @@
   	background: none;
   	text-align: left;
 
+    td, th, tr {
+      cursor: default;
+    }
+
   	thead.summary, tbody.summary {
   		td, th {
   			padding-left: 5px;
@@ -29,6 +33,7 @@
   		width: 2em;
   		color: #F9A41E;
   		font-size: 1.4em;
+      cursor: pointer;
 
   		.before, .after {
   			display: inline-block;
@@ -58,6 +63,7 @@
   	td.val {
       width: 4em;
       text-align: right;
+      color: #ccc;
   	}
 
     td.priority {
@@ -65,6 +71,7 @@
       font-size: 1.3em;
       position: relative;
       padding: 0 2em;
+      color: #ccc;
 
       .less, .more {
         font-family: monospace;
