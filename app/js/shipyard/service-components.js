@@ -1,7 +1,7 @@
 angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'ShipsDB', 'ComponentSet', 'Utils',  function (_, C, Ships, ComponentSet, Utils) {
 
   this.cargoScoop = function() {
-    return { name: 'Cargo Hatch', class: 1, rating: 'H', power: 0.6, priority: 1};
+    return { name: 'Cargo Hatch', class: 1, rating: 'H', power: 0.6, priority: 1, status: 1};
   };
 
   this.common = function (typeIndex, componentId) {
@@ -9,6 +9,7 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
 
     if (item.power) {
       item["priority"] = 1;
+      item["status"] = 1;
     }
     return item;
   };
@@ -21,6 +22,12 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
           var item = Utils.clone(group[i]);
           if (item.power) {
             item["priority"] = 1;
+            item["status"] = 1;
+            if (!item.passive) {
+              item["hardpoint"] = true;
+              item["deployed"] = false;
+              item.status = 3;
+            }
           }
           //console.log(item); DEBUG
           return item;
@@ -38,6 +45,7 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
           var item = Utils.clone(group[i]);
           if (item.power) {
             item["priority"] = 1;
+            item["status"] = 1;
           }
           //console.log(item); DEBUG
           return item;

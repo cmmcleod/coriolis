@@ -229,7 +229,9 @@
           <td class="lbl">{{c.c.class}}{{c.c.rating}} {{CArr[$index]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
           <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
           <td class="status">
-            ENABLED
+            <span class="shutdown" ng-if="c.c.status == 0">SHUTDOWN</span>
+            <span class="online" ng-if="c.c.status == 1">ONLINE</span>
+            <span class="offline" ng-if="c.c.status == 2">OFFLINE</span>
           </td>
         </tr>
         <!-- END Standard -->
@@ -245,7 +247,9 @@
           <td class="lbl">1H Cargo Scoop</td><td class="val">{{fPwr(ship.cargoScoop.c.power)}}</td>
           <td class="priority"><span class="less" ng-click="downPriority(ship.cargoScoop.c)">–</span>{{ship.cargoScoop.c.priority}}<span class="more" ng-click="upPriority(ship.cargoScoop.c)">+</span></td>
           <td class="status">
-            ENABLED
+            <span class="shutdown" ng-if="c.c.status == 0">SHUTDOWN</span>
+            <span class="online" ng-if="c.c.status == 1">ONLINE</span>
+            <span class="offline" ng-if="c.c.status == 2">OFFLINE</span>
           </td>
         </tr>
         <!-- END Cargo Scoop -->
@@ -264,7 +268,10 @@
           <td class="lbl">{{c.c.class}}{{c.c.rating}}/{{c.c.mode}} {{c.c.name || hgMap[c.c.grp]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
           <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
           <td class="status">
-            ENABLED
+            <span class="shutdown" ng-if="c.c.status == 0">SHUTDOWN</span>
+            <span class="online" ng-if="c.c.status == 1">ONLINE</span>
+            <span class="offline" ng-if="c.c.status == 2">OFFLINE</span>
+            <span class="retracted" ng-if="c.c.status == 3">RETRACTED</span>
           </td>
         </tr>
         <!-- END Hardpoints -->
@@ -283,7 +290,9 @@
           <td class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || hgMap[c.c.grp]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
           <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
           <td class="status">
-            ENABLED
+            <span class="shutdown" ng-if="c.c.status == 0">SHUTDOWN</span>
+            <span class="online" ng-if="c.c.status == 1">ONLINE</span>
+            <span class="offline" ng-if="c.c.status == 2">OFFLINE</span>
           </td>
         </tr>
         <!-- END Utility -->
@@ -302,7 +311,9 @@
           <td class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || igMap[c.c.grp]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
           <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
           <td class="status">
-            ENABLED
+            <span class="shutdown" ng-if="c.c.status == 0">SHUTDOWN</span>
+            <span class="online" ng-if="c.c.status == 1">ONLINE</span>
+            <span class="offline" ng-if="c.c.status == 2">OFFLINE</span>
           </td>
         </tr>
         <!-- END Internal -->
