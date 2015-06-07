@@ -31,7 +31,10 @@ angular.module('shipyard', ['ngLodash'])
     rf:'Refinery',
     sb:'Shield Cell Bank',
     sg:'Shield Generator',
-    dc:'Docking Computer'
+    dc:'Docking Computer',
+    fx:'Fuel Transfer Limpet Ctrl',
+    pc:'Prospector Limpet Ctrl',
+    cc:'Collector Limpet Ctrl'
   })
   .value('hardpointsGroupMap', {
     'bl': "Beam Laser",

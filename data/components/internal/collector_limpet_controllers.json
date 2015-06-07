@@ -1,0 +1,27 @@
+{
+  "Collector Limpet Ctrl": [
+    { "id": "Cf", "grp":"cc", "class":7, "rating":"E", "cost": 437400, "mass": 32.0, "power":0.41, "range":1.36, "maximum": 4, "time":300 },
+    { "id": "Cg", "grp":"cc", "class":7, "rating":"D", "cost": 874800, "mass": 32.0, "power":0.55, "range":1.02, "maximum": 4, "time":600 },
+    { "id": "Ch", "grp":"cc", "class":7, "rating":"C", "cost":1749600, "mass": 80.0, "power":0.69, "range":1.70, "maximum": 4, "time":510 },
+    { "id": "Ci", "grp":"cc", "class":7, "rating":"B", "cost":3499200, "mass":128.0, "power":0.83, "range":2.38, "maximum": 4, "time":420 },
+    { "id": "Cj", "grp":"cc", "class":7, "rating":"A", "cost":6998400, "mass":128.0, "power":0.97, "range":2.04, "maximum": 4, "time":720 },
+
+    { "id": "Ca", "grp":"cc", "class":5, "rating":"E", "cost":  48600, "mass":  8.0, "power":0.30, "range":1.04, "maximum": 3, "time":300 },
+    { "id": "Cb", "grp":"cc", "class":5, "rating":"D", "cost":  97200, "mass":  8.0, "power":0.40, "range":0.78, "maximum": 3, "time":600 },
+    { "id": "Cc", "grp":"cc", "class":5, "rating":"C", "cost": 194400, "mass": 20.0, "power":0.50, "range":1.30, "maximum": 3, "time":510 },
+    { "id": "Cd", "grp":"cc", "class":5, "rating":"B", "cost": 388800, "mass": 32.0, "power":0.60, "range":1.82, "maximum": 3, "time":420 },
+    { "id": "Ce", "grp":"cc", "class":5, "rating":"A", "cost": 777600, "mass": 32.0, "power":0.70, "range":1.56, "maximum": 3, "time":720 },
+
+    { "id": "C6", "grp":"cc", "class":3, "rating":"E", "cost":   5400, "mass":  2.0, "power":0.20, "range":0.88, "maximum": 2, "time":300 },
+    { "id": "C7", "grp":"cc", "class":3, "rating":"D", "cost":  10800, "mass":  2.0, "power":0.27, "range":0.66, "maximum": 2, "time":600 },
+    { "id": "C8", "grp":"cc", "class":3, "rating":"C", "cost":  21600, "mass":  5.0, "power":0.34, "range":1.10, "maximum": 2, "time":510 },
+    { "id": "C9", "grp":"cc", "class":3, "rating":"B", "cost":  43200, "mass":  8.0, "power":0.41, "range":1.54, "maximum": 2, "time":420 },
+    { "id": "C0", "grp":"cc", "class":3, "rating":"A", "cost":  86400, "mass":  8.0, "power":0.48, "range":1.32, "maximum": 2, "time":720 },
+
+    { "id": "C1", "grp":"cc", "class":1, "rating":"E", "cost":    600, "mass":  0.5, "power":0.14, "range":0.80, "maximum": 1, "time":300 },
+    { "id": "C2", "grp":"cc", "class":1, "rating":"D", "cost":   1200, "mass":  0.5, "power":0.18, "range":0.60, "maximum": 1, "time":600 },
+    { "id": "C3", "grp":"cc", "class":1, "rating":"C", "cost":   2400, "mass":  1.3, "power":0.23, "range":1.00, "maximum": 1, "time":510 },
+    { "id": "C4", "grp":"cc", "class":1, "rating":"B", "cost":   4800, "mass":  2.0, "power":0.28, "range":1.40, "maximum": 1, "time":420 },
+    { "id": "C5", "grp":"cc", "class":1, "rating":"A", "cost":   9600, "mass":  2.0, "power":0.32, "range":1.20, "maximum": 1, "time":720 }
+  ]
+}
