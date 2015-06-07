@@ -238,7 +238,20 @@
         <tr>
           <td class="primary-disabled" colspan="3">Hardpoints</td>
         </tr>
-        <tr ng-repeat="c in ship.hardpoints" ng-if="c.c.power" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwr(c)">
+        <tr ng-repeat="c in ship.hardpoints" ng-if="c.c.power && !c.c.passive" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwr(c)">
+          <td class="activator">
+            <span class="before">[</span>
+            <span class="center">
+              <span class="square" ng-class="{enabled:c.enabled}">■</span>
+            </span>
+            <span class="after">]</span>
+          </td>
+          <td class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || hgMap[c.c.grp]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
+        </tr>
+        <tr>
+          <td class="primary-disabled" colspan="3">Passives</td>
+        </tr>
+        <tr ng-repeat="c in ship.hardpoints" ng-if="c.c.power && c.c.passive" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}" ng-click="togglePwr(c)">
           <td class="activator">
             <span class="before">[</span>
             <span class="center">
