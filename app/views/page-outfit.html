@@ -321,14 +321,19 @@
     </div>
 
     <table>
-      <thead class="summary"><tr><th>Priority 1</th><th>Priority 2</th><th>Priority 3</th><th>Priority 4</th><th>Priority 5</th></tr></thead>
+      <thead class="summary"><tr><th ng-repeat="p in priority track by $index">Priority {{$index + 1}}</th></tr></thead>
       <tbody class="summary">
         <tr>
-          <td>0 <u>MW</u></td>
-          <td>0 <u>MW</u></td>
-          <td>0 <u>MW</u></td>
-          <td>0 <u>MW</u></td>
-          <td>0 <u>MW</u></td>
+          <td ng-repeat="p in priority track by $index">{{priority[$index]}} <u>MW</u></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead class="summary"><tr><th ng-repeat="p in totalPriority track by $index">Priority T{{$index + 1}}</th></thead>
+      <tbody class="summary">
+        <tr>
+          <td ng-repeat="p in priority track by $index"><span ng:class="{true:'exceded', false:''}[totalPriority[$index]>ship.powerAvailable]">{{totalPriority[$index]}} <u>MW</u></span></td>
         </tr>
       </tbody>
     </table>
