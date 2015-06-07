@@ -27,6 +27,8 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
   $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
   $scope.canSave = Persist.isEnabled();
   $scope.fuel = 0;
+  $scope.priority = [0, 0, 0, 0, 0];
+  $scope.totalPriority = [0, 0, 0, 0];
 
   $scope.jrSeries = {
     xMin: 0,
@@ -51,6 +53,8 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
     },
     watch: $scope.fsd
   };
+
+  updatePriority();
 
   /**
    * 'Opens' a select for component selection.
@@ -173,6 +177,7 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
       c.status = 0;
 
     ship.updateTotals();
+    updatePriority();
   };
 
   $scope.toggleHardpoints = function() {
@@ -192,6 +197,8 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
       else
         c.status = 3;
     };
+
+    updatePriority();
   }
 
   $scope.downPriority = function (c) {
@@ -199,6 +206,8 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
       if (c.priority > 1)
         --c.priority;
     }
+
+    updatePriority();
   }
 
   $scope.upPriority = function (c) {
@@ -206,6 +215,8 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
       if (c.priority < 5)
         ++c.priority;
     }
+
+    updatePriority();
   }
 
   $scope.fuelChange = function (fuel) {
@@ -219,6 +230,101 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
     $scope.jrSeries.xMax = ship.cargoCapacity;
     $scope.jrSeries.yMax = ship.jumpRangeWithMass(ship.unladenMass);
     $scope.jrSeries.mass = ship.unladenMass;
+
+    updatePriority();
+  }
+
+  function updatePriority() {
+    var poweredItems = collectPowered();
+
+    $scope.totalPriority[0] = $scope.priority[0];
+    $scope.totalPriority[1] = $scope.totalPriority[0] + $scope.priority[1];
+    $scope.totalPriority[2] = $scope.totalPriority[1] + $scope.priority[2];
+    $scope.totalPriority[3] = $scope.totalPriority[2] + $scope.priority[3];
+    $scope.totalPriority[4] = $scope.totalPriority[3] + $scope.priority[4];
+    floatTable($scope.totalPriority);
+
+    var minimal = (function () {
+      for (var i = $scope.totalPriority.length - 1; i >= 0; i--) {
+        if ($scope.totalPriority[i] > $scope.ship.powerAvailable)
+          continue;
+        else
+          return (i + 1);
+      };
+      return 0;
+    })();
+
+    for (var i = 0; i < poweredItems.length; i++) {
+      var item = poweredItems[i];
+      var c = item.c;
+
+      if (c.priority > minimal)
+        c.status = 2;
+      else
+        c.status = 1;
+    };
+  }
+
+  function collectPowered() {
+    var items = [];
+    $scope.priority = [0, 0, 0, 0, 0];
+
+    // Standard
+    for (var i = 0; i < $scope.ship.common.length; i++) {
+      var item = $scope.ship.common[i];
+      var c = item.c;
+
+      if (item.enabled) {
+        $scope.priority[c.priority - 1] = $scope.priority[c.priority - 1] + c.power;
+        items.push(item);
+      }
+    };
+    // Cargo scoop
+    if ($scope.ship.cargoScoop.enabled) {
+      $scope.priority[$scope.ship.cargoScoop.c.priority - 1] = $scope.priority[$scope.ship.cargoScoop.c.priority - 1] + $scope.ship.cargoScoop.c.power;
+      items.push($scope.ship.cargoScoop);
+    }
+    // Hardpoints && Utility
+    for (var i = 0; i < $scope.ship.hardpoints.length; i++) {
+      var item = $scope.ship.hardpoints[i];
+
+      if (item.c == null)
+        continue;
+
+      var c = item.c;
+
+      if (item.enabled) {
+        if ((c.hardpoint && $scope.ship.deployed) || !c.hardpoint) {
+          $scope.priority[c.priority - 1] = $scope.priority[c.priority - 1] + c.power;
+          items.push(item);
+        }
+      }
+    };
+    // Internal
+    for (var i = 0; i < $scope.ship.internal.length; i++) {
+      var item = $scope.ship.internal[i];
+
+      if (item.c == null)
+        continue;
+
+      var c = item.c;
+
+      if (item.enabled) {
+        $scope.priority[c.priority - 1] = $scope.priority[c.priority - 1] + c.power;
+        items.push(item);
+      }
+    };
+
+    floatTable($scope.priority);
+
+    return items;
+  }
+
+  function floatTable (table) {
+    for (var i = 0; i < table.length; i++) {
+      table[i] = (table[i]).toFixed(2);
+      table[i] = parseFloat(table[i]);
+    };
   }
 
   // Hide any open menu/slot/etc if escape key is pressed
