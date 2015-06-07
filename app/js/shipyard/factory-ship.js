@@ -99,7 +99,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.ladenTotalRange = fuelRemaining > 0? calcJumpRange(this.unladenMass + this.cargoCapacity + fuelRemaining, fsd, fuelRemaining): 0;
 
     // For each max fuel jump, calculate the max jump range based on fuel left in the tank
-    for (var j = 0, jumps = Math.floor(jumps); j < jumps; j++) {
+    for (var j = 0, l = Math.floor(jumps); j < l; j++) {
       fuelRemaining += fsd.maxfuel;
       this.unladenTotalRange += calcJumpRange(this.unladenMass + fuelRemaining, fsd);
       this.ladenTotalRange += calcJumpRange(this.unladenMass + this.cargoCapacity + fuelRemaining, fsd);

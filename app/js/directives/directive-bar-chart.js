@@ -33,7 +33,7 @@ angular.module('app').directive('barChart', ['$window', function ($window) {
           y1 = d3.scale.ordinal(),
           x = d3.scale.linear(),
           yAxis = d3.svg.axis().scale(y0).outerTickSize(0).orient('left'),
-          xAxis = d3.svg.axis().scale(x).ticks(5).outerTickSize(0).orient('bottom').tickFormat(d3.format('.2s'));;
+          xAxis = d3.svg.axis().scale(x).ticks(5).outerTickSize(0).orient('bottom').tickFormat(d3.format('.2s'));
 
       // Create chart
       var svg = d3.select(element[0]).append('svg');
@@ -70,10 +70,10 @@ angular.module('app').directive('barChart', ['$window', function ($window) {
       function render() {
         var data = scope.data,
             width = element[0].offsetWidth,
-            w = width - margin.left - margin.right;
+            w = width - margin.left - margin.right,
             height = 45 + (30 * data.length),
             h = height - margin.top - margin.bottom,
-            maxVal = d3.max(data, function(d) { return d3.max(properties, function(p) {return d[p]; }); }),
+            maxVal = d3.max(data, function(d) { return d3.max(properties, function(p) {return d[p]; }); });
 
         // Update chart size
         svg.attr('width', width).attr('height', height);

@@ -1,5 +1,5 @@
 angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable', 'shipyard', 'ngLodash', 'app.templates'])
-.run(['$rootScope', '$location', '$window', '$document','$state','commonArray','shipPurpose','shipSize','hardPointClass','internalGroupMap','hardpointsGroupMap', 'Persist', '$state', function ($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hpc, igMap, hgMap, Persist, $state) {
+.run(['$rootScope', '$location', '$window', '$document','$state','commonArray','shipPurpose','shipSize','hardPointClass','internalGroupMap','hardpointsGroupMap', 'Persist', function ($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hpc, igMap, hgMap, Persist) {
   // App is running as a standalone web app on tablet/mobile
   var isStandAlone = $window.navigator.standalone || ($window.external && $window.external.msIsSiteMode && $window.external.msIsSiteMode());
 

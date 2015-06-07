@@ -16,7 +16,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
           fmtLong = d3.format('.2f'),
           func = series.func,
           drag = d3.behavior.drag(),
-          dragging = false;
+          dragging = false,
           // Define Axes
           xAxis = d3.svg.axis().outerTickSize(0).orient("bottom").tickFormat(d3.format('.2r')),
           yAxis = d3.svg.axis().outerTickSize(0).orient("left").tickFormat(fmt),
@@ -111,7 +111,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
         // Remove existing elements
         vis.selectAll('path.area').remove();
 
-        var path = vis.insert("path",':first-child')   // Area/Path to appear behind everything else
+        vis.insert("path",':first-child')   // Area/Path to appear behind everything else
           .datum(data)
           .attr("class", "area")
           .attr('fill', 'url(#gradient)')
@@ -131,7 +131,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
             dragging = false;
             hideTip();
           })
-          .on('drag', moveTip)
+          .on('drag', moveTip);
       }
 
       function showTip() {
