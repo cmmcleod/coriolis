@@ -247,9 +247,9 @@
           <td class="lbl">1H Cargo Scoop</td><td class="val">{{fPwr(ship.cargoScoop.c.power)}}</td>
           <td class="priority"><span class="less" ng-click="downPriority(ship.cargoScoop.c)">–</span>{{ship.cargoScoop.c.priority}}<span class="more" ng-click="upPriority(ship.cargoScoop.c)">+</span></td>
           <td class="status">
-            <span class="shutdown" ng-if="c.c.status == 0">SHUTDOWN</span>
-            <span class="online" ng-if="c.c.status == 1">ONLINE</span>
-            <span class="offline" ng-if="c.c.status == 2">OFFLINE</span>
+            <span class="shutdown" ng-if="ship.cargoScoop.c.status == 0">SHUTDOWN</span>
+            <span class="online" ng-if="ship.cargoScoop.c.status == 1">ONLINE</span>
+            <span class="offline" ng-if="ship.cargoScoop.c.status == 2">OFFLINE</span>
           </td>
         </tr>
         <!-- END Cargo Scoop -->
