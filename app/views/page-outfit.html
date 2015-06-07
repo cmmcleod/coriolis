@@ -265,8 +265,21 @@
     </div>
 
     <table>
-      <thead><tr><td>Retracted</td><td>Deployed</td></tr></thead>
-      <tbody>
+      <thead class="summary"><tr><th>Priority 1</th><th>Priority 2</th><th>Priority 3</th><th>Priority 4</th><th>Priority 5</th></tr></thead>
+      <tbody class="summary">
+        <tr>
+          <td>0 <u>MW</u></td>
+          <td>0 <u>MW</u></td>
+          <td>0 <u>MW</u></td>
+          <td>0 <u>MW</u></td>
+          <td>0 <u>MW</u></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead class="summary"><tr><td>Retracted</td><th>Deployed</th></tr></thead>
+      <tbody class="summary">
         <tr>
           <td>{{fPwr(ship.powerRetracted)}} <u>MW</u> ({{fPct(ship.powerRetracted/ship.powerAvailable)}})</td>
           <td>{{fPwr(ship.powerDeployed)}} <u>MW</u> ({{fPct(ship.powerDeployed/ship.powerAvailable)}})</td>
