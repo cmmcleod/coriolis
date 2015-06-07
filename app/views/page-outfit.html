@@ -201,7 +201,7 @@
       <table>
         <!-- START Power Plant -->
         <tr>
-          <td class="primary-disabled" colspan="4">Generated</td>
+          <td class="primary-disabled" colspan="5">Generated</td>
         </tr>
         <tr ng-if="pp.c.pGen" class="item common enabled untoggleable">
           <td class="activator">
@@ -216,7 +216,7 @@
         <!-- END Power Plant -->
         <!-- START Standard -->
         <tr>
-          <td class="primary-disabled" colspan="4">Standard</td>
+          <td class="primary-disabled" colspan="5">Standard</td>
         </tr>
         <tr ng-repeat="c in ship.common" ng-if="c.c.power" class="item common" ng-class="{enabled:c.enabled, consumer:c.c.power}">
           <td class="activator" ng-click="togglePwr(c)">
@@ -228,6 +228,9 @@
           </td>
           <td class="lbl">{{c.c.class}}{{c.c.rating}} {{CArr[$index]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
           <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
+          <td class="status">
+            ENABLED
+          </td>
         </tr>
         <!-- END Standard -->
         <!-- SART Cargo Scoop -->
@@ -241,11 +244,14 @@
           </td>
           <td class="lbl">1H Cargo Scoop</td><td class="val">{{fPwr(ship.cargoScoop.c.power)}}</td>
           <td class="priority"><span class="less" ng-click="downPriority(ship.cargoScoop.c)">–</span>{{ship.cargoScoop.c.priority}}<span class="more" ng-click="upPriority(ship.cargoScoop.c)">+</span></td>
+          <td class="status">
+            ENABLED
+          </td>
         </tr>
         <!-- END Cargo Scoop -->
         <!-- START Hardpoints -->
         <tr>
-          <td class="primary-disabled" colspan="4">Hardpoints</td>
+          <td class="primary-disabled" colspan="5">Hardpoints</td>
         </tr>
         <tr ng-repeat="c in ship.hardpoints" ng-if="c.c.power && !c.c.passive" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}">
           <td class="activator" ng-click="togglePwr(c)">
@@ -257,11 +263,14 @@
           </td>
           <td class="lbl">{{c.c.class}}{{c.c.rating}}/{{c.c.mode}} {{c.c.name || hgMap[c.c.grp]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
           <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
+          <td class="status">
+            ENABLED
+          </td>
         </tr>
         <!-- END Hardpoints -->
         <!-- START Utility -->
         <tr>
-          <td class="primary-disabled" colspan="3">Utility</td>
+          <td class="primary-disabled" colspan="5">Utility</td>
         </tr>
         <tr ng-repeat="c in ship.hardpoints" ng-if="c.c.power && c.c.passive" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}">
           <td class="activator" ng-click="togglePwr(c)">
@@ -273,11 +282,14 @@
           </td>
           <td class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || hgMap[c.c.grp]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
           <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
+          <td class="status">
+            ENABLED
+          </td>
         </tr>
         <!-- END Utility -->
         <!-- START Internal -->
         <tr>
-          <td class="primary-disabled" colspan="3">Internal</td>
+          <td class="primary-disabled" colspan="5">Internal</td>
         </tr>
         <tr ng-repeat="c in ship.internal" ng-if="c.c.power" class="item internal" ng-class="{enabled:c.enabled, consumer:c.c.power}">
           <td class="activator" ng-click="togglePwr(c)">
@@ -289,6 +301,9 @@
           </td>
           <td class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || igMap[c.c.grp]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
           <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
+          <td class="status">
+            ENABLED
+          </td>
         </tr>
         <!-- END Internal -->
       </table>
