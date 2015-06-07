@@ -164,6 +164,20 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
     ship.updateTotals();
   };
 
+  $scope.downPriority = function (c) {
+    if (c.priority) {
+      if (c.priority > 1)
+        --c.priority;
+    }
+  }
+
+  $scope.upPriority = function (c) {
+    if (c.priority) {
+      if (c.priority < 5)
+        ++c.priority;
+    }
+  }
+
   $scope.fuelChange = function (fuel) {
     $scope.fuel = fuel;
     angular.element($window).triggerHandler('render');

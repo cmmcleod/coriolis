@@ -227,7 +227,7 @@
             <span class="after">]</span>
           </td>
           <td class="lbl">{{c.c.class}}{{c.c.rating}} {{CArr[$index]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
-          <td class="priority"><span class="less" ng-click="downPriority(c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c)">+</span></td>
+          <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
         </tr>
         <!-- END Standard -->
         <!-- SART Cargo Scoop -->
@@ -256,7 +256,7 @@
             <span class="after">]</span>
           </td>
           <td class="lbl">{{c.c.class}}{{c.c.rating}}/{{c.c.mode}} {{c.c.name || hgMap[c.c.grp]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
-          <td class="priority"><span class="less" ng-click="downPriority(c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c)">+</span></td>
+          <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
         </tr>
         <!-- END Hardpoints -->
         <!-- START Utility -->
@@ -272,7 +272,7 @@
             <span class="after">]</span>
           </td>
           <td class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || hgMap[c.c.grp]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
-          <td class="priority"><span class="less" ng-click="downPriority(c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c)">+</span></td>
+          <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
         </tr>
         <!-- END Utility -->
         <!-- START Internal -->
@@ -288,7 +288,7 @@
             <span class="after">]</span>
           </td>
           <td class="lbl">{{c.c.class}}{{c.c.rating}} {{c.c.name || igMap[c.c.grp]}}</td><td class="val">{{fPwr(c.c.power)}}</td>
-          <td class="priority"><span class="less" ng-click="downPriority(c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c)">+</span></td>
+          <td class="priority"><span class="less" ng-click="downPriority(c.c)">–</span>{{c.c.priority}}<span class="more" ng-click="upPriority(c.c)">+</span></td>
         </tr>
         <!-- END Internal -->
       </table>
