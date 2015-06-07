@@ -255,7 +255,7 @@
         <!-- END Cargo Scoop -->
         <!-- START Hardpoints -->
         <tr>
-          <td class="primary-disabled" colspan="5">Hardpoints</td>
+          <td class="primary-disabled hardpoints" colspan="5" ng-click="toggleHardpoints()">Hardpoints <span ng-if="ship.deployed">Deployed</span><span ng-if="!ship.deployed">Retracted</span></td>
         </tr>
         <tr ng-repeat="c in ship.hardpoints" ng-if="c.c.power && !c.c.passive" class="item hardpoints" ng-class="{enabled:c.enabled, consumer:c.c.power}">
           <td class="activator" ng-click="togglePwr(c)">

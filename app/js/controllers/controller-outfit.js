@@ -34,7 +34,7 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
     // Slightly higher than actual based bacuse components are excluded
     yMax: ship.jumpRangeWithMass(ship.unladenMass),
     yMin: 0,
-    func: function(cargo) { // X Axis is Cargo
+    func: function (cargo) { // X Axis is Cargo
       return ship.jumpRangeWithMass(ship.unladenMass + $scope.fuel + cargo, $scope.fuel);
     }
   };
@@ -58,7 +58,7 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
    * @param  {[type]} e    The event object
    * @param  {[type]} slot The slot that is being 'opened' for selection
    */
-  $scope.selectSlot = function(e, slot) {
+  $scope.selectSlot = function (e, slot) {
     e.stopPropagation();
     if ($scope.selectedSlot == slot) {
       $scope.selectedSlot = null;
@@ -75,7 +75,7 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
    * @param  {[type]} slot The slot object belonging to the ship instance
    * @param  {[type]} e    The event object
    */
-  $scope.select = function(type, slot, e) {
+  $scope.select = function (type, slot, e) {
     e.stopPropagation();
     var id = angular.element(e.target).attr('cpid');  // Get component ID
 
@@ -140,7 +140,7 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
   /**
    * On build name change, retrieve the existing saved code if there is one
    */
-  $scope.bnChange = function(){
+  $scope.bnChange = function() {
     $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
   };
 
@@ -148,7 +148,7 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
    * Toggle cost of the selected component
    * @param  {object} item The component being toggled
    */
-  $scope.toggleCost = function(item) {
+  $scope.toggleCost = function (item) {
     item.incCost = !item.incCost;
     ship.updateTotals();
   };
@@ -157,12 +157,42 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
    * Toggle the power on/off for the selected component
    * @param  {object} item The component being toggled
    */
-  $scope.togglePwr = function(item) {
+  $scope.togglePwr = function (item) {
     // Update serialize code
     // updateState();
+    var c = item.c;
+
     item.enabled = !item.enabled;
+    if (item.enabled) {
+      if (c.hardpoint && !$scope.ship.deployed)
+        c.status = 3;
+      else
+        c.status = 1;
+    }
+    else
+      c.status = 0;
+
     ship.updateTotals();
   };
+
+  $scope.toggleHardpoints = function() {
+    $scope.ship.deployed = !$scope.ship.deployed;
+
+    for (var i = 0; i < ship.hardpoints.length; i++) {
+      var item = ship.hardpoints[i];
+      var c = item.c;
+
+      if (c.passive)
+        continue;
+
+      if (!item.enabled)
+        c.status = 0;
+      else if ($scope.ship.deployed && item.enabled)
+        c.status = 1;
+      else
+        c.status = 3;
+    };
+  }
 
   $scope.downPriority = function (c) {
     if (c.priority) {
