@@ -184,14 +184,14 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       }
     }
     return false;
-  }
+  };
 
   Ship.prototype.setCostIncluded = function (item, included) {
     if (item.incCost != included && item.c) {
       this.totalCost += included? item.c.cost : -item.c.cost;
     }
     item.incCost = included;
-  }
+  };
 
   Ship.prototype.setSlotEnabled = function (slot, enabled) {
     if (slot.enabled != enabled && slot.c) { // Enabled state is changing
@@ -200,7 +200,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       this.updatePower();
     }
     slot.enabled = enabled;
-  }
+  };
 
   Ship.prototype.getSlotStatus = function (slot, deployed) {
     if(!slot.c) { // Empty Slot
@@ -216,7 +216,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       return 0;  // No Status (Not possible)
     }
     return this.priorityBands[slot.priority].retractedSum > this.powerAvailable? 2 : 3;    // Offline : Online
-  }
+  };
 
   /**
    * Updates the ship's cumulative and aggregated stats based on the component change.

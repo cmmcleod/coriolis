@@ -6,15 +6,14 @@ angular.module('app').directive('powerBands', ['$window', function ($window) {
       available: '='
     },
     link: function(scope, element) {
-      var color = d3.scale.ordinal().range([ '#7b6888', '#6b486b', '#3182bd', '#a05d56', '#d0743c']),
-          margin = {top: 20, right: 130, bottom: 20, left: 40},
+      var margin = {top: 20, right: 130, bottom: 20, left: 40},
           barHeight = 20,
           innerHeight = (barHeight * 2) + 3,
           height = innerHeight + margin.top + margin.bottom + 1,
           wattScale = d3.scale.linear(),
           pctScale = d3.scale.linear().domain([0, 1]),
-          wattFmt = d3.format('.2f');
-          pctFmt = d3.format('.1%');
+          wattFmt = d3.format('.2f'),
+          pctFmt = d3.format('.1%'),
           wattAxis = d3.svg.axis().scale(wattScale).outerTickSize(0).orient('top').tickFormat(d3.format('.2r')),
           pctAxis = d3.svg.axis().scale(pctScale).outerTickSize(0).orient('bottom').tickFormat(d3.format('%')),
           // Create chart
@@ -29,8 +28,8 @@ angular.module('app').directive('powerBands', ['$window', function ($window) {
       vis.append("text").attr('x', -35).attr('y', 15).attr('class','primary').text('RET');
       vis.append("text").attr('x', -35).attr('y', barHeight + 17).attr('class','primary').text('DEP');
 
-      var retLbl = vis.append("text").attr('y', 15)
-      var depLbl = vis.append("text").attr('y', barHeight + 17).attr('class','primary');
+      var retLbl = vis.append("text").attr('y', 15);
+      var depLbl = vis.append("text").attr('y', barHeight + 17);
 
       // Watch for changes to data and events
       scope.$watchCollection('available', render);
@@ -41,7 +40,7 @@ angular.module('app').directive('powerBands', ['$window', function ($window) {
             available = scope.available,
             width = element[0].offsetWidth,
             w = width - margin.left - margin.right,
-            maxBand = bands[bands.length - 1];
+            maxBand = bands[bands.length - 1],
             maxPwr = Math.max(available, maxBand.deployedSum);
 
         // Update chart size
@@ -81,7 +80,7 @@ angular.module('app').directive('powerBands', ['$window', function ($window) {
           .attr('y', 15)
           .style('text-anchor', 'middle')
           .attr('class','primary-bg')
-          .text(function(d,i) { return bandText(d.retracted, i, available); });
+          .text(function(d,i) { return bandText(d.retracted, i); });
 
         deployed.selectAll("rect").data(bands).enter().append("rect")
           .attr("height", barHeight)
@@ -95,11 +94,11 @@ angular.module('app').directive('powerBands', ['$window', function ($window) {
           .attr('y', barHeight + 17)
           .style('text-anchor', 'middle')
           .attr('class','primary-bg')
-          .text(function(d,i) { return bandText(d.deployed + d.retracted, i, available); });
+          .text(function(d,i) { return bandText(d.deployed + d.retracted, i); });
 
       }
 
-      function bandText(val, index, available) {
+      function bandText(val, index) {
         if (val > 0) {
           if( wattScale(val) > 100) {
             return (index + 1) + ' (' + wattFmt(val) + ' MW)';

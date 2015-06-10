@@ -38,7 +38,7 @@ angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable',
 
   $rootScope.cName = function (c) {
     return c.c? c.c.name? c.c.name : GroupMap[c.c.grp] : null;
-  }
+  };
 
   // Formatters
   $rootScope.fCrd = d3.format(',.0f');

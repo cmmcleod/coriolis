@@ -1,4 +1,4 @@
-angular.module('app').controller('OutfitController', ['$window','$rootScope','$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', 'lodash', function ($window, $rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist, _) {
+angular.module('app').controller('OutfitController', ['$window','$rootScope','$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', function ($window, $rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist) {
   var data = Ships[$p.shipId];   // Retrieve the basic ship properties, slots and defaults
   var ship = new Ship($p.shipId, data.properties, data.slots); // Create a new Ship instance
   var win = angular.element($window);   // Angularized window object for event triggering
