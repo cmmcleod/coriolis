@@ -84,11 +84,7 @@ function writeDB(err, arr) {
     fs.writeFile(db_filename, code, function(err) {});
   });
 
-  if (!fs.existsSync('./build')){
-    fs.mkdirSync('./build');
-  }
-
-  fs.open('./build/db.json', 'w', function() {
-    fs.writeFile('./build/db.json', JSON.stringify(db), function(err) {});
+  fs.open('./app/db.json', 'w', function() {
+    fs.writeFile('./app/db.json', JSON.stringify(db), function(err) {});
   });
 }

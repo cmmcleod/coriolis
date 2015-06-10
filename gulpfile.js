@@ -18,6 +18,7 @@ var gulp            = require('gulp'),
     svgmin          = require( 'gulp-svgmin' ),
     jsonlint        = require("gulp-jsonlint"),
     appCache        = require("gulp-manifest"),
+    jasmine         = require('gulp-jasmine'),
     pkg             = require('./package.json');
 
 var cdnHostStr = '';
@@ -111,7 +112,7 @@ gulp.task('js', function() {
 });
 
 gulp.task('copy', function() {
-  return gulp.src(['app/images/**','app/fonts/**','app/.htaccess'], {base: 'app/'})
+  return gulp.src(['app/images/**','app/fonts/**','app/db.json'], {base: 'app/'})
     .pipe(gulp.dest('build'));
 });
 
@@ -177,7 +178,7 @@ gulp.task('serve-stop', function(cb) {
 
 gulp.task('watch', function() {
   gulp.watch(['app/index.html','app/icons/*.svg'], ['generateIndexHTML']);
-  gulp.watch(['app/images/**','app/fonts/**'], ['copy']);
+  gulp.watch(['app/images/**','app/fonts/**', 'app/db.json'], ['copy']);
   gulp.watch('app/less/*.less', ['less']);
   gulp.watch('app/views/**/*', ['html2js']);
   gulp.watch('app/js/**/*.js', ['js']);
@@ -235,6 +236,11 @@ gulp.task('upload', function(done) {
     ].join(''),
     done
   );
+});
+
+gulp.task('test', function () {
+    return gulp.src('tests/test-*.js')
+        .pipe(jasmine());
 });
 
 gulp.task('lint', ['js-lint', 'json-lint']);
