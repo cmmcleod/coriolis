@@ -1,7 +1,7 @@
 {
   "Fuel Tank": [
     {
-      "id": "F1",
+      "id": "f1",
       "grp": "ft",
       "class": 1,
       "rating": "C",
@@ -9,7 +9,7 @@
       "capacity": 2
     },
     {
-      "id": "F2",
+      "id": "f2",
       "grp": "ft",
       "class": 2,
       "rating": "C",
@@ -17,7 +17,7 @@
       "capacity": 4
     },
     {
-      "id": "F3",
+      "id": "f3",
       "grp": "ft",
       "class": 3,
       "rating": "C",
@@ -25,7 +25,7 @@
       "capacity": 8
     },
     {
-      "id": "F4",
+      "id": "f4",
       "grp": "ft",
       "class": 4,
       "rating": "C",
@@ -33,7 +33,7 @@
       "capacity": 16
     },
     {
-      "id": "F5",
+      "id": "f5",
       "grp": "ft",
       "class": 5,
       "rating": "C",
@@ -41,7 +41,7 @@
       "capacity": 32
     },
     {
-      "id": "F6",
+      "id": "f6",
       "grp": "ft",
       "class": 6,
       "rating": "C",

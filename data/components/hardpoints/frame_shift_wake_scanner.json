@@ -2,7 +2,7 @@
   "Frame Shift Wake Scanners": [
     {
       "id": "0i",
-      "grp": "fs",
+      "grp": "ws",
       "class": 0,
       "rating": "E",
       "cost": 13544,
@@ -13,7 +13,7 @@
     },
     {
       "id": "0h",
-      "grp": "fs",
+      "grp": "ws",
       "class": 0,
       "rating": "D",
       "cost": 40633,
@@ -24,7 +24,7 @@
     },
     {
       "id": "0g",
-      "grp": "fs",
+      "grp": "ws",
       "class": 0,
       "rating": "C",
       "cost": 121899,
@@ -35,7 +35,7 @@
     },
     {
       "id": "0f",
-      "grp": "fs",
+      "grp": "ws",
       "class": 0,
       "rating": "B",
       "cost": 365698,
@@ -46,7 +46,7 @@
     },
     {
       "id": "0e",
-      "grp": "fs",
+      "grp": "ws",
       "class": 0,
       "rating": "A",
       "cost": 1097095,
