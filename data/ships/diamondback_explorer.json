@@ -5,7 +5,7 @@
       "name": "Diamondback Explorer",
       "manufacturer": "Lakon",
       "class": 1,
-      "cost": 2000000,
+      "cost": 1740931,
       "speed": 242,
       "boost": 316,
       "agility": 5,
@@ -14,6 +14,7 @@
       "fuelcost": 50,
       "mass": 298
     },
+    "retailCost": 2000000,
     "slots": {
       "common": [
         4,
