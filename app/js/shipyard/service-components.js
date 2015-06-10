@@ -32,13 +32,26 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
     return null;
   };
 
+  /**
+   * Looks up the bulkhead component for a specific ship and bulkhead
+   * @param  {string} shipId       Unique ship Id/Key
+   * @param  {number} bulkheadsId  Id/Index for the specified bulkhead
+   * @return {object}             The bulkhead component object
+   */
   this.bulkheads = function(shipId, bulkheadsId) {
     return C.bulkheads[shipId][bulkheadsId];
   };
 
+  /**
+   * Creates a new ComponentSet that contains all available components
+   * that the specified ship is eligible to use.
+   *
+   * @param  {string} shipId    Unique ship Id/Key
+   * @return {ComponentSet}     The set of components the ship can install
+   */
   this.forShip = function (shipId) {
     var ship = Ships[shipId];
-    return new ComponentSet(C, ship.properties.mass, ship.slots.common, ship.slots.internal[0], ship.slots.hardpoints[0]);
+    return new ComponentSet(C, ship.properties.mass + 5, ship.slots.common, ship.slots.internal[0], ship.slots.hardpoints[0]);
   };
 
 }]);

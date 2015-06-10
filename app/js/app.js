@@ -1,5 +1,5 @@
 angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable', 'shipyard', 'ngLodash', 'app.templates'])
-.run(['$rootScope', '$location', '$window', '$document','$state','commonArray','shipPurpose','shipSize','hardPointClass','internalGroupMap','hardpointsGroupMap', 'Persist', function ($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hpc, igMap, hgMap, Persist) {
+.run(['$rootScope', '$location', '$window', '$document','$state','commonArray','shipPurpose','shipSize','hardPointClass','GroupMap', 'Persist', function ($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hpc, GroupMap, Persist) {
   // App is running as a standalone web app on tablet/mobile
   var isStandAlone = $window.navigator.standalone || ($window.external && $window.external.msIsSiteMode && $window.external.msIsSiteMode());
 
@@ -31,9 +31,14 @@ angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable',
   $rootScope.SP = shipPurpose;
   $rootScope.SZ = sz;
   $rootScope.HPC = hpc;
-  $rootScope.igMap = igMap;
-  $rootScope.hgMap = hgMap;
+  $rootScope.GMAP = GroupMap;
+  $rootScope.STATUS = ['','DISABLED', 'OFF', 'ON'];
+  $rootScope.STATUS_CLASS = ['','disabled', 'warning', 'secondary-disabled'];
   $rootScope.title = 'Coriolis';
+
+  $rootScope.cName = function (c) {
+    return c.c? c.c.name? c.c.name : GroupMap[c.c.grp] : null;
+  }
 
   // Formatters
   $rootScope.fCrd = d3.format(',.0f');

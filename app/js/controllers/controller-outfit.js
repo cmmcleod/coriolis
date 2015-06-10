@@ -1,6 +1,7 @@
-angular.module('app').controller('OutfitController', ['$window','$rootScope','$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', function ($window, $rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist) {
+angular.module('app').controller('OutfitController', ['$window','$rootScope','$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', 'lodash', function ($window, $rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist, _) {
   var data = Ships[$p.shipId];   // Retrieve the basic ship properties, slots and defaults
   var ship = new Ship($p.shipId, data.properties, data.slots); // Create a new Ship instance
+  var win = angular.element($window);   // Angularized window object for event triggering
 
   //  Update the ship instance with the code (if provided) or the 'factory' defaults.
   if ($p.code) {
@@ -22,11 +23,18 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
   $scope.ft = ship.common[6];   // Fuel Tank
   $scope.hps = ship.hardpoints;
   $scope.internal = ship.internal;
+  $scope.costList = ship.costList;
+  $scope.powerList = ship.powerList;
+  $scope.priorityBands = ship.priorityBands;
   $scope.availCS = Components.forShip(ship.id);
   $scope.selectedSlot = null;
   $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
   $scope.canSave = Persist.isEnabled();
   $scope.fuel = 0;
+  $scope.pwrDesc = false;
+  $scope.pwrPredicate = null;
+  $scope.costDesc = true;
+  $scope.costPredicate = 'c.cost';
 
   $scope.jrSeries = {
     xMin: 0,
@@ -149,39 +157,71 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
    * @param  {object} item The component being toggled
    */
   $scope.toggleCost = function(item) {
-    item.incCost = !item.incCost;
-    ship.updateTotals();
+    ship.setCostIncluded(item, !item.incCost);
+  };
+
+  /**
+   * [sortCost description]
+   * @param  {[type]} key [description]
+   * @return {[type]}     [description]
+   */
+  $scope.sortCost = function (key) {
+    $scope.costDesc =  ($scope.costPredicate == key)? !$scope.costDesc : $scope.costDesc;
+    $scope.costPredicate = key;
+  };
+
+  $scope.sortPwr = function (key) {
+    $scope.pwrDesc =  ($scope.pwrPredicate == key)? !$scope.pwrDesc : $scope.pwrDesc;
+    $scope.pwrPredicate = key;
   };
 
   /**
    * Toggle the power on/off for the selected component
    * @param  {object} item The component being toggled
    */
-  $scope.togglePwr = function(item) {
-    // Update serialize code
-    // updateState();
-    item.enabled = !item.enabled;
-    ship.updateTotals();
+  $scope.togglePwr = function(c) {
+    ship.setSlotEnabled(c, !c.enabled);
+    $scope.code = Serializer.fromShip(ship);
+    updateState();
+  };
+
+  $scope.incPriority = function (c) {
+    if (ship.changePriority(c, c.priority + 1)) {
+      $scope.code = Serializer.fromShip(ship);
+      updateState();
+    }
+  };
+
+  $scope.decPriority = function (c) {
+    if (ship.changePriority(c, c.priority - 1)) {
+      $scope.code = Serializer.fromShip(ship);
+      updateState();
+    }
   };
 
   $scope.fuelChange = function (fuel) {
     $scope.fuel = fuel;
-    angular.element($window).triggerHandler('render');
+    win.triggerHandler('render');
+  };
+
+  $scope.statusRetracted = function (slot) {
+    return ship.getSlotStatus(slot, false);
+  };
+
+  $scope.statusDeployed = function (slot) {
+    return ship.getSlotStatus(slot, true);
   };
 
   // Utilify functions
+
   function updateState() {
     $state.go('outfit', {shipId: ship.id, code: $scope.code, bn: $scope.buildName}, {location:'replace', notify:false});
     $scope.jrSeries.xMax = ship.cargoCapacity;
     $scope.jrSeries.yMax = ship.jumpRangeWithMass(ship.unladenMass);
     $scope.jrSeries.mass = ship.unladenMass;
+    win.triggerHandler('pwrchange');
   }
 
-  // Hide any open menu/slot/etc if escape key is pressed
-  $scope.$on('escape', function () {
-    $scope.selectedSlot = null;
-    $scope.$apply();
-  });
   // Hide any open menu/slot/etc if the background is clicked
   $scope.$on('close', function () {
     $scope.selectedSlot = null;
