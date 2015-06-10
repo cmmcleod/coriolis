@@ -4,8 +4,6 @@
     <td class="head">Comparison</td>
     <td>
       <input ng-model="name" ng-change="nameChange()" placeholder="Enter Comparison Name"  maxlength="50" />
-    </td>
-    <td>
       <button ng-click="save()" ng-disabled="!name || name == 'all' || saved">
         <svg class="icon lg "><use xlink:href="#floppy-disk"></use></svg><span class="button-lbl"> Save</span>
       </button>
@@ -23,17 +21,17 @@
   </tr>
   <tr ng-show="!compareMode">
     <td class="head">Comparison</td>
-    <td colspan="2">
+    <td>
       <h3 ng-bind="name"></h3>
       <button class="r" ui-sref="modal.import({obj:importObj})"><svg class="icon lg "><use xlink:href="#download"></use></svg> Import Builds</button>
     </td>
   </tr>
   <tr>
     <td class="head">Compare</td>
-    <td colspan="2">
+    <td>
       <ul id="facet-container" as-sortable="facetSortOpts" ng-model="facets" class="sortable" update="tblUpdate">
         <li ng-repeat="(i,f) in facets" as-sortable-item class="facet" ng-class="{active: f.active}" ng-click="toggleFacet(i)">
-          <div as-sortable-item-handle><span ng-bind="f.title"></span></div>
+          <div as-sortable-item-handle>↔ <span ng-bind="f.title"></span></div>
         </li>
       </ul>
     </td>

@@ -19,7 +19,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
           dragging = false,
           // Define Axes
           xAxis = d3.svg.axis().outerTickSize(0).orient("bottom").tickFormat(d3.format('.2r')),
-          yAxis = d3.svg.axis().outerTickSize(0).orient("left").tickFormat(fmt),
+          yAxis = d3.svg.axis().ticks(6).outerTickSize(0).orient("left").tickFormat(fmt),
           x = d3.scale.linear(),
           y = d3.scale.linear();
 
@@ -78,7 +78,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
 
       function render() {
         var width = element[0].parentElement.offsetWidth,
-            height = width * 0.6,
+            height = width * 0.5,
             w = width - margin.left - margin.right,
             h = height - margin.top - margin.bottom,
             data = [];

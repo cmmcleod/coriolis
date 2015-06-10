@@ -3,22 +3,29 @@
   max-width: 1600px;
   margin: 0 auto;
   .user-select-none();
+  font-size: 0.9em;
 
   .tablet({
+    font-size: 0.8em;
     width: 100%;
   });
+
+  .smallTablet({
+    font-size: 1em;
+  });
+
+  table {
+    white-space: nowrap;
+  }
 }
 
 #overview {
-  .tablet({
-      font-size: 0.9em;
-  });
-
   h1 {
     margin: 0;
     float: left;
   }
   overflow: hidden;
+  margin: 0.5em;
 }
 
 #summary {
@@ -27,46 +34,75 @@
   box-sizing: border-box;
   width: 100%;
   padding: 0.5em 0.2em;
+  font-size: 0.9em;
 
   #summaryTable {
     .user-select-none();
     width: 100%;
-    white-space: nowrap;
     border-collapse: collapse;
-    font-size: 0.8em;
-
   }
 }
 
 #build {
   float: right;
   line-height: 2em;
-  font-size: 0.8em;
+  text-align: left;
 
   input {
     background: none;
-    line-height: 1.5em;
-    font-size: 0.8em;
+    line-height: 1.3em;
     width: 20em;
+    font-size: 0.9em;
     box-sizing: border-box;
     display: inline-block;
-    padding: 0.5em;
+    padding: 0.3em;
+    vertical-align: middle;
 
     &:focus {
       border: 1px solid @primary;
       color: @primary;
     }
-  }
-  button {
-    .smallPhone({
-      padding: 0.25em;
+
+    .largePhone({
+      width: 70%;
+    });
+
+    .medPhone({
+      width: 100%;
     });
   }
 
   .largePhone({
     float: left;
     clear: left;
+    width: 100%;
   });
+}
+
+.sortable {
+  &:hover {
+    color: @primary;
+  }
+}
+
+.shorten {
+  overflow: hidden;
+  max-width: 8em;
+  text-overflow: ellipsis;
+}
+
+table.total {
+  width: 100%;
+
+  &, td {
+    border-collapse: collapse;
+    border: 1px solid @primary-disabled;
+  }
+  .lbl {
+    text-transform: uppercase;
+    color: @primary-bg;
+    background-color: @primary-disabled;
+  }
 }
 
 .group {
@@ -78,20 +114,27 @@
   .user-select-none();
   cursor: default;
 
+  [ng-click] {
+    cursor: pointer;
+  }
+
+
   h1 {
     font-family: @fStandard;
     color: @bgBlack;
     background-color: @primary-disabled;
     text-transform: uppercase;
     margin: 0;
+    padding-top: 2px;
     font-size: 1em;
     line-height: 1.3em;
     font-weight: normal;
   }
 
-  .tablet({
-    font-size: 0.9em;
-  });
+  tbody tr:hover {
+    background-color: @warning-bg;
+  }
+
 
   .smallTablet({
     width: 50%;
@@ -104,9 +147,15 @@
   &.dbl {
     width: 50%;
 
+    .tablet({
+      td {
+        line-height: 2em;
+      }
+    });
+
     .smallTablet({
+      overflow-x: auto;
       width: 100% !important;
     });
   }
-
 }

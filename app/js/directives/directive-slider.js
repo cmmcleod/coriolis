@@ -50,10 +50,10 @@ angular.module('app').directive('slider', ['$window', function ($window) {
             .scale(x)
             .orient("bottom")
             .tickFormat(function(d) { return d + unit; })
-            .ticks(5)
+            .tickValues([0, scope.max / 4, scope.max / 2, (3 * scope.max) / 4, scope.max])
             .tickSize(0)
             .tickPadding(12))
-        .select(".domain");
+          .select(".domain");
         lbl.attr('x', w + 20);
         slider.call(brush.extent([val, val])).call(brush.event);
         slider.selectAll(".extent,.resize").remove();

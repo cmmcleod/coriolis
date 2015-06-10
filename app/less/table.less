@@ -14,7 +14,7 @@ thead {
   color: @bgBlack;
   background-color: @primary-disabled;
   text-transform: uppercase;
-  line-height: 1.4em;
+  line-height: 1.3em;
   .user-select-none();
 
   .main th {
@@ -26,8 +26,9 @@ thead {
   }
 
   th {
+    vertical-align: middle;
     font-weight: normal;
-    padding: 0 0.75em;
+    padding: 2px 0.4em 0; // Padding top for font vertical alignment
 
     &.prop {
       cursor: pointer;
@@ -50,15 +51,13 @@ tbody tr {
     text-align: right;
 
     &:hover {
-      color: @fg;
-      fill: @warning;
       background-color: @warning-bg;
     }
   }
 
   td {
     line-height: 1.4em;
-    padding: 0 0.7em;
+    padding: 0 0.3em;
   }
 
 }

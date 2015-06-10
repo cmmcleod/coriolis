@@ -1,7 +1,7 @@
 <div class="sz" ng-bind="c.maxClass"></div>
 <div class="empty" ng-if="!c.c">EMPTY</div>
 <div ng-if="c.c">
-  <div class="l">{{c.c.class}}{{c.c.rating}} {{c.c.name || lbl}}</div>
+  {{c.c.class}}{{c.c.rating}} {{c.c.name || lbl}}
   <div class="r">{{c.c.mass || c.c.capacity || '0'}} <u>T</u></div>
   <div class="cb"></div>
   <div class="l" ng-if="c.c.optmass">Opt: {{c.c.optmass}} <u>T</u></div>
@@ -10,9 +10,9 @@
   <div class="l" ng-if="c.c.rate">Rate: {{c.c.rate}} <u>Kg/s</u>&nbsp;&nbsp;&nbsp;Refuel Time: {{$r.fTime(fuel * 1000 / c.c.rate)}}</div>
   <div class="l" ng-if="c.c.ammo">Ammo: {{c.c.ammo}}</div>
   <div class="l" ng-if="c.c.cells">Cells: {{c.c.cells}}</div>
-  <div class="l" ng-if="c.c.recharge">Recharge: {{c.c.recharge}} <u>Mj</u></div>
+  <div class="l" ng-if="c.c.recharge">Recharge: {{c.c.recharge}} <u>MJ</u></div>
   <div class="l" ng-if="c.c.repair">Repair: {{c.c.repair}}</div>
-  <div class="l" ng-if="c.c.range">Range {{c.c.range}} <u>Km</u></div>
+  <div class="l" ng-if="c.c.range">Range {{c.c.range}} <u>km</u></div>
   <div class="l" ng-if="c.c.time">Time: {{$r.fTime(c.c.time)}}</div>
   <div class="l" ng-if="c.c.maximum">Max: {{(c.c.maximum)}}</div>
   <div class="l" ng-if="c.c.rangeLS">{{c.c.rangeLS}} <u>LS</u></div>
