@@ -32,7 +32,7 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
   $scope.canSave = Persist.isEnabled();
   $scope.fuel = 0;
   $scope.pwrDesc = false;
-  $scope.pwrPredicate = null;
+  $scope.pwrPredicate = 'type';
   $scope.costDesc = true;
   $scope.costPredicate = 'c.cost';
 
