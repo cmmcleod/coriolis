@@ -43,6 +43,14 @@
   }
 }
 
+.flip {
+  display: inline-block;
+  -moz-transform: scaleX(-1);    /* Gecko */
+  -o-transform: scaleX(-1);      /* Operah */
+  -webkit-transform: scaleX(-1); /* webkit */
+  transform: scaleX(-1);         /* standard */
+}
+
 #build {
   float: right;
   line-height: 2em;
@@ -170,10 +178,8 @@ table.total {
     table tbody tr td {
       &:nth-child(4) {
         span {
-          display:inline;
-          padding:0;
-          margin:0;
-          font-size: 2em;
+          vertical-align: middle;
+          font-size: 1.6em;
         }
       }
     }
@@ -186,7 +192,7 @@ table.total {
       g.tick:nth-child(2n) text {
         display: none;
       }
-    } 
+    }
 
     table thead tr.main th {
       font-size: 0.8em;

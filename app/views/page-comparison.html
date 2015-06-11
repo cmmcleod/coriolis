@@ -31,7 +31,7 @@
     <td>
       <ul id="facet-container" as-sortable="facetSortOpts" ng-model="facets" class="sortable" update="tblUpdate">
         <li ng-repeat="(i,f) in facets" as-sortable-item class="facet" ng-class="{active: f.active}" ng-click="toggleFacet(i)">
-          <div as-sortable-item-handle>↔ <span ng-bind="f.title"></span></div>
+          <div as-sortable-item-handle>&#x2194; <span ng-bind="f.title"></span></div>
         </li>
       </ul>
     </td>
