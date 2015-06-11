@@ -46,6 +46,7 @@ angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable',
   $rootScope.fRound = function(d) { return d3.round(d, 2); };
   $rootScope.fRound4 = function(d) { return d3.round(d, 4); };
   $rootScope.fPct = d3.format('.2%');
+  $rootScope.f1Pct = d3.format('.1%');
   $rootScope.fRPct = d3.format('%');
   $rootScope.fTime = function(d) { return Math.floor(d/60) + ":" + ("00" + Math.floor(d%60)).substr(-2,2); };
 
