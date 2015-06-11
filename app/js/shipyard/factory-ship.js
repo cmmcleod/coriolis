@@ -70,19 +70,21 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.useBulkhead(comps.bulkheads || 0, true);
     this.cargoScoop.priority = priorities? priorities[0] * 1 : 0;
     this.cargoScoop.enabled = enabled? enabled[0] * 1 : true;
+
     if (this.cargoScoop.enabled) {
       bands[this.cargoScoop.priority].retracted += this.cargoScoop.c.power;
     }
 
     for(i = 0; i < cl; i++) {
-      common[i].enabled = enabled? enabled[i] * 1 : true;
-      common[i].priority = priorities? priorities[i] * 1 : 0;
+      common[i].enabled = enabled? enabled[i + 1] * 1 : true;
+      common[i].priority = priorities? priorities[i + 1] * 1 : 0;
       common[i].type = 'SYS';
       this.use(common[i], comps.common[i], Components.common(i, comps.common[i]), true);
     }
 
     common[1].type = 'ENG'; // Thrusters
     common[2].type = 'ENG'; // FSD
+    cl++; // Increase accounting for Cargo Scoop
 
     for(i = 0, l = comps.hardpoints.length; i < l; i++) {
       hps[i].enabled = enabled? enabled[cl + i] * 1 : true;
