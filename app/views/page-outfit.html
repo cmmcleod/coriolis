@@ -221,7 +221,7 @@
           <td style="width:1em;" ng-click="togglePwr(c)">{{c.c.class}}{{c.c.rating}}</td>
           <td class="le shorten" ng-click="togglePwr(c)" ng-bind="cName(c)"></td>
           <td ng-click="togglePwr(c)"><u  ng-bind="c.type"></u></td>
-          <td><span ng-click="decPriority(c)">◀</span> {{c.priority + 1}} <span ng-click="incPriority(c)">▶</span></td>
+          <td><span ng-click="decPriority(c)">&#9668;</span> {{c.priority + 1}} <span ng-click="incPriority(c)">&#9658;</span></td>
           <td class="ri" style="width:3.25em;">{{fPwr(c.c.power)}}</td>
           <td class="ri" style="width:2em;"><u>{{fRPct(c.c.power/ship.powerAvailable)}}</u></td>
           <td ng-if="!c.enabled" class="disabled" colspan="2">DISABLED</td>
