@@ -9,11 +9,20 @@ angular.module('app').service('Serializer', ['lodash', function (_) {
    * @return {string}     Encoded string of components
    */
   this.fromShip = function(ship) {
+    var power = {
+      enabled: [ship.cargoScoop.enabled? 1 : 0],
+      priorities: [ship.cargoScoop.priority]
+    };
+
     var data = [
       ship.bulkheads.id,
-      _.map(ship.common, idToStr),
-      _.map(ship.hardpoints, idToStr),
-      _.map(ship.internal, idToStr),
+      _.map(ship.common, mapGroup, power),
+      _.map(ship.hardpoints, mapGroup, power),
+      _.map(ship.internal, mapGroup, power),
+      '.',
+      LZString.compressToBase64(power.enabled.join('')).replace(/\//g,'-'),
+      '.',
+      LZString.compressToBase64(power.priorities.join('')).replace(/\//g,'-')
     ];
 
     return _.flatten(data).join('');
@@ -26,32 +35,38 @@ angular.module('app').service('Serializer', ['lodash', function (_) {
    * @param {Ship}    ship  The ship instance to be updated
    * @param {string}  code  The string to deserialize
    */
-  this.toShip = function (ship, code) {
-    var commonCount = ship.common.length;
-    var hpCount = commonCount + ship.hardpoints.length;
-    var comps = {
-      bulkheads: code.charAt(0) * 1,
-      common: new Array(ship.common.length),
-      hardpoints: new Array(ship.hardpoints.length),
-      internal: new Array(ship.internal.length)
-    };
+  this.toShip = function (ship, dataString) {
+    var commonCount = ship.common.length,
+        hpCount = commonCount + ship.hardpoints.length,
+        totalCount = hpCount + ship.internal.length,
+        common = new Array(ship.common.length),
+        hardpoints = new Array(ship.hardpoints.length),
+        internal = new Array(ship.internal.length),
+        parts = dataString.split('.'),
+        priorities = null,
+        enabled = null,
+        code = parts[0];
 
-    // TODO: improve...
-    for (var i = 1, c = 0, l = code.length; i < l; i++) {
-      var empty = code.charAt(i) == '-';
-      if (c < commonCount) {
-        comps.common[c] = empty? 0 : code.substring(i, i + 2);
-      } else if (c < hpCount) {
-        comps.hardpoints[c - commonCount] = empty? 0 : code.substring(i, i + 2);
-      } else {
-        comps.internal[c - hpCount] = empty? 0 : code.substring(i, i + 2);
-      }
-      if (!empty) {
-        i++;
-      }
-      c++;
+    if(parts[1]) {
+      enabled = LZString.decompressFromBase64(parts[1].replace(/-/g,'/')).split('');
     }
-    ship.buildWith(comps);
+
+    if(parts[2]) {
+      priorities = LZString.decompressFromBase64(parts[2].replace(/-/g,'/')).split('');
+    }
+
+    decodeToArray(code, internal, decodeToArray(code, hardpoints, decodeToArray(code, common, 1)));
+
+    // get the remaining substring / split into parts for
+    // - priorities
+    // - enabled/disabled
+
+    ship.buildWith({
+      bulkheads: code.charAt(0) * 1,
+      common: common,
+      hardpoints: hardpoints,
+      internal: internal,
+    }, priorities, enabled);
   };
 
   this.fromComparison = function (name, builds, facets, predicate, desc) {
@@ -82,8 +97,24 @@ angular.module('app').service('Serializer', ['lodash', function (_) {
    * @param  {object} slot The slot object.
    * @return {string}      The id of the selected component or '-' if none selected
    */
-  function idToStr(slot) {
+  function mapGroup(slot) {
+    this.enabled.push(slot.enabled? 1 : 0);
+    this.priorities.push(slot.priority);
+
     return (slot.id === null)? '-' : slot.id;
+  }
+
+  function decodeToArray(code, arr, codePos) {
+    for (i = 0; i < arr.length; i++) {
+      if (code.charAt(codePos) == '-') {
+        arr[i] = 0;
+        codePos++;
+      } else {
+        arr[i] = code.substring(codePos, codePos + 2);
+        codePos += 2;
+      }
+    }
+    return codePos;
   }
 
 }]);

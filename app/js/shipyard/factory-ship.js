@@ -9,7 +9,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    */
   function Ship(id, properties, slots) {
     this.id = id;
-    this.cargoScoop = { enabled: true, c: Components.cargoScoop(), type: 'SYS' };
+    this.cargoScoop = { c: Components.cargoScoop(), type: 'SYS' };
     this.bulkheads = { incCost: true, maxClass: 8 };
 
     for (var p in properties) { this[p] = properties[p]; }  // Copy all base properties from shipData
@@ -18,7 +18,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       var slotGroup = slots[slotType];
       var group = this[slotType] = [];   // Initialize Slot group (Common, Hardpoints, Internal)
       for(var i = 0; i < slotGroup.length; i++){
-        group.push({id: null, c: null, enabled: true, incCost: true, maxClass: slotGroup[i]});
+        group.push({id: null, c: null, incCost: true, maxClass: slotGroup[i]});
       }
     }
     this.c = { incCost: true, c: { name: this.name, cost: this.cost } };  // Make a 'Ship' component similar to other components
@@ -35,6 +35,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.powerList.unshift(this.common[3]);  // Add Life Support
     this.powerList.unshift(this.common[2]);  // Add FSD
     this.powerList.unshift(this.common[0]);  // Add Power Plant
+
     this.priorityBands = [
       {deployed: 0, retracted: 0},
       {deployed: 0, retracted: 0},
@@ -43,7 +44,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       {deployed: 0, retracted: 0}
     ];
 
-    // Reset cumulative and aggragate stats
+    // Cumulative and aggragate stats
     this.fuelCapacity = 0;
     this.cargoCapacity = 0;
     this.ladenMass = 0;
@@ -58,20 +59,24 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    * Builds/Updates the ship instance with the components[comps] passed in.
    * @param {object} comps Collection of components used to build the ship
    */
-  Ship.prototype.buildWith = function(comps) {
-    var internal = this.internal;
-    var common = this.common;
-    var hps = this.hardpoints;
-    var bands = this.priorityBands;
-    var i,l;
+  Ship.prototype.buildWith = function(comps, priorities, enabled) {
+    var internal = this.internal,
+        common = this.common,
+        hps = this.hardpoints,
+        bands = this.priorityBands,
+        cl = common.length, hl = hps.length, il = internal.length,
+        i,l;
 
     this.useBulkhead(comps.bulkheads || 0, true);
-    this.cargoScoop.priority = 0; // TODO set from comps
-    bands[this.cargoScoop.priority].retracted += this.cargoScoop.c.power;
+    this.cargoScoop.priority = priorities? priorities[0] * 1 : 0;
+    this.cargoScoop.enabled = enabled? enabled[0] * 1 : true;
+    if (this.cargoScoop.enabled) {
+      bands[this.cargoScoop.priority].retracted += this.cargoScoop.c.power;
+    }
 
-    for(i = 0, l = comps.common.length; i < l; i++) {
-      common[i].enabled = true; // TODO set enabled from comps
-      common[i].priority = 0;   // TODO set from comps
+    for(i = 0; i < cl; i++) {
+      common[i].enabled = enabled? enabled[i] * 1 : true;
+      common[i].priority = priorities? priorities[i] * 1 : 0;
       common[i].type = 'SYS';
       this.use(common[i], comps.common[i], Components.common(i, comps.common[i]), true);
     }
@@ -80,9 +85,10 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     common[2].type = 'ENG'; // FSD
 
     for(i = 0, l = comps.hardpoints.length; i < l; i++) {
-      hps[i].enabled = true;   // TODO set enabled from comps
-      hps[i].priority = 0;  // TODO set from comps
+      hps[i].enabled = enabled? enabled[cl + i] * 1 : true;
+      hps[i].priority = priorities? priorities[cl + i] * 1 : 0;
       hps[i].type = hps[i].maxClass? 'WEP' : 'SYS';
+
       if (comps.hardpoints[i] !== 0) {
         this.use(hps[i], comps.hardpoints[i], Components.hardpoints(comps.hardpoints[i]), true);
       } else {
@@ -91,9 +97,10 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     }
 
     for(i = 0, l = comps.internal.length; i < l; i++) {
-      internal[i].enabled = true; // TODO set enabled from comps
-      internal[i].priority = 0;   // TODO set from comps
+      internal[i].enabled = enabled? enabled[hl + cl + i] * 1 : true;
+      internal[i].priority = priorities? priorities[hl + cl + i] * 1 : 0;
       internal[i].type = 'SYS';
+
       if (comps.internal[i] !== 0) {
         this.use(internal[i], comps.internal[i], Components.internal(comps.internal[i]), true);
       } else {
