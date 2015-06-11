@@ -170,7 +170,7 @@ table.total {
     table tbody tr td {
       &:nth-child(4) {
         span {
-          display: inline;
+          display:inline;
           padding:0;
           margin:0;
           font-size: 2em;
@@ -200,8 +200,8 @@ table.total {
       &:nth-child(1) {
         padding: 0;
         margin: 0;
-        max-width: 0;
-        width: 0;
+        max-width: 0 !important;
+        width: 0 !important;
         color: transparent;
       }
       &:nth-child(3) {
@@ -215,12 +215,16 @@ table.total {
 
   .smallPhone({
     table tbody tr td {
+        padding: 0;
+
       &:nth-child(6) {
         padding: 0;
         margin: 0;
-        max-width: 0;
-        width: 0;
+        max-width: 0 !important;
+        width: 0 !important;
         color: transparent;
+
+        u { display: none; }
       }
     }
   });
