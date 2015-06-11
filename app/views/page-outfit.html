@@ -193,8 +193,8 @@
     </div>
   </div>
 
-  <div class="group dbl">
-    <table style="min-width:500px;width:100%">
+  <div class="group dbl" id="componentPriority">
+    <table style="width:100%">
       <thead>
         <tr class="main">
           <th colspan="2" class="sortable le" ng-click="sortPwr(cName)">Component</th>
@@ -221,7 +221,7 @@
           <td style="width:1em;" ng-click="togglePwr(c)">{{c.c.class}}{{c.c.rating}}</td>
           <td class="le shorten" ng-click="togglePwr(c)" ng-bind="cName(c)"></td>
           <td ng-click="togglePwr(c)"><u  ng-bind="c.type"></u></td>
-          <td><span ng-click="decPriority(c)">◀</span> {{c.priority + 1}} <span ng-click="incPriority(c)">▶</span></td>
+          <td><span ng-click="decPriority(c)">&#9668;</span> {{c.priority + 1}} <span ng-click="incPriority(c)">&#9658;</span></td>
           <td class="ri" style="width:3.25em;">{{fPwr(c.c.power)}}</td>
           <td class="ri" style="width:3em;"><u>{{f1Pct(c.c.power/ship.powerAvailable)}}</u></td>
           <td ng-if="!c.enabled" class="disabled" colspan="2">DISABLED</td>
@@ -230,7 +230,7 @@
         </tr>
       </tbody>
     </table>
-    <div style="min-width: 500px; margin-top: 1em" power-bands bands="priorityBands" available="ship.powerAvailable"></div>
+    <div style="margin-top: 1em" power-bands bands="priorityBands" available="ship.powerAvailable"></div>
   </div>
 
   <div class="group dbl">

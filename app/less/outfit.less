@@ -160,3 +160,72 @@ table.total {
     });
   }
 }
+
+#componentPriority {
+  .tablet({
+    text.primary, text.warning, text.primary-bg {
+      font-size: 0.8em;
+    }
+
+    table tbody tr td {
+      &:nth-child(4) {
+        span {
+          display:inline;
+          padding:0;
+          margin:0;
+          font-size: 2em;
+        }
+      }
+    }
+  });
+
+  .medPhone({
+    .axis {
+      font-size: 0.8em;
+
+      g.tick:nth-child(2n) text {
+        display: none;
+      }
+    } 
+
+    table thead tr.main th {
+      font-size: 0.8em;
+
+      &:nth-child(2) {
+        display: none;
+      }
+    }
+
+    table tbody tr td {
+      &:nth-child(1) {
+        padding: 0;
+        margin: 0;
+        max-width: 0 !important;
+        width: 0 !important;
+        color: transparent;
+      }
+      &:nth-child(3) {
+        display: none;
+      }
+      &:nth-child(2) {
+        font-size: 0.7em;
+      }
+    }
+  });
+
+  .smallPhone({
+    table tbody tr td {
+        padding: 0;
+
+      &:nth-child(6) {
+        padding: 0;
+        margin: 0;
+        max-width: 0 !important;
+        width: 0 !important;
+        color: transparent;
+
+        u { display: none; }
+      }
+    }
+  });
+}
