@@ -43,7 +43,8 @@ gulp.task('js-lint', function() {
       curly: true,
       predef: [ 'angular','DB','d3', 'ga', 'GAPI_KEY', 'document' , 'LZString' ]
     }))
-    .pipe(jshint.reporter('default'));
+    .pipe(jshint.reporter('default'))
+    .pipe(jshint.reporter("fail"));
 });
 
 gulp.task('json-lint', function() {
