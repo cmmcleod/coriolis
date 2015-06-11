@@ -43,7 +43,7 @@
 
   <div class="r menu">
     <div class="menu-header" ng-class="{selected: openedMenu=='settings'}" ng-click="openMenu($event,'settings')">
-      <svg class="icon xl warning"><use xlink:href="#cogs"></use></svg>
+      <svg class="icon xl warning"><use xlink:href="#cogs"></use></svg><span class="menu-item-label"> Settings</span>
     </div>
     <div class="menu-list no-wrap" ng-if="openedMenu=='settings'" ng-click="$event.stopPropagation();">
       <ul>
