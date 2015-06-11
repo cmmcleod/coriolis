@@ -1,6 +1,6 @@
-[![Tasks in Ready](https://badge.waffle.io/cmmcleod/coriolis.png?label=ready&title=Ready)](https://waffle.io/cmmcleod/coriolis) [![Tasks in Progress](https://badge.waffle.io/cmmcleod/coriolis.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/cmmcleod/coriolis)
+[ ![Codeship Status for cmmcleod/coriolis](https://codeship.com/projects/637858c0-f2a5-0132-7af7-5ed004d44c71/status?branch=master)](https://codeship.com/projects/85232) [![Tasks in Ready](https://badge.waffle.io/cmmcleod/coriolis.png?label=ready&title=Ready)](https://waffle.io/cmmcleod/coriolis) [![Tasks in Progress](https://badge.waffle.io/cmmcleod/coriolis.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/cmmcleod/coriolis)
 
-[ ![Codeship Status for cmmcleod/coriolis](https://codeship.com/projects/637858c0-f2a5-0132-7af7-5ed004d44c71/status?branch=master)](https://codeship.com/projects/85232)
+
 
 ## About
 
