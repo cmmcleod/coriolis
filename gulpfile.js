@@ -244,13 +244,19 @@ gulp.task('test', function () {
 });
 
 gulp.task('lint', ['js-lint', 'json-lint']);
+
 gulp.task('clean', function (done) { del(['build'], done); });
+
 gulp.task('build', function (done) { runSequence('clean', ['html2js','jsonToDB'], ['generateIndexHTML','bower','js','less','copy'], done); });
 gulp.task('build-cache', function (done) { runSequence('build', 'appcache', done); });
+gulp.task('build-prod', function (done) { runSequence('build', 'cache-bust', 'appcache', done); });
+
 gulp.task('dev', function (done) { runSequence('build-cache', 'serve','watch', done); });
+
 gulp.task('deploy', function (done) {
   cdnHostStr = '//cdn.' + process.env.CORIOLIS_HOST;
-  runSequence('lint', 'build','cache-bust', 'appcache', 'upload', done);
+  runSequence('build-prod', 'upload', done);
 });
+
 gulp.task('default', ['dev']);
 
