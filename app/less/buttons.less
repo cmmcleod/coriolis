@@ -6,7 +6,7 @@ button {
   }
   border: none;
   font-family: @fStandard;
-
+  vertical-align: middle;
   padding: 0.5em;
   cursor: pointer;
   background: none;
@@ -27,4 +27,12 @@ button {
       fill: @disabled;
     }
   }
+}
+
+.button-lbl {
+  margin-left: 0.5em;
+
+  .smallTablet({
+    display: none;
+  });
 }

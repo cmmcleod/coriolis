@@ -3,24 +3,42 @@
   display: inline-block;
   text-align: left;
   border-collapse: collapse;
+  text-transform: uppercase;
+  font-size: 0.8em;
 
   td {
     border: 1px solid @primary-disabled;
     padding: 0;
 
     h3 {
+      font-size: 1.1em;
       margin: 0 1em;
       line-height: 2em;
       display: inline-block;
     }
+
+    .tablet({
+      font-size: 0.9em;
+    });
   }
 
   input {
+    background: none;
+    line-height: 1.3em;
+    width: 20em;
     height: 100%;
-    width: 100%;
-    box-sizing: border-box;
+    display: inline-block;
+    padding: 0.3em;
+    vertical-align: middle;
     border: none;
-    padding-left: 1em;
+    border-right: 1px solid @primary-disabled;
+
+    .largePhone({
+      width: 100%;
+      height: 2em;
+      border-right: none;
+      border-bottom: 1px solid @primary-disabled;
+    });
   }
 
   .head {
@@ -39,10 +57,6 @@
   margin: 0;
   padding: 0;
 
-  .tablet({
-    font-size: 0.8em;
-  });
-
   .as-sortable-placeholder {
     background-color: @primary-bg;
   }
@@ -55,7 +69,7 @@
   cursor: pointer;
   background-color: @primary-bg;
   margin: 0;
-  padding: 0.5em 1em;
+  padding: 0.5em 0.5em;
   list-style: none;
   white-space: nowrap;
   color: @disabled;
@@ -80,9 +94,7 @@
 #build-select {
   clear: both;
   margin: 1em 0 0;
-  height: 10em;
-  white-space: nowrap;
-  overflow:hidden;
+  overflow-y:auto;
 
   h1 {
     display: inline-block;
@@ -91,21 +103,25 @@
   }
 
   table {
+    box-sizing: border-box;
     display: inline-block;
-    width: 20em;
+    width: 40%;
     vertical-align: top;
+
+    .smallTablet({
+      width: 100%;
+    });
 
     thead {
       display: block;
-      text-align: center;
     }
 
     tbody {
       display: block;
-      overflow-x: hidden;
       overflow-y: auto;
       z-index: 0;
       -webkit-overflow-scrolling: touch;
+      height: 8em;
       max-height: 8em;
     }
   }
@@ -117,7 +133,14 @@
 
 #comp-tbl {
   margin: 1em auto;
+  white-space: nowrap;
+  font-size: 0.8em;
+
+  td {
+    padding: 0 0.5em;
+  }
+
   .tablet({
-    font-size: 0.85em;
+    font-size: 0.7em;
   });
 }

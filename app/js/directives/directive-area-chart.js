@@ -11,12 +11,15 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
       var series = scope.series,
           config = scope.config,
           labels = config.labels,
-          margin = {top: 15, right: 15, bottom: 35, left: 50},
+          margin = {top: 15, right: 15, bottom: 35, left: 60},
           fmt = d3.format('.3r'),
           fmtLong = d3.format('.2f'),
+          func = series.func,
+          drag = d3.behavior.drag(),
+          dragging = false,
           // Define Axes
           xAxis = d3.svg.axis().outerTickSize(0).orient("bottom").tickFormat(d3.format('.2r')),
-          yAxis = d3.svg.axis().outerTickSize(0).orient("left").tickFormat(fmt),
+          yAxis = d3.svg.axis().ticks(6).outerTickSize(0).orient("left").tickFormat(fmt),
           x = d3.scale.linear(),
           y = d3.scale.linear();
 
@@ -46,7 +49,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
       var yTxt = vis.append("g").attr("class", "y axis")
         .append("text")
           .attr("transform", "rotate(-90)")
-          .attr("y", -40)
+          .attr("y", -50)
           .attr("dy", ".1em")
           .style("text-anchor", "middle")
           .text(labels.yAxis.title + ' (' + labels.yAxis.unit + ')');
@@ -64,8 +67,8 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
       tip.append("circle")
         .attr("class", "marker")
         .attr("r", 4);
-      tip.append("text").attr("class", 'label x').attr("y", "-0.1em");
-      tip.append("text").attr("class", 'label y').attr("y", '0.7em');
+      tip.append("text").attr("class", 'label x').attr("y", "-0.25em");
+      tip.append("text").attr("class", 'label y').attr("y", '0.85em');
 
       /**
        * Watch for changes in the series data (mass changes, etc)
@@ -75,11 +78,10 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
 
       function render() {
         var width = element[0].parentElement.offsetWidth,
-            height = width * 0.6,
+            height = width * 0.5,
             w = width - margin.left - margin.right,
             h = height - margin.top - margin.bottom,
-            data = [],
-            func = series.func;
+            data = [];
 
         if (series.xMax == series.xMin) {
           var yVal = func(series.xMin);
@@ -96,7 +98,7 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
         // Update Chart Size
         svg.attr("width", width).attr("height", height);
         // Update domain and scale for axes;
-        x.range([0, w]).domain([series.xMin, series.xMax]);
+        x.range([0, w]).domain([series.xMin, series.xMax]).clamp(true);
         xAxis.scale(x);
         xLbl.attr("transform", "translate(0," + h + ")");
         xTxt.attr("x", w/2);
@@ -114,17 +116,46 @@ angular.module('app').directive('areaChart', ['$window', function ($window) {
           .attr("class", "area")
           .attr('fill', 'url(#gradient)')
           .attr("d", area)
-          .on("mouseover", function() { tip.style("display", null); })
-          .on("mouseout", function() { tip.style("display", "none"); })
-          .on('mousemove', function() {
-            var xPos = d3.mouse(this)[0], x0 = x.invert(xPos), y0 = func(x0), flip = (xPos > w * 0.75);
-            tip.attr("transform", "translate(" + xPos + "," + y(y0) + ")");
-            tip.selectAll('rect').attr("x", flip? '-4.5em' : "0.5em").style("text-anchor", flip? 'end' : 'start');
-            tip.selectAll('text.label').attr("x", flip? "-1em" : "1em").style("text-anchor", flip? 'end' : 'start');
-            tip.select('text.label.x').text(fmtLong(x0) + ' ' + labels.xAxis.unit);
-            tip.select('text.label.y').text(fmtLong(y0) + ' ' + labels.yAxis.unit);
-          });
+          .on('mouseover', showTip)
+          .on('mouseout', hideTip)
+          .on('mousemove', moveTip)
+          .call(drag);
+
+        drag
+          .on('dragstart', function() {
+            dragging = true;
+            moveTip.call(this);
+            showTip();
+          })
+          .on("dragend", function() {
+            dragging = false;
+            hideTip();
+          })
+          .on('drag', moveTip);
       }
+
+      function showTip() {
+       tip.style("display", null);
+      }
+
+      function hideTip() {
+        if (!dragging) {
+          tip.style("display", "none");
+        }
+      }
+
+      function moveTip() {
+        var xPos = d3.mouse(this)[0], x0 = x.invert(xPos), y0 = func(x0), flip = (x0 / x.domain()[1] > 0.75);
+        tip.attr("transform", "translate(" + x(x0) + "," + y(y0) + ")");
+        tip.selectAll('rect').attr("x", flip? '-4.5em' : "0.5em").style("text-anchor", flip? 'end' : 'start');
+        tip.selectAll('text.label').attr("x", flip? "-1em" : "1em").style("text-anchor", flip? 'end' : 'start');
+        tip.select('text.label.x').text(fmtLong(x0) + ' ' + labels.xAxis.unit);
+        tip.select('text.label.y').text(fmtLong(y0) + ' ' + labels.yAxis.unit);
+      }
+
+      scope.$on('$destroy', function() {
+        angular.element($window).unbind('orientationchange resize render', render);
+      });
 
     }
   };

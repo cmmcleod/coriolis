@@ -2,6 +2,7 @@
   "Countermeasures": [
     {
       "id": "00",
+      "grp": "cm",
       "name": "Chaff Launcher",
       "class": 0,
       "rating": "I",
@@ -16,6 +17,7 @@
     },
     {
       "id": "01",
+      "grp": "cm",
       "name": "Electronic Countermeasure",
       "class": 0,
       "rating": "F",
@@ -29,6 +31,7 @@
     },
     {
       "id": "02",
+      "grp": "cm",
       "name": "Heat Sink Launcher",
       "class": 0,
       "rating": "I",
@@ -43,6 +46,7 @@
     },
     {
       "id": "03",
+      "grp": "cm",
       "name": "Point Defence",
       "class": 0,
       "rating": "I",

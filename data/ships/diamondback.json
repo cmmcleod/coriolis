@@ -5,15 +5,16 @@
       "name": "Diamondback Scout",
       "manufacturer": "Lakon",
       "class": 1,
-      "cost": 564300,
+      "cost": 461312,
       "speed": 283,
       "boost": 384,
-      "agility": 3,
+      "agility": 8,
       "shields": 93,
       "armour": 216,
       "fuelcost": 50,
       "mass": 170
     },
+    "retailCost": 564300,
     "slots": {
       "common": [
         4,

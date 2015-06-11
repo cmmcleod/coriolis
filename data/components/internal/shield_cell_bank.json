@@ -2,7 +2,7 @@
   "Shield Cell Banks": [
     {
       "id": "65",
-      "grp": "sb",
+      "grp": "scb",
       "class": 8,
       "rating": "E",
       "cost": 697584,
@@ -14,7 +14,7 @@
     },
     {
       "id": "64",
-      "grp": "sb",
+      "grp": "scb",
       "class": 8,
       "rating": "D",
       "cost": 1743961,
@@ -26,7 +26,7 @@
     },
     {
       "id": "63",
-      "grp": "sb",
+      "grp": "scb",
       "class": 8,
       "rating": "C",
       "cost": 4359903,
@@ -38,7 +38,7 @@
     },
     {
       "id": "62",
-      "grp": "sb",
+      "grp": "scb",
       "class": 8,
       "rating": "B",
       "cost": 10899756,
@@ -50,7 +50,7 @@
     },
     {
       "id": "61",
-      "grp": "sb",
+      "grp": "scb",
       "class": 8,
       "rating": "A",
       "cost": 27249391,
@@ -62,7 +62,7 @@
     },
     {
       "id": "60",
-      "grp": "sb",
+      "grp": "scb",
       "class": 7,
       "rating": "E",
       "cost": 249137,
@@ -74,7 +74,7 @@
     },
     {
       "id": "5v",
-      "grp": "sb",
+      "grp": "scb",
       "class": 7,
       "rating": "D",
       "cost": 622843,
@@ -86,7 +86,7 @@
     },
     {
       "id": "5u",
-      "grp": "sb",
+      "grp": "scb",
       "class": 7,
       "rating": "C",
       "cost": 1557108,
@@ -98,7 +98,7 @@
     },
     {
       "id": "5t",
-      "grp": "sb",
+      "grp": "scb",
       "class": 7,
       "rating": "B",
       "cost": 3892770,
@@ -110,7 +110,7 @@
     },
     {
       "id": "5s",
-      "grp": "sb",
+      "grp": "scb",
       "class": 7,
       "rating": "A",
       "cost": 9731925,
@@ -122,7 +122,7 @@
     },
     {
       "id": "5r",
-      "grp": "sb",
+      "grp": "scb",
       "class": 6,
       "rating": "E",
       "cost": 88978,
@@ -134,7 +134,7 @@
     },
     {
       "id": "5q",
-      "grp": "sb",
+      "grp": "scb",
       "class": 6,
       "rating": "D",
       "cost": 222444,
@@ -146,7 +146,7 @@
     },
     {
       "id": "5p",
-      "grp": "sb",
+      "grp": "scb",
       "class": 6,
       "rating": "C",
       "cost": 556110,
@@ -158,7 +158,7 @@
     },
     {
       "id": "5o",
-      "grp": "sb",
+      "grp": "scb",
       "class": 6,
       "rating": "B",
       "cost": 1390275,
@@ -170,7 +170,7 @@
     },
     {
       "id": "5n",
-      "grp": "sb",
+      "grp": "scb",
       "class": 6,
       "rating": "A",
       "cost": 3475688,
@@ -182,7 +182,7 @@
     },
     {
       "id": "5m",
-      "grp": "sb",
+      "grp": "scb",
       "class": 5,
       "rating": "E",
       "cost": 31778,
@@ -194,7 +194,7 @@
     },
     {
       "id": "5l",
-      "grp": "sb",
+      "grp": "scb",
       "class": 5,
       "rating": "D",
       "cost": 79444,
@@ -206,7 +206,7 @@
     },
     {
       "id": "5k",
-      "grp": "sb",
+      "grp": "scb",
       "class": 5,
       "rating": "C",
       "cost": 198611,
@@ -218,7 +218,7 @@
     },
     {
       "id": "5j",
-      "grp": "sb",
+      "grp": "scb",
       "class": 5,
       "rating": "B",
       "cost": 496527,
@@ -230,7 +230,7 @@
     },
     {
       "id": "5i",
-      "grp": "sb",
+      "grp": "scb",
       "class": 5,
       "rating": "A",
       "cost": 1241317,
@@ -242,7 +242,7 @@
     },
     {
       "id": "5h",
-      "grp": "sb",
+      "grp": "scb",
       "class": 4,
       "rating": "E",
       "cost": 11349,
@@ -254,7 +254,7 @@
     },
     {
       "id": "5g",
-      "grp": "sb",
+      "grp": "scb",
       "class": 4,
       "rating": "D",
       "cost": 28373,
@@ -266,7 +266,7 @@
     },
     {
       "id": "5f",
-      "grp": "sb",
+      "grp": "scb",
       "class": 4,
       "rating": "C",
       "cost": 70932,
@@ -278,7 +278,7 @@
     },
     {
       "id": "5e",
-      "grp": "sb",
+      "grp": "scb",
       "class": 4,
       "rating": "B",
       "cost": 177331,
@@ -290,7 +290,7 @@
     },
     {
       "id": "5d",
-      "grp": "sb",
+      "grp": "scb",
       "class": 4,
       "rating": "A",
       "cost": 443328,
@@ -302,7 +302,7 @@
     },
     {
       "id": "5c",
-      "grp": "sb",
+      "grp": "scb",
       "class": 3,
       "rating": "E",
       "cost": 4053,
@@ -314,7 +314,7 @@
     },
     {
       "id": "5b",
-      "grp": "sb",
+      "grp": "scb",
       "class": 3,
       "rating": "D",
       "cost": 10133,
@@ -326,7 +326,7 @@
     },
     {
       "id": "5a",
-      "grp": "sb",
+      "grp": "scb",
       "class": 3,
       "rating": "C",
       "cost": 25333,
@@ -338,7 +338,7 @@
     },
     {
       "id": "59",
-      "grp": "sb",
+      "grp": "scb",
       "class": 3,
       "rating": "B",
       "cost": 63333,
@@ -350,7 +350,7 @@
     },
     {
       "id": "58",
-      "grp": "sb",
+      "grp": "scb",
       "class": 3,
       "rating": "A",
       "cost": 158331,
@@ -362,7 +362,7 @@
     },
     {
       "id": "57",
-      "grp": "sb",
+      "grp": "scb",
       "class": 2,
       "rating": "E",
       "cost": 1448,
@@ -374,7 +374,7 @@
     },
     {
       "id": "56",
-      "grp": "sb",
+      "grp": "scb",
       "class": 2,
       "rating": "D",
       "cost": 3619,
@@ -386,7 +386,7 @@
     },
     {
       "id": "55",
-      "grp": "sb",
+      "grp": "scb",
       "class": 2,
       "rating": "C",
       "cost": 9048,
@@ -398,7 +398,7 @@
     },
     {
       "id": "54",
-      "grp": "sb",
+      "grp": "scb",
       "class": 2,
       "rating": "B",
       "cost": 22619,
@@ -410,7 +410,7 @@
     },
     {
       "id": "53",
-      "grp": "sb",
+      "grp": "scb",
       "class": 2,
       "rating": "A",
       "cost": 56547,
@@ -422,7 +422,7 @@
     },
     {
       "id": "52",
-      "grp": "sb",
+      "grp": "scb",
       "class": 1,
       "rating": "E",
       "cost": 517,
@@ -434,7 +434,7 @@
     },
     {
       "id": "51",
-      "grp": "sb",
+      "grp": "scb",
       "class": 1,
       "rating": "D",
       "cost": 1293,
@@ -446,7 +446,7 @@
     },
     {
       "id": "50",
-      "grp": "sb",
+      "grp": "scb",
       "class": 1,
       "rating": "C",
       "cost": 3231,
@@ -458,7 +458,7 @@
     },
     {
       "id": "4v",
-      "grp": "sb",
+      "grp": "scb",
       "class": 1,
       "rating": "B",
       "cost": 8078,
@@ -470,7 +470,7 @@
     },
     {
       "id": "4u",
-      "grp": "sb",
+      "grp": "scb",
       "class": 1,
       "rating": "A",
       "cost": 20195,

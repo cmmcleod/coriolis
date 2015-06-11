@@ -5,7 +5,7 @@
       "name": "Imperial Courier",
       "manufacturer": "Gutamaya",
       "class": 1,
-      "cost": 2479400,
+      "cost": 2481521,
       "speed": 277,
       "boost": 380,
       "agility": 6,
@@ -14,6 +14,7 @@
       "fuelcost": 50,
       "mass": 35
     },
+    "retailCost": 2542900,
     "slots": {
       "common": [
         4,
@@ -62,11 +63,11 @@
         0
       ],
       "internal": [
-        "02",
-        "44",
         "01",
-        0,
-        0,
+        "01",
+        "3v",
+        "00",
+        "00",
         "2h"
       ]
     }

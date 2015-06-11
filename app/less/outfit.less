@@ -1,112 +1,161 @@
 
 #outfit {
-  font-size: 1.1em;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   .user-select-none();
+  font-size: 0.9em;
 
   .tablet({
+    font-size: 0.8em;
     width: 100%;
-    font-size: 1.2em;
-    max-width: 1600px;
   });
 
-  &>.list {
-    .tablet({
-      width: 49%;
-    });
+  .smallTablet({
+    font-size: 1em;
+  });
 
-    .largePhone({
-      width: 100%;
-    });
+  table {
+    white-space: nowrap;
   }
 }
 
 #overview {
-  .tablet({
-      font-size: 0.9em;
-  });
-
   h1 {
     margin: 0;
     float: left;
   }
   overflow: hidden;
+  margin: 0.5em;
 }
 
 #summary {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
   width: 100%;
-  margin: 1em 0 1em 0;
-  padding-bottom: 1em;
-  
+  padding: 0.5em 0.2em;
+  font-size: 0.9em;
+
   #summaryTable {
     .user-select-none();
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.8em;
-
-    tbody td {
-        padding: 0 0.5em;
-    }
   }
 }
 
 #build {
   float: right;
   line-height: 2em;
-  font-size: 0.8em;
+  text-align: left;
 
   input {
     background: none;
-    line-height: 1.5em;
-    font-size: 0.8em;
+    line-height: 1.3em;
+    width: 20em;
+    font-size: 0.9em;
     box-sizing: border-box;
     display: inline-block;
-    padding: 0.5em;
+    padding: 0.3em;
+    vertical-align: middle;
 
     &:focus {
       border: 1px solid @primary;
       color: @primary;
     }
-  }
-  button {
-    .smallPhone({
-      padding: 0.25em;
+
+    .largePhone({
+      width: 70%;
+    });
+
+    .medPhone({
+      width: 100%;
     });
   }
+
+  .largePhone({
+    float: left;
+    clear: left;
+    width: 100%;
+  });
 }
 
-
-#hardpoints, #utility, #standard {
-  padding-right: 0.3em;
-  .slot {
-    clear: left;
+.sortable {
+  &:hover {
+    color: @primary;
   }
 }
 
-#internal {
- .slot {
-    clear: left;
+.shorten {
+  overflow: hidden;
+  max-width: 8em;
+  text-overflow: ellipsis;
+}
+
+table.total {
+  width: 100%;
+
+  &, td {
+    border-collapse: collapse;
+    border: 1px solid @primary-disabled;
+  }
+  .lbl {
+    text-transform: uppercase;
+    color: @primary-bg;
+    background-color: @primary-disabled;
   }
 }
 
-.outfit-button-label {
-  margin-left: 0.5em;
+.group {
+  width: 25%;
+  padding: 0.5em 0.2em;
+  vertical-align: top;
+  box-sizing: border-box;
+  display: inline-block;
+  .user-select-none();
+  cursor: default;
+
+  [ng-click] {
+    cursor: pointer;
+  }
+
+
+  h1 {
+    font-family: @fStandard;
+    color: @bgBlack;
+    background-color: @primary-disabled;
+    text-transform: uppercase;
+    margin: 0;
+    padding-top: 2px;
+    font-size: 1em;
+    line-height: 1.3em;
+    font-weight: normal;
+  }
+
+  tbody tr:hover {
+    background-color: @warning-bg;
+  }
+
 
   .smallTablet({
-    display: none;
+    width: 50%;
   });
-}
 
-#jumpRange {
-  width: 50%;
-  padding: 0 0.5em;
-
-  .tablet({
-    float: right;
-    clear: both;
-    display: block;
-    width: 100% !important;
+  .largePhone({
+    width: 100%;
   });
+
+  &.dbl {
+    width: 50%;
+
+    .tablet({
+      td {
+        line-height: 2em;
+      }
+    });
+
+    .smallTablet({
+      overflow-x: auto;
+      width: 100% !important;
+    });
+  }
 }

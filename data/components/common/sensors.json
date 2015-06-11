@@ -1,5 +1,6 @@
 {
   "8E": {
+    "grp": "s",
     "class": 8,
     "rating": "E",
     "cost": 697584,
@@ -8,6 +9,7 @@
     "range": 5
   },
   "8D": {
+    "grp": "s",
     "class": 8,
     "rating": "D",
     "cost": 1743961,
@@ -16,6 +18,7 @@
     "range": 6
   },
   "8C": {
+    "grp": "s",
     "class": 8,
     "rating": "C",
     "cost": 4359903,
@@ -24,6 +27,7 @@
     "range": 6
   },
   "8B": {
+    "grp": "s",
     "class": 8,
     "rating": "B",
     "cost": 10899756,
@@ -32,6 +36,7 @@
     "range": 7
   },
   "8A": {
+    "grp": "s",
     "class": 8,
     "rating": "A",
     "cost": 27249391,
@@ -40,6 +45,7 @@
     "range": 8
   },
   "6E": {
+    "grp": "s",
     "class": 6,
     "rating": "E",
     "cost": 88978,
@@ -48,6 +54,7 @@
     "range": 5
   },
   "6D": {
+    "grp": "s",
     "class": 6,
     "rating": "D",
     "cost": 222444,
@@ -56,6 +63,7 @@
     "range": 5
   },
   "6C": {
+    "grp": "s",
     "class": 6,
     "rating": "C",
     "cost": 556110,
@@ -64,6 +72,7 @@
     "range": 6
   },
   "6B": {
+    "grp": "s",
     "class": 6,
     "rating": "B",
     "cost": 1390275,
@@ -72,6 +81,7 @@
     "range": 7
   },
   "6A": {
+    "grp": "s",
     "class": 6,
     "rating": "A",
     "cost": 3475688,
@@ -80,6 +90,7 @@
     "range": 7
   },
   "5E": {
+    "grp": "s",
     "class": 5,
     "rating": "E",
     "cost": 31778,
@@ -88,6 +99,7 @@
     "range": 4.5
   },
   "5D": {
+    "grp": "s",
     "class": 5,
     "rating": "D",
     "cost": 79444,
@@ -96,6 +108,7 @@
     "range": 5
   },
   "5C": {
+    "grp": "s",
     "class": 5,
     "rating": "C",
     "cost": 198611,
@@ -104,6 +117,7 @@
     "range": 5.5
   },
   "5B": {
+    "grp": "s",
     "class": 5,
     "rating": "B",
     "cost": 496527,
@@ -112,6 +126,7 @@
     "range": 6
   },
   "5A": {
+    "grp": "s",
     "class": 5,
     "rating": "A",
     "cost": 1241317,
@@ -120,6 +135,7 @@
     "range": 6.5
   },
   "4E": {
+    "grp": "s",
     "class": 4,
     "rating": "E",
     "cost": 11349,
@@ -128,6 +144,7 @@
     "range": 4
   },
   "4D": {
+    "grp": "s",
     "class": 4,
     "rating": "D",
     "cost": 28373,
@@ -136,6 +153,7 @@
     "range": 5
   },
   "4C": {
+    "grp": "s",
     "class": 4,
     "rating": "C",
     "cost": 70932,
@@ -144,6 +162,7 @@
     "range": 6
   },
   "4B": {
+    "grp": "s",
     "class": 4,
     "rating": "B",
     "cost": 177331,
@@ -152,6 +171,7 @@
     "range": 6
   },
   "4A": {
+    "grp": "s",
     "class": 4,
     "rating": "A",
     "cost": 443328,
@@ -160,6 +180,7 @@
     "range": 7
   },
   "3E": {
+    "grp": "s",
     "class": 3,
     "rating": "E",
     "cost": 4053,
@@ -168,6 +189,7 @@
     "range": 4
   },
   "3D": {
+    "grp": "s",
     "class": 3,
     "rating": "D",
     "cost": 10133,
@@ -176,6 +198,7 @@
     "range": 4.5
   },
   "3C": {
+    "grp": "s",
     "class": 3,
     "rating": "C",
     "cost": 25333,
@@ -184,6 +207,7 @@
     "range": 5
   },
   "3B": {
+    "grp": "s",
     "class": 3,
     "rating": "B",
     "cost": 63333,
@@ -192,6 +216,7 @@
     "range": 5.5
   },
   "3A": {
+    "grp": "s",
     "class": 3,
     "rating": "A",
     "cost": 158331,
@@ -200,6 +225,7 @@
     "range": 6
   },
   "2E": {
+    "grp": "s",
     "class": 2,
     "rating": "E",
     "cost": 1448,
@@ -208,6 +234,7 @@
     "range": 4
   },
   "2D": {
+    "grp": "s",
     "class": 2,
     "rating": "D",
     "cost": 3619,
@@ -216,6 +243,7 @@
     "range": 4.5
   },
   "2C": {
+    "grp": "s",
     "class": 2,
     "rating": "C",
     "cost": 9048,
@@ -224,6 +252,7 @@
     "range": 5
   },
   "2B": {
+    "grp": "s",
     "class": 2,
     "rating": "B",
     "cost": 22619,
@@ -232,6 +261,7 @@
     "range": 5.5
   },
   "2A": {
+    "grp": "s",
     "class": 2,
     "rating": "A",
     "cost": 56547,
@@ -240,6 +270,7 @@
     "range": 6
   },
   "1E": {
+    "grp": "s",
     "class": 1,
     "rating": "E",
     "cost": 517,
@@ -248,6 +279,7 @@
     "range": 4
   },
   "1D": {
+    "grp": "s",
     "class": 1,
     "rating": "D",
     "cost": 1293,
@@ -256,6 +288,7 @@
     "range": 4.5
   },
   "1C": {
+    "grp": "s",
     "class": 1,
     "rating": "C",
     "cost": 3231,
@@ -264,6 +297,7 @@
     "range": 5
   },
   "1B": {
+    "grp": "s",
     "class": 1,
     "rating": "B",
     "cost": 8078,
@@ -272,6 +306,7 @@
     "range": 5.5
   },
   "1A": {
+    "grp": "s",
     "class": 1,
     "rating": "A",
     "cost": 20195,

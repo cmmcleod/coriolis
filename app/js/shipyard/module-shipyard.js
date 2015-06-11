@@ -19,37 +19,51 @@ angular.module('shipyard', ['ngLodash'])
     'Sensors',
     'Fuel Tank'
   ])
-  .value('internalGroupMap', {
+  // Map to lookup group labels/names for component grp
+  .value('GroupMap', {
+    // Common
+    pp:'Power Plant',
+    t:'Thrusters',
+    fsd:'Frame Shift Drive',
+    ls:'Life Support',
+    pd:'Power Distributor',
+    s:'Sensors',
+    ft:'Fuel Tank',
+
+    // Internal
     fs:'Fuel Scoop',
     sc:'Scanners',
-    am:'Auto Field-Maintenance Unit',
+    am:'Auto Field-Maint. Unit',
     cr:'Cargo Racks',
     fi:'FSD Interdictor',
     hb:'Hatch Breaker Limpet Ctrl',
     hr:'Hull Reinforcement Package',
     rf:'Refinery',
-    sb:'Shield Cell Bank',
+    scb:'Shield Cell Bank',
     sg:'Shield Generator',
-    dc:'Docking Computer'
-  })
-  .value('hardpointsGroupMap', {
-    'bl': "Beam Laser",
-    'ul': "Burst Laser",
-    'c': "Cannon",
-    'cs': "Cargo Scanner",
-    'cm': "Countermeasure",
-    'fc': "Fragment Cannon",
-    'fs': "Frame Shift Wake Scanner",
-    'kw': "Kill Warrant Scanner",
-    'nl': "Mine Launcher",
-    'ml': "Mining Laser",
-    'mr': "Missile Rack",
-    'pa': "Plasma Accelerator",
-    'mc': "Multi-cannon",
-    'pl': "Pulse Laser",
-    'rg': "Rail Gun",
-    'sb': "Shield Booster",
-    'tp': "Torpedo Pylon"
+    dc:'Docking Computer',
+    fx:'Fuel Transfer Limpet Ctrl',
+    pc:'Prospector Limpet Ctrl',
+    cc:'Collector Limpet Ctrl',
+
+    // Hard Points
+    bl: "Beam Laser",
+    ul: "Burst Laser",
+    c: "Cannon",
+    cs: "Cargo Scanner",
+    cm: "Countermeasure",
+    fc: "Fragment Cannon",
+    ws: "Frame Shift Wake Scanner",
+    kw: "Kill Warrant Scanner",
+    nl: "Mine Launcher",
+    ml: "Mining Laser",
+    mr: "Missile Rack",
+    pa: "Plasma Accelerator",
+    mc: "Multi-cannon",
+    pl: "Pulse Laser",
+    rg: "Rail Gun",
+    sb: "Shield Booster",
+    tp: "Torpedo Pylon"
   })
   .value('shipPurpose', {
     mp: 'Multi Purpose',
@@ -89,7 +103,7 @@ angular.module('shipyard', ['ngLodash'])
       title: 'Speed',
       props: ['speed', 'boost'],
       lbls: ['Thrusters', 'Boost'],
-      unit: 'M/s',
+      unit: 'm/s',
       fmt: 'fRound'
     },
     {                   // 2
@@ -101,13 +115,13 @@ angular.module('shipyard', ['ngLodash'])
     {                   // 3
       title: 'Shields',
       props: ['shieldStrength'],
-      unit: 'Mj',
+      unit: 'MJ',
       fmt: 'fRound'
     },
     {                   // 4
       title: 'Jump Range',
-      props: ['unladenJumpRange', 'ladenJumpRange'],
-      lbls: ['Unladen', 'Laden'],
+      props: ['unladenRange', 'fullTankRange', 'ladenRange'],
+      lbls: ['Max', 'Full Tank', 'Laden'],
       unit: 'LY',
       fmt: 'fRound'
     },
@@ -142,7 +156,14 @@ angular.module('shipyard', ['ngLodash'])
       props: ['totalCost'],
       unit: 'CR',
       fmt: 'fCrd'
-    }
+    },
+    {                   // 10
+      title: 'Total Range',
+      props: ['unladenTotalRange', 'ladenTotalRange'],
+      lbls: ['Unladen', 'Laden'],
+      unit: 'LY',
+      fmt: 'fRound'
+    },
   ])
   /**
    * Calculate the maximum single jump range based on mass and a specific FSD

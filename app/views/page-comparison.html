@@ -4,37 +4,45 @@
     <td class="head">Comparison</td>
     <td>
       <input ng-model="name" ng-change="nameChange()" placeholder="Enter Comparison Name"  maxlength="50" />
-    </td>
-    <td>
-      <button ng-click="save()" ng-disabled="!name || name == 'all' || saved"><svg class="icon lg "><use xlink:href="#floppy-disk"></use></svg> Save</button>
+      <button ng-click="save()" ng-disabled="!name || name == 'all' || saved">
+        <svg class="icon lg "><use xlink:href="#floppy-disk"></use></svg><span class="button-lbl"> Save</span>
+      </button>
       <button ng-click="delete()" ng-disabled="name == 'all' || !saved"><svg class="icon lg warning "><use xlink:href="#bin"></use></svg></button>
-      <button ng-click="selectBuilds(true, $event)"><svg class="icon lg "><use xlink:href="#rocket"></use></svg> Builds</button>
-      <button class="r" ng-click="permalink($event)" ng-disabled="builds.length == 0"><svg class="icon lg "><use xlink:href="#link"></use></svg> Permalink</button>
-      <button class="r" ng-click="embed($event)" ng-disabled="builds.length == 0"><svg class="icon lg "><use xlink:href="#embed"></use></svg> Forum</button>
+      <button ng-click="selectBuilds(true, $event)">
+        <svg class="icon lg "><use xlink:href="#rocket"></use></svg><span class="button-lbl"> Builds</span>
+      </button>
+      <button class="r" ng-click="permalink($event)" ng-disabled="builds.length == 0">
+        <svg class="icon lg "><use xlink:href="#link"></use></svg><span class="button-lbl"> Permalink</span>
+      </button>
+      <button class="r" ng-click="embed($event)" ng-disabled="builds.length == 0">
+        <svg class="icon lg "><use xlink:href="#embed"></use></svg><span class="button-lbl"> Forum</span>
+        </button>
     </td>
   </tr>
   <tr ng-show="!compareMode">
     <td class="head">Comparison</td>
-    <td colspan="2">
+    <td>
       <h3 ng-bind="name"></h3>
       <button class="r" ui-sref="modal.import({obj:importObj})"><svg class="icon lg "><use xlink:href="#download"></use></svg> Import Builds</button>
     </td>
   </tr>
   <tr>
     <td class="head">Compare</td>
-    <td colspan="2">
+    <td>
       <ul id="facet-container" as-sortable="facetSortOpts" ng-model="facets" class="sortable" update="tblUpdate">
         <li ng-repeat="(i,f) in facets" as-sortable-item class="facet" ng-class="{active: f.active}" ng-click="toggleFacet(i)">
-          <div as-sortable-item-handle><span ng-bind="f.title"></span></div>
+          <div as-sortable-item-handle>↔ <span ng-bind="f.title"></span></div>
         </li>
       </ul>
     </td>
     </tr>
 </table>
 
-<table id="comp-tbl" comparison-table ng-click="handleClick($event)"></table>
+<div class="scroll-x">
+  <table id="comp-tbl" comparison-table ng-click="handleClick($event)"></table>
+</div>
 
-<div ng-repeat="f in facets | filter:{active:true}" ng-if="builds.length > 0" class="chart" bar-chart width="480" facet="f" data="builds">
+<div ng-repeat="f in facets | filter:{active:true}" ng-if="builds.length > 0" class="chart" bar-chart facet="f" data="builds">
   <h3 ng-click="sort(f.props[0])" >{{f.title}}</h3>
 </div>
 
@@ -52,14 +60,15 @@
       </table>
       <h1>⇆</h1>
       <table>
+        <thead><tr><th colspan="2">Added</th></tr></thead>
         <tbody>
-          <thead><tr><th colspan="2">Added</th></tr></thead>
           <tr ng-repeat="b in builds | orderBy:'name'" ng-click="removeBuild(b.id, b.buildName)">
             <td class="tl" ng-bind="b.name"></td><td class="tl" ng-bind="b.buildName"></td>
           </tr>
         </tbody>
       </table>
     </div>
+    <br>
     <button class="r dismiss" ng-click="selectBuilds(false, $event)">Done</button>
   </div>
 </div>

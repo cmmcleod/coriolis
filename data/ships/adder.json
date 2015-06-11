@@ -14,6 +14,7 @@
       "fuelcost": 50,
       "mass": 35
     },
+    "retailCost": 87808,
     "slots": {
       "common": [
         3,

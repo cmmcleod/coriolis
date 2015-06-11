@@ -9,7 +9,7 @@
     <div class="menu-header" ng-class="{selected: openedMenu=='s'}" ng-click="openMenu($event,'s')">
       <svg class="icon warning"><use xlink:href="#rocket"></use></svg><span class="menu-item-label"> Ships</span>
 </div>
-    <div class="menu-list no-wrap" ng-if="openedMenu=='s'">
+    <div class="menu-list dbl no-wrap" ng-if="openedMenu=='s'">
       <a class="block" ng-repeat="(shipId,ship) in ships" ui-sref-active="active" ui-sref="outfit({shipId:shipId, code:null, bn:null})">{{::ship.properties.name}}</a>
     </div>
   </div>
