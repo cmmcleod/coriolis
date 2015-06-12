@@ -1,25 +1,28 @@
-var gulp            = require('gulp'),
-    less            = require('gulp-less'),
-    jshint          = require('gulp-jshint'),
-    minifyCSS       = require('gulp-minify-css'),
+// Build / Built-in dependencies
+var gulp  = require('gulp'),
+    exec  = require('child_process').exec,
+    pkg   = require('./package.json');
+
+// Package.json / Gulp Dependencies
+var appCache        = require("gulp-manifest"),
     concat          = require('gulp-concat'),
-    uglify          = require('gulp-uglify'),
-    sourcemaps      = require('gulp-sourcemaps'),
-    templateCache   = require('gulp-angular-templatecache'),
-    htmlmin         = require('gulp-htmlmin'),
-    template        = require('gulp-template'),
-    mainBowerFiles  = require('main-bower-files'),
     del             = require('del'),
-    runSequence     = require('run-sequence'),
-    exec            = require('child_process').exec,
-    RevAll          = require('gulp-rev-all'),
-    gutil           = require( 'gulp-util' ),
-    svgstore        = require( 'gulp-svgstore' ),
-    svgmin          = require( 'gulp-svgmin' ),
-    jsonlint        = require("gulp-jsonlint"),
-    appCache        = require("gulp-manifest"),
+    eslint          = require('gulp-eslint');
+    gutil           = require('gulp-util'),
+    htmlmin         = require('gulp-htmlmin'),
     jasmine         = require('gulp-jasmine'),
-    pkg             = require('./package.json');
+    jsonlint        = require("gulp-jsonlint"),
+    less            = require('gulp-less'),
+    mainBowerFiles  = require('main-bower-files'),
+    minifyCSS       = require('gulp-minify-css'),
+    revAll          = require('gulp-rev-all'),
+    runSequence     = require('run-sequence'),
+    sourcemaps      = require('gulp-sourcemaps'),
+    svgstore        = require('gulp-svgstore'),
+    svgmin          = require('gulp-svgmin'),
+    template        = require('gulp-template'),
+    templateCache   = require('gulp-angular-templatecache'),
+    uglify          = require('gulp-uglify');
 
 var cdnHostStr = '';
 
@@ -36,21 +39,31 @@ gulp.task('less', function() {
 });
 
 gulp.task('js-lint', function() {
-  return gulp.src('app/js/**/*.js')
-    .pipe(jshint({
-      undef: true,
-      unused: true,
-      curly: true,
-      predef: [ 'angular','DB','d3', 'ga', 'GAPI_KEY', 'document' , 'LZString' ]
+  return gulp.src(['app/js/**/*.js', '!app/js/template_cache.js', '!app/js/db.js'])
+    .pipe(eslint({
+      globals: { angular:1, DB:1, d3:1, ga:1, GAPI_KEY:1, LZString: 1 },
+      rules: {
+        quotes: [2, 'single'],
+        strict: 'global',
+        eqeqeq: 'smart',
+        'space-after-keywords': [2, 'always'],
+        'no-use-before-define': 'no-func',
+        'space-before-function-paren': [2, 'never'],
+        'space-before-blocks': [2, 'always'],
+        'object-curly-spacing': [2, "always"],
+        'brace-style': [2, '1tbs', { allowSingleLine: true }]
+      },
+      envs: ['browser']
     }))
-    .pipe(jshint.reporter('default'))
-    .pipe(jshint.reporter("fail"));
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
 });
 
 gulp.task('json-lint', function() {
   return gulp.src('data/**/*.json')
     .pipe(jsonlint())
-    .pipe(jsonlint.reporter());
+    .pipe(jsonlint.reporter())
+    .pipe(jsonlint.failAfterError());
 });
 
 gulp.task('bower', function(){
@@ -188,11 +201,11 @@ gulp.task('watch', function() {
 });
 
 gulp.task('cache-bust', function(done) {
-  var revAll = new RevAll({ prefix: cdnHostStr, dontRenameFile: ['.html','db.json'] });
+  var rev_all = new revAll({ prefix: cdnHostStr, dontRenameFile: ['.html','db.json'] });
   var stream = gulp.src('build/**')
-    .pipe(revAll.revision())
+    .pipe(rev_all.revision())
     .pipe(gulp.dest('build'))
-    .pipe(revAll.manifestFile())
+    .pipe(rev_all.manifestFile())
     .pipe(gulp.dest('build'));
 
   stream.on('end', function() {
