@@ -1,4 +1,10 @@
-angular.module('shipyard').factory('ComponentSet', ['lodash', function (_) {
+angular.module('shipyard').factory('ComponentSet', ['lodash', function(_) {
+
+  function filter(data, maxClass, minClass, mass) {
+    return _.filter(data, function(c) {
+      return c.class <= maxClass && c.class >= minClass && (c.maxmass === undefined || mass <= c.maxmass);
+    });
+  }
 
   function ComponentSet(components, mass, maxCommonArr, maxInternal, maxHardPoint) {
     this.mass = mass;
@@ -8,7 +14,7 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function (_) {
     this.hpClass = {};
     this.intClass = {};
 
-    for (var i = 0; i < components.common.length; i ++) {
+    for (var i = 0; i < components.common.length; i++) {
       var max = maxCommonArr[i];
       switch (i) {
         // Slots where component class must be equal to slot class
@@ -22,21 +28,21 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function (_) {
       }
     }
 
-    for(var h in components.hardpoints) {
+    for (var h in components.hardpoints) {
       this.hardpoints[h] = filter(components.hardpoints[h], maxHardPoint, 0, this.mass);
     }
 
-    for(var g in components.internal) {
+    for (var g in components.internal) {
       this.internal[g] = filter(components.internal[g], maxInternal, 0, this.mass);
     }
   }
 
   ComponentSet.prototype.getHps = function(c) {
-    if(!this.hpClass[c]) {
-      var o = this.hpClass[c] =  {};
-      for(var key in this.hardpoints) {
-        var data = filter(this.hardpoints[key], c, c? 1 : 0, this.mass);
-        if(data.length) {  // If group is not empty
+    if (!this.hpClass[c]) {
+      var o = this.hpClass[c] = {};
+      for (var key in this.hardpoints) {
+        var data = filter(this.hardpoints[key], c, c ? 1 : 0, this.mass);
+        if (data.length) {  // If group is not empty
           o[key] = data;
         }
       }
@@ -45,23 +51,17 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function (_) {
   };
 
   ComponentSet.prototype.getInts = function(c) {
-    if(!this.intClass[c]) {
-      var o = this.intClass[c] =  {};
-      for(var key in this.internal) {
+    if (!this.intClass[c]) {
+      var o = this.intClass[c] = {};
+      for (var key in this.internal) {
         var data = filter(this.internal[key], c, 0, this.mass);
-        if(data.length) {  // If group is not empty
+        if (data.length) {  // If group is not empty
           o[key] = data;
         }
       }
     }
     return this.intClass[c];
   };
-
-  function filter (data, maxClass, minClass, mass) {
-    return _.filter(data, function (c) {
-      return c.class <= maxClass && c.class >= minClass && (c.maxmass === undefined || mass <= c.maxmass);
-    });
-  }
 
   return ComponentSet;
 

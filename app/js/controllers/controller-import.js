@@ -1,4 +1,4 @@
-angular.module('app').controller('ImportController', ['$scope', '$stateParams', 'ShipsDB', 'Ship', 'Persist', 'Serializer', function ($scope, $stateParams, Ships, Ship, Persist, Serializer) {
+angular.module('app').controller('ImportController', ['$scope', '$stateParams', 'ShipsDB', 'Ship', 'Persist', 'Serializer', function($scope, $stateParams, Ships, Ship, Persist, Serializer) {
   $scope.jsonValid = false;
   $scope.importData = null;
   $scope.errorMsg = null;
@@ -21,7 +21,7 @@ angular.module('app').controller('ImportController', ['$scope', '$stateParams', 
       return;
     }
 
-    if(typeof importObj != 'object') {
+    if (typeof importObj != 'object') {
       $scope.errorMsg = 'Must be an object!';
       return;
     }
@@ -48,7 +48,7 @@ angular.module('app').controller('ImportController', ['$scope', '$stateParams', 
           }
         }
       } else {
-        $scope.errorMsg = '"' + shipId + '" is not a valid Ship Id!';
+        $scope.errorMsg = '"' + shipId + '"" is not a valid Ship Id!';
         return;
       }
       $scope.builds = importObj.builds;
@@ -57,7 +57,7 @@ angular.module('app').controller('ImportController', ['$scope', '$stateParams', 
     $scope.jsonValid = true;
   };
 
-  $scope.hasBuild = function (shipId, name) {
+  $scope.hasBuild = function(shipId, name) {
     return Persist.getBuild(shipId, name) !== null;
   };
 

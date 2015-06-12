@@ -1,5 +1,5 @@
 angular.module('app')
-.controller('ErrorController', ['$window','$rootScope','$scope','$stateParams', '$location', function ($window, $rootScope, $scope, $p, $location) {
+.controller('ErrorController', ['$window', '$rootScope', '$scope', '$stateParams', '$location', function($window, $rootScope, $scope, $p, $location) {
   $rootScope.title = 'Error';
   $scope.path = $location.path();
   $scope.type = $p.type || 'unknown';
@@ -21,7 +21,7 @@ angular.module('app')
         $scope.details = $p.details;
       break;
     default:
-      $scope.msgPre = "Uh, Jameson, we have a problem..";
+      $scope.msgPre = 'Uh, Jameson, we have a problem..';
       $scope.errorMessage = $p.message;
       $scope.details = $p.details;
   }

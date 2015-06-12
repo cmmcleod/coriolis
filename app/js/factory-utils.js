@@ -1,17 +1,17 @@
 /**
  * BBCode Generator functions for embedding in the Elite Dangerous Forums
  */
-angular.module('app').factory('Utils', ['$window','$state','$http', '$q', function ($window, $state, $http, $q) {
+angular.module('app').factory('Utils', ['$window', '$state', '$http', '$q', function($window, $state, $http, $q) {
 
   var shortenAPI = 'https://www.googleapis.com/urlshortener/v1/url?key=';
 
   function shortenUrl(url) {
     if ($window.navigator.onLine) {
-      return $http.post(shortenAPI + GAPI_KEY, {longUrl:url}).then(function(response) {
+      return $http.post(shortenAPI + GAPI_KEY, { longUrl: url }).then(function(response) {
         return response.data.id;
       });
     } else {
-      return $q.reject({statusText: 'Not Online'});
+      return $q.reject({ statusText: 'Not Online' });
     }
   }
 
@@ -39,7 +39,7 @@ angular.module('app').factory('Utils', ['$window','$state','$http', '$q', functi
     for (i = 0; i < builds.length; i++) {
       b = builds[i];
       //var href = $state.href('outfit',{shipId: b.id, code: b.code, bn: b.buildName}, {absolute: true});
-      l.push('[tr][td]', b.name,'[/td][td]', b.buildName ,'[/td]');
+      l.push('[tr][td]', b.name, '[/td][td]', b.buildName, '[/td]');
 
       for (j = 0, fl = facets.length; j < fl; j++) {
         if (facets[j].active) {
@@ -52,8 +52,8 @@ angular.module('app').factory('Utils', ['$window','$state','$http', '$q', functi
       }
       l.push('[/tr]\n');
     }
-    l.push('[tr][td="align: center, colspan:',colCount,'"][size=-3]\n[url=', link,']Interactive Comparison at Coriolis.io[/url][/td][/tr]\n[/size][/table]');
-    l.unshift('[table="width:', colCount * 90,',align: center"]\n[tr][th][B][COLOR=#FF8C0D]Ship[/COLOR][/B][/th][th][B][COLOR="#FF8C0D"]Build[/COLOR][/B][/th]');
+    l.push('[tr][td="align: center, colspan:', colCount, '"][size=-3]\n[url=', link, ']Interactive Comparison at Coriolis.io[/url][/td][/tr]\n[/size][/table]');
+    l.unshift('[table="width:', colCount * 90, ',align: center"]\n[tr][th][B][COLOR=#FF8C0D]Ship[/COLOR][/B][/th][th][B][COLOR="#FF8C0D"]Build[/COLOR][/B][/th]');
     return l.join('');
   }
 
