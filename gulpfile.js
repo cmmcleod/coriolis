@@ -10,8 +10,8 @@ var appCache        = require("gulp-manifest"),
     eslint          = require('gulp-eslint');
     gutil           = require('gulp-util'),
     htmlmin         = require('gulp-htmlmin'),
-    jasmine         = require('gulp-jasmine'),
     jsonlint        = require("gulp-jsonlint"),
+    karma           = require('karma').server,
     less            = require('gulp-less'),
     mainBowerFiles  = require('main-bower-files'),
     minifyCSS       = require('gulp-minify-css'),
@@ -252,9 +252,13 @@ gulp.task('upload', function(done) {
   );
 });
 
-gulp.task('test', function () {
-    return gulp.src('tests/test-*.js')
-        .pipe(jasmine());
+gulp.task('test', function (done) {
+  karma.start({
+    configFile: __dirname + '/test/karma.conf.js',
+    singleRun: true
+  }, function(exitStatus) {
+      done(exitStatus ? new gutil.PluginError('karma', { message: 'Unit tests failed!' }) : undefined);
+  });
 });
 
 gulp.task('lint', ['js-lint', 'json-lint']);

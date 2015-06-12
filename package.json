@@ -9,6 +9,7 @@
   "engine": "node >= 0.12.2",
   "dependencies": {},
   "devDependencies": {
+    "angular-mocks": "^1.3.16",
     "async": "^0.9.0",
     "del": "^1.1.1",
     "gulp": "^3.8.11",
@@ -28,7 +29,11 @@
     "gulp-template": "^3.0.0",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.4",
+    "jasmine-core": "^2.3.4",
     "json-concat": "0.0.0",
+    "karma": "^0.12.36",
+    "karma-chrome-launcher": "^0.1.12",
+    "karma-jasmine": "^0.3.5",
     "main-bower-files": "^2.6.2",
     "run-sequence": "^1.0.2",
     "uglify-js": "^2.4.19"
