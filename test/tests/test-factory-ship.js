@@ -19,16 +19,15 @@ describe("Ship Factory", function() {
       ship.buildWith(shipData.defaults);
 
       expect(ship.totalCost).toEqual(shipData.retailCost, s + ' retail cost does not match default build cost');
-      expect(ship.priorityBands[0].retracted).toBeGreaterThan(0);
-      expect(ship.powerAvailable).toBeGreaterThan(0);
-      expect(ship.unladenRange).toBeGreaterThan(0);
-      expect(ship.ladenRange).toBeGreaterThan(0);
-      expect(ship.cargoCapacity).toBeGreaterThan(0);
-      expect(ship.fuelCapacity).toBeGreaterThan(0);
-      expect(ship.unladenTotalRange).toBeGreaterThan(0);
-      expect(ship.ladenTotalRange).toBeGreaterThan(0);
-      expect(ship.shieldStrength).toBeGreaterThan(0);
-      expect(ship.armourTotal).toBeGreaterThan(0);
+      expect(ship.priorityBands[0].retracted).toBeGreaterThan(0, s + ' cargo');
+      expect(ship.powerAvailable).toBeGreaterThan(0, s + ' powerAvailable');
+      expect(ship.unladenRange).toBeGreaterThan(0, s + ' unladenRange');
+      expect(ship.ladenRange).toBeGreaterThan(0, s + ' ladenRange');
+      expect(ship.fuelCapacity).toBeGreaterThan(0, s + ' fuelCapacity');
+      expect(ship.unladenTotalRange).toBeGreaterThan(0, s + ' unladenTotalRange');
+      expect(ship.ladenTotalRange).toBeGreaterThan(0, s + ' ladenTotalRange');
+      expect(ship.shieldStrength).toBeGreaterThan(0, s + ' shieldStrength');
+      expect(ship.armourTotal).toBeGreaterThan(0, s + ' armourTotal');
     }
   });
 
