@@ -1,48 +1,49 @@
-angular.module('app').controller('ComparisonController', ['lodash', '$rootScope', '$filter', '$scope', '$state', '$stateParams', 'Utils', 'ShipFacets', 'ShipsDB', 'Ship', 'Persist', 'Serializer', function (_, $rootScope, $filter, $scope, $state, $stateParams, Utils, ShipFacets, Ships, Ship, Persist, Serializer) {
+angular.module('app').controller('ComparisonController', ['lodash', '$rootScope', '$filter', '$scope', '$state', '$stateParams', 'Utils', 'ShipFacets', 'ShipsDB', 'Ship', 'Persist', 'Serializer', function(_, $rootScope, $filter, $scope, $state, $stateParams, Utils, ShipFacets, Ships, Ship, Persist, Serializer) {
   $rootScope.title = 'Coriolis - Compare';
   $scope.predicate = 'name'; // Sort by ship name as default
   $scope.desc = false;
-  $scope.facetSortOpts = { containment: '#facet-container', orderChanged: function () { $scope.saved = false; } };
+  $scope.facetSortOpts = { containment: '#facet-container', orderChanged: function() { $scope.saved = false; } };
   $scope.builds = [];
   $scope.unusedBuilds = [];
   $scope.name = $stateParams.name;
   $scope.compareMode = !$stateParams.code;
   $scope.importObj = {}; // Used for importing comparison builds (from permalinked comparison)
-  var defaultFacets = [9,6,4,1,3,2]; // Reverse order of Armour, Shields, Speed, Jump Range, Cargo Capacity, Cost
+  var defaultFacets = [9, 6, 4, 1, 3, 2]; // Reverse order of Armour, Shields, Speed, Jump Range, Cargo Capacity, Cost
   var facets = $scope.facets = angular.copy(ShipFacets);
+  var shipId, buildName, comparisonData;
 
   /**
    * Add an existing build to the comparison. The build must be saved locally.
-   * @param  {string} shipId    The unique ship key/id
-   * @param  {string} buildName The build name
+   * @param  {string} id    The unique ship key/id
+   * @param  {string} name  The build name
    */
-  $scope.addBuild = function (shipId, buildName, code) {
-    var data = Ships[shipId];   // Get ship properties
-    code = code? code : Persist.builds[shipId][buildName]; // Retrieve build code if not passed
-    var b = new Ship(shipId, data.properties, data.slots); // Create a new Ship instance
+  $scope.addBuild = function(id, name, code) {
+    var data = Ships[id];   // Get ship properties
+    code = code ? code : Persist.builds[id][name]; // Retrieve build code if not passed
+    var b = new Ship(id, data.properties, data.slots); // Create a new Ship instance
     Serializer.toShip(b, code);  // Populate components from code
     // Extend ship instance and add properties below
-    b.buildName = buildName;
+    b.buildName = name;
     b.code = code;
     b.pctRetracted = b.powerRetracted / b.powerAvailable;
     b.pctDeployed = b.powerDeployed / b.powerAvailable;
     $scope.builds.push(b); // Add ship build to comparison
     $scope.builds = $filter('orderBy')($scope.builds, $scope.predicate, $scope.desc);  // Resort
-    _.remove($scope.unusedBuilds, function (b) {  // Remove from unused builds
-      return b.id == shipId && b.buildName == buildName;
+    _.remove($scope.unusedBuilds, function(o) {  // Remove from unused builds
+      return o.id == id && o.buildName == name;
     });
     $scope.saved = false;
   };
 
   /**
    * Removes a build from the comparison
-   * @param  {string} shipId    The unique ship key/id
-   * @param  {string} buildName The build name
+   * @param  {string} id   The unique ship key/id
+   * @param  {string} name The build name
    */
-  $scope.removeBuild = function (shipId, buildName) {
-    _.remove($scope.builds, function (b) {
-      if (b.id == shipId && b.buildName == buildName) {
-        $scope.unusedBuilds.push({id: shipId, buildName: buildName, name: b.name}); // Add build back to unused builds
+  $scope.removeBuild = function(id, name) {
+    _.remove($scope.builds, function(s) {
+      if (s.id == id && s.buildName == name) {
+        $scope.unusedBuilds.push({ id: id, buildName: name, name: s.name }); // Add build back to unused builds
         return true;
       }
       return false;
@@ -54,7 +55,7 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
    * Toggles the selected the set of facets used in the comparison
    * @param  {number} i The index of the facet in facets
    */
-  $scope.toggleFacet = function (i) {
+  $scope.toggleFacet = function(i) {
     facets[i].active = !facets[i].active;
     $scope.tblUpdate = !$scope.tblUpdate; // Simple switch to trigger the table to update
     $scope.saved = false;
@@ -64,12 +65,12 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
    * Click handler for sorting by facets in the table
    * @param  {object} e Event object
    */
-  $scope.handleClick = function (e) {
+  $scope.handleClick = function(e) {
     var elem = angular.element(e.target);
-    if(elem.attr('prop')) {     // Get component ID
+    if (elem.attr('prop')) {     // Get component ID
       $scope.sort(elem.attr('prop'));
-    }
-    else if (elem.attr('del')) {  // Delete index
+
+    } else if (elem.attr('del')) {  // Delete index
       $scope.removeBuild(elem.attr('del'));
     }
   };
@@ -78,8 +79,8 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
    * Sort the comparison array based on the selected facet / ship property
    * @param  {string} key Ship property
    */
-  $scope.sort = function (key) {
-    $scope.desc =  ($scope.predicate == key)? !$scope.desc : $scope.desc;
+  $scope.sort = function(key) {
+    $scope.desc = $scope.predicate == key ? !$scope.desc : $scope.desc;
     $scope.predicate = key;
     $scope.builds = $filter('orderBy')($scope.builds, $scope.predicate, $scope.desc);
   };
@@ -94,12 +95,12 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
     }
     var selectedFacets = [];
     facets.forEach(function(f) {
-      if(f.active) {
+      if (f.active) {
         selectedFacets.unshift(f.index);
       }
     });
     Persist.saveComparison($scope.name, $scope.builds, selectedFacets);
-    $state.go('compare', {name: $scope.name}, {location:'replace', notify:false});
+    $state.go('compare', { name: $scope.name }, { location: 'replace', notify: false });
     $scope.saved = true;
   };
 
@@ -108,7 +109,7 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
    */
   $scope.delete = function() {
     Persist.deleteComparison($scope.name);
-    $state.go('compare', {name: null}, {location:'replace', reload:true});
+    $state.go('compare', { name: null }, { location: 'replace', reload: true });
   };
 
   /**
@@ -134,7 +135,7 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
    */
   $scope.permalink = function(e) {
     e.stopPropagation();
-    $state.go('modal.link', {url:  genPermalink()});
+    $state.go('modal.link', { url: genPermalink() });
   };
 
   /**
@@ -147,14 +148,14 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
     e.stopPropagation();
     // Make a request to goo.gl to shorten the URL, returns a promise
     var promise = Utils.shortenUrl( genPermalink()).then(
-      function (shortUrl) {
+      function(shortUrl) {
         return Utils.comparisonBBCode(facets, $scope.builds, shortUrl);
       },
-      function (e) {
-        return 'Error - ' + e.statusText;
+      function(err) {
+        return 'Error - ' + err.statusText;
       }
     );
-    $state.go('modal.export', {promise: promise, title:'Forum BBCode'});
+    $state.go('modal.export', { promise: promise, title: 'Forum BBCode' });
   };
 
   /**
@@ -164,7 +165,7 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
   function genPermalink() {
     var selectedFacets = [];
     facets.forEach(function(f) {
-      if(f.active) {
+      if (f.active) {
         selectedFacets.unshift(f.index);
       }
     });
@@ -175,7 +176,7 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
       $scope.predicate,
       $scope.desc
     );
-    return $state.href('comparison', {code: code}, {absolute:true});
+    return $state.href('comparison', { code: code }, { absolute: true });
   }
 
   /* Event listeners */
@@ -184,7 +185,6 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
   });
 
   /* Initialization */
-  var shipId, buildName, comparisonData;
   if ($scope.compareMode) {
     if ($scope.name == 'all') {
       for (shipId in Persist.builds) {
@@ -195,13 +195,13 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
     } else {
       for (shipId in Persist.builds) {
         for (buildName in Persist.builds[shipId]) {
-          $scope.unusedBuilds.push({id: shipId, buildName: buildName, name: Ships[shipId].properties.name});
+          $scope.unusedBuilds.push({ id: shipId, buildName: buildName, name: Ships[shipId].properties.name });
         }
       }
       comparisonData = Persist.getComparison($scope.name);
       if (comparisonData) {
         defaultFacets = comparisonData.facets;
-        comparisonData.builds.forEach(function (b) {
+        comparisonData.builds.forEach(function(b) {
           $scope.addBuild(b.shipId, b.buildName);
         });
         $scope.saved = true;
@@ -214,9 +214,9 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
       $scope.name = comparisonData.n;
       $scope.predicate = comparisonData.p;
       $scope.desc = comparisonData.d;
-      comparisonData.b.forEach(function (build) {
+      comparisonData.b.forEach(function(build) {
         $scope.addBuild(build.s, build.n, build.c);
-        if(!$scope.importObj[build.s]) {
+        if (!$scope.importObj[build.s]) {
           $scope.importObj[build.s] = {};
         }
         $scope.importObj[build.s][build.n] = build.c;
@@ -226,9 +226,9 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
     }
   }
   // Replace fmt with actual format function as defined in rootScope and retain original index
-  facets.forEach(function(f,i) { f.fmt = $rootScope[f.fmt]; f.index = i; });
+  facets.forEach(function(f, i) { f.fmt = $rootScope[f.fmt]; f.index = i; });
   // Remove default facets, mark as active, and add them back in selected order
-  _.pullAt(facets, defaultFacets).forEach(function (f) { f.active = true; facets.unshift(f); });
+  _.pullAt(facets, defaultFacets).forEach(function(f) { f.active = true; facets.unshift(f); });
   $scope.builds = $filter('orderBy')($scope.builds, $scope.predicate, $scope.desc);
 
 }]);

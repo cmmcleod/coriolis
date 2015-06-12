@@ -1,13 +1,13 @@
-angular.module('app').directive('slotHardpoint', ['$rootScope', function ($r) {
+angular.module('app').directive('slotHardpoint', ['$rootScope', function($r) {
   return {
     restrict: 'A',
-    scope:{
+    scope: {
       hp: '=',
       size: '=',
-      lbl: '=',
+      lbl: '='
     },
     templateUrl: 'views/_slot-hardpoint.html',
-    link: function (scope) {
+    link: function(scope) {
       scope.$r = $r;
     }
  };

@@ -1,4 +1,4 @@
-angular.module('app').controller('OutfitController', ['$window','$rootScope','$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', function ($window, $rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist) {
+angular.module('app').controller('OutfitController', ['$window', '$rootScope', '$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', function($window, $rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist) {
   var data = Ships[$p.shipId];   // Retrieve the basic ship properties, slots and defaults
   var ship = new Ship($p.shipId, data.properties, data.slots); // Create a new Ship instance
   var win = angular.element($window);   // Angularized window object for event triggering
@@ -12,7 +12,7 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
   }
 
   $scope.buildName = $p.bn;
-  $rootScope.title = ship.name + ($scope.buildName? ' - ' + $scope.buildName : '');
+  $rootScope.title = ship.name + ($scope.buildName ? ' - ' + $scope.buildName : '');
   $scope.ship = ship;
   $scope.pp = ship.common[0];   // Power Plant
   $scope.th = ship.common[1];   // Thruster
@@ -49,11 +49,11 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
   $scope.jrChart = {
     labels: {
       xAxis: {
-        title:'Cargo',
+        title: 'Cargo',
         unit: 'T'
       },
       yAxis: {
-        title:'Jump Range',
+        title: 'Jump Range',
         unit: 'LY'
       }
     },
@@ -90,7 +90,7 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
     if (id) {
       if (id == 'empty') {
         ship.use(slot, null, null);
-      } else if(type == 'h') {
+      } else if (type == 'h') {
         ship.use(slot, id, Components.hardpoints(id));
       } else if (type == 'c') {
         ship.use(slot, id, Components.common(ship.common.indexOf(slot), id));
@@ -142,13 +142,13 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
    */
   $scope.deleteBuild = function() {
     Persist.deleteBuild(ship.id, $scope.buildName);
-    $state.go('outfit', {shipId: ship.id, code: null, bn: null}, {location:'replace', reload:true});
+    $state.go('outfit', { shipId: ship.id, code: null, bn: null }, { location: 'replace', reload: true });
   };
 
   /**
    * On build name change, retrieve the existing saved code if there is one
    */
-  $scope.bnChange = function(){
+  $scope.bnChange = function() {
     $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
   };
 
@@ -165,13 +165,13 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
    * @param  {[type]} key [description]
    * @return {[type]}     [description]
    */
-  $scope.sortCost = function (key) {
-    $scope.costDesc =  ($scope.costPredicate == key)? !$scope.costDesc : $scope.costDesc;
+  $scope.sortCost = function(key) {
+    $scope.costDesc = $scope.costPredicate == key ? !$scope.costDesc : $scope.costDesc;
     $scope.costPredicate = key;
   };
 
-  $scope.sortPwr = function (key) {
-    $scope.pwrDesc =  ($scope.pwrPredicate == key)? !$scope.pwrDesc : $scope.pwrDesc;
+  $scope.sortPwr = function(key) {
+    $scope.pwrDesc = $scope.pwrPredicate == key ? !$scope.pwrDesc : $scope.pwrDesc;
     $scope.pwrPredicate = key;
   };
 
@@ -185,37 +185,37 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
     updateState();
   };
 
-  $scope.incPriority = function (c) {
+  $scope.incPriority = function(c) {
     if (ship.changePriority(c, c.priority + 1)) {
       $scope.code = Serializer.fromShip(ship);
       updateState();
     }
   };
 
-  $scope.decPriority = function (c) {
+  $scope.decPriority = function(c) {
     if (ship.changePriority(c, c.priority - 1)) {
       $scope.code = Serializer.fromShip(ship);
       updateState();
     }
   };
 
-  $scope.fuelChange = function (fuel) {
+  $scope.fuelChange = function(fuel) {
     $scope.fuel = fuel;
     win.triggerHandler('render');
   };
 
-  $scope.statusRetracted = function (slot) {
+  $scope.statusRetracted = function(slot) {
     return ship.getSlotStatus(slot, false);
   };
 
-  $scope.statusDeployed = function (slot) {
+  $scope.statusDeployed = function(slot) {
     return ship.getSlotStatus(slot, true);
   };
 
   // Utilify functions
 
   function updateState() {
-    $state.go('outfit', {shipId: ship.id, code: $scope.code, bn: $scope.buildName}, {location:'replace', notify:false});
+    $state.go('outfit', { shipId: ship.id, code: $scope.code, bn: $scope.buildName }, { location: 'replace', notify: false });
     $scope.jrSeries.xMax = ship.cargoCapacity;
     $scope.jrSeries.yMax = ship.jumpRangeWithMass(ship.unladenMass);
     $scope.jrSeries.mass = ship.unladenMass;
@@ -223,7 +223,7 @@ angular.module('app').controller('OutfitController', ['$window','$rootScope','$s
   }
 
   // Hide any open menu/slot/etc if the background is clicked
-  $scope.$on('close', function () {
+  $scope.$on('close', function() {
     $scope.selectedSlot = null;
   });
 
