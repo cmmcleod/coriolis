@@ -71,6 +71,11 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.cargoScoop.priority = priorities ? priorities[0] * 1 : 0;
     this.cargoScoop.enabled = enabled ? enabled[0] * 1 : true;
 
+    for (i = 0, l = this.priorityBands.length; i < l; i++) {
+      this.priorityBands[i].deployed = 0;
+      this.priorityBands[i].retracted = 0;
+    }
+
     if (this.cargoScoop.enabled) {
       bands[this.cargoScoop.priority].retracted += this.cargoScoop.c.power;
     }
@@ -79,6 +84,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       common[i].enabled = enabled ? enabled[i + 1] * 1 : true;
       common[i].priority = priorities ? priorities[i + 1] * 1 : 0;
       common[i].type = 'SYS';
+      common[i].c = common[i].id = null; // Resetting 'old' component if there was one
       this.use(common[i], comps.common[i], Components.common(i, comps.common[i]), true);
     }
 
@@ -90,11 +96,10 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       hps[i].enabled = enabled ? enabled[cl + i] * 1 : true;
       hps[i].priority = priorities ? priorities[cl + i] * 1 : 0;
       hps[i].type = hps[i].maxClass ? 'WEP' : 'SYS';
+      hps[i].c = hps[i].id = null; // Resetting 'old' component if there was one
 
       if (comps.hardpoints[i] !== 0) {
         this.use(hps[i], comps.hardpoints[i], Components.hardpoints(comps.hardpoints[i]), true);
-      } else {
-        hps[i].c = hps[i].id = null;
       }
     }
 
@@ -104,11 +109,10 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       internal[i].enabled = enabled ? enabled[cl + i] * 1 : true;
       internal[i].priority = priorities ? priorities[cl + i] * 1 : 0;
       internal[i].type = 'SYS';
+      internal[i].id = internal[i].c = null; // Resetting 'old' component if there was one
 
       if (comps.internal[i] !== 0) {
         this.use(internal[i], comps.internal[i], Components.internal(comps.internal[i]), true);
-      } else {
-        internal[i].id = internal[i].c = null;
       }
     }
 
@@ -181,18 +185,24 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     });
   };
 
+  /**
+   * Will change the priority of the specified slot if the new priority is valid
+   * @param  {object} slot        The slot to be updated
+   * @param  {number} newPriority The new priority to be set
+   * @return {boolean}            Returns true if the priority was changed (within range)
+   */
   Ship.prototype.changePriority = function(slot, newPriority) {
     if (newPriority >= 0 && newPriority < this.priorityBands.length) {
       var oldPriority = slot.priority;
       slot.priority = newPriority;
 
-      if (slot.enabled) {
+      if (slot.enabled) { // Only update power if the slot is enabled
         var usage = (slot.c.passive || this.hardpoints.indexOf(slot) == -1) ? 'retracted' : 'deployed';
         this.priorityBands[oldPriority][usage] -= slot.c.power;
         this.priorityBands[newPriority][usage] += slot.c.power;
         this.updatePower();
-        return true;
       }
+      return true;
     }
     return false;
   };
@@ -253,7 +263,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
         this.totalCost -= old.cost;
       }
 
-      if (old.power) {
+      if (old.power && slot.enabled) {
         this.priorityBands[slot.priority][(isHardPoint && !old.passive) ? 'deployed' : 'retracted'] -= old.power;
         powerChange = true;
       }
@@ -283,7 +293,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
         this.totalCost += n.cost;
       }
 
-      if (n.power) {
+      if (n.power && slot.enabled) {
         this.priorityBands[slot.priority][(isHardPoint && !n.passive) ? 'deployed' : 'retracted'] += n.power;
         powerChange = true;
       }

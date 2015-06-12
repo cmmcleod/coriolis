@@ -12,7 +12,7 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
     for (var n in C.hardpoints) {
       var group = C.hardpoints[n];
       for (var i = 0; i < group.length; i++) {
-        if (group[i].id === id) {
+        if (group[i].id == id) {
           return group[i];
         }
       }
@@ -24,7 +24,7 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
     for (var n in C.internal) {
       var group = C.internal[n];
       for (var i = 0; i < group.length; i++) {
-        if (group[i].id === id) {
+        if (group[i].id == id) {
           return group[i];
         }
       }
