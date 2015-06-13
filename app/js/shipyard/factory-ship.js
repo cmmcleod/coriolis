@@ -245,7 +245,6 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     var powerChange = slot == this.common[0];
 
     if (old) {  // Old component now being removed
-      console.log('this shouldn\'t happen', old);
       switch (old.grp) {
         case 'ft':
           this.fuelCapacity -= old.capacity;
