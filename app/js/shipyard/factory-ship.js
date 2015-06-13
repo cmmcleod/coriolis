@@ -57,7 +57,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
         cl = common.length,
         i, l;
 
-    // Reset Cumulative and aggragate stats
+    // Reset Cumulative stats
     this.fuelCapacity = 0;
     this.cargoCapacity = 0;
     this.ladenMass = 0;
@@ -141,7 +141,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    */
   Ship.prototype.use = function(slot, id, component, preventUpdate) {
     if (slot.id != id) { // Selecting a different component
-      var slotIndex = this.internal.indexOf(slot);
+      var slotIndex = preventUpdate ? -1 : this.internal.indexOf(slot);
       // Slot is an internal slot, is not being emptied, and the selected component group/type must be of unique
       if (slotIndex != -1 && component && _.includes(['sg', 'rf', 'fs'], component.grp)) {
         // Find another internal slot that already has this type/group installed
@@ -245,6 +245,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     var powerChange = slot == this.common[0];
 
     if (old) {  // Old component now being removed
+      console.log('this shouldn\'t happen', old);
       switch (old.grp) {
         case 'ft':
           this.fuelCapacity -= old.capacity;

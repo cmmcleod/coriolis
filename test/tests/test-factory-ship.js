@@ -31,4 +31,40 @@ describe("Ship Factory", function() {
     }
   });
 
+  it("resets and rebuilds properly", function() {
+      var id = 'cobra_mk_iii';
+      var cobra = DB.ships[id];
+      var shipA = new Ship(id, cobra.properties, cobra.slots);
+      var shipB = new Ship(id, cobra.properties, cobra.slots);
+      var testShip = new Ship(id, cobra.properties, cobra.slots);
+
+      var buildA = cobra.defaults;
+      var buildB = {
+        common:['4A', '4A', '4A', '3D', '3A', '3A', '4C'],
+        hardpoints: ['0s', '0s', '2d', '2d', 0, '04'],
+        internal: ['45', '03', '2b', '2o', '27', '53']
+      };
+
+      shipA.buildWith(buildA); // Build A
+      shipB.buildWith(buildB);// Build B
+      testShip.buildWith(buildA);
+
+      for(var p in testShip) {
+        expect(testShip[p]).toEqual(shipA[p], p + ' does not match');
+      }
+
+      testShip.buildWith(buildB);
+
+      for(var p in testShip) {
+        expect(testShip[p]).toEqual(shipB[p], p + ' does not match');
+      }
+
+      testShip.buildWith(buildA);
+
+      for(var p in testShip) {
+        expect(testShip[p]).toEqual(shipA[p], p + ' does not match');
+      }
+
+  });
+
 });
