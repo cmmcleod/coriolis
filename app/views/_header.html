@@ -51,6 +51,10 @@
       <ul>
         Insurance
         <li><select ng-model="insurance.current" ng-options="ins.name for (i,ins) in insurance.opts" ng-change="updateInsurance()"></select></li>
+      </ul><br>
+      <ul>
+        Discount
+        <li><select ng-model="discounts.current" ng-options="d.name for (i,d) in discounts.opts" ng-change="updateDiscount()"></select></li>
       </ul>
       <hr />
       <ul>

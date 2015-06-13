@@ -12,17 +12,9 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', 'Pers
       scope.allComparisons = Persist.comparisons;
       scope.bs = Persist.state;
 
-      // Insurance options and management here for now.
-      $rootScope.insurance = {
-        opts: [
-          { name: 'Standard', pct: 0.05 },
-          { name: 'Alpha', pct: 0.025 },
-          { name: 'Beta', pct: 0.035 }
-        ]
-      };
-
       var insIndex = _.findIndex($rootScope.insurance.opts, 'name', Persist.getInsurance());
       $rootScope.insurance.current = $rootScope.insurance.opts[insIndex != -1 ? insIndex : 0];
+      $rootScope.discounts.current = $rootScope.discounts.opts[Persist.getDiscount() || 0];
 
       // Close menus if a navigation change event occurs
       $rootScope.$on('$stateChangeStart', function() {
@@ -40,6 +32,13 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', 'Pers
        */
       scope.updateInsurance = function() {
         Persist.setInsurance($rootScope.insurance.current.name);
+      };
+
+      /**
+       * Save selected discount option
+       */
+      scope.updateDiscount = function() {
+        Persist.setDiscount($rootScope.discounts.opts.indexOf($rootScope.discounts.current));
       };
 
       scope.openMenu = function(e, menu) {

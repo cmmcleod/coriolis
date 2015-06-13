@@ -242,21 +242,21 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="toggleable" ng-repeat="c in costList | orderBy:costPredicate:costDesc" ng-if="c.c.cost > 0" ng-class="{disabled:!c.incCost}" ng-click="toggleCost(c)">
-          <td style="width:1em;">{{c.c.class}}{{c.c.rating}}</td>
-          <td class="le shorten" ng-bind="cName(c)"></td>
-          <td class="ri">{{fCrd(c.c.cost)}} <u>CR</u></td>
+        <tr  ng-repeat="c in costList | orderBy:costPredicate:costDesc" ng-if="c.c.cost > 0" ng-class="{disabled:!c.incCost}">
+          <td class="toggleable" style="width:1em;"  ng-click="toggleCost(c)">{{c.c.class}}{{c.c.rating}}</td>
+          <td class="le toggleable shorten" ng-bind="cName(c)"  ng-click="toggleCost(c)"></td>
+          <td class="ri toggleable"  ng-click="toggleCost(c)">{{fCrd(discounts.current.pct * c.c.cost)}} <u>CR</u></td>
         </tr>
       </tbody>
     </table>
     <table class="total">
         <tr class="ri">
           <td class="lbl">Total</td>
-          <td>{{fCrd(ship.totalCost)}} <u>CR</u></td>
+          <td>{{fCrd(ship.totalCost * discounts.current.pct)}} <u>CR</u></td>
         </tr>
         <tr class="ri">
           <td class="lbl">Insurance</td>
-          <td>{{fCrd(ship.totalCost * insurance.current.pct)}} <u>CR</u></td>
+          <td>{{fCrd(ship.totalCost * discounts.current.pct * insurance.current.pct)}} <u>CR</u></td>
         </tr>
     </table>
   </div>

@@ -33,6 +33,8 @@ function($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hp
   $rootScope.SZ = sz;
   $rootScope.HPC = hpc;
   $rootScope.GMAP = GroupMap;
+  $rootScope.insurance = { opts: [{ name: 'Standard', pct: 0.05 }, { name: 'Alpha', pct: 0.025 }, { name: 'Beta', pct: 0.035 }] };
+  $rootScope.discounts = { opts: [{ name: 'None', pct: 1 }, { name: 'Founders World - 10%', pct: 0.90 }] };
   $rootScope.STATUS = ['', 'DISABLED', 'OFF', 'ON'];
   $rootScope.STATUS_CLASS = ['', 'disabled', 'warning', 'secondary-disabled'];
   $rootScope.title = 'Coriolis';

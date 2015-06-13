@@ -184,6 +184,27 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
   };
 
   /**
+   * Persist selected discount
+   * @param {number} val Discount value/amount
+   */
+  this.setDiscount = function(val) {
+    if (this.lsEnabled) {
+      return localStorage.setItem('discount', val);
+    }
+  };
+
+  /**
+   * Get the saved  discount
+   * @return {number} val Discount value/amount
+   */
+  this.getDiscount = function() {
+    if (this.lsEnabled) {
+      return localStorage.getItem('discount');
+    }
+    return null;
+  };
+
+  /**
    * Retrieve the last router state from local storage
    * @param {object} state State object containing state name and params
    */
