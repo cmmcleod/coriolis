@@ -10,7 +10,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
   function Ship(id, properties, slots) {
     this.id = id;
     this.cargoScoop = { c: Components.cargoScoop(), type: 'SYS' };
-    this.bulkheads = { incCost: true, maxClass: 8 };
+    this.bulkheads = { incCost: true, maxClass: 8, discount: 1 };
 
     for (var p in properties) { this[p] = properties[p]; }  // Copy all base properties from shipData
 
@@ -18,10 +18,10 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       var slotGroup = slots[slotType];
       var group = this[slotType] = [];   // Initialize Slot group (Common, Hardpoints, Internal)
       for (var i = 0; i < slotGroup.length; i++) {
-        group.push({ id: null, c: null, incCost: true, maxClass: slotGroup[i] });
+        group.push({ id: null, c: null, incCost: true, maxClass: slotGroup[i], discount: 1 });
       }
     }
-    this.c = { incCost: true, c: { name: this.name, cost: this.cost } };  // Make a 'Ship' component similar to other components
+    this.c = { incCost: true, discount: 1, c: { name: this.name, cost: this.cost } };  // Make a 'Ship' component similar to other components
 
     this.costList = _.union(this.internal, this.common, this.hardpoints);
     this.costList.push(this.bulkheads);  // Add The bulkheads
@@ -43,16 +43,6 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       { deployed: 0, retracted: 0 },
       { deployed: 0, retracted: 0 }
     ];
-
-    // Cumulative and aggragate stats
-    this.fuelCapacity = 0;
-    this.cargoCapacity = 0;
-    this.ladenMass = 0;
-    this.armourAdded = 0;
-    this.shieldMultiplier = 1;
-    this.totalCost = this.cost;
-    this.unladenMass = this.mass;
-    this.armourTotal = this.armour;
   }
 
   /**
@@ -67,6 +57,17 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
         cl = common.length,
         i, l;
 
+    // Reset Cumulative and aggragate stats
+    this.fuelCapacity = 0;
+    this.cargoCapacity = 0;
+    this.ladenMass = 0;
+    this.armourAdded = 0;
+    this.shieldMultiplier = 1;
+    this.totalCost = this.cost;
+    this.unladenMass = this.mass;
+    this.armourTotal = this.armour;
+
+    this.bulkheads.c = null;
     this.useBulkhead(comps.bulkheads || 0, true);
     this.cargoScoop.priority = priorities ? priorities[0] * 1 : 0;
     this.cargoScoop.enabled = enabled ? enabled[0] * 1 : true;
