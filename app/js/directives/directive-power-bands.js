@@ -75,7 +75,7 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
 
         for (var b = 0, l = bands.length; b < l; b++) {
           if (bands[b].retSelected) {
-            retractedSum += bands[b].retracted;
+            retractedSum += bands[b].retracted + bands[b].retOnly;
             retBandsSelected = true;
           }
           if (bands[b].depSelected) {
@@ -89,8 +89,8 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
 
         retracted.selectAll('rect').data(bands).enter().append('rect')
           .attr('height', barHeight)
-          .attr('width', function(d) { return Math.max(wattScale(d.retracted) - 1, 0); })
-          .attr('x', function(d) { return wattScale(d.retractedSum) - wattScale(d.retracted); })
+          .attr('width', function(d) { return Math.max(wattScale(d.retracted + d.retOnly) - 1, 0); })
+          .attr('x', function(d) { return wattScale(d.retractedSum) - wattScale(d.retracted + d.retOnly); })
           .attr('y', 1)
           .on('click', function(d) {
             d.retSelected = !d.retSelected;
@@ -99,7 +99,7 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
           .attr('class', function(d) { return getClass(d.retSelected, d.retractedSum, available); });
 
         retracted.selectAll('text').data(bands).enter().append('text')
-          .attr('x', function(d) { return wattScale(d.retractedSum) - (wattScale(d.retracted) / 2); })
+          .attr('x', function(d) { return wattScale(d.retractedSum) - (wattScale(d.retracted + d.retOnly) / 2); })
           .attr('y', 15)
           .style('text-anchor', 'middle')
           .attr('class', 'primary-bg')
@@ -107,7 +107,7 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
             d.retSelected = !d.retSelected;
             render();
           })
-          .text(function(d, i) { return bandText(d.retracted, i); });
+          .text(function(d, i) { return bandText(d.retracted + d.retOnly, i); });
 
         deployed.selectAll('rect').data(bands).enter().append('rect')
           .attr('height', barHeight)

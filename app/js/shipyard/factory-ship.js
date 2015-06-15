@@ -1,6 +1,24 @@
 angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 'calcJumpRange', 'lodash', function(Components, calcShieldStrength, calcJumpRange, _) {
 
   /**
+   * Returns the power usage type of a slot and it's particular component
+   * @param  {object} slot      The Slot
+   * @param  {object} component The component in the slot
+   * @return {string}           The key for the power usage type
+   */
+  function powerUsageType(slot, component) {
+    if (component) {
+      if (component.retractedOnly) {
+        return 'retOnly';
+      }
+      if (component.passive) {
+        return 'retracted';
+      }
+    }
+    return slot.cat != 1 ? 'retracted' : 'deployed';
+  }
+
+  /**
    * Ship model used to track all ship components and properties.
    *
    * @param {string} id         Unique ship Id / Key
@@ -37,11 +55,11 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.powerList.unshift(this.common[0]);  // Add Power Plant
 
     this.priorityBands = [
-      { deployed: 0, retracted: 0 },
-      { deployed: 0, retracted: 0 },
-      { deployed: 0, retracted: 0 },
-      { deployed: 0, retracted: 0 },
-      { deployed: 0, retracted: 0 }
+      { deployed: 0, retracted: 0, retOnly: 0 },
+      { deployed: 0, retracted: 0, retOnly: 0 },
+      { deployed: 0, retracted: 0, retOnly: 0 },
+      { deployed: 0, retracted: 0, retOnly: 0 },
+      { deployed: 0, retracted: 0, retOnly: 0 }
     ];
   }
 
@@ -75,6 +93,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     for (i = 0, l = this.priorityBands.length; i < l; i++) {
       this.priorityBands[i].deployed = 0;
       this.priorityBands[i].retracted = 0;
+      this.priorityBands[i].retOnly = 0;
     }
 
     if (this.cargoScoop.enabled) {
@@ -82,6 +101,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     }
 
     for (i = 0; i < cl; i++) {
+      common[i].cat = 0;
       common[i].enabled = enabled ? enabled[i + 1] * 1 : true;
       common[i].priority = priorities ? priorities[i + 1] * 1 : 0;
       common[i].type = 'SYS';
@@ -94,6 +114,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     cl++; // Increase accounts for Cargo Scoop
 
     for (i = 0, l = hps.length; i < l; i++) {
+      hps[i].cat = 1;
       hps[i].enabled = enabled ? enabled[cl + i] * 1 : true;
       hps[i].priority = priorities ? priorities[cl + i] * 1 : 0;
       hps[i].type = hps[i].maxClass ? 'WEP' : 'SYS';
@@ -107,6 +128,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     cl += hps.length; // Increase accounts for hardpoints
 
     for (i = 0, l = internal.length; i < l; i++) {
+      internal[i].cat = 2;
       internal[i].enabled = enabled ? enabled[cl + i] * 1 : true;
       internal[i].priority = priorities ? priorities[cl + i] * 1 : 0;
       internal[i].type = 'SYS';
@@ -141,18 +163,14 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    */
   Ship.prototype.use = function(slot, id, component, preventUpdate) {
     if (slot.id != id) { // Selecting a different component
-      var slotIndex = preventUpdate ? -1 : this.internal.indexOf(slot);
       // Slot is an internal slot, is not being emptied, and the selected component group/type must be of unique
-      if (slotIndex != -1 && component && _.includes(['sg', 'rf', 'fs'], component.grp)) {
+      if (slot.cat != 2 && component && _.includes(['sg', 'rf', 'fs'], component.grp)) {
         // Find another internal slot that already has this type/group installed
-        var similarSlotIndex = this.findInternalByGroup(component.grp);
+        var similarSlot = this.findInternalByGroup(component.grp);
         // If another slot has an installed component with of the same type
-        if (similarSlotIndex != -1 && similarSlotIndex != slotIndex) {
-          // Empty the slot
-          var similarSlot = this.internal[similarSlotIndex];
+        if (similarSlot && similarSlot !== slot) {
           this.updateStats(similarSlot, null, similarSlot.c, true);  // Update stats but don't trigger a global update
-          similarSlot.id = null;
-          similarSlot.c = null;
+          similarSlot.id = similarSlot.c = null;  // Empty the slot
         }
       }
       var oldComponent = slot.c;
@@ -181,9 +199,13 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    * @return {number}       The index of the slot in ship.internal
    */
   Ship.prototype.findInternalByGroup = function(group) {
-    return _.findIndex(this.internal, function(slot) {
+    var index = _.findIndex(this.internal, function(slot) {
       return slot.c && slot.c.grp == group;
     });
+    if (index !== -1) {
+      return this.internal[index];
+    }
+    return null;
   };
 
   /**
@@ -198,7 +220,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       slot.priority = newPriority;
 
       if (slot.enabled) { // Only update power if the slot is enabled
-        var usage = (slot.c.passive || this.hardpoints.indexOf(slot) == -1) ? 'retracted' : 'deployed';
+        var usage = powerUsageType(slot, slot.c);
         this.priorityBands[oldPriority][usage] -= slot.c.power;
         this.priorityBands[newPriority][usage] += slot.c.power;
         this.updatePower();
@@ -217,8 +239,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
 
   Ship.prototype.setSlotEnabled = function(slot, enabled) {
     if (slot.enabled != enabled && slot.c) { // Enabled state is changing
-      var usage = (slot.c.passive || this.hardpoints.indexOf(slot) == -1) ? 'retracted' : 'deployed';
-      this.priorityBands[slot.priority][usage] += enabled ? slot.c.power : -slot.c.power;
+      this.priorityBands[slot.priority][powerUsageType(slot, slot.c)] += enabled ? slot.c.power : -slot.c.power;
       this.updatePower();
     }
     slot.enabled = enabled;
@@ -229,9 +250,10 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       return 0;   // No Status (Not possible)
     } else if (!slot.enabled) {
       return 1;   // Disabled
-    } else if (deployed) {
+    } else if (deployed && !slot.c.retractedOnly) {  // Certain component (e.g. Detaild Surface scanner) are power only while retracted
       return this.priorityBands[slot.priority].deployedSum > this.powerAvailable ? 2 : 3; // Offline : Online
-    } else if (this.hardpoints.indexOf(slot) != -1 && !slot.c.passive) {  // Active hardpoints have no retracted status
+      // Active hardpoints have no retracted status
+    } else if ((deployed && slot.c.retractedOnly) || (slot.cat === 1 && !slot.c.passive)) {
       return 0;  // No Status (Not possible)
     }
     return this.priorityBands[slot.priority].retractedSum > this.powerAvailable ? 2 : 3;    // Offline : Online
@@ -241,7 +263,6 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    * Updates the ship's cumulative and aggregated stats based on the component change.
    */
   Ship.prototype.updateStats = function(slot, n, old, preventUpdate) {
-    var isHardPoint = this.hardpoints.indexOf(slot) != -1;
     var powerChange = slot == this.common[0];
 
     if (old) {  // Old component now being removed
@@ -265,7 +286,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       }
 
       if (old.power && slot.enabled) {
-        this.priorityBands[slot.priority][(isHardPoint && !old.passive) ? 'deployed' : 'retracted'] -= old.power;
+        this.priorityBands[slot.priority][powerUsageType(slot, old)] -= old.power;
         powerChange = true;
       }
       this.unladenMass -= old.mass || 0;
@@ -295,7 +316,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       }
 
       if (n.power && slot.enabled) {
-        this.priorityBands[slot.priority][(isHardPoint && !n.passive) ? 'deployed' : 'retracted'] += n.power;
+        this.priorityBands[slot.priority][powerUsageType(slot, n)] += n.power;
         powerChange = true;
       }
       this.unladenMass += n.mass || 0;
@@ -319,7 +340,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
 
     for (var i = 0, l = bands.length; i < l; i++) {
       var band = bands[i];
-      prevRetracted = band.retractedSum = prevRetracted + band.retracted;
+      prevRetracted = band.retractedSum = prevRetracted + band.retracted + band.retOnly;
       prevDeployed = band.deployedSum = prevDeployed + band.deployed + band.retracted;
     }
 
@@ -329,8 +350,8 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
   };
 
   Ship.prototype.updateShieldStrength = function() {
-    var sgSI = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
-    this.shieldStrength = sgSI != -1 ? calcShieldStrength(this.mass, this.shields, this.internal[sgSI].c, this.shieldMultiplier) : 0;
+    var sgSlot = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
+    this.shieldStrength = sgSlot ? calcShieldStrength(this.mass, this.shields, sgSlot.c, this.shieldMultiplier) : 0;
   };
 
   /**
