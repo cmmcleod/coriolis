@@ -3,9 +3,6 @@
   <div id="overview">
     <h1 ng-bind="ship.name"></h1>
     <div id="build">
-      <button ng-click="stripBuild()">
-        <svg class="icon lg"><use xlink:href="#spinner11"></use></svg><span class="button-lbl">Strip</span>
-      </button>
       <input ng-model="buildName" ng-change="bnChange()" placeholder="Enter Build Name" maxsize="50" />
       <button ng-click="saveBuild()" ng-disabled="!buildName || savedCode && code == savedCode || !canSave">
         <svg class="icon lg "><use xlink:href="#floppy-disk"></use></svg><span class="button-lbl">Save</span>
@@ -18,6 +15,9 @@
       </button>
       <button ui-sref="outfit({shipId: ship.id,code:null, bn: buildName})" ng-disabled="!code">
         <svg class="icon lg"><use xlink:href="#switch"></use></svg><span class="button-lbl">Reset</span>
+      </button>
+      <button ng-click="stripBuild()">
+        <svg class="icon lg"><use xlink:href="#spinner11"></use></svg><span class="button-lbl">Strip</span>
       </button>
     </div>
   </div>
