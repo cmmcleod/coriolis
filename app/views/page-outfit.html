@@ -16,6 +16,9 @@
       <button ui-sref="outfit({shipId: ship.id,code:null, bn: buildName})" ng-disabled="!code">
         <svg class="icon lg"><use xlink:href="#switch"></use></svg><span class="button-lbl">Reset</span>
       </button>
+      <button ng-click="stripBuild()">
+        <svg class="icon lg"><use xlink:href="#spinner11"></use></svg><span class="button-lbl">Strip</span>
+      </button>
     </div>
   </div>
 
