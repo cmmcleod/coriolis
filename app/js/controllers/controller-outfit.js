@@ -120,16 +120,16 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
    * Strip ship to D-class and no other components.
    */
   $scope.stripBuild = function() {
-		angular.forEach(ship.common, function(slot,i) {
-			id = slot.maxClass+'D';
-			ship.use(slot, id, Components.common(ship.common.indexOf(slot), id));
-		});
-		angular.forEach(ship.hardpoints, function(slot,i) {
-			ship.use(slot, null, null);
-		});
-		angular.forEach(ship.internal, function(slot,i) {
-			ship.use(slot, null, null);
-		});
+    angular.forEach(ship.common, function(slot,i) {
+      id = slot.maxClass+'D';
+      ship.use(slot, id, Components.common(ship.common.indexOf(slot), id));
+    });
+    angular.forEach(ship.hardpoints, function(slot,i) {
+      ship.use(slot, null, null);
+    });
+    angular.forEach(ship.internal, function(slot,i) {
+      ship.use(slot, null, null);
+    });
   };
 
   /**
