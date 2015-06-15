@@ -20,8 +20,8 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
           // Create chart
           svg = d3.select(element[0]).append('svg'),
           vis = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')'),
-          deployed = vis.append('g').attr('class','power-band'),
-          retracted = vis.append('g').attr('class','power-band');
+          deployed = vis.append('g').attr('class', 'power-band'),
+          retracted = vis.append('g').attr('class', 'power-band');
 
       svg.on('contextmenu', function() {
           d3.event.preventDefault();
@@ -55,7 +55,7 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
             deployedSum = 0,
             retractedSum = 0,
             retBandsSelected = false,
-            depBandsSelected = false;
+            depBandsSelected = false,
             maxPwr = Math.max(available, maxBand.retractedSum, maxBand.deployedSum);
 
         // Update chart size
@@ -73,27 +73,26 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
         vis.selectAll('.watt.axis').call(wattAxis);
         vis.selectAll('.pct.axis').attr('transform', 'translate(0,' + innerHeight + ')').call(pctAxis);
 
-        for (var i = 0, l = bands.length; i < l; i++) {
-          if (bands[i].retSelected) {
-            console.log(bands[i]);
-            retractedSum += bands[i].retracted;
+        for (var b = 0, l = bands.length; b < l; b++) {
+          if (bands[b].retSelected) {
+            retractedSum += bands[b].retracted;
             retBandsSelected = true;
           }
-          if (bands[i].depSelected) {
-            deployedSum += bands[i].deployed + bands[i].retracted;
+          if (bands[b].depSelected) {
+            deployedSum += bands[b].deployed + bands[b].retracted;
             depBandsSelected = true;
           }
         }
 
         updateLabel(retLbl, w, retBandsSelected, retBandsSelected ? retractedSum : maxBand.retractedSum, available);
-        updateLabel(depLbl, w, depBandsSelected, depBandsSelected ? deployedSum :  maxBand.deployedSum, available);
+        updateLabel(depLbl, w, depBandsSelected, depBandsSelected ? deployedSum : maxBand.deployedSum, available);
 
         retracted.selectAll('rect').data(bands).enter().append('rect')
           .attr('height', barHeight)
           .attr('width', function(d) { return Math.max(wattScale(d.retracted) - 1, 0); })
           .attr('x', function(d) { return wattScale(d.retractedSum) - wattScale(d.retracted); })
           .attr('y', 1)
-          .on('click', function(d,i) {
+          .on('click', function(d) {
             d.retSelected = !d.retSelected;
             render();
           })
@@ -104,7 +103,7 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
           .attr('y', 15)
           .style('text-anchor', 'middle')
           .attr('class', 'primary-bg')
-          .on('click', function(d,i) {
+          .on('click', function(d) {
             d.retSelected = !d.retSelected;
             render();
           })
@@ -115,18 +114,18 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
           .attr('width', function(d) { return Math.max(wattScale(d.deployed + d.retracted) - 1, 0); })
           .attr('x', function(d) { return wattScale(d.deployedSum) - wattScale(d.retracted) - wattScale(d.deployed); })
           .attr('y', barHeight + 2)
-          .on('click', function(d,i) {
+          .on('click', function(d) {
             d.depSelected = !d.depSelected;
             render();
           })
-          .attr('class', function(d) { return getClass(d.depSelected, d.deployedSum, available) });
+          .attr('class', function(d) { return getClass(d.depSelected, d.deployedSum, available); });
 
         deployed.selectAll('text').data(bands).enter().append('text')
           .attr('x', function(d) { return wattScale(d.deployedSum) - ((wattScale(d.retracted) + wattScale(d.deployed)) / 2); })
           .attr('y', barHeight + 17)
           .style('text-anchor', 'middle')
           .attr('class', 'primary-bg')
-          .on('click', function(d,i) {
+          .on('click', function(d) {
             d.depSelected = !d.depSelected;
             render();
           })
@@ -142,7 +141,7 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
       }
 
       function getClass(selected, sum, available) {
-        return selected? 'secondary' : (sum > available) ? 'warning' : 'primary';
+        return selected ? 'secondary' : (sum > available) ? 'warning' : 'primary';
       }
 
       function bandText(val, index) {

@@ -84,7 +84,6 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
    * @param  {[type]} e    The event object
    */
   $scope.select = function(type, slot, e, id) {
-    console.log('SELECT:', arguments);
     e.stopPropagation();
     id = id || angular.element(e.target).attr('cpid');  // Get component ID
 
