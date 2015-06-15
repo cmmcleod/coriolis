@@ -8,6 +8,7 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
     link: function(scope, element) {
       var margin = { top: 20, right: 130, bottom: 20, left: 40 },
           barHeight = 20,
+          bands = null,
           innerHeight = (barHeight * 2) + 3,
           height = innerHeight + margin.top + margin.bottom + 1,
           wattScale = d3.scale.linear(),
@@ -19,8 +20,17 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
           // Create chart
           svg = d3.select(element[0]).append('svg'),
           vis = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')'),
-          deployed = vis.append('g'),
-          retracted = vis.append('g');
+          deployed = vis.append('g').attr('class','power-band'),
+          retracted = vis.append('g').attr('class','power-band');
+
+      svg.on('contextmenu', function() {
+          d3.event.preventDefault();
+          for (var i = 0, l = bands.length; i < l; i++) {
+            bands[i].retSelected = false;
+            bands[i].depSelected = false;
+          }
+          render();
+        });
 
       // Create Y Axis SVG Elements
       vis.append('g').attr('class', 'watt axis');
@@ -36,12 +46,17 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
       angular.element($window).bind('orientationchange resize pwrchange', render);
 
       function render() {
-        var bands = scope.bands,
-            available = scope.available,
+        bands = scope.bands;
+
+        var available = scope.available,
             width = element[0].offsetWidth,
             w = width - margin.left - margin.right,
             maxBand = bands[bands.length - 1],
-            maxPwr = Math.max(available, maxBand.deployedSum);
+            deployedSum = 0,
+            retractedSum = 0,
+            retBandsSelected = false,
+            depBandsSelected = false;
+            maxPwr = Math.max(available, maxBand.retractedSum, maxBand.deployedSum);
 
         // Update chart size
         svg.attr('width', width).attr('height', height);
@@ -55,32 +70,44 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
         // Update X & Y Axis
         wattScale.range([0, w]).domain([0, maxPwr]).clamp(true);
         pctScale.range([0, w]).domain([0, maxPwr / available]).clamp(true);
-
         vis.selectAll('.watt.axis').call(wattAxis);
         vis.selectAll('.pct.axis').attr('transform', 'translate(0,' + innerHeight + ')').call(pctAxis);
 
-        retLbl
-          .attr('x', w + 5 )
-          .attr('class', maxBand.retractedSum > available ? 'warning' : 'primary')
-          .text(wattFmt(Math.max(0, maxBand.retractedSum)) + ' (' + pctFmt(Math.max(0, maxBand.retractedSum / available)) + ')');
+        for (var i = 0, l = bands.length; i < l; i++) {
+          if (bands[i].retSelected) {
+            console.log(bands[i]);
+            retractedSum += bands[i].retracted;
+            retBandsSelected = true;
+          }
+          if (bands[i].depSelected) {
+            deployedSum += bands[i].deployed + bands[i].retracted;
+            depBandsSelected = true;
+          }
+        }
 
-        depLbl
-          .attr('x', w + 5 )
-          .attr('class', maxBand.deployedSum > available ? 'warning' : 'primary')
-          .text(wattFmt(Math.max(0, maxBand.deployedSum)) + ' (' + pctFmt(Math.max(0, maxBand.deployedSum / available)) + ')');
+        updateLabel(retLbl, w, retBandsSelected, retBandsSelected ? retractedSum : maxBand.retractedSum, available);
+        updateLabel(depLbl, w, depBandsSelected, depBandsSelected ? deployedSum :  maxBand.deployedSum, available);
 
         retracted.selectAll('rect').data(bands).enter().append('rect')
           .attr('height', barHeight)
           .attr('width', function(d) { return Math.max(wattScale(d.retracted) - 1, 0); })
           .attr('x', function(d) { return wattScale(d.retractedSum) - wattScale(d.retracted); })
           .attr('y', 1)
-          .attr('class', function(d) { return (d.retractedSum > available) ? 'warning' : 'primary'; });
+          .on('click', function(d,i) {
+            d.retSelected = !d.retSelected;
+            render();
+          })
+          .attr('class', function(d) { return getClass(d.retSelected, d.retractedSum, available); });
 
         retracted.selectAll('text').data(bands).enter().append('text')
           .attr('x', function(d) { return wattScale(d.retractedSum) - (wattScale(d.retracted) / 2); })
           .attr('y', 15)
           .style('text-anchor', 'middle')
           .attr('class', 'primary-bg')
+          .on('click', function(d,i) {
+            d.retSelected = !d.retSelected;
+            render();
+          })
           .text(function(d, i) { return bandText(d.retracted, i); });
 
         deployed.selectAll('rect').data(bands).enter().append('rect')
@@ -88,15 +115,34 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
           .attr('width', function(d) { return Math.max(wattScale(d.deployed + d.retracted) - 1, 0); })
           .attr('x', function(d) { return wattScale(d.deployedSum) - wattScale(d.retracted) - wattScale(d.deployed); })
           .attr('y', barHeight + 2)
-          .attr('class', function(d) { return (d.deployedSum > available) ? 'warning' : 'primary'; });
+          .on('click', function(d,i) {
+            d.depSelected = !d.depSelected;
+            render();
+          })
+          .attr('class', function(d) { return getClass(d.depSelected, d.deployedSum, available) });
 
         deployed.selectAll('text').data(bands).enter().append('text')
           .attr('x', function(d) { return wattScale(d.deployedSum) - ((wattScale(d.retracted) + wattScale(d.deployed)) / 2); })
           .attr('y', barHeight + 17)
           .style('text-anchor', 'middle')
           .attr('class', 'primary-bg')
+          .on('click', function(d,i) {
+            d.depSelected = !d.depSelected;
+            render();
+          })
           .text(function(d, i) { return bandText(d.deployed + d.retracted, i); });
 
+      }
+
+      function updateLabel(lbl, width, selected, sum, available) {
+        lbl
+          .attr('x', width + 5 )
+          .attr('class', getClass(selected, sum, available))
+          .text(wattFmt(Math.max(0, sum)) + ' (' + pctFmt(Math.max(0, sum / available)) + ')');
+      }
+
+      function getClass(selected, sum, available) {
+        return selected? 'secondary' : (sum > available) ? 'warning' : 'primary';
       }
 
       function bandText(val, index) {
