@@ -3,6 +3,9 @@
   <div id="overview">
     <h1 ng-bind="ship.name"></h1>
     <div id="build">
+      <button ng-click="stripBuild()">
+        <svg class="icon lg"><use xlink:href="#spinner11"></use></svg><span class="button-lbl">Strip</span>
+      </button>
       <input ng-model="buildName" ng-change="bnChange()" placeholder="Enter Build Name" maxsize="50" />
       <button ng-click="saveBuild()" ng-disabled="!buildName || savedCode && code == savedCode || !canSave">
         <svg class="icon lg "><use xlink:href="#floppy-disk"></use></svg><span class="button-lbl">Save</span>
