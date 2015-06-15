@@ -83,9 +83,10 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
    * @param  {[type]} slot The slot object belonging to the ship instance
    * @param  {[type]} e    The event object
    */
-  $scope.select = function(type, slot, e) {
+  $scope.select = function(type, slot, e, id) {
+    console.log('SELECT:', arguments);
     e.stopPropagation();
-    var id = angular.element(e.target).attr('cpid');  // Get component ID
+    id = id || angular.element(e.target).attr('cpid');  // Get component ID
 
     if (id) {
       if (id == 'empty') {
