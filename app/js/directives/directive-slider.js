@@ -8,7 +8,7 @@ angular.module('app').directive('slider', ['$window', function($window) {
       change: '&onChange'
     },
     link: function(scope, element) {
-      var margin = { top: -10, right: 140, bottom: 0, left: 50 },
+      var margin = { top: -10, right: 145, bottom: 0, left: 50 },
           height = 40,    // Height is fixed
           h = height - margin.top - margin.bottom,
           fmt = d3.format('.2f'),
