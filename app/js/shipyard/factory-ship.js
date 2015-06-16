@@ -1,4 +1,4 @@
-angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 'calcJumpRange', 'lodash', function(Components, calcShieldStrength, calcJumpRange, _) {
+angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 'calcJumpRange', 'calcTotalRange', 'lodash', function(Components, calcShieldStrength, calcJumpRange, calcTotalRange, _) {
 
   /**
    * Returns the power usage type of a slot and it's particular component
@@ -358,24 +358,13 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    * Jump Range and total range calculations
    */
   Ship.prototype.updateJumpStats = function() {
-    var fsd = this.common[2].c;                     // Frame Shift Drive;
-    var fuelRemaining = this.fuelCapacity % fsd.maxfuel;  // Fuel left after making N max jumps
-    var jumps = this.fuelCapacity / fsd.maxfuel;
+    var fsd = this.common[2].c;   // Frame Shift Drive;
     this.unladenRange = calcJumpRange(this.unladenMass + fsd.maxfuel, fsd, this.fuelCapacity); // Include fuel weight for jump
     this.fullTankRange = calcJumpRange(this.unladenMass + this.fuelCapacity, fsd, this.fuelCapacity); // Full Tanke
     this.ladenRange = calcJumpRange(this.ladenMass, fsd, this.fuelCapacity);
-    this.maxJumpCount = Math.ceil(jumps);  // Number of full fuel jumps + final jump to empty tank
-
-    // Going backwards, start with the last jump using the remaining fuel
-    this.unladenTotalRange = fuelRemaining > 0 ? calcJumpRange(this.unladenMass + fuelRemaining, fsd, fuelRemaining) : 0;
-    this.ladenTotalRange = fuelRemaining > 0 ? calcJumpRange(this.unladenMass + this.cargoCapacity + fuelRemaining, fsd, fuelRemaining) : 0;
-
-    // For each max fuel jump, calculate the max jump range based on fuel left in the tank
-    for (var j = 0, l = Math.floor(jumps); j < l; j++) {
-      fuelRemaining += fsd.maxfuel;
-      this.unladenTotalRange += calcJumpRange(this.unladenMass + fuelRemaining, fsd);
-      this.ladenTotalRange += calcJumpRange(this.unladenMass + this.cargoCapacity + fuelRemaining, fsd);
-    }
+    this.unladenTotalRange = calcTotalRange(this.unladenMass, fsd, this.fuelCapacity);
+    this.ladenTotalRange = calcTotalRange(this.unladenMass + this.cargoCapacity, fsd, this.fuelCapacity);
+    this.maxJumpCount = Math.ceil(this.fuelCapacity / fsd.maxfuel);
   };
 
   return Ship;

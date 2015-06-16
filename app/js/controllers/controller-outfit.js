@@ -1,4 +1,4 @@
-angular.module('app').controller('OutfitController', ['$window', '$rootScope', '$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', function($window, $rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist) {
+angular.module('app').controller('OutfitController', ['$window', '$rootScope', '$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', 'calcTotalRange', function($window, $rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist, calcTotalRange) {
   var data = Ships[$p.shipId];   // Retrieve the basic ship properties, slots and defaults
   var ship = new Ship($p.shipId, data.properties, data.slots); // Create a new Ship instance
   var win = angular.element($window);   // Angularized window object for event triggering
@@ -39,8 +39,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   $scope.jrSeries = {
     xMin: 0,
     xMax: ship.cargoCapacity,
-    // Slightly higher than actual based bacuse components are excluded
-    yMax: ship.jumpRangeWithMass(ship.unladenMass),
+    yMax: ship.unladenRange,
     yMin: 0,
     func: function(cargo) { // X Axis is Cargo
       return ship.jumpRangeWithMass(ship.unladenMass + $scope.fuel + cargo, $scope.fuel);
@@ -54,6 +53,29 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
       },
       yAxis: {
         title: 'Jump Range',
+        unit: 'LY'
+      }
+    },
+    watch: $scope.fsd
+  };
+
+  $scope.trSeries = {
+    xMin: 0,
+    xMax: ship.cargoCapacity,
+    yMax: ship.unladenTotalRange,
+    yMin: 0,
+    func: function(cargo) { // X Axis is Cargo
+      return calcTotalRange(ship.unladenMass + cargo, $scope.fsd.c, $scope.fuel);
+    }
+  };
+  $scope.trChart = {
+    labels: {
+      xAxis: {
+        title: 'Cargo',
+        unit: 'T'
+      },
+      yAxis: {
+        title: 'Total Range',
         unit: 'LY'
       }
     },
@@ -120,16 +142,12 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
    * Strip ship to D-class and no other components.
    */
   $scope.stripBuild = function() {
-    angular.forEach(ship.common, function(slot,i) {
-      id = slot.maxClass+'D';
+    ship.common.forEach(function(slot) {
+      var id = slot.maxClass + 'D';
       ship.use(slot, id, Components.common(ship.common.indexOf(slot), id));
     });
-    angular.forEach(ship.hardpoints, function(slot,i) {
-      ship.use(slot, null, null);
-    });
-    angular.forEach(ship.internal, function(slot,i) {
-      ship.use(slot, null, null);
-    });
+    ship.hardpoints.forEach(function(slot) { ship.use(slot, null, null); });
+    ship.internal.forEach(function(slot) { ship.use(slot, null, null); });
   };
 
   /**
@@ -232,9 +250,9 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
 
   function updateState() {
     $state.go('outfit', { shipId: ship.id, code: $scope.code, bn: $scope.buildName }, { location: 'replace', notify: false });
-    $scope.jrSeries.xMax = ship.cargoCapacity;
-    $scope.jrSeries.yMax = ship.jumpRangeWithMass(ship.unladenMass);
-    $scope.jrSeries.mass = ship.unladenMass;
+    $scope.trSeries.xMax = $scope.jrSeries.xMax = ship.cargoCapacity;
+    $scope.jrSeries.yMax = ship.unladenRange;
+    $scope.trSeries.yMax = ship.unladenTotalRange;
     win.triggerHandler('pwrchange');
   }
 

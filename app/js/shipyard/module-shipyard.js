@@ -176,6 +176,50 @@ angular.module('shipyard', ['ngLodash'])
   .value('calcJumpRange', function(mass, fsd, fuel) {
       return Math.pow(Math.min(fuel === undefined ? fsd.maxfuel : fuel, fsd.maxfuel) / fsd.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass;
   })
+      /**
+   * Calculate the maximum single jump range based on mass and a specific FSD
+   *
+   * @param  {number} mass Mass of a ship: laden, unlanden, partially laden, etc
+   * @param  {object} fsd  The FDS object/component with maxfuel, fuelmul, fuelpower, optmass
+   * @param  {number} fuel Optional - The fuel consumed during the jump (must be less than the drives max fuel per jump)
+   * @return {number}      Distance in Light Years
+   */
+  .value('calcTotalRangev1', function(mass, fsd, fuel) {
+    var fuelRemaining = fuel % fsd.maxfuel;  // Fuel left after making N max jumps
+    var jumps = fuel / fsd.maxfuel;
+    mass += fuelRemaining;
+    // Going backwards, start with the last jump using the remaining fuel
+    var totalRange = fuelRemaining > 0 ? Math.pow(fuelRemaining / fsd.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass : 0;
+    // For each max fuel jump, calculate the max jump range based on fuel left in the tank
+    for (var j = Math.floor(jumps); j >= 0; j--) {
+      fuelRemaining += fsd.maxfuel;
+      totalRange += Math.pow(fsd.maxfuel / fsd.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass;
+    }
+    return totalRange;
+  })
+    /**
+   * Calculate the maximum single jump range based on mass and a specific FSD
+   *
+   * @param  {number} mass Mass of a ship: laden, unlanden, partially laden, etc
+   * @param  {object} fsd  The FDS object/component with maxfuel, fuelmul, fuelpower, optmass
+   * @param  {number} fuel Optional - The fuel consumed during the jump (must be less than the drives max fuel per jump)
+   * @return {number}      Distance in Light Years
+   */
+  .value('calcTotalRange', function(mass, fsd, fuel) {
+      var maxfuel = fsd.maxfuel;
+      var maxJumpCount = Math.floor(fuel / maxfuel);
+      var fuelRemaining = fuel % maxfuel;
+      var jumpCoefficient = Math.pow(fsd.maxfuel / fsd.fuelmul, 1 / fsd.fuelpower);
+
+      mass += fuelRemaining;
+
+      var massCoefficient = (fsd.optmass / maxfuel) * (Math.log(mass + (maxJumpCount * maxfuel)) - Math.log(mass));
+      var totalDistance = (jumpCoefficient * massCoefficient);
+      if (fuelRemaining > 0) {
+        totalDistance += Math.pow(fuelRemaining / fsd.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass;
+      }
+      return totalDistance;
+  })
    /**
    * Calculate the a ships shield strength based on mass, shield generator and shield boosters used.
    *

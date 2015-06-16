@@ -266,11 +266,17 @@
 
   <div class="group dbl">
     <h1>Jump Range</h1>
-    <div class="cen">
-      <div area-chart config="jrChart" series="jrSeries"></div>
-      <div slider max="ship.fuelCapacity" unit="'T'" on-change="::fuelChange(val)" style="position:relative; margin: 0 auto;">
+    <div area-chart config="jrChart" series="jrSeries"></div>
+  </div>
+
+  <div class="group dbl">
+    <h1>Total Range</h1>
+    <div area-chart config="trChart" series="trSeries"></div>
+  </div>
+
+  <div class="group dbl">
+    <div slider max="ship.fuelCapacity" unit="'T'" on-change="::fuelChange(val)" style="position:relative; margin: 0 auto;">
         <svg class="icon xl primary-disabled" style="position:absolute;height: 100%;"><use xlink:href="#fuel"></use></svg>
-      </div>
     </div>
   </div>
 
