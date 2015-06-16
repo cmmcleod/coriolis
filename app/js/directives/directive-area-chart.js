@@ -19,7 +19,8 @@ angular.module('app').directive('areaChart', ['$window', function($window) {
           xAxis = d3.svg.axis().outerTickSize(0).orient('bottom').tickFormat(d3.format('.2r')),
           yAxis = d3.svg.axis().ticks(6).outerTickSize(0).orient('left').tickFormat(fmt),
           x = d3.scale.linear(),
-          y = d3.scale.linear();
+          y = d3.scale.linear(),
+          data = [];
 
       // Create chart
       var svg = d3.select(element[0]).append('svg');
@@ -61,12 +62,34 @@ angular.module('app').directive('areaChart', ['$window', function($window) {
 
       // Create and Add tooltip
       var tip = vis.append('g').style('display', 'none');
-      tip.append('rect').attr('width', '4em').attr('height', '2em').attr('x', '0.5em').attr('y', '-1em').attr('class', 'tip');
+      tip.append('rect').attr('width', '5em').attr('height', '2em').attr('x', '0.5em').attr('y', '-1em').attr('class', 'tip');
       tip.append('circle')
         .attr('class', 'marker')
         .attr('r', 4);
       tip.append('text').attr('class', 'label x').attr('y', '-0.25em');
       tip.append('text').attr('class', 'label y').attr('y', '0.85em');
+
+      vis.insert('path', ':first-child')   // Area/Path to appear behind everything else
+        .data([data])
+        .attr('class', 'area')
+        .attr('fill', 'url(#gradient)')
+        .attr('d', area)
+        .on('mouseover', showTip)
+        .on('mouseout', hideTip)
+        .on('mousemove', moveTip)
+        .call(drag);
+
+      drag
+        .on('dragstart', function() {
+          dragging = true;
+          moveTip.call(this);
+          showTip();
+        })
+        .on('dragend', function() {
+          dragging = false;
+          hideTip();
+        })
+        .on('drag', moveTip);
 
       /**
        * Watch for changes in the series data (mass changes, etc)
@@ -78,8 +101,9 @@ angular.module('app').directive('areaChart', ['$window', function($window) {
         var width = element[0].parentElement.offsetWidth,
             height = width * 0.5,
             w = width - margin.left - margin.right,
-            h = height - margin.top - margin.bottom,
-            data = [];
+            h = height - margin.top - margin.bottom;
+
+        data.length = 0;  // Reset Data array
 
         if (series.xMax == series.xMin) {
           var yVal = func(series.xMin);
@@ -95,7 +119,7 @@ angular.module('app').directive('areaChart', ['$window', function($window) {
 
         // Update Chart Size
         svg.attr('width', width).attr('height', height);
-        // Update domain and scale for axes;
+        // Update domain and scale for axes
         x.range([0, w]).domain([series.xMin, series.xMax]).clamp(true);
         xAxis.scale(x);
         xLbl.attr('transform', 'translate(0,' + h + ')');
@@ -106,30 +130,9 @@ angular.module('app').directive('areaChart', ['$window', function($window) {
         vis.selectAll('.y.axis').call(yAxis);
         vis.selectAll('.x.axis').call(xAxis);
 
-        // Remove existing elements
-        vis.selectAll('path.area').remove();
-
-        vis.insert('path', ':first-child')   // Area/Path to appear behind everything else
-          .datum(data)
-          .attr('class', 'area')
-          .attr('fill', 'url(#gradient)')
-          .attr('d', area)
-          .on('mouseover', showTip)
-          .on('mouseout', hideTip)
-          .on('mousemove', moveTip)
-          .call(drag);
-
-        drag
-          .on('dragstart', function() {
-            dragging = true;
-            moveTip.call(this);
-            showTip();
-          })
-          .on('dragend', function() {
-            dragging = false;
-            hideTip();
-          })
-          .on('drag', moveTip);
+        vis.selectAll('path.area')   // Area/Path to appear behind everything else
+          .data([data])
+          .attr('d', area);
       }
 
       function showTip() {
@@ -145,8 +148,8 @@ angular.module('app').directive('areaChart', ['$window', function($window) {
       function moveTip() {
         var xPos = d3.mouse(this)[0], x0 = x.invert(xPos), y0 = func(x0), flip = (x0 / x.domain()[1] > 0.75);
         tip.attr('transform', 'translate(' + x(x0) + ',' + y(y0) + ')');
-        tip.selectAll('rect').attr('x', flip ? '-4.5em' : '0.5em').style('text-anchor', flip ? 'end' : 'start');
-        tip.selectAll('text.label').attr('x', flip ? '-1em' : '1em').style('text-anchor', flip ? 'end' : 'start');
+        tip.selectAll('rect').attr('x', flip ? '-6.25em' : '0.5em').style('text-anchor', flip ? 'end' : 'start');
+        tip.selectAll('text.label').attr('x', flip ? '-2em' : '1em').style('text-anchor', flip ? 'end' : 'start');
         tip.select('text.label.x').text(fmtLong(x0) + ' ' + labels.xAxis.unit);
         tip.select('text.label.y').text(fmtLong(y0) + ' ' + labels.yAxis.unit);
       }
