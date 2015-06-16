@@ -14,21 +14,13 @@ module.exports = function(config) {
       '../build/app*.js',
       'tests/**/*.js'
     ],
-    // list of files to exclude
-    exclude: [],
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {},
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['mocha'],
     port: 9876,
     colors: true,
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
     autoWatch: false,
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
     singleRun: false
   });
 };

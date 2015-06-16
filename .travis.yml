@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "0.12"
+before_script:
+  - npm install -g gulp
+  - npm install -g bower
+  - npm install
+  - bower install
+script:
+  - gulp lint
+  - gulp build-prod
+  - gulp test
