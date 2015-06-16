@@ -148,6 +148,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     }
     ship.hardpoints.forEach(function(slot) { ship.use(slot, null, null); });
     ship.internal.forEach(function(slot) { ship.use(slot, null, null); });
+    ship.useBulkhead(0);
     $scope.code = Serializer.fromShip(ship);
     updateState();
   };
