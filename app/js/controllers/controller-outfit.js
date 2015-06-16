@@ -142,12 +142,14 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
    * Strip ship to D-class and no other components.
    */
   $scope.stripBuild = function() {
-    ship.common.forEach(function(slot) {
-      var id = slot.maxClass + 'D';
-      ship.use(slot, id, Components.common(ship.common.indexOf(slot), id));
-    });
+    for (var i = 0, l = ship.common.length - 1; i < l; i++) { // All except Fuel Tank
+      var id = ship.common[i].maxClass + 'D';
+      ship.use(ship.common[i], id, Components.common(i, id));
+    }
     ship.hardpoints.forEach(function(slot) { ship.use(slot, null, null); });
     ship.internal.forEach(function(slot) { ship.use(slot, null, null); });
+    $scope.code = Serializer.fromShip(ship);
+    updateState();
   };
 
   /**
