@@ -12,6 +12,7 @@
     "angular-mocks": "1.3.x",
     "async": "0.9.x",
     "del": "1.2.x",
+    "gulp": "3.9.x",
     "gulp-angular-templatecache": "1.6.x",
     "gulp-concat": "2.5.x",
     "gulp-eslint": "0.13.x",
