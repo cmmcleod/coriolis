@@ -62,7 +62,7 @@ angular.module('app').directive('areaChart', ['$window', function($window) {
 
       // Create and Add tooltip
       var tip = vis.append('g').style('display', 'none');
-      tip.append('rect').attr('width', '5em').attr('height', '2em').attr('x', '0.5em').attr('y', '-1em').attr('class', 'tip');
+      tip.append('rect').attr('width', '4.5em').attr('height', '2em').attr('x', '0.5em').attr('y', '-1em').attr('class', 'tip');
       tip.append('circle')
         .attr('class', 'marker')
         .attr('r', 4);
@@ -146,9 +146,9 @@ angular.module('app').directive('areaChart', ['$window', function($window) {
       }
 
       function moveTip() {
-        var xPos = d3.mouse(this)[0], x0 = x.invert(xPos), y0 = func(x0), flip = (x0 / x.domain()[1] > 0.75);
+        var xPos = d3.mouse(this)[0], x0 = x.invert(xPos), y0 = func(x0), flip = (x0 / x.domain()[1] > 0.65);
         tip.attr('transform', 'translate(' + x(x0) + ',' + y(y0) + ')');
-        tip.selectAll('rect').attr('x', flip ? '-6.25em' : '0.5em').style('text-anchor', flip ? 'end' : 'start');
+        tip.selectAll('rect').attr('x', flip ? '-5.75em' : '0.5em').style('text-anchor', flip ? 'end' : 'start');
         tip.selectAll('text.label').attr('x', flip ? '-2em' : '1em').style('text-anchor', flip ? 'end' : 'start');
         tip.select('text.label.x').text(fmtLong(x0) + ' ' + labels.xAxis.unit);
         tip.select('text.label.y').text(fmtLong(y0) + ' ' + labels.yAxis.unit);
