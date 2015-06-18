@@ -6,11 +6,11 @@
 
 The Coriolis project was inspired by [E:D Shipyard](http://www.edshipyard.com/) and, of course, [Elite Dangerous](http://www.elitedangerous.com). The ultimate goal of Coriolis is to provide rich features to support in-game play and planning while engaging the E:D community to support its development.
 
-Coriolis was created for non-commercial purposes. It is not endorsed by nor reflects the views or opinions of Frontier Developments.
+Coriolis was created for non-commercial purposes. Coriolis was created using assets and imagery from Elite: Dangerous, with the permission of Frontier Developments plc, for non-commercial purposes. It is not endorsed by nor reflects the views or opinions of Frontier Developments and no employee of Frontier Developments was involved in the making of it.
 
 ## Contributing
 
-Please [submit issues](https://github.com/cmmcleod/coriolis/issues), or better yet [pull requests](http://www.elitedangerous.com) for any corrections or additions to the database or the code.
+Please [submit issues](https://github.com/cmmcleod/coriolis/issues), or better yet [pull requests](https://github.com/cmmcleod/coriolis/pulls) for any corrections or additions to the database or the code.
 
 ### Feature Requests, Suggestions & Bugs
 
@@ -31,7 +31,8 @@ See [Data wiki](https://github.com/cmmcleod/coriolis/wiki/Database) for details 
 All Data and [associated JSON](https://github.com/cmmcleod/coriolis/tree/master/data) files are intellectual property and copyright of Frontier Developments plc ('Frontier', 'Frontier Developments') and are subject to their
 [terms and conditions](https://www.frontierstore.net/terms-and-conditions/).
 
-The code specificially for Coriolis.io is released under the MIT License.
+The code (Javascript, CSS, HTML, and SVG files only) specificially for Coriolis.io is released under the MIT License.
+
 Copyright (c) 2015 Coriolis.io, Colin McLeod
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
