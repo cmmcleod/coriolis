@@ -245,8 +245,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
 
         if (slot.c.grp == 'sg') {
           this.updateShieldStrength();
-        }
-        else if (slot.c.grp == 'sb') {
+        } else if (slot.c.grp == 'sb') {
           this.shieldMultiplier += slot.c.shieldmul * (enabled ? 1 : -1);
           this.updateShieldStrength();
         }
@@ -318,7 +317,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
           this.armourAdded += n.armouradd;
           break;
         case 'sb':
-          this.shieldMultiplier +=  slot.enabled ?  n.shieldmul : 0;
+          this.shieldMultiplier += slot.enabled ? n.shieldmul : 0;
           break;
       }
 
@@ -363,7 +362,6 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
   Ship.prototype.updateShieldStrength = function() {
     var sgSlot = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
     this.shieldStrength = sgSlot && sgSlot.enabled ? calcShieldStrength(this.mass, this.shields, sgSlot.c, this.shieldMultiplier) : 0;
-    console.log(this.shieldStrength);
   };
 
   /**
