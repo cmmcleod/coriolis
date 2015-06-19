@@ -164,11 +164,11 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
   Ship.prototype.use = function(slot, id, component, preventUpdate) {
     if (slot.id != id) { // Selecting a different component
       // Slot is an internal slot, is not being emptied, and the selected component group/type must be of unique
-      if (slot.cat != 2 && component && _.includes(['sg', 'rf', 'fs'], component.grp)) {
+      if (slot.cat == 2 && component && _.includes(['sg', 'rf', 'fs'], component.grp)) {
         // Find another internal slot that already has this type/group installed
         var similarSlot = this.findInternalByGroup(component.grp);
         // If another slot has an installed component with of the same type
-        if (similarSlot && similarSlot !== slot) {
+        if (!preventUpdate && similarSlot && similarSlot !== slot) {
           this.updateStats(similarSlot, null, similarSlot.c, true);  // Update stats but don't trigger a global update
           similarSlot.id = similarSlot.c = null;  // Empty the slot
         }
