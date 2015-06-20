@@ -1,4 +1,4 @@
-angular.module('app').controller('OutfitController', ['$window', '$rootScope', '$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', 'calcTotalRange', function($window, $rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist, calcTotalRange) {
+angular.module('app').controller('OutfitController', ['$window', '$rootScope', '$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', 'calcTotalRange', 'calcSpeed', function($window, $rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist, calcTotalRange, calcSpeed) {
   var data = Ships[$p.shipId];   // Retrieve the basic ship properties, slots and defaults
   var ship = new Ship($p.shipId, data.properties, data.slots); // Create a new Ship instance
   var win = angular.element($window);   // Angularized window object for event triggering
@@ -55,8 +55,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
         title: 'Jump Range',
         unit: 'LY'
       }
-    },
-    watch: $scope.fsd
+    }
   };
 
   $scope.trSeries = {
@@ -78,8 +77,30 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
         title: 'Total Range',
         unit: 'LY'
       }
-    },
-    watch: $scope.fsd
+    }
+  };
+
+  $scope.speedSeries = {
+    xMin: 0,
+    xMax: ship.cargoCapacity,
+    yMax: 500,
+    yMin: 0,
+    series: ['speed', 'boost'],
+    func: function(cargo) { // X Axis is Cargo
+      return calcSpeed(ship.unladenMass + $scope.fuel + cargo, ship.speed, ship.boost, $scope.th.c);
+    }
+  };
+  $scope.speedChart = {
+    labels: {
+      xAxis: {
+        title: 'Cargo',
+        unit: 'T'
+      },
+      yAxis: {
+        title: 'Speed',
+        unit: 'm/s'
+      }
+    }
   };
 
   /**
@@ -122,8 +143,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
         ship.useBulkhead(id);
       }
       $scope.selectedSlot = null;
-      $scope.code = Serializer.fromShip(ship);
-      updateState();
+      updateState(Serializer.fromShip(ship));
     }
   };
 
@@ -133,8 +153,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   $scope.reloadBuild = function() {
     if ($scope.buildName && $scope.savedCode) {
       Serializer.toShip(ship, $scope.savedCode);  // Repopulate with components from last save
-      $scope.code = $scope.savedCode;
-      updateState();
+      updateState($scope.savedCode);
     }
   };
 
@@ -149,8 +168,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     ship.hardpoints.forEach(function(slot) { ship.use(slot, null, null); });
     ship.internal.forEach(function(slot) { ship.use(slot, null, null); });
     ship.useBulkhead(0);
-    $scope.code = Serializer.fromShip(ship);
-    updateState();
+    updateState(Serializer.fromShip(ship));
   };
 
   /**
@@ -169,7 +187,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     if ($scope.code != $scope.savedCode) {
       Persist.saveBuild(ship.id, $scope.buildName, $scope.code);
       $scope.savedCode = $scope.code;
-      updateState();
+      updateState($scope.code);
     }
   };
 
@@ -218,21 +236,18 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
    */
   $scope.togglePwr = function(c) {
     ship.setSlotEnabled(c, !c.enabled);
-    $scope.code = Serializer.fromShip(ship);
-    updateState();
+    updateState(Serializer.fromShip(ship));
   };
 
   $scope.incPriority = function(c) {
     if (ship.changePriority(c, c.priority + 1)) {
-      $scope.code = Serializer.fromShip(ship);
-      updateState();
+      updateState(Serializer.fromShip(ship));
     }
   };
 
   $scope.decPriority = function(c) {
     if (ship.changePriority(c, c.priority - 1)) {
-      $scope.code = Serializer.fromShip(ship);
-      updateState();
+      updateState(Serializer.fromShip(ship));
     }
   };
 
@@ -251,9 +266,10 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
 
   // Utilify functions
 
-  function updateState() {
+  function updateState(code) {
+    $scope.code = code;
     $state.go('outfit', { shipId: ship.id, code: $scope.code, bn: $scope.buildName }, { location: 'replace', notify: false });
-    $scope.trSeries.xMax = $scope.jrSeries.xMax = ship.cargoCapacity;
+    $scope.speedSeries.xMax = $scope.trSeries.xMax = $scope.jrSeries.xMax = ship.cargoCapacity;
     $scope.jrSeries.yMax = ship.unladenRange;
     $scope.trSeries.yMax = ship.unladenTotalRange;
     win.triggerHandler('pwrchange');

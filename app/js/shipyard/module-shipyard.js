@@ -208,9 +208,6 @@ angular.module('shipyard', ['ngLodash'])
    * @return {number}            Approximate shield strengh in MJ
    */
   .value('calcShieldStrength', function(mass, shields, sg, multiplier) {
-    if (!sg) {
-      return 0;
-    }
     if (mass <= sg.minmass) {
       return shields * multiplier * sg.minmul;
     }
@@ -221,4 +218,20 @@ angular.module('shipyard', ['ngLodash'])
       return shields * multiplier * (sg.optmul + (mass - sg.optmass) / (sg.maxmass - sg.optmass) * (sg.maxmul - sg.optmul));
     }
     return shields * multiplier * sg.maxmul;
+  })
+  /**
+   * Calculate the a ships speed based on mass, and thrusters. Currently Innacurate / Incomplete :(
+   *
+   * @private
+   * @param  {number} mass        Current mass of the ship
+   * @param  {number} baseSpeed   Base speed m/s for ship
+   * @param  {number} baseBoost   Base boost m/s for ship
+   * @param  {object} thrusters   The shield generator used
+   * @return {object}             Approximate speed and boost speed in m/s
+   */
+  .value('calcSpeed', function(mass, baseSpeed, baseBoost) { //, thrusters) {
+    //var speed = baseSpeed * (1 + ((thrusters.optmass / mass) * 0.1 ) );  // TODO: find thruser coefficient(s)
+    //var boost = baseBoost * (1 + ((thrusters.optmass / mass) * 0.1 ) );
+
+    return { boost: baseSpeed, speed: baseBoost };
   });
