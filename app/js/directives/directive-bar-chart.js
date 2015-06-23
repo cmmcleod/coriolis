@@ -1,10 +1,10 @@
-angular.module('app').directive('barChart', ['$window', function ($window) {
+angular.module('app').directive('barChart', ['$window', function($window) {
 
-  function bName (build) {
+  function bName(build) {
     return build.buildName + '\n' + build.name;
   }
 
-  var insertLinebreaks = function (d) {
+  function insertLinebreaks(d) {
     var el = d3.select(this);
     var words = d.split('\n');
     el.text('').attr('y', -6);
@@ -14,11 +14,11 @@ angular.module('app').directive('barChart', ['$window', function ($window) {
         tspan.attr('x', -9).attr('dy', 12);
       }
     }
-  };
+  }
 
   return {
     restrict: 'A',
-    scope:{
+    scope: {
       data: '=',
       facet: '='
     },
@@ -28,7 +28,7 @@ angular.module('app').directive('barChart', ['$window', function ($window) {
           fmt = scope.facet.fmt,
           properties = scope.facet.props,
           unit = scope.facet.unit,
-          margin = {top: 10, right: 20, bottom: 35, left: 150},
+          margin = { top: 10, right: 20, bottom: 35, left: 150 },
           y0 = d3.scale.ordinal(),
           y1 = d3.scale.ordinal(),
           x = d3.scale.linear(),
@@ -43,7 +43,7 @@ angular.module('app').directive('barChart', ['$window', function ($window) {
       var tip = d3.tip()
         .attr('class', 'd3-tip')
         .html(function(property, propertyIndex) {
-          return (labels? (labels[propertyIndex] + ': ') : '') + fmt(property.value) + ' ' + unit;
+          return (labels ? (labels[propertyIndex] + ': ') : '') + fmt(property.value) + ' ' + unit;
         });
 
       vis.call(tip);
@@ -52,13 +52,13 @@ angular.module('app').directive('barChart', ['$window', function ($window) {
       vis.append('g').attr('class', 'y axis');
       vis.selectAll('g.y.axis g text').each(insertLinebreaks);
       // Create X Axis SVG Elements
-      var xAxisLbl =  vis.append('g')
+      var xAxisLbl = vis.append('g')
           .attr('class', 'x axis')
         .append('text')
           .attr('y', 30)
           .attr('dy', '.1em')
           .style('text-anchor', 'middle')
-          .text(scope.facet.title + (unit? (' (' + unit + ')') : ''));
+          .text(scope.facet.title + (unit ? (' (' + unit + ')') : ''));
 
 
       /**
@@ -84,11 +84,11 @@ angular.module('app').directive('barChart', ['$window', function ($window) {
 
         // Update X & Y Axis
         x.range([0, w]).domain([0, maxVal]);
-        y0.domain(data.map(bName)).rangeRoundBands([0, h],0.3);
+        y0.domain(data.map(bName)).rangeRoundBands([0, h], 0.3);
         y1.domain(properties).rangeRoundBands([0, y0.rangeBand()]);
         vis.selectAll('.y.axis').call(yAxis);
         vis.selectAll('.x.axis').attr('transform', 'translate(0,' + h + ')').call(xAxis);
-        xAxisLbl.attr('x', w/2);
+        xAxisLbl.attr('x', w / 2);
         // Update Y-Axis labels
         vis.selectAll('g.y.axis g text').each(insertLinebreaks);
 
@@ -102,13 +102,13 @@ angular.module('app').directive('barChart', ['$window', function ($window) {
           .data(function(build) {
             var o = [];
             for (var i = 0; i < properties.length; i++) {
-              o.push({name: properties[i], value:build[properties[i]]});
+              o.push({ name: properties[i], value: build[properties[i]] });
             }
             return o;
           })
         .enter().append('rect')
           .attr('height', y1.rangeBand())
-          .attr('x',0)
+          .attr('x', 0)
           .attr('y', function(d) {return y1(d.name); })
           .attr('width', function(d) { return x(d.value); })
           .on('mouseover', tip.show)

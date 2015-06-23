@@ -1,7 +1,7 @@
-angular.module('app').directive('slotInternal', ['$rootScope', function ($r) {
+angular.module('app').directive('slotInternal', ['$rootScope', function($r) {
   return {
     restrict: 'A',
-    scope:{
+    scope: {
       c: '=slot',
       lbl: '=',
       fuel: '='

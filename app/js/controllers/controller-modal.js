@@ -1,9 +1,9 @@
-angular.module('app').controller('ModalController', ['$rootScope','$scope', '$state', function ($rootScope, $scope, $state) {
+angular.module('app').controller('ModalController', ['$rootScope', '$scope', '$state', function($rootScope, $scope, $state) {
 
   $scope.dismiss = function() {
     if ($rootScope.prevState) {
       var state = $rootScope.prevState;
-      $state.go(state.name, state.params, {location: 'replace', reload: false});
+      $state.go(state.name, state.params, { location: 'replace', reload: false });
     } else {
       $state.go('shipyard');
     }

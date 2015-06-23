@@ -16,6 +16,9 @@
       <button ui-sref="outfit({shipId: ship.id,code:null, bn: buildName})" ng-disabled="!code">
         <svg class="icon lg"><use xlink:href="#switch"></use></svg><span class="button-lbl">Reset</span>
       </button>
+      <button ng-click="stripBuild()">
+        <svg class="icon lg"><use xlink:href="#feather"></use></svg><span class="button-lbl">Low-Weight</span>
+      </button>
     </div>
   </div>
 
@@ -53,7 +56,7 @@
           <td>{{fRound(ship.speed)}} <u>m/s</u></td>
           <td>{{fRound(ship.boost)}} <u>m/s</u></td>
           <td>{{ship.armourTotal}} <span ng-if="ship.armourAdded">({{ship.armour}} + {{ship.armourAdded}})</span></td>
-          <td>{{fRound(ship.shieldStrength)}} <u>MJ</u> <span ng-if="ship.shieldMultiplier > 1">({{fRPct(ship.shieldMultiplier)}})</span></td>
+          <td>{{fRound(ship.shieldStrength)}} <u>MJ</u> <span ng-if="ship.shieldMultiplier > 1 && ship.shieldStrength > 0">({{fRPct(ship.shieldMultiplier)}})</span></td>
           <td>{{fRound(ship.unladenMass)}} <u>T</u></td>
           <td>{{fRound(ship.ladenMass)}} <u>T</u></td>
           <td>{{fRound(ship.cargoCapacity)}} <u>T</u></td>
@@ -165,7 +168,7 @@
 
   <div id="internal" class="group">
     <h1>Internal Compartments</h1>
-    <div class="slot" ng-repeat="i in ship.internal" ng-click="selectSlot($event, i)" ng-class="{selected: selectedSlot==i}">
+    <div class="slot" ng-repeat="i in ship.internal" ng-click="selectSlot($event, i)" context-menu="select('i', i, $event, 'empty')" ng-class="{selected: selectedSlot==i}">
       <div slot-internal class="details" slot="i" lbl="GMAP[i.c.grp]" fuel="ship.fuelCapacity"></div>
       <div class="select" ng-if="selectedSlot==i" ng-click="select('i',i,$event)">
         <div component-select s="i" groups="availCS.getInts(i.maxClass)"></div>
@@ -175,7 +178,7 @@
 
   <div id="hardpoints" class="group">
     <h1>HardPoints</h1>
-    <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '!0'}" ng-click="selectSlot($event, h)" ng-class="{selected: selectedSlot==h}">
+    <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '!0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
       <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="GMAP[h.c.grp]"></div>
       <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
         <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
@@ -185,7 +188,7 @@
 
   <div id="utility" class="group">
     <h1>Utility Mounts</h1>
-    <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '0'}" ng-click="selectSlot($event, h)" ng-class="{selected: selectedSlot==h}">
+    <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
       <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="GMAP[h.c.grp]"></div>
       <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
         <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
@@ -212,7 +215,7 @@
           <td><u>SYS</u></td>
           <td>1</td>
           <td class="ri">{{fPwr(pp.c.pGen)}}</td>
-          <td><u>100%</u></td>
+          <td class="ri"><u>100%</u></td>
           <td></td>
           <td></td>
         </tr>
@@ -242,32 +245,43 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="toggleable" ng-repeat="c in costList | orderBy:costPredicate:costDesc" ng-if="c.c.cost > 0" ng-class="{disabled:!c.incCost}" ng-click="toggleCost(c)">
-          <td style="width:1em;">{{c.c.class}}{{c.c.rating}}</td>
-          <td class="le shorten" ng-bind="cName(c)"></td>
-          <td class="ri">{{fCrd(c.c.cost)}} <u>CR</u></td>
+        <tr  ng-repeat="c in costList | orderBy:costPredicate:costDesc" ng-if="c.c.cost > 0" ng-class="{disabled:!c.incCost}">
+          <td class="toggleable" style="width:1em;"  ng-click="toggleCost(c)">{{c.c.class}}{{c.c.rating}}</td>
+          <td class="le toggleable shorten" ng-bind="cName(c)"  ng-click="toggleCost(c)"></td>
+          <td class="ri toggleable"  ng-click="toggleCost(c)">{{fCrd(discounts.current.pct * c.c.cost)}} <u>CR</u></td>
         </tr>
       </tbody>
     </table>
     <table class="total">
         <tr class="ri">
           <td class="lbl">Total</td>
-          <td>{{fCrd(ship.totalCost)}} <u>CR</u></td>
+          <td>{{fCrd(ship.totalCost * discounts.current.pct)}} <u>CR</u></td>
         </tr>
         <tr class="ri">
           <td class="lbl">Insurance</td>
-          <td>{{fCrd(ship.totalCost * insurance.current.pct)}} <u>CR</u></td>
+          <td>{{fCrd(ship.totalCost * discounts.current.pct * insurance.current.pct)}} <u>CR</u></td>
         </tr>
     </table>
   </div>
 
-  <div class="group dbl">
+  <div class="group semi">
     <h1>Jump Range</h1>
-    <div class="cen">
-      <div area-chart config="jrChart" series="jrSeries"></div>
-      <div slider max="ship.fuelCapacity" unit="'T'" on-change="::fuelChange(val)" style="position:relative; margin: 0 auto;">
+    <div line-chart config="jrChart" series="jrSeries"></div>
+  </div>
+
+  <div class="group semi">
+    <h1>Total Range</h1>
+    <div line-chart config="trChart" series="trSeries"></div>
+  </div>
+
+  <div class="group semi">
+    <h1>Thruster Speed</h1>
+    <div line-chart config="speedChart" series="speedSeries"></div>
+  </div>
+
+  <div class="group dbl">
+    <div slider max="ship.fuelCapacity" unit="'T'" on-change="::fuelChange(val)" style="position:relative; margin: 0 auto;">
         <svg class="icon xl primary-disabled" style="position:absolute;height: 100%;"><use xlink:href="#fuel"></use></svg>
-      </div>
     </div>
   </div>
 

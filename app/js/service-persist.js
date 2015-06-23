@@ -1,7 +1,7 @@
 /**
  * [description]
  */
-angular.module('app').service('Persist', ['$window','lodash', function ($window, _) {
+angular.module('app').service('Persist', ['$window', 'lodash', function($window, _) {
   var LS_KEY_BUILDS = 'builds';
   var LS_KEY_COMPARISONS = 'comparisons';
   var localStorage = $window.localStorage;
@@ -19,8 +19,8 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
     this.lsEnabled = false;
   }
 
-  this.builds = buildJson? angular.fromJson(buildJson) : {};
-  this.comparisons = comparisonJson? angular.fromJson(comparisonJson) : {};
+  this.builds = buildJson ? angular.fromJson(buildJson) : {};
+  this.comparisons = comparisonJson ? angular.fromJson(comparisonJson) : {};
   var buildCount = Object.keys(this.builds).length;
 
   this.state = {
@@ -35,7 +35,7 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
    * @param  {string} name   The name of the build
    * @param  {string} code   The serialized code
    */
-  this.saveBuild = function (shipId, name, code) {
+  this.saveBuild = function(shipId, name, code) {
     if (!this.lsEnabled) {
       return;
     }
@@ -44,7 +44,7 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
       this.builds[shipId] = {};
     }
 
-    if(!this.builds[shipId][name]) {
+    if (!this.builds[shipId][name]) {
       this.state.buildCount++;
       this.state.hasBuilds = true;
     }
@@ -62,7 +62,7 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
    * @param  {string} name   The name of the build
    * @return {string}        The serialized build string.
    */
-  this.getBuild = function (shipId, name) {
+  this.getBuild = function(shipId, name) {
     if (this.builds[shipId] && this.builds[shipId][name]) {
       return this.builds[shipId][name];
     }
@@ -76,8 +76,8 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
    * @param  {string} shipId The unique id for a model of ship
    * @param  {string} name   The name of the build
    */
-  this.deleteBuild = function (shipId, name) {
-    if(this.lsEnabled && this.builds[shipId][name]) {
+  this.deleteBuild = function(shipId, name) {
+    if (this.lsEnabled && this.builds[shipId][name]) {
       delete this.builds[shipId][name];
       if (Object.keys(this.builds[shipId]).length === 0) {
         delete this.builds[shipId];
@@ -90,8 +90,8 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
       var comps = this.comparisons;
       for (var c in comps) {
         for (var i = 0; i < comps[c].builds.length; i++) {  // For all builds in the current comparison
-          if(comps[c].builds[i].shipId == shipId && comps[c].builds[i].buildName == name) {
-            comps[c].builds.splice(i,1);
+          if (comps[c].builds[i].shipId == shipId && comps[c].builds[i].buildName == name) {
+            comps[c].builds.splice(i, 1);
             break;  // A build is unique ber comparison
           }
         }
@@ -107,7 +107,7 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
    * @param  {array} builds  Array of builds
    * @param  {array} facets  Array of facet indices
    */
-  this.saveComparison = function (name, builds, facets){
+  this.saveComparison = function(name, builds, facets) {
     if (!this.lsEnabled) {
       return;
     }
@@ -117,7 +117,7 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
     }
     this.comparisons[name] = {
       facets: facets,
-      builds: _.map(builds, function (b) { return {shipId: b.id, buildName: b.buildName }; })
+      builds: _.map(builds, function(b) { return { shipId: b.id, buildName: b.buildName }; })
     };
     localStorage.setItem(LS_KEY_COMPARISONS, angular.toJson(this.comparisons));
     this.state.hasComparisons = true;
@@ -128,7 +128,7 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
    * @param  {string} name [description]
    * @return {object}      Object containing array of facets and ship id + build names
    */
-  this.getComparison = function (name) {
+  this.getComparison = function(name) {
     if (this.comparisons[name]) {
       return this.comparisons[name];
     }
@@ -139,7 +139,7 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
    * Removes the comparison from localstorage.
    * @param  {string} name Comparison name
    */
-  this.deleteComparison = function (name) {
+  this.deleteComparison = function(name) {
     if (this.lsEnabled && this.comparisons[name]) {
       delete this.comparisons[name];
       localStorage.setItem(LS_KEY_COMPARISONS, angular.toJson(this.comparisons));
@@ -166,7 +166,7 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
    * Get the saved insurance type
    * @return {string} The name of the saved insurance type of null
    */
-  this.getInsurance = function () {
+  this.getInsurance = function() {
     if (this.lsEnabled) {
       return localStorage.getItem('insurance');
     }
@@ -177,19 +177,40 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
    * Persist selected insurance type
    * @param {string} name Insurance type name
    */
-  this.setInsurance = function (name) {
+  this.setInsurance = function(name) {
     if (this.lsEnabled) {
       return localStorage.setItem('insurance', name);
     }
   };
 
   /**
+   * Persist selected discount
+   * @param {number} val Discount value/amount
+   */
+  this.setDiscount = function(val) {
+    if (this.lsEnabled) {
+      return localStorage.setItem('discount', val);
+    }
+  };
+
+  /**
+   * Get the saved  discount
+   * @return {number} val Discount value/amount
+   */
+  this.getDiscount = function() {
+    if (this.lsEnabled) {
+      return localStorage.getItem('discount');
+    }
+    return null;
+  };
+
+  /**
    * Retrieve the last router state from local storage
    * @param {object} state State object containing state name and params
    */
-  this.getState = function () {
+  this.getState = function() {
     if (this.lsEnabled) {
-      var state  = localStorage.getItem('state');
+      var state = localStorage.getItem('state');
       if (state) {
         return angular.fromJson(state);
       }
@@ -201,9 +222,9 @@ angular.module('app').service('Persist', ['$window','lodash', function ($window,
    * Save the current router state to localstorage
    * @param {object} state State object containing state name and params
    */
-  this.setState = function (state) {
+  this.setState = function(state) {
     if (this.lsEnabled) {
-      localStorage.setItem('state',angular.toJson(state));
+      localStorage.setItem('state', angular.toJson(state));
     }
   };
 

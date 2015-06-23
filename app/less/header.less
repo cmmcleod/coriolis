@@ -63,7 +63,7 @@ header {
     .menu-item-label {
       margin-left: 1em;
 
-      .medPhone({
+      .largePhone({
         display: none;
       });
     }
@@ -92,21 +92,41 @@ header {
 
 
     .tablet({
-      a {
+      li, a {
         padding: 0.3em 0;
       }
     });
+  }
 
+  .dbl {
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+    ul {
+      min-width: 10em;
+    }
 
+    .smallTablet({
+      -webkit-column-count: 3; /* Chrome, Safari, Opera */
+      -moz-column-count: 3; /* Firefox */
+      column-count: 3;
 
-    &.dbl {
+      ul {
+        min-width: 20em;
+      }
+    });
+
+    .largePhone({
       -webkit-column-count: 2; /* Chrome, Safari, Opera */
       -moz-column-count: 2; /* Firefox */
       column-count: 2;
-      ul {
-        width: 10em;
-      }
-    }
+    });
+
+    .smallPhone({
+      -webkit-column-count: 1; /* Chrome, Safari, Opera */
+      -moz-column-count: 1; /* Firefox */
+      column-count: 1;
+    });
   }
 
   ul {

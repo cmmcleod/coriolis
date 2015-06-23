@@ -1,7 +1,7 @@
 /**
  * Service managing seralization and deserialization of models for use in URLs and persistene.
  */
-angular.module('app').service('Serializer', ['lodash', function (_) {
+angular.module('app').service('Serializer', ['lodash', function(_) {
 
  /**
    * Serializes the ships selected components for all slots to a URL friendly string.
@@ -10,7 +10,7 @@ angular.module('app').service('Serializer', ['lodash', function (_) {
    */
   this.fromShip = function(ship) {
     var power = {
-      enabled: [ship.cargoScoop.enabled? 1 : 0],
+      enabled: [ship.cargoScoop.enabled ? 1 : 0],
       priorities: [ship.cargoScoop.priority]
     };
 
@@ -20,9 +20,9 @@ angular.module('app').service('Serializer', ['lodash', function (_) {
       _.map(ship.hardpoints, mapGroup, power),
       _.map(ship.internal, mapGroup, power),
       '.',
-      LZString.compressToBase64(power.enabled.join('')).replace(/\//g,'-'),
+      LZString.compressToBase64(power.enabled.join('')).replace(/\//g, '-'),
       '.',
-      LZString.compressToBase64(power.priorities.join('')).replace(/\//g,'-')
+      LZString.compressToBase64(power.priorities.join('')).replace(/\//g, '-')
     ];
 
     return _.flatten(data).join('');
@@ -35,11 +35,8 @@ angular.module('app').service('Serializer', ['lodash', function (_) {
    * @param {Ship}    ship  The ship instance to be updated
    * @param {string}  code  The string to deserialize
    */
-  this.toShip = function (ship, dataString) {
-    var commonCount = ship.common.length,
-        hpCount = commonCount + ship.hardpoints.length,
-        totalCount = hpCount + ship.internal.length,
-        common = new Array(ship.common.length),
+  this.toShip = function(ship, dataString) {
+    var common = new Array(ship.common.length),
         hardpoints = new Array(ship.hardpoints.length),
         internal = new Array(ship.internal.length),
         parts = dataString.split('.'),
@@ -47,12 +44,12 @@ angular.module('app').service('Serializer', ['lodash', function (_) {
         enabled = null,
         code = parts[0];
 
-    if(parts[1]) {
-      enabled = LZString.decompressFromBase64(parts[1].replace(/-/g,'/')).split('');
+    if (parts[1]) {
+      enabled = LZString.decompressFromBase64(parts[1].replace(/-/g, '/')).split('');
     }
 
-    if(parts[2]) {
-      priorities = LZString.decompressFromBase64(parts[2].replace(/-/g,'/')).split('');
+    if (parts[2]) {
+      priorities = LZString.decompressFromBase64(parts[2].replace(/-/g, '/')).split('');
     }
 
     decodeToArray(code, internal, decodeToArray(code, hardpoints, decodeToArray(code, common, 1)));
@@ -61,19 +58,23 @@ angular.module('app').service('Serializer', ['lodash', function (_) {
     // - priorities
     // - enabled/disabled
 
-    ship.buildWith({
-      bulkheads: code.charAt(0) * 1,
-      common: common,
-      hardpoints: hardpoints,
-      internal: internal,
-    }, priorities, enabled);
+    ship.buildWith(
+      {
+        bulkheads: code.charAt(0) * 1,
+        common: common,
+        hardpoints: hardpoints,
+        internal: internal
+      },
+      priorities,
+      enabled
+    );
   };
 
-  this.fromComparison = function (name, builds, facets, predicate, desc) {
+  this.fromComparison = function(name, builds, facets, predicate, desc) {
     var shipBuilds = [];
 
-    builds.forEach(function (b) {
-      shipBuilds.push({s: b.id, n: b.buildName, c: this.fromShip(b)});
+    builds.forEach(function(b) {
+      shipBuilds.push({ s: b.id, n: b.buildName, c: this.fromShip(b) });
     }.bind(this));
 
     return LZString.compressToBase64(angular.toJson({
@@ -81,12 +82,12 @@ angular.module('app').service('Serializer', ['lodash', function (_) {
       b: shipBuilds,
       f: facets,
       p: predicate,
-      d: desc? 1 : 0
-    })).replace(/\//g,'-');
+      d: desc ? 1 : 0
+    })).replace(/\//g, '-');
   };
 
-  this.toComparison = function (code) {
-    return angular.fromJson(LZString.decompressFromBase64(code.replace(/-/g,'/')));
+  this.toComparison = function(code) {
+    return angular.fromJson(LZString.decompressFromBase64(code.replace(/-/g, '/')));
   };
 
   /**
@@ -98,14 +99,14 @@ angular.module('app').service('Serializer', ['lodash', function (_) {
    * @return {string}      The id of the selected component or '-' if none selected
    */
   function mapGroup(slot) {
-    this.enabled.push(slot.enabled? 1 : 0);
+    this.enabled.push(slot.enabled ? 1 : 0);
     this.priorities.push(slot.priority);
 
-    return (slot.id === null)? '-' : slot.id;
+    return slot.id === null ? '-' : slot.id;
   }
 
   function decodeToArray(code, arr, codePos) {
-    for (i = 0; i < arr.length; i++) {
+    for (var i = 0; i < arr.length; i++) {
       if (code.charAt(codePos) == '-') {
         arr[i] = 0;
         codePos++;
