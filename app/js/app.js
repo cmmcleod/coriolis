@@ -3,8 +3,7 @@ angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable',
 function($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hpc, GroupMap, Persist) {
   // App is running as a standalone web app on tablet/mobile
   var isStandAlone;
-
-  // This was causing issues on Windows phones ($window.external was causing Angular js to throw an exception). Backup is to try this and set isStandAlone to true if this fails.
+  // This was causing issues on Windows phones ($window.external was causing Angular js to throw an exception). Backup is to try this and set isStandAlone to false if this fails.
   try {
     isStandAlone = $window.navigator.standalone || ($window.external && $window.external.msIsSiteMode && $window.external.msIsSiteMode());
   }
