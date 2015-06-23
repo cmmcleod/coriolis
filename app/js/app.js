@@ -2,7 +2,15 @@ angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable',
 .run(['$rootScope', '$location', '$window', '$document', '$state', 'commonArray', 'shipPurpose', 'shipSize', 'hardPointClass', 'GroupMap', 'Persist',
 function($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hpc, GroupMap, Persist) {
   // App is running as a standalone web app on tablet/mobile
-  var isStandAlone = $window.navigator.standalone || ($window.external && $window.external.msIsSiteMode && $window.external.msIsSiteMode());
+  var isStandAlone;
+
+  // This was causing issues on Windows phones ($window.external was causing Angular js to throw an exception). Backup is to try this and set isStandAlone to true if this fails.
+  try {
+    isStandAlone = $window.navigator.standalone || ($window.external && $window.external.msIsSiteMode && $window.external.msIsSiteMode());
+  }
+  catch (ex) {
+    isStandAlone = false;
+  }
 
   // Redirect any state transition errors to the error controller/state
   $rootScope.$on('$stateChangeError', function(e, toState, toParams, fromState, fromParams, error) {
