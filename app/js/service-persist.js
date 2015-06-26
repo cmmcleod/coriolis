@@ -189,7 +189,7 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
    */
   this.setDiscount = function(val) {
     if (this.lsEnabled) {
-      return localStorage.setItem('discount', val);
+      return localStorage.setItem('discounts', angular.toJson(val));
     }
   };
 
@@ -199,7 +199,7 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
    */
   this.getDiscount = function() {
     if (this.lsEnabled) {
-      return localStorage.getItem('discount');
+      return angular.fromJson(localStorage.getItem('discounts'));
     }
     return null;
   };

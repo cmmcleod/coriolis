@@ -11,6 +11,8 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     ship.buildWith(data.defaults);  // Populate with default components
   }
 
+  ship.applyDiscounts($rootScope.discounts.ship, $rootScope.discounts.components);
+
   $scope.buildName = $p.bn;
   $rootScope.title = ship.name + ($scope.buildName ? ' - ' + $scope.buildName : '');
   $scope.ship = ship;
@@ -278,6 +280,11 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   // Hide any open menu/slot/etc if the background is clicked
   $scope.$on('close', function() {
     $scope.selectedSlot = null;
+  });
+
+    // Hide any open menu/slot/etc if the background is clicked
+  $scope.$on('discountChange', function() {
+    ship.applyDiscounts($rootScope.discounts.ship, $rootScope.discounts.components);
   });
 
 }]);

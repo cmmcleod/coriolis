@@ -68,6 +68,37 @@ describe("Ship Factory", function() {
     }
   });
 
+  it("discounts hull and components properly", function() {
+    var id = 'cobra_mk_iii';
+    var cobra = DB.ships[id];
+    var testShip = new Ship(id, cobra.properties, cobra.slots);
+    testShip.buildWith(cobra.defaults);
+
+    var originalHullCost = testShip.cost;
+    var originalTotalCost = testShip.totalCost;
+    var discount = 0.9;
+
+    expect(testShip.c.discountedCost).toEqual(originalHullCost, 'Hull cost does not match');
+
+    testShip.applyDiscounts(discount, discount);
+
+    // Floating point errors cause miniscule decimal places which are handled in the app by rounding/formatting
+
+    expect(Math.floor(testShip.c.discountedCost)).toEqual(Math.floor(originalHullCost * discount), 'Discounted Hull cost does not match');
+    expect(Math.floor(testShip.totalCost)).toEqual(Math.floor(originalTotalCost * discount), 'Discounted Total cost does not match');
+
+    testShip.applyDiscounts(1, 1); // No discount, 100% of cost
+
+    expect(testShip.c.discountedCost).toEqual(originalHullCost, 'Hull cost does not match');
+    expect(testShip.totalCost).toEqual(originalTotalCost, 'Total cost does not match');
+
+    testShip.applyDiscounts(discount, 1); // Only discount hull
+
+    expect(Math.floor(testShip.c.discountedCost)).toEqual(Math.round(originalHullCost * discount), 'Discounted Hull cost does not match');
+    expect(testShip.totalCost).toEqual(originalTotalCost - originalHullCost + testShip.c.discountedCost, 'Total cost does not match');
+
+  });
+
   it("enforces a single shield generator", function() {
     var id = 'anaconda';
     var anacondaData = DB.ships[id];

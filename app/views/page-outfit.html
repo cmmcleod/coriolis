@@ -220,7 +220,7 @@
           <td></td>
         </tr>
         <tr><td style="line-height:0;" colspan="8"><hr style="margin: 0 0 3px;background: #ff8c0d;border: 0;height: 1px;" /></td></tr>
-        <tr ng-repeat="c in powerList | orderBy:pwrPredicate:pwrDesc" ng-if="c.c.power" ng-class="{disabled:!c.enabled}">
+        <tr class="highlight" ng-repeat="c in powerList | orderBy:pwrPredicate:pwrDesc" ng-if="c.c.power" ng-class="{disabled:!c.enabled}">
           <td style="width:1em;" ng-click="togglePwr(c)">{{c.c.class}}{{c.c.rating}}</td>
           <td class="le shorten" ng-click="togglePwr(c)" ng-bind="cName(c)"></td>
           <td ng-click="togglePwr(c)"><u  ng-bind="c.type"></u></td>
@@ -240,26 +240,32 @@
     <table style="width:100%">
       <thead>
         <tr class="main">
-          <th colspan="2" class="sortable le" ng-click="sortCost(cName)">Component</th>
-          <th class="sortable le" ng-click="sortCost('c.cost')">Credits</th>
+          <th colspan="2" class="sortable le" ng-click="sortCost(cName)">
+            Component
+            <div class="r">
+              <u ng-if="discounts.ship < 1">[Ship {{fRPct(1 - discounts.ship)}} off]</u>
+              <u ng-if="discounts.components < 1">[Components {{fRPct(1 - discounts.components)}} off]</u>
+            </div>
+          </th>
+          <th class="sortable le" ng-click="sortCost('discountedCost')">Credits</th>
         </tr>
       </thead>
       <tbody>
-        <tr  ng-repeat="c in costList | orderBy:costPredicate:costDesc" ng-if="c.c.cost > 0" ng-class="{disabled:!c.incCost}">
-          <td class="toggleable" style="width:1em;"  ng-click="toggleCost(c)">{{c.c.class}}{{c.c.rating}}</td>
-          <td class="le toggleable shorten" ng-bind="cName(c)"  ng-click="toggleCost(c)"></td>
-          <td class="ri toggleable"  ng-click="toggleCost(c)">{{fCrd(discounts.current.pct * c.c.cost)}} <u>CR</u></td>
+        <tr class="highlight" ng-repeat="item in costList | orderBy:costPredicate:costDesc" ng-if="item.c.cost > 0" ng-class="{disabled:!item.incCost}">
+          <td class="toggleable" style="width:1em;"  ng-click="toggleCost(item)">{{item.c.class}}{{item.c.rating}}</td>
+          <td class="le toggleable shorten" ng-click="toggleCost(item)">{{cName(item)}}</td>
+          <td class="ri toggleable"  ng-click="toggleCost(item)">{{fCrd(item.discountedCost)}} <u>CR</u></td>
         </tr>
       </tbody>
     </table>
     <table class="total">
         <tr class="ri">
           <td class="lbl">Total</td>
-          <td>{{fCrd(ship.totalCost * discounts.current.pct)}} <u>CR</u></td>
+          <td>{{fCrd(ship.totalCost)}} <u>CR</u></td>
         </tr>
         <tr class="ri">
           <td class="lbl">Insurance</td>
-          <td>{{fCrd(ship.totalCost * discounts.current.pct * insurance.current.pct)}} <u>CR</u></td>
+          <td>{{fCrd(ship.totalCost * insurance.current.pct)}} <u>CR</u></td>
         </tr>
     </table>
   </div>

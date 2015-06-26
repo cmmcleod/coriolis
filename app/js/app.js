@@ -1,6 +1,6 @@
 angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable', 'shipyard', 'ngLodash', 'app.templates'])
-.run(['$rootScope', '$location', '$window', '$document', '$state', 'commonArray', 'shipPurpose', 'shipSize', 'hardPointClass', 'GroupMap', 'Persist',
-function($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hpc, GroupMap, Persist) {
+.run(['$rootScope', '$location', '$window', '$document', '$state', 'commonArray', 'shipPurpose', 'shipSize', 'hardPointClass', 'GroupMap', 'Persist', 'Discounts',
+function($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hpc, GroupMap, Persist, Discounts) {
   // App is running as a standalone web app on tablet/mobile
   var isStandAlone;
   // This was causing issues on Windows phones ($window.external was causing Angular js to throw an exception). Backup is to try this and set isStandAlone to false if this fails.
@@ -40,7 +40,7 @@ function($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hp
   $rootScope.HPC = hpc;
   $rootScope.GMAP = GroupMap;
   $rootScope.insurance = { opts: [{ name: 'Standard', pct: 0.05 }, { name: 'Alpha', pct: 0.025 }, { name: 'Beta', pct: 0.035 }] };
-  $rootScope.discounts = { opts: [{ name: 'None', pct: 1 }, { name: 'Founders World - 10%', pct: 0.90 }] };
+  $rootScope. discounts = { opts: Discounts };
   $rootScope.STATUS = ['', 'DISABLED', 'OFF', 'ON'];
   $rootScope.STATUS_CLASS = ['', 'disabled', 'warning', 'secondary-disabled'];
   $rootScope.title = 'Coriolis';

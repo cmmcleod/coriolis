@@ -166,6 +166,19 @@ angular.module('shipyard', ['ngLodash'])
     }
   ])
   /**
+   * Set of all available / theoretical discounts
+   *
+   * @type {Object}
+   */
+  .value('Discounts', {
+    'None': 1,
+    '5%': 0.95,
+    '10%': 0.90,
+    '15%': 0.85,
+    '20%': 0.80,
+    '25%': 0.75
+  })
+  /**
    * Calculate the maximum single jump range based on mass and a specific FSD
    *
    * @param  {number} mass Mass of a ship: laden, unlanden, partially laden, etc
