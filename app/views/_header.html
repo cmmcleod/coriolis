@@ -73,7 +73,13 @@
         <li><a href="#" class="block" ui-sref="modal.delete" translate="delete all"></a></li>
       </ul>
       <hr />
-      <a href="#" ui-sref="modal.about" class="block" translate="about"></a>
+      <table style="width: 100%"><tr>
+        <td style="width: 20px"><u>A</u></td>
+        <td slider min="0.65" def="fontSize" max="1.5" unit="null" on-change="textSizeChange(val)"></td>
+        <td style="width: 20px"><span style="font-size: 30px">A</span></td>
+      </tr></table>
+      <hr />
+      <a href="#" ui-sref="modal.about" class="block">About</a>
     </div>
   </div>
 

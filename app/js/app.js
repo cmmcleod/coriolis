@@ -51,6 +51,7 @@ function($rootScope, $location, $window, $doc, $state, $translate, localeFormat,
   $rootScope.discounts = { opts: Discounts };
   $rootScope.STATUS = ['', 'disabled', 'off', 'on'];
   $rootScope.STATUS_CLASS = ['', 'disabled', 'warning', 'secondary-disabled'];
+  $rootScope.fontSize =  1;
   $rootScope.title = 'Coriolis';
 
   $rootScope.changeLanguage = function() {

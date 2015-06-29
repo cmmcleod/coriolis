@@ -79,6 +79,11 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', '$sta
         scope.openedMenu = null;
       });
 
+      scope.textSizeChange = function(size) {
+        $rootScope.fontSize = size;
+        document.getElementById('main').style.fontSize = size + 'em';
+      };
+
       scope.$watchCollection('allBuilds', function() {
         scope.buildsList = Object.keys(scope.allBuilds).sort();
       });
