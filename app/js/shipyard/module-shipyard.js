@@ -163,6 +163,13 @@ angular.module('shipyard', ['ngLodash'])
       lbls: ['Unladen', 'Laden'],
       unit: 'LY',
       fmt: 'fRound'
+    },
+    {                   // 11
+      title: 'DPS',
+      props: ['totalDps'],
+      lbls: ['Dps'],
+      unit: '',
+      fmt: 'fRound'
     }
   ])
   /**

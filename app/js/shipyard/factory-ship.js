@@ -88,6 +88,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.totalCost = this.c.incCost ? this.c.discountedCost : 0;
     this.unladenMass = this.mass;
     this.armourTotal = this.armour;
+    this.totalDps = 0;
 
     this.bulkheads.c = null;
     this.useBulkhead(comps.bulkheads || 0, true);
@@ -258,6 +259,8 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
         } else if (slot.c.grp == 'sb') {
           this.shieldMultiplier += slot.c.shieldmul * (enabled ? 1 : -1);
           this.updateShieldStrength();
+        } else if (slot.c.dps) {
+          this.totalDps += slot.c.dps * (enabled ? 1 : -1);
         }
 
         this.updatePower();
@@ -308,6 +311,10 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       if (old.power && slot.enabled) {
         this.priorityBands[slot.priority][powerUsageType(slot, old)] -= old.power;
         powerChange = true;
+
+        if (old.dps) {
+          this.totalDps -= old.dps;
+        }
       }
       this.unladenMass -= old.mass || 0;
     }
@@ -338,6 +345,10 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       if (n.power && slot.enabled) {
         this.priorityBands[slot.priority][powerUsageType(slot, n)] += n.power;
         powerChange = true;
+
+        if (n.dps) {
+          this.totalDps += n.dps;
+        }
       }
       this.unladenMass += n.mass || 0;
     }
