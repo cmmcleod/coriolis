@@ -140,7 +140,7 @@ gulp.task('generateIndexHTML', function(done) {
       gulp.src('app/index.html')
         .pipe(template({
           version: pkg.version,
-          date : (new Date()).toLocaleDateString(),
+          date : new Date().toISOString().slice(0, 10),
           uaTracking: process.env.CORIOLIS_UA_TRACKING || false,
           svgContent: svgIconsContent,
           gapiKey: process.env.CORIOLIS_GAPI_KEY
