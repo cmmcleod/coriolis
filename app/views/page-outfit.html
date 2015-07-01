@@ -283,32 +283,34 @@
     </div>
 
     <div ng-if="costTab == 'retrofit'">
-      <table style="width:100%">
-        <thead>
-          <tr class="main">
-            <th colspan="2" class="sortable le" ng-click="sortRetrofit('sellName')">Sell</th>
-            <th colspan="2" class="sortable le" ng-click="sortRetrofit('buyName')">Buy</th>
-            <th class="sortable le" ng-click="sortRetrofit('netCost')">
-              Net Cost
-              <div class="r">
-                <u ng-if="discounts.components < 1">[{{fRPct(1 - discounts.components)}} off]</u>
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="disabled" ng-if="!retrofitList || retrofitList.length == 0">
-            <td colspan="5">No Retrofitting changes</td>
-          </tr>
-          <tr class="highlight" ng-repeat="item in retrofitList | orderBy:retroPredicate:retroDesc">
-            <td style="width:1em;">{{item.sellClassRating}}</td>
-            <td class="le shorten">{{item.sellName}}</td>
-            <td style="width:1em;">{{item.buyClassRating}}</td>
-            <td class="le shorten">{{item.buyName}}</td>
-            <td class="ri" ng-class="item.netCost > 0 ? 'warning' : 'secondary-disabled'">{{ fCrd(item.netCost)}} <u>CR</u></td>
-          </tr>
-        </tbody>
-      </table>
+      <div style="overflow-x: auto;-webkit-overflow-scrolling: touch;">
+        <table style="width:100%">
+          <thead>
+            <tr class="main">
+              <th colspan="2" class="sortable le" ng-click="sortRetrofit('sellName')">Sell</th>
+              <th colspan="2" class="sortable le" ng-click="sortRetrofit('buyName')">Buy</th>
+              <th class="sortable le" ng-click="sortRetrofit('netCost')">
+                Net Cost
+                <div class="r">
+                  <u ng-if="discounts.components < 1">[{{fRPct(1 - discounts.components)}} off]</u>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="disabled" ng-if="!retrofitList || retrofitList.length == 0">
+              <td colspan="5">No Retrofitting changes</td>
+            </tr>
+            <tr class="highlight" ng-repeat="item in retrofitList | orderBy:retroPredicate:retroDesc">
+              <td style="width:1em;">{{item.sellClassRating}}</td>
+              <td class="le shorten">{{item.sellName}}</td>
+              <td style="width:1em;">{{item.buyClassRating}}</td>
+              <td class="le shorten">{{item.buyName}}</td>
+              <td class="ri" ng-class="item.netCost > 0 ? 'warning' : 'secondary-disabled'">{{ fCrd(item.netCost)}} <u>CR</u></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <table class="total">
         <tr class="ri">
           <td class="lbl">Cost</td>
