@@ -21,7 +21,7 @@ angular.module('app').directive('componentSelect', function() {
       list.push((o.maxmass && mass > o.maxmass) ? ' disabled"' : '" cpid="', id, '">');
 
       if (o.mode) {
-        list.push('<svg cpid="', id, '" class="icon lg"><use xlink:href="#mount-', o.mode, '"></use></svg> ');
+        list.push('<svg cpid="', id, '" class="icon lg"><use cpid="', id, '" xlink:href="#mount-', o.mode, '"></use></svg> ');
       }
 
       list.push(o.class, o.rating);
