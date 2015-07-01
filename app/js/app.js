@@ -45,8 +45,13 @@ function($rootScope, $location, $window, $doc, $state, CArr, shipPurpose, sz, hp
   $rootScope.STATUS_CLASS = ['', 'disabled', 'warning', 'secondary-disabled'];
   $rootScope.title = 'Coriolis';
 
-  $rootScope.cName = function(c) {
-    return c.c ? c.c.name ? c.c.name : GroupMap[c.c.grp] : null;
+  /**
+   * Returns the name of the component mounted in the specified slot
+   * @param  {Object} slot The slot object
+   * @return {String}      The component name
+   */
+  $rootScope.cName = function(slot) {
+    return slot.c ? slot.c.name ? slot.c.name : GroupMap[slot.c.grp] : null;
   };
 
   // Formatters
