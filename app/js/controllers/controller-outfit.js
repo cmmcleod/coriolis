@@ -1,7 +1,8 @@
 angular.module('app').controller('OutfitController', ['$window', '$rootScope', '$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', 'calcTotalRange', 'calcSpeed', function($window, $rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist, calcTotalRange, calcSpeed) {
+  var win = angular.element($window);   // Angularized window object for event triggering
   var data = Ships[$p.shipId];   // Retrieve the basic ship properties, slots and defaults
   var ship = new Ship($p.shipId, data.properties, data.slots); // Create a new Ship instance
-  var win = angular.element($window);   // Angularized window object for event triggering
+  var retrofitShip = new Ship($p.shipId, data.properties, data.slots); // Create a new Ship for retrofit comparison
 
   //  Update the ship instance with the code (if provided) or the 'factory' defaults.
   if ($p.code) {
@@ -10,8 +11,6 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   } else {
     ship.buildWith(data.defaults);  // Populate with default components
   }
-
-  ship.applyDiscounts($rootScope.discounts.ship, $rootScope.discounts.components);
 
   $scope.buildName = $p.bn;
   $rootScope.title = ship.name + ($scope.buildName ? ' - ' + $scope.buildName : '');
@@ -32,11 +31,27 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   $scope.selectedSlot = null;
   $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
   $scope.canSave = Persist.isEnabled();
+  $scope.allBuilds = Persist.builds;
   $scope.fuel = 0;
   $scope.pwrDesc = false;
   $scope.pwrPredicate = 'type';
+  $scope.retroDesc = false;
+  $scope.retroPredicate = 'netCost';
   $scope.costDesc = true;
   $scope.costPredicate = 'c.cost';
+  $scope.costTab = 'retrofit';
+
+  if ($scope.savedCode) {
+    Serializer.toShip(retrofitShip, $scope.savedCode);  // Populate components from last save
+    $scope.retrofitBuild = $scope.buildName;
+  } else {
+    retrofitShip.buildWith(data.defaults);
+    $scope.retrofitBuild = null;
+  }
+
+  ship.applyDiscounts($rootScope.discounts.ship, $rootScope.discounts.components);
+  retrofitShip.applyDiscounts($rootScope.discounts.ship, $rootScope.discounts.components);
+  updateRetrofitCosts();
 
   $scope.jrSeries = {
     xMin: 0,
@@ -189,6 +204,9 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     if ($scope.code != $scope.savedCode) {
       Persist.saveBuild(ship.id, $scope.buildName, $scope.code);
       $scope.savedCode = $scope.code;
+      if ($scope.retrofitBuild === $scope.buildName) {
+        Serializer.toShip(retrofitShip, $scope.code);
+      }
       updateState($scope.code);
     }
   };
@@ -232,6 +250,11 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     $scope.pwrPredicate = key;
   };
 
+  $scope.sortRetrofit = function(key) {
+      $scope.retroDesc = $scope.retroPredicate == key ? !$scope.retroDesc : $scope.retroDesc;
+      $scope.retroPredicate = key;
+  };
+
   /**
    * Toggle the power on/off for the selected component
    * @param  {object} item The component being toggled
@@ -266,6 +289,15 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     return ship.getSlotStatus(slot, true);
   };
 
+  $scope.setRetrofitBase = function() {
+    if ($scope.retrofitBuild) {
+      Serializer.toShip(retrofitShip, Persist.getBuild(ship.id, $scope.retrofitBuild));
+    } else {
+      retrofitShip.buildWith(data.defaults);
+    }
+    updateRetrofitCosts();
+  };
+
   // Utilify functions
 
   function updateState(code) {
@@ -274,7 +306,49 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     $scope.speedSeries.xMax = $scope.trSeries.xMax = $scope.jrSeries.xMax = ship.cargoCapacity;
     $scope.jrSeries.yMax = ship.unladenRange;
     $scope.trSeries.yMax = ship.unladenTotalRange;
+    updateRetrofitCosts();
     win.triggerHandler('pwrchange');
+  }
+
+  function updateRetrofitCosts() {
+    var costs = $scope.retrofitList = [];
+    var cName = $rootScope.cName;
+    var total = 0, i, l, item;
+
+    if (ship.bulkheads.id != retrofitShip.bulkheads.id) {
+      item = {
+        buyClassRating: ship.bulkheads.c.class + ship.bulkheads.c.rating,
+        buyName: cName(ship.bulkheads),
+        sellClassRating: retrofitShip.bulkheads.c.class + retrofitShip.bulkheads.c.rating,
+        sellName: cName(retrofitShip.bulkheads),
+        netCost: ship.bulkheads.discountedCost - retrofitShip.bulkheads.discountedCost
+      };
+      costs.push(item);
+      total += item.netCost;
+    }
+
+    for (var g in { common: 1, internal: 1, hardpoints: 1 }) {
+      var retroSlotGroup = retrofitShip[g];
+      var slotGroup = ship[g];
+      for (i = 0, l = slotGroup.length; i < l; i++) {
+        if (slotGroup[i].id != retroSlotGroup[i].id) {
+          item = { netCost: 0 };
+          if (slotGroup[i].id) {
+            item.buyName = cName(slotGroup[i]);
+            item.buyClassRating = slotGroup[i].c.class + slotGroup[i].c.rating;
+            item.netCost = slotGroup[i].discountedCost;
+          }
+          if (retroSlotGroup[i].id) {
+            item.sellName = cName(retroSlotGroup[i]);
+            item.sellClassRating = retroSlotGroup[i].c.class + retroSlotGroup[i].c.rating;
+            item.netCost -= retroSlotGroup[i].discountedCost;
+          }
+          costs.push(item);
+          total += item.netCost;
+        }
+      }
+    }
+    $scope.retrofitTotal = total;
   }
 
   // Hide any open menu/slot/etc if the background is clicked
@@ -282,9 +356,11 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     $scope.selectedSlot = null;
   });
 
-    // Hide any open menu/slot/etc if the background is clicked
+  // Hide any open menu/slot/etc if the background is clicked
   $scope.$on('discountChange', function() {
     ship.applyDiscounts($rootScope.discounts.ship, $rootScope.discounts.components);
+    retrofitShip.applyDiscounts($rootScope.discounts.ship, $rootScope.discounts.components);
+    updateRetrofitCosts();
   });
 
 }]);

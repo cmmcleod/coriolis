@@ -113,6 +113,25 @@ table.total {
   }
 }
 
+.tabs {
+  width: 100%;
+  margin-bottom: 1px;
+
+  &, th {
+    border-collapse: collapse;
+    color: @primary-disabled;
+    background-color: @primary-bg;
+    border: 1px solid @primary-disabled;
+    padding-top: 1px;
+  }
+
+  .active {
+    color: @primary-bg;
+    background-color: @primary-disabled;
+  }
+
+}
+
 .group {
   width: 25%;
   padding: 0.5em 0.2em;

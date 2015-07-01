@@ -239,28 +239,38 @@
   </div>
 
   <div class="group half">
-    <table style="width:100%">
+    <table class="tabs">
       <thead>
-        <tr class="main">
-          <th colspan="2" class="sortable le" ng-click="sortCost(cName)">
-            Component
-            <div class="r">
-              <u ng-if="discounts.ship < 1">[Ship {{fRPct(1 - discounts.ship)}} off]</u>
-              <u ng-if="discounts.components < 1">[Components {{fRPct(1 - discounts.components)}} off]</u>
-            </div>
-          </th>
-          <th class="sortable le" ng-click="sortCost('discountedCost')">Credits</th>
+        <tr>
+          <th style="width:50%" ng-class="{active: costTab == 'retrofit'}" ng-click="costTab = 'retrofit'">Retrofit Costs</th>
+          <th style="width:50%" ng-class="{active: costTab == 'costs'}" ng-click="costTab = 'costs'">Costs</th>
         </tr>
       </thead>
-      <tbody>
-        <tr class="highlight" ng-repeat="item in costList | orderBy:costPredicate:costDesc" ng-if="item.c.cost > 0" ng-class="{disabled:!item.incCost}">
-          <td class="toggleable" style="width:1em;"  ng-click="toggleCost(item)">{{item.c.class}}{{item.c.rating}}</td>
-          <td class="le toggleable shorten" ng-click="toggleCost(item)">{{cName(item)}}</td>
-          <td class="ri toggleable"  ng-click="toggleCost(item)">{{fCrd(item.discountedCost)}} <u>CR</u></td>
-        </tr>
-      </tbody>
     </table>
-    <table class="total">
+
+    <div ng-if="costTab == 'costs'">
+      <table style="width:100%">
+        <thead>
+          <tr class="main">
+            <th colspan="2" class="sortable le" ng-click="sortCost(cName)">
+              Component
+              <div class="r">
+                <u ng-if="discounts.ship < 1">[Ship {{fRPct(1 - discounts.ship)}} off]</u>
+                <u ng-if="discounts.components < 1">[Components {{fRPct(1 - discounts.components)}} off]</u>
+              </div>
+            </th>
+            <th class="sortable le" ng-click="sortCost('discountedCost')">Credits</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight" ng-repeat="item in costList | orderBy:costPredicate:costDesc" ng-if="item.c.cost > 0" ng-class="{disabled:!item.incCost}">
+            <td class="toggleable" style="width:1em;"  ng-click="toggleCost(item)">{{item.c.class}}{{item.c.rating}}</td>
+            <td class="le toggleable shorten" ng-click="toggleCost(item)">{{cName(item)}}</td>
+            <td class="ri toggleable"  ng-click="toggleCost(item)">{{fCrd(item.discountedCost)}} <u>CR</u></td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="total">
         <tr class="ri">
           <td class="lbl">Total</td>
           <td>{{fCrd(ship.totalCost)}} <u>CR</u></td>
@@ -269,7 +279,51 @@
           <td class="lbl">Insurance</td>
           <td>{{fCrd(ship.totalCost * insurance.current.pct)}} <u>CR</u></td>
         </tr>
-    </table>
+      </table>
+    </div>
+
+    <div ng-if="costTab == 'retrofit'">
+      <table style="width:100%">
+        <thead>
+          <tr class="main">
+            <th colspan="2" class="sortable le" ng-click="sortRetrofit('sellName')">Sell</th>
+            <th colspan="2" class="sortable le" ng-click="sortRetrofit('buyName')">Buy</th>
+            <th class="sortable le" ng-click="sortRetrofit('netCost')">
+              Net Cost
+              <div class="r">
+                <u ng-if="discounts.components < 1">[{{fRPct(1 - discounts.components)}} off]</u>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="disabled" ng-if="!retrofitList || retrofitList.length == 0">
+            <td colspan="5">No Retrofitting changes</td>
+          </tr>
+          <tr class="highlight" ng-repeat="item in retrofitList | orderBy:retroPredicate:retroDesc">
+            <td style="width:1em;">{{item.sellClassRating}}</td>
+            <td class="le shorten">{{item.sellName}}</td>
+            <td style="width:1em;">{{item.buyClassRating}}</td>
+            <td class="le shorten">{{item.buyName}}</td>
+            <td class="ri" ng-class="item.netCost > 0 ? 'warning' : 'secondary-disabled'">{{ fCrd(item.netCost)}} <u>CR</u></td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="total">
+        <tr class="ri">
+          <td class="lbl">Cost</td>
+          <td ng-class="retrofitTotal > 0 ? 'warning' : 'secondary-disabled'">{{fCrd(retrofitTotal)}} <u>CR</u></td>
+        </tr>
+        <tr class="ri">
+          <td class="lbl">Retrofitting from</td>
+          <td style="padding:0;">
+            <select style="width: 100%; border: none;" ng-model="$parent.retrofitBuild" ng-change="setRetrofitBase()" ng-options="name as name for (name, build) in allBuilds[ship.id]">
+              <option value="">Stock / Standard</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
 
   <div class="group half">
