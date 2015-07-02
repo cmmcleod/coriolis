@@ -1,12 +1,25 @@
 select {
   .border-radius(0);
+  cursor: pointer;
   background: none;
   color: @primary-disabled;
-  border: 1px solid @primary-disabled;
-  outline: none;
   font-family: @fStandard;
   font-size: 1em;
   background-color: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 0.1em 0.5em;
+  outline:none;
+  border: 0;
+
+  &:focus {
+    outline:none;
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
 }
 
 .select {

@@ -33,14 +33,15 @@
           <th rowspan="2">DPS</th>
           <th rowspan="2">Armour</th>
           <th rowspan="2">Shields</th>
-          <th colspan="2">Mass</th>
+          <th colspan="3">Mass</th>
           <th rowspan="2">Cargo</th>
           <th rowspan="2">Fuel</th>
           <th colspan="3">Jump Range</th>
           <th colspan="3">Total Range</th>
         </tr>
         <tr>
-          <th class="lft">Unladen</th>
+          <th class="lft">Hull</th>
+          <th>Unladen</th>
           <th>Laden</th>
           <th class="lft">Max</th>
           <th>Full Tank</th>
@@ -59,6 +60,7 @@
           <td>{{fRound(ship.totalDps)}}</td>
           <td>{{ship.armourTotal}} <span ng-if="ship.armourAdded">({{ship.armour}} + {{ship.armourAdded}})</span></td>
           <td>{{fRound(ship.shieldStrength)}} <u>MJ</u> <span ng-if="ship.shieldMultiplier > 1 && ship.shieldStrength > 0">({{fRPct(ship.shieldMultiplier)}})</span></td>
+          <td>{{ship.mass}} <u>T</u></td>
           <td>{{fRound(ship.unladenMass)}} <u>T</u></td>
           <td>{{fRound(ship.ladenMass)}} <u>T</u></td>
           <td>{{fRound(ship.cargoCapacity)}} <u>T</u></td>
@@ -314,14 +316,16 @@
       <table class="total">
         <tr class="ri">
           <td class="lbl">Cost</td>
-          <td ng-class="retrofitTotal > 0 ? 'warning' : 'secondary-disabled'">{{fCrd(retrofitTotal)}} <u>CR</u></td>
+          <td colspan="2" ng-class="retrofitTotal > 0 ? 'warning' : 'secondary-disabled'">{{fCrd(retrofitTotal)}} <u>CR</u></td>
         </tr>
         <tr class="ri">
           <td class="lbl">Retrofitting from</td>
-          <td style="padding:0;">
-            <select style="width: 100%; border: none;" ng-model="$parent.retrofitBuild" ng-change="setRetrofitBase()" ng-options="name as name for (name, build) in allBuilds[ship.id]">
+          <td class="cen" style="border-right:none;width: 1em;"><u class="primary-disabled">&#9662;</u></td>
+          <td style="border-left:none;padding:0;">
+            <select style="width: 100%;padding: 0" ng-model="$parent.retrofitBuild" ng-change="setRetrofitBase()" ng-options="name as name for (name, build) in allBuilds[ship.id]">
               <option value="">Stock / Standard</option>
             </select>
+
           </td>
         </tr>
       </table>
