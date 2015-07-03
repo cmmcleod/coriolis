@@ -84,6 +84,19 @@ header {
     -webkit-overflow-scrolling: touch;
     max-height: 500px;
 
+    &::-webkit-scrollbar {
+      width: 0.5em;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: @warning-disabled;
+    }
+
+
     .smallTablet({
       max-height: 400px;
       left: 0;

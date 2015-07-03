@@ -59,7 +59,7 @@
   input {
     background: none;
     line-height: 1.3em;
-    width: 20em;
+    width: 15em;
     font-size: 0.9em;
     box-sizing: border-box;
     display: inline-block;
@@ -99,6 +99,12 @@
   text-overflow: ellipsis;
 }
 
+.optional-hide {
+  .largePhone({
+    display: none;
+  });
+}
+
 table.total {
   width: 100%;
 
@@ -115,6 +121,7 @@ table.total {
 
 .tabs {
   width: 100%;
+  box-sizing: border-box;
   margin-bottom: 1px;
 
   &, th {
@@ -160,6 +167,12 @@ table.total {
 
   .smallTablet({
     width: 50%;
+
+    .axis.x {
+      g.tick:nth-child(2n + 1) text {
+        display: none;
+      }
+    }
   });
 
   .largePhone({
@@ -182,14 +195,6 @@ table.total {
 
   &.third {
     width: 33%;
-
-    .smallTablet({
-      .axis.x {
-        g.tick:nth-child(2n + 1) text {
-          display: none;
-        }
-      }
-    });
 
     .largePhone({
       width: 100% !important;

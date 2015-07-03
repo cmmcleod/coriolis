@@ -39,6 +39,19 @@ select {
   white-space: nowrap;
   text-align: center;
 
+  &::-webkit-scrollbar {
+    width: 0.5em;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-left: 1px solid @primary;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: @primary-disabled;
+  }
+
   .select-group {
     line-height: 1.5em;
     text-align: left;

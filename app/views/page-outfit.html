@@ -76,6 +76,26 @@
     </table>
   </div>
 
+  <div id="hardpoints" class="group">
+    <h1>HardPoints</h1>
+    <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '!0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
+      <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="GMAP[h.c.grp]"></div>
+      <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
+        <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="utility" class="group">
+    <h1>Utility Mounts</h1>
+    <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
+      <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="GMAP[h.c.grp]"></div>
+      <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
+        <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
+      </div>
+    </div>
+  </div>
+
   <div id="standard" class="group">
     <h1>Standard</h1>
     <div class="slot" ng-click="selectSlot($event, ship.bulkheads)" ng-class="{selected: selectedSlot==ship.bulkheads}">
@@ -180,26 +200,6 @@
     </div>
   </div>
 
-  <div id="hardpoints" class="group">
-    <h1>HardPoints</h1>
-    <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '!0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
-      <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="GMAP[h.c.grp]"></div>
-      <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
-        <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="utility" class="group">
-    <h1>Utility Mounts</h1>
-    <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
-      <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="GMAP[h.c.grp]"></div>
-      <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
-        <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
-      </div>
-    </div>
-  </div>
-
   <div class="group half" id="componentPriority">
     <table style="width:100%">
       <thead>
@@ -256,10 +256,8 @@
           <tr class="main">
             <th colspan="2" class="sortable le" ng-click="sortCost(cName)">
               Component
-              <div class="r">
-                <u ng-if="discounts.ship < 1">[Ship {{fRPct(1 - discounts.ship)}} off]</u>
-                <u ng-if="discounts.components < 1">[Components {{fRPct(1 - discounts.components)}} off]</u>
-              </div>
+              <u class="optional-hide" ng-if="discounts.ship < 1">[Ship {{fRPct(1 - discounts.ship)}} off]</u>
+              <u class="optional-hide" ng-if="discounts.components < 1">[Components {{fRPct(1 - discounts.components)}} off]</u>
             </th>
             <th class="sortable le" ng-click="sortCost('discountedCost')">Credits</th>
           </tr>
@@ -285,17 +283,14 @@
     </div>
 
     <div ng-if="costTab == 'retrofit'">
-      <div style="overflow-x: auto;-webkit-overflow-scrolling: touch;">
+      <div class="scroll-x">
         <table style="width:100%">
           <thead>
             <tr class="main">
               <th colspan="2" class="sortable le" ng-click="sortRetrofit('sellName')">Sell</th>
               <th colspan="2" class="sortable le" ng-click="sortRetrofit('buyName')">Buy</th>
               <th class="sortable le" ng-click="sortRetrofit('netCost')">
-                Net Cost
-                <div class="r">
-                  <u ng-if="discounts.components < 1">[{{fRPct(1 - discounts.components)}} off]</u>
-                </div>
+                Net Cost <u class="optional-hide" ng-if="discounts.components < 1">[{{fRPct(1 - discounts.components)}} off]</u>
               </th>
             </tr>
           </thead>
