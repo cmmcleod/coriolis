@@ -205,6 +205,27 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
   };
 
   /**
+   * Persist selected cost tab
+   * @param {number} val Discount value/amount
+   */
+  this.setCostTab = function(tabName) {
+    if (this.lsEnabled) {
+      return localStorage.setItem('costTab', tabName);
+    }
+  };
+
+  /**
+   * Get the saved  discount
+   * @return {number} val Discount value/amount
+   */
+  this.getCostTab = function() {
+    if (this.lsEnabled) {
+      return localStorage.getItem('costTab');
+    }
+    return null;
+  };
+
+  /**
    * Retrieve the last router state from local storage
    * @param {object} state State object containing state name and params
    */

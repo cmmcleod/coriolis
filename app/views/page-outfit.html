@@ -76,26 +76,6 @@
     </table>
   </div>
 
-  <div id="hardpoints" class="group">
-    <h1>HardPoints</h1>
-    <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '!0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
-      <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="GMAP[h.c.grp]"></div>
-      <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
-        <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="utility" class="group">
-    <h1>Utility Mounts</h1>
-    <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
-      <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="GMAP[h.c.grp]"></div>
-      <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
-        <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
-      </div>
-    </div>
-  </div>
-
   <div id="standard" class="group">
     <h1>Standard</h1>
     <div class="slot" ng-click="selectSlot($event, ship.bulkheads)" ng-class="{selected: selectedSlot==ship.bulkheads}">
@@ -200,6 +180,26 @@
     </div>
   </div>
 
+  <div id="hardpoints" class="group">
+    <h1>HardPoints</h1>
+    <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '!0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
+      <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="GMAP[h.c.grp]"></div>
+      <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
+        <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="utility" class="group">
+    <h1>Utility Mounts</h1>
+    <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
+      <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]" lbl="GMAP[h.c.grp]"></div>
+      <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
+        <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="group half" id="componentPriority">
     <table style="width:100%">
       <thead>
@@ -244,8 +244,8 @@
     <table class="tabs">
       <thead>
         <tr>
-          <th style="width:50%" ng-class="{active: costTab == 'retrofit'}" ng-click="costTab = 'retrofit'">Retrofit Costs</th>
-          <th style="width:50%" ng-class="{active: costTab == 'costs'}" ng-click="costTab = 'costs'">Costs</th>
+          <th style="width:50%" ng-class="{active: costTab == 'retrofit'}" ng-click="updateCostTab('retrofit')">Retrofit Costs</th>
+          <th style="width:50%" ng-class="{active: costTab == 'costs'}" ng-click="updateCostTab('costs')">Costs</th>
         </tr>
       </thead>
     </table>
@@ -296,7 +296,7 @@
           </thead>
           <tbody>
             <tr ng-if="!retrofitList || retrofitList.length == 0">
-              <td colspan="5">No Retrofitting changes</td>
+              <td colspan="5" style="padding: 3em 0;">No Retrofitting changes</td>
             </tr>
             <tr class="highlight" ng-repeat="item in retrofitList | orderBy:retroPredicate:retroDesc">
               <td style="width:1em;">{{item.sellClassRating}}</td>

@@ -39,7 +39,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   $scope.retroPredicate = 'netCost';
   $scope.costDesc = true;
   $scope.costPredicate = 'c.cost';
-  $scope.costTab = 'retrofit';
+  $scope.costTab = Persist.getCostTab() || 'costs';
 
   if ($scope.savedCode) {
     Serializer.toShip(retrofitShip, $scope.savedCode);  // Populate components from last save
@@ -349,6 +349,11 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
       }
     }
     $scope.retrofitTotal = total;
+  }
+
+  $scope.updateCostTab = function (tab) {
+    Persist.setCostTab(tab);
+    $scope.costTab = tab;
   }
 
   // Hide any open menu/slot/etc if the background is clicked
