@@ -314,7 +314,7 @@
           <td colspan="2" ng-class="retrofitTotal > 0 ? 'warning' : 'secondary-disabled'">{{fCrd(retrofitTotal)}} <u>CR</u></td>
         </tr>
         <tr class="ri">
-          <td class="lbl">Retrofitting from</td>
+          <td class="lbl">Retrofit from</td>
           <td class="cen" style="border-right:none;width: 1em;"><u class="primary-disabled">&#9662;</u></td>
           <td style="border-left:none;padding:0;">
             <select style="width: 100%;padding: 0" ng-model="$parent.retrofitBuild" ng-change="setRetrofitBase()" ng-options="name as name for (name, build) in allBuilds[ship.id]">

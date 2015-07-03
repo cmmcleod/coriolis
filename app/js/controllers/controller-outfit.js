@@ -351,10 +351,10 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     $scope.retrofitTotal = total;
   }
 
-  $scope.updateCostTab = function (tab) {
+  $scope.updateCostTab = function(tab) {
     Persist.setCostTab(tab);
     $scope.costTab = tab;
-  }
+  };
 
   // Hide any open menu/slot/etc if the background is clicked
   $scope.$on('close', function() {
