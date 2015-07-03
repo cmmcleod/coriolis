@@ -1,52 +1,12 @@
 {
   "Fuel Tank": [
-    {
-      "id": "f1",
-      "grp": "ft",
-      "class": 1,
-      "rating": "C",
-      "cost": 1000,
-      "capacity": 2
-    },
-    {
-      "id": "f2",
-      "grp": "ft",
-      "class": 2,
-      "rating": "C",
-      "cost": 3750,
-      "capacity": 4
-    },
-    {
-      "id": "f3",
-      "grp": "ft",
-      "class": 3,
-      "rating": "C",
-      "cost": 7063,
-      "capacity": 8
-    },
-    {
-      "id": "f4",
-      "grp": "ft",
-      "class": 4,
-      "rating": "C",
-      "cost": 24734,
-      "capacity": 16
-    },
-    {
-      "id": "f5",
-      "grp": "ft",
-      "class": 5,
-      "rating": "C",
-      "cost": 97754,
-      "capacity": 32
-    },
-    {
-      "id": "f6",
-      "grp": "ft",
-      "class": 6,
-      "rating": "C",
-      "cost": 341577,
-      "capacity": 64
-    }
+    { "id": "f1", "grp": "ft", "class": 1, "rating": "C", "cost": 1000, "capacity": 2 },
+    { "id": "f2", "grp": "ft", "class": 2, "rating": "C", "cost": 3750, "capacity": 4 },
+    { "id": "f3", "grp": "ft", "class": 3, "rating": "C", "cost": 7063, "capacity": 8 },
+    { "id": "f4", "grp": "ft", "class": 4, "rating": "C", "cost": 24734, "capacity": 16 },
+    { "id": "f5", "grp": "ft", "class": 5, "rating": "C", "cost": 97754, "capacity": 32 },
+    { "id": "f6", "grp": "ft", "class": 6, "rating": "C", "cost": 341577, "capacity": 64 },
+    { "id": "f7", "grp": "ft", "class": 7, "rating": "C", "cost": 1780900, "capacity": 128 },
+    { "id": "f8", "grp": "ft", "class": 8, "rating": "C", "cost": 5428400, "capacity": 256 }
   ]
 }
