@@ -1,76 +1,12 @@
 {
   "Cargo Racks": [
-    {
-      "id": "07",
-      "grp": "cr",
-      "name": "Cargo Rack (256)",
-      "class": 8,
-      "rating": "E",
-      "cost": 3829866,
-      "capacity": 256
-    },
-    {
-      "id": "06",
-      "grp": "cr",
-      "name": "Cargo Rack (128)",
-      "class": 7,
-      "rating": "E",
-      "cost": 1178420,
-      "capacity": 128
-    },
-    {
-      "id": "05",
-      "grp": "cr",
-      "name": "Cargo Rack (64)",
-      "class": 6,
-      "rating": "E",
-      "cost": 362591,
-      "capacity": 64
-    },
-    {
-      "id": "04",
-      "grp": "cr",
-      "name": "Cargo Rack (32)",
-      "class": 5,
-      "rating": "E",
-      "cost": 111566,
-      "capacity": 32
-    },
-    {
-      "id": "03",
-      "grp": "cr",
-      "name": "Cargo Rack (16)",
-      "class": 4,
-      "rating": "E",
-      "cost": 34328,
-      "capacity": 16
-    },
-    {
-      "id": "02",
-      "grp": "cr",
-      "name": "Cargo Rack (8)",
-      "class": 3,
-      "rating": "E",
-      "cost": 10563,
-      "capacity": 8
-    },
-    {
-      "id": "01",
-      "grp": "cr",
-      "name": "Cargo Rack (4)",
-      "class": 2,
-      "rating": "E",
-      "cost": 3250,
-      "capacity": 4
-    },
-    {
-      "id": "00",
-      "grp": "cr",
-      "name": "Cargo Rack (2)",
-      "class": 1,
-      "rating": "E",
-      "cost": 1000,
-      "capacity": 2
-    }
+    { "id": "00", "grp": "cr", "class": 1, "rating": "E", "cost": 1000,     "capacity": 2 },
+    { "id": "01", "grp": "cr", "class": 2, "rating": "E", "cost": 3250,     "capacity": 4 },
+    { "id": "02", "grp": "cr", "class": 3, "rating": "E", "cost": 10563,    "capacity": 8 },
+    { "id": "03", "grp": "cr", "class": 4, "rating": "E", "cost": 34328,    "capacity": 16 },
+    { "id": "04", "grp": "cr", "class": 5, "rating": "E", "cost": 111566,   "capacity": 32 },
+    { "id": "05", "grp": "cr", "class": 6, "rating": "E", "cost": 362591,   "capacity": 64 },
+    { "id": "06", "grp": "cr", "class": 7, "rating": "E", "cost": 1178420,  "capacity": 128 },
+    { "id": "07", "grp": "cr", "class": 8, "rating": "E", "cost": 3829866,  "capacity": 256 }
   ]
 }
