@@ -24,7 +24,7 @@ angular.module('app').directive('componentSelect', function() {
         list.push('<svg cpid="', id, '" class="icon lg"><use cpid="', id, '" xlink:href="#mount-', o.mode, '"></use></svg> ');
       }
 
-      list.push(o.class, o.rating);
+      list.push('<span>', o.class, o.rating);
 
       if (o.missile) {
         list.push('/' + o.missile);
@@ -35,7 +35,7 @@ angular.module('app').directive('componentSelect', function() {
         list.push(' ' + o.name);
       }
 
-      list.push('</li>');
+      list.push('</span></li>');
       prevClass = o.class;
       prevRating = o.rating;
     }
