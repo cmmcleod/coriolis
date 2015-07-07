@@ -1,0 +1,11 @@
+{
+  "Prismatic Shield Generators": [
+    { "id": "p6", "grp": "psg", "class": 1, "rating": "A", "cost": 132195,   "mass": 2.5, "power": 2.52, "minmass": 13,  "optmass": 25,   "maxmass": 63,   "minmul": 2.04, "optmul": 1.44, "maxmul": 0.84 },
+    { "id": "p5", "grp": "psg", "class": 2, "rating": "A", "cost": 240336,   "mass": 5,   "power": 3.15, "minmass": 23,  "optmass": 55,   "maxmass": 138,  "minmul": 2.04, "optmul": 1.44, "maxmul": 0.84 },
+    { "id": "p4", "grp": "psg", "class": 3, "rating": "A", "cost": 761868,   "mass": 10,  "power": 3.78, "minmass": 83,  "optmass": 165,  "maxmass": 413,  "minmul": 2.04, "optmul": 1.44, "maxmul": 0.84 },
+    { "id": "p3", "grp": "psg", "class": 4, "rating": "A", "cost": 2415120,  "mass": 20,  "power": 4.62, "minmass": 143, "optmass": 285,  "maxmass": 713,  "minmul": 2.04, "optmul": 1.44, "maxmul": 0.84 },
+    { "id": "p2", "grp": "psg", "class": 5, "rating": "A", "cost": 7655930,  "mass": 40,  "power": 5.46, "minmass": 203, "optmass": 405,  "maxmass": 1013, "minmul": 2.04, "optmul": 1.44, "maxmul": 0.84 },
+    { "id": "p1", "grp": "psg", "class": 6, "rating": "A", "cost": 24269297, "mass": 80,  "power": 6.51, "minmass": 270, "optmass": 540,  "maxmass": 1350, "minmul": 2.04, "optmul": 1.44, "maxmul": 0.84 },
+    { "id": "p0", "grp": "psg", "class": 7, "rating": "A", "cost": 76933668, "mass": 160, "power": 7.35, "minmass": 530, "optmass": 1060, "maxmass": 2650, "minmul": 2.04, "optmul": 1.44, "maxmul": 0.84 }
+  ]
+}
