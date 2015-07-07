@@ -170,6 +170,23 @@
       "mjeps" : 0.51,
       "ssdam" : 1.07,
       "thermload": 1
+    },
+    {
+      "id": "PL",
+      "grp": "pl",
+      "name": "Distruptor",
+      "class": 2,
+      "rating": "E",
+      "cost": 26000,
+      "mass": 4,
+      "power": 0.7,
+      "mode": "F",
+      "type": "T",
+      "damage": 2,
+      "armourpen": "A",
+      "rof": 1.6,
+      "dps": 2,
+      "thermload": 1
     }
   ]
 }
