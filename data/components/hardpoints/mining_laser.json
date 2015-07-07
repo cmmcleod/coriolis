@@ -10,10 +10,7 @@
       "power": 0.5,
       "mode": "F",
       "armourpen": "D",
-      "thermload": 3,
-      "grp": "ml",
-      "clip": 1,
-      "ammo": 1
+      "thermload": 3
     },
     {
       "id": "2m",
@@ -25,10 +22,23 @@
       "power": 0.75,
       "mode": "F",
       "armourpen": "D",
-      "thermload": 5,
+      "thermload": 5
+    },
+    {
+      "id": "ml",
       "grp": "ml",
-      "clip": 1,
-      "ammo": 1
+      "name": "Mining Lance",
+      "class": 1,
+      "rating": "D",
+      "cost": 22576,
+      "mass": 2,
+      "power": 0.7,
+      "mode": "F",
+      "type": "T",
+      "damage": 3,
+      "dps": 3,
+      "armourpen": "D",
+      "thermload": 3
     }
   ]
 }
