@@ -15,7 +15,6 @@
       "rof": 0.6,
       "dps": 4,
       "thermload": 7,
-      "grp": "rg",
       "clip": 1,
       "mjdps" : 13.75,
       "ssdam" : 24.75,
@@ -36,11 +35,29 @@
       "rof": 0.5,
       "dps": 4,
       "thermload": 10,
-      "grp": "rg",
       "clip": 1,
       "mjdps" : 21.66,
       "ssdam" : 43.32,
       "ammo": 30
+    },
+    {
+      "id": "ih",
+      "grp": "rg",
+      "name": "Imperial Hammer",
+      "class": 2,
+      "rating": "B",
+      "cost": 619200,
+      "mass": 4,
+      "power": 1.63,
+      "mode": "F",
+      "type": "TK",
+      "damage": 5,
+      "armourpen": "A",
+      "rof": 0.6,
+      "dps": 5,
+      "thermload": 3,
+      "clip": 3,
+      "ammo": 90
     }
   ]
 }
