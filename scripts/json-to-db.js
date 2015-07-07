@@ -42,11 +42,11 @@ function writeDB(err, arr) {
     "Torpedo Pylons",
     "Mine Launchers",
     "Mining Lasers",
-    "Shield Boosters",
+    "Cargo Scanners",
     "Countermeasures",
-    "Kill Warrant Scanners",
     "Frame Shift Wake Scanners",
-    "Cargo Scanners"
+    "Kill Warrant Scanners",
+    "Shield Boosters"
   ];
 
   for (var i = 0; i < internalOrder.length; i++) {
