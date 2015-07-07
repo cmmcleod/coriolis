@@ -15,7 +15,6 @@
       "rof": 0.3,
       "dps": 4,
       "thermload": 10,
-      "grp": "pa",
       "clip": 5,
       "mjdps" : 6.89,
       "ssdam" : 27.85,
@@ -36,7 +35,6 @@
       "rof": 0.3,
       "dps": 4,
       "thermload": 8,
-      "grp": "pa",
       "clip": 5,
       "mjdps" : 20.98,
       "ssdam" : 92.82,
@@ -57,11 +55,29 @@
       "rof": 0.3,
       "dps": 5,
       "thermload": 10,
-      "grp": "pa",
       "clip": 5,
       "mjdps" : 25.55,
       "ssdam" : 123.76,
       "ammo": 100
+    },
+    {
+      "id": "Ap",
+      "grp": "pa",
+      "name": "Advanced",
+      "class": 3,
+      "rating": "B",
+      "cost": 4119120,
+      "mass": 8,
+      "power": 1.97,
+      "mode": "F",
+      "type": "TK",
+      "damage": 8,
+      "armourpen": "A",
+      "rof": 0.6,
+      "dps": 4,
+      "thermload": 4,
+      "clip": 20,
+      "ammo": 300
     }
   ]
 }
