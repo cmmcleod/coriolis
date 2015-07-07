@@ -161,6 +161,23 @@
       "mjdps" : 5.49,
       "mjeps" : 1.29,
       "thermload": 2
+    },
+    {
+      "id": "b0",
+      "grp": "bl",
+      "name": "Retributor",
+      "class": 1,
+      "rating": "E",
+      "cost": 500000,
+      "mass": 2,
+      "power": 0.69,
+      "mode": "F",
+      "type": "T",
+      "damage": 0,
+      "armourpen": "A",
+      "rof": null,
+      "dps": 3,
+      "thermload": 1
     }
   ]
 }
