@@ -173,7 +173,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
   Ship.prototype.use = function(slot, id, component, preventUpdate) {
     if (slot.id != id) { // Selecting a different component
       // Slot is an internal slot, is not being emptied, and the selected component group/type must be of unique
-      if (slot.cat == 2 && component && _.includes(['psg','sg', 'rf', 'fs'], component.grp)) {
+      if (slot.cat == 2 && component && _.includes(['psg', 'sg', 'rf', 'fs'], component.grp)) {
         // Find another internal slot that already has this type/group installed
         var similarSlot = this.findInternalByGroup(component.grp);
         // If another slot has an installed component with of the same type
@@ -210,12 +210,13 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    * @return {number}       The index of the slot in ship.internal
    */
   Ship.prototype.findInternalByGroup = function(group) {
-    if(group == 'sg' || group == 'psg') {
-      var index = _.findIndex(this.internal, function(slot) {
+    var index;
+    if (group == 'sg' || group == 'psg') {
+      index = _.findIndex(this.internal, function(slot) {
         return slot.c && (slot.c.grp == 'sg' || slot.c.grp == 'psg');
       });
     } else {
-      var index = _.findIndex(this.internal, function(slot) {
+      index = _.findIndex(this.internal, function(slot) {
         return slot.c && slot.c.grp == group;
       });
     }
