@@ -161,6 +161,23 @@
       "mjeps" : 0.63,
       "ssdam" : 2.24,
       "thermload": 1
+    },
+    {
+      "id": "cy",
+      "grp": "ul",
+      "name": "Cryptoscrambler",
+      "class": 1,
+      "rating": "F",
+      "cost": 52800,
+      "mass": 2,
+      "power": 0.65,
+      "mode": "F",
+      "type": "T",
+      "damage": 2,
+      "armourpen": "A",
+      "rof": 1.6,
+      "dps": 3,
+      "thermload": 1
     }
   ]
 }
