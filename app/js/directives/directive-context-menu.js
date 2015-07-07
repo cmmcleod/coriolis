@@ -3,10 +3,12 @@ angular.module('app').directive('contextMenu', ['$parse', function($parse) {
     var fn = $parse(attrs.contextMenu);
 
     element.bind('contextmenu', function(e) {
-      scope.$apply(function() {
-        e.preventDefault();
-        fn(scope, { $event: e });
-      });
+      if (!e.shiftKey) {
+        scope.$apply(function() {
+          e.preventDefault();
+          fn(scope, { $event: e });
+        });
+      }
     });
   };
 }]);
