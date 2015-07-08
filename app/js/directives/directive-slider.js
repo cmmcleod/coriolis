@@ -11,16 +11,17 @@ angular.module('app').directive('slider', ['$window', function($window) {
     },
     link: function(scope, element) {
       var unit = scope.unit,
-          margin = unit ? { top: -10, right: 145, bottom: 0, left: 50 } : { top: 0, right: 10, bottom: 0, left: 10 },
+          margin = unit ? { top: -10, right: 145, left: 50 } : { top: 0, right: 10, left: 10 },
           height = unit ? 40 : 20,    // Height is fixed
-          h = height - margin.top - margin.bottom,
+          h = height - margin.top,
           fmt = d3.format('.2f'),
           pct = d3.format('.1%'),
           val = scope.def !== undefined ? scope.def : scope.max,
           svg = d3.select(element[0]).append('svg'),
           vis = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')'),
-          xAxis = vis.append('g').attr('class', 'x slider-axis').attr('transform', 'translate(0,' + h / 2 + ')'),
+          xAxisContainer = vis.append('g').attr('class', 'x slider-axis').attr('transform', 'translate(0,' + h / 2 + ')'),
           x = d3.scale.linear(),
+          xAxis = d3.svg.axis().scale(x).orient('bottom').tickFormat(function(d) { return d + unit; }).tickSize(0).tickPadding(12);
           slider = vis.append('g').attr('class', 'slider'),
           filled = slider.append('path').attr('class', 'filled').attr('transform', 'translate(0,' + h / 2 + ')'),
           brush = d3.svg.brush().x(x).extent([scope.max, scope.max]).on('brush', brushed),
@@ -47,15 +48,7 @@ angular.module('app').directive('slider', ['$window', function($window) {
         x.domain([scope.min || 0, scope.max]).range([0, w]).clamp(true);
         handle.attr('cx', x(val));
         if (unit) {
-          xAxis
-            .call(d3.svg.axis()
-              .scale(x)
-              .orient('bottom')
-              .tickFormat(function(d) { return d + unit; })
-              .tickValues([0, scope.max / 4, scope.max / 2, (3 * scope.max) / 4, scope.max])
-              .tickSize(0)
-              .tickPadding(12))
-            .select('.domain');
+          xAxisContainer.call(xAxis.tickValues([0, scope.max / 4, scope.max / 2, (3 * scope.max) / 4, scope.max]));
           lbl.attr('x', w + 20);
         }
         slider.call(brush.extent([val, val])).call(brush.event);

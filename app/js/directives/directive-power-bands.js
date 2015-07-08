@@ -19,18 +19,20 @@ angular.module('app').directive('powerBands', ['$window', '$translate', '$rootSc
           pctAxis = d3.svg.axis().scale(pctScale).outerTickSize(0).orient('bottom').tickFormat(d3.format('%')),
           // Create chart
           svg = d3.select(element[0]).append('svg'),
-          vis = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')'),
+          vis = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
           deployed = vis.append('g').attr('class', 'power-band'),
           retracted = vis.append('g').attr('class', 'power-band');
 
       svg.on('contextmenu', function() {
+        if (!d3.event.shiftKey) {
           d3.event.preventDefault();
           for (var i = 0, l = bands.length; i < l; i++) {
             bands[i].retSelected = false;
             bands[i].depSelected = false;
           }
           render();
-        });
+        }
+      });
 
       // Create Y Axis SVG Elements
       vis.append('g').attr('class', 'watt axis');
