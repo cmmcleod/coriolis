@@ -40,7 +40,7 @@ angular.module('app').directive('slider', ['$window', function($window) {
         render();
       });
 
-      angular.element($window).bind('orientationchange resize', render);
+      //angular.element($window).bind('orientationchange resize', render);
 
       function render() {
         var width = element[0].offsetWidth, w = width - margin.left - margin.right;

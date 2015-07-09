@@ -57,7 +57,7 @@
 <body style="background-color:#000;">
   <div style="height: 0; width: 0; overflow:hidden"><%= svgContent %></div>
   <shipyard-header></shipyard-header>
-  <div id="main" ui-view ng-click="bgClicked($event)" ng-style="{'font-size': fontSize + 'em'}"></div>
+  <div id="main" ui-view ng-click="bgClicked($event)" ng-style="{'font-size': sizeRatio + 'em'}"></div>
 
   <div ui-view="modal" ng-click="bgClicked($event)"></div>
 

@@ -41,3 +41,58 @@
     cursor: crosshair;
   }
 }
+
+input[type=range] {
+    -webkit-appearance: none;
+    border: 1px solid @bgBlack;
+    /*required for proper track sizing in FF*/
+    width: 300px;
+
+  &::-moz-range-track, &::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 5px;
+    background: @primary;
+    border: none;
+    border-radius: 3px;
+  }
+  &::-moz-range-thumb, &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    background: @primary;
+  }
+  &:focus {
+    outline: none;
+  }
+  /*hide the outline behind the border*/
+  &:-moz-focusring{
+      outline: 1px solid @bgBlack;
+      outline-offset: -1px;
+  }
+
+  &::-ms-track {
+    width: 300px;
+    height: 5px;
+    background: transparent;
+    border-color: transparent;
+    border-width: 6px 0;
+    color: transparent;
+  }
+  &::-ms-fill-lower {
+    background: @primary;
+    border-radius: 10px;
+  }
+  &::-ms-fill-upper {
+    background: @primary;
+    border-radius: 10px;
+  }
+  &::-ms-thumb {
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: goldenrod;
+  }
+}

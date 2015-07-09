@@ -76,8 +76,8 @@
       <table style="width: 100%;background-color:transparent">
         <tr>
           <td style="width: 20px"><u>A</u></td>
-          <td slider min="0.65" def="fontSize" max="1.2" on-change="textSizeChange(val)"></td>
-          <td style="width: 20px"><span style="font-size: 30px">A</span></td>
+          <td slider min="0.65" def="sizeRatio" max="1.2" on-change="textSizeChange(val)"></td>
+          <td style="width: 40px" ng-click="textSizeChange(1)"><span style="font-size: 30px">A</span><svg class="icon lg primary"><use xlink:href="#switch"></use></svg></td>
         </tr>
       </table>
       <hr />

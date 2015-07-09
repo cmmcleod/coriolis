@@ -1,5 +1,6 @@
 angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', '$state', 'Persist', 'Serializer', 'ShipsDB', function(_, $rootScope, $state, Persist, Serializer, ships) {
 
+
   return {
     restrict: 'E',
     templateUrl: 'views/_header.html',
@@ -12,6 +13,7 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', '$sta
       scope.allComparisons = Persist.comparisons;
       scope.bs = Persist.state;
 
+      var win = angular.element($window);   // Angularized window object for event triggering
       var insIndex = _.findIndex($rootScope.insurance.opts, 'name', Persist.getInsurance());
       var savedDiscounts = Persist.getDiscount() || [1, 1];
       $rootScope.insurance.current = $rootScope.insurance.opts[insIndex != -1 ? insIndex : 0];
@@ -80,10 +82,9 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', '$sta
       });
 
       scope.textSizeChange = function(size) {
-        $rootScope.fontSize = size;
-        $rootScope.fontSizePx = size * parseFloat(getComputedStyle(document.documentElement).fontSize);
+        $rootScope.sizeRatio = size;
         document.getElementById('main').style.fontSize = size + 'em';
-        $rootScope.$broadcast('render');
+        win.triggerHandler('resize');
       };
 
       scope.$watchCollection('allBuilds', function() {
