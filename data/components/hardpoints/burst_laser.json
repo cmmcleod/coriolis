@@ -165,10 +165,10 @@
     {
       "id": "cy",
       "grp": "ul",
-      "name": "Cryptoscrambler",
+      "name": "Cytoscrambler",
       "class": 1,
       "rating": "F",
-      "cost": 52800,
+      "cost": 8800,
       "mass": 2,
       "power": 0.65,
       "mode": "F",
