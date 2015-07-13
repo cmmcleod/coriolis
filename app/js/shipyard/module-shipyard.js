@@ -66,13 +66,6 @@ angular.module('shipyard', ['ngLodash'])
     sb: 'Shield Booster',
     tp: 'Torpedo Pylon'
   })
-  .value('shipPurpose', {
-    mp: 'Multi Purpose',
-    fr: 'Freighter',
-    ex: 'Explorer',
-    co: 'Combat',
-    pa: 'Passenger Transport'
-  })
   .value('shipSize', [
     'N/A',
     'Small',
