@@ -12,7 +12,8 @@
       "shields": 180,
       "armour": 486,
       "fuelcost": 50,
-      "mass": 400
+      "mass": 400,
+      "masslock": 12
     },
     "retailCost": 22296860,
     "slots": {

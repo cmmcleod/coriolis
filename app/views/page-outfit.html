@@ -38,6 +38,7 @@
           <th rowspan="2">Fuel</th>
           <th colspan="3">Jump Range</th>
           <th colspan="3">Total Range</th>
+          <th rowspan="2">Lock<br>Factor</th>
         </tr>
         <tr>
           <th class="lft">Hull</th>
@@ -71,6 +72,7 @@
           <td>{{fRound(ship.maxJumpCount)}}</td>
           <td>{{fRound(ship.unladenTotalRange)}} <u>LY</u></td>
           <td>{{fRound(ship.ladenTotalRange)}} <u>LY</u></td>
+          <td ng-bind="ship.masslock"></td>
         </tr>
       </tbody>
     </table>
