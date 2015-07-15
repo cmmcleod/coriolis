@@ -201,7 +201,7 @@ gulp.task('watch', function() {
 });
 
 gulp.task('cache-bust', function(done) {
-  var rev_all = new revAll({ prefix: cdnHostStr, dontRenameFile: ['.html','db.json'] });
+  var rev_all = new revAll({ prefix: cdnHostStr, dontRenameFile: ['.html','.json'] });
   var stream = gulp.src('build/**')
     .pipe(rev_all.revision())
     .pipe(gulp.dest('build'))
