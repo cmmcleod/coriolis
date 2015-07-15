@@ -1,18 +1,16 @@
 {
   "sidewinder": {
     "properties": {
-      "grp": "mp",
       "name": "Sidewinder",
       "manufacturer": "Faulcon DeLacy",
       "class": 1,
-      "cost": 12887,
+      "hullCost": 12887,
       "speed": 220,
       "boost": 320,
       "agility": 8,
-      "shields": 40,
-      "armour": 108,
-      "fuelcost": 50,
-      "mass": 25,
+      "baseShieldStrength": 40,
+      "baseArmour": 108,
+      "hullMass": 25,
       "masslock": 6
     },
     "retailCost": 32000,

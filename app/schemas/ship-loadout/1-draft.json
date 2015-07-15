@@ -1,0 +1,287 @@
+{
+  "$schema":            "http://json-schema.org/draft-04/schema#",
+  "id":                 "http://cdn.coriolis.io/schemas/ship-loadout/1-draft.json#",
+  "title":              "Ship Loadout",
+  "type":               "object",
+  "description":        "The details for a specific ship build/loadout",
+  "required":           ["name", "ship", "components"],
+  "properties": {
+    "name": {
+      "description":    "The name of the build/loadout",
+      "type":           "string",
+      "minLength":      2
+    },
+    "ship": {
+      "description":    "The full display name of the ship",
+      "type":           "string",
+      "minimum":        3
+    },
+    "manufacturer": {
+      "description":    "The ship manufacturer",
+      "type":           "string"
+    },
+    "references" : {
+      "description":    "3rd Party references and/or links to this build/loadout",
+      "type":           "array",
+      "items": {
+        "type":             "object",
+        "required":         ["name","url"],
+        "properties": {
+          "name": {
+            "description":  "The name of the 3rd party, .e.g 'Coriolis.io' or 'E:D Shipyard'",
+            "type":         "string"
+          },
+          "url": {
+            "description":  "The link/url to the 3rd party referencing this build/loadout",
+            "type":         "string"
+          },
+          "shipId": {
+            "type":         "string"
+          },
+          "code": {
+            "description":  "The serialized code or string for the build/loadout",
+            "type":         "string"
+          }
+        }
+      }
+    },
+    "components": {
+      "description":                "The components used by this build",
+      "type":                       "object",
+      "additionalProperties":       false,
+      "required":                   ["standard", "internal", "hardpoints", "utility"],
+      "properties": {
+        "standard": {
+          "description":            "The set of standard components across all ships",
+          "type":                   "object",
+          "additionalProperties":   false,
+          "required":               ["bulkheads", "powerPlant", "thrusters", "frameShiftDrive", "lifeSupport", "powerDistributor", "sensors", "fuelTank"],
+          "properties": {
+            "bulkheads": {
+              "enum":               ["Lightweight Alloy", "Reinforced Alloy", "Military Grade Composite", "Mirrored Surface Composite", "Reactive Surface Composite"]
+            },
+            "powerPlant": {
+              "required": ["class", "rating"],
+              "properties": {
+                "class": { "type": "integer", "minimum": 2, "maximum": 8 },
+                "rating": { "$ref": "#/definitions/standardRatings" }
+              }
+            },
+            "thrusters": {
+              "required": ["class", "rating"],
+              "properties": {
+                "class": { "type": "integer", "minimum": 2, "maximum": 8 },
+                "rating": { "$ref": "#/definitions/standardRatings" }
+              }
+            },
+            "frameShiftDrive": {
+              "required": ["class", "rating"],
+              "properties": {
+                "class": { "type": "integer", "minimum": 2, "maximum": 8 },
+                "rating": { "$ref": "#/definitions/standardRatings" }
+              }
+            },
+            "lifeSupport": {
+              "required": ["class", "rating"],
+              "properties": {
+                "class": { "type": "integer", "minimum": 1, "maximum": 6 },
+                "rating": { "$ref": "#/definitions/standardRatings" }
+              }
+            },
+            "powerDistributor": {
+              "required": ["class", "rating"],
+              "properties": {
+                "class": { "type": "integer", "minimum": 1, "maximum": 8 },
+                "rating": { "$ref": "#/definitions/standardRatings" }
+              }
+            },
+            "sensors": {
+              "required": ["class", "rating"],
+              "properties": {
+                "class": { "type": "integer", "minimum": 1, "maximum": 8 },
+                "rating": { "$ref": "#/definitions/standardRatings" }
+              }
+            },
+            "fuelTank": {
+              "required": ["class", "rating"],
+              "properties": {
+                "class": { "type": "integer", "minimum": 1, "maximum": 6 },
+                "rating": { "$ref": "#/definitions/standardRatings" }
+              }
+            }
+          }
+        },
+        "internal": {
+          "type": "array",
+          "items": {
+            "type": ["object", "null"],
+            "required": ["class", "rating", "group"],
+            "properties" : {
+              "class": { "type": "integer", "minimum": 1, "maximum": 8 },
+              "rating": { "$ref": "#/definitions/standardRatings" },
+              "group": {
+                "description": "The group of the component, e.g. 'Shield Generator', or 'Cargo Rack'",
+                "type": "string"
+              },
+              "name": {
+                "description": "The name identifying the component (if applicable), e.g. 'Advance Discovery Scanner', or 'Detailed Surface Scanner'",
+                "type": "string"
+              }
+            }
+          },
+          "minItems": 3
+        },
+        "hardpoints": {
+          "type": "array",
+          "items": {
+            "type": ["object", "null"],
+            "required": ["class", "rating", "group", "mount"],
+            "properties" : {
+              "class": { "type": "integer", "minimum": 1, "maximum": 4 },
+              "rating": { "$ref": "#/definitions/allRatings" },
+              "mount": { "type": "string", "enum": ["Fixed", "Gimballed", "Turret"] },
+              "group": {
+                "description": "The group of the component, e.g. 'Beam Laser', or 'Missile Rack'",
+                "type": "string"
+              },
+              "name": {
+                "description": "The name identifing the component (if applicable), e.g. 'Retributor', or 'Mining Lance'",
+                "type": "string"
+              }
+            }
+          },
+          "minItems": 1
+        },
+        "utility": {
+          "type": "array",
+          "items": {
+            "type": ["object", "null"],
+            "required": ["class", "rating", "group"],
+            "properties" : {
+              "class": { "type": "integer", "minimum": 0, "maximum": 0 },
+              "rating": { "$ref": "#/definitions/allRatings" },
+              "group": {
+                "description": "The group of the component, e.g. 'Shield Booster', or 'Kill Warrant Scanner'",
+                "type": "string"
+              },
+              "name": {
+                "description": "The name identifing the component (if applicable), e.g. 'Point Defence', or 'Electronic Countermeasure'",
+                "type": "string"
+              }
+            }
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "stats": {
+      "description":          "Optional statistics from the build",
+      "type":                 "object",
+      "additionalProperties": true,
+      "properties": {
+        "agility": {
+          "type":         "integer",
+          "minimum":      0
+        },
+        "armour": {
+          "description":  "Sum of base armour + any hull reinforcements",
+          "type":         "integer",
+          "minimum":      1
+        },
+        "armourAdded":{
+          "description":  "Armour added through Hull reinforcement",
+          "type":         "integer",
+          "minimum":      1
+        },
+        "baseShieldStrength": {
+          "type":         "integer",
+          "minimum":      1
+        },
+        "baseArmour":  {
+          "type":         "integer",
+          "minimum":      1
+        },
+        "boost": {
+          "description":  "Maximum boost speed of the ships (4 pips, straight-line)",
+          "type":         "number",
+          "minimum":      1
+        },
+        "cargoCapacity": {
+          "type":         "integer",
+          "minimum":      0
+        },
+        "class": {
+          "description":  "Ship Class/Size [Small, Medium, Large]",
+          "enum":         [1,2,3]
+        },
+        "dps": {
+          "description":  "Cumulative DPS based on the in-game 1-10 statistic",
+          "type":         "integer",
+          "minimum":      0
+        },
+        "hullCost": {
+          "description":  "Cost of the ship's hull",
+          "type":         "integer",
+          "minimum":      1
+        },
+        "hullMass": {
+          "description":  "Mass of the Ship hull only",
+          "type":         "number",
+          "minimum":      1
+        },
+        "fuelCapacity": {
+          "type":         "integer",
+          "minimum":      1
+        },
+        "fullTankRange": {
+          "description":  "Single Jump range with a full tank (unladenMass + fuel)",
+          "type":         "number",
+          "minimum":      0
+        },
+        "ladenMass": {
+          "description":  "Mass of the Ship + fuel + cargo (hull + all components + fuel tank + cargo capacity)",
+          "type":         "number",
+          "minimum":      1
+        },
+        "ladenRange": {
+          "description":  "Single Jump range with full cargo load, see ladenMass",
+          "type":         "number",
+          "minimum":      0
+        },
+        "masslock": {
+          "description":  "Mass Lock Factor of the Ship",
+          "type":         "integer",
+          "minimum":      1
+        },
+        "shieldStrength": {
+          "description":  "Shield strengh in Mega Joules (Mj)",
+          "type":         "number",
+          "minimum":      0
+        },
+        "speed": {
+          "description":  "Maximum speed of the ships (4 pips, straight-line)",
+          "type":         "number",
+          "minimum":      1
+        },
+        "totalCost":  {
+          "type":         "integer",
+          "minimum":      1
+        },
+        "unladenRange": {
+          "description":  "Single Jump range when unladen, see unladenMass",
+          "type":         "number",
+          "minimum":      0
+        },
+        "unladenMass": {
+          "description":  "Mass of the Ship (hull + all components)",
+          "type":         "number",
+          "minimum":      1
+        }
+      }
+    }
+  },
+  "definitions": {
+    "standardRatings":  { "enum": ["A", "B", "C", "D", "E"] },
+    "allRatings":       { "enum": ["A", "B", "C", "D", "E", "F", "I" ] }
+  }
+}

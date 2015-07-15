@@ -1,21 +1,20 @@
 {
   "diamondback": {
     "properties": {
-      "grp": "ex",
       "name": "Diamondback Scout",
       "manufacturer": "Lakon",
       "class": 1,
-      "cost": 461341,
+      "hullCost": 461341,
       "speed": 283,
       "boost": 384,
       "agility": 8,
-      "shields": 118,
-      "armour": 216,
-      "fuelcost": 50,
-      "mass": 170,
+      "baseShieldStrength": 118,
+      "baseArmour": 216,
+      "hullMass": 170,
       "masslock": 8
     },
     "retailCost": 564329,
+    "minMassFilter": 180.5,
     "slots": {
       "common": [
         4,

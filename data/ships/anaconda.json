@@ -1,18 +1,16 @@
 {
   "anaconda": {
     "properties": {
-      "grp": "mp",
       "name": "Anaconda",
       "manufacturer": "Faulcon DeLacy",
       "class": 3,
-      "cost": 141889932,
+      "hullCost": 141889932,
       "speed": 180,
       "boost": 240,
       "agility": 2,
-      "shields": 350,
-      "armour": 945,
-      "fuelcost": 50,
-      "mass": 400,
+      "baseShieldStrength": 350,
+      "baseArmour": 945,
+      "hullMass": 400,
       "masslock": 23
     },
     "retailCost": 146969451,

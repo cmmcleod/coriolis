@@ -1,18 +1,16 @@
 {
   "vulture": {
     "properties": {
-      "grp": "co",
       "name": "Vulture",
       "manufacturer": "Core Dynamics",
       "class": 1,
-      "cost": 4689629,
+      "hullCost": 4689629,
       "speed": 210,
       "boost": 340,
       "agility": 9,
-      "shields": 240,
-      "armour": 288,
-      "fuelcost": 50,
-      "mass": 230,
+      "baseShieldStrength": 240,
+      "baseArmour": 288,
+      "hullMass": 230,
       "masslock": 10
     },
     "retailCost": 4925615,

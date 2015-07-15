@@ -1,18 +1,16 @@
 {
   "python": {
     "properties": {
-      "grp": "mp",
       "name": "Python",
       "manufacturer": "Faulcon DeLacy",
       "class": 2,
-      "cost": 55171395,
+      "hullCost": 55171395,
       "speed": 230,
       "boost": 280,
       "agility": 6,
-      "shields": 260,
-      "armour": 468,
-      "fuelcost": 50,
-      "mass": 350,
+      "baseShieldStrength": 260,
+      "baseArmour": 468,
+      "hullMass": 350,
       "masslock": 17
     },
     "retailCost": 56978179,

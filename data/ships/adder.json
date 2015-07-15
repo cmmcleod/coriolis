@@ -1,18 +1,16 @@
 {
   "adder": {
     "properties": {
-      "grp": "ex",
       "name": "Adder",
       "manufacturer": "Zorgon Peterson",
       "class": 1,
-      "cost": 39993,
+      "hullCost": 39993,
       "speed": 220,
       "boost": 320,
       "agility": 8,
-      "shields": 60,
-      "armour": 162,
-      "fuelcost": 50,
-      "mass": 35,
+      "baseShieldStrength": 60,
+      "baseArmour": 162,
+      "hullMass": 35,
       "masslock": 7
     },
     "retailCost": 87808,

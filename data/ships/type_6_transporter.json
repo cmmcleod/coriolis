@@ -1,18 +1,16 @@
 {
   "type_6_transporter": {
     "properties": {
-      "grp": "fr",
       "name": "Type-6 Transporter",
       "manufacturer": "Lakon",
       "class": 2,
-      "cost": 865782,
+      "hullCost": 865782,
       "speed": 220,
       "boost": 350,
       "agility": 3,
-      "shields": 90,
-      "armour": 162,
-      "fuelcost": 50,
-      "mass": 155,
+      "baseShieldStrength": 90,
+      "baseArmour": 162,
+      "hullMass": 155,
       "masslock": 8
     },
     "retailCost": 1045945,

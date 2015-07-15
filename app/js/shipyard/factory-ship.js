@@ -40,7 +40,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       }
     }
     // Make a Ship 'slot'/item similar to other slots
-    this.c = { incCost: true, type: 'SHIP', discountedCost: this.cost, c: { name: this.name, cost: this.cost } };
+    this.c = { incCost: true, type: 'SHIP', discountedCost: this.hullCost, c: { name: this.name, cost: this.hullCost } };
 
     this.costList = _.union(this.internal, this.common, this.hardpoints);
     this.costList.push(this.bulkheads);  // Add The bulkheads
@@ -55,8 +55,8 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.powerList.unshift(this.common[2]);  // Add FSD
     this.powerList.unshift(this.common[0]);  // Add Power Plant
 
-    this.shipDiscount = 1;
-    this.componentDiscount = 1;
+    this.shipCostMultiplier = 1;
+    this.componentCostMultiplier = 1;
 
     this.priorityBands = [
       { deployed: 0, retracted: 0, retOnly: 0 },
@@ -86,8 +86,8 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.armourAdded = 0;
     this.shieldMultiplier = 1;
     this.totalCost = this.c.incCost ? this.c.discountedCost : 0;
-    this.unladenMass = this.mass;
-    this.armourTotal = this.armour;
+    this.unladenMass = this.hullMass;
+    this.armour = this.baseArmour;
     this.totalDps = 0;
 
     this.bulkheads.c = null;
@@ -157,7 +157,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     var oldBulkhead = this.bulkheads.c;
     this.bulkheads.id = index;
     this.bulkheads.c = Components.bulkheads(this.id, index);
-    this.bulkheads.discountedCost = this.bulkheads.c.cost * this.componentDiscount;
+    this.bulkheads.discountedCost = this.bulkheads.c.cost * this.componentCostMultiplier;
     this.updateStats(this.bulkheads, this.bulkheads.c, oldBulkhead, preventUpdate);
   };
 
@@ -186,7 +186,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       var oldComponent = slot.c;
       slot.id = id;
       slot.c = component;
-      slot.discountedCost = (component && component.cost) ? component.cost * this.componentDiscount : 0;
+      slot.discountedCost = (component && component.cost) ? component.cost * this.componentCostMultiplier : 0;
       this.updateStats(slot, component, oldComponent, preventUpdate);
     }
   };
@@ -313,7 +313,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       }
 
       if (slot.incCost && old.cost) {
-        this.totalCost -= old.cost * this.componentDiscount;
+        this.totalCost -= old.cost * this.componentCostMultiplier;
       }
 
       if (old.power && slot.enabled) {
@@ -335,9 +335,6 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
         case 'cr':
           this.cargoCapacity += n.capacity;
           break;
-        case 't':
-          this.maxMass = n.maxmass;
-          break;
         case 'hr':
           this.armourAdded += n.armouradd;
           break;
@@ -347,7 +344,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       }
 
       if (slot.incCost && n.cost) {
-        this.totalCost += n.cost * this.componentDiscount;
+        this.totalCost += n.cost * this.componentCostMultiplier;
       }
 
       if (n.power && slot.enabled) {
@@ -362,7 +359,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     }
 
     this.ladenMass = this.unladenMass + this.cargoCapacity + this.fuelCapacity;
-    this.armourTotal = this.armourAdded + this.armour;
+    this.armour = this.armourAdded + this.baseArmour;
 
     if (!preventUpdate) {
       if (powerChange) {
@@ -390,7 +387,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
 
   Ship.prototype.updateShieldStrength = function() {
     var sgSlot = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
-    this.shieldStrength = sgSlot && sgSlot.enabled ? calcShieldStrength(this.mass, this.shields, sgSlot.c, this.shieldMultiplier) : 0;
+    this.shieldStrength = sgSlot && sgSlot.enabled ? calcShieldStrength(this.hullMass, this.baseShieldStrength, sgSlot.c, this.shieldMultiplier) : 0;
   };
 
   /**
@@ -408,24 +405,24 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
 
   /**
    * Recalculate all item costs and total based on discounts.
-   * @param  {number} shipDiscount      Ship cost multiplier discount (e.g. 0.9 === 10% discount)
-   * @param  {number} componentDiscount Component cost multiplier discount (e.g. 0.75 === 25% discount)
+   * @param  {number} shipCostMultiplier      Ship cost multiplier discount (e.g. 0.9 === 10% discount)
+   * @param  {number} componentCostMultiplier Component cost multiplier discount (e.g. 0.75 === 25% discount)
    */
-  Ship.prototype.applyDiscounts = function(shipDiscount, componentDiscount) {
+  Ship.prototype.applyDiscounts = function(shipCostMultiplier, componentCostMultiplier) {
     var total = 0;
     var costList = this.costList;
 
     for (var i = 0, l = costList.length; i < l; i++) {
       var item = costList[i];
       if (item.c && item.c.cost) {
-        item.discountedCost = item.c.cost * (item.type == 'SHIP' ? shipDiscount : componentDiscount);
+        item.discountedCost = item.c.cost * (item.type == 'SHIP' ? shipCostMultiplier : componentCostMultiplier);
         if (item.incCost) {
           total += item.discountedCost;
         }
       }
     }
-    this.shipDiscount = shipDiscount;
-    this.componentDiscount = componentDiscount;
+    this.shipCostMultiplier = shipCostMultiplier;
+    this.componentCostMultiplier = componentCostMultiplier;
     this.totalCost = total;
   };
 

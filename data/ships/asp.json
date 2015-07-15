@@ -1,18 +1,16 @@
 {
   "asp": {
     "properties": {
-      "grp": "ex",
       "name": "Asp Explorer",
       "manufacturer": "Lakon",
       "class": 2,
-      "cost": 6135658,
+      "hullCost": 6135658,
       "speed": 250,
       "boost": 340,
       "agility": 6,
-      "shields": 140,
-      "armour": 378,
-      "fuelcost": 50,
-      "mass": 280,
+      "baseShieldStrength": 140,
+      "baseArmour": 378,
+      "hullMass": 280,
       "masslock": 11
     },
     "retailCost": 6661153,

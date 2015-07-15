@@ -19,6 +19,9 @@
       <button ng-click="stripBuild()">
         <svg class="icon lg"><use xlink:href="#feather"></use></svg><span class="button-lbl">Low-Weight</span>
       </button>
+      <!-- <button ng-click="exportBuild($event)"  ng-disabled="!buildName">
+        <svg class="icon lg"><use xlink:href="#download"></use></svg><span class="button-lbl">Export</span>
+      </button> -->
     </div>
   </div>
 
@@ -59,9 +62,9 @@
           <td>{{fRound(ship.speed)}} <u>m/s</u></td>
           <td>{{fRound(ship.boost)}} <u>m/s</u></td>
           <td>{{fRound(ship.totalDps)}}</td>
-          <td>{{ship.armourTotal}} <span ng-if="ship.armourAdded">({{ship.armour}} + {{ship.armourAdded}})</span></td>
+          <td>{{ship.armour}} <span ng-if="ship.armourAdded">({{ship.baseArmour}} + {{ship.armourAdded}})</span></td>
           <td>{{fRound(ship.shieldStrength)}} <u>MJ</u> <span ng-if="ship.shieldMultiplier > 1 && ship.shieldStrength > 0">({{fRPct(ship.shieldMultiplier)}})</span></td>
-          <td>{{ship.mass}} <u>T</u></td>
+          <td>{{ship.hullMass}} <u>T</u></td>
           <td>{{fRound(ship.unladenMass)}} <u>T</u></td>
           <td>{{fRound(ship.ladenMass)}} <u>T</u></td>
           <td>{{fRound(ship.cargoCapacity)}} <u>T</u></td>
@@ -117,7 +120,7 @@
         <div class="l">Optimal Mass: {{th.c.optmass}} <u>T</u></div>
         <div class="l">Max Mass: {{th.c.maxmass}} <u>T</u></div>
       </div>
-      <div component-select class="select" s="th" mass="ship.unladenMass" opts="availCS.common[1]" ng-if="selectedSlot==th" ng-click="select('c',th,$event)"></div>
+      <div component-select class="select" s="th" mass="ship.ladenMass" opts="availCS.common[1]" ng-if="selectedSlot==th" ng-click="select('c',th,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, fsd)" ng-class="{selected: selectedSlot==fsd}">
       <div class="details">

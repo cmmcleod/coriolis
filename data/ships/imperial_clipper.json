@@ -1,18 +1,16 @@
 {
   "imperial_clipper": {
     "properties": {
-      "grp": "mp",
       "name": "Imperial Clipper",
       "manufacturer": "Gutamaya",
       "class": 3,
-      "cost": 21077784,
+      "hullCost": 21077784,
       "speed": 300,
       "boost": 380,
       "agility": 2,
-      "shields": 180,
-      "armour": 486,
-      "fuelcost": 50,
-      "mass": 400,
+      "baseShieldStrength": 180,
+      "baseArmour": 486,
+      "hullMass": 400,
       "masslock": 12
     },
     "retailCost": 22296860,

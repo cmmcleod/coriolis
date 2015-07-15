@@ -1,18 +1,16 @@
 {
   "eagle": {
     "properties": {
-      "grp": "co",
       "name": "Eagle",
       "manufacturer": "Core Dynamics",
       "class": 1,
-      "cost": 10446,
+      "hullCost": 10446,
       "speed": 240,
       "boost": 350,
       "agility": 10,
-      "shields": 60,
-      "armour": 72,
-      "fuelcost": 50,
-      "mass": 50,
+      "baseShieldStrength": 60,
+      "baseArmour": 72,
+      "hullMass": 50,
       "masslock": 6
     },
     "retailCost": 44800,

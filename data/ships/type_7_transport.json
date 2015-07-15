@@ -1,18 +1,16 @@
 {
   "type_7_transport": {
     "properties": {
-      "grp": "fr",
       "name": "Type-7 Transporter",
       "manufacturer": "Lakon",
       "class": 3,
-      "cost": 16881511,
+      "hullCost": 16881511,
       "speed": 180,
       "boost": 300,
       "agility": 2,
-      "shields": 120,
-      "armour": 216,
-      "fuelcost": 50,
-      "mass": 420,
+      "baseShieldStrength": 120,
+      "baseArmour": 216,
+      "hullMass": 420,
       "masslock": 10
     },
     "retailCost": 17472252,

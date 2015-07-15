@@ -66,6 +66,11 @@ angular.module('shipyard', ['ngLodash'])
     sb: 'Shield Booster',
     tp: 'Torpedo Pylon'
   })
+  .value('MountMap', {
+    'F': 'Fixed',
+    'G': 'Gimballed',
+    'T': 'Turret'
+  })
   .value('shipSize', [
     'N/A',
     'Small',
@@ -102,7 +107,7 @@ angular.module('shipyard', ['ngLodash'])
     },
     {                   // 2
       title: 'Armour',
-      props: ['armourTotal'],
+      props: ['armour'],
       unit: '',
       fmt: 'fCrd'
     },

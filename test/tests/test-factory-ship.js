@@ -29,7 +29,7 @@ describe("Ship Factory", function() {
       expect(ship.unladenTotalRange).toBeGreaterThan(0, s + ' unladenTotalRange');
       expect(ship.ladenTotalRange).toBeGreaterThan(0, s + ' ladenTotalRange');
       expect(ship.shieldStrength).toBeGreaterThan(0, s + ' shieldStrength');
-      expect(ship.armourTotal).toBeGreaterThan(0, s + ' armourTotal');
+      expect(ship.armour).toBeGreaterThan(0, s + ' armour');
     }
   });
 
@@ -74,7 +74,7 @@ describe("Ship Factory", function() {
     var testShip = new Ship(id, cobra.properties, cobra.slots);
     testShip.buildWith(cobra.defaults);
 
-    var originalHullCost = testShip.cost;
+    var originalHullCost = testShip.hullCost;
     var originalTotalCost = testShip.totalCost;
     var discount = 0.9;
 

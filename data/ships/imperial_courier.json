@@ -1,18 +1,16 @@
 {
   "imperial_courier": {
     "properties": {
-      "grp": "mp",
       "name": "Imperial Courier",
       "manufacturer": "Gutamaya",
       "class": 1,
-      "cost": 2481552,
+      "hullCost": 2481552,
       "speed": 277,
       "boost": 380,
       "agility": 6,
-      "shields": 197,
-      "armour": 144,
-      "fuelcost": 50,
-      "mass": 35,
+      "baseShieldStrength": 197,
+      "baseArmour": 144,
+      "hullMass": 35,
       "masslock": 7
     },
     "retailCost": 2542931,

@@ -1,7 +1,7 @@
 /**
  * Service managing seralization and deserialization of models for use in URLs and persistene.
  */
-angular.module('app').service('Serializer', ['lodash', function(_) {
+angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', function(_, GroupMap, MountMap) {
 
  /**
    * Serializes the ships selected components for all slots to a URL friendly string.
@@ -32,8 +32,8 @@ angular.module('app').service('Serializer', ['lodash', function(_) {
    * Updates an existing ship instance's slots with components determined by the
    * code.
    *
-   * @param {Ship}    ship  The ship instance to be updated
-   * @param {string}  code  The string to deserialize
+   * @param {Ship}    ship        The ship instance to be updated
+   * @param {string}  dataString  The string to deserialize
    */
   this.toShip = function(ship, dataString) {
     var common = new Array(ship.common.length),
@@ -54,10 +54,6 @@ angular.module('app').service('Serializer', ['lodash', function(_) {
 
     decodeToArray(code, internal, decodeToArray(code, hardpoints, decodeToArray(code, common, 1)));
 
-    // get the remaining substring / split into parts for
-    // - priorities
-    // - enabled/disabled
-
     ship.buildWith(
       {
         bulkheads: code.charAt(0) * 1,
@@ -68,6 +64,48 @@ angular.module('app').service('Serializer', ['lodash', function(_) {
       priorities,
       enabled
     );
+  };
+
+  this.toJsonBuild = function(buildName, ship, url, code) {
+    var standard = ship.common,
+        hardpoints = ship.hardpoints,
+        internal = ship.internal;
+
+    var data = {
+      $schema: 'http://cdn.coriolis.io/schemas/ship-loadout/1-draft.json#',
+      name: buildName,
+      ship: ship.name,
+      references: [{
+        name: 'Coriolis.io',
+        url: url,
+        code: code,
+        shipId: ship.id
+      }],
+      components: {
+        standard: {
+          bulkheads: ship.bulkheads.c.name,
+          powerPlant: { class: standard[0].c.class, rating: standard[0].c.rating },
+          thrusters: { class: standard[1].c.class, rating: standard[1].c.rating },
+          frameShiftDrive: { class: standard[2].c.class, rating: standard[2].c.rating },
+          lifeSupport: { class: standard[3].c.class, rating: standard[3].c.rating },
+          powerDistributor: { class: standard[4].c.class, rating: standard[4].c.rating },
+          sensors: { class: standard[5].c.class, rating: standard[5].c.rating },
+          fuelTank: { class: standard[6].c.class, rating: standard[6].c.rating }
+        },
+        hardpoints: _.map(_.filter(hardpoints, function(slot) { return slot.maxClass > 0; }), slotToSchema),
+        utility: _.map(_.filter(hardpoints, function(slot) { return slot.maxClass === 0; }), slotToSchema),
+        internal: _.map(internal, slotToSchema)
+      },
+      stats: {}
+    };
+
+    for (var stat in ship) {
+      if (!isNaN(ship[stat])) {
+        data.stats[stat] = Math.round(ship[stat] * 100) / 100;
+      }
+    }
+
+    return data;
   };
 
   this.fromComparison = function(name, builds, facets, predicate, desc) {
@@ -117,5 +155,20 @@ angular.module('app').service('Serializer', ['lodash', function(_) {
     }
     return codePos;
   }
+
+  function slotToSchema(slot) {
+    if (slot.c) {
+      var o = { class: slot.c.class, rating: slot.c.rating, group: GroupMap[slot.c.grp] };
+      if (slot.c.name) {
+        o.name = slot.c.name;
+      }
+      if (slot.c.mode) {
+        o.mount = MountMap[slot.c.mode];
+      }
+      return o;
+    }
+    return null;
+  }
+
 
 }]);

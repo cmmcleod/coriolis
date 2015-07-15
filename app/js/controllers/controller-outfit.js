@@ -212,6 +212,24 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   };
 
   /**
+   * Export the build to detailed JSON
+   */
+  $scope.exportBuild = function(e) {
+    e.stopPropagation();
+
+    if ($scope.buildName) {
+      $state.go('modal.export', {
+        data: Serializer.toJsonBuild(
+          $scope.buildName,
+          ship,
+          $state.href($state.current.name, $state.params, { absolute: true }),
+          $scope.code || Serializer.fromShip(ship)
+        )
+      });
+    }
+  };
+
+  /**
    * Permanently delete the current build and redirect/reload this controller
    * with the 'factory' build of the current ship.
    */

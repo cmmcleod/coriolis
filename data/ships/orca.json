@@ -1,18 +1,16 @@
 {
   "orca": {
     "properties": {
-      "grp": "pa",
       "name": "Orca",
       "manufacturer": "Saud Kruger",
       "class": 3,
-      "cost": 47798079,
+      "hullCost": 47798079,
       "speed": 300,
       "boost": 380,
       "agility": 2,
-      "shields": 220,
-      "armour": 396,
-      "fuelcost": 50,
-      "mass": 580,
+      "baseShieldStrength": 220,
+      "baseArmour": 396,
+      "hullMass": 580,
       "masslock": 13
     },
     "retailCost": 48539887,

@@ -1,18 +1,16 @@
 {
   "fer_de_lance": {
     "properties": {
-      "grp": "co",
       "name": "Fer-de-Lance",
       "manufacturer": "Zorgon Peterson",
       "class": 2,
-      "cost": 51232230,
+      "hullCost": 51232230,
       "speed": 260,
       "boost": 350,
       "agility": 6,
-      "shields": 300,
-      "armour": 405,
-      "fuelcost": 50,
-      "mass": 250,
+      "baseShieldStrength": 300,
+      "baseArmour": 405,
+      "hullMass": 250,
       "masslock": 12
     },
     "retailCost": 51567040,

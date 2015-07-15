@@ -1,18 +1,16 @@
 {
   "viper": {
     "properties": {
-      "grp": "co",
       "name": "Viper",
       "manufacturer": "Faulcon DeLacy",
       "class": 1,
-      "cost": 95893,
+      "hullCost": 95893,
       "speed": 320,
       "boost": 400,
       "agility": 6,
-      "shields": 105,
-      "armour": 126,
-      "fuelcost": 50,
-      "mass": 60,
+      "baseShieldStrength": 105,
+      "baseArmour": 126,
+      "hullMass": 60,
       "masslock": 7
     },
     "retailCost": 142931,

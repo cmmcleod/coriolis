@@ -1,18 +1,16 @@
 {
   "federal_dropship": {
     "properties": {
-      "grp": "mp",
       "name": "Federal Dropship",
       "manufacturer": "Core Dynamics",
       "class": 2,
-      "cost": 18969990,
+      "hullCost": 18969990,
       "speed": 180,
       "boost": 300,
       "agility": 2,
-      "shields": 200,
-      "armour": 540,
-      "fuelcost": 50,
-      "mass": 580,
+      "baseShieldStrength": 200,
+      "baseArmour": 540,
+      "hullMass": 580,
       "masslock": 14
     },
     "retailCost": 19814205,

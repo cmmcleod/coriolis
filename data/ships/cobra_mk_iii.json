@@ -1,18 +1,16 @@
 {
   "cobra_mk_iii": {
     "properties": {
-      "grp": "mp",
       "name": "Cobra Mk III",
       "manufacturer": "Faulcon DeLacy",
       "class": 1,
-      "cost": 235787,
+      "hullCost": 235787,
       "speed": 280,
       "boost": 400,
       "agility": 6,
-      "shields": 80,
-      "armour": 216,
-      "fuelcost": 50,
-      "mass": 180,
+      "baseShieldStrength": 80,
+      "baseArmour": 216,
+      "hullMass": 180,
       "masslock": 8
     },
     "retailCost": 379718,

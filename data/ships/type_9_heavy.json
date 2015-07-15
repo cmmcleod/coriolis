@@ -1,18 +1,16 @@
 {
   "type_9_heavy": {
     "properties": {
-      "grp": "fr",
       "name": "Type-9 Heavy",
       "manufacturer": "Lakon",
       "class": 3,
-      "cost": 73255168,
+      "hullCost": 73255168,
       "speed": 130,
       "boost": 200,
       "agility": 0,
-      "shields": 240,
-      "armour": 432,
-      "fuelcost": 50,
-      "mass": 1000,
+      "baseShieldStrength": 240,
+      "baseArmour": 432,
+      "hullMass": 1000,
       "masslock": 16
     },
     "retailCost": 76555842,
