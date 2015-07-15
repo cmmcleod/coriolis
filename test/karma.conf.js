@@ -3,7 +3,8 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['jasmine', 'fixture'],
     preprocessors: {
-        '../build/schemas/**/*.json': ['json_fixtures']
+      '../build/schemas/**/*.json': ['json_fixtures'],
+      'fixtures/**/*.json': ['json_fixtures']
     },
     files: [
       '../build/lib*.js',
@@ -11,10 +12,11 @@ module.exports = function(config) {
       '../node_modules/jsen/dist/jsen.js',
       '../build/app*.js',
       '../build/schemas/**/*.json',
+      'fixtures/**/*.json',
       'tests/**/*.js',
     ],
-     jsonFixturesPreprocessor: {
-      stripPrefix: '.*build',
+    jsonFixturesPreprocessor: {
+      stripPrefix: '.*(/build/)',
       variableName: '__json__'
     },
     reporters: ['mocha'],

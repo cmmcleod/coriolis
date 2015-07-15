@@ -5,7 +5,7 @@ angular.module('app').controller('ExportController', ['$scope', '$stateParams', 
   if ($stateParams.promise) {
     $scope.export = 'Generating...';
     $stateParams.promise.then(function(data) {
-      $scope.export = data;
+      $scope.export = (typeof data === 'object') ? angular.toJson(data, true) : data;
     });
   } else {
     $scope.export = angular.toJson($stateParams.data, true);

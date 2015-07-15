@@ -7,7 +7,7 @@ angular.module('app').controller('ImportController', ['$scope', '$stateParams', 
   $scope.ships = Ships;
 
   $scope.validateJson = function() {
-    var importObj = null;
+    var importObj = null, shipData = null;
     $scope.jsonValid = false;
     $scope.errorMsg = null;
     $scope.builds = null;
@@ -22,36 +22,68 @@ angular.module('app').controller('ImportController', ['$scope', '$stateParams', 
     }
 
     if (typeof importObj != 'object') {
-      $scope.errorMsg = 'Must be an object!';
+      $scope.errorMsg = 'Must be an object or array!';
       return;
     }
 
-    if ((!importObj.builds || !Object.keys(importObj.builds).length)) {
-      $scope.errorMsg = 'No builds in data';
-      return;
-    }
-
-    for (var shipId in importObj.builds) {
-      var shipData = Ships[shipId];
-      if (shipData) {
-        for (var buildName in importObj.builds[shipId]) {
-          if (typeof importObj.builds[shipId][buildName] != 'string') {
-            $scope.errorMsg = shipData.properties.name + ' build "' + buildName + '" must be a string!';
-            return;
+    // Using JSON from a simple/shortform/standard export
+    if (importObj.builds && Object.keys(importObj.builds).length) {
+      for (var shipId in importObj.builds) {
+        shipData = Ships[shipId];
+        if (shipData) {
+          for (var buildName in importObj.builds[shipId]) {
+            if (typeof importObj.builds[shipId][buildName] != 'string') {
+              $scope.errorMsg = shipData.properties.name + ' build "' + buildName + '" must be a string!';
+              return;
+            }
+            try {
+              // Actually build the ship with the code to ensure it's valid
+              Serializer.toShip(new Ship(shipId, shipData.properties, shipData.slots), importObj.builds[shipId][buildName]);
+            } catch (e) {
+              $scope.errorMsg = shipData.properties.name + ' build "' + buildName + '" is not valid!';
+              return;
+            }
           }
-          try {
-            // Actually build the ship with the code to ensure it's valid
-            Serializer.toShip(new Ship(shipId, shipData.properties, shipData.slots), importObj.builds[shipId][buildName]);
-          } catch (e) {
-            $scope.errorMsg = shipData.properties.name + ' build "' + buildName + '" is not valid!';
+        } else {
+          $scope.errorMsg = '"' + shipId + '"" is not a valid Ship Id!';
+          return;
+        }
+        $scope.builds = importObj.builds;
+      }
+
+    // Using JSON from a detailed export
+    } else if (importObj.length && importObj[0].references && importObj[0].references.length) {
+      var builds = {};
+      for (var i = 0, l = importObj.length; i < l; i++) {
+        if (typeof importObj[i].name != 'string' || typeof importObj[i].ship != 'string') {
+          $scope.errorMsg = 'Build [' + i + '] must have a ship and build name!';
+          return;
+        }
+        for (var r = 0, rl = importObj[i].references.length; r < rl; r++) {
+          var ref = importObj[i].references[r];
+          if (ref.name == 'Coriolis.io' && ref.code && ref.shipId) {
+            if (!builds[ref.shipId]) {
+              builds[ref.shipId] = {};
+            }
+            try {
+              // Actually build the ship with the code to ensure it's valid
+              shipData = Ships[ref.shipId];
+              Serializer.toShip(new Ship(ref.shipId, shipData.properties, shipData.slots), ref.code);
+            } catch (e) {
+              $scope.errorMsg = importObj[i].ship + ' build "' + importObj[i].name + '" is not valid!';
+              return;
+            }
+            builds[ref.shipId][importObj[i].name] = ref.code;
+          } else {
+            $scope.errorMsg = importObj[i].ship + ' build "' + importObj[i].name + '" has an invalid Coriolis reference!';
             return;
           }
         }
-      } else {
-        $scope.errorMsg = '"' + shipId + '"" is not a valid Ship Id!';
-        return;
       }
-      $scope.builds = importObj.builds;
+      $scope.builds = builds;
+    } else {
+      $scope.errorMsg = 'No builds in data';
+      return;
     }
 
     $scope.jsonValid = true;

@@ -219,12 +219,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
 
     if ($scope.buildName) {
       $state.go('modal.export', {
-        data: Serializer.toJsonBuild(
-          $scope.buildName,
-          ship,
-          $state.href($state.current.name, $state.params, { absolute: true }),
-          $scope.code || Serializer.fromShip(ship)
-        )
+        data: Serializer.toDetailedBuild($scope.buildName, ship, $scope.code || Serializer.fromShip(ship))
       });
     }
   };

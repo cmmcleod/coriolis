@@ -1,7 +1,7 @@
 /**
  * Service managing seralization and deserialization of models for use in URLs and persistene.
  */
-angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', function(_, GroupMap, MountMap) {
+angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', 'ShipsDB', 'Ship', '$state', function(_, GroupMap, MountMap, ShipsDB, Ship, $state) {
 
  /**
    * Serializes the ships selected components for all slots to a URL friendly string.
@@ -66,18 +66,18 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', f
     );
   };
 
-  this.toJsonBuild = function(buildName, ship, url, code) {
+  this.toDetailedBuild = function(buildName, ship, code) {
     var standard = ship.common,
         hardpoints = ship.hardpoints,
         internal = ship.internal;
 
     var data = {
-      $schema: 'http://cdn.coriolis.io/schemas/ship-loadout/1-draft.json#',
+      $schema: 'http://cdn.coriolis.io/schemas/ship-loadout/1.json#',
       name: buildName,
       ship: ship.name,
       references: [{
         name: 'Coriolis.io',
-        url: url,
+        url: $state.href('outfit', { shipId: ship.id, code: code, bn: buildName }, { absolute: true }),
         code: code,
         shipId: ship.id
       }],
@@ -105,6 +105,21 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', f
       }
     }
 
+    return data;
+  };
+
+  this.toDetailedExport = function(builds) {
+    var data = [];
+
+    for (var shipId in builds) {
+      for (var buildName in builds[shipId]) {
+        var code = builds[shipId][buildName];
+        var shipData = ShipsDB[shipId];
+        var ship = new Ship(shipId, shipData.properties, shipData.slots);
+        this.toShip(ship, code);
+        data.push(this.toDetailedBuild(buildName, ship, code));
+      }
+    }
     return data;
   };
 

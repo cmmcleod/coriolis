@@ -1,4 +1,4 @@
-angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', 'Persist', 'ShipsDB', function(_, $rootScope, Persist, ships) {
+angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', '$state', 'Persist', 'Serializer', 'ShipsDB', function(_, $rootScope, $state, Persist, Serializer, ships) {
 
   return {
     restrict: 'E',
@@ -18,17 +18,6 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', 'Pers
       $rootScope.discounts.ship = savedDiscounts[0];
       $rootScope.discounts.components = savedDiscounts[1];
 
-      // Close menus if a navigation change event occurs
-      $rootScope.$on('$stateChangeStart', function() {
-        scope.openedMenu = null;
-      });
-
-      // Listen to close event to close opened menus or modals
-      $rootScope.$on('close', function() {
-        scope.openedMenu = null;
-        $rootScope.showAbout = false;
-      });
-
       /**
        * Save selected insurance option
        */
@@ -42,6 +31,13 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', 'Pers
       scope.updateDiscount = function() {
         Persist.setDiscount([$rootScope.discounts.ship, $rootScope.discounts.components]);
         $rootScope.$broadcast('discountChange');
+      };
+
+      scope.detailedExport = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        scope.openedMenu = null;
+        $state.go('modal.export', { data: Serializer.toDetailedExport(scope.allBuilds) });
       };
 
       scope.openMenu = function(e, menu) {
@@ -58,16 +54,15 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', 'Pers
         scope.openedMenu = menu;
       };
 
-      scope.about = function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+      // Close menus if a navigation change event occurs
+      $rootScope.$on('$stateChangeStart', function() {
         scope.openedMenu = null;
-        $rootScope.showAbout = true;
-      };
+      });
 
-      $rootScope.hideAbout = function() {
-        $rootScope.showAbout = false;
-      };
+      // Listen to close event to close opened menus or modals
+      $rootScope.$on('close', function() {
+        scope.openedMenu = null;
+      });
 
       scope.$watchCollection('allBuilds', function() {
         scope.buildsList = Object.keys(scope.allBuilds).sort();
