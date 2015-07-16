@@ -25,7 +25,7 @@ describe('Database', function() {
     }
   });
 
-  it('has valid internal components', function() {
+  it('has unique IDs for every internal component', function() {
     var ids = {};
     var groups = DB.components.internal;
 
