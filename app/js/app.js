@@ -38,7 +38,7 @@ function($rootScope, $location, $window, $doc, $state, CArr, sz, hpc, GroupMap, 
   $rootScope.SZ = sz;
   $rootScope.HPC = hpc;
   $rootScope.GMAP = GroupMap;
-  $rootScope.insurance = { opts: [{ name: 'Standard', pct: 0.05 }, { name: 'Alpha', pct: 0.025 }, { name: 'Beta', pct: 0.035 }] };
+  $rootScope.insurance = { opts: [{ name: 'Standard', pct: 0.05 }, { name: 'Alpha', pct: 0.025 }, { name: 'Beta', pct: 0.0375 }] };
   $rootScope. discounts = { opts: Discounts };
   $rootScope.STATUS = ['', 'DISABLED', 'OFF', 'ON'];
   $rootScope.STATUS_CLASS = ['', 'disabled', 'warning', 'secondary-disabled'];
