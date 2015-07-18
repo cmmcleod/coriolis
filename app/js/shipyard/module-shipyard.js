@@ -205,13 +205,13 @@ angular.module('shipyard', ['ngLodash'])
    */
   .value('calcTotalRange', function(mass, fsd, fuel) {
     var fuelRemaining = fuel % fsd.maxfuel;  // Fuel left after making N max jumps
-    var jumps = fuel / fsd.maxfuel;
+    var jumps = Math.floor(fuel / fsd.maxfuel);
     mass += fuelRemaining;
     // Going backwards, start with the last jump using the remaining fuel
     var totalRange = fuelRemaining > 0 ? Math.pow(fuelRemaining / fsd.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass : 0;
-    // For each max fuel jump, calculate the max jump range based on fuel left in the tank
-    for (var j = 0, l = Math.floor(jumps); j < l; j++) {
-      fuelRemaining += fsd.maxfuel;
+    // For each max fuel jump, calculate the max jump range based on fuel mass left in the tank
+    for (var j = 0; j < jumps; j++) {
+      mass += fsd.maxfuel;
       totalRange += Math.pow(fsd.maxfuel / fsd.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass;
     }
     return totalRange;
