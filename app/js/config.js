@@ -46,7 +46,7 @@ angular.module('app').config(['$provide', '$stateProvider', '$urlRouterProvider'
     // Modal States and views
     .state('modal', { abstract: true, views: { 'modal': { templateUrl: 'views/_modal.html', controller: 'ModalController' } } })
     .state('modal.about', { views: { 'modal-content': { templateUrl: 'views/modal-about.html' } } })
-    .state('modal.export', { params: { title: null, data: null, promise: null }, views: { 'modal-content': { templateUrl: 'views/modal-export.html', controller: 'ExportController' } } })
+    .state('modal.export', { params: { title: null, data: null, promise: null, description: null }, views: { 'modal-content': { templateUrl: 'views/modal-export.html', controller: 'ExportController' } } })
     .state('modal.import', { params: { obj: null }, views: { 'modal-content': { templateUrl: 'views/modal-import.html', controller: 'ImportController' } } })
     .state('modal.link', { params: { url: null }, views: { 'modal-content': { templateUrl: 'views/modal-link.html', controller: 'LinkController' } } })
     .state('modal.delete', { views: { 'modal-content': { templateUrl: 'views/modal-delete.html', controller: 'DeleteController' } } });
