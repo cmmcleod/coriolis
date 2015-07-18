@@ -4,6 +4,9 @@
 angular.module('app').service('Persist', ['$window', 'lodash', function($window, _) {
   var LS_KEY_BUILDS = 'builds';
   var LS_KEY_COMPARISONS = 'comparisons';
+  var LS_KEY_COST_TAB = 'costTab';
+  var LS_KEY_INSURANCE = 'insurance';
+  var LS_KEY_DISCOUNTS = 'discounts';
   var localStorage = $window.localStorage;
   var buildJson = null;
   var comparisonJson = null;
@@ -162,13 +165,23 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
     }
   };
 
+  this.getAll = function() {
+    var data = {};
+    data[LS_KEY_BUILDS] = this.builds;
+    data[LS_KEY_COMPARISONS] = this.comparisons;
+    data[LS_KEY_INSURANCE] = this.getInsurance();
+    data[LS_KEY_DISCOUNTS] = this.getDiscount();
+
+    return data;
+  };
+
   /**
    * Get the saved insurance type
    * @return {string} The name of the saved insurance type of null
    */
   this.getInsurance = function() {
     if (this.lsEnabled) {
-      return localStorage.getItem('insurance');
+      return localStorage.getItem(LS_KEY_INSURANCE);
     }
     return null;
   };
@@ -179,7 +192,7 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
    */
   this.setInsurance = function(name) {
     if (this.lsEnabled) {
-      return localStorage.setItem('insurance', name);
+      return localStorage.setItem(LS_KEY_INSURANCE, name);
     }
   };
 
@@ -189,7 +202,7 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
    */
   this.setDiscount = function(val) {
     if (this.lsEnabled) {
-      return localStorage.setItem('discounts', angular.toJson(val));
+      return localStorage.setItem(LS_KEY_DISCOUNTS, angular.toJson(val));
     }
   };
 
@@ -199,7 +212,7 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
    */
   this.getDiscount = function() {
     if (this.lsEnabled) {
-      return angular.fromJson(localStorage.getItem('discounts'));
+      return angular.fromJson(localStorage.getItem(LS_KEY_DISCOUNTS));
     }
     return null;
   };
@@ -210,7 +223,7 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
    */
   this.setCostTab = function(tabName) {
     if (this.lsEnabled) {
-      return localStorage.setItem('costTab', tabName);
+      return localStorage.setItem(LS_KEY_COST_TAB, tabName);
     }
   };
 
@@ -220,7 +233,7 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
    */
   this.getCostTab = function() {
     if (this.lsEnabled) {
-      return localStorage.getItem('costTab');
+      return localStorage.getItem(LS_KEY_COST_TAB);
     }
     return null;
   };
