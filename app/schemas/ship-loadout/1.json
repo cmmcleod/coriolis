@@ -24,8 +24,9 @@
       "description":    "3rd Party references and/or links to this build/loadout",
       "type":           "array",
       "items": {
-        "type":             "object",
-        "required":         ["name","url"],
+        "type":                 "object",
+        "required":             ["name","url"],
+        "additionalProperties": true,
         "properties": {
           "name": {
             "description":  "The name of the 3rd party, .e.g 'Coriolis.io' or 'E:D Shipyard'",
@@ -33,13 +34,6 @@
           },
           "url": {
             "description":  "The link/url to the 3rd party referencing this build/loadout",
-            "type":         "string"
-          },
-          "shipId": {
-            "type":         "string"
-          },
-          "code": {
-            "description":  "The serialized code or string for the build/loadout",
             "type":         "string"
           }
         }
