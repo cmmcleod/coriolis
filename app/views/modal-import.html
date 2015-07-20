@@ -1,24 +1,38 @@
 <h2>Import</h2>
 <div ng-show="!processed">
-  <textarea class="cb json"  ng-model="importData" ng-change="validateJson()" placeholder="Paste JSON Here"></textarea>
+  <textarea class="cb json"  ng-model="importJSON" ng-change="validateJson()" placeholder="Paste JSON Here"></textarea>
   <button class="l" ng-click="process()" ng-disabled="!jsonValid">Proceed</button>
   <div class="l warning" style="margin-left:3em;">{{errorMsg}}</div>
 </div>
 
 <div ng-show="processed">
   <table class="l" style="overflow:hidden;margin: 1em 0; width: 100%;">
-    <thead><tr><th>Ship</th><th>Build Name</th><th>Action</th></tr></thead>
+    <thead><tr><th style="text-align:left">Ship</th><th style="text-align:left">Build Name</th><th>Action</th></tr></thead>
     <tbody ng-repeat="(shipId,shipBuilds) in builds">
       <tr class="cb" ng-repeat="(buildName, b) in shipBuilds">
         <td>{{ships[shipId].properties.name}}</td>
         <td><input type="text" ng-model="b.useName"/></td>
-        <td ng-class="{warning: hasBuild(shipId, b.useName) == true, disabled: b.useName == ''}">
+        <td style="text-align:center" ng-class="{warning: hasBuild(shipId, b.useName) == true, disabled: b.useName == ''}">
           <span ng-show="b.useName">{{ hasBuild(shipId, b.useName)? 'Overwrite' : 'Create' }}</span>
           <span ng-show="b.useName == ''">Skip</span>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <table class="l" style="overflow:hidden;margin: 1em 0; width: 100%;" ng-if="comparisons">
+    <thead><tr><th style="text-align:left">Comparison</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr class="cb" ng-repeat="(name, comparison) in comparisons">
+        <td><input type="text" ng-model="comparison.useName"/></td>
+        <td style="text-align:center" ng-class="{warning: hasComparison(comparison.useName) == true, disabled: comparison.useName == ''}">
+          <span ng-show="comparison.useName">{{ hasComparison(comparison.useName)? 'Overwrite' : 'Create' }}</span>
+          <span ng-show="comparison.useName == ''">Skip</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
   <button class="cl l" ng-click="import()"><svg class="icon"><use xlink:href="#download"></use></svg> Import</button>
   <button class="l" style="margin-left: 2em;" ng-click="processed = false" ng-show="canEdit">Edit JSON</button>
 </div>

@@ -1,5 +1,5 @@
 {
-  "Collector Limpet Controllers": [
+  "Collector Limpet Controller": [
     { "id": "Cf", "grp":"cc", "class":7, "rating":"E", "cost": 437400, "mass": 32.0, "power":0.41, "range":1.36, "maximum": 4, "time":300 },
     { "id": "Cg", "grp":"cc", "class":7, "rating":"D", "cost": 874800, "mass": 32.0, "power":0.55, "range":1.02, "maximum": 4, "time":600 },
     { "id": "Ch", "grp":"cc", "class":7, "rating":"C", "cost":1749600, "mass": 80.0, "power":0.69, "range":1.70, "maximum": 4, "time":510 },

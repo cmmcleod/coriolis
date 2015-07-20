@@ -1,9 +1,9 @@
 {
-  "Scanners": [
+  "Scanner": [
     {
       "id": "2f",
       "grp": "sc",
-      "name": "Adv. Discovery Scanner",
+      "name": "Advanced Discovery Scanner",
       "class": 1,
       "rating": "C",
       "cost": 1545000,
@@ -14,7 +14,7 @@
     {
       "id": "2g",
       "grp": "sc",
-      "name": "Inter. Discovery Scanner",
+      "name": "Intermediate Discovery Scanner",
       "class": 1,
       "rating": "D",
       "cost": 505000,

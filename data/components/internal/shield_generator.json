@@ -1,5 +1,5 @@
 {
-  "Shield Generators": [
+  "Shield Generator": [
     { "id": "4t", "grp": "sg", "class": 8, "rating": "E", "cost": 2007241,   "mass": 160, "power": 2.4,  "minmass": 900, "optmass": 1800, "maxmass": 4500, "minmul": 1.3, "optmul": 0.8, "maxmul": 0.3 },
     { "id": "4s", "grp": "sg", "class": 8, "rating": "D", "cost": 6021722,   "mass": 64,  "power": 3.2,  "minmass": 900, "optmass": 1800, "maxmass": 4500, "minmul": 1.4, "optmul": 0.9, "maxmul": 0.4 },
     { "id": "4r", "grp": "sg", "class": 8, "rating": "C", "cost": 18065165,  "mass": 160, "power": 4,    "minmass": 900, "optmass": 1800, "maxmass": 4500, "minmul": 1.5, "optmul": 1,   "maxmul": 0.5 },

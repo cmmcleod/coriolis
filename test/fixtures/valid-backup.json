@@ -1,0 +1,66 @@
+{
+  "builds": {
+    "type_6_transporter": {
+      "Cargo": "02A4D4A2D2D2D4C-----04040303430101",
+      "Miner": "03A4D4A2D2D2D4C2l2l---040403451q0101",
+      "Hopper": "02A4D4A2D1A2D4C1717---030302024300-"
+    },
+    "type_7_transport": {
+      "Cargo": "02A5D5A4D3D3D5C--------0505040403480101",
+      "Miner": "04D5D5A4D2D3D5C--2l2l----0505041v03450000"
+    },
+    "federal_dropship": {
+      "Cargo": "04D5D5A5D3D4D4C-1717------05040448020201"
+    },
+    "asp": {
+      "Miner": "25A5A5A4D4A5A5C0s0s24242l2l---04054a1q02022o27"
+    },
+    "cobra_mk_iii": {
+      "Example": "24A4A4A3D3A3A4C0s0s2d2d0m0445032b2o2753.AwRj4yKA.CwBhEYyrKhmMQ===",
+    },
+    "imperial_clipper": {
+      "Cargo": "03A5D5A5D4D5D4C--0s0s----0605450302020101",
+      "Multi-purpose": "26A4A5A5D6A5A4C0v0v272704090j0h064f2c0302020101",
+      "Current": "05A6D5A5D6A5A4C0v0v27270404050n4m05035d29292o01.AwRj4yrI.AwhMIyuBGNiA",
+      "Dream": "26A6A5A5D6A5A4C0v0v0s0s04040c0n064f5d2b02022o0d.AwRj49UlmI==.AwiMIyuo"
+    },
+    "type_9_heavy": {
+      "Cargo": "04A6D6A5D4D4D5C---------07064f040303010201.AwRj4yoo.EwBhEYy6dsg="
+    },
+    "python": {
+      "Cargo": "04A6D5A4D6D6D5C---------050505044a03020201",
+      "Miner": "04A6D5A4D6D6D5C---2m2m----050505044d1v02022o"
+    },
+    "anaconda": {
+      "Dream": "48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404040l0b0100034k5n05050404040303326b.AwRj4yo5dig=.MwBhEYy6duwEziA=",
+      "Cargo": "03A7D6A5D4D8D5C----------------060505054d040403030301.AwRj4yuqg===.Aw18ZlA="
+    },
+    "diamondback_explorer": {
+      "Explorer": "02A4D5A3D3D3D5C-------320p432i2f.AwRj4zTI.AwiMIypI"
+    }
+  },
+  "comparisons": {
+    "Test": {
+      "facets": [ 9, 6, 4, 1, 3, 2 ],
+      "builds": [
+        {
+          "shipId": "anaconda",
+          "buildName": "Dream"
+        },
+        {
+          "shipId": "asp",
+          "buildName": "Miner"
+        },
+        {
+          "shipId": "diamondback_explorer",
+          "buildName": "Explorer"
+        }
+      ]
+    }
+  },
+  "insurance": "Beta",
+  "discounts": [
+    1,
+    1
+  ]
+}

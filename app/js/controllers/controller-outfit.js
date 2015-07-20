@@ -219,6 +219,8 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
 
     if ($scope.buildName) {
       $state.go('modal.export', {
+        title: $scope.buildName + ' Export',
+        description: 'A detailed JSON export of your build for use in other sites and tools',
         data: Serializer.toDetailedBuild($scope.buildName, ship, $scope.code || Serializer.fromShip(ship))
       });
     }

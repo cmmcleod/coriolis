@@ -1,7 +1,7 @@
 /**
  * Service managing seralization and deserialization of models for use in URLs and persistene.
  */
-angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', 'ShipsDB', 'Ship', '$state', function(_, GroupMap, MountMap, ShipsDB, Ship, $state) {
+angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', 'ShipsDB', 'Ship', 'Components', '$state', function(_, GroupMap, MountMap, ShipsDB, Ship, Components, $state) {
 
  /**
    * Serializes the ships selected components for all slots to a URL friendly string.
@@ -108,6 +108,46 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
     return data;
   };
 
+  this.fromDetailedBuild = function(detailedBuild) {
+    var shipId = _.findKey(ShipsDB, { properties: { name: detailedBuild.ship } });
+
+    if (!shipId) {
+      throw 'No such ship: ' + detailedBuild.ship;
+    }
+
+    var comps = detailedBuild.components;
+    var shipData = ShipsDB[shipId];
+    var ship = new Ship(shipId, shipData.properties, shipData.slots);
+    var bulkheads = Components.bulkheadIndex(comps.standard.bulkheads);
+
+    if (bulkheads < 0) {
+      throw 'Invalid bulkheads: ' + comps.standard.bulkheads;
+    }
+
+    var common = _.map(
+      ['powerPlant', 'thrusters', 'frameShiftDrive', 'lifeSupport', 'powerDistributor', 'sensors', 'fuelTank'],
+      function(c) {
+        if (!comps.standard[c].class || !comps.standard[c].rating) {
+          throw 'Invalid value for ' + c;
+        }
+        return comps.standard[c].class + comps.standard[c].rating;
+      }
+    );
+
+    var internal = _.map(comps.internal, function(c) { return c ? Components.findInternalId(c.group, c.class, c.rating, c.name) : 0; });
+
+    var hardpoints = _.map(comps.hardpoints, function(c) {
+      return c ? Components.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount], c.missile) : 0;
+    });
+    hardpoints = hardpoints.concat(_.map(comps.utility, function(c) {
+      return c ? Components.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount]) : 0;
+    }));
+
+    ship.buildWith({ bulkheads: bulkheads, common: common, hardpoints: hardpoints, internal: internal });
+
+    return ship;
+  };
+
   this.toDetailedExport = function(builds) {
     var data = [];
 
@@ -179,6 +219,9 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
       }
       if (slot.c.mode) {
         o.mount = MountMap[slot.c.mode];
+      }
+      if (slot.c.missile) {
+        o.missile = slot.c.missile;
       }
       return o;
     }

@@ -1,0 +1,3620 @@
+[
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Cargo",
+    "ship": "Type-6 Transporter",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/type_6_transporter/02A4D4A2D2D2D4C-----04040303430101?bn=Cargo",
+        "code": "02A4D4A2D2D2D4C-----04040303430101",
+        "shipId": "type_6_transporter"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 2,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 4,
+          "rating": "D"
+        },
+        "frameShiftDrive": {
+          "class": 4,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 2,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 2,
+          "rating": "D"
+        },
+        "sensors": {
+          "class": 2,
+          "rating": "D"
+        },
+        "fuelTank": {
+          "class": 4,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        null,
+        null
+      ],
+      "utility": [
+        null,
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 3,
+          "rating": "D",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cargo Rack"
+        }
+      ]
+    },
+    "stats": {
+      "class": 2,
+      "hullCost": 865782,
+      "speed": 220,
+      "boost": 350,
+      "agility": 3,
+      "baseShieldStrength": 90,
+      "baseArmour": 162,
+      "hullMass": 155,
+      "masslock": 8,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 16,
+      "cargoCapacity": 104,
+      "ladenMass": 295.3,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 3048410,
+      "unladenMass": 175.3,
+      "armour": 162,
+      "totalDps": 0,
+      "powerAvailable": 9.6,
+      "powerRetracted": 7.21,
+      "powerDeployed": 7.21,
+      "unladenRange": 32.48,
+      "fullTankRange": 30.27,
+      "ladenRange": 19.61,
+      "unladenTotalRange": 176.71,
+      "ladenTotalRange": 112.92,
+      "maxJumpCount": 6,
+      "shieldStrength": 86.49
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Miner",
+    "ship": "Type-6 Transporter",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/type_6_transporter/03A4D4A2D2D2D4C2l2l---040403451q0101?bn=Miner",
+        "code": "03A4D4A2D2D2D4C2l2l---040403451q0101",
+        "shipId": "type_6_transporter"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 3,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 4,
+          "rating": "D"
+        },
+        "frameShiftDrive": {
+          "class": 4,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 2,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 2,
+          "rating": "D"
+        },
+        "sensors": {
+          "class": 2,
+          "rating": "D"
+        },
+        "fuelTank": {
+          "class": 4,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        {
+          "class": 1,
+          "rating": "D",
+          "group": "Mining Laser",
+          "mount": "Fixed"
+        },
+        {
+          "class": 1,
+          "rating": "D",
+          "group": "Mining Laser",
+          "mount": "Fixed"
+        }
+      ],
+      "utility": [
+        null,
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 3,
+          "rating": "A",
+          "group": "Refinery"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cargo Rack"
+        }
+      ]
+    },
+    "stats": {
+      "class": 2,
+      "hullCost": 865782,
+      "speed": 220,
+      "boost": 350,
+      "agility": 3,
+      "baseShieldStrength": 90,
+      "baseArmour": 162,
+      "hullMass": 155,
+      "masslock": 8,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 16,
+      "cargoCapacity": 88,
+      "ladenMass": 292.5,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 7109898,
+      "unladenMass": 188.5,
+      "armour": 162,
+      "totalDps": 0,
+      "powerAvailable": 12,
+      "powerRetracted": 9.33,
+      "powerDeployed": 10.33,
+      "unladenRange": 30.24,
+      "fullTankRange": 28.32,
+      "ladenRange": 19.8,
+      "unladenTotalRange": 164.89,
+      "ladenTotalRange": 114.03,
+      "maxJumpCount": 6,
+      "shieldStrength": 149.2
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Hopper",
+    "ship": "Type-6 Transporter",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/type_6_transporter/02A4D4A2D1A2D4C1717---030302024300-?bn=Hopper",
+        "code": "02A4D4A2D1A2D4C1717---030302024300-",
+        "shipId": "type_6_transporter"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 2,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 4,
+          "rating": "D"
+        },
+        "frameShiftDrive": {
+          "class": 4,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 2,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 1,
+          "rating": "A"
+        },
+        "sensors": {
+          "class": 2,
+          "rating": "D"
+        },
+        "fuelTank": {
+          "class": 4,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        {
+          "class": 1,
+          "rating": "F",
+          "group": "Pulse Laser",
+          "mount": "Fixed"
+        },
+        {
+          "class": 1,
+          "rating": "F",
+          "group": "Pulse Laser",
+          "mount": "Fixed"
+        }
+      ],
+      "utility": [
+        null,
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 3,
+          "rating": "D",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 1,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        null
+      ]
+    },
+    "stats": {
+      "class": 2,
+      "hullCost": 865782,
+      "speed": 220,
+      "boost": 350,
+      "agility": 3,
+      "baseShieldStrength": 90,
+      "baseArmour": 162,
+      "hullMass": 155,
+      "masslock": 8,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 16,
+      "cargoCapacity": 50,
+      "ladenMass": 245.6,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 2861880,
+      "unladenMass": 179.6,
+      "armour": 162,
+      "totalDps": 6,
+      "powerAvailable": 9.6,
+      "powerRetracted": 7.28,
+      "powerDeployed": 8.06,
+      "unladenRange": 31.71,
+      "fullTankRange": 29.61,
+      "ladenRange": 23.58,
+      "unladenTotalRange": 172.68,
+      "ladenTotalRange": 136.46,
+      "maxJumpCount": 6,
+      "shieldStrength": 86.49
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Cargo",
+    "ship": "Type-7 Transporter",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/type_7_transport/02A5D5A4D3D3D5C--------0505040403480101?bn=Cargo",
+        "code": "02A5D5A4D3D3D5C--------0505040403480101",
+        "shipId": "type_7_transport"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 2,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 5,
+          "rating": "D"
+        },
+        "frameShiftDrive": {
+          "class": 5,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 4,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 3,
+          "rating": "D"
+        },
+        "sensors": {
+          "class": 3,
+          "rating": "D"
+        },
+        "fuelTank": {
+          "class": 5,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "utility": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "D",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cargo Rack"
+        }
+      ]
+    },
+    "stats": {
+      "class": 3,
+      "hullCost": 16881511,
+      "speed": 180,
+      "boost": 300,
+      "agility": 2,
+      "baseShieldStrength": 120,
+      "baseArmour": 216,
+      "hullMass": 420,
+      "masslock": 10,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 32,
+      "cargoCapacity": 216,
+      "ladenMass": 709.3,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 23529891,
+      "unladenMass": 461.3,
+      "armour": 216,
+      "totalDps": 0,
+      "powerAvailable": 9.6,
+      "powerRetracted": 8.81,
+      "powerDeployed": 8.81,
+      "unladenRange": 26.41,
+      "fullTankRange": 24.97,
+      "ladenRange": 17.36,
+      "unladenTotalRange": 172.04,
+      "ladenTotalRange": 118.55,
+      "maxJumpCount": 7,
+      "shieldStrength": 89.07
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Miner",
+    "ship": "Type-7 Transporter",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/type_7_transport/04D5D5A4D2D3D5C--2l2l----0505041v03450000?bn=Miner",
+        "code": "04D5D5A4D2D3D5C--2l2l----0505041v03450000",
+        "shipId": "type_7_transport"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 4,
+          "rating": "D"
+        },
+        "thrusters": {
+          "class": 5,
+          "rating": "D"
+        },
+        "frameShiftDrive": {
+          "class": 5,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 4,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 2,
+          "rating": "D"
+        },
+        "sensors": {
+          "class": 3,
+          "rating": "D"
+        },
+        "fuelTank": {
+          "class": 5,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        null,
+        null,
+        {
+          "class": 1,
+          "rating": "D",
+          "group": "Mining Laser",
+          "mount": "Fixed"
+        },
+        {
+          "class": 1,
+          "rating": "D",
+          "group": "Mining Laser",
+          "mount": "Fixed"
+        }
+      ],
+      "utility": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Refinery"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 1,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 1,
+          "rating": "E",
+          "group": "Cargo Rack"
+        }
+      ]
+    },
+    "stats": {
+      "class": 3,
+      "hullCost": 16881511,
+      "speed": 180,
+      "boost": 300,
+      "agility": 2,
+      "baseShieldStrength": 120,
+      "baseArmour": 216,
+      "hullMass": 420,
+      "masslock": 10,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 32,
+      "cargoCapacity": 180,
+      "ladenMass": 685,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 29371613,
+      "unladenMass": 473,
+      "armour": 216,
+      "totalDps": 0,
+      "powerAvailable": 11.7,
+      "powerRetracted": 10.66,
+      "powerDeployed": 11.66,
+      "unladenRange": 25.77,
+      "fullTankRange": 24.39,
+      "ladenRange": 17.98,
+      "unladenTotalRange": 167.93,
+      "ladenTotalRange": 122.84,
+      "maxJumpCount": 7,
+      "shieldStrength": 125.07
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Cargo",
+    "ship": "Federal Dropship",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/federal_dropship/04D5D5A5D3D4D4C-1717------05040448020201?bn=Cargo",
+        "code": "04D5D5A5D3D4D4C-1717------05040448020201",
+        "shipId": "federal_dropship"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 4,
+          "rating": "D"
+        },
+        "thrusters": {
+          "class": 5,
+          "rating": "D"
+        },
+        "frameShiftDrive": {
+          "class": 5,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 5,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 3,
+          "rating": "D"
+        },
+        "sensors": {
+          "class": 4,
+          "rating": "D"
+        },
+        "fuelTank": {
+          "class": 4,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        null,
+        {
+          "class": 1,
+          "rating": "F",
+          "group": "Pulse Laser",
+          "mount": "Fixed"
+        },
+        {
+          "class": 1,
+          "rating": "F",
+          "group": "Pulse Laser",
+          "mount": "Fixed"
+        },
+        null,
+        null
+      ],
+      "utility": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "D",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cargo Rack"
+        }
+      ]
+    },
+    "stats": {
+      "class": 2,
+      "hullCost": 18969990,
+      "speed": 180,
+      "boost": 300,
+      "agility": 2,
+      "baseShieldStrength": 200,
+      "baseArmour": 540,
+      "hullMass": 580,
+      "masslock": 14,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 16,
+      "cargoCapacity": 148,
+      "ladenMass": 798,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 25139427,
+      "unladenMass": 634,
+      "armour": 540,
+      "totalDps": 6,
+      "powerAvailable": 11.7,
+      "powerRetracted": 8.95,
+      "powerDeployed": 9.73,
+      "unladenRange": 19.27,
+      "fullTankRange": 18.95,
+      "ladenRange": 15.43,
+      "unladenTotalRange": 67.34,
+      "ladenTotalRange": 54.75,
+      "maxJumpCount": 4,
+      "shieldStrength": 111.07
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Miner",
+    "ship": "Asp Explorer",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/asp/25A5A5A4D4A5A5C0s0s24242l2l---04054a1q02022o27?bn=Miner",
+        "code": "25A5A5A4D4A5A5C0s0s24242l2l---04054a1q02022o27",
+        "shipId": "asp"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Military Grade Composite",
+        "powerPlant": {
+          "class": 5,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 5,
+          "rating": "A"
+        },
+        "frameShiftDrive": {
+          "class": 5,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 4,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 4,
+          "rating": "A"
+        },
+        "sensors": {
+          "class": 5,
+          "rating": "A"
+        },
+        "fuelTank": {
+          "class": 5,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 1,
+          "rating": "G",
+          "group": "Multi-cannon",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 1,
+          "rating": "G",
+          "group": "Multi-cannon",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 1,
+          "rating": "D",
+          "group": "Mining Laser",
+          "mount": "Fixed"
+        },
+        {
+          "class": 1,
+          "rating": "D",
+          "group": "Mining Laser",
+          "mount": "Fixed"
+        }
+      ],
+      "utility": [
+        null,
+        null,
+        null,
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        }
+      ],
+      "internal": [
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 3,
+          "rating": "A",
+          "group": "Refinery"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 2,
+          "rating": "A",
+          "group": "Fuel Scoop"
+        },
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Hull Reinforcement Package"
+        }
+      ]
+    },
+    "stats": {
+      "class": 2,
+      "hullCost": 6135658,
+      "speed": 250,
+      "boost": 340,
+      "agility": 6,
+      "baseShieldStrength": 140,
+      "baseArmour": 378,
+      "hullMass": 280,
+      "masslock": 11,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 32,
+      "cargoCapacity": 80,
+      "ladenMass": 561.5,
+      "armourAdded": 30,
+      "shieldMultiplier": 1.2,
+      "totalCost": 38529401,
+      "unladenMass": 449.5,
+      "armour": 408,
+      "totalDps": 14,
+      "powerAvailable": 20.4,
+      "powerRetracted": 15.49,
+      "powerDeployed": 19.43,
+      "unladenRange": 27.1,
+      "fullTankRange": 25.58,
+      "ladenRange": 21.94,
+      "unladenTotalRange": 176.39,
+      "ladenTotalRange": 150.58,
+      "maxJumpCount": 7,
+      "shieldStrength": 253.58
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Cargo",
+    "ship": "Imperial Clipper",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/imperial_clipper/03A5D5A5D4D5D4C--0s0s----0605450302020101?bn=Cargo",
+        "code": "03A5D5A5D4D5D4C--0s0s----0605450302020101",
+        "shipId": "imperial_clipper"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 3,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 5,
+          "rating": "D"
+        },
+        "frameShiftDrive": {
+          "class": 5,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 5,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 4,
+          "rating": "D"
+        },
+        "sensors": {
+          "class": 5,
+          "rating": "D"
+        },
+        "fuelTank": {
+          "class": 4,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        null,
+        null,
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        }
+      ],
+      "utility": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 7,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cargo Rack"
+        }
+      ]
+    },
+    "stats": {
+      "class": 3,
+      "hullCost": 21077784,
+      "speed": 300,
+      "boost": 380,
+      "agility": 2,
+      "baseShieldStrength": 180,
+      "baseArmour": 486,
+      "hullMass": 400,
+      "masslock": 12,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 16,
+      "cargoCapacity": 232,
+      "ladenMass": 716.5,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 31304924,
+      "unladenMass": 468.5,
+      "armour": 486,
+      "totalDps": 8,
+      "powerAvailable": 12,
+      "powerRetracted": 10.38,
+      "powerDeployed": 12.58,
+      "unladenRange": 26.01,
+      "fullTankRange": 25.42,
+      "ladenRange": 17.19,
+      "unladenTotalRange": 90.67,
+      "ladenTotalRange": 61.04,
+      "maxJumpCount": 4,
+      "shieldStrength": 191.82
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Dream",
+    "ship": "Imperial Clipper",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/imperial_clipper/26A6A5A5D6A5A4C0v0v0s0s0404040n4k5n5d2b29292o-.AwRj4yWU1I%3D%3D.CwBhCYy6YRigzLIA?bn=Dream",
+        "code": "26A6A5A5D6A5A4C0v0v0s0s0404040n4k5n5d2b29292o-.AwRj4yWU1I==.CwBhCYy6YRigzLIA",
+        "shipId": "imperial_clipper"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Military Grade Composite",
+        "powerPlant": {
+          "class": 6,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 6,
+          "rating": "A"
+        },
+        "frameShiftDrive": {
+          "class": 5,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 5,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 6,
+          "rating": "A"
+        },
+        "sensors": {
+          "class": 5,
+          "rating": "A"
+        },
+        "fuelTank": {
+          "class": 4,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        {
+          "class": 3,
+          "rating": "C",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 3,
+          "rating": "C",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        }
+      ],
+      "utility": [
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        {
+          "class": 0,
+          "rating": "E",
+          "group": "Kill Warrant Scanner"
+        }
+      ],
+      "internal": [
+        {
+          "class": 7,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 6,
+          "rating": "A",
+          "group": "Shield Cell Bank"
+        },
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Shield Cell Bank"
+        },
+        {
+          "class": 4,
+          "rating": "D",
+          "group": "Hull Reinforcement Package"
+        },
+        {
+          "class": 3,
+          "rating": "D",
+          "group": "Hull Reinforcement Package"
+        },
+        {
+          "class": 3,
+          "rating": "D",
+          "group": "Hull Reinforcement Package"
+        },
+        {
+          "class": 2,
+          "rating": "A",
+          "group": "Fuel Scoop"
+        },
+        null
+      ]
+    },
+    "stats": {
+      "class": 3,
+      "hullCost": 21077784,
+      "speed": 300,
+      "boost": 380,
+      "agility": 2,
+      "baseShieldStrength": 180,
+      "baseArmour": 486,
+      "hullMass": 400,
+      "masslock": 12,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 16,
+      "cargoCapacity": 0,
+      "ladenMass": 821.8,
+      "armourAdded": 240,
+      "shieldMultiplier": 1.6,
+      "totalCost": 145934292,
+      "unladenMass": 805.8,
+      "armour": 726,
+      "totalDps": 16,
+      "powerAvailable": 25.2,
+      "powerRetracted": 19.35,
+      "powerDeployed": 25.31,
+      "unladenRange": 15.19,
+      "fullTankRange": 14.99,
+      "ladenRange": 14.99,
+      "unladenTotalRange": 53.15,
+      "ladenTotalRange": 53.15,
+      "maxJumpCount": 4,
+      "shieldStrength": 489.6
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Current",
+    "ship": "Imperial Clipper",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/imperial_clipper/04A6A5A5D4A5A4C----------------.AwRj4yWU1I%3D%3D.CwBhCYy6YRigzLIA?bn=Current",
+        "code": "04A6A5A5D4A5A4C----------------.AwRj4yWU1I==.CwBhCYy6YRigzLIA",
+        "shipId": "imperial_clipper"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 4,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 6,
+          "rating": "A"
+        },
+        "frameShiftDrive": {
+          "class": 5,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 5,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 4,
+          "rating": "A"
+        },
+        "sensors": {
+          "class": 5,
+          "rating": "A"
+        },
+        "fuelTank": {
+          "class": 4,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "utility": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "internal": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "stats": {
+      "class": 3,
+      "hullCost": 21077784,
+      "speed": 300,
+      "boost": 380,
+      "agility": 2,
+      "baseShieldStrength": 180,
+      "baseArmour": 486,
+      "hullMass": 400,
+      "masslock": 12,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 16,
+      "cargoCapacity": 0,
+      "ladenMass": 519,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 45760171,
+      "unladenMass": 503,
+      "armour": 486,
+      "totalDps": 0,
+      "powerAvailable": 15.6,
+      "powerRetracted": 10.7,
+      "powerDeployed": 10.7,
+      "unladenRange": 24.25,
+      "fullTankRange": 23.73,
+      "ladenRange": 23.73,
+      "unladenTotalRange": 84.56,
+      "ladenTotalRange": 84.56,
+      "maxJumpCount": 4,
+      "shieldStrength": 0
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Current",
+    "ship": "Type-9 Heavy",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/type_9_heavy/04A7D6A5D5D4D6C---------0706054a0303020224.AwRj4yoo.EwBhEYy6dsg%3D?bn=Current",
+        "code": "04A7D6A5D5D4D6C---------0706054a0303020224.AwRj4yoo.EwBhEYy6dsg=",
+        "shipId": "type_9_heavy"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 4,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 7,
+          "rating": "D"
+        },
+        "frameShiftDrive": {
+          "class": 6,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 5,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 5,
+          "rating": "D"
+        },
+        "sensors": {
+          "class": 4,
+          "rating": "D"
+        },
+        "fuelTank": {
+          "class": 6,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "utility": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 8,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 7,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 1,
+          "rating": "E",
+          "group": "Docking Computer",
+          "name": "Standard Docking Computer"
+        }
+      ]
+    },
+    "stats": {
+      "class": 3,
+      "hullCost": 73255168,
+      "speed": 130,
+      "boost": 200,
+      "agility": 0,
+      "baseShieldStrength": 240,
+      "baseArmour": 432,
+      "hullMass": 1000,
+      "masslock": 16,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 64,
+      "cargoCapacity": 496,
+      "ladenMass": 1677,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 104042326,
+      "unladenMass": 1117,
+      "armour": 432,
+      "totalDps": 0,
+      "powerAvailable": 15.6,
+      "powerRetracted": 13.13,
+      "powerDeployed": 13.13,
+      "unladenRange": 19.51,
+      "fullTankRange": 18.58,
+      "ladenRange": 13.09,
+      "unladenTotalRange": 152.32,
+      "ladenTotalRange": 106.49,
+      "maxJumpCount": 8,
+      "shieldStrength": 170.57
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Cargo",
+    "ship": "Python",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/python/04A6D5A4D6D6D5C---------050505040448020201.Iw18eQ%3D%3D.Aw18eQ%3D%3D?bn=Cargo",
+        "code": "04A6D5A4D6D6D5C---------050505040448020201.Iw18eQ==.Aw18eQ==",
+        "shipId": "python"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 4,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 6,
+          "rating": "D"
+        },
+        "frameShiftDrive": {
+          "class": 5,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 4,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 6,
+          "rating": "D"
+        },
+        "sensors": {
+          "class": 6,
+          "rating": "D"
+        },
+        "fuelTank": {
+          "class": 5,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "utility": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "D",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cargo Rack"
+        }
+      ]
+    },
+    "stats": {
+      "class": 2,
+      "hullCost": 55171395,
+      "speed": 230,
+      "boost": 280,
+      "agility": 6,
+      "baseShieldStrength": 260,
+      "baseArmour": 468,
+      "hullMass": 350,
+      "masslock": 17,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 32,
+      "cargoCapacity": 276,
+      "ladenMass": 739,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 64450599,
+      "unladenMass": 431,
+      "armour": 468,
+      "totalDps": 0,
+      "powerAvailable": 15.6,
+      "powerRetracted": 10.25,
+      "powerDeployed": 10.25,
+      "unladenRange": 28.25,
+      "fullTankRange": 26.6,
+      "ladenRange": 16.67,
+      "unladenTotalRange": 183.67,
+      "ladenTotalRange": 113.69,
+      "maxJumpCount": 7,
+      "shieldStrength": 214.26
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Miner",
+    "ship": "Python",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/python/06A6A5A4D6A6A5C0v0v0v2m2m0404--050505Ce4a1v02022o.Iw18eQ%3D%3D.IwBhBYy6dkCYg%3D%3D%3D?bn=Miner",
+        "code": "06A6A5A4D6A6A5C0v0v0v2m2m0404--050505Ce4a1v02022o.Iw18eQ==.IwBhBYy6dkCYg===",
+        "shipId": "python"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 6,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 6,
+          "rating": "A"
+        },
+        "frameShiftDrive": {
+          "class": 5,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 4,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 6,
+          "rating": "A"
+        },
+        "sensors": {
+          "class": 6,
+          "rating": "A"
+        },
+        "fuelTank": {
+          "class": 5,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        {
+          "class": 3,
+          "rating": "C",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 3,
+          "rating": "C",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 3,
+          "rating": "C",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Mining Laser",
+          "mount": "Fixed"
+        },
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Mining Laser",
+          "mount": "Fixed"
+        }
+      ],
+      "utility": [
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "A",
+          "group": "Collector Limpet Controller"
+        },
+        {
+          "class": 5,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Refinery"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 2,
+          "rating": "A",
+          "group": "Fuel Scoop"
+        }
+      ]
+    },
+    "stats": {
+      "class": 2,
+      "hullCost": 55171395,
+      "speed": 230,
+      "boost": 280,
+      "agility": 6,
+      "baseShieldStrength": 260,
+      "baseArmour": 468,
+      "hullMass": 350,
+      "masslock": 17,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 32,
+      "cargoCapacity": 208,
+      "ladenMass": 841,
+      "armourAdded": 0,
+      "shieldMultiplier": 1.4,
+      "totalCost": 119283687,
+      "unladenMass": 601,
+      "armour": 468,
+      "totalDps": 12,
+      "powerAvailable": 25.2,
+      "powerRetracted": 19.34,
+      "powerDeployed": 26.18,
+      "unladenRange": 20.32,
+      "fullTankRange": 19.46,
+      "ladenRange": 14.65,
+      "unladenTotalRange": 133.17,
+      "ladenTotalRange": 99.65,
+      "maxJumpCount": 7,
+      "shieldStrength": 486.35
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Dream",
+    "ship": "Python",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/python/27A6A5A4D7A6A5C0v0v0v27270404040m5n5n4f2d2d032t0201.Iw1%2BgDBxA%3D%3D%3D.EwBhEYy6e0WEA%3D%3D%3D?bn=Dream",
+        "code": "27A6A5A4D7A6A5C0v0v0v27270404040m5n5n4f2d2d032t0201.Iw1+gDBxA===.EwBhEYy6e0WEA===",
+        "shipId": "python"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Military Grade Composite",
+        "powerPlant": {
+          "class": 7,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 6,
+          "rating": "A"
+        },
+        "frameShiftDrive": {
+          "class": 5,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 4,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 7,
+          "rating": "A"
+        },
+        "sensors": {
+          "class": 6,
+          "rating": "A"
+        },
+        "fuelTank": {
+          "class": 5,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        {
+          "class": 3,
+          "rating": "C",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 3,
+          "rating": "C",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 3,
+          "rating": "C",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 2,
+          "rating": "F",
+          "group": "Multi-cannon",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 2,
+          "rating": "F",
+          "group": "Multi-cannon",
+          "mount": "Gimballed"
+        }
+      ],
+      "utility": [
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        {
+          "class": 0,
+          "rating": "D",
+          "group": "Kill Warrant Scanner"
+        }
+      ],
+      "internal": [
+        {
+          "class": 6,
+          "rating": "A",
+          "group": "Shield Cell Bank"
+        },
+        {
+          "class": 6,
+          "rating": "A",
+          "group": "Shield Cell Bank"
+        },
+        {
+          "class": 6,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 5,
+          "rating": "D",
+          "group": "Hull Reinforcement Package"
+        },
+        {
+          "class": 5,
+          "rating": "D",
+          "group": "Hull Reinforcement Package"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 3,
+          "rating": "A",
+          "group": "Fuel Scoop"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cargo Rack"
+        }
+      ]
+    },
+    "stats": {
+      "class": 2,
+      "hullCost": 55171395,
+      "speed": 230,
+      "boost": 280,
+      "agility": 6,
+      "baseShieldStrength": 260,
+      "baseArmour": 468,
+      "hullMass": 350,
+      "masslock": 17,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 32,
+      "cargoCapacity": 28,
+      "ladenMass": 914.8,
+      "armourAdded": 480,
+      "shieldMultiplier": 1.6,
+      "totalCost": 225526207,
+      "unladenMass": 854.8,
+      "armour": 948,
+      "totalDps": 20,
+      "powerAvailable": 30,
+      "powerRetracted": 22.61,
+      "powerDeployed": 29.63,
+      "unladenRange": 14.32,
+      "fullTankRange": 13.89,
+      "ladenRange": 13.46,
+      "unladenTotalRange": 94.42,
+      "ladenTotalRange": 91.49,
+      "maxJumpCount": 7,
+      "shieldStrength": 645.57
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Dream",
+    "ship": "Anaconda",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/anaconda/48A7A6A5D8A8A5C2c0o0o0o1m1m0q0q0404040l0b0100004k5n5n112d2d040303326b.AwRj4yo5dig%3D.MwBhCYy6du3ARiA%3D?bn=Dream",
+        "code": "48A7A6A5D8A8A5C2c0o0o0o1m1m0q0q0404040l0b0100004k5n5n112d2d040303326b.AwRj4yo5dig=.MwBhCYy6du3ARiA=",
+        "shipId": "anaconda"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Reactive Surface Composite",
+        "powerPlant": {
+          "class": 8,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 7,
+          "rating": "A"
+        },
+        "frameShiftDrive": {
+          "class": 6,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 5,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 8,
+          "rating": "A"
+        },
+        "sensors": {
+          "class": 8,
+          "rating": "A"
+        },
+        "fuelTank": {
+          "class": 5,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Plasma Accelerator",
+          "mount": "Fixed"
+        },
+        {
+          "class": 3,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Turret"
+        },
+        {
+          "class": 3,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Turret"
+        },
+        {
+          "class": 3,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Turret"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cannon",
+          "mount": "Turret"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cannon",
+          "mount": "Turret"
+        },
+        {
+          "class": 1,
+          "rating": "F",
+          "group": "Beam Laser",
+          "mount": "Turret"
+        },
+        {
+          "class": 1,
+          "rating": "F",
+          "group": "Beam Laser",
+          "mount": "Turret"
+        }
+      ],
+      "utility": [
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        {
+          "class": 0,
+          "rating": "C",
+          "group": "Kill Warrant Scanner"
+        },
+        {
+          "class": 0,
+          "rating": "C",
+          "group": "Cargo Scanner"
+        },
+        {
+          "class": 0,
+          "rating": "F",
+          "group": "Countermeasure",
+          "name": "Electronic Countermeasure"
+        },
+        {
+          "class": 0,
+          "rating": "I",
+          "group": "Countermeasure",
+          "name": "Chaff Launcher"
+        },
+        {
+          "class": 0,
+          "rating": "I",
+          "group": "Countermeasure",
+          "name": "Chaff Launcher"
+        }
+      ],
+      "internal": [
+        {
+          "class": 7,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 6,
+          "rating": "A",
+          "group": "Shield Cell Bank"
+        },
+        {
+          "class": 6,
+          "rating": "A",
+          "group": "Shield Cell Bank"
+        },
+        {
+          "class": 6,
+          "rating": "A",
+          "group": "Auto Field-Maintenance Unit"
+        },
+        {
+          "class": 5,
+          "rating": "D",
+          "group": "Hull Reinforcement Package"
+        },
+        {
+          "class": 5,
+          "rating": "D",
+          "group": "Hull Reinforcement Package"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Fuel Scoop"
+        },
+        {
+          "class": 2,
+          "rating": "A",
+          "group": "FSD Interdictor"
+        }
+      ]
+    },
+    "stats": {
+      "class": 3,
+      "hullCost": 141889932,
+      "speed": 180,
+      "boost": 240,
+      "agility": 2,
+      "baseShieldStrength": 350,
+      "baseArmour": 945,
+      "hullMass": 400,
+      "masslock": 23,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 32,
+      "cargoCapacity": 64,
+      "ladenMass": 1379.5,
+      "armourAdded": 480,
+      "shieldMultiplier": 1.6,
+      "totalCost": 935449309,
+      "unladenMass": 1283.5,
+      "armour": 1425,
+      "totalDps": 29,
+      "powerAvailable": 36,
+      "powerRetracted": 25.88,
+      "powerDeployed": 37.51,
+      "unladenRange": 16.99,
+      "fullTankRange": 16.68,
+      "ladenRange": 15.91,
+      "unladenTotalRange": 67.35,
+      "ladenTotalRange": 64.2,
+      "maxJumpCount": 4,
+      "shieldStrength": 952
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Cargo",
+    "ship": "Anaconda",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/anaconda/04A6D6A5D5D8D5C----------------0605050504040445030301.Iw18ZlA%3D.Aw18ZlA%3D?bn=Cargo",
+        "code": "04A6D6A5D5D8D5C----------------0605050504040445030301.Iw18ZlA=.Aw18ZlA=",
+        "shipId": "anaconda"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 4,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 6,
+          "rating": "D"
+        },
+        "frameShiftDrive": {
+          "class": 6,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 5,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 5,
+          "rating": "D"
+        },
+        "sensors": {
+          "class": 8,
+          "rating": "D"
+        },
+        "fuelTank": {
+          "class": 5,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "utility": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 7,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cargo Rack"
+        }
+      ]
+    },
+    "stats": {
+      "class": 3,
+      "hullCost": 141889932,
+      "speed": 180,
+      "boost": 240,
+      "agility": 2,
+      "baseShieldStrength": 350,
+      "baseArmour": 945,
+      "hullMass": 400,
+      "masslock": 23,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 32,
+      "cargoCapacity": 452,
+      "ladenMass": 1035,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 166562265,
+      "unladenMass": 551,
+      "armour": 945,
+      "totalDps": 0,
+      "powerAvailable": 15.6,
+      "powerRetracted": 11.92,
+      "powerDeployed": 11.92,
+      "unladenRange": 39.26,
+      "fullTankRange": 37.65,
+      "ladenRange": 21.21,
+      "unladenTotalRange": 153.79,
+      "ladenTotalRange": 85.82,
+      "maxJumpCount": 4,
+      "shieldStrength": 372.98
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Current",
+    "ship": "Anaconda",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/anaconda/04A6D6A5D5A8D5C----------------0605050504040403034524.Iw18ZlA%3D.Aw18ZlA%3D?bn=Current",
+        "code": "04A6D6A5D5A8D5C----------------0605050504040403034524.Iw18ZlA=.Aw18ZlA=",
+        "shipId": "anaconda"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 4,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 6,
+          "rating": "D"
+        },
+        "frameShiftDrive": {
+          "class": 6,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 5,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 5,
+          "rating": "A"
+        },
+        "sensors": {
+          "class": 8,
+          "rating": "D"
+        },
+        "fuelTank": {
+          "class": 5,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "utility": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 7,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 1,
+          "rating": "E",
+          "group": "Docking Computer",
+          "name": "Standard Docking Computer"
+        }
+      ]
+    },
+    "stats": {
+      "class": 3,
+      "hullCost": 141889932,
+      "speed": 180,
+      "boost": 240,
+      "agility": 2,
+      "baseShieldStrength": 350,
+      "baseArmour": 945,
+      "hullMass": 400,
+      "masslock": 23,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 32,
+      "cargoCapacity": 448,
+      "ladenMass": 1043,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 167725388,
+      "unladenMass": 563,
+      "armour": 945,
+      "totalDps": 0,
+      "powerAvailable": 15.6,
+      "powerRetracted": 12.49,
+      "powerDeployed": 12.49,
+      "unladenRange": 38.44,
+      "fullTankRange": 36.89,
+      "ladenRange": 21.04,
+      "unladenTotalRange": 150.62,
+      "ladenTotalRange": 85.16,
+      "maxJumpCount": 4,
+      "shieldStrength": 372.98
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Explorer",
+    "ship": "Anaconda",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/anaconda/04A6D6A5D5A8D5C--------0202------f7050505040s372f2i4524.AwRj4yVKJthA.AwhMIyungRhEA%3D%3D%3D?bn=Explorer",
+        "code": "04A6D6A5D5A8D5C--------0202------f7050505040s372f2i4524.AwRj4yVKJthA.AwhMIyungRhEA===",
+        "shipId": "anaconda"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 4,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 6,
+          "rating": "D"
+        },
+        "frameShiftDrive": {
+          "class": 6,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 5,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 5,
+          "rating": "A"
+        },
+        "sensors": {
+          "class": 8,
+          "rating": "D"
+        },
+        "fuelTank": {
+          "class": 5,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "utility": [
+        {
+          "class": 0,
+          "rating": "I",
+          "group": "Countermeasure",
+          "name": "Heat Sink Launcher"
+        },
+        {
+          "class": 0,
+          "rating": "I",
+          "group": "Countermeasure",
+          "name": "Heat Sink Launcher"
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 7,
+          "rating": "C",
+          "group": "Fuel Tank"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "A",
+          "group": "Auto Field-Maintenance Unit"
+        },
+        {
+          "class": 5,
+          "rating": "A",
+          "group": "Fuel Scoop"
+        },
+        {
+          "class": 1,
+          "rating": "C",
+          "group": "Scanner",
+          "name": "Advanced Discovery Scanner"
+        },
+        {
+          "class": 1,
+          "rating": "C",
+          "group": "Scanner",
+          "name": "Detailed Surface Scanner"
+        },
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 1,
+          "rating": "E",
+          "group": "Docking Computer",
+          "name": "Standard Docking Computer"
+        }
+      ]
+    },
+    "stats": {
+      "class": 3,
+      "hullCost": 141889932,
+      "speed": 180,
+      "boost": 240,
+      "agility": 2,
+      "baseShieldStrength": 350,
+      "baseArmour": 945,
+      "hullMass": 400,
+      "masslock": 23,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 160,
+      "cargoCapacity": 224,
+      "ladenMass": 952.9,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 187414830,
+      "unladenMass": 568.9,
+      "armour": 945,
+      "totalDps": 0,
+      "powerAvailable": 15.6,
+      "powerRetracted": 13,
+      "powerDeployed": 12.4,
+      "unladenRange": 38.04,
+      "fullTankRange": 30.11,
+      "ladenRange": 23.03,
+      "unladenTotalRange": 675.7,
+      "ladenTotalRange": 501.97,
+      "maxJumpCount": 20,
+      "shieldStrength": 372.98
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Test",
+    "ship": "Anaconda",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/anaconda/48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.Iw18ZlA%3D.Aw18ZlA%3D?bn=Test",
+        "code": "48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.Iw18ZlA=.Aw18ZlA=",
+        "shipId": "anaconda"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Reactive Surface Composite",
+        "powerPlant": {
+          "class": 8,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 6,
+          "rating": "A"
+        },
+        "frameShiftDrive": {
+          "class": 6,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 5,
+          "rating": "A"
+        },
+        "powerDistributor": {
+          "class": 8,
+          "rating": "A"
+        },
+        "sensors": {
+          "class": 8,
+          "rating": "A"
+        },
+        "fuelTank": {
+          "class": 5,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Plasma Accelerator",
+          "mount": "Fixed"
+        },
+        {
+          "class": 3,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Turret"
+        },
+        {
+          "class": 3,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Turret"
+        },
+        {
+          "class": 3,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Turret"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cannon",
+          "mount": "Turret"
+        },
+        {
+          "class": 2,
+          "rating": "E",
+          "group": "Cannon",
+          "mount": "Turret"
+        },
+        {
+          "class": 1,
+          "rating": "F",
+          "group": "Beam Laser",
+          "mount": "Turret"
+        },
+        {
+          "class": 1,
+          "rating": "F",
+          "group": "Beam Laser",
+          "mount": "Turret"
+        }
+      ],
+      "utility": [
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        null,
+        {
+          "class": 0,
+          "rating": "C",
+          "group": "Kill Warrant Scanner"
+        },
+        {
+          "class": 0,
+          "rating": "C",
+          "group": "Cargo Scanner"
+        },
+        {
+          "class": 0,
+          "rating": "F",
+          "group": "Countermeasure",
+          "name": "Electronic Countermeasure"
+        },
+        {
+          "class": 0,
+          "rating": "I",
+          "group": "Countermeasure",
+          "name": "Chaff Launcher"
+        },
+        {
+          "class": 0,
+          "rating": "I",
+          "group": "Countermeasure",
+          "name": "Point Defence"
+        }
+      ],
+      "internal": [
+        {
+          "class": 7,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 6,
+          "rating": "A",
+          "group": "Shield Cell Bank"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "D",
+          "group": "Hull Reinforcement Package"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        null,
+        null,
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Fuel Scoop"
+        },
+        {
+          "class": 2,
+          "rating": "A",
+          "group": "FSD Interdictor"
+        }
+      ]
+    },
+    "stats": {
+      "class": 3,
+      "hullCost": 141889932,
+      "speed": 180,
+      "boost": 240,
+      "agility": 2,
+      "baseShieldStrength": 350,
+      "baseArmour": 945,
+      "hullMass": 400,
+      "masslock": 23,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 32,
+      "cargoCapacity": 128,
+      "ladenMass": 1339.2,
+      "armourAdded": 240,
+      "shieldMultiplier": 1.4,
+      "totalCost": 882362049,
+      "unladenMass": 1179.2,
+      "armour": 1185,
+      "totalDps": 29,
+      "powerAvailable": 36,
+      "powerRetracted": 23.93,
+      "powerDeployed": 35.56,
+      "unladenRange": 18.49,
+      "fullTankRange": 18.12,
+      "ladenRange": 16.39,
+      "unladenTotalRange": 73.21,
+      "ladenTotalRange": 66.15,
+      "maxJumpCount": 4,
+      "shieldStrength": 833
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Explorer",
+    "ship": "Diamondback Explorer",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/diamondback_explorer/02A4D5A3D3D3D5C---0202--320p432i2f.AwRj4zTI.AwiMIypI?bn=Explorer",
+        "code": "02A4D5A3D3D3D5C---0202--320p432i2f.AwRj4zTI.AwiMIypI",
+        "shipId": "diamondback_explorer"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 2,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 4,
+          "rating": "D"
+        },
+        "frameShiftDrive": {
+          "class": 5,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 3,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 3,
+          "rating": "D"
+        },
+        "sensors": {
+          "class": 3,
+          "rating": "D"
+        },
+        "fuelTank": {
+          "class": 5,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        null,
+        null,
+        null
+      ],
+      "utility": [
+        {
+          "class": 0,
+          "rating": "I",
+          "group": "Countermeasure",
+          "name": "Heat Sink Launcher"
+        },
+        {
+          "class": 0,
+          "rating": "I",
+          "group": "Countermeasure",
+          "name": "Heat Sink Launcher"
+        },
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Fuel Scoop"
+        },
+        {
+          "class": 4,
+          "rating": "C",
+          "group": "Auto Field-Maintenance Unit"
+        },
+        {
+          "class": 3,
+          "rating": "D",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 1,
+          "rating": "C",
+          "group": "Scanner",
+          "name": "Detailed Surface Scanner"
+        },
+        {
+          "class": 1,
+          "rating": "C",
+          "group": "Scanner",
+          "name": "Advanced Discovery Scanner"
+        }
+      ]
+    },
+    "stats": {
+      "class": 1,
+      "hullCost": 1635691,
+      "speed": 242,
+      "boost": 316,
+      "agility": 5,
+      "baseShieldStrength": 146,
+      "baseArmour": 270,
+      "hullMass": 298,
+      "masslock": 7,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 32,
+      "cargoCapacity": 0,
+      "ladenMass": 369.2,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 12295710,
+      "unladenMass": 337.2,
+      "armour": 270,
+      "totalDps": 0,
+      "powerAvailable": 9.6,
+      "powerRetracted": 8.48,
+      "powerDeployed": 7.88,
+      "unladenRange": 35.99,
+      "fullTankRange": 33.36,
+      "ladenRange": 33.36,
+      "unladenTotalRange": 232.28,
+      "ladenTotalRange": 232.28,
+      "maxJumpCount": 7,
+      "shieldStrength": 92.25
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Bounty Hunter",
+    "ship": "Vulture",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/vulture/34A4C4A3D5A4A3C1e1e0404-0l4a5d27662j.AwRj4y2I.MwBhBYy6wJmAjLIA?bn=Bounty%20Hunter",
+        "code": "34A4C4A3D5A4A3C1e1e0404-0l4a5d27662j.AwRj4y2I.MwBhBYy6wJmAjLIA",
+        "shipId": "vulture"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Mirrored Surface Composite",
+        "powerPlant": {
+          "class": 4,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 4,
+          "rating": "C"
+        },
+        "frameShiftDrive": {
+          "class": 4,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 3,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 5,
+          "rating": "A"
+        },
+        "sensors": {
+          "class": 4,
+          "rating": "A"
+        },
+        "fuelTank": {
+          "class": 3,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Pulse Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 3,
+          "rating": "E",
+          "group": "Pulse Laser",
+          "mount": "Gimballed"
+        }
+      ],
+      "utility": [
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        null,
+        {
+          "class": 0,
+          "rating": "C",
+          "group": "Kill Warrant Scanner"
+        }
+      ],
+      "internal": [
+        {
+          "class": 5,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Shield Cell Bank"
+        },
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Hull Reinforcement Package"
+        },
+        {
+          "class": 1,
+          "rating": "A",
+          "group": "FSD Interdictor"
+        },
+        {
+          "class": 1,
+          "rating": "A",
+          "group": "Fuel Scoop"
+        }
+      ]
+    },
+    "stats": {
+      "class": 1,
+      "hullCost": 4689629,
+      "speed": 210,
+      "boost": 340,
+      "agility": 9,
+      "baseShieldStrength": 240,
+      "baseArmour": 288,
+      "hullMass": 230,
+      "masslock": 10,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 8,
+      "cargoCapacity": 0,
+      "ladenMass": 389.6,
+      "armourAdded": 30,
+      "shieldMultiplier": 1.4,
+      "totalCost": 27869961,
+      "unladenMass": 381.6,
+      "armour": 318,
+      "totalDps": 8,
+      "powerAvailable": 15.6,
+      "powerRetracted": 14.87,
+      "powerDeployed": 17.51,
+      "unladenRange": 15.06,
+      "fullTankRange": 14.86,
+      "ladenRange": 14.86,
+      "unladenTotalRange": 42.5,
+      "ladenTotalRange": 42.5,
+      "maxJumpCount": 3,
+      "shieldStrength": 548.74
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Attack",
+    "ship": "Fer-de-Lance",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/fer_de_lance/25A5C4A4D6A4A3C1r0s0s0s0s000404-04-4a-5d27-.Iw18aQ%3D%3D.CwBhrSu8EZyA?bn=Attack",
+        "code": "25A5C4A4D6A4A3C1r0s0s0s0s000404-04-4a-5d27-.Iw18aQ==.CwBhrSu8EZyA",
+        "shipId": "fer_de_lance"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Military Grade Composite",
+        "powerPlant": {
+          "class": 5,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 5,
+          "rating": "C"
+        },
+        "frameShiftDrive": {
+          "class": 4,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 4,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 6,
+          "rating": "A"
+        },
+        "sensors": {
+          "class": 4,
+          "rating": "A"
+        },
+        "fuelTank": {
+          "class": 3,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        {
+          "class": 4,
+          "rating": "B",
+          "group": "Cannon",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        }
+      ],
+      "utility": [
+        {
+          "class": 0,
+          "rating": "I",
+          "group": "Countermeasure",
+          "name": "Chaff Launcher"
+        },
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        null,
+        {
+          "class": 0,
+          "rating": "A",
+          "group": "Shield Booster"
+        },
+        null
+      ],
+      "internal": [
+        {
+          "class": 5,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        null,
+        {
+          "class": 4,
+          "rating": "A",
+          "group": "Shield Cell Bank"
+        },
+        {
+          "class": 2,
+          "rating": "D",
+          "group": "Hull Reinforcement Package"
+        },
+        null
+      ]
+    },
+    "stats": {
+      "class": 2,
+      "hullCost": 51232230,
+      "speed": 260,
+      "boost": 350,
+      "agility": 6,
+      "baseShieldStrength": 300,
+      "baseArmour": 405,
+      "hullMass": 250,
+      "masslock": 12,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 8,
+      "cargoCapacity": 0,
+      "ladenMass": 467.8,
+      "armourAdded": 30,
+      "shieldMultiplier": 1.6,
+      "totalCost": 122716938,
+      "unladenMass": 459.8,
+      "armour": 435,
+      "totalDps": 20,
+      "powerAvailable": 20.4,
+      "powerRetracted": 17.71,
+      "powerDeployed": 23.14,
+      "unladenRange": 12.51,
+      "fullTankRange": 12.38,
+      "ladenRange": 12.38,
+      "unladenTotalRange": 35.35,
+      "ladenTotalRange": 35.35,
+      "maxJumpCount": 3,
+      "shieldStrength": 760.16
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Figther",
+    "ship": "Eagle",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/eagle/42A3A3A1D2A2A2C0p0p24-40532j.AwRj49iA.AwgsIkEZigmIA%3D%3D%3D?bn=Figther",
+        "code": "42A3A3A1D2A2A2C0p0p24-40532j.AwRj49iA.AwgsIkEZigmIA===",
+        "shipId": "eagle"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Reactive Surface Composite",
+        "powerPlant": {
+          "class": 2,
+          "rating": "A"
+        },
+        "thrusters": {
+          "class": 3,
+          "rating": "A"
+        },
+        "frameShiftDrive": {
+          "class": 3,
+          "rating": "A"
+        },
+        "lifeSupport": {
+          "class": 1,
+          "rating": "D"
+        },
+        "powerDistributor": {
+          "class": 2,
+          "rating": "A"
+        },
+        "sensors": {
+          "class": 2,
+          "rating": "A"
+        },
+        "fuelTank": {
+          "class": 2,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        {
+          "class": 1,
+          "rating": "E",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 1,
+          "rating": "E",
+          "group": "Beam Laser",
+          "mount": "Gimballed"
+        },
+        {
+          "class": 1,
+          "rating": "G",
+          "group": "Multi-cannon",
+          "mount": "Gimballed"
+        }
+      ],
+      "utility": [
+        null
+      ],
+      "internal": [
+        {
+          "class": 3,
+          "rating": "A",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 2,
+          "rating": "A",
+          "group": "Shield Cell Bank"
+        },
+        {
+          "class": 1,
+          "rating": "A",
+          "group": "Fuel Scoop"
+        }
+      ]
+    },
+    "stats": {
+      "class": 1,
+      "hullCost": 10446,
+      "speed": 240,
+      "boost": 350,
+      "agility": 10,
+      "baseShieldStrength": 60,
+      "baseArmour": 72,
+      "hullMass": 50,
+      "masslock": 6,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 4,
+      "cargoCapacity": 0,
+      "ladenMass": 92.3,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 2265303,
+      "unladenMass": 88.3,
+      "armour": 72,
+      "totalDps": 9,
+      "powerAvailable": 9.6,
+      "powerRetracted": 9.46,
+      "powerDeployed": 11.17,
+      "unladenRange": 17.12,
+      "fullTankRange": 16.71,
+      "ladenRange": 16.71,
+      "unladenTotalRange": 42.4,
+      "ladenTotalRange": 42.4,
+      "maxJumpCount": 3,
+      "shieldStrength": 102
+    }
+  },
+  {
+    "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+    "name": "Missile",
+    "ship": "Python",
+    "references": [
+      {
+        "name": "Coriolis.io",
+        "url": "http://localhost:3300/outfit/python/07E6E5E4E7E6E5C2f2g2d2ePh----04044j03---002h.Iw18eQ%3D%3D.Aw18eQ%3D%3D?bn=Missile",
+        "code": "07E6E5E4E7E6E5C2f2g2d2ePh----04044j03---002h.Iw18eQ==.Aw18eQ==",
+        "shipId": "python"
+      }
+    ],
+    "components": {
+      "standard": {
+        "bulkheads": "Lightweight Alloy",
+        "powerPlant": {
+          "class": 7,
+          "rating": "E"
+        },
+        "thrusters": {
+          "class": 6,
+          "rating": "E"
+        },
+        "frameShiftDrive": {
+          "class": 5,
+          "rating": "E"
+        },
+        "lifeSupport": {
+          "class": 4,
+          "rating": "E"
+        },
+        "powerDistributor": {
+          "class": 7,
+          "rating": "E"
+        },
+        "sensors": {
+          "class": 6,
+          "rating": "E"
+        },
+        "fuelTank": {
+          "class": 5,
+          "rating": "C"
+        }
+      },
+      "hardpoints": [
+        {
+          "class": 2,
+          "rating": "B",
+          "group": "Missile Rack",
+          "mount": "Fixed",
+          "missile": "D"
+        },
+        {
+          "class": 2,
+          "rating": "B",
+          "group": "Missile Rack",
+          "mount": "Fixed",
+          "missile": "S"
+        },
+        {
+          "class": 1,
+          "rating": "B",
+          "group": "Missile Rack",
+          "mount": "Fixed",
+          "missile": "D"
+        },
+        {
+          "class": 1,
+          "rating": "B",
+          "group": "Missile Rack",
+          "mount": "Fixed",
+          "missile": "S"
+        },
+        {
+          "class": 2,
+          "rating": "B",
+          "group": "Missile Rack",
+          "name": "Pack-Hound",
+          "mount": "Fixed",
+          "missile": "S"
+        }
+      ],
+      "utility": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "internal": [
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 5,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 6,
+          "rating": "E",
+          "group": "Shield Generator"
+        },
+        {
+          "class": 4,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        null,
+        null,
+        null,
+        {
+          "class": 1,
+          "rating": "E",
+          "group": "Cargo Rack"
+        },
+        {
+          "class": 1,
+          "rating": "E",
+          "group": "Scanner",
+          "name": "Basic Discovery Scanner"
+        }
+      ]
+    },
+    "stats": {
+      "class": 2,
+      "hullCost": 55171395,
+      "speed": 230,
+      "boost": 280,
+      "agility": 6,
+      "baseShieldStrength": 260,
+      "baseArmour": 468,
+      "hullMass": 350,
+      "masslock": 17,
+      "shipCostMultiplier": 1,
+      "componentCostMultiplier": 1,
+      "fuelCapacity": 32,
+      "cargoCapacity": 82,
+      "ladenMass": 792,
+      "armourAdded": 0,
+      "shieldMultiplier": 1,
+      "totalCost": 58832186,
+      "unladenMass": 678,
+      "armour": 468,
+      "totalDps": 26,
+      "powerAvailable": 20,
+      "powerRetracted": 9.31,
+      "powerDeployed": 13.91,
+      "unladenRange": 8.43,
+      "fullTankRange": 8.09,
+      "ladenRange": 7.25,
+      "unladenTotalRange": 81.5,
+      "ladenTotalRange": 72.9,
+      "maxJumpCount": 10,
+      "shieldStrength": 299.48
+    }
+  }
+]

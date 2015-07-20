@@ -1,5 +1,5 @@
 {
-  "Fuel Transfer Limpet Controllers": [
+  "Fuel Transfer Limpet Controller": [
     { "id": "Ff", "grp":"fx", "class":7, "rating":"E", "cost": 437400, "mass": 80.0, "power":0.55, "range":1.02, "maximum": 8 },
     { "id": "Fg", "grp":"fx", "class":7, "rating":"D", "cost": 874800, "mass": 32.0, "power":0.41, "range":1.36, "maximum": 8 },
     { "id": "Fh", "grp":"fx", "class":7, "rating":"C", "cost":1749600, "mass": 80.0, "power":0.69, "range":1.70, "maximum": 8 },

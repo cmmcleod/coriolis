@@ -1,5 +1,5 @@
 {
-  "Shield Cell Banks": [
+  "Shield Cell Bank": [
     { "id": "65", "grp": "scb", "class": 8, "rating": "E", "cost": 697584, "mass": 160, "power": 1.44, "cells": 5, "rechargeRating": "C", "recharge": 0 },
     { "id": "64", "grp": "scb", "class": 8, "rating": "D", "cost": 1743961, "mass": 64, "power": 1.92, "cells": 3, "rechargeRating": "C", "recharge": 0 },
     { "id": "63", "grp": "scb", "class": 8, "rating": "C", "cost": 4359903, "mass": 160, "power": 2.4, "cells": 4, "rechargeRating": "B", "recharge": 0 },

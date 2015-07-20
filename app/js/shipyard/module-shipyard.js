@@ -32,7 +32,7 @@ angular.module('shipyard', ['ngLodash'])
 
     // Internal
     fs: 'Fuel Scoop',
-    sc: 'Scanners',
+    sc: 'Scanner',
     am: 'Auto Field-Maintenance Unit',
     cr: 'Cargo Rack',
     fi: 'FSD Interdictor',
@@ -69,7 +69,10 @@ angular.module('shipyard', ['ngLodash'])
   .value('MountMap', {
     'F': 'Fixed',
     'G': 'Gimballed',
-    'T': 'Turret'
+    'T': 'Turret',
+    'Fixed': 'F',
+    'Gimballed': 'G',
+    'Turret': 'T'
   })
   .value('shipSize', [
     'N/A',

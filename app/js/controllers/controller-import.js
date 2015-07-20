@@ -1,88 +1,110 @@
-angular.module('app').controller('ImportController', ['$scope', '$stateParams', 'ShipsDB', 'Ship', 'Persist', 'Serializer', function($scope, $stateParams, Ships, Ship, Persist, Serializer) {
+angular.module('app').controller('ImportController', ['lodash', '$rootScope', '$scope', '$stateParams', 'ShipsDB', 'Ship', 'Persist', 'Serializer', function(_, $rootScope, $scope, $stateParams, Ships, Ship, Persist, Serializer) {
   $scope.jsonValid = false;
-  $scope.importData = null;
+  $scope.importJSON = null;
   $scope.errorMsg = null;
   $scope.canEdit = true;
   $scope.builds = $stateParams.obj || null;
   $scope.ships = Ships;
 
-  $scope.validateJson = function() {
-    var importObj = null, shipData = null;
-    $scope.jsonValid = false;
-    $scope.errorMsg = null;
-    $scope.builds = null;
+  function validateBuild(shipId, code, name) {
+    var shipData = Ships[shipId];
 
-    if (!$scope.importData) { return; }
+    if (!shipData) {
+      throw '"' + shipId + '" is not a valid Ship Id!';
+    }
+    if (typeof name != 'string' || name.length < 3) {
+      throw shipData.properties.name + ' build "' + name + '" must be a string at least 3 characters long!';
+    }
+    if (typeof code != 'string' || code.length < 10) {
+      throw shipData.properties.name + ' build "' + name + '" is not valid!';
+    }
+    try {
+      Serializer.toShip(new Ship(shipId, shipData.properties, shipData.slots), code);
+    } catch (e) {
+      throw shipData.properties.name + ' build "' + name + '" is not valid!';
+    }
+  }
+
+  function detailedJsonToBuild(detailedBuild) {
+    var ship;
+    if (!detailedBuild.name) {
+      throw 'Build Name missing!';
+    }
 
     try {
-      importObj = angular.fromJson($scope.importData);
+      ship = Serializer.fromDetailedBuild(detailedBuild);
+    } catch (e) {
+      throw detailedBuild.ship + ' Build "' + detailedBuild.name + '": Invalid data';
+    }
+
+    return { shipId: ship.id, name: detailedBuild.name, code: Serializer.fromShip(ship) };
+  }
+
+  function importBackup(importData) {
+    if (importData.builds && typeof importData.builds == 'object') {
+      for (var shipId in importData.builds) {
+        for (var buildName in importData.builds[shipId]) {
+          validateBuild(shipId, importData.builds[shipId][buildName], buildName);
+        }
+      }
+      $scope.builds = importData.builds;
+    } else {
+      throw 'builds must be an object!';
+    }
+    if (importData.comparisons) {
+      // TODO: check ship/builds exist for comparison
+      $scope.comparisons = importData.comparisons;
+    }
+    if (importData.discounts instanceof Array && importData.discounts.length == 2) {
+      $scope.discounts = importData.discounts;
+    }
+    if (typeof importData.insurance == 'string' && importData.insurance.length > 3) {
+      $scope.insurance = importData.insurance;
+    }
+  }
+
+  function importDetailedArray(importArr) {
+    var builds = {};
+    for (var i = 0, l = importArr.length; i < l; i++) {
+      var build = detailedJsonToBuild(importArr[i]);
+      if (!builds[build.shipId]) {
+        builds[build.shipId] = {};
+      }
+      builds[build.shipId][build.name] = build.code;
+    }
+    $scope.builds = builds;
+  }
+
+  $scope.validateJson = function() {
+    var importData = null;
+    $scope.jsonValid = false;
+    $scope.errorMsg = null;
+    $scope.builds = $scope.discounts = $scope.comparisons = $scope.insurance = null;
+
+    if (!$scope.importJSON) { return; }
+
+    try {
+      importData = angular.fromJson($scope.importJSON);
     } catch (e) {
       $scope.errorMsg = 'Cannot Parse JSON!';
       return;
     }
 
-    if (typeof importObj != 'object') {
+    if (!importData || typeof importData != 'object') {
       $scope.errorMsg = 'Must be an object or array!';
       return;
     }
 
-    // Using JSON from a simple/shortform/standard export
-    if (importObj.builds && Object.keys(importObj.builds).length) {
-      for (var shipId in importObj.builds) {
-        shipData = Ships[shipId];
-        if (shipData) {
-          for (var buildName in importObj.builds[shipId]) {
-            if (typeof importObj.builds[shipId][buildName] != 'string') {
-              $scope.errorMsg = shipData.properties.name + ' build "' + buildName + '" must be a string!';
-              return;
-            }
-            try {
-              // Actually build the ship with the code to ensure it's valid
-              Serializer.toShip(new Ship(shipId, shipData.properties, shipData.slots), importObj.builds[shipId][buildName]);
-            } catch (e) {
-              $scope.errorMsg = shipData.properties.name + ' build "' + buildName + '" is not valid!';
-              return;
-            }
-          }
-        } else {
-          $scope.errorMsg = '"' + shipId + '"" is not a valid Ship Id!';
-          return;
-        }
-        $scope.builds = importObj.builds;
+    try {
+      if (importData instanceof Array) {   // Must be detailed export json
+        importDetailedArray(importData);
+      } else if (importData.ship && importData.name) { // Using JSON from a single ship build export
+        importDetailedArray([importData]); // Convert to array with singleobject
+      } else { // Using Backup JSON
+        importBackup(importData);
       }
-
-    // Using JSON from a detailed export
-    } else if (importObj.length && importObj[0].references && importObj[0].references.length) {
-      var builds = {};
-      for (var i = 0, l = importObj.length; i < l; i++) {
-        if (typeof importObj[i].name != 'string' || typeof importObj[i].ship != 'string') {
-          $scope.errorMsg = 'Build [' + i + '] must have a ship and build name!';
-          return;
-        }
-        for (var r = 0, rl = importObj[i].references.length; r < rl; r++) {
-          var ref = importObj[i].references[r];
-          if (ref.name == 'Coriolis.io' && ref.code && ref.shipId) {
-            if (!builds[ref.shipId]) {
-              builds[ref.shipId] = {};
-            }
-            try {
-              // Actually build the ship with the code to ensure it's valid
-              shipData = Ships[ref.shipId];
-              Serializer.toShip(new Ship(ref.shipId, shipData.properties, shipData.slots), ref.code);
-            } catch (e) {
-              $scope.errorMsg = importObj[i].ship + ' build "' + importObj[i].name + '" is not valid!';
-              return;
-            }
-            builds[ref.shipId][importObj[i].name] = ref.code;
-          } else {
-            $scope.errorMsg = importObj[i].ship + ' build "' + importObj[i].name + '" has an invalid Coriolis reference!';
-            return;
-          }
-        }
-      }
-      $scope.builds = builds;
-    } else {
-      $scope.errorMsg = 'No builds in data';
+    } catch (e) {
+      $scope.errorMsg = e;
       return;
     }
 
@@ -93,32 +115,73 @@ angular.module('app').controller('ImportController', ['$scope', '$stateParams', 
     return Persist.getBuild(shipId, name) !== null;
   };
 
+  $scope.hasComparison = function(name) {
+    return Persist.getComparison(name) !== null;
+  };
+
   $scope.process = function() {
-    var builds = $scope.builds;
-    for (var shipId in builds) {
-      for (var buildName in builds[shipId]) {
-        var code = builds[shipId][buildName];
-        // Update builds object such that orginal name retained, but can be renamed
-        builds[shipId][buildName] = {
-          code: code,
-          useName: buildName
-        };
+    if ($scope.builds) {
+      var builds = $scope.builds;
+      for (var shipId in builds) {
+        for (var buildName in builds[shipId]) {
+          var code = builds[shipId][buildName];
+          // Update builds object such that orginal name retained, but can be renamed
+          builds[shipId][buildName] = {
+            code: code,
+            useName: buildName
+          };
+        }
       }
     }
+
+    if ($scope.comparisons) {
+      var comparisons = $scope.comparisons;
+      for (var name in comparisons) {
+        comparisons[name].useName = name;
+      }
+    }
+
     $scope.processed = true;
   };
 
   $scope.import = function() {
-    var builds = $scope.builds;
-    for (var shipId in builds) {
-      for (var buildName in builds[shipId]) {
-        var build = builds[shipId][buildName];
-        var name = build.useName.trim();
-        if (name) {
-          Persist.saveBuild(shipId, name, build.code);
+
+    if ($scope.builds) {
+      var builds = $scope.builds;
+      for (var shipId in builds) {
+        for (var buildName in builds[shipId]) {
+          var build = builds[shipId][buildName];
+          var name = build.useName.trim();
+          if (name) {
+            Persist.saveBuild(shipId, name, build.code);
+          }
         }
       }
     }
+
+    if ($scope.comparisons) {
+      var comparisons = $scope.comparisons;
+      for (var comp in comparisons) {
+        var comparison = comparisons[comp];
+        var useName = comparison.useName.trim();
+        if (useName) {
+          Persist.saveComparison(useName, comparison.builds, comparison.facets);
+        }
+      }
+    }
+
+    if ($scope.discounts) {
+      $rootScope.discounts.ship = $scope.discounts[0];
+      $rootScope.discounts.components = $scope.discounts[1];
+      $rootScope.$broadcast('discountChange');
+      Persist.setDiscount($scope.discounts);
+    }
+
+    if ($scope.insurance) {
+      $rootScope.insurance.current = $scope.insurance;
+      Persist.setInsurance($scope.insurance);
+    }
+
     $scope.$parent.dismiss();
   };
 

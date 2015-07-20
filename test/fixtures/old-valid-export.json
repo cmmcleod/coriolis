@@ -1,0 +1,50 @@
+{
+  "builds": {
+    "type_6_transporter": {
+      "Cargo": "02A4D4A2D2D2D4C-----04040303430101",
+      "Miner": "03A4D4A2D2D2D4C2l2l---040403451q0101",
+      "Hopper": "02A4D4A2D1A2D4C1717---030302024300-"
+    },
+    "type_7_transport": {
+      "Cargo": "02A5D5A4D3D3D5C--------0505040403480101",
+      "Miner": "04D5D5A4D2D3D5C--2l2l----0505041v03450000"
+    },
+    "federal_dropship": {
+      "Cargo": "04D5D5A5D3D4D4C-1717------05040448020201"
+    },
+    "asp": {
+      "Miner": "25A5A5A4D4A5A5C0s0s24242l2l---04054a1q02022o27"
+    },
+    "imperial_clipper": {
+      "Cargo": "03A5D5A5D4D5D4C--0s0s----0605450302020101",
+      "Dream": "26A6A5A5D6A5A4C0v0v0s0s0404040n4k5n5d2b29292o-.AwRj4yWU1I==.CwBhCYy6YRigzLIA",
+      "Current": "04A6A5A5D4A5A4C----------------.AwRj4yWU1I==.CwBhCYy6YRigzLIA"
+    },
+    "type_9_heavy": {
+      "Current": "04A7D6A5D5D4D6C---------0706054a0303020224.AwRj4yoo.EwBhEYy6dsg="
+    },
+    "python": {
+      "Cargo": "04A6D5A4D6D6D5C---------050505040448020201.Iw18eQ==.Aw18eQ==",
+      "Miner": "06A6A5A4D6A6A5C0v0v0v2m2m0404--050505Ce4a1v02022o.Iw18eQ==.IwBhBYy6dkCYg===",
+      "Dream": "27A6A5A4D7A6A5C0v0v0v27270404040m5n5n4f2d2d032t0201.Iw1+gDBxA===.EwBhEYy6e0WEA==="
+    },
+    "anaconda": {
+      "Dream": "48A7A6A5D8A8A5C2c0o0o0o1m1m0q0q0404040l0b0100004k5n5n112d2d040303326b.AwRj4yo5dig=.MwBhCYy6du3ARiA=",
+      "Cargo": "04A6D6A5D5D8D5C----------------0605050504040445030301.Iw18ZlA=.Aw18ZlA=",
+      "Current": "04A6D6A5D5A8D5C----------------0605050504040403034524.Iw18ZlA=.Aw18ZlA=",
+      "Explorer": "04A6D6A5D5A8D5C--------0202------f7050505040s372f2i4524.AwRj4yVKJthA.AwhMIyungRhEA==="
+    },
+    "diamondback_explorer": {
+      "Explorer": "02A4D5A3D3D3D5C---0202--320p432i2f.AwRj4zTI.AwiMIypI"
+    },
+    "vulture": {
+      "Bounty Hunter": "34A4C4A3D5A4A3C1e1e0404-0l4a5d27662j.AwRj4y2I.MwBhBYy6wJmAjLIA"
+    },
+    "fer_de_lance": {
+      "Attack": "25A5C4A4D6A4A3C1r0s0s0s0s000404-04-4a-5d27-.Iw18aQ==.CwBhrSu8EZyA"
+    },
+    "eagle": {
+      "Figther": "42A3A3A1D2A2A2C0p0p24-40532j.AwRj49iA.AwgsIkEZigmIA==="
+    }
+  }
+}

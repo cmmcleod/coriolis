@@ -1,7 +1,7 @@
 describe("Outfit Controller", function() {
   beforeEach(module('app'));
 
-  var outfitController, scope;
+  var outfitController, $rootScope, $stateParams, scope;
 
   var eventStub = {
       preventDefault: function(){ },

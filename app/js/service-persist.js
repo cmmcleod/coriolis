@@ -120,7 +120,7 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
     }
     this.comparisons[name] = {
       facets: facets,
-      builds: _.map(builds, function(b) { return { shipId: b.id, buildName: b.buildName }; })
+      builds: _.map(builds, function(b) { return { shipId: b.id || b.shipId, buildName: b.buildName }; })
     };
     localStorage.setItem(LS_KEY_COMPARISONS, angular.toJson(this.comparisons));
     this.state.hasComparisons = true;

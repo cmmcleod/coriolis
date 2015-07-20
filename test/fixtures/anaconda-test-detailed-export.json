@@ -5,8 +5,8 @@
   "references": [
     {
       "name": "Coriolis.io",
-      "url": "http://localhost:3300/outfit/anaconda/48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4yo5dig%3D.MwBhEYy6duwEziA?bn=Test",
-      "code": "48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4yo5dig=.MwBhEYy6duwEziA",
+      "url": "http://localhost:3300/outfit/anaconda/48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b?bn=Test",
+      "code": "48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b",
       "shipId": "anaconda"
     }
   ],
@@ -205,13 +205,13 @@
     "armour": 1185,
     "totalDps": 29,
     "powerAvailable": 36,
-    "powerRetracted": 23.33,
-    "powerDeployed": 34.96,
+    "powerRetracted": 23.93,
+    "powerDeployed": 35.56,
     "unladenRange": 18.49,
     "fullTankRange": 18.12,
     "ladenRange": 16.39,
-    "unladenTotalRange": 74.45,
-    "ladenTotalRange": 67.16,
+    "unladenTotalRange": 73.21,
+    "ladenTotalRange": 66.15,
     "maxJumpCount": 4,
     "shieldStrength": 833
   }

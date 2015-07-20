@@ -1,5 +1,5 @@
 {
-  "Cargo Racks": [
+  "Cargo Rack": [
     { "id": "00", "grp": "cr", "class": 1, "rating": "E", "cost": 1000,     "capacity": 2 },
     { "id": "01", "grp": "cr", "class": 2, "rating": "E", "cost": 3250,     "capacity": 4 },
     { "id": "02", "grp": "cr", "class": 3, "rating": "E", "cost": 10563,    "capacity": 8 },
