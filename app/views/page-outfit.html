@@ -62,7 +62,11 @@
           <td>{{fRound(ship.speed)}} <u>m/s</u></td>
           <td>{{fRound(ship.boost)}} <u>m/s</u></td>
           <td>{{fRound(ship.totalDps)}}</td>
-          <td>{{ship.armour}} <span ng-if="ship.armourAdded">({{ship.baseArmour}} + {{ship.armourAdded}})</span></td>
+          <td>
+            {{ship.armour}}
+            <span ng-if="ship.armourAdded || ship.armourMultiplier > 1">(<span ng-if="ship.armourMultiplier > 1">{{fRPct(ship.armourMultiplier)}}</span>
+            <span ng-if="ship.armourAdded">+ {{ship.armourAdded}}</span>)</span>
+          </td>
           <td>{{fRound(ship.shieldStrength)}} <u>MJ</u> <span ng-if="ship.shieldMultiplier > 1 && ship.shieldStrength > 0">({{fRPct(ship.shieldMultiplier)}})</span></td>
           <td>{{ship.hullMass}} <u>T</u></td>
           <td>{{fRound(ship.unladenMass)}} <u>T</u></td>

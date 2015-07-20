@@ -10,6 +10,13 @@ angular.module('shipyard', ['ngLodash'])
   // Create 'angularized' references to DB.This will aid testing
   .constant('ShipsDB', DB.ships)
   .constant('ComponentsDB', DB.components)
+  .value('ArmourMultiplier', [
+    1,      // Lightweight
+    1.4,    // Reinforced
+    1.945,  // Military
+    1.945,  // Mirrored
+    1.945   // Reactive
+  ])
   .value('commonArray', [
     'Power Plant',
     'Thrusters',

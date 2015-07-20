@@ -1,4 +1,4 @@
-angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 'calcJumpRange', 'calcTotalRange', 'lodash', function(Components, calcShieldStrength, calcJumpRange, calcTotalRange, _) {
+angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 'calcJumpRange', 'calcTotalRange', 'lodash', 'ArmourMultiplier', function(Components, calcShieldStrength, calcJumpRange, calcTotalRange, _, ArmourMultiplier) {
 
   /**
    * Returns the power usage type of a slot and it's particular component
@@ -84,10 +84,10 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.cargoCapacity = 0;
     this.ladenMass = 0;
     this.armourAdded = 0;
+    this.armourMultiplier = 1;
     this.shieldMultiplier = 1;
     this.totalCost = this.c.incCost ? this.c.discountedCost : 0;
     this.unladenMass = this.hullMass;
-    this.armour = this.baseArmour;
     this.totalDps = 0;
 
     this.bulkheads.c = null;
@@ -158,6 +158,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.bulkheads.id = index;
     this.bulkheads.c = Components.bulkheads(this.id, index);
     this.bulkheads.discountedCost = this.bulkheads.c.cost * this.componentCostMultiplier;
+    this.armourMultiplier = ArmourMultiplier[index];
     this.updateStats(this.bulkheads, this.bulkheads.c, oldBulkhead, preventUpdate);
   };
 
@@ -359,7 +360,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     }
 
     this.ladenMass = this.unladenMass + this.cargoCapacity + this.fuelCapacity;
-    this.armour = this.armourAdded + this.baseArmour;
+    this.armour = this.armourAdded + Math.round(this.baseArmour * this.armourMultiplier);
 
     if (!preventUpdate) {
       if (powerChange) {
