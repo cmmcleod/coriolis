@@ -52,7 +52,7 @@ angular.module('app').directive('componentSelect', function() {
       groups: '=',  // Groups of Component Options
       mass: '=',    // Current ship unladen mass
       s: '=',       // Current Slot
-      warning: '=', // Check warning function
+      warning: '='  // Check warning function
     },
     link: function(scope, element) {
       var list = [];
