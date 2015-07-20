@@ -8,6 +8,7 @@
       "speed": 200,
       "boost": 300,
       "agility": 6,
+      "boostEnergy": 7,
       "baseShieldStrength": 50,
       "baseArmour": 90,
       "hullMass": 14,

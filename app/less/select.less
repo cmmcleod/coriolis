@@ -77,17 +77,9 @@ select {
     stroke: @primary-disabled;
 
     &:hover {
+      border-color: @primary;
       color: @primary;
       stroke: @primary;
-    }
-    &.disabled {
-      cursor: not-allowed;
-      color: @disabled;
-      stroke: @disabled;
-    }
-    &.active {
-      color: @secondary;
-      stroke: @secondary;
     }
   }
 
@@ -96,15 +88,27 @@ select {
     padding: 0.1em 0.2em;
     margin: 0.3em;
 
-    &:hover {
-      border:1px solid @primary;
+    &.warning {
+      border-color: @warning-disabled;
+      color: @warning-disabled;
+      stroke: @warning-disabled;
+
+      &:hover {
+        border-color: @warning;
+        color: @warning;
+        stroke: @warning;
+      }
     }
 
     &.disabled {
-      border:1px solid @disabled;
+      border-color: @disabled;
+      color: @disabled;
+      stroke: @disabled;
     }
     &.active {
-      border:1px solid @secondary;
+      border-color: @secondary;
+      color: @secondary;
+      stroke: @secondary;
     }
   }
 

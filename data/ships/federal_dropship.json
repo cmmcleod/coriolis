@@ -7,6 +7,7 @@
       "hullCost": 18969990,
       "speed": 180,
       "boost": 300,
+      "boostEnergy": 21,
       "agility": 2,
       "baseShieldStrength": 200,
       "baseArmour": 540,

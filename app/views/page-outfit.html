@@ -32,7 +32,7 @@
           <th rowspan="2">Size</th>
           <th rowspan="2">Agility</th>
           <th rowspan="2">Speed</th>
-          <th rowspan="2">Boost</th>
+          <th rowspan="2" ng-class="{'bg-warning-disabled': pd.c.enginecapacity < ship.boostEnergy}">Boost</th>
           <th rowspan="2">DPS</th>
           <th rowspan="2">Armour</th>
           <th rowspan="2">Shields</th>
@@ -60,7 +60,10 @@
           <td ng-bind="SZ[ship.class]"></td>
           <td>{{ship.agility}}/10</td>
           <td>{{fRound(ship.speed)}} <u>m/s</u></td>
-          <td>{{fRound(ship.boost)}} <u>m/s</u></td>
+          <td>
+            <span ng-if="pd.c.enginecapacity >= ship.boostEnergy">{{fRound(ship.boost)}} <u>m/s</u></span>
+            <span class="warning" ng-if="pd.c.enginecapacity < ship.boostEnergy">0 <svg class="icon"><use xlink:href="#warning"></use></svg></span>
+          </td>
           <td>{{fRound(ship.totalDps)}}</td>
           <td>
             {{ship.armour}}
@@ -148,7 +151,7 @@
       <div component-select class="select" s="ls" opts="availCS.common[3]" ng-if="selectedSlot==ls" ng-click="select('c',ls,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, pd)" ng-class="{selected: selectedSlot==pd}">
-      <div class="details">
+      <div class="details" ng-class="{warning: pd.c.enginecapacity < ship.boostEnergy}">
         <div class="sz">{{::pd.maxClass}}</div>
         <div class="l">{{pd.id}} Power Distributor</div>
         <div class="r">{{pd.c.mass}} <u>T</u></div>
@@ -157,7 +160,7 @@
         <div class="l">SYS: {{pd.c.systemcapacity}} <u>MJ</u> / {{pd.c.systemrecharge}} <u>MW</u></div>
         <div class="l">ENG: {{pd.c.enginecapacity}} <u>MJ</u> / {{pd.c.enginerecharge}} <u>MW</u></div>
       </div>
-      <div component-select class="select" s="pd" opts="availCS.common[4]" ng-if="selectedSlot==pd" ng-click="select('c',pd,$event)"></div>
+      <div component-select class="select" s="pd" warning="pdWarning" opts="availCS.common[4]" ng-if="selectedSlot==pd" ng-click="select('c',pd,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, ss)" ng-class="{selected: selectedSlot==ss}">
       <div class="details">

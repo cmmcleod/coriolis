@@ -2,7 +2,7 @@ angular.module('app').directive('componentSelect', function() {
 
   // Generting the HTML in this manner is MUCH faster than using an angular template.
 
-  function appendGroup(list, opts, cid, mass) {
+  function appendGroup(list, opts, cid, mass, checkWarning) {
     var prevClass = null, prevRating = null;
     for (var i = 0; i < opts.length; i++) {
       var o = opts[i];
@@ -16,6 +16,10 @@ angular.module('app').directive('componentSelect', function() {
 
       if (cid == id) {
         list.push(' active');
+      }
+
+      if (checkWarning && checkWarning(opts[i])) {
+        list.push(' warning');
       }
 
       list.push((o.maxmass && mass > o.maxmass) ? ' disabled"' : '" cpid="', id, '">');
@@ -47,7 +51,8 @@ angular.module('app').directive('componentSelect', function() {
       opts: '=',    // Component Options object
       groups: '=',  // Groups of Component Options
       mass: '=',    // Current ship unladen mass
-      s: '='       // Current Slot
+      s: '=',       // Current Slot
+      warning: '=', // Check warning function
     },
     link: function(scope, element) {
       var list = [];
@@ -64,12 +69,12 @@ angular.module('app').directive('componentSelect', function() {
           var grp = groups[g];
           var grpCode = grp[Object.keys(grp)[0]].grp; // Nasty operation to get the grp property of the first/any single component
           list.push('<div id="', grpCode, '" class="select-group">', g, '</div><ul>');
-          appendGroup(list, grp, cid, mass);
+          appendGroup(list, grp, cid, mass, scope.warning);
           list.push('</ul>');
         }
       } else {
         list.push('<ul>');
-        appendGroup(list, opts, cid, mass);
+        appendGroup(list, opts, cid, mass, scope.warning);
         list.push('</ul>');
       }
 

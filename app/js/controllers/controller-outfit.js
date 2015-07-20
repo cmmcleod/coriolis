@@ -371,6 +371,10 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     $scope.costTab = tab;
   };
 
+  $scope.pdWarning = function(pd) {
+    return pd.enginecapacity < ship.boostEnergy;
+  }
+
   // Hide any open menu/slot/etc if the background is clicked
   $scope.$on('close', function() {
     $scope.selectedSlot = null;
