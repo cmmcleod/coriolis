@@ -187,7 +187,7 @@
     <div class="slot" ng-repeat="i in ship.internal" ng-click="selectSlot($event, i)" context-menu="select('i', i, $event, 'empty')" ng-class="{selected: selectedSlot==i}">
       <div slot-internal class="details" slot="i" lbl="GMAP[i.c.grp]" fuel="ship.fuelCapacity"></div>
       <div class="select" ng-if="selectedSlot==i" ng-click="select('i',i,$event)">
-        <div component-select s="i" groups="availCS.getInts(i.maxClass)"></div>
+        <div component-select s="i" groups="availCS.getInts(i.maxClass, i.eligible)"></div>
       </div>
     </div>
   </div>

@@ -90,7 +90,8 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
    */
   this.forShip = function(shipId) {
     var ship = Ships[shipId];
-    return new ComponentSet(C, ship.minMassFilter || ship.properties.hullMass + 5, ship.slots.common, ship.slots.internal[0], ship.slots.hardpoints[0]);
+    var maxInternal = isNaN(ship.slots.internal[0]) ? ship.slots.internal[0].class : ship.slots.internal[0];
+    return new ComponentSet(C, ship.minMassFilter || ship.properties.hullMass + 5, ship.slots.common, maxInternal, ship.slots.hardpoints[0]);
   };
 
 }]);

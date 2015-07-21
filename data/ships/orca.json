@@ -35,8 +35,8 @@
         0
       ],
       "internal": [
-        6,
-        5,
+        { "class": 6, "eligible": { "Cargo Rack": 1, "Hull Reinforcement Package": 1 } },
+        { "class": 5, "eligible": { "Cargo Rack": 1, "Hull Reinforcement Package": 1 } },
         5,
         5,
         4,

@@ -6,6 +6,13 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function(_) {
     });
   }
 
+  function getKey(maxClass, eligible) {
+    if (eligible) {
+      return maxClass + Object.keys(eligible).join('-');
+    }
+    return maxClass;
+  }
+
   function ComponentSet(components, mass, maxCommonArr, maxInternal, maxHardPoint) {
     this.mass = mass;
     this.common = {};
@@ -36,33 +43,56 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function(_) {
     for (var g in components.internal) {
       this.internal[g] = filter(components.internal[g], maxInternal, 0, mass);
     }
+
+    /**
+     * Create a memoized function for determining the components that are
+     * eligible for an internal slot
+     * @param  {integer} c        The max class component that can be mounted in the slot
+     * @param  {Object} eligible) The map of eligible internal groups
+     * @return {object}           A map of all eligible components by group
+     */
+    this.getInts = _.memoize(
+      function(c, eligible) {
+        var o = {};
+        for (var key in this.internal) {
+          if (eligible && !eligible[key]) {
+            continue;
+          }
+          var data = filter(this.internal[key], c, 0, this.mass);
+          if (data.length) {  // If group is not empty
+            o[key] = data;
+          }
+        }
+        return o;
+      },
+      getKey
+    );
+
+    /**
+     * Create a memoized function for determining the components that are
+     * eligible for an hardpoint slot
+     * @param  {integer} c        The max class component that can be mounted in the slot
+     * @param  {Object} eligible) The map of eligible hardpoint groups
+     * @return {object}           A map of all eligible components by group
+     */
+    this.getHps = _.memoize(
+      function(c, eligible) {
+        var o = {};
+        for (var key in this.hardpoints) {
+          if (eligible && !eligible[key]) {
+            continue;
+          }
+          var data = filter(this.hardpoints[key], c, c ? 1 : 0, this.mass);
+          if (data.length) {  // If group is not empty
+            o[key] = data;
+          }
+        }
+        return o;
+      },
+      getKey
+    );
+
   }
-
-  ComponentSet.prototype.getHps = function(c) {
-    if (!this.hpClass[c]) {
-      var o = this.hpClass[c] = {};
-      for (var key in this.hardpoints) {
-        var data = filter(this.hardpoints[key], c, c ? 1 : 0, this.mass);
-        if (data.length) {  // If group is not empty
-          o[key] = data;
-        }
-      }
-    }
-    return this.hpClass[c];
-  };
-
-  ComponentSet.prototype.getInts = function(c) {
-    if (!this.intClass[c]) {
-      var o = this.intClass[c] = {};
-      for (var key in this.internal) {
-        var data = filter(this.internal[key], c, 0, this.mass);
-        if (data.length) {  // If group is not empty
-          o[key] = data;
-        }
-      }
-    }
-    return this.intClass[c];
-  };
 
   return ComponentSet;
 

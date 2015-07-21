@@ -36,7 +36,11 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       var slotGroup = slots[slotType];
       var group = this[slotType] = [];   // Initialize Slot group (Common, Hardpoints, Internal)
       for (var i = 0; i < slotGroup.length; i++) {
-        group.push({ id: null, c: null, incCost: true, maxClass: slotGroup[i] });
+        if (typeof slotGroup[i] == 'object') {
+          group.push({ id: null, c: null, incCost: true, maxClass: slotGroup[i].class, eligible: slotGroup[i].eligible });
+        } else {
+          group.push({ id: null, c: null, incCost: true, maxClass: slotGroup[i] });
+        }
       }
     }
     // Make a Ship 'slot'/item similar to other slots
