@@ -52,7 +52,15 @@ angular.module('app').controller('ImportController', ['lodash', '$rootScope', '$
       throw 'builds must be an object!';
     }
     if (importData.comparisons) {
-      // TODO: check ship/builds exist for comparison
+      for (var compName in importData.comparisons) {
+        var comparison = importData.comparisons[compName];
+        for (var i = 0, l = comparison.builds.length; i < l; i++) {
+          var build = comparison.builds[i];
+          if (!importData.builds[build.shipId] || !importData.builds[build.shipId][build.buildName]) {
+            throw build.shipId + ' build "' + build.buildName + '" data is missing!';
+          }
+        }
+      }
       $scope.comparisons = importData.comparisons;
     }
     if (importData.discounts instanceof Array && importData.discounts.length == 2) {

@@ -85,6 +85,13 @@ describe('Import Controller', function() {
       expect(scope.jsonValid).toBeFalsy();
       expect(scope.errorMsg).toEqual('Imperial Clipper build "" must be a string at least 3 characters long!');
 
+      invalidImportData = angular.copy(importData);
+      invalidImportData.builds.asp = null;   // Remove Asp Miner build used in comparison
+      scope.importJSON = angular.toJson(invalidImportData);
+      scope.validateJson();
+      expect(scope.jsonValid).toBeFalsy();
+      expect(scope.errorMsg).toEqual('asp build "Miner" data is missing!');
+
     });
 
   });
