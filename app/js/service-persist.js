@@ -257,7 +257,7 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
 
   /**
    * Retrieve the last router state from local storage
-   * @param {object} state State object containing state name and params
+   * @return {object} state State object containing state name and params
    */
   this.getState = function() {
     if (this.lsEnabled) {
@@ -276,6 +276,30 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
   this.setState = function(state) {
     if (this.lsEnabled) {
       localStorage.setItem('state', angular.toJson(state));
+    }
+  };
+
+  /**
+   * Retrieve the last router state from local storage
+   * @return {number} size Ratio
+   */
+  this.getSizeRatio = function() {
+    if (this.lsEnabled) {
+      var ratio = localStorage.getItem('sizeRatio');
+      if (!isNaN(ratio) && ratio > 0.6) {
+        return ratio
+      }
+    }
+    return 1;
+  };
+
+  /**
+   * Save the current size ratio to localstorage
+   * @param {number} sizeRatio
+   */
+  this.setSizeRatio = function(sizeRatio) {
+    if (this.lsEnabled) {
+      localStorage.setItem('sizeRatio', sizeRatio);
     }
   };
 

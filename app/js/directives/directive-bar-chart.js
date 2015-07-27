@@ -11,7 +11,7 @@ angular.module('app').directive('barChart', ['$window', '$translate', '$rootScop
     for (var i = 0; i < words.length; i++) {
       var tspan = el.append('tspan').text(words[i]);
       if (i > 0) {
-        tspan.attr('x', -9).attr('dy', 12);
+        tspan.attr('x', -9).attr('dy', '1em');
       }
     }
   }
@@ -71,7 +71,7 @@ angular.module('app').directive('barChart', ['$window', '$translate', '$rootScop
         var data = scope.data,
             width = element[0].offsetWidth,
             w = width - margin.left - margin.right,
-            height = 45 + (30 * data.length),
+            height = 45 + (30 * data.length * $rootScope.sizeRatio),
             h = height - margin.top - margin.bottom,
             maxVal = d3.max(data, function(d) { return d3.max(properties, function(p) {return d[p]; }); });
 

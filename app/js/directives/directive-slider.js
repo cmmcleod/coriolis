@@ -21,7 +21,7 @@ angular.module('app').directive('slider', ['$window', function($window) {
           vis = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')'),
           xAxisContainer = vis.append('g').attr('class', 'x slider-axis').attr('transform', 'translate(0,' + h / 2 + ')'),
           x = d3.scale.linear(),
-          xAxis = d3.svg.axis().scale(x).orient('bottom').tickFormat(function(d) { return d + unit; }).tickSize(0).tickPadding(12);
+          xAxis = d3.svg.axis().scale(x).orient('bottom').tickFormat(function(d) { return d + unit; }).tickSize(0).tickPadding(12),
           slider = vis.append('g').attr('class', 'slider'),
           filled = slider.append('path').attr('class', 'filled').attr('transform', 'translate(0,' + h / 2 + ')'),
           brush = d3.svg.brush().x(x).extent([scope.max, scope.max]).on('brush', brushed),

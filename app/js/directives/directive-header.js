@@ -1,4 +1,4 @@
-angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', '$state', 'Persist', 'Serializer', 'ShipsDB', function(_, $rootScope, $state, Persist, Serializer, ships) {
+angular.module('app').directive('shipyardHeader', ['lodash', '$window', '$rootScope', '$state', 'Persist', 'Serializer', 'ShipsDB', function(_, $window, $rootScope, $state, Persist, Serializer, ships) {
 
 
   return {
@@ -84,6 +84,7 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', '$sta
       scope.textSizeChange = function(size) {
         $rootScope.sizeRatio = size;
         document.getElementById('main').style.fontSize = size + 'em';
+        Persist.setSizeRatio(size);
         win.triggerHandler('resize');
       };
 

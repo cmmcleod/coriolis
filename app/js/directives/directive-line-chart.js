@@ -51,7 +51,7 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
           .text($translate.instant(labels.xAxis.title) + ' (' + $translate.instant(labels.xAxis.unit) + ')');
 
       // Create and Add tooltip
-      var tipWidth = (Math.max(labels.yAxis.unit.length, labels.xAxis.unit.length) * 1.25) + 2;
+      var tipWidth = (Math.max(labels.yAxis.unit.length, labels.xAxis.unit.length) * 1.25) + 2.5;
       var tips = vis.append('g').style('display', 'none');
 
       var background = vis.append('rect') // Background to capture hover/drag
@@ -83,7 +83,7 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
 
       function render() {
         var width = element[0].parentElement.offsetWidth,
-            height = width * 0.5,
+            height = width * 0.5 * $rootScope.sizeRatio,
             xMax = seriesConfig.xMax,
             xMin = seriesConfig.xMin,
             yMax = seriesConfig.yMax,
