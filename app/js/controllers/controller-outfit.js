@@ -175,6 +175,32 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   };
 
   /**
+   * Strip ship to A-class and A-class shield generator.
+   */
+  $scope.aRatedBuild = function() {
+    ship.buildWith(data.defaults); // Reset build to default -- lazy hack to find shield slot
+    var sgSlot = 0;
+    var sgId = 0;
+    ship.internal.forEach(function(slot) {
+      // TODO: equip biggest A-rated shield in highest slot instead
+      if (slot.c && (slot.c.grp == 'sg')) {
+        sgSlot = ship.internal.indexOf(slot);
+        // Dirty hack using char decrement to get to A rated shield from default E
+        sgId = slot.c.id.charAt(0) + String.fromCharCode(slot.c.id.charCodeAt(1) - 4);
+      }
+    });
+    for (var i = 0, l = ship.common.length - 1; i < l; i++) { // All except Fuel Tank
+      var id = ship.common[i].maxClass + 'A';
+      ship.use(ship.common[i], id, Components.common(i, id));
+    }
+    ship.hardpoints.forEach(function(slot) { ship.use(slot, null, null); });
+    ship.internal.forEach(function(slot) { ship.use(slot, null, null); });
+    ship.use(ship.internal[sgSlot], sgId, Components.internal(sgId));
+    ship.useBulkhead(0);
+    updateState(Serializer.fromShip(ship));
+  };
+
+  /**
    * Strip ship to D-class and no other components.
    */
   $scope.stripBuild = function() {

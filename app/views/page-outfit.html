@@ -16,6 +16,9 @@
       <button ui-sref="outfit({shipId: ship.id,code:null, bn: buildName})" ng-disabled="!code">
         <svg class="icon lg"><use xlink:href="#switch"></use></svg><span class="button-lbl">Reset</span>
       </button>
+      <button ng-click="aRatedBuild()">
+        <svg class="icon lg"><use xlink:href="#cogs"></use></svg><span class="button-lbl">A-Rated</span>
+      </button>
       <button ng-click="stripBuild()">
         <svg class="icon lg"><use xlink:href="#feather"></use></svg><span class="button-lbl">Low-Weight</span>
       </button>
