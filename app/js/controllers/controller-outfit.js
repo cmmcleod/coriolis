@@ -185,8 +185,8 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     ship.hardpoints.forEach(function(slot) { ship.use(slot, null, null); });
     ship.internal.forEach(function(slot) { ship.use(slot, null, null); });
     ship.internal.some(function(slot) {
-      if ('undefined' == typeof slot.eligible) { // Assuming largest slot can hold an eligible shield
-        var id = Components.findInternalId('Shield Generator', slot.maxClass, 'A');
+      if (typeof slot.eligible === "undefined") { // Assuming largest slot can hold an eligible shield
+        id = Components.findInternalId('Shield Generator', slot.maxClass, 'A');
         ship.use(slot, id, Components.internal(id));
         return true;
       }
