@@ -175,6 +175,27 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   };
 
   /**
+   * Strip ship to A-class and biggest A-class shield generator with military bulkheads
+   */
+  $scope.aRatedBuild = function() {
+    for (var i = 0, l = ship.common.length - 1; i < l; i++) { // All except Fuel Tank
+      var id = ship.common[i].maxClass + 'A';
+      ship.use(ship.common[i], id, Components.common(i, id));
+    }
+    ship.hardpoints.forEach(function(slot) { ship.use(slot, null, null); });
+    ship.internal.forEach(function(slot) { ship.use(slot, null, null); });
+    ship.internal.some(function(slot) {
+      if (typeof slot.eligible === 'undefined') { // Assuming largest slot can hold an eligible shield
+        id = Components.findInternalId('Shield Generator', slot.maxClass, 'A');
+        ship.use(slot, id, Components.internal(id));
+        return true;
+      }
+    });
+    ship.useBulkhead(2);
+    updateState(Serializer.fromShip(ship));
+  };
+
+  /**
    * Strip ship to D-class and no other components.
    */
   $scope.stripBuild = function() {
