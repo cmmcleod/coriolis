@@ -196,16 +196,24 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   };
 
   /**
-   * Strip ship to D-class and no other components.
+   * Optimize for the lower mass build that can still boost and power the ship
+   * without power management.
    */
-  $scope.stripBuild = function() {
-    for (var i = 0, l = ship.common.length - 1; i < l; i++) { // All except Fuel Tank
-      var id = ship.common[i].maxClass + 'D';
-      ship.use(ship.common[i], id, Components.common(i, id));
-    }
+  $scope.optimizeMassBuild = function() {
+    var common = ship.common;
     ship.hardpoints.forEach(function(slot) { ship.use(slot, null, null); });
     ship.internal.forEach(function(slot) { ship.use(slot, null, null); });
     ship.useBulkhead(0);
+    ship.use(common[1], common[1].maxClass + 'D', Components.common(1, common[1].maxClass + 'D')); // Thrusters
+    ship.use(common[2], common[2].maxClass + 'A', Components.common(2, common[2].maxClass + 'A')); // FSD
+    ship.use(common[3], common[3].maxClass + 'D', Components.common(3, common[3].maxClass + 'D')); // Life Support
+    ship.use(common[5], common[5].maxClass + 'D', Components.common(5, common[5].maxClass + 'D')); // Sensors
+
+    var pd = $scope.availCS.lightestPowerDist(ship.boostEnergy); // Find lightest Power Distributor that can still boost
+    ship.use(ship.common[4], pd, Components.common(4, pd));
+    var pp = $scope.availCS.lightestPowerPlant(ship.powerRetracted); // Find lightest Power plant that can power the ship
+    ship.use(ship.common[0], pp, Components.common(0, pp));
+
     updateState(Serializer.fromShip(ship));
   };
 

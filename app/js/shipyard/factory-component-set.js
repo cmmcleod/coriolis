@@ -91,8 +91,31 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function(_) {
       },
       getKey
     );
-
   }
+
+  ComponentSet.prototype.lightestPowerDist = function(boostEnergy) {
+    var pds = this.common[4];
+    var pd = pds[0];
+
+    for (var i = 1; i < pds.length; i++) {
+      if (pds[i].mass < pd.mass && pds[i].enginecapacity >= boostEnergy) {
+        pd = pds[i];
+      }
+    }
+    return pd.class + pd.rating;
+  };
+
+  ComponentSet.prototype.lightestPowerPlant = function(powerUsed) {
+    var pps = this.common[0];
+    var pp = null;
+
+    for (var i = 0; i < pps.length; i++) {
+      if (pp == null || (pps[i].mass < pp.mass && pps[i].pGen >= powerUsed)) {
+        pp = pps[i];
+      }
+    }
+    return pp.class + (pp.rating != 'D' ? 'A' : 'D'); // Use A rated if C,E
+  };
 
   return ComponentSet;
 
