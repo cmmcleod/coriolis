@@ -1,7 +1,7 @@
 <h2>Import</h2>
 <div ng-show="!processed">
-  <textarea class="cb json"  ng-model="importJSON" ng-change="validateJson()" placeholder="Paste JSON Here"></textarea>
-  <button class="l" ng-click="process()" ng-disabled="!jsonValid">Proceed</button>
+  <textarea class="cb json"  ng-model="importString" ng-change="validateImport()" placeholder="Paste JSON or Build text Here"></textarea>
+  <button class="l" ng-click="process()" ng-disabled="!importValid">Proceed</button>
   <div class="l warning" style="margin-left:3em;">{{errorMsg}}</div>
 </div>
 
@@ -34,7 +34,7 @@
   </table>
 
   <button class="cl l" ng-click="import()"><svg class="icon"><use xlink:href="#download"></use></svg> Import</button>
-  <button class="l" style="margin-left: 2em;" ng-click="processed = false" ng-show="canEdit">Edit JSON</button>
+  <button class="l" style="margin-left: 2em;" ng-click="processed = false" ng-show="canEdit">Edit Data</button>
 </div>
 
 <button class="r dismiss" ng-click="dismiss()">Cancel</button>

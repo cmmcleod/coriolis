@@ -1,0 +1,22 @@
+[
+  {
+    "buildText": "[Imaginary Ship]\nbla bla",
+    "errorMsg": "No such ship found: \"Imaginary Ship\""
+  },
+  {
+    "buildText": "[Viper]\nS: 1F/F Pulse Laser\nsome un-parseable nonsense\nS: 1F/F Pulse Laser\n",
+    "errorMsg": "Error parsing: \"some un-parseable nonsense\""
+  },
+  {
+    "buildText": "[Sidewinder]\nS: 2F/F Pulse Laser\nS: 1F/F Pulse Laser\n",
+    "errorMsg": "2F Pulse Laser exceeds slot size: \"S: 2F/F Pulse Laser\""
+  },
+  {
+    "buildText": "[Sidewinder]\nL: 2F/F Pulse Laser\nS: 1F/F Pulse Laser\n",
+    "errorMsg": "No hardpoint slot available for: \"L: 2F/F Pulse Laser\""
+  },
+  {
+    "buildText": "[Sidewinder]\nS: 1F/F Magic Thing\nS: 1F/F Pulse Laser\n",
+    "errorMsg": "Unknown component: \"S: 1F/F Magic Thing\""
+  }
+]

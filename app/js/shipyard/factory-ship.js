@@ -95,7 +95,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.totalDps = 0;
 
     this.bulkheads.c = null;
-    this.useBulkhead(comps.bulkheads || 0, true);
+    this.useBulkhead(comps && comps.bulkheads ? comps.bulkheads : 0, true);
     this.cargoScoop.priority = priorities ? priorities[0] * 1 : 0;
     this.cargoScoop.enabled = enabled ? enabled[0] * 1 : true;
 
@@ -116,7 +116,10 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       common[i].type = 'SYS';
       common[i].c = common[i].id = null; // Resetting 'old' component if there was one
       common[i].discountedCost = 0;
-      this.use(common[i], comps.common[i], Components.common(i, comps.common[i]), true);
+
+      if (comps) {
+        this.use(common[i], comps.common[i], Components.common(i, comps.common[i]), true);
+      }
     }
 
     common[1].type = 'ENG'; // Thrusters
@@ -131,7 +134,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       hps[i].c = hps[i].id = null; // Resetting 'old' component if there was one
       hps[i].discountedCost = 0;
 
-      if (comps.hardpoints[i] !== 0) {
+      if (comps && comps.hardpoints[i] !== 0) {
         this.use(hps[i], comps.hardpoints[i], Components.hardpoints(comps.hardpoints[i]), true);
       }
     }
@@ -146,15 +149,17 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       internal[i].id = internal[i].c = null; // Resetting 'old' component if there was one
       internal[i].discountedCost = 0;
 
-      if (comps.internal[i] !== 0) {
+      if (comps && comps.internal[i] !== 0) {
         this.use(internal[i], comps.internal[i], Components.internal(comps.internal[i]), true);
       }
     }
 
     // Update aggragated stats
-    this.updatePower();
-    this.updateJumpStats();
-    this.updateShieldStrength();
+    if (comps) {
+      this.updatePower();
+      this.updateJumpStats();
+      this.updateShieldStrength();
+    }
   };
 
   Ship.prototype.useBulkhead = function(index, preventUpdate) {

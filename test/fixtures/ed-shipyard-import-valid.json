@@ -1,0 +1,26 @@
+[
+  {
+    "shipId": "anaconda",
+    "buildName": "Imported Anaconda",
+    "buildCode": "08E7E6E5E8E8E5C------1717--------05044j-03--2h--00.Iw18ZlA=.Aw18ZlA=",
+    "buildText": "[Anaconda]\nS: 1F/F Pulse Laser\nS: 1F/F Pulse Laser\n\nBH: 1I Lightweight Alloy\nRB: 8E Power Plant\nTM: 7E Thrusters\nFH: 6E Frame Shift Drive\nEC: 5E Life Support\nPC: 8E Power Distributor\nSS: 8E Sensors\nFS: 5C Fuel Tank (Capacity: 32)\n\n7: 6E Cargo Rack (Capacity: 64)\n6: 5E Cargo Rack (Capacity: 32)\n6: 6E Shield Generator\n5: 4E Cargo Rack (Capacity: 16)\n4: 1E Basic Discovery Scanner\n2: 1E Cargo Rack (Capacity: 2)\n"
+  },
+  {
+    "shipId": "cobra_mk_iii",
+    "buildName": "Imported Cobra Mk III",
+    "buildCode": "04A4C4E3D2A3D4C1712222503040202490f242h.Iw1-kA==.Aw1-kA==",
+    "buildText": "[Cobra Mk III]\nM: 1F/F Pulse Laser\nM: 1G/G Burst Laser\nS: 1E/T Fragment Cannon\nS: 1G/T Multi-cannon\nU: 0I Point Defence\nU: 0A Shield Booster\n\nBH: 1I Lightweight Alloy\nRB: 4A Power Plant\nTM: 4C Thrusters\nFH: 4E Frame Shift Drive\nEC: 3D Life Support\nPC: 2A Power Distributor\nSS: 3D Sensors\nFS: 4C Fuel Tank (Capacity: 16)\n\n4: 3E Cargo Rack (Capacity: 8)\n4: 3E Cargo Rack (Capacity: 8)\n4: 4E Shield Generator\n2: 2C Auto Field-Maintenance Unit\n2: 1E Standard Docking Computer\n2: 1E Basic Discovery Scanner\n---\nShield: 112.29 MJ\nPower : 10.45 MW retracted (67%)\n 12.16 MW deployed (78%)\n 15.60 MW available\nCargo : 16 T\nFuel : 16 T\nMass : 235.5 T empty\n 267.5 T full\nRange : 10.69 LY unladen\n 10.05 LY laden\nPrice : 2,929,040 CR\nRe-Buy: 146,452 CR @ 95% insurance\n"
+  },
+  {
+    "shipId": "type_9_heavy",
+    "buildName": "Imported Type-9 Heavy",
+    "buildCode": "35A7D6A5A4D4D5C7e2k2f2h110001020306054j03022f01242i.Iw18eQ==.Aw18eQ==",
+    "buildText": "[Type-9 Heavy]\nM: 2D/G Fragment Cannon\nM: 2I/F Mine Launcher\nM: 2B/FD Missile Rack\nS: 1I/FS Torpedo Pylon\nS: 1F/F Burst Laser\nU: 0I Chaff Launcher\nU: 0F Electronic Countermeasure\nU: 0I Heat Sink Launcher\nU: 0I Point Defence\n\nBH: 1I Mirrored Surface Composite\nRB: 5A Power Plant\nTM: 7D Thrusters\nFH: 6A Frame Shift Drive\nEC: 5A Life Support\nPC: 4D Power Distributor\nSS: 4D Sensors\nFS: 5C Fuel Tank (Capacity: 32)\n\n8: 7E Cargo Rack (Capacity: 128)\n7: 6E Cargo Rack (Capacity: 64)\n6: 6E Shield Generator\n5: 4E Cargo Rack (Capacity: 16)\n4: 3E Cargo Rack (Capacity: 8)\n4: 1C Advanced Discovery Scanner\n3: 2E Cargo Rack (Capacity: 4)\n3: 1E Standard Docking Computer\n2: 1C Detailed Surface Scanner\n"
+  },
+  {
+    "shipId": "vulture",
+    "buildName": "Imported Vulture",
+    "buildCode": "44A5A4A3D5A4D3C1e1e0e0j04044a0n532jf1.Iw19kA==.Aw19kA==",
+    "buildText": "[Vulture]\nL: 3E/G Pulse Laser\nL: 3E/G Pulse Laser\nU: 0A Frame Shift Wake Scanner\nU: 0A Kill Warrant Scanner\nU: 0A Shield Booster\nU: 0A Shield Booster\n\nBH: 1I Reactive Surface Composite\nRB: 4A Power Plant\nTM: 5A Thrusters\nFH: 4A Frame Shift Drive\nEC: 3D Life Support\nPC: 5A Power Distributor\nSS: 4D Sensors\nFS: 3C Fuel Tank (Capacity: 8)\n\n5: 5A Shield Generator\n4: 4A Auto Field-Maintenance Unit\n2: 2A Shield Cell Bank\n1: 1A Fuel Scoop\n1: 1C Fuel Tank (Capacity: 2)"
+  }
+]

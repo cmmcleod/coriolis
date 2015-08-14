@@ -37,9 +37,9 @@ describe('Import Controller', function() {
 
     it('imports a valid backup', function() {
       var importData = __json__['fixtures/valid-backup'];
-      scope.importJSON = angular.toJson(importData);
-      scope.validateJson();
-      expect(scope.jsonValid).toBeTruthy();
+      scope.importString = angular.toJson(importData);
+      scope.validateImport();
+      expect(scope.importValid).toBeTruthy();
       expect(scope.errorMsg).toEqual(null);
       scope.process();
       expect(scope.processed).toBeTruthy();
@@ -52,9 +52,9 @@ describe('Import Controller', function() {
 
     it('imports an old valid backup', function() {
       var importData = __json__['fixtures/old-valid-export'];
-      scope.importJSON = angular.toJson(importData);
-      scope.validateJson();
-      expect(scope.jsonValid).toBeTruthy();
+      scope.importString = angular.toJson(importData);
+      scope.validateImport();
+      expect(scope.importValid).toBeTruthy();
       expect(scope.errorMsg).toEqual(null);
       scope.process();
       expect(scope.processed).toBeTruthy();
@@ -65,31 +65,31 @@ describe('Import Controller', function() {
     it('catches an invalid backup', function() {
       var importData = __json__['fixtures/valid-backup'];
 
-      scope.importJSON = 'null';
-      scope.validateJson();
-      expect(scope.jsonValid).toBeFalsy();
+      scope.importString = 'null';
+      scope.validateImport();
+      expect(scope.importValid).toBeFalsy();
       expect(scope.errorMsg).toEqual('Must be an object or array!');
 
-      scope.importJSON = '{ "builds": "Should not be a string" }';
-      scope.validateJson();
-      expect(scope.jsonValid).toBeFalsy();
+      scope.importString = '{ "builds": "Should not be a string" }';
+      scope.validateImport();
+      expect(scope.importValid).toBeFalsy();
       expect(scope.errorMsg).toEqual('builds must be an object!');
 
-      scope.importJSON = angular.toJson(importData).replace('anaconda', 'invalid_ship');
-      scope.validateJson();
-      expect(scope.jsonValid).toBeFalsy();
+      scope.importString = angular.toJson(importData).replace('anaconda', 'invalid_ship');
+      scope.validateImport();
+      expect(scope.importValid).toBeFalsy();
       expect(scope.errorMsg).toEqual('"invalid_ship" is not a valid Ship Id!');
 
-      scope.importJSON = angular.toJson(importData).replace('Dream', '');
-      scope.validateJson();
-      expect(scope.jsonValid).toBeFalsy();
+      scope.importString = angular.toJson(importData).replace('Dream', '');
+      scope.validateImport();
+      expect(scope.importValid).toBeFalsy();
       expect(scope.errorMsg).toEqual('Imperial Clipper build "" must be a string at least 3 characters long!');
 
       invalidImportData = angular.copy(importData);
       invalidImportData.builds.asp = null;   // Remove Asp Miner build used in comparison
-      scope.importJSON = angular.toJson(invalidImportData);
-      scope.validateJson();
-      expect(scope.jsonValid).toBeFalsy();
+      scope.importString = angular.toJson(invalidImportData);
+      scope.validateImport();
+      expect(scope.importValid).toBeFalsy();
       expect(scope.errorMsg).toEqual('asp build "Miner" data is missing!');
 
     });
@@ -100,9 +100,9 @@ describe('Import Controller', function() {
 
     it('imports a valid build', function() {
       var importData = __json__['fixtures/anaconda-test-detailed-export'];
-      scope.importJSON = angular.toJson(importData);
-      scope.validateJson();
-      expect(scope.jsonValid).toBeTruthy();
+      scope.importString = angular.toJson(importData);
+      scope.validateImport();
+      expect(scope.importValid).toBeTruthy();
       expect(scope.errorMsg).toEqual(null);
       scope.process();
       expect(scope.processed).toBeTruthy();
@@ -114,9 +114,9 @@ describe('Import Controller', function() {
 
     it('catches an invalid build', function() {
       var importData = __json__['fixtures/anaconda-test-detailed-export'];
-      scope.importJSON = angular.toJson(importData).replace('components', 'comps');
-      scope.validateJson();
-      expect(scope.jsonValid).toBeFalsy();
+      scope.importString = angular.toJson(importData).replace('components', 'comps');
+      scope.validateImport();
+      expect(scope.importValid).toBeFalsy();
       expect(scope.errorMsg).toEqual('Anaconda Build "Test": Invalid data');
     });
 
@@ -127,9 +127,9 @@ describe('Import Controller', function() {
     it('imports all builds', function() {
       var importData = __json__['fixtures/valid-detailed-export'];
       var expectedBuilds = __json__['fixtures/expected-builds'];
-      scope.importJSON = angular.toJson(importData);
-      scope.validateJson();
-      expect(scope.jsonValid).toBeTruthy();
+      scope.importString = angular.toJson(importData);
+      scope.validateImport();
+      expect(scope.importValid).toBeTruthy();
       expect(scope.errorMsg).toEqual(null);
       scope.process();
       expect(scope.processed).toBeTruthy();
@@ -139,6 +139,41 @@ describe('Import Controller', function() {
         for (var b in builds[s]) {
           expect(builds[s][b]).toEqual(expectedBuilds[s][b]);
         }
+      }
+    });
+
+  });
+
+  describe('Import E:D Shipyard Builds', function() {
+
+    it('imports a valid builds', function() {
+      var imports = __json__['fixtures/ed-shipyard-import-valid'];
+
+      for (var i = 0; i < imports.length; i++ ) {
+        scope.importString = imports[i].buildText;
+        scope.validateImport();
+        expect(scope.importValid).toBeTruthy();
+        expect(scope.errorMsg).toEqual(null, 'Build #' + i + ': ' + imports[i].buildName);
+
+        if (scope.importValid) {  // No point in carrying out other assertions
+          scope.process();
+          expect(scope.processed).toBeTruthy();
+          scope.import();
+          var allBuilds = angular.fromJson(localStorage.getItem('builds'));
+          var shipBuilds = allBuilds ? allBuilds[imports[i].shipId] : null;
+          var build = shipBuilds ? shipBuilds[imports[i].buildName] : null;
+          expect(build).toEqual(imports[i].buildCode, 'Build #' + i + ': ' + imports[i].buildName);
+        }
+      }
+    });
+
+    it('catches invalid builds', function() {
+      var imports = __json__['fixtures/ed-shipyard-import-invalid'];
+      for (var i = 0; i < imports.length; i++ ) {
+        scope.importString = imports[i].buildText;
+        scope.validateImport();
+        expect(scope.importValid).toBeFalsy();
+        expect(scope.errorMsg).toEqual(imports[i].errorMsg);
       }
     });
 

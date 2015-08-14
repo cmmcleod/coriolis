@@ -33,15 +33,25 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
   };
 
   this.findInternalId = function(groupName, clss, rating, name) {
-    var group = C.internal[groupName];
+    var groups = {};
 
-    if (!group) {
-      throw 'Invalid internal group: ' + groupName;
+    if (groupName) {
+      if (!C.internal[groupName]) {
+        throw 'Invalid internal group: ' + groupName;
+      }
+      groups[groupName] = C.internal[groupName];
+    } else if (name) {
+      groups = C.internal;
+    } else {
+      throw 'Invalid group or name not provided';
     }
 
-    for (var i = 0, l = group.length; i < l; i++) {
-      if (group[i].class == clss && group[i].rating == rating && ((!name && !group[i].name) || group[i].name == name)) {
-        return group[i].id;
+    for (var g in groups) {
+      var group = groups[g];
+      for (var i = 0, l = group.length; i < l; i++) {
+        if (group[i].class == clss && group[i].rating == rating && ((!name && !group[i].name) || group[i].name == name)) {
+          return group[i].id;
+        }
       }
     }
 
@@ -49,18 +59,28 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
   };
 
   this.findHardpointId = function(groupName, clss, rating, name, mode, missile) {
-    var group = C.hardpoints[groupName];
+    var groups = {};
 
-    if (!group) {
-      throw 'Invalid hardpoint group: ' + groupName;
+    if (groupName) {
+      if (!C.hardpoints[groupName]) {
+        throw 'Invalid internal group: ' + groupName;
+      }
+      groups[groupName] = C.hardpoints[groupName];
+    } else if (name) {
+      groups = C.hardpoints;
+    } else {
+      throw 'Invalid group or name not provided';
     }
 
-    for (var i = 0, l = group.length; i < l; i++) {
-      if (group[i].class == clss && group[i].rating == rating && group[i].mode == mode
-          && ((!name && !group[i].name) || group[i].name == name)
-          && ((!missile && !group[i].missile) || group[i].missile == missile)
-          ) {
-        return group[i].id;
+    for (var g in groups) {
+      var group = groups[g];
+      for (var i = 0, l = group.length; i < l; i++) {
+        if (group[i].class == clss && group[i].rating == rating && group[i].mode == mode
+            && ((!name && !group[i].name) || group[i].name == name)
+            && ((!missile && !group[i].missile) || group[i].missile == missile)
+            ) {
+          return group[i].id;
+        }
       }
     }
 

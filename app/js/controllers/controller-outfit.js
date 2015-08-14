@@ -145,7 +145,14 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
    */
   $scope.select = function(type, slot, e, id) {
     e.stopPropagation();
-    id = id || angular.element(e.target).attr('cpid');  // Get component ID
+
+    if (!id) {  // Find component id if not passed
+      var elem = e.target;
+      while (elem && elem !== e.currentTarget && !elem.getAttribute('cpid')) {
+        elem = elem.parentElement;
+      }
+      id = elem.getAttribute('cpid');
+    }
 
     if (id) {
       if (id == 'empty') {
