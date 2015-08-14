@@ -6,7 +6,7 @@
 
 The Coriolis project was inspired by [E:D Shipyard](http://www.edshipyard.com/) and, of course, [Elite Dangerous](http://www.elitedangerous.com). The ultimate goal of Coriolis is to provide rich features to support in-game play and planning while engaging the E:D community to support its development.
 
-Coriolis was created for non-commercial purposes. Coriolis was created using assets and imagery from Elite: Dangerous, with the permission of Frontier Developments plc, for non-commercial purposes. It is not endorsed by nor reflects the views or opinions of Frontier Developments and no employee of Frontier Developments was involved in the making of it.
+Coriolis was created using assets and imagery from Elite: Dangerous, with the permission of Frontier Developments plc, for non-commercial purposes. It is not endorsed by nor reflects the views or opinions of Frontier Developments and no employee of Frontier Developments was involved in the making of it.
 
 ## Contributing
 
