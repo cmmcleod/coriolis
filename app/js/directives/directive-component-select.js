@@ -22,13 +22,13 @@ angular.module('app').directive('componentSelect', function() {
         list.push(' warning');
       }
 
-      list.push((o.maxmass && mass > o.maxmass) ? ' disabled"' : '" cpid="', id, '">');
+      list.push((o.maxmass && (mass + (o.mass ? o.mass : 0)) > o.maxmass) ? ' disabled"' : '" cpid="', id, '">');
 
       if (o.mode) {
-        list.push('<svg cpid="', id, '" class="icon lg"><use cpid="', id, '" xlink:href="#mount-', o.mode, '"></use></svg> ');
+        list.push('<svg class="icon lg"><use xlink:href="#mount-', o.mode, '"></use></svg> ');
       }
 
-      list.push('<span cpid="', id, '">', o.class, o.rating);
+      list.push('<span>', o.class, o.rating);
 
       if (o.missile) {
         list.push('/' + o.missile);
@@ -50,7 +50,7 @@ angular.module('app').directive('componentSelect', function() {
     scope: {
       opts: '=',    // Component Options object
       groups: '=',  // Groups of Component Options
-      mass: '=',    // Current ship unladen mass
+      mass: '=',    // Current ship mass
       s: '=',       // Current Slot
       warning: '='  // Check warning function
     },
@@ -60,7 +60,7 @@ angular.module('app').directive('componentSelect', function() {
       var component = scope.s.c;  // Slot's Current Component (may be null/undefined)
       var opts = scope.opts;
       var groups = scope.groups;
-      var mass = scope.mass || 0;
+      var mass = (scope.mass ? scope.mass : 0) - (component && component.mass ? component.mass : 0); // Mass minus the currently selected component
 
       if (groups) {
         // At present time slots with grouped options (Hardpoints and Internal) can be empty
