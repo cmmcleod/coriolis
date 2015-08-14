@@ -6,6 +6,12 @@
     "buildText": "[Anaconda]\nS: 1F/F Pulse Laser\nS: 1F/F Pulse Laser\n\nBH: 1I Lightweight Alloy\nRB: 8E Power Plant\nTM: 7E Thrusters\nFH: 6E Frame Shift Drive\nEC: 5E Life Support\nPC: 8E Power Distributor\nSS: 8E Sensors\nFS: 5C Fuel Tank (Capacity: 32)\n\n7: 6E Cargo Rack (Capacity: 64)\n6: 5E Cargo Rack (Capacity: 32)\n6: 6E Shield Generator\n5: 4E Cargo Rack (Capacity: 16)\n4: 1E Basic Discovery Scanner\n2: 1E Cargo Rack (Capacity: 2)\n"
   },
   {
+    "shipId": "anaconda",
+    "buildName": "Imported Anaconda",
+    "buildCode": "08E7E6E5E8E8E5C------1717--------05044j-03--2h--00.Iw18ZlA=.Aw18ZlA=",
+    "buildText": "\n\n \t[Anaconda]\nS: 1F/F Pulse Laser\nS: 1F/F Pulse Laser\n\nBH: 1I Lightweight Alloy\nRB: 8E Power Plant\nTM: 7E Thrusters\nFH: 6E Frame Shift Drive\nEC: 5E Life Support\nPC: 8E Power Distributor\nSS: 8E Sensors\nFS: 5C Fuel Tank (Capacity: 32)\n\n7: 6E Cargo Rack (Capacity: 64)\n6: 5E Cargo Rack (Capacity: 32)\n6: 6E Shield Generator\n5: 4E Cargo Rack (Capacity: 16)\n4: 1E Basic Discovery Scanner\n2: 1E Cargo Rack (Capacity: 2)\n"
+  },
+  {
     "shipId": "cobra_mk_iii",
     "buildName": "Imported Cobra Mk III",
     "buildCode": "04A4C4E3D2A3D4C1712222503040202490f242h.Iw1-kA==.Aw1-kA==",
