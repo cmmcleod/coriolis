@@ -116,7 +116,7 @@
       </div>
     </div>
     <div class="slot" ng-click="selectSlot($event, pp)" ng-class="{selected: selectedSlot==pp}">
-      <div class="details">
+      <div class="details" ng-class="{warning: pp.c.pGen < ship.powerRetracted}">
         <div class="sz">{{::pp.maxClass}}</div>
         <div class="l">{{pp.id}} Power Plant</div>
         <div class="r">{{pp.c.mass}} <u>T</u></div>
@@ -124,7 +124,7 @@
         <div class="l">Efficiency: {{pp.c.eff}}</div>
         <div class="l">Power: {{pp.c.pGen}} <u>MW</u></div>
       </div>
-      <div component-select class="select" s="pp" opts="availCS.common[0]" ng-if="selectedSlot==pp" ng-click="select('c',pp,$event)"></div>
+      <div component-select class="select" s="pp" warning="ppWarning" opts="availCS.common[0]" ng-if="selectedSlot==pp" ng-click="select('c',pp,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, th)" ng-class="{selected: selectedSlot==th}">
       <div class="details"  ng-class="{'warning': th.c.maxmass < ship.ladenMass}">

@@ -407,6 +407,10 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     $scope.costTab = tab;
   };
 
+  $scope.ppWarning = function(pp) {
+    return pp.pGen < ship.powerRetracted;
+  };
+
   $scope.pdWarning = function(pd) {
     return pd.enginecapacity < ship.boostEnergy;
   };
