@@ -51,7 +51,8 @@ gulp.task('js-lint', function() {
         'space-before-function-paren': [2, 'never'],
         'space-before-blocks': [2, 'always'],
         'object-curly-spacing': [2, "always"],
-        'brace-style': [2, '1tbs', { allowSingleLine: true }]
+        'brace-style': [2, '1tbs', { allowSingleLine: true }],
+        'no-control-regex': false
       },
       envs: ['browser']
     }))
