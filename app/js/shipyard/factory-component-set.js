@@ -105,6 +105,18 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function(_) {
     return pd.class + pd.rating;
   };
 
+  ComponentSet.prototype.lightestThruster = function(ladenMass) {
+    var ths = this.common[1];
+    var th = ths[0];
+
+    for (var i = 1; i < ths.length; i++) {
+      if (ths[i].mass < th.mass && ths[i].maxmass >= ladenMass) {
+        th = ths[i];
+      }
+    }
+    return th.class + th.rating;
+  };
+
   ComponentSet.prototype.lightestPowerPlant = function(powerUsed) {
     var pps = this.common[0];
     var pp = null;
