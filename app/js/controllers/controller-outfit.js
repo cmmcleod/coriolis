@@ -151,7 +151,9 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
       while (elem && elem !== e.currentTarget && !elem.getAttribute('cpid')) {
         elem = elem.parentElement;
       }
-      id = elem.getAttribute('cpid');
+      if (elem) {
+        id = elem.getAttribute('cpid');
+      }
     }
 
     if (id) {
