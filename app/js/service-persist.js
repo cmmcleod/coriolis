@@ -4,6 +4,7 @@
 angular.module('app').service('Persist', ['$window', 'lodash', function($window, _) {
   var LS_KEY_BUILDS = 'builds';
   var LS_KEY_COMPARISONS = 'comparisons';
+  var LS_KEY_LANG = 'NG_TRANSLATE_LANG_KEY';
   var LS_KEY_COST_TAB = 'costTab';
   var LS_KEY_INSURANCE = 'insurance';
   var LS_KEY_DISCOUNTS = 'discounts';
@@ -31,6 +32,22 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
     hasBuilds: buildCount > 0,
     hasComparisons: Object.keys(this.comparisons).length > 0
   };
+
+  this.put = function(name, value) {
+    if (!this.lsEnabled) {
+      return;
+    }
+    localStorage.setItem(name, value);
+  };
+
+  this.get = function(name) {
+    return this.lsEnabled ? localStorage.getItem(name) : null;
+  };
+
+  this.getLangCode = function() {
+    return this.lsEnabled ? localStorage.getItem(LS_KEY_LANG) : 'en';
+  };
+
   /**
    * Persist a ship build in local storage.
    *

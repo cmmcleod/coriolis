@@ -3,8 +3,7 @@ angular.module('app').directive('slotHardpoint', ['$rootScope', function($r) {
     restrict: 'A',
     scope: {
       hp: '=',
-      size: '=',
-      lbl: '='
+      size: '='
     },
     templateUrl: 'views/_slot-hardpoint.html',
     link: function(scope) {

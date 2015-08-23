@@ -1,4 +1,4 @@
-angular.module('app').directive('componentSelect', function() {
+angular.module('app').directive('componentSelect', ['$translate', function($translate) {
 
   // Generting the HTML in this manner is MUCH faster than using an angular template.
 
@@ -36,7 +36,7 @@ angular.module('app').directive('componentSelect', function() {
 
 
       if (o.name) {
-        list.push(' ' + o.name);
+        list.push(' ' + $translate.instant(o.name));
       }
 
       list.push('</span></li>');
@@ -64,11 +64,11 @@ angular.module('app').directive('componentSelect', function() {
 
       if (groups) {
         // At present time slots with grouped options (Hardpoints and Internal) can be empty
-        list.push('<div class="empty-c" cpid="empty">EMPTY</div>');
+        list.push('<div class="empty-c upp" cpid="empty">', $translate.instant('empty'), '</div>');
         for (var g in groups) {
           var grp = groups[g];
           var grpCode = grp[Object.keys(grp)[0]].grp; // Nasty operation to get the grp property of the first/any single component
-          list.push('<div id="', grpCode, '" class="select-group">', g, '</div><ul>');
+          list.push('<div id="', grpCode, '" class="select-group cap">', $translate.instant(g), '</div><ul>');
           appendGroup(list, grp, cid, mass, scope.warning);
           list.push('</ul>');
         }
@@ -87,4 +87,4 @@ angular.module('app').directive('componentSelect', function() {
       }
     }
   };
-});
+}]);

@@ -1,4 +1,4 @@
-angular.module('app').controller('ComparisonController', ['lodash', '$rootScope', '$filter', '$scope', '$state', '$stateParams', 'Utils', 'ShipFacets', 'ShipsDB', 'Ship', 'Persist', 'Serializer', function(_, $rootScope, $filter, $scope, $state, $stateParams, Utils, ShipFacets, Ships, Ship, Persist, Serializer) {
+angular.module('app').controller('ComparisonController', ['lodash', '$rootScope', '$filter', '$scope', '$state', '$stateParams', '$translate', 'Utils', 'ShipFacets', 'ShipsDB', 'Ship', 'Persist', 'Serializer', function(_, $rootScope, $filter, $scope, $state, $stateParams, $translate, Utils, ShipFacets, Ships, Ship, Persist, Serializer) {
   $rootScope.title = 'Coriolis - Compare';
   $scope.predicate = 'name'; // Sort by ship name as default
   $scope.desc = false;
@@ -155,7 +155,7 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
         return 'Error - ' + err.statusText;
       }
     );
-    $state.go('modal.export', { promise: promise, title: 'Forum BBCode' });
+    $state.go('modal.export', { promise: promise, title: $translate.instant('FORUM') + ' BBCode' });
   };
 
   /**
@@ -182,6 +182,10 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
   /* Event listeners */
   $scope.$on('close', function() {
     $scope.showBuilds = false;
+  });
+
+  $scope.$on('languageChanged', function() {
+    $scope.tblUpdate = !$scope.tblUpdate; // Simple switch to trigger the table to update
   });
 
   /* Initialization */
@@ -226,7 +230,7 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
     }
   }
   // Replace fmt with actual format function as defined in rootScope and retain original index
-  facets.forEach(function(f, i) { f.fmt = $rootScope[f.fmt]; f.index = i; });
+  facets.forEach(function(f, i) { f.index = i; });
   // Remove default facets, mark as active, and add them back in selected order
   _.pullAt(facets, defaultFacets).forEach(function(f) { f.active = true; facets.unshift(f); });
   $scope.builds = $filter('orderBy')($scope.builds, $scope.predicate, $scope.desc);

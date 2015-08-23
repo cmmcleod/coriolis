@@ -1,4 +1,4 @@
-angular.module('app').directive('areaChart', ['$window', function($window) {
+angular.module('app').directive('areaChart', ['$window', '$translate', function($window, $translate) {
   return {
     restrict: 'A',
     scope: {
@@ -47,18 +47,19 @@ angular.module('app').directive('areaChart', ['$window', function($window) {
       // Create Y Axis SVG Elements
       var yTxt = vis.append('g').attr('class', 'y axis')
         .append('text')
+          .attr('class', 'cap')
           .attr('transform', 'rotate(-90)')
           .attr('y', -50)
           .attr('dy', '.1em')
           .style('text-anchor', 'middle')
-          .text(labels.yAxis.title + ' (' + labels.yAxis.unit + ')');
+          .text($translate.instant(labels.yAxis.title) + ' (' + $translate.instant(labels.yAxis.unit) + ')');
       // Create X Axis SVG Elements
       var xLbl = vis.append('g').attr('class', 'x axis');
       var xTxt = xLbl.append('text')
           .attr('y', 30)
           .attr('dy', '.1em')
           .style('text-anchor', 'middle')
-          .text(labels.xAxis.title + ' (' + labels.xAxis.unit + ')');
+          .text($translate.instant(labels.xAxis.title) + ' (' + $translate.instant(labels.xAxis.unit) + ')');
 
       // Create and Add tooltip
       var tip = vis.append('g').style('display', 'none');
@@ -150,8 +151,8 @@ angular.module('app').directive('areaChart', ['$window', function($window) {
         tip.attr('transform', 'translate(' + x(x0) + ',' + y(y0) + ')');
         tip.selectAll('rect').attr('x', flip ? '-5.75em' : '0.5em').style('text-anchor', flip ? 'end' : 'start');
         tip.selectAll('text.label').attr('x', flip ? '-2em' : '1em').style('text-anchor', flip ? 'end' : 'start');
-        tip.select('text.label.x').text(fmtLong(x0) + ' ' + labels.xAxis.unit);
-        tip.select('text.label.y').text(fmtLong(y0) + ' ' + labels.yAxis.unit);
+        tip.select('text.label.x').text(fmtLong(x0) + ' ' + $translate.instant(labels.xAxis.unit));
+        tip.select('text.label.y').text(fmtLong(y0) + ' ' + $translate.instant(labels.yAxis.unit));
       }
 
       scope.$on('$destroy', function() {

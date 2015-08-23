@@ -1,4 +1,4 @@
-angular.module('app').directive('barChart', ['$window', function($window) {
+angular.module('app').directive('barChart', ['$window', '$translate', '$rootScope', function($window, $translate, $rootScope) {
 
   function bName(build) {
     return build.buildName + '\n' + build.name;
@@ -25,15 +25,15 @@ angular.module('app').directive('barChart', ['$window', function($window) {
     link: function(scope, element) {
       var color = d3.scale.ordinal().range([ '#7b6888', '#6b486b', '#3182bd', '#a05d56', '#d0743c']),
           labels = scope.facet.lbls,
-          fmt = scope.facet.fmt,
+          fmt = null,
+          unit = null,
           properties = scope.facet.props,
-          unit = scope.facet.unit,
           margin = { top: 10, right: 20, bottom: 35, left: 150 },
           y0 = d3.scale.ordinal(),
           y1 = d3.scale.ordinal(),
           x = d3.scale.linear(),
           yAxis = d3.svg.axis().scale(y0).outerTickSize(0).orient('left'),
-          xAxis = d3.svg.axis().scale(x).ticks(5).outerTickSize(0).orient('bottom').tickFormat(d3.format('.2s'));
+          xAxis = d3.svg.axis().scale(x).ticks(5).outerTickSize(0).orient('bottom');
 
       // Create chart
       var svg = d3.select(element[0]).append('svg');
@@ -43,7 +43,7 @@ angular.module('app').directive('barChart', ['$window', function($window) {
       var tip = d3.tip()
         .attr('class', 'd3-tip')
         .html(function(property, propertyIndex) {
-          return (labels ? (labels[propertyIndex] + ': ') : '') + fmt(property.value) + ' ' + unit;
+          return (labels ? ($translate.instant(labels[propertyIndex]) + ': ') : '') + fmt(property.value) + ' ' + unit;
         });
 
       vis.call(tip);
@@ -53,13 +53,13 @@ angular.module('app').directive('barChart', ['$window', function($window) {
       vis.selectAll('g.y.axis g text').each(insertLinebreaks);
       // Create X Axis SVG Elements
       var xAxisLbl = vis.append('g')
-          .attr('class', 'x axis')
+          .attr('class', 'x axis cap')
         .append('text')
           .attr('y', 30)
           .attr('dy', '.1em')
-          .style('text-anchor', 'middle')
-          .text(scope.facet.title + (unit ? (' (' + unit + ')') : ''));
+          .style('text-anchor', 'middle');
 
+      updateFormats();
 
       /**
        * Watch for changes in the comparison array (ships added/removed, sorting)
@@ -116,6 +116,16 @@ angular.module('app').directive('barChart', ['$window', function($window) {
           .style('fill', function(d) { return color(d.name); });
 
       }
+
+      function updateFormats() {
+        fmt = $rootScope[scope.facet.fmt];
+        unit = $translate.instant(scope.facet.unit);
+        xAxisLbl.text($translate.instant(scope.facet.title) + (unit ? (' (' + $translate.instant(unit) + ')') : ''));
+        xAxis.tickFormat($rootScope.localeFormat.numberFormat('.2s'));
+        render();
+      }
+
+      scope.$on('languageChanged', updateFormats);
 
       scope.$on('$destroy', function() {
         angular.element($window).unbind('orientationchange resize render', render);

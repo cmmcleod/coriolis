@@ -38,9 +38,9 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', '$sta
         e.stopPropagation();
         scope.openedMenu = null;
         $state.go('modal.export', {
-          title: 'Backup',
+          title: 'backup',
           data: Persist.getAll(),
-          description: 'Backup of all Coriolis data to save or transfer to another browser/device'
+          description: 'PHRASE_BACKUP_DESC'
         });
       };
 
@@ -49,9 +49,9 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$rootScope', '$sta
         e.stopPropagation();
         scope.openedMenu = null;
         $state.go('modal.export', {
-          title: 'Detailed Export',
+          title: 'detailed export',
           data: Serializer.toDetailedExport(scope.allBuilds),
-          description: 'Detailed export of all builds for use with other tools and sites'
+          description: 'PHRASE_EXPORT_DESC'
         });
       };
 

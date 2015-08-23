@@ -1,22 +1,22 @@
 <div class="sz" ng-bind="c.maxClass"></div>
-<div class="empty" ng-if="!c.c">EMPTY</div>
+<div class="empty" ng-if="!c.c" translate="empty"></div>
 <div ng-if="c.c">
-  <div class="l name">{{c.c.class}}{{c.c.rating}} {{c.c.name || lbl}}</div>
-  <div class="r">{{c.c.mass || c.c.capacity || '0'}} <u>T</u></div>
+  <div class="l name">{{c.c.class}}{{c.c.rating}} {{c.c.name || c.c.grp | translate}}</div>
+  <div class="r">{{c.c.mass || c.c.capacity || '0'}} <u translate="T"></u></div>
   <div class="cb"></div>
-  <div class="l" ng-if="c.c.optmass">Optimal Mass: {{c.c.optmass}} <u>T</u></div>
-  <div class="l" ng-if="c.c.maxmass">Max Mass: {{c.c.maxmass}} <u>T</u></div>
-  <div class="l" ng-if="c.c.bins">{{c.c.bins}} <u>Bins</u></div>
-  <div class="l" ng-if="c.c.rate">Rate: {{c.c.rate}} <u>Kg/s</u>&nbsp;&nbsp;&nbsp;Refuel Time: {{$r.fTime(fuel * 1000 / c.c.rate)}}</div>
-  <div class="l" ng-if="c.c.ammo">Ammo: {{c.c.ammo}}</div>
-  <div class="l" ng-if="c.c.cells">Cells: {{c.c.cells}}</div>
-  <div class="l" ng-if="c.c.recharge">Recharge: {{c.c.recharge}} <u>MJ</u>&nbsp;&nbsp;&nbsp;Total: {{c.c.cells * c.c.recharge}} <u>MJ</u></div>
-  <div class="l" ng-if="c.c.repair">Repair: {{c.c.repair}}</div>
-  <div class="l" ng-if="c.c.range">Range {{c.c.range}} <u>km</u></div>
-  <div class="l" ng-if="c.c.time">Time: {{$r.fTime(c.c.time)}}</div>
-  <div class="l" ng-if="c.c.maximum">Max: {{(c.c.maximum)}}</div>
-  <div class="l" ng-if="c.c.rangeLS">{{c.c.rangeLS}} <u>LS</u></div>
-  <div class="l" ng-if="c.c.rangeLS === null"><svg class="icon"><use xlink:href="#infinite"></use></svg> <u>LS</u></div>
-  <div class="l" ng-if="c.c.rangeRating">Range: {{c.c.rangeRating}}</div>
-  <div class="l" ng-if="c.c.armouradd">+{{c.c.armouradd}} <u>Armour</u></div>
+  <div class="l" ng-if="c.c.optmass">{{'optimal mass' | translate}}: {{c.c.optmass}} <u translate="T"></u></div>
+  <div class="l" ng-if="c.c.maxmass">{{'max mass' | translate}}: {{c.c.maxmass}} <u translate="T"></u></div>
+  <div class="l" ng-if="c.c.bins">{{c.c.bins}} <u translate="bins"></u></div>
+  <div class="l" ng-if="c.c.rate">{{'rate' | translate}}: {{c.c.rate}} <u>Kg/s</u>&nbsp;&nbsp;&nbsp;{{'refuel time' | translate}}: {{$r.fTime(fuel * 1000 / c.c.rate)}}</div>
+  <div class="l" ng-if="c.c.ammo">{{'ammo' | translate}}: {{c.c.ammo}}</div>
+  <div class="l" ng-if="c.c.cells">{{'cells' | translate}}: {{c.c.cells}}</div>
+  <div class="l" ng-if="c.c.recharge">{{'recharge' | translate}}: {{c.c.recharge}} <u>MJ</u>&nbsp;&nbsp;&nbsp;{{'total' | translate}}: {{c.c.cells * c.c.recharge}} <u>MJ</u></div>
+  <div class="l" ng-if="c.c.repair">{{'repair' | translate}}: {{c.c.repair}}</div>
+  <div class="l" ng-if="c.c.range">{{'range' | translate}} {{c.c.range}} <u>km</u></div>
+  <div class="l" ng-if="c.c.time">{{'time' | translate}}: {{$r.fTime(c.c.time)}}</div>
+  <div class="l" ng-if="c.c.maximum">{{'max' | translate}}: {{(c.c.maximum)}}</div>
+  <div class="l" ng-if="c.c.rangeLS">{{c.c.rangeLS}} <u translate="LS"></u></div>
+  <div class="l" ng-if="c.c.rangeLS === null"><svg class="icon"><use xlink:href="#infinite"></use></svg> <u translate="LS"></u></div>
+  <div class="l" ng-if="c.c.rangeRating">{{'range' | translate}}: {{c.c.rangeRating}}</div>
+  <div class="l" ng-if="c.c.armouradd">+{{c.c.armouradd}} <u translate="armour"></u></div>
 </div>

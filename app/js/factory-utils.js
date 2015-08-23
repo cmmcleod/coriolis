@@ -1,7 +1,7 @@
 /**
  * BBCode Generator functions for embedding in the Elite Dangerous Forums
  */
-angular.module('app').factory('Utils', ['$window', '$state', '$http', '$q', function($window, $state, $http, $q) {
+angular.module('app').factory('Utils', ['$window', '$state', '$http', '$q', '$translate', '$rootScope', function($window, $state, $http, $q, $translate, $rootScope) {
 
   var shortenAPI = 'https://www.googleapis.com/urlshortener/v1/url?key=';
 
@@ -24,11 +24,11 @@ angular.module('app').factory('Utils', ['$window', '$state', '$http', '$q', func
         p = f.props;
 
         if (p.length == 1) {
-          l.push('[th][B][COLOR=#FF8C0D]', f.title, '[/COLOR][/B][/th]');
+          l.push('[th][B][COLOR=#FF8C0D]', $translate.instant(f.title).toUpperCase(), '[/COLOR][/B][/th]');
           colCount++;
         } else {
           for (j = 0; j < p.length; j++) {
-            l.push('[th][B][COLOR=#FF8C0D]', f.title, '\n', f.lbls[j], '[/COLOR][/B][/th]');
+            l.push('[th][B][COLOR=#FF8C0D]', $translate.instant(f.title).toUpperCase(), '\n', $translate.instant(f.lbls[j]).toUpperCase(), '[/COLOR][/B][/th]');
             colCount++;
           }
         }
@@ -46,7 +46,7 @@ angular.module('app').factory('Utils', ['$window', '$state', '$http', '$q', func
           f = facets[j];
           p = f.props;
           for (k = 0, pl = p.length; k < pl; k++) {
-            l.push('[td="align: right"]', f.fmt(b[p[k]]), ' [size=-2]', f.unit, '[/size][/td]');
+            l.push('[td="align: right"]', $rootScope[f.fmt](b[p[k]]), ' [size=-2]', $translate.instant(f.unit), '[/size][/td]');
           }
         }
       }

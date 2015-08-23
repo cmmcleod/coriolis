@@ -30,23 +30,23 @@ function writeDB(err, arr) {
   var shipOrder = Object.keys(arr[0]).sort();
   var internalOrder = Object.keys(arr[3]).sort();
   var hpOrder = [
-    "Pulse Laser",
-    "Burst Laser",
-    "Beam Laser",
-    "Multi-cannon",
-    "Cannon",
-    "Fragment Cannon",
-    "Rail Gun",
-    "Plasma Accelerator",
-    "Missile Rack",
-    "Torpedo Pylon",
-    "Mine Launcher",
-    "Mining Laser",
-    "Cargo Scanner",
-    "Countermeasure",
-    "Frame Shift Wake Scanner",
-    "Kill Warrant Scanner",
-    "Shield Booster"
+    "pl",
+    "ul",
+    "bl",
+    "mc",
+    "c",
+    "fc",
+    "rg",
+    "pa",
+    "mr",
+    "tp",
+    "nl",
+    "ml",
+    "cs",
+    "cm",
+    "ws",
+    "kw",
+    "sb"
   ];
 
   for (var i = 0; i < internalOrder.length; i++) {

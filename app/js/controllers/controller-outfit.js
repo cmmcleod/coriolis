@@ -1,4 +1,4 @@
-angular.module('app').controller('OutfitController', ['$window', '$rootScope', '$scope', '$state', '$stateParams', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', 'calcTotalRange', 'calcSpeed', function($window, $rootScope, $scope, $state, $p, Ships, Ship, Components, Serializer, Persist, calcTotalRange, calcSpeed) {
+angular.module('app').controller('OutfitController', ['$window', '$rootScope', '$scope', '$state', '$stateParams', '$translate', 'ShipsDB', 'Ship', 'Components', 'Serializer', 'Persist', 'calcTotalRange', 'calcSpeed', function($window, $rootScope, $scope, $state, $p, $translate, Ships, Ship, Components, Serializer, Persist, calcTotalRange, calcSpeed) {
   var win = angular.element($window);   // Angularized window object for event triggering
   var data = Ships[$p.shipId];   // Retrieve the basic ship properties, slots and defaults
   var ship = new Ship($p.shipId, data.properties, data.slots); // Create a new Ship instance
@@ -65,11 +65,11 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   $scope.jrChart = {
     labels: {
       xAxis: {
-        title: 'Cargo',
+        title: 'cargo',
         unit: 'T'
       },
       yAxis: {
-        title: 'Jump Range',
+        title: 'jump range',
         unit: 'LY'
       }
     }
@@ -87,11 +87,11 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   $scope.trChart = {
     labels: {
       xAxis: {
-        title: 'Cargo',
+        title: 'cargo',
         unit: 'T'
       },
       yAxis: {
-        title: 'Total Range',
+        title: 'total range',
         unit: 'LY'
       }
     }
@@ -110,11 +110,11 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   $scope.speedChart = {
     labels: {
       xAxis: {
-        title: 'Cargo',
+        title: 'cargo',
         unit: 'T'
       },
       yAxis: {
-        title: 'Speed',
+        title: 'speed',
         unit: 'm/s'
       }
     }
@@ -258,8 +258,8 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
 
     if ($scope.buildName) {
       $state.go('modal.export', {
-        title: $scope.buildName + ' Export',
-        description: 'A detailed JSON export of your build for use in other sites and tools',
+        title: $scope.buildName + ' ' + $translate.instant('export'),
+        description: $translate.instant('PHRASE_EXPORT_DESC'),
         data: Serializer.toDetailedBuild($scope.buildName, ship, $scope.code || Serializer.fromShip(ship))
       });
     }
@@ -366,15 +366,14 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
 
   function updateRetrofitCosts() {
     var costs = $scope.retrofitList = [];
-    var cName = $rootScope.cName;
     var total = 0, i, l, item;
 
     if (ship.bulkheads.id != retrofitShip.bulkheads.id) {
       item = {
         buyClassRating: ship.bulkheads.c.class + ship.bulkheads.c.rating,
-        buyName: cName(ship.bulkheads),
+        buyName: ship.bulkheads.c.name,
         sellClassRating: retrofitShip.bulkheads.c.class + retrofitShip.bulkheads.c.rating,
-        sellName: cName(retrofitShip.bulkheads),
+        sellName: retrofitShip.bulkheads.c.name,
         netCost: ship.bulkheads.discountedCost - retrofitShip.bulkheads.discountedCost
       };
       costs.push(item);
@@ -388,12 +387,12 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
         if (slotGroup[i].id != retroSlotGroup[i].id) {
           item = { netCost: 0 };
           if (slotGroup[i].id) {
-            item.buyName = cName(slotGroup[i]);
+            item.buyName = slotGroup[i].c.name || slotGroup[i].c.grp;
             item.buyClassRating = slotGroup[i].c.class + slotGroup[i].c.rating;
             item.netCost = slotGroup[i].discountedCost;
           }
           if (retroSlotGroup[i].id) {
-            item.sellName = cName(retroSlotGroup[i]);
+            item.sellName = retroSlotGroup[i].c.name || retroSlotGroup[i].c.grp;
             item.sellClassRating = retroSlotGroup[i].c.class + retroSlotGroup[i].c.rating;
             item.netCost -= retroSlotGroup[i].discountedCost;
           }
@@ -420,6 +419,11 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
 
   // Hide any open menu/slot/etc if the background is clicked
   $scope.$on('close', function() {
+    $scope.selectedSlot = null;
+  });
+
+  // Hide any open menu/slot/etc if the background is clicked
+  $scope.$on('languageChanged', function() {
     $scope.selectedSlot = null;
   });
 

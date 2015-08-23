@@ -1,6 +1,6 @@
-angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable', 'shipyard', 'ngLodash', 'app.templates'])
-.run(['$rootScope', '$location', '$window', '$document', '$state', 'commonArray', 'shipSize', 'hardPointClass', 'GroupMap', 'Persist', 'Discounts',
-function($rootScope, $location, $window, $doc, $state, CArr, sz, hpc, GroupMap, Persist, Discounts) {
+angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable', 'shipyard', 'ngLodash', 'app.templates', 'pascalprecht.translate'])
+.run(['$rootScope', '$location', '$window', '$document', '$state', '$translate', 'localeFormat', 'Persist', 'Discounts',
+function($rootScope, $location, $window, $doc, $state, $translate, localeFormat, Persist, Discounts) {
   // App is running as a standalone web app on tablet/mobile
   var isStandAlone;
   // This was causing issues on Windows phones ($window.external was causing Angular js to throw an exception). Backup is to try this and set isStandAlone to false if this fails.
@@ -21,7 +21,6 @@ function($rootScope, $location, $window, $doc, $state, CArr, sz, hpc, GroupMap, 
     $rootScope.prevState = { name: from.name, params: fromParams };
 
     if (to.url) { // Only track states that have a URL
-
       if ($window.ga) {
         ga('send', 'pageview', { page: $location.path() });
       }
@@ -33,16 +32,47 @@ function($rootScope, $location, $window, $doc, $state, CArr, sz, hpc, GroupMap, 
     }
   });
 
+  $rootScope.language = {
+    opts: {
+      en: 'English',
+      de: 'Deutsh',
+      es: 'Español',
+      fr: 'Français',
+      ru: 'ру́сский язы́к'
+    },
+    current: Persist.getLangCode()
+  };
+
+  $rootScope.localeFormat = d3.locale(localeFormat.get($rootScope.language.current));
+  updateNumberFormat();
+
   // Global Reference variables
-  $rootScope.CArr = CArr;
-  $rootScope.SZ = sz;
-  $rootScope.HPC = hpc;
-  $rootScope.GMAP = GroupMap;
-  $rootScope.insurance = { opts: [{ name: 'Standard', pct: 0.05 }, { name: 'Alpha', pct: 0.025 }, { name: 'Beta', pct: 0.0375 }] };
-  $rootScope. discounts = { opts: Discounts };
-  $rootScope.STATUS = ['', 'DISABLED', 'OFF', 'ON'];
+  $rootScope.insurance = { opts: [{ name: 'standard', pct: 0.05 }, { name: 'alpha', pct: 0.025 }, { name: 'beta', pct: 0.0375 }] };
+  $rootScope.discounts = { opts: Discounts };
+  $rootScope.STATUS = ['', 'disabled', 'off', 'on'];
   $rootScope.STATUS_CLASS = ['', 'disabled', 'warning', 'secondary-disabled'];
   $rootScope.title = 'Coriolis';
+
+  $rootScope.changeLanguage = function() {
+    $translate.use($rootScope.language.current);
+    $rootScope.localeFormat = d3.locale(localeFormat.get($rootScope.language.current));
+    updateNumberFormat();
+    $rootScope.$broadcast('languageChanged', $rootScope.language.current);
+  };
+
+  // Formatters
+  $rootScope.fRPct = d3.format('%');
+  $rootScope.fTime = function(d) { return Math.floor(d / 60) + ':' + ('00' + Math.floor(d % 60)).substr(-2, 2); };
+
+  function updateNumberFormat() {
+    var locale = $rootScope.localeFormat;
+    var fGen = $rootScope.fGen = locale.numberFormat('n');
+    $rootScope.fCrd = locale.numberFormat(',.0f');
+    $rootScope.fPwr = locale.numberFormat(',.2f');
+    $rootScope.fRound = function(d) { return fGen(d3.round(d, 2)); };
+    $rootScope.fPct = locale.numberFormat('.2%');
+    $rootScope.f1Pct = locale.numberFormat('.1%');
+  }
 
   /**
    * Returns the name of the component mounted in the specified slot
@@ -50,28 +80,8 @@ function($rootScope, $location, $window, $doc, $state, CArr, sz, hpc, GroupMap, 
    * @return {String}      The component name
    */
   $rootScope.cName = function(slot) {
-    return slot.c ? slot.c.name ? slot.c.name : GroupMap[slot.c.grp] : null;
+    return $translate.instant(slot.c ? slot.c.name ? slot.c.name : slot.c.grp : null);
   };
-
-  // Formatters
-  $rootScope.fCrd = d3.format(',.0f');
-  $rootScope.fPwr = d3.format(',.2f');
-  $rootScope.fRound = function(d) { return d3.round(d, 2); };
-  $rootScope.fRound4 = function(d) { return d3.round(d, 4); };
-  $rootScope.fPct = d3.format('.2%');
-  $rootScope.f1Pct = d3.format('.1%');
-  $rootScope.fRPct = d3.format('%');
-  $rootScope.fTime = function(d) { return Math.floor(d / 60) + ':' + ('00' + Math.floor(d % 60)).substr(-2, 2); };
-
-  if (isStandAlone) {
-    var state = Persist.getState();
-    // If a previous state has been stored, load that state
-    if (state && state.name && state.params) {
-      $state.go(state.name, state.params, { location: 'replace' });
-    } else {
-      $state.go('shipyard', null, { location: 'replace' }); // Default to home page
-    }
-  }
 
   // Global Event Listeners
   $doc.bind('keyup', function(e) {
@@ -96,6 +106,16 @@ function($rootScope, $location, $window, $doc, $state, CArr, sz, hpc, GroupMap, 
         $rootScope.$apply();
       }
     }, false);
+  }
+
+  if (isStandAlone) {
+    var state = Persist.getState();
+    // If a previous state has been stored, load that state
+    if (state && state.name && state.params) {
+      $state.go(state.name, state.params, { location: 'replace' });
+    } else {
+      $state.go('shipyard', null, { location: 'replace' }); // Default to home page
+    }
   }
 
 }]);

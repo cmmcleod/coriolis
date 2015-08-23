@@ -1,17 +1,17 @@
-<div class="sz">{{::['U','S','M','L','H'][hp.maxClass]}}</div>
-<div class="empty" ng-if="!hp.c">EMPTY</div>
+<div class="sz">{{['U','S','M','L','H'][hp.maxClass] | translate}}</div>
+<div class="empty" ng-if="!hp.c" translate="empty"></div>
 <div ng-if="hp.c">
-  {{hp.c.class}}{{hp.c.rating}}<span ng-if="hp.c.mode">/{{hp.c.mode}}{{hp.c.missile}}</span> {{hp.c.name || lbl}}
+  {{hp.c.class}}{{hp.c.rating}}<span ng-if="hp.c.mode">/{{hp.c.mode}}{{hp.c.missile}}</span> {{hp.c.name || hp.c.grp  | translate}}
   <div class="r">{{hp.c.mass}} <u>T</u></div>
   <div class="cb">
-    <div class="l" ng-if="hp.c.damage">Damage: {{hp.c.damage}} <span ng-if="hp.c.ssdam">({{$r.fCrd(hp.c.ssdam)}} <u>Mj</u>)</span></div>
-    <div class="l" ng-if="hp.c.dps">DPS: {{hp.c.dps}} <span ng-if="hp.c.mjdps">({{$r.fCrd(hp.c.mjdps)}} <u>Mj</u>)</span></div>
-    <div class="l" ng-if="hp.c.thermload">T-Load: {{hp.c.thermload}}</div>
-    <div class="l" ng-if="hp.c.type">Type: {{hp.c.type}}</div>
-    <div class="l" ng-if="hp.c.rof">ROF: {{hp.c.rof}}<u>/s</u></div>
-    <div class="l" ng-if="hp.c.armourpen">Pen: {{hp.c.armourpen}}</div>
+    <div class="l" ng-if="hp.c.damage">{{'damage' | translate}}: {{hp.c.damage}} <span ng-if="hp.c.ssdam">({{$r.fCrd(hp.c.ssdam)}} <u>MJ</u>)</span></div>
+    <div class="l" ng-if="hp.c.dps">{{'DPS' | translate}}: {{hp.c.dps}} <span ng-if="hp.c.mjdps">({{$r.fCrd(hp.c.mjdps)}} <u>MJ</u>)</span></div>
+    <div class="l" ng-if="hp.c.thermload">{{'T_LOAD' | translate}}: {{hp.c.thermload}}</div>
+    <div class="l" ng-if="hp.c.type">{{'type' | translate}}: {{hp.c.type}}</div>
+    <div class="l" ng-if="hp.c.rof">{{'ROF' | translate}}: {{hp.c.rof}}<u>/s</u></div>
+    <div class="l" ng-if="hp.c.armourpen">{{'pen' | translate}}: {{hp.c.armourpen}}</div>
     <div class="l" ng-if="hp.c.shieldmul">+{{$r.fRPct(hp.c.shieldmul)}}</div>
-    <div class="l" ng-if="hp.c.range">{{hp.c.range}} <u>KM</u></div>
-    <div class="l" ng-if="hp.c.ammo">Ammo: {{$r.fCrd(hp.c.clip)}}/{{$r.fCrd(hp.c.ammo)}}</div>
+    <div class="l" ng-if="hp.c.range">{{hp.c.range}} <u>km</u></div>
+    <div class="l" ng-if="hp.c.ammo">{{'ammo' | translate}}: {{$r.fCrd(hp.c.clip)}}/{{$r.fCrd(hp.c.ammo)}}</div>
   </div>
 </div>

@@ -1,7 +1,7 @@
-angular.module('app').directive('comparisonTable', ['$state', function($state) {
+angular.module('app').directive('comparisonTable', ['$state', '$translate', '$rootScope', function($state, $translate, $rootScope) {
 
   function tblHeader(facets) {
-    var r1 = ['<tr class="main"><th rowspan="2" class="prop" prop="name">Ship</th><th rowspan="2" class="prop" prop="buildName">Build</th>'];
+    var r1 = ['<tr class="main"><th rowspan="2" class="prop" prop="name">', $translate.instant('SHIP'), '</th><th rowspan="2" class="prop" prop="buildName">', $translate.instant('BUILD'), '</th>'];
     var r2 = [];
     for (var i = 0, l = facets.length; i < l; i++) {
       if (facets[i].active) {
@@ -14,11 +14,11 @@ angular.module('app').directive('comparisonTable', ['$state', function($state) {
           r1.push(' prop="', p[0], '" class="prop"');
         } else {
           for (var j = 0; j < pl; j++) {
-            r2.push('<th prop="', p[j], '" class="prop ', j === 0 ? 'lft' : '', '">', f.lbls[j], '</th>');
+            r2.push('<th prop="', p[j], '" class="prop ', j === 0 ? 'lft' : '', '">', $translate.instant(f.lbls[j]), '</th>');
           }
         }
 
-        r1.push('>', f.title, '</th>');
+        r1.push('>', $translate.instant(f.title), '</th>');
       }
     }
     r1.push('</tr><tr>');
@@ -46,7 +46,7 @@ angular.module('app').directive('comparisonTable', ['$state', function($state) {
           var f = facets[j];
           var p = f.props;
           for (var k = 0, pl = p.length; k < pl; k++) {
-            body.push('<td>', f.fmt(b[p[k]]), '<u> ', f.unit, '</u></td>');
+            body.push('<td>', $rootScope[f.fmt](b[p[k]]), '<u> ', $translate.instant(f.unit), '</u></td>');
           }
         }
       }

@@ -7,7 +7,7 @@
  * @requires ngLodash
  */
 angular.module('shipyard', ['ngLodash'])
-  // Create 'angularized' references to DB.This will aid testing
+  // Create 'angularized' references to DB. This will aid testing
   .constant('ShipsDB', DB.ships)
   .constant('ComponentsDB', DB.components)
   .value('ArmourMultiplier', [
@@ -17,16 +17,7 @@ angular.module('shipyard', ['ngLodash'])
     1.945,  // Mirrored
     1.945   // Reactive
   ])
-  .value('commonArray', [
-    'Power Plant',
-    'Thrusters',
-    'Frame Shift Drive',
-    'Life Support',
-    'Power Distributor',
-    'Sensors',
-    'Fuel Tank'
-  ])
-  // Map to lookup group labels/names for component grp
+  // Map to lookup group labels/names for component grp, used for JSON Serialization
   .value('GroupMap', {
     // Common
     pp: 'Power Plant',
@@ -81,20 +72,6 @@ angular.module('shipyard', ['ngLodash'])
     'Gimballed': 'G',
     'Turret': 'T'
   })
-  .value('shipSize', [
-    'N/A',
-    'Small',
-    'Medium',
-    'Large',
-    'Capital'
-  ])
-  .value('hardPointClass', [
-    'Utility',
-    'Small',
-    'Medium',
-    'Large',
-    'Huge'
-  ])
   /**
    * Array of all Ship properties (facets) organized into groups
    * used for ship comparisons.
@@ -103,91 +80,89 @@ angular.module('shipyard', ['ngLodash'])
    */
   .value('ShipFacets', [
     {                   // 0
-      title: 'Agility',
+      title: 'agility',
       props: ['agility'],
       unit: '',
       fmt: 'fCrd'
     },
     {                   // 1
-      title: 'Speed',
+      title: 'speed',
       props: ['speed', 'boost'],
-      lbls: ['Thrusters', 'Boost'],
+      lbls: ['thrusters', 'boost'],
       unit: 'm/s',
       fmt: 'fRound'
     },
     {                   // 2
-      title: 'Armour',
+      title: 'armour',
       props: ['armour'],
       unit: '',
       fmt: 'fCrd'
     },
     {                   // 3
-      title: 'Shields',
+      title: 'shields',
       props: ['shieldStrength'],
       unit: 'MJ',
       fmt: 'fRound'
     },
     {                   // 4
-      title: 'Jump Range',
+      title: 'jump range',
       props: ['unladenRange', 'fullTankRange', 'ladenRange'],
-      lbls: ['Max', 'Full Tank', 'Laden'],
+      lbls: ['max', 'full tank', 'laden'],
       unit: 'LY',
       fmt: 'fRound'
     },
     {                   // 5
-      title: 'Mass',
+      title: 'mass',
       props: ['unladenMass', 'ladenMass'],
-      lbls: ['Unladen', 'Laden'],
+      lbls: ['unladen', 'laden'],
       unit: 'T',
       fmt: 'fRound'
     },
     {                   // 6
-      title: 'Cargo',
+      title: 'cargo',
       props: ['cargoCapacity'],
       unit: 'T',
       fmt: 'fRound'
     },
     {                   // 7
-      title: 'Fuel',
+      title: 'fuel',
       props: ['fuelCapacity'],
       unit: 'T',
       fmt: 'fRound'
     },
     {                   // 8
-      title: 'Power',
+      title: 'power',
       props: ['powerRetracted', 'powerDeployed', 'powerAvailable'],
-      lbls: ['Retracted', 'Deployed', 'Available'],
+      lbls: ['retracted', 'deployed', 'available'],
       unit: 'MW',
       fmt: 'fPwr'
     },
     {                   // 9
-      title: 'Cost',
+      title: 'cost',
       props: ['totalCost'],
       unit: 'CR',
       fmt: 'fCrd'
     },
     {                   // 10
-      title: 'Total Range',
+      title: 'total range',
       props: ['unladenTotalRange', 'ladenTotalRange'],
-      lbls: ['Unladen', 'Laden'],
+      lbls: ['unladen', 'laden'],
       unit: 'LY',
       fmt: 'fRound'
     },
     {                   // 11
       title: 'DPS',
       props: ['totalDps'],
-      lbls: ['Dps'],
+      lbls: ['DPS'],
       unit: '',
       fmt: 'fRound'
     }
   ])
   /**
    * Set of all available / theoretical discounts
-   *
-   * @type {Object}
    */
   .value('Discounts', {
-    'None': 1,
+    '0%': 1,
     '5%': 0.95,
     '10%': 0.90,
     '15%': 0.85,

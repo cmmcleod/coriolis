@@ -1,4 +1,4 @@
-angular.module('app').directive('powerBands', ['$window', function($window) {
+angular.module('app').directive('powerBands', ['$window', '$translate', '$rootScope', function($window, $translate, $rootScope) {
   return {
     restrict: 'A',
     scope: {
@@ -35,15 +35,16 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
       // Create Y Axis SVG Elements
       vis.append('g').attr('class', 'watt axis');
       vis.append('g').attr('class', 'pct axis');
-      vis.append('text').attr('x', -35).attr('y', 16).attr('class', 'primary').text('RET');
-      vis.append('text').attr('x', -35).attr('y', barHeight + 18).attr('class', 'primary').text('DEP');
-
-      var retLbl = vis.append('text').attr('y', 16);
-      var depLbl = vis.append('text').attr('y', barHeight + 18);
+      var retLbl = vis.append('text').attr('x', -35).attr('y', 16).attr('class', 'primary upp');
+      var depLbl = vis.append('text').attr('x', -35).attr('y', barHeight + 18).attr('class', 'primary upp');
+      var retVal = vis.append('text').attr('y', 16);
+      var depVal = vis.append('text').attr('y', barHeight + 18);
 
       // Watch for changes to data and events
       scope.$watchCollection('available', render);
       angular.element($window).bind('orientationchange resize pwrchange', render);
+
+      updateFormats();
 
       function render() {
         bands = scope.bands;
@@ -84,8 +85,8 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
           }
         }
 
-        updateLabel(retLbl, w, retBandsSelected, retBandsSelected ? retractedSum : maxBand.retractedSum, available);
-        updateLabel(depLbl, w, depBandsSelected, depBandsSelected ? deployedSum : maxBand.deployedSum, available);
+        updateLabel(retVal, w, retBandsSelected, retBandsSelected ? retractedSum : maxBand.retractedSum, available);
+        updateLabel(depVal, w, depBandsSelected, depBandsSelected ? deployedSum : maxBand.deployedSum, available);
 
         retracted.selectAll('rect').data(bands).enter().append('rect')
           .attr('height', barHeight)
@@ -150,6 +151,18 @@ angular.module('app').directive('powerBands', ['$window', function($window) {
         }
         return '';
       }
+
+      function updateFormats() {
+        retLbl.text($translate.instant('ret'));
+        depLbl.text($translate.instant('dep'));
+        wattFmt = $rootScope.localeFormat.numberFormat('.2f');
+        pctFmt = $rootScope.localeFormat.numberFormat('.1%');
+        wattAxis.tickFormat($rootScope.localeFormat.numberFormat('.2r'));
+        pctAxis.tickFormat($rootScope.localeFormat.numberFormat('%'));
+        render();
+      }
+
+      scope.$on('languageChanged', updateFormats);
 
       scope.$on('$destroy', function() {
         angular.element($window).unbind('orientationchange resize pwrchange', render);

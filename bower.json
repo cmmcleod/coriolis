@@ -26,7 +26,8 @@
     "d3-tip": "~0.6.7",
     "ng-sortable": "~1.2.1",
     "lz-string": "~1.4.4",
-    "angular": "~1.4.0"
+    "angular": "~1.4.0",
+    "angular-translate": "~2.7.2"
   },
   "overrides": {
     "angular": {
@@ -34,6 +35,9 @@
     },
     "angular-ui-router": {
       "main": "release/angular-ui-router.min.js"
+    },
+    "angular-translate": {
+      "main": "angular-translate.min.js"
     },
     "d3": {
       "main": "d3.min.js"

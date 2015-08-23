@@ -1,4 +1,10 @@
-angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'ShipsDB', 'ComponentSet', function(_, C, Ships, ComponentSet) {
+angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'ShipsDB', 'ComponentSet', 'GroupMap', function(_, C, Ships, ComponentSet, GroupMap) {
+
+  var GrpNameToCodeMap = {};
+
+  for (var grp in GroupMap) {
+    GrpNameToCodeMap[GroupMap[grp]] = grp;
+  }
 
   this.cargoScoop = function() {
     return { name: 'Cargo Hatch', class: 1, rating: 'H', power: 0.6 };
@@ -36,10 +42,11 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
     var groups = {};
 
     if (groupName) {
-      if (!C.internal[groupName]) {
+      var grpCode = GrpNameToCodeMap[groupName];
+      if (grpCode && !C.internal[grpCode]) {
         throw 'Invalid internal group: ' + groupName;
       }
-      groups[groupName] = C.internal[groupName];
+      groups[grpCode] = C.internal[grpCode];
     } else if (name) {
       groups = C.internal;
     } else {
@@ -62,10 +69,11 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
     var groups = {};
 
     if (groupName) {
-      if (!C.hardpoints[groupName]) {
+      var grpCode = GrpNameToCodeMap[groupName];
+      if (grpCode && !C.hardpoints[grpCode]) {
         throw 'Invalid internal group: ' + groupName;
       }
-      groups[groupName] = C.hardpoints[groupName];
+      groups[grpCode] = C.hardpoints[grpCode];
     } else if (name) {
       groups = C.hardpoints;
     } else {

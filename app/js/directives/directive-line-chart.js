@@ -1,4 +1,4 @@
-angular.module('app').directive('lineChart', ['$window', function($window) {
+angular.module('app').directive('lineChart', ['$window', '$translate', '$rootScope', function($window, $translate, $rootScope) {
   return {
     restrict: 'A',
     scope: {
@@ -12,8 +12,7 @@ angular.module('app').directive('lineChart', ['$window', function($window) {
           config = scope.config,
           labels = config.labels,
           margin = { top: 15, right: 15, bottom: 35, left: 60 },
-          fmt = d3.format('.3r'),
-          fmtLong = d3.format('.2f'),
+          fmtLong = null,
           func = seriesConfig.func,
           drag = d3.behavior.drag(),
           dragging = false,
@@ -21,8 +20,8 @@ angular.module('app').directive('lineChart', ['$window', function($window) {
           x = d3.scale.linear(),
           y = d3.scale.linear(),
           // Define Axes
-          xAxis = d3.svg.axis().scale(x).outerTickSize(0).orient('bottom').tickFormat(d3.format('.2r')),
-          yAxis = d3.svg.axis().scale(y).ticks(6).outerTickSize(0).orient('left').tickFormat(fmt),
+          xAxis = d3.svg.axis().scale(x).outerTickSize(0).orient('bottom'),
+          yAxis = d3.svg.axis().scale(y).ticks(6).outerTickSize(0).orient('left'),
           data = [];
 
       // Create chart
@@ -36,18 +35,20 @@ angular.module('app').directive('lineChart', ['$window', function($window) {
       // Create Y Axis SVG Elements
       var yTxt = vis.append('g').attr('class', 'y axis')
         .append('text')
+          .attr('class', 'cap')
           .attr('transform', 'rotate(-90)')
           .attr('y', -50)
           .attr('dy', '.1em')
           .style('text-anchor', 'middle')
-          .text(labels.yAxis.title + ' (' + labels.yAxis.unit + ')');
+          .text($translate.instant(labels.yAxis.title) + ' (' + $translate.instant(labels.yAxis.unit) + ')');
       // Create X Axis SVG Elements
       var xLbl = vis.append('g').attr('class', 'x axis');
       var xTxt = xLbl.append('text')
+          .attr('class', 'cap')
           .attr('y', 30)
           .attr('dy', '.1em')
           .style('text-anchor', 'middle')
-          .text(labels.xAxis.title + ' (' + labels.xAxis.unit + ')');
+          .text($translate.instant(labels.xAxis.title) + ' (' + $translate.instant(labels.xAxis.unit) + ')');
 
       // Create and Add tooltip
       var tipWidth = (Math.max(labels.yAxis.unit.length, labels.xAxis.unit.length) * 1.25) + 2;
@@ -71,6 +72,8 @@ angular.module('app').directive('lineChart', ['$window', function($window) {
           hideTip();
         })
         .on('drag', moveTip);
+
+      updateFormats();
 
       /**
        * Watch for changes in the series data (mass changes, etc)
@@ -177,9 +180,20 @@ angular.module('app').directive('lineChart', ['$window', function($window) {
         var tip = tips.selectAll('g.tooltip').attr('transform', function(d, i) { return 'translate(' + x(x0) + ',' + y(series ? y0[series[i]] : y0) + ')'; });
         tip.selectAll('rect').attr('x', flip ? (-tipWidth - 0.5) + 'em' : '0.5em').style('text-anchor', flip ? 'end' : 'start');
         tip.selectAll('text.label').attr('x', flip ? '-1em' : '1em').style('text-anchor', flip ? 'end' : 'start');
-        tip.selectAll('text.label.x').text(fmtLong(x0) + ' ' + labels.xAxis.unit);
-        tips.selectAll('text.label.y').text(function(d, i) { return fmtLong(series ? y0[series[i]] : y0) + ' ' + labels.yAxis.unit; });
+        tip.selectAll('text.label.x').text(fmtLong(x0) + ' ' + $translate.instant(labels.xAxis.unit));
+        tips.selectAll('text.label.y').text(function(d, i) { return fmtLong(series ? y0[series[i]] : y0) + ' ' + $translate.instant(labels.yAxis.unit); });
       }
+
+      function updateFormats() {
+        xTxt.text($translate.instant(labels.xAxis.title) + ' (' + $translate.instant(labels.xAxis.unit) + ')');
+        yTxt.text($translate.instant(labels.yAxis.title) + ' (' + $translate.instant(labels.yAxis.unit) + ')');
+        fmtLong = $rootScope.localeFormat.numberFormat('.2f');
+        xAxis.tickFormat($rootScope.localeFormat.numberFormat('.2r'));
+        yAxis.tickFormat($rootScope.localeFormat.numberFormat('.3r'));
+        render();
+      }
+
+      scope.$on('languageChanged', updateFormats);
 
       scope.$on('$destroy', function() {
         angular.element($window).unbind('orientationchange resize render', render);

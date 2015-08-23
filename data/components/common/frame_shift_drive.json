@@ -1,6 +1,6 @@
 {
   "6E": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 6,
     "rating": "E",
     "cost": 199747,
@@ -12,7 +12,7 @@
     "fuelpower": 2.6
   },
   "6D": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 6,
     "rating": "D",
     "cost": 599242,
@@ -24,7 +24,7 @@
     "fuelpower": 2.6
   },
   "6C": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 6,
     "rating": "C",
     "cost": 1797726,
@@ -36,7 +36,7 @@
     "fuelpower": 2.6
   },
   "6B": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 6,
     "rating": "B",
     "cost": 5393177,
@@ -48,7 +48,7 @@
     "fuelpower": 2.6
   },
   "6A": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 6,
     "rating": "A",
     "cost": 16179531,
@@ -60,7 +60,7 @@
     "fuelpower": 2.6
   },
   "5E": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 5,
     "rating": "E",
     "cost": 63013,
@@ -72,7 +72,7 @@
     "fuelpower": 2.45
   },
   "5D": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 5,
     "rating": "D",
     "cost": 189036,
@@ -84,7 +84,7 @@
     "fuelpower": 2.45
   },
   "5C": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 5,
     "rating": "C",
     "cost": 567106,
@@ -96,7 +96,7 @@
     "fuelpower": 2.45
   },
   "5B": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 5,
     "rating": "B",
     "cost": 1701318,
@@ -108,7 +108,7 @@
     "fuelpower": 2.45
   },
   "5A": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 5,
     "rating": "A",
     "cost": 5103953,
@@ -120,7 +120,7 @@
     "fuelpower": 2.45
   },
   "4E": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 4,
     "rating": "E",
     "cost": 19878,
@@ -132,7 +132,7 @@
     "fuelpower": 2.3
   },
   "4D": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 4,
     "rating": "D",
     "cost": 59633,
@@ -144,7 +144,7 @@
     "fuelpower": 2.3
   },
   "4C": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 4,
     "rating": "C",
     "cost": 178898,
@@ -156,7 +156,7 @@
     "fuelpower": 2.3
   },
   "4B": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 4,
     "rating": "B",
     "cost": 536693,
@@ -168,7 +168,7 @@
     "fuelpower": 2.3
   },
   "4A": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 4,
     "rating": "A",
     "cost": 1610080,
@@ -180,7 +180,7 @@
     "fuelpower": 2.3
   },
   "3E": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 3,
     "rating": "E",
     "cost": 6271,
@@ -192,7 +192,7 @@
     "fuelpower": 2.15
   },
   "3D": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 3,
     "rating": "D",
     "cost": 18812,
@@ -204,7 +204,7 @@
     "fuelpower": 2.15
   },
   "3C": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 3,
     "rating": "C",
     "cost": 56435,
@@ -216,7 +216,7 @@
     "fuelpower": 2.15
   },
   "3B": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 3,
     "rating": "B",
     "cost": 169304,
@@ -228,7 +228,7 @@
     "fuelpower": 2.15
   },
   "3A": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 3,
     "rating": "A",
     "cost": 507912,
@@ -240,7 +240,7 @@
     "fuelpower": 2.15
   },
   "2E": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 2,
     "rating": "E",
     "cost": 1978,
@@ -252,7 +252,7 @@
     "fuelpower": 2
   },
   "2D": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 2,
     "rating": "D",
     "cost": 5934,
@@ -264,7 +264,7 @@
     "fuelpower": 2
   },
   "2C": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 2,
     "rating": "C",
     "cost": 17803,
@@ -276,7 +276,7 @@
     "fuelpower": 2
   },
   "2B": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 2,
     "rating": "B",
     "cost": 53408,
@@ -288,7 +288,7 @@
     "fuelpower": 2
   },
   "2A": {
-    "grp": "fsd",
+    "grp": "fd",
     "class": 2,
     "rating": "A",
     "cost": 160224,

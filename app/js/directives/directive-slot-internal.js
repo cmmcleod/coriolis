@@ -3,7 +3,6 @@ angular.module('app').directive('slotInternal', ['$rootScope', function($r) {
     restrict: 'A',
     scope: {
       c: '=slot',
-      lbl: '=',
       fuel: '='
     },
     templateUrl: 'views/_slot-internal.html',
