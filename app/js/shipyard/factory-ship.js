@@ -97,7 +97,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.bulkheads.c = null;
     this.useBulkhead(comps && comps.bulkheads ? comps.bulkheads : 0, true);
     this.cargoScoop.priority = priorities ? priorities[0] * 1 : 0;
-    this.cargoScoop.enabled = enabled ? Boolean(enabled[0]) : true;
+    this.cargoScoop.enabled = enabled ? enabled[0] * true : true;
 
     for (i = 0, l = this.priorityBands.length; i < l; i++) {
       this.priorityBands[i].deployed = 0;
@@ -111,7 +111,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
 
     for (i = 0; i < cl; i++) {
       common[i].cat = 0;
-      common[i].enabled = enabled ? Boolean(enabled[i + 1]) : true;
+      common[i].enabled = enabled ? enabled[i + 1] * true : true;
       common[i].priority = priorities ? priorities[i + 1] * 1 : 0;
       common[i].type = 'SYS';
       common[i].c = common[i].id = null; // Resetting 'old' component if there was one
@@ -128,7 +128,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
 
     for (i = 0, l = hps.length; i < l; i++) {
       hps[i].cat = 1;
-      hps[i].enabled = enabled ? Boolean(enabled[cl + i]) : true;
+      hps[i].enabled = enabled ? enabled[cl + i] * true : true;
       hps[i].priority = priorities ? priorities[cl + i] * 1 : 0;
       hps[i].type = hps[i].maxClass ? 'WEP' : 'SYS';
       hps[i].c = hps[i].id = null; // Resetting 'old' component if there was one
@@ -143,7 +143,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
 
     for (i = 0, l = internal.length; i < l; i++) {
       internal[i].cat = 2;
-      internal[i].enabled = enabled ? Boolean(enabled[cl + i]) : true;
+      internal[i].enabled = enabled ? enabled[cl + i] * true : true;
       internal[i].priority = priorities ? priorities[cl + i] * 1 : 0;
       internal[i].type = 'SYS';
       internal[i].id = internal[i].c = null; // Resetting 'old' component if there was one

@@ -5,8 +5,8 @@
   "references": [
     {
       "name": "Coriolis.io",
-      "url": "http://localhost:3300/outfit/anaconda/48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b?bn=Test",
-      "code": "48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b",
+      "url": "http://localhost:3300/outfit/anaconda/48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.Iw18QDBNA%3D%3D%3D.AwhMJBGaei%2BJCyyiA%3D%3D%3D?bn=Test",
+      "code": "48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.Iw18QDBNA===.AwhMJBGaei+JCyyiA===",
       "shipId": "anaconda"
     }
   ],
@@ -29,7 +29,7 @@
         "class": 6,
         "rating": "A",
         "enabled": true,
-        "priority": 1
+        "priority": 3
       },
       "lifeSupport": {
         "class": 5,
@@ -61,7 +61,7 @@
         "class": 4,
         "rating": "A",
         "enabled": true,
-        "priority": 1,
+        "priority": 2,
         "group": "Plasma Accelerator",
         "mount": "Fixed"
       },
@@ -69,7 +69,7 @@
         "class": 3,
         "rating": "D",
         "enabled": true,
-        "priority": 1,
+        "priority": 2,
         "group": "Beam Laser",
         "mount": "Turret"
       },
@@ -77,7 +77,7 @@
         "class": 3,
         "rating": "D",
         "enabled": true,
-        "priority": 1,
+        "priority": 2,
         "group": "Beam Laser",
         "mount": "Turret"
       },
@@ -85,7 +85,7 @@
         "class": 3,
         "rating": "D",
         "enabled": true,
-        "priority": 1,
+        "priority": 2,
         "group": "Beam Laser",
         "mount": "Turret"
       },
@@ -93,7 +93,7 @@
         "class": 2,
         "rating": "E",
         "enabled": true,
-        "priority": 1,
+        "priority": 2,
         "group": "Cannon",
         "mount": "Turret"
       },
@@ -101,7 +101,7 @@
         "class": 2,
         "rating": "E",
         "enabled": true,
-        "priority": 1,
+        "priority": 2,
         "group": "Cannon",
         "mount": "Turret"
       },
@@ -109,7 +109,7 @@
         "class": 1,
         "rating": "F",
         "enabled": true,
-        "priority": 1,
+        "priority": 2,
         "group": "Beam Laser",
         "mount": "Turret"
       },
@@ -117,7 +117,7 @@
         "class": 1,
         "rating": "F",
         "enabled": true,
-        "priority": 1,
+        "priority": 2,
         "group": "Beam Laser",
         "mount": "Turret"
       }
@@ -142,20 +142,20 @@
         "class": 0,
         "rating": "C",
         "enabled": true,
-        "priority": 1,
+        "priority": 2,
         "group": "Kill Warrant Scanner"
       },
       {
         "class": 0,
         "rating": "C",
         "enabled": true,
-        "priority": 1,
+        "priority": 2,
         "group": "Cargo Scanner"
       },
       {
         "class": 0,
         "rating": "F",
-        "enabled": true,
+        "enabled": false,
         "priority": 1,
         "group": "Countermeasure",
         "name": "Electronic Countermeasure"
@@ -172,7 +172,7 @@
         "class": 0,
         "rating": "I",
         "enabled": true,
-        "priority": 1,
+        "priority": 2,
         "group": "Countermeasure",
         "name": "Point Defence"
       }
@@ -233,14 +233,14 @@
         "class": 4,
         "rating": "A",
         "enabled": true,
-        "priority": 1,
+        "priority": 3,
         "group": "Fuel Scoop"
       },
       {
         "class": 2,
         "rating": "A",
         "enabled": true,
-        "priority": 1,
+        "priority": 3,
         "group": "FSD Interdictor"
       }
     ]
@@ -270,7 +270,7 @@
     "totalDps": 29,
     "powerAvailable": 36,
     "powerRetracted": 23.93,
-    "powerDeployed": 35.56,
+    "powerDeployed": 35.36,
     "unladenRange": 18.49,
     "fullTankRange": 18.12,
     "ladenRange": 16.39,
