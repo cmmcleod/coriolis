@@ -117,7 +117,7 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
 
     var comps = detailedBuild.components;
     var priorities = [ 0 ];	// cargoScoop
-    var enabled = [ false ];	// assume cargoScoop disabled
+    var enabled = [ true ];	// assume cargoScoop enabled
     var shipData = ShipsDB[shipId];
     var ship = new Ship(shipId, shipData.properties, shipData.slots);
     var bulkheads = Components.bulkheadIndex(comps.standard.bulkheads);
@@ -151,9 +151,9 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
     priorities = priorities.concat(_.map(comps.hardpoints, function(c) { return (!c || c.priority === undefined) ? 0 : c.priority - 1; }),
                                    _.map(comps.utility, function(c) { return (!c || c.priority === undefined) ? 0 : c.priority - 1; }),
                                    _.map(comps.internal, function(c) { return (!c || c.priority === undefined) ? 0 : c.priority - 1; }));
-    enabled = enabled.concat(_.map(comps.hardpoints, function(c) { return (!c || c.enabled === undefined) ? false : c.enabled; }),
-                             _.map(comps.utility, function(c) { return (!c || c.enabled === undefined) ? false : c.enabled; }),
-                             _.map(comps.internal, function(c) { return (!c || c.enabled === undefined) ? false : c.enabled; }));
+    enabled = enabled.concat(_.map(comps.hardpoints, function(c) { return (!c || c.enabled === undefined) ? true : c.enabled * 1; }),
+                             _.map(comps.utility, function(c) { return (!c || c.enabled === undefined) ? true : c.enabled * 1; }),
+                             _.map(comps.internal, function(c) { return (!c || c.enabled === undefined) ? true : c.enabled * 1; }));
 
     ship.buildWith({ bulkheads: bulkheads, common: common, hardpoints: hardpoints, internal: internal }, priorities, enabled);
 

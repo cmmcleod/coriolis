@@ -1,5 +1,5 @@
 {
-  "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
+  "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/2.json#",
   "name": "Test",
   "ship": "Anaconda",
   "references": [
@@ -15,79 +15,109 @@
       "bulkheads": "Reactive Surface Composite",
       "powerPlant": {
         "class": 8,
-        "rating": "A"
+        "rating": "A",
+        "enabled": true,
+        "priority": 1
       },
       "thrusters": {
         "class": 6,
-        "rating": "A"
+        "rating": "A",
+        "enabled": true,
+        "priority": 1
       },
       "frameShiftDrive": {
         "class": 6,
-        "rating": "A"
+        "rating": "A",
+        "enabled": true,
+        "priority": 1
       },
       "lifeSupport": {
         "class": 5,
-        "rating": "A"
+        "rating": "A",
+        "enabled": true,
+        "priority": 1
       },
       "powerDistributor": {
         "class": 8,
-        "rating": "A"
+        "rating": "A",
+        "enabled": true,
+        "priority": 1
       },
       "sensors": {
         "class": 8,
-        "rating": "A"
+        "rating": "A",
+        "enabled": true,
+        "priority": 1
       },
       "fuelTank": {
         "class": 5,
-        "rating": "C"
+        "rating": "C",
+        "enabled": true,
+        "priority": 1
       }
     },
     "hardpoints": [
       {
         "class": 4,
         "rating": "A",
+        "enabled": true,
+        "priority": 1,
         "group": "Plasma Accelerator",
         "mount": "Fixed"
       },
       {
         "class": 3,
         "rating": "D",
+        "enabled": true,
+        "priority": 1,
         "group": "Beam Laser",
         "mount": "Turret"
       },
       {
         "class": 3,
         "rating": "D",
+        "enabled": true,
+        "priority": 1,
         "group": "Beam Laser",
         "mount": "Turret"
       },
       {
         "class": 3,
         "rating": "D",
+        "enabled": true,
+        "priority": 1,
         "group": "Beam Laser",
         "mount": "Turret"
       },
       {
         "class": 2,
         "rating": "E",
+        "enabled": true,
+        "priority": 1,
         "group": "Cannon",
         "mount": "Turret"
       },
       {
         "class": 2,
         "rating": "E",
+        "enabled": true,
+        "priority": 1,
         "group": "Cannon",
         "mount": "Turret"
       },
       {
         "class": 1,
         "rating": "F",
+        "enabled": true,
+        "priority": 1,
         "group": "Beam Laser",
         "mount": "Turret"
       },
       {
         "class": 1,
         "rating": "F",
+        "enabled": true,
+        "priority": 1,
         "group": "Beam Laser",
         "mount": "Turret"
       }
@@ -96,39 +126,53 @@
       {
         "class": 0,
         "rating": "A",
+        "enabled": true,
+        "priority": 1,
         "group": "Shield Booster"
       },
       {
         "class": 0,
         "rating": "A",
+        "enabled": true,
+        "priority": 1,
         "group": "Shield Booster"
       },
       null,
       {
         "class": 0,
         "rating": "C",
+        "enabled": true,
+        "priority": 1,
         "group": "Kill Warrant Scanner"
       },
       {
         "class": 0,
         "rating": "C",
+        "enabled": true,
+        "priority": 1,
         "group": "Cargo Scanner"
       },
       {
         "class": 0,
         "rating": "F",
+        "enabled": true,
+        "priority": 1,
         "group": "Countermeasure",
         "name": "Electronic Countermeasure"
       },
       {
         "class": 0,
         "rating": "I",
+        "enabled": true,
+        "priority": 1,
         "group": "Countermeasure",
         "name": "Chaff Launcher"
       },
       {
         "class": 0,
         "rating": "I",
+        "enabled": true,
+        "priority": 1,
         "group": "Countermeasure",
         "name": "Point Defence"
       }
@@ -137,26 +181,36 @@
       {
         "class": 7,
         "rating": "A",
+        "enabled": true,
+        "priority": 1,
         "group": "Shield Generator"
       },
       {
         "class": 6,
         "rating": "A",
+        "enabled": true,
+        "priority": 1,
         "group": "Shield Cell Bank"
       },
       {
         "class": 6,
         "rating": "E",
+        "enabled": true,
+        "priority": 1,
         "group": "Cargo Rack"
       },
       {
         "class": 5,
         "rating": "D",
+        "enabled": true,
+        "priority": 1,
         "group": "Hull Reinforcement Package"
       },
       {
         "class": 5,
         "rating": "E",
+        "enabled": true,
+        "priority": 1,
         "group": "Cargo Rack"
       },
       null,
@@ -164,21 +218,29 @@
       {
         "class": 4,
         "rating": "E",
+        "enabled": true,
+        "priority": 1,
         "group": "Cargo Rack"
       },
       {
         "class": 4,
         "rating": "E",
+        "enabled": true,
+        "priority": 1,
         "group": "Cargo Rack"
       },
       {
         "class": 4,
         "rating": "A",
+        "enabled": true,
+        "priority": 1,
         "group": "Fuel Scoop"
       },
       {
         "class": 2,
         "rating": "A",
+        "enabled": true,
+        "priority": 1,
         "group": "FSD Interdictor"
       }
     ]
