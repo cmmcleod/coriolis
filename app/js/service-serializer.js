@@ -148,12 +148,12 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
     }));
 
     // The ordering of these arrays must match the order in which they are read in Ship.buildWith
-    priorities = priorities.concat(_.map(comps.hardpoints, function(c) { return (!c || c.priority===undefined) ? 0 : c.priority - 1; }),
-                                   _.map(comps.utility, function(c) { return (!c || c.priority===undefined) ? 0 : c.priority - 1; }),
-                                   _.map(comps.internal, function(c) { return (!c || c.priority===undefined) ? 0 : c.priority - 1; }));
-    enabled = enabled.concat(_.map(comps.hardpoints, function(c) { return (!c || c.enabled===undefined) ? false : c.enabled; }),
-                             _.map(comps.utility, function(c) { return (!c || c.enabled===undefined) ? false : c.enabled; }),
-                             _.map(comps.internal, function(c) { return (!c || c.enabled===undefined) ? false : c.enabled; }));
+    priorities = priorities.concat(_.map(comps.hardpoints, function(c) { return (!c || c.priority === undefined) ? 0 : c.priority - 1; }),
+                                   _.map(comps.utility, function(c) { return (!c || c.priority === undefined) ? 0 : c.priority - 1; }),
+                                   _.map(comps.internal, function(c) { return (!c || c.priority === undefined) ? 0 : c.priority - 1; }));
+    enabled = enabled.concat(_.map(comps.hardpoints, function(c) { return (!c || c.enabled === undefined) ? false : c.enabled; }),
+                             _.map(comps.utility, function(c) { return (!c || c.enabled === undefined) ? false : c.enabled; }),
+                             _.map(comps.internal, function(c) { return (!c || c.enabled === undefined) ? false : c.enabled; }));
 
     ship.buildWith({ bulkheads: bulkheads, common: common, hardpoints: hardpoints, internal: internal }, priorities, enabled);
 
