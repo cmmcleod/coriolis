@@ -261,5 +261,4 @@ angular.module('app').config(['$translateProvider', 'localeFormatProvider', func
     YES: 'Ja'
   })
   .registerAvailableLanguageKeys(['fr'], { 'fr_FR': 'fr', 'fr_CA': 'fr' });
-
 }]);
