@@ -178,7 +178,7 @@ angular.module('app').directive('powerBands', ['$window', '$translate', '$rootSc
       }
 
       function getClass(selected, sum, avail) {
-        return selected ? 'secondary' : (sum > avail) ? 'warning' : 'primary';
+        return selected ? 'secondary' : (sum >= avail) ? 'warning' : 'primary';
       }
 
       function bandText(val, index) {

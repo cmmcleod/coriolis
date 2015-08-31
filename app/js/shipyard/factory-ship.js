@@ -292,12 +292,12 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     } else if (!slot.enabled) {
       return 1;   // Disabled
     } else if (deployed && !slot.c.retractedOnly) {  // Certain component (e.g. Detaild Surface scanner) are power only while retracted
-      return this.priorityBands[slot.priority].deployedSum > this.powerAvailable ? 2 : 3; // Offline : Online
+      return this.priorityBands[slot.priority].deployedSum >= this.powerAvailable ? 2 : 3; // Offline : Online
       // Active hardpoints have no retracted status
     } else if ((deployed && slot.c.retractedOnly) || (slot.cat === 1 && !slot.c.passive)) {
       return 0;  // No Status (Not possible)
     }
-    return this.priorityBands[slot.priority].retractedSum > this.powerAvailable ? 2 : 3;    // Offline : Online
+    return this.priorityBands[slot.priority].retractedSum >= this.powerAvailable ? 2 : 3;    // Offline : Online
   };
 
   /**
