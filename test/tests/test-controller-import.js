@@ -108,7 +108,7 @@ describe('Import Controller', function() {
       expect(scope.processed).toBeTruthy();
       scope.import();
       expect(angular.fromJson(localStorage.getItem('builds'))).toEqual({
-        anaconda: { 'Test': '48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.Iw18ZlA=.Aw18ZlA=' }
+        anaconda: { 'Test': '48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.Iw18QDBNA===.AwhMJBGaei+JCyyiA===' }
       });
     });
 
