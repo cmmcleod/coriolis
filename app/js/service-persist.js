@@ -45,7 +45,7 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
   };
 
   this.getLangCode = function() {
-    return this.lsEnabled ? localStorage.getItem(LS_KEY_LANG) : 'en';
+    return this.lsEnabled ? localStorage.getItem(LS_KEY_LANG) : null;
   };
 
   /**
@@ -287,7 +287,7 @@ angular.module('app').service('Persist', ['$window', 'lodash', function($window,
     if (this.lsEnabled) {
       var ratio = localStorage.getItem('sizeRatio');
       if (!isNaN(ratio) && ratio > 0.6) {
-        return ratio
+        return ratio;
       }
     }
     return 1;

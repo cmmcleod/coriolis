@@ -76,11 +76,12 @@
       <table style="width: 300px;background-color:transparent">
         <tr>
           <td style="width: 20px"><u>A</u></td>
-          <td slider min="0.65" def="sizeRatio" max="1.2" on-change="textSizeChange(val)"></td>
+          <td slider min="0.65" def="sizeRatio" max="1.2" on-change="textSizeChange(val)" ignore-resize="true"></td>
+          <!-- <td slider min="0.65" max="1.2" def="1" init="sizeRatio" on-change="textSizeChange(val)" reset="'resetSize'" ignore-events="true"></td> -->
           <td style="width: 20px"><span style="font-size: 30px">A</span></td>
         </tr>
         <tr>
-         <td></td><td style="text-align:center" class="primary-disabled" ng-click="textSizeChange(1)">Reset</td><td></td>
+         <td></td><td style="text-align:center" class="primary-disabled cap" ng-click="resetTextSize()" translate="reset"></td><td></td>
         </tr>
       </table>
       <hr />

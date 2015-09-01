@@ -51,7 +51,5 @@ angular.module('app').config(['$translateProvider', function($translateProvider)
       PHRASE_CONFIRMATION: 'Are You Sure?',
       PHRASE_UPDATE_RDY: 'Update Available! Click to Refresh',
       PHRASE_BACKUP_DESC: 'Backup of all Coriolis data to save or transfer to another browser/device'
-    })
-    .registerAvailableLanguageKeys(['en'], { 'en_US': 'en', 'en_UK': 'en', 'en_GB': 'en', 'en_CA': 'en' });
-
+    });
 }]);

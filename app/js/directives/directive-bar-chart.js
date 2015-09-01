@@ -28,7 +28,7 @@ angular.module('app').directive('barChart', ['$window', '$translate', '$rootScop
           fmt = null,
           unit = null,
           properties = scope.facet.props,
-          margin = { top: 10, right: 20, bottom: 35, left: 150 },
+          margin = { top: 10, right: 20, bottom: 40, left: 150 },
           y0 = d3.scale.ordinal(),
           y1 = d3.scale.ordinal(),
           x = d3.scale.linear(),
@@ -55,17 +55,11 @@ angular.module('app').directive('barChart', ['$window', '$translate', '$rootScop
       var xAxisLbl = vis.append('g')
           .attr('class', 'x axis cap')
         .append('text')
-          .attr('y', 30)
+          .attr('y', 33)
           .attr('dy', '.1em')
           .style('text-anchor', 'middle');
 
       updateFormats();
-
-      /**
-       * Watch for changes in the comparison array (ships added/removed, sorting)
-       */
-      scope.$watchCollection('data', render);
-      angular.element($window).bind('orientationchange resize render', render);
 
       function render() {
         var data = scope.data,
@@ -125,8 +119,9 @@ angular.module('app').directive('barChart', ['$window', '$translate', '$rootScop
         render();
       }
 
+      angular.element($window).bind('orientationchange resize render', render);
+      scope.$watchCollection('data', render); // Watch for changes in the comparison array
       scope.$on('languageChanged', updateFormats);
-
       scope.$on('$destroy', function() {
         angular.element($window).unbind('orientationchange resize render', render);
         tip.destroy(); // Remove the tooltip from the DOM

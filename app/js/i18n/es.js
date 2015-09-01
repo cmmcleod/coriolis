@@ -259,7 +259,5 @@ angular.module('app').config(['$translateProvider', 'localeFormatProvider', func
     VULTURE: 'Vulture',
     WEP: 'WAF',
     YES: 'Ja'
-  })
-  .registerAvailableLanguageKeys(['es'], { 'es_ES': 'es' });
-
+  });
 }]);

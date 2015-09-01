@@ -16,10 +16,10 @@ angular.module('app').directive('powerBands', ['$window', '$translate', '$rootSc
           depBandsSelected = false,
           wattScale = d3.scale.linear(),
           pctScale = d3.scale.linear().domain([0, 1]),
-          wattFmt = d3.format('.2f'),
-          pctFmt = d3.format('.1%'),
-          wattAxis = d3.svg.axis().scale(wattScale).outerTickSize(0).orient('top').tickFormat(d3.format('.2r')),
-          pctAxis = d3.svg.axis().scale(pctScale).outerTickSize(0).orient('bottom').tickFormat(d3.format('%')),
+          wattFmt,
+          pctFmt,
+          wattAxis = d3.svg.axis().scale(wattScale).outerTickSize(0).orient('top'),
+          pctAxis = d3.svg.axis().scale(pctScale).outerTickSize(0).orient('bottom'),
           // Create chart
           svg = d3.select(element[0]).append('svg'),
           vis = svg.append('g'),
@@ -40,20 +40,14 @@ angular.module('app').directive('powerBands', ['$window', '$translate', '$rootSc
       // Create Y Axis SVG Elements
       vis.append('g').attr('class', 'watt axis');
       vis.append('g').attr('class', 'pct axis');
+      var retText = vis.append('text').attr('x', -3).style('text-anchor', 'end').attr('dy', '0.5em').attr('class', 'primary upp');
+      var depText = vis.append('text').attr('x', -3).style('text-anchor', 'end').attr('dy', '0.5em').attr('class', 'primary upp');
+      var retLbl = vis.append('text').attr('dy', '0.5em');
+      var depLbl = vis.append('text').attr('dy', '0.5em');
 
-      var retLbl = vis.append('text').attr('x', -35).attr('y', 16).attr('class', 'primary upp');
-      var depLbl = vis.append('text').attr('x', -35).attr('y', barHeight + 18).attr('class', 'primary upp');
-      var retVal = vis.append('text').attr('y', 16);
-      var depVal = vis.append('text').attr('y', barHeight + 18);
+      updateFormats(true);
 
-      // Watch for changes to data and events
-      scope.$watchCollection('available', dataChange);
-      angular.element($window).bind('pwrchange', dataChange);
-      angular.element($window).bind('orientationchange resize', render);
-
-      updateFormats();
-
-      function render() {
+      function dataChange() {
         bands = scope.bands;
         available = scope.available;
         maxBand = bands[bands.length - 1];
@@ -82,7 +76,7 @@ angular.module('app').directive('powerBands', ['$window', '$translate', '$rootSc
             mTop = Math.round(25 * size),
             mRight = Math.round(130 * size),
             mBottom = Math.round(25 * size),
-            mLeft = Math.round(40 * size),
+            mLeft = Math.round(45 * size),
             barHeight = Math.round(20 * size),
             width = element[0].offsetWidth,
             innerHeight = (barHeight * 2) + 2,
@@ -107,19 +101,10 @@ angular.module('app').directive('powerBands', ['$window', '$translate', '$rootSc
         vis.selectAll('.watt.axis').call(wattAxis);
         vis.selectAll('.pct.axis').attr('transform', 'translate(0,' + innerHeight + ')').call(pctAxis);
 
-        for (var b = 0, l = bands.length; b < l; b++) {
-          if (bands[b].retSelected) {
-            retractedSum += bands[b].retracted + bands[b].retOnly;
-            retBandsSelected = true;
-          }
-          if (bands[b].depSelected) {
-            deployedSum += bands[b].deployed + bands[b].retracted;
-            depBandsSelected = true;
-          }
-        }
-
-        updateLabel(retVal, w, retBandsSelected, retBandsSelected ? retractedSum : maxBand.retractedSum, available);
-        updateLabel(depVal, w, depBandsSelected, depBandsSelected ? deployedSum : maxBand.deployedSum, available);
+        retText.attr('y', repY);
+        depText.attr('y', depY);
+        updateLabel(retLbl, w, repY, retBandsSelected, retBandsSelected ? retractedSum : maxBand.retractedSum, available);
+        updateLabel(depLbl, w, depY, depBandsSelected, depBandsSelected ? deployedSum : maxBand.deployedSum, available);
 
         retracted.selectAll('rect').data(bands).enter().append('rect')
           .attr('height', barHeight)
@@ -166,7 +151,6 @@ angular.module('app').directive('powerBands', ['$window', '$translate', '$rootSc
             dataChange();
           })
           .text(function(d, i) { return bandText(d.deployed + d.retracted, i); });
-
       }
 
       function updateLabel(lbl, width, y, selected, sum, avail) {
@@ -188,18 +172,23 @@ angular.module('app').directive('powerBands', ['$window', '$translate', '$rootSc
         return '';
       }
 
-      function updateFormats() {
-        retLbl.text($translate.instant('ret'));
-        depLbl.text($translate.instant('dep'));
+      function updateFormats(preventRender) {
+        retText.text($translate.instant('ret'));
+        depText.text($translate.instant('dep'));
         wattFmt = $rootScope.localeFormat.numberFormat('.2f');
         pctFmt = $rootScope.localeFormat.numberFormat('.1%');
         wattAxis.tickFormat($rootScope.localeFormat.numberFormat('.2r'));
         pctAxis.tickFormat($rootScope.localeFormat.numberFormat('%'));
-        render();
+        if (!preventRender) {
+          render();
+        }
       }
 
+      // Watch for changes to data and events
+      angular.element($window).bind('pwrchange', dataChange);
+      angular.element($window).bind('orientationchange resize', render);
+      scope.$watchCollection('available', dataChange);
       scope.$on('languageChanged', updateFormats);
-
       scope.$on('$destroy', function() {
         angular.element($window).unbind('orientationchange resize pwrchange', render);
       });

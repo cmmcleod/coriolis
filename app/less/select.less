@@ -63,6 +63,8 @@ select {
     padding-left: 5px;
     border-top: 1px solid @primary-disabled;
     border-bottom: 1px solid @primary-disabled;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   @optionSpacing: 2em;
@@ -114,6 +116,7 @@ select {
   }
 
   .lc {
+    overflow: hidden;
     text-overflow: ellipsis;
   }
 
@@ -130,6 +133,7 @@ select {
     display: inline-block;
     text-align: left;
     min-width: 16em;
+    max-width: 100%;
     margin: 0 auto;
     padding: 0;
     list-style: none;

@@ -82,10 +82,19 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$window', '$rootSc
       });
 
       scope.textSizeChange = function(size) {
-        $rootScope.sizeRatio = size;
-        document.getElementById('main').style.fontSize = size + 'em';
-        Persist.setSizeRatio(size);
-        win.triggerHandler('resize');
+        if (size != $rootScope.sizeRatio) {
+          $rootScope.sizeRatio = size;
+          document.getElementById('main').style.fontSize = size + 'em';
+          Persist.setSizeRatio(size);
+          win.triggerHandler('resize');
+        }
+      };
+
+      scope.resetTextSize = function() {
+        if ($rootScope.sizeRatio != 1) {
+          scope.textSizeChange(1);
+          scope.$broadcast('reset');
+        }
       };
 
       scope.$watchCollection('allBuilds', function() {

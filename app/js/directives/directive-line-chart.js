@@ -75,12 +75,6 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
 
       updateFormats();
 
-      /**
-       * Watch for changes in the series data (mass changes, etc)
-       */
-      scope.$watchCollection('series', render);
-      angular.element($window).bind('orientationchange resize render', render);
-
       function render() {
         var width = element[0].parentElement.offsetWidth,
             height = width * 0.5 * $rootScope.sizeRatio,
@@ -193,8 +187,9 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
         render();
       }
 
+      angular.element($window).bind('orientationchange resize render', render);
+      scope.$watchCollection('series', render);   // Watch for changes in the series data
       scope.$on('languageChanged', updateFormats);
-
       scope.$on('$destroy', function() {
         angular.element($window).unbind('orientationchange resize render', render);
       });
