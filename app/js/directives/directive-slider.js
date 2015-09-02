@@ -51,6 +51,7 @@ angular.module('app').directive('slider', ['$window', function($window) {
       function brushed() {
         val = x.invert(d3.mouse(this)[0]);
         brush.extent([val, val]);
+        scope.change({ val: val });
         drawBrush();
       }
 
@@ -58,7 +59,6 @@ angular.module('app').directive('slider', ['$window', function($window) {
         if (unit) {
           lbl.text(fmt(val) + ' ' + unit + ' ' + pct(val / scope.max));
         }
-        scope.change({ val: val });
         handle.attr('cx', x(val));
         filled.attr('d', 'M0,0V0H' + x(val) + 'V0');
       }
@@ -77,7 +77,7 @@ angular.module('app').directive('slider', ['$window', function($window) {
 
       scope.$on('reset', function() {
         val = def;
-        render();
+        drawBrush();
       });
 
       scope.$on('$destroy', function() {
