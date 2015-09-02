@@ -93,7 +93,7 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$window', '$rootSc
       scope.resetTextSize = function() {
         if ($rootScope.sizeRatio != 1) {
           scope.textSizeChange(1);
-          scope.$broadcast('reset',1);
+          scope.$broadcast('reset', 1);
         }
       };
 
