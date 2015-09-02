@@ -1,0 +1,77 @@
+{
+  "federal_assault_ship": {
+    "properties": {
+      "name": "Federal Assault Ship",
+      "manufacturer": "Core Dynamics",
+      "class": 2,
+      "hullCost": 19071993,
+      "speed": 216,
+      "boost": 361,
+      "boostEnergy": 21,
+      "agility": 6,
+      "baseShieldStrength": 180,
+      "baseArmour": 540,
+      "hullMass": 480,
+      "masslock": 14
+    },
+    "retailCost": 19814205,
+    "slots": {
+      "common": [
+        6,
+        6,
+        5,
+        5,
+        6,
+        4,
+        4
+      ],
+      "hardpoints": [
+        3,
+        3,
+        2,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        5,
+        5,
+        4,
+        3,
+        2,
+        2
+      ]
+    },
+    "defaults": {
+      "common": [
+        "6E",
+        "6E",
+        "5E",
+        "5E",
+        "6E",
+        "4E",
+        "4C"
+      ],
+      "hardpoints": [
+        0,
+        0,
+        17,
+        17,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        "4e",
+        "03",
+        "02",
+        "02",
+        0,
+        0
+      ]
+    }
+  }
+}

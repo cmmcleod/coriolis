@@ -1,0 +1,63 @@
+{
+  "imperial_eagle": {
+    "properties": {
+      "name": "Imperial Eagle",
+      "manufacturer": "Core Dynamics",
+      "class": 1,
+      "hullCost": 72186,
+      "speed": 303,
+      "boost": 405,
+      "boostEnergy": 9,
+      "agility": 6,
+      "baseShieldStrength": 80,
+      "baseArmour": 108,
+      "hullMass": 50,
+      "masslock": 6
+    },
+    "retailCost": 110833,
+    "slots": {
+      "common": [
+        3,
+        3,
+        3,
+        1,
+        2,
+        2,
+        2
+      ],
+      "hardpoints": [
+        2,
+        1,
+        1,
+        0
+      ],
+      "internal": [
+        3,
+        2,
+        1
+      ]
+    },
+    "defaults": {
+      "common": [
+        "3E",
+        "3E",
+        "3E",
+        "1E",
+        "2E",
+        "2E",
+        "2C"
+      ],
+      "hardpoints": [
+        0,
+        17,
+        17,
+        0
+      ],
+      "internal": [
+        "44",
+        "00",
+        "2h"
+      ]
+    }
+  }
+}

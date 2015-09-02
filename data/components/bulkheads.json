@@ -221,6 +221,80 @@
       "mass": 60
     }
   ],
+  "imperial_eagle": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 66500,
+      "mass": 4
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 222765,
+      "mass": 8
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 346555,
+      "mass": 8
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 372044,
+      "mass": 8
+    }
+  ],
+  "federal_assault_ship": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 7925682,
+      "mass": 44
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 17832784,
+      "mass": 87
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 42144814,
+      "mass": 87
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 46702081,
+      "mass": 87
+    }
+  ],
   "federal_dropship": [
     {
       "name": "Lightweight Alloy",
@@ -255,6 +329,43 @@
       "class": 1,
       "rating": "I",
       "cost": 46702081,
+      "mass": 87
+    }
+  ],
+  "federal_gunship": [
+    {
+      "name": "Lightweight Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 0,
+      "mass": 0
+    },
+    {
+      "name": "Reinforced Alloy",
+      "class": 1,
+      "rating": "I",
+      "cost": 14325688,
+      "mass": 44
+    },
+    {
+      "name": "Military Grade Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 32232788,
+      "mass": 87
+    },
+    {
+      "name": "Mirrored Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost":   76176811,
+      "mass": 87
+    },
+    {
+      "name": "Reactive Surface Composite",
+      "class": 1,
+      "rating": "I",
+      "cost": 84414088,
       "mass": 87
     }
   ],
