@@ -22,7 +22,7 @@ angular.module('app').directive('componentSelect', ['$translate', function($tran
         list.push(' warning');
       }
 
-      list.push((o.maxmass && (mass + (o.mass ? o.mass : 0)) > o.maxmass) ? ' disabled"' : '" cpid="', id, '">');
+      list.push(((o.maxmass && (mass + (o.mass ? o.mass : 0)) > o.maxmass) ? ' disabled"' : '" cpid="' + id + '"'), '>');
 
       if (o.mode) {
         list.push('<svg class="icon lg"><use xlink:href="#mount-', o.mode, '"></use></svg> ');
