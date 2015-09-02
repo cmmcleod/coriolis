@@ -1,0 +1,81 @@
+{
+  "federal_gunship": {
+    "properties": {
+      "name": "Federal Gunship",
+      "manufacturer": "Core Dynamics",
+      "class": 2,
+      "hullCost": 34774802,
+      "speed": 172,
+      "boost": 284,
+      "boostEnergy": 21,
+      "agility": 2,
+      "baseShieldStrength": 240,
+      "baseArmour": 630,
+      "hullMass": 580,
+      "masslock": 14
+    },
+    "retailCost": 35814211,
+    "slots": {
+      "common": [
+        6,
+        6,
+        5,
+        5,
+        7,
+        5,
+        4
+      ],
+      "hardpoints": [
+        3,
+        2,
+        2,
+        2,
+        2,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        6,
+        6,
+        5,
+        2,
+        2
+      ]
+    },
+    "defaults": {
+      "common": [
+        "6E",
+        "6E",
+        "5E",
+        "5E",
+        "7E",
+        "5E",
+        "4C"
+      ],
+      "hardpoints": [
+        0,
+        17,
+        17,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "internal": [
+        0,
+        "4j",
+        "03",
+        0,
+        "2h"
+      ]
+    }
+  }
+}
