@@ -27,7 +27,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    */
   function Ship(id, properties, slots) {
     this.id = id;
-    this.cargoScoop = { c: Components.cargoScoop(), type: 'SYS' };
+    this.cargoHatch = { c: Components.cargoHatch(), type: 'SYS' };
     this.bulkheads = { incCost: true, maxClass: 8 };
 
     for (var p in properties) { this[p] = properties[p]; }  // Copy all base properties from shipData
@@ -51,7 +51,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.costList.unshift(this.c); // Add the ship itself to the list
 
     this.powerList = _.union(this.internal, this.hardpoints);
-    this.powerList.unshift(this.cargoScoop);
+    this.powerList.unshift(this.cargoHatch);
     this.powerList.unshift(this.common[1]);  // Add Thrusters
     this.powerList.unshift(this.common[5]);  // Add Sensors
     this.powerList.unshift(this.common[4]);  // Add Power Distributor
@@ -96,8 +96,8 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
 
     this.bulkheads.c = null;
     this.useBulkhead(comps && comps.bulkheads ? comps.bulkheads : 0, true);
-    this.cargoScoop.priority = priorities ? priorities[0] * 1 : 0;
-    this.cargoScoop.enabled = enabled ? enabled[0] * 1 : true;
+    this.cargoHatch.priority = priorities ? priorities[0] * 1 : 0;
+    this.cargoHatch.enabled = enabled ? enabled[0] * 1 : true;
 
     for (i = 0, l = this.priorityBands.length; i < l; i++) {
       this.priorityBands[i].deployed = 0;
@@ -105,8 +105,8 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       this.priorityBands[i].retOnly = 0;
     }
 
-    if (this.cargoScoop.enabled) {
-      bands[this.cargoScoop.priority].retracted += this.cargoScoop.c.power;
+    if (this.cargoHatch.enabled) {
+      bands[this.cargoHatch.priority].retracted += this.cargoHatch.c.power;
     }
 
     for (i = 0; i < cl; i++) {

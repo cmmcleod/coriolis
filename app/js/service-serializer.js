@@ -10,8 +10,8 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
    */
   this.fromShip = function(ship) {
     var power = {
-      enabled: [ship.cargoScoop.enabled ? 1 : 0],
-      priorities: [ship.cargoScoop.priority]
+      enabled: [ship.cargoHatch.enabled ? 1 : 0],
+      priorities: [ship.cargoHatch.priority]
     };
 
     var data = [
@@ -84,6 +84,7 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
       components: {
         standard: {
           bulkheads: ship.bulkheads.c.name,
+          cargoHatch: { enabled: Boolean(ship.cargoHatch.enabled), priority: ship.cargoHatch.priority + 1 },
           powerPlant: { class: standard[0].c.class, rating: standard[0].c.rating, enabled: Boolean(standard[0].enabled), priority: standard[0].priority + 1 },
           thrusters: { class: standard[1].c.class, rating: standard[1].c.rating, enabled: Boolean(standard[1].enabled), priority: standard[1].priority + 1 },
           frameShiftDrive: { class: standard[2].c.class, rating: standard[2].c.rating, enabled: Boolean(standard[2].enabled), priority: standard[2].priority + 1 },
@@ -116,25 +117,26 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
     }
 
     var comps = detailedBuild.components;
-    var priorities = [ 0 ];	// cargoScoop
-    var enabled = [ true ];	// assume cargoScoop enabled
+    var standard = comps.standard;
+    var priorities = [ standard.cargoHatch && standard.cargoHatch.priority !== undefined ? standard.cargoHatch.priority - 1 : 0 ];
+    var enabled = [ standard.cargoHatch && standard.cargoHatch.enabled !== undefined ? standard.cargoHatch.enabled : true ];
     var shipData = ShipsDB[shipId];
     var ship = new Ship(shipId, shipData.properties, shipData.slots);
-    var bulkheads = Components.bulkheadIndex(comps.standard.bulkheads);
+    var bulkheads = Components.bulkheadIndex(standard.bulkheads);
 
     if (bulkheads < 0) {
-      throw 'Invalid bulkheads: ' + comps.standard.bulkheads;
+      throw 'Invalid bulkheads: ' + standard.bulkheads;
     }
 
     var common = _.map(
       ['powerPlant', 'thrusters', 'frameShiftDrive', 'lifeSupport', 'powerDistributor', 'sensors', 'fuelTank'],
       function(c) {
-        if (!comps.standard[c].class || !comps.standard[c].rating) {
+        if (!standard[c].class || !standard[c].rating) {
           throw 'Invalid value for ' + c;
         }
-        priorities.push(comps.standard[c].priority === undefined ? 0 : comps.standard[c].priority - 1);
-        enabled.push(comps.standard[c].enabled === undefined ? true : comps.standard[c].enabled);
-        return comps.standard[c].class + comps.standard[c].rating;
+        priorities.push(standard[c].priority === undefined ? 0 : standard[c].priority - 1);
+        enabled.push(standard[c].enabled === undefined ? true : standard[c].enabled);
+        return standard[c].class + standard[c].rating;
       }
     );
 

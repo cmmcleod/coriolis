@@ -98,8 +98,8 @@ describe('Import Controller', function() {
 
   describe('Import Detailed Build', function() {
 
-    it('imports a valid build', function() {
-      var importData = __json__['fixtures/anaconda-test-detailed-export'];
+    it('imports a valid v1 build', function() {
+      var importData = __json__['fixtures/anaconda-test-detailed-export-v1'];
       scope.importString = angular.toJson(importData);
       scope.validateImport();
       expect(scope.importValid).toBeTruthy();
@@ -108,12 +108,26 @@ describe('Import Controller', function() {
       expect(scope.processed).toBeTruthy();
       scope.import();
       expect(angular.fromJson(localStorage.getItem('builds'))).toEqual({
-        anaconda: { 'Test': '48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.Iw18QDBNA===.AwhMJBGaei+JCyyiA===' }
+        anaconda: { 'Test': '48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.Iw18ZlA=.Aw18ZlA=' }
+      });
+    });
+
+    it('imports a valid v2 build', function() {
+      var importData = __json__['fixtures/anaconda-test-detailed-export-v2'];
+      scope.importString = angular.toJson(importData);
+      scope.validateImport();
+      expect(scope.importValid).toBeTruthy();
+      expect(scope.errorMsg).toEqual(null);
+      scope.process();
+      expect(scope.processed).toBeTruthy();
+      scope.import();
+      expect(angular.fromJson(localStorage.getItem('builds'))).toEqual({
+        anaconda: { 'Test': '48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA' }
       });
     });
 
     it('catches an invalid build', function() {
-      var importData = __json__['fixtures/anaconda-test-detailed-export'];
+      var importData = __json__['fixtures/anaconda-test-detailed-export-v2'];
       scope.importString = angular.toJson(importData).replace('components', 'comps');
       scope.validateImport();
       expect(scope.importValid).toBeFalsy();

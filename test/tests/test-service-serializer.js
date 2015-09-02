@@ -3,7 +3,7 @@ describe("Serializer Service", function() {
 
   var Ship,
       Serializer,
-      code = '48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.Iw18QDBNA===.AwhMJBGaei+JCyyiA===',
+      code = '48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA',
       anaconda = DB.ships['anaconda'],
       testBuild,
       exportData;
@@ -21,13 +21,6 @@ describe("Serializer Service", function() {
       exportData = Serializer.toDetailedBuild('Test', testBuild, code);
     });
 
-    it("conforms to the v1 ship-loadout schema", function() {
-      var shipLoadoutSchema = __json__['schemas/ship-loadout/1'];
-      var validate = jsen(shipLoadoutSchema);
-      var valid = validate(exportData);
-      expect(valid).toBeTruthy();
-    });
-
     it("conforms to the v2 ship-loadout schema", function() {
       var shipLoadoutSchema = __json__['schemas/ship-loadout/2'];
       var validate = jsen(shipLoadoutSchema);
@@ -36,7 +29,7 @@ describe("Serializer Service", function() {
     });
 
     it("contains the correct components and stats", function() {
-      var anacondaTestExport = __json__['fixtures/anaconda-test-detailed-export'];
+      var anacondaTestExport = __json__['fixtures/anaconda-test-detailed-export-v2'];
       expect(exportData.components).toEqual(anacondaTestExport.components);
       expect(exportData.stats).toEqual(anacondaTestExport.stats);
       expect(exportData.ship).toEqual(anacondaTestExport.ship);
@@ -48,7 +41,7 @@ describe("Serializer Service", function() {
   describe("From Detailed Build", function() {
 
     it("builds the ship correctly", function() {
-      var anacondaTestExport = __json__['fixtures/anaconda-test-detailed-export'];
+      var anacondaTestExport = __json__['fixtures/anaconda-test-detailed-export-v2'];
       testBuildA = new Ship('anaconda', anaconda.properties, anaconda.slots);
       Serializer.toShip(testBuildA, code);
       testBuildB = Serializer.fromDetailedBuild(anacondaTestExport);

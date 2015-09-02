@@ -13,6 +13,10 @@
   "components": {
     "standard": {
       "bulkheads": "Reactive Surface Composite",
+      "cargoHatch": {
+        "enabled": false,
+        "priority": 5
+      },
       "powerPlant": {
         "class": 8,
         "rating": "A",
@@ -269,8 +273,8 @@
     "unladenMass": 1179.2,
     "totalDps": 29,
     "powerAvailable": 36,
-    "powerRetracted": 23.93,
-    "powerDeployed": 35.36,
+    "powerRetracted": 23.33,
+    "powerDeployed": 34.76,
     "unladenRange": 18.49,
     "fullTankRange": 18.12,
     "ladenRange": 16.39,

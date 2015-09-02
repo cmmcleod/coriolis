@@ -49,10 +49,17 @@
           "description":            "The set of standard components across all ships",
           "type":                   "object",
           "additionalProperties":   false,
-          "required":               ["bulkheads", "powerPlant", "thrusters", "frameShiftDrive", "lifeSupport", "powerDistributor", "sensors", "fuelTank"],
+          "required":               ["bulkheads", "powerPlant", "thrusters", "frameShiftDrive", "lifeSupport", "powerDistributor", "sensors", "fuelTank", "cargoHatch"],
           "properties": {
             "bulkheads": {
               "enum":               ["Lightweight Alloy", "Reinforced Alloy", "Military Grade Composite", "Mirrored Surface Composite", "Reactive Surface Composite"]
+            },
+            "cargoHatch": {
+              "required": ["enabled", "priority"],
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "priority": { "type": "integer", "minimum": 1, "maximum": 5 }
+              }
             },
             "powerPlant": {
               "required": ["class", "rating", "enabled", "priority"],

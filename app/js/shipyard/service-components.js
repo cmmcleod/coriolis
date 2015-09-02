@@ -6,7 +6,7 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
     GrpNameToCodeMap[GroupMap[grp]] = grp;
   }
 
-  this.cargoScoop = function() {
+  this.cargoHatch = function() {
     return { name: 'Cargo Hatch', class: 1, rating: 'H', power: 0.6 };
   };
 
