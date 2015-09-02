@@ -76,8 +76,8 @@ angular.module('app').directive('slider', ['$window', function($window) {
         angular.element($window).bind('orientationchange resize', render);
       }
 
-      scope.$on('reset', function() {
-        val = def;
+      scope.$on('reset', function(e, resetVal) {
+        val = resetVal;
         drawBrush();
       });
 
