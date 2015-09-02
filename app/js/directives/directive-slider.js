@@ -68,6 +68,7 @@ angular.module('app').directive('slider', ['$window', function($window) {
        */
       scope.$watch('max', function(newMax, oldMax) {
         val = newMax * (val / oldMax); // Retain percentage filled
+        scope.change({ val: val });
         render();
       });
 
