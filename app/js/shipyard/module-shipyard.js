@@ -212,16 +212,21 @@ angular.module('shipyard', ['ngLodash'])
    * @return {number}            Approximate shield strengh in MJ
    */
   .value('calcShieldStrength', function(mass, shields, sg, multiplier) {
-    if (mass <= sg.minmass) {
+    if (mass < sg.minmass) {
       return shields * multiplier * sg.minmul;
     }
+    if (mass > sg.maxmass) {
+      return shields * multiplier * sg.maxmul;
+    }
     if (mass < sg.optmass) {
-      return shields * multiplier * (sg.minmul + (mass - sg.minmass) / (sg.optmass - sg.minmass) * (sg.optmul - sg.minmul));
+      var opt = (sg.optmass - mass) / (sg.optmass - sg.minmass);
+      opt = 1 - Math.pow(1 - opt, 0.87);
+      return shields * multiplier * ((opt * sg.minmul) + ((1 - opt) * sg.optmul));
+    } else {
+      var opt = (sg.optmass - mass) / (sg.maxmass - sg.optmass);
+      opt = -1 + Math.pow(1 + opt, 2.425);
+      return shields * multiplier * ( (-1 * opt * sg.maxmul) + ((1 + opt) * sg.optmul) );
     }
-    if (mass < sg.maxmass) {
-      return shields * multiplier * (sg.optmul + (mass - sg.optmass) / (sg.maxmass - sg.optmass) * (sg.maxmul - sg.optmul));
-    }
-    return shields * multiplier * sg.maxmul;
   })
   /**
    * Calculate the a ships speed based on mass, and thrusters. Currently Innacurate / Incomplete :(
