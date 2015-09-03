@@ -212,6 +212,7 @@ angular.module('shipyard', ['ngLodash'])
    * @return {number}            Approximate shield strengh in MJ
    */
   .value('calcShieldStrength', function(mass, shields, sg, multiplier) {
+    var opt;
     if (mass < sg.minmass) {
       return shields * multiplier * sg.minmul;
     }
@@ -219,11 +220,11 @@ angular.module('shipyard', ['ngLodash'])
       return shields * multiplier * sg.maxmul;
     }
     if (mass < sg.optmass) {
-      var opt = (sg.optmass - mass) / (sg.optmass - sg.minmass);
+      opt = (sg.optmass - mass) / (sg.optmass - sg.minmass);
       opt = 1 - Math.pow(1 - opt, 0.87);
       return shields * multiplier * ((opt * sg.minmul) + ((1 - opt) * sg.optmul));
     } else {
-      var opt = (sg.optmass - mass) / (sg.maxmass - sg.optmass);
+      opt = (sg.optmass - mass) / (sg.maxmass - sg.optmass);
       opt = -1 + Math.pow(1 + opt, 2.425);
       return shields * multiplier * ( (-1 * opt * sg.maxmul) + ((1 + opt) * sg.optmul) );
     }
