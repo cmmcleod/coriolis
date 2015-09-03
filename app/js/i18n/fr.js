@@ -145,7 +145,7 @@ angular.module('app').config(['$translateProvider', 'localeFormatProvider', func
     proceed: 'continuer',
     pc: 'Drône de minage',
     pl: 'Laser à impulsion',
-    PWR: 'Puissance',
+    PWR: 'P',
     rg: 'Canon électromagnétique',
     range: 'portée',
     rate: 'cadence',
