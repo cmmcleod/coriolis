@@ -101,7 +101,7 @@ angular.module('app').config(['$translateProvider', 'localeFormatProvider', func
     ft: 'Топливный бак',
     fx: 'Контроллер Дрона-заправщика',
     'full tank': 'Полный бак',
-    Gimballed: 'Доводимое',
+    Gimballed: 'Шарнирное',
     H: 'O',
     hardpoints: 'Орудийные порты',
     hb: 'Контроллер "дрон-взломщик"',
