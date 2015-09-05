@@ -17,5 +17,5 @@ angular.module('app').config(['$translateProvider', function($translateProvider)
   de: 'Deutsh',
   //es: 'Español',
   fr: 'Français',
-  ru: 'ру́сский язы́к'
+  ru: 'ру́сский'
 });
