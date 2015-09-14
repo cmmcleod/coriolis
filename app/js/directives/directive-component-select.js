@@ -8,7 +8,7 @@ angular.module('app').directive('componentSelect', ['$translate', function($tran
       var o = opts[i];
       var id = o.id || (o.class + o.rating);  // Common components' ID is their class and rating
 
-      if (i > 0 && opts.length > 4 && o.class != prevClass && (o.rating != prevRating || o.mode)) {
+      if (i > 0 && opts.length > 3 && o.class != prevClass && (o.rating != prevRating || o.mode) && o.grp != 'pa') {
         list.push('<br/>');
       }
 
