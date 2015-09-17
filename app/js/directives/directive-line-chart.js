@@ -1,4 +1,7 @@
 angular.module('app').directive('lineChart', ['$window', '$translate', '$rootScope', function($window, $translate, $rootScope) {
+
+  var RENDER_POINTS = 20;   // Only render 20 points on the graph
+
   return {
     restrict: 'A',
     scope: {
@@ -8,7 +11,7 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
     link: function(scope, element) {
       var seriesConfig = scope.series,
           series = seriesConfig.series,
-          color = d3.scale.ordinal().range([ '#ff8c0d', '#1fb0ff', '#a05d56', '#d0743c']),
+          color = d3.scale.ordinal().range([ '#ff8c0d']),
           config = scope.config,
           labels = config.labels,
           margin = { top: 15, right: 15, bottom: 35, left: 60 },
@@ -51,8 +54,19 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
           .text($translate.instant(labels.xAxis.title) + ' (' + $translate.instant(labels.xAxis.unit) + ')');
 
       // Create and Add tooltip
-      var tipWidth = (Math.max(labels.yAxis.unit.length, labels.xAxis.unit.length) * 1.25) + 2.5;
-      var tips = vis.append('g').style('display', 'none');
+      var tipHeight = 2 + (1.25 * (series ? series.length : 0.75));
+      var tips = vis.append('g').style('display', 'none').attr('class', 'tooltip');
+      var markers = vis.append('g').style('display', 'none');
+
+      tips.append('rect')
+        .attr('height', tipHeight + 'em')
+        .attr('y', (-tipHeight / 2) + 'em')
+        .attr('class', 'tip');
+
+      tips.append('text')
+      .attr('class', 'label x')
+      .attr('dy', (-tipHeight / 2) + 'em')
+      .attr('y', '1.25em');
 
       var background = vis.append('rect') // Background to capture hover/drag
         .attr('fill-opacity', 0)
@@ -84,7 +98,7 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
             yMin = seriesConfig.yMin,
             w = width - margin.left - margin.right,
             h = height - margin.top - margin.bottom,
-            s, val, yVal, delta;
+            c, s, val, yVal, delta;
 
         data.length = 0;  // Reset Data array
 
@@ -105,12 +119,14 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
               data[s].push( [ xMin, yVal[ series[s] ] ], [ 1, yVal[ series[s] ] ]);
             }
           } else {
-            delta = (xMax - xMin) / 30;  // Only render 30 points on the graph
-            for (val = xMin; val <= xMax; val += delta) {
+            delta = (xMax - xMin) / RENDER_POINTS;
+            val = 0;
+            for (c = 0; c <= RENDER_POINTS; c++) {
               yVal = func(val);
               for (s = 0; s < series.length; s++) {
                 data[s].push([ val, yVal[ series[s] ] ]);
               }
+              val += delta;
             }
           }
 
@@ -120,9 +136,11 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
             yVal = func(xMin);
             seriesData.push([ xMin, yVal ], [ 1, yVal ]);
           } else {
-            delta = (xMax - xMin) / 30;  // Only render 30 points on the graph
-            for (val = xMin; val <= xMax; val += delta) {
+            delta = (xMax - xMin) / RENDER_POINTS;
+            val = 0;
+            for (c = 0; c <= RENDER_POINTS; c++) {
               seriesData.push([val, func(val) ]);
+              val += delta;
             }
           }
 
@@ -152,30 +170,58 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
             .attr('stroke-width', 2)
             .attr('d', line);
 
-        var tip = tips.selectAll('g.tooltip').data(data).enter().append('g').attr('class', 'tooltip');
-        tip.append('rect').attr('width', tipWidth + 'em').attr('height', '2em').attr('x', '0.5em').attr('y', '-1em').attr('class', 'tip');
-        tip.append('circle').attr('class', 'marker').attr('r', 4);
-        tip.append('text').attr('class', 'label x').attr('y', '-0.25em');
-        tip.append('text').attr('class', 'label y').attr('y', '0.85em');
+        tips.selectAll('text.label.y').data(data).enter()
+          .append('text')
+            .attr('class', 'label y')
+            .attr('dy', (-tipHeight / 2) + 'em')
+            .attr('y', function(d, i) { return 1.25 * (i + 2) + 'em'; });
+
+        markers.selectAll('circle.marker').data(data).enter().append('circle').attr('class', 'marker').attr('r', 4);
       }
 
       function showTip() {
        tips.style('display', null);
+       markers.style('display', null);
       }
 
       function hideTip() {
         if (!dragging) {
           tips.style('display', 'none');
+          markers.style('display', 'none');
         }
       }
 
       function moveTip() {
-        var xPos = d3.mouse(this)[0], x0 = x.invert(xPos), y0 = func(x0), flip = (x0 / x.domain()[1] > 0.65);
-        var tip = tips.selectAll('g.tooltip').attr('transform', function(d, i) { return 'translate(' + x(x0) + ',' + y(series ? y0[series[i]] : y0) + ')'; });
-        tip.selectAll('rect').attr('x', flip ? (-tipWidth - 0.5) + 'em' : '0.5em').style('text-anchor', flip ? 'end' : 'start');
-        tip.selectAll('text.label').attr('x', flip ? '-1em' : '1em').style('text-anchor', flip ? 'end' : 'start');
-        tip.selectAll('text.label.x').text(fmtLong(x0) + ' ' + $translate.instant(labels.xAxis.unit));
-        tips.selectAll('text.label.y').text(function(d, i) { return fmtLong(series ? y0[series[i]] : y0) + ' ' + $translate.instant(labels.yAxis.unit); });
+        var xPos = d3.mouse(this)[0],
+            x0 = x.invert(xPos),
+            y0 = func(x0),
+            yTotal = 0,
+            flip = (x0 / x.domain()[1] > 0.65),
+            tipWidth = 0,
+            minTransY = (tips.selectAll('rect').node().getBoundingClientRect().height / 2) - margin.top;
+
+        tips.selectAll('text.label.y').text(function(d, i) {
+          var yVal = series ? y0[series[i]] : y0;
+          yTotal += yVal;
+          return (series ? series[i] : '') + ' ' + fmtLong(yVal) + ' ' + $translate.instant(labels.yAxis.unit);
+        });
+
+        tips.selectAll('text').each(function() {
+          if (this.getBBox().width > tipWidth) {
+            tipWidth = Math.ceil(this.getBBox().width);
+          }
+        });
+
+        tipWidth += 8;
+        markers.selectAll('circle.marker').attr('cx', x(x0)).attr('cy', function(d, i) { return y(series ? y0[series[i]] : y0); });
+        tips.selectAll('text.label').attr('x', flip ? -12 : 12).style('text-anchor', flip ? 'end' : 'start');
+        tips.selectAll('text.label.x').text(fmtLong(x0) + ' ' + $translate.instant(labels.xAxis.unit));
+        tips.attr('transform', 'translate(' + x(x0) + ',' + Math.max(minTransY, y(yTotal / (series ? series.length : 1))) + ')');
+        tips.selectAll('rect')
+          .attr('width', tipWidth + 4)
+          .attr('x', flip ? -tipWidth - 12 : 8)
+          .style('text-anchor', flip ? 'end' : 'start');
+
       }
 
       function updateFormats() {

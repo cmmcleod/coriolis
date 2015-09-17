@@ -163,12 +163,6 @@ table.total {
 
   .smallTablet({
     width: 50%;
-
-    .axis.x {
-      g.tick:nth-child(2n + 1) text {
-        display: none;
-      }
-    }
   });
 
   .largePhone({
@@ -192,12 +186,12 @@ table.total {
   &.third {
     width: 33%;
 
-    .largePhone({
+    .smallTablet({
       width: 100% !important;
     });
   }
 
-  .smallTablet({
+  .smallScreen({
     .axis.x {
       g.tick:nth-child(2n + 1) text {
         display: none;
