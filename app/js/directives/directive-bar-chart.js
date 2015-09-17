@@ -65,7 +65,7 @@ angular.module('app').directive('barChart', ['$window', '$translate', '$rootScop
         var data = scope.data,
             width = element[0].offsetWidth,
             w = width - margin.left - margin.right,
-            height = 45 + (30 * data.length * $rootScope.sizeRatio),
+            height = 50 + (30 * data.length * $rootScope.sizeRatio),
             h = height - margin.top - margin.bottom,
             maxVal = d3.max(data, function(d) { return d3.max(properties, function(p) {return d[p]; }); });
 
