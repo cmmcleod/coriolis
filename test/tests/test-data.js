@@ -1,6 +1,20 @@
 describe('Database', function() {
 
-  var shipProperties = ['name', 'manufacturer', 'class', 'hullCost', 'speed', 'boost', 'agility', 'baseShieldStrength', 'baseArmour', 'hullMass', 'masslock'];
+  var shipProperties = [
+    'name',
+    'manufacturer',
+    'class',
+    'hullCost',
+    'speed',
+    'boost',
+    'boostEnergy',
+    'agility',
+    'baseShieldStrength',
+    'baseArmour',
+    'hullMass',
+    'masslock',
+    'pipSpeed'
+  ];
 
   it('has ships and components', function() {
     expect(DB.ships).toBeDefined()

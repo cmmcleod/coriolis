@@ -204,7 +204,6 @@ angular.module('shipyard', ['ngLodash'])
    /**
    * Calculate the a ships shield strength based on mass, shield generator and shield boosters used.
    *
-   * @private
    * @param  {number} mass       Current mass of the ship
    * @param  {number} shields    Base Shield strength MJ for ship
    * @param  {object} sg         The shield generator used
@@ -230,18 +229,20 @@ angular.module('shipyard', ['ngLodash'])
     }
   })
   /**
-   * Calculate the a ships speed based on mass, and thrusters. Currently Innacurate / Incomplete :(
+   * Calculate the a ships speed based on mass, and thrusters.
    *
-   * @private
    * @param  {number} mass        Current mass of the ship
    * @param  {number} baseSpeed   Base speed m/s for ship
-   * @param  {number} baseBoost   Base boost m/s for ship
-   * @param  {object} thrusters   The shield generator used
-   * @return {object}             Approximate speed and boost speed in m/s
+   * @param  {object} thrusters   The Thrusters used
+   * @param  {number} pipSpeed    Speed pip multiplier
+   * @return {object}             Approximate speed by pips
    */
-  .value('calcSpeed', function(mass, baseSpeed, baseBoost) { //, thrusters) {
-    //var speed = baseSpeed * (1 + ((thrusters.optmass / mass) * 0.1 ) );  // TODO: find thruser coefficient(s)
-    //var boost = baseBoost * (1 + ((thrusters.optmass / mass) * 0.1 ) );
+  .value('calcSpeed', function(mass, baseSpeed, thrusters, pipSpeed) {
+    var speed = baseSpeed * ((1 - thrusters.M) + (thrusters.M * Math.pow(3 - (2 * Math.max(0.5, mass / thrusters.optmass)), thrusters.P)));
 
-    return { boost: baseSpeed, speed: baseBoost };
+    return {
+      '0 Pips': speed * (1 - (pipSpeed * 4)),
+      '2 Pips': speed * (1 - (pipSpeed * 2)),
+      '4 Pips': speed
+    };
   });

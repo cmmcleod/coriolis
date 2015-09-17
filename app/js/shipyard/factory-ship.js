@@ -1,4 +1,4 @@
-angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 'calcJumpRange', 'calcTotalRange', 'lodash', 'ArmourMultiplier', function(Components, calcShieldStrength, calcJumpRange, calcTotalRange, _, ArmourMultiplier) {
+angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 'calcJumpRange', 'calcTotalRange', 'calcSpeed', 'lodash', 'ArmourMultiplier', function(Components, calcShieldStrength, calcJumpRange, calcTotalRange, calcSpeed, _, ArmourMultiplier) {
 
   /**
    * Returns the power usage type of a slot and it's particular component
@@ -159,6 +159,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       this.updatePower();
       this.updateJumpStats();
       this.updateShieldStrength();
+      this.updateTopSpeed();
     }
   };
 
@@ -375,6 +376,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       if (powerChange) {
         this.updatePower();
       }
+      this.updateTopSpeed();
       this.updateJumpStats();
       this.updateShieldStrength();
     }
@@ -393,6 +395,10 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.powerAvailable = this.common[0].c.pGen;
     this.powerRetracted = prevRetracted;
     this.powerDeployed = prevDeployed;
+  };
+
+  Ship.prototype.updateTopSpeed = function() {
+    this.topSpeed = calcSpeed(this.unladenMass + this.fuelCapacity, this.speed, this.common[1].c, this.pipSpeed)['4 Pips'];
   };
 
   Ship.prototype.updateShieldStrength = function() {

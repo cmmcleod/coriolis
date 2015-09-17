@@ -63,7 +63,7 @@
           <td class="cap" ng-bind="['','small','medium','large','capital'][ship.class] | translate"></td>
           <td>{{ship.agility}}/10</td>
           <td>
-            <span ng-if="th.c.maxmass >= ship.ladenMass">{{fRound(ship.speed)}} <u translate>m/s</u></span>
+            <span ng-if="th.c.maxmass >= ship.ladenMass">{{fCrd(ship.topSpeed)}} <u translate>m/s</u></span>
             <span class="warning" ng-if="th.c.maxmass < ship.ladenMass">0 <svg class="icon"><use xlink:href="#warning"></use></svg></span>
             </td>
           <td>
@@ -348,22 +348,21 @@
     </div>
   </div>
 
-  <div class="group half">
+  <div class="group third">
     <h1 translate="jump range"></h1>
     <div line-chart config="jrChart" series="jrSeries"></div>
   </div>
 
-  <div class="group half">
+  <div class="group third">
     <h1 translate="total range"></h1>
     <div line-chart config="trChart" series="trSeries"></div>
   </div>
 
-  <!-- TODO: Add back in once calcSpeed is dynamic and accurate
   <div class="group third">
     <h1 translate="speed"></h1>
     <div line-chart config="speedChart" series="speedSeries"></div>
   </div>
-  -->
+
 
   <div class="group half">
     <div slider max="ship.fuelCapacity" unit="'T'" on-change="::fuelChange(val)" style="position:relative; margin: 0 auto;">
