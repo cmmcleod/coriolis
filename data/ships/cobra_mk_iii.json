@@ -6,13 +6,14 @@
       "class": 1,
       "hullCost": 235787,
       "speed": 280,
-      "boost": 400,
+      "boost": 402,
       "boostEnergy": 11,
       "agility": 6,
       "baseShieldStrength": 80,
       "baseArmour": 216,
       "hullMass": 180,
-      "masslock": 8
+      "masslock": 8,
+      "pipSpeed": 0.125
     },
     "retailCost": 379718,
     "slots": {

@@ -12,7 +12,8 @@
       "baseShieldStrength": 146,
       "baseArmour": 270,
       "hullMass": 298,
-      "masslock": 10
+      "masslock": 10,
+      "pipSpeed": 0.09625
     },
     "retailCost": 1894760,
     "slots": {

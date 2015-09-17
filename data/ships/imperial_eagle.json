@@ -5,14 +5,15 @@
       "manufacturer": "Core Dynamics",
       "class": 1,
       "hullCost": 72186,
-      "speed": 303,
+      "speed": 300,
       "boost": 405,
       "boostEnergy": 9,
       "agility": 6,
       "baseShieldStrength": 80,
       "baseArmour": 108,
       "hullMass": 50,
-      "masslock": 6
+      "masslock": 6,
+      "pipSpeed": 0.075
     },
     "retailCost": 110833,
     "slots": {
