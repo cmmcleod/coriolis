@@ -87,10 +87,10 @@ angular.module('shipyard', ['ngLodash'])
     },
     {                   // 1
       title: 'speed',
-      props: ['speed', 'boost'],
+      props: ['topSpeed', 'boost'],
       lbls: ['thrusters', 'boost'],
       unit: 'm/s',
-      fmt: 'fRound'
+      fmt: 'fCrd'
     },
     {                   // 2
       title: 'armour',
