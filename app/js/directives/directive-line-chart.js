@@ -52,6 +52,9 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
           .attr('dy', '.1em')
           .style('text-anchor', 'middle');
 
+      // xTxt.append('tspan').attr('class', 'metric');
+      // yTxt.append('tspan').attr('class', 'metric');
+
       // Create and Add tooltip
       var tipHeight = 2 + (1.25 * (series ? series.length : 0.75));
       var tips = vis.append('g').style('display', 'none').attr('class', 'tooltip');
@@ -63,9 +66,9 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
         .attr('class', 'tip');
 
       tips.append('text')
-      .attr('class', 'label x')
-      .attr('dy', (-tipHeight / 2) + 'em')
-      .attr('y', '1.25em');
+        .attr('class', 'label x')
+        .attr('dy', (-tipHeight / 2) + 'em')
+        .attr('y', '1.25em');
 
       var background = vis.append('rect') // Background to capture hover/drag
         .attr('fill-opacity', 0)
@@ -199,11 +202,11 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
             tipWidth = 0,
             minTransY = (tips.selectAll('rect').node().getBoundingClientRect().height / 2) - margin.top;
 
-        tips.selectAll('text.label.y').html(function(d, i) {
+        tips.selectAll('text.label.y').text(function(d, i) {
           var yVal = series ? y0[series[i]] : y0;
           yTotal += yVal;
-          return (series ? series[i] : '') + ' <tspan class="metric">' + fmtLong(yVal) + ' ' + $translate.instant(labels.yAxis.unit) + '</tspan>';
-        });
+          return (series ?  $translate.instant(series[i]) : '') + ' ' + fmtLong(yVal);
+        }).append('tspan').attr('class','metric').text(' ' + $translate.instant(labels.yAxis.unit));
 
         tips.selectAll('text').each(function() {
           if (this.getBBox().width > tipWidth) {
@@ -214,7 +217,7 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
         tipWidth += 8;
         markers.selectAll('circle.marker').attr('cx', x(x0)).attr('cy', function(d, i) { return y(series ? y0[series[i]] : y0); });
         tips.selectAll('text.label').attr('x', flip ? -12 : 12).style('text-anchor', flip ? 'end' : 'start');
-        tips.selectAll('text.label.x').text(fmtLong(x0) + ' ' + $translate.instant(labels.xAxis.unit));
+        tips.selectAll('text.label.x').text(fmtLong(x0)).append('tspan').attr('class','metric').text(' ' + $translate.instant(labels.xAxis.unit));
         tips.attr('transform', 'translate(' + x(x0) + ',' + Math.max(minTransY, y(yTotal / (series ? series.length : 1))) + ')');
         tips.selectAll('rect')
           .attr('width', tipWidth + 4)
@@ -224,8 +227,8 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
       }
 
       function updateFormats() {
-        xTxt.html($translate.instant(labels.xAxis.title) + ' <tspan class="metric">(' + $translate.instant(labels.xAxis.unit) + ')</tspan>');
-        yTxt.html($translate.instant(labels.yAxis.title) + ' <tspan class="metric">(' + $translate.instant(labels.yAxis.unit) + ')</tspan>');
+        xTxt.text($translate.instant(labels.xAxis.title)).append('tspan').attr('class', 'metric').text(' (' + $translate.instant(labels.xAxis.unit) + ')');
+        yTxt.text($translate.instant(labels.yAxis.title)).append('tspan').attr('class', 'metric').text(' (' + $translate.instant(labels.yAxis.unit) + ')');
         fmtLong = $rootScope.localeFormat.numberFormat('.2f');
         xAxis.tickFormat($rootScope.localeFormat.numberFormat('.2r'));
         yAxis.tickFormat($rootScope.localeFormat.numberFormat('.3r'));
