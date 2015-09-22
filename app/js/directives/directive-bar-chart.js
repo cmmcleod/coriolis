@@ -6,12 +6,14 @@ angular.module('app').directive('barChart', ['$window', '$translate', '$rootScop
 
   function insertLinebreaks(d) {
     var el = d3.select(this);
-    var words = d.split('\n');
+    var lines = d.split('\n');
     el.text('').attr('y', -6);
-    for (var i = 0; i < words.length; i++) {
-      var tspan = el.append('tspan').text(words[i]);
+    for (var i = 0; i < lines.length; i++) {
+      var tspan = el.append('tspan').text(lines[i].length > 18 ? lines[i].substring(0,15) + '...' : lines[i]);
       if (i > 0) {
         tspan.attr('x', -9).attr('dy', '1em');
+      } else {
+        tspan.attr('class', 'primary');
       }
     }
   }

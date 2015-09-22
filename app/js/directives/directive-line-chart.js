@@ -11,7 +11,7 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
     link: function(scope, element) {
       var seriesConfig = scope.series,
           series = seriesConfig.series,
-          color = d3.scale.ordinal().range([ '#ff8c0d']),
+          color = d3.scale.ordinal().range(scope.series.colors ? scope.series.colors : ['#ff8c0d']),
           config = scope.config,
           labels = config.labels,
           margin = { top: 15, right: 15, bottom: 35, left: 60 },
@@ -42,16 +42,15 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
           .attr('transform', 'rotate(-90)')
           .attr('y', -50)
           .attr('dy', '.1em')
-          .style('text-anchor', 'middle')
-          .text($translate.instant(labels.yAxis.title) + ' (' + $translate.instant(labels.yAxis.unit) + ')');
+          .style('text-anchor', 'middle');
+
       // Create X Axis SVG Elements
       var xLbl = vis.append('g').attr('class', 'x axis');
       var xTxt = xLbl.append('text')
           .attr('class', 'cap')
           .attr('y', 30)
           .attr('dy', '.1em')
-          .style('text-anchor', 'middle')
-          .text($translate.instant(labels.xAxis.title) + ' (' + $translate.instant(labels.xAxis.unit) + ')');
+          .style('text-anchor', 'middle');
 
       // Create and Add tooltip
       var tipHeight = 2 + (1.25 * (series ? series.length : 0.75));
@@ -200,10 +199,10 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
             tipWidth = 0,
             minTransY = (tips.selectAll('rect').node().getBoundingClientRect().height / 2) - margin.top;
 
-        tips.selectAll('text.label.y').text(function(d, i) {
+        tips.selectAll('text.label.y').html(function(d, i) {
           var yVal = series ? y0[series[i]] : y0;
           yTotal += yVal;
-          return (series ? series[i] : '') + ' ' + fmtLong(yVal) + ' ' + $translate.instant(labels.yAxis.unit);
+          return (series ? series[i] : '') + ' <tspan class="metric">' + fmtLong(yVal) + ' ' + $translate.instant(labels.yAxis.unit) + '</tspan>';
         });
 
         tips.selectAll('text').each(function() {
@@ -225,8 +224,8 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
       }
 
       function updateFormats() {
-        xTxt.text($translate.instant(labels.xAxis.title) + ' (' + $translate.instant(labels.xAxis.unit) + ')');
-        yTxt.text($translate.instant(labels.yAxis.title) + ' (' + $translate.instant(labels.yAxis.unit) + ')');
+        xTxt.html($translate.instant(labels.xAxis.title) + ' <tspan class="metric">(' + $translate.instant(labels.xAxis.unit) + ')</tspan>');
+        yTxt.html($translate.instant(labels.yAxis.title) + ' <tspan class="metric">(' + $translate.instant(labels.yAxis.unit) + ')</tspan>');
         fmtLong = $rootScope.localeFormat.numberFormat('.2f');
         xAxis.tickFormat($rootScope.localeFormat.numberFormat('.2r'));
         yAxis.tickFormat($rootScope.localeFormat.numberFormat('.3r'));
