@@ -100,7 +100,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   $scope.speedSeries = {
     xMin: 0,
     xMax: ship.cargoCapacity,
-    yMax: calcSpeed(ship.unladenMass, ship.speed, ship.boost, $scope.th.c, ship.pipSpeed)['boost'],
+    yMax: calcSpeed(ship.unladenMass, ship.speed, ship.boost, $scope.th.c, ship.pipSpeed).boost,
     yMin: 0,
     series: ['boost', '4 Pips', '2 Pips', '0 Pips'],
     colors: ['#0088d2', '#ff8c0d', '#D26D00', '#c06400'],
@@ -361,7 +361,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     $scope.speedSeries.xMax = $scope.trSeries.xMax = $scope.jrSeries.xMax = ship.cargoCapacity;
     $scope.jrSeries.yMax = ship.unladenRange;
     $scope.trSeries.yMax = ship.unladenTotalRange;
-    $scope.speedSeries.yMax = calcSpeed(ship.unladenMass, ship.speed, ship.boost, $scope.th.c, ship.pipSpeed)['boost'];
+    $scope.speedSeries.yMax = calcSpeed(ship.unladenMass, ship.speed, ship.boost, $scope.th.c, ship.pipSpeed).boost;
     updateRetrofitCosts();
     win.triggerHandler('pwrchange');
   }

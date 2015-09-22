@@ -400,7 +400,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
   Ship.prototype.updateTopSpeed = function() {
     var speeds = calcSpeed(this.unladenMass + this.fuelCapacity, this.speed, this.boost, this.common[1].c, this.pipSpeed);
     this.topSpeed = speeds['4 Pips'];
-    this.topBoost = speeds['boost'];
+    this.topBoost = speeds.boost;
   };
 
   Ship.prototype.updateShieldStrength = function() {
