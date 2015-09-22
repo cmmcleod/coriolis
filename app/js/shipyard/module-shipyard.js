@@ -87,7 +87,7 @@ angular.module('shipyard', ['ngLodash'])
     },
     {                   // 1
       title: 'speed',
-      props: ['topSpeed', 'boost'],
+      props: ['topSpeed', 'topBoost'],
       lbls: ['thrusters', 'boost'],
       unit: 'm/s',
       fmt: 'fCrd'
