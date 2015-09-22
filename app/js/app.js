@@ -42,8 +42,6 @@ function($rootScope, $location, $window, $doc, $state, $translate, localeFormat,
   // Global Reference variables
   $rootScope.insurance = { opts: [{ name: 'standard', pct: 0.05 }, { name: 'alpha', pct: 0.025 }, { name: 'beta', pct: 0.0375 }] };
   $rootScope.discounts = { opts: Discounts };
-  $rootScope.STATUS = ['', 'disabled', 'off', 'on'];
-  $rootScope.STATUS_CLASS = ['', 'disabled', 'warning', 'secondary-disabled'];
   $rootScope.sizeRatio = Persist.getSizeRatio();
   $rootScope.title = 'Coriolis';
 
