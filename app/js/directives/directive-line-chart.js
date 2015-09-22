@@ -205,8 +205,8 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
         tips.selectAll('text.label.y').text(function(d, i) {
           var yVal = series ? y0[series[i]] : y0;
           yTotal += yVal;
-          return (series ?  $translate.instant(series[i]) : '') + ' ' + fmtLong(yVal);
-        }).append('tspan').attr('class','metric').text(' ' + $translate.instant(labels.yAxis.unit));
+          return (series ? $translate.instant(series[i]) : '') + ' ' + fmtLong(yVal);
+        }).append('tspan').attr('class', 'metric').text(' ' + $translate.instant(labels.yAxis.unit));
 
         tips.selectAll('text').each(function() {
           if (this.getBBox().width > tipWidth) {
@@ -217,7 +217,7 @@ angular.module('app').directive('lineChart', ['$window', '$translate', '$rootSco
         tipWidth += 8;
         markers.selectAll('circle.marker').attr('cx', x(x0)).attr('cy', function(d, i) { return y(series ? y0[series[i]] : y0); });
         tips.selectAll('text.label').attr('x', flip ? -12 : 12).style('text-anchor', flip ? 'end' : 'start');
-        tips.selectAll('text.label.x').text(fmtLong(x0)).append('tspan').attr('class','metric').text(' ' + $translate.instant(labels.xAxis.unit));
+        tips.selectAll('text.label.x').text(fmtLong(x0)).append('tspan').attr('class', 'metric').text(' ' + $translate.instant(labels.xAxis.unit));
         tips.attr('transform', 'translate(' + x(x0) + ',' + Math.max(minTransY, y(yTotal / (series ? series.length : 1))) + ')');
         tips.selectAll('rect')
           .attr('width', tipWidth + 4)
