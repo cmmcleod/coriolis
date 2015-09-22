@@ -67,7 +67,7 @@
             <span class="warning" ng-if="th.c.maxmass < ship.ladenMass">0 <svg class="icon"><use xlink:href="#warning"></use></svg></span>
             </td>
           <td>
-            <span ng-if="pd.c.enginecapacity >= ship.boostEnergy && th.c.maxmass >= ship.ladenMass">{{fRound(ship.boost)}} <u translate>m/s</u></span>
+            <span ng-if="pd.c.enginecapacity >= ship.boostEnergy && th.c.maxmass >= ship.ladenMass">{{fCrd(ship.topBoost)}} <u translate>m/s</u></span>
             <span class="warning" ng-if="pd.c.enginecapacity < ship.boostEnergy || th.c.maxmass < ship.ladenMass">0
               <svg class="icon"><use xlink:href="#warning"></use></svg>
             </span>
