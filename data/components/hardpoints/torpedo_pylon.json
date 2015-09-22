@@ -13,7 +13,7 @@
       "thermload": 10,
       "grp": "tp",
       "clip": 1,
-      "ammo": 1,
+      "ammo": 0,
       "missile": "S"
     },
     {
@@ -29,7 +29,7 @@
       "thermload": 10,
       "grp": "tp",
       "clip": 2,
-      "ammo": 1,
+      "ammo": 0,
       "missile": "S"
     }
   ]
