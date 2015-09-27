@@ -12,6 +12,6 @@
     <div class="l" ng-if="hp.c.armourpen">{{'pen' | translate}}: {{hp.c.armourpen}}</div>
     <div class="l" ng-if="hp.c.shieldmul">+{{$r.fRPct(hp.c.shieldmul)}}</div>
     <div class="l" ng-if="hp.c.range">{{hp.c.range}} <u>km</u></div>
-    <div class="l" ng-if="hp.c.ammo">{{'ammo' | translate}}: {{$r.fCrd(hp.c.clip)}}/{{$r.fCrd(hp.c.ammo)}}</div>
+    <div class="l" ng-if="hp.c.ammo >= 0">{{'ammo' | translate}}: {{$r.fCrd(hp.c.clip)}}+{{$r.fCrd(hp.c.ammo)}}</div>
   </div>
 </div>

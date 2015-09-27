@@ -245,7 +245,7 @@
         "rating": "A",
         "enabled": true,
         "priority": 3,
-        "group": "FSD Interdictor"
+        "group": "Frame Shift Drive Interdictor"
       }
     ]
   },
@@ -254,8 +254,9 @@
     "hullCost": 141889932,
     "speed": 180,
     "topSpeed": 186.5,
-    "boost": 244,
+    "boost": 240,
     "boostEnergy": 29,
+    "topBoost": 248.66,
     "agility": 2,
     "baseShieldStrength": 350,
     "baseArmour": 945,

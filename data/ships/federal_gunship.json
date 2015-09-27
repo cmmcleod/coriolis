@@ -4,9 +4,9 @@
       "name": "Federal Gunship",
       "manufacturer": "Core Dynamics",
       "class": 2,
-      "hullCost": 44774591,
+      "hullCost": 34774801,
       "speed": 170,
-      "boost": 284,
+      "boost": 280,
       "boostEnergy": 21,
       "agility": 2,
       "baseShieldStrength": 250,
@@ -15,7 +15,7 @@
       "masslock": 14,
       "pipSpeed": 0.1025
     },
-    "retailCost": 45814000,
+    "retailCost": 35814210,
     "slots": {
       "common": [
         6,

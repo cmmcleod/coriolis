@@ -33,7 +33,7 @@ angular.module('shipyard', ['ngLodash'])
     sc: 'Scanner',
     am: 'Auto Field-Maintenance Unit',
     cr: 'Cargo Rack',
-    fi: 'FSD Interdictor',
+    fi: 'Frame Shift Drive Interdictor',
     hb: 'Hatch Breaker Limpet Controller',
     hr: 'Hull Reinforcement Package',
     rf: 'Refinery',
@@ -87,7 +87,7 @@ angular.module('shipyard', ['ngLodash'])
     },
     {                   // 1
       title: 'speed',
-      props: ['topSpeed', 'boost'],
+      props: ['topSpeed', 'topBoost'],
       lbls: ['thrusters', 'boost'],
       unit: 'm/s',
       fmt: 'fCrd'
@@ -233,16 +233,19 @@ angular.module('shipyard', ['ngLodash'])
    *
    * @param  {number} mass        Current mass of the ship
    * @param  {number} baseSpeed   Base speed m/s for ship
+   * @param  {number} baseBoost   Base boost speed m/s for ship
    * @param  {object} thrusters   The Thrusters used
    * @param  {number} pipSpeed    Speed pip multiplier
    * @return {object}             Approximate speed by pips
    */
-  .value('calcSpeed', function(mass, baseSpeed, thrusters, pipSpeed) {
-    var speed = baseSpeed * ((1 - thrusters.M) + (thrusters.M * Math.pow(3 - (2 * Math.max(0.5, mass / thrusters.optmass)), thrusters.P)));
+  .value('calcSpeed', function(mass, baseSpeed, baseBoost, thrusters, pipSpeed) {
+    var multiplier = mass > thrusters.maxmass ? 0 : ((1 - thrusters.M) + (thrusters.M * Math.pow(3 - (2 * Math.max(0.5, mass / thrusters.optmass)), thrusters.P)));
+    var speed = baseSpeed * multiplier;
 
     return {
       '0 Pips': speed * (1 - (pipSpeed * 4)),
       '2 Pips': speed * (1 - (pipSpeed * 2)),
-      '4 Pips': speed
+      '4 Pips': speed,
+      'boost': baseBoost * multiplier
     };
   });

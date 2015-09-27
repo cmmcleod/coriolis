@@ -100,11 +100,12 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   $scope.speedSeries = {
     xMin: 0,
     xMax: ship.cargoCapacity,
-    yMax: calcSpeed(ship.unladenMass, ship.speed, $scope.th.c, ship.pipSpeed)['4 Pips'],
+    yMax: calcSpeed(ship.unladenMass, ship.speed, ship.boost, $scope.th.c, ship.pipSpeed).boost,
     yMin: 0,
-    series: ['4 Pips', '2 Pips', '0 Pips'],
+    series: ['boost', '4 Pips', '2 Pips', '0 Pips'],
+    colors: ['#0088d2', '#ff8c0d', '#D26D00', '#c06400'],
     func: function(cargo) { // X Axis is Cargo
-      return calcSpeed(ship.unladenMass + $scope.fuel + cargo, ship.speed, $scope.th.c, ship.pipSpeed);
+      return calcSpeed(ship.unladenMass + $scope.fuel + cargo, ship.speed, ship.boost, $scope.th.c, ship.pipSpeed);
     }
   };
   $scope.speedChart = {
@@ -360,7 +361,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     $scope.speedSeries.xMax = $scope.trSeries.xMax = $scope.jrSeries.xMax = ship.cargoCapacity;
     $scope.jrSeries.yMax = ship.unladenRange;
     $scope.trSeries.yMax = ship.unladenTotalRange;
-    $scope.speedSeries.yMax = calcSpeed(ship.unladenMass, ship.speed, $scope.th.c, ship.pipSpeed)['4 Pips'];
+    $scope.speedSeries.yMax = calcSpeed(ship.unladenMass, ship.speed, ship.boost, $scope.th.c, ship.pipSpeed).boost;
     updateRetrofitCosts();
     win.triggerHandler('pwrchange');
   }

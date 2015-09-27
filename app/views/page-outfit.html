@@ -67,7 +67,7 @@
             <span class="warning" ng-if="th.c.maxmass < ship.ladenMass">0 <svg class="icon"><use xlink:href="#warning"></use></svg></span>
             </td>
           <td>
-            <span ng-if="pd.c.enginecapacity >= ship.boostEnergy && th.c.maxmass >= ship.ladenMass">{{fRound(ship.boost)}} <u translate>m/s</u></span>
+            <span ng-if="pd.c.enginecapacity >= ship.boostEnergy && th.c.maxmass >= ship.ladenMass">{{fCrd(ship.topBoost)}} <u translate>m/s</u></span>
             <span class="warning" ng-if="pd.c.enginecapacity < ship.boostEnergy || th.c.maxmass < ship.ladenMass">0
               <svg class="icon"><use xlink:href="#warning"></use></svg>
             </span>
@@ -229,8 +229,8 @@
           <th style="width:3em;" class="sortable" ng-click="sortPwr('type')" translate="TYPE"></th>
           <th style="width:4em;" class="sortable" ng-click="sortPwr('priority')" translate="PRI"></th>
           <th colspan="2" class="sortable" ng-click="sortPwr('c.power')" translate="PWR"></th>
-          <th style="width:3em;" class="sortable" ng-click="sortPwr(statusRetracted)" translate="RET"></th>
-          <th style="width:3em;" class="sortable" ng-click="sortPwr(statusDeployed)" translate="DEP"></th>
+          <th style="width:3em;" class="sortable" ng-click="sortPwr(statusRetracted)" translate="ret"></th>
+          <th style="width:3em;" class="sortable" ng-click="sortPwr(statusDeployed)" translate="dep"></th>
         </tr>
       </thead>
       <tbody>
@@ -250,11 +250,19 @@
           <td class="le shorten cap" ng-click="togglePwr(c)" ng-bind="cName(c)"></td>
           <td ng-click="togglePwr(c)"><u ng-bind="c.type | translate"></u></td>
           <td><span ng-click="decPriority(c)" class="flip">&#9658;</span> {{c.priority + 1}} <span ng-click="incPriority(c)">&#9658;</span></td>
-          <td class="ri" style="width:3.25em;">{{fPwr(c.c.power)}}</td>
-          <td class="ri" style="width:3em;"><u>{{f1Pct(c.c.power/ship.powerAvailable)}}</u></td>
-          <td ng-if="!c.enabled" class="disabled upp" colspan="2" translate="disabled"></td>
-          <td class="upp" ng-if="c.enabled" ng-class="STATUS_CLASS[statusRetracted(c)]">{{STATUS[statusRetracted(c)] | translate}}</td>
-          <td class="upp" ng-if="c.enabled" ng-class="STATUS_CLASS[statusDeployed(c)]">{{STATUS[statusDeployed(c)] | translate}}</td>
+          <td class="ri" style="width:3.25em;" ng-click="togglePwr(c)">{{fPwr(c.c.power)}}</td>
+          <td class="ri" style="width:3em;" ng-click="togglePwr(c)"><u>{{f1Pct(c.c.power/ship.powerAvailable)}}</u></td>
+          <td ng-if="!c.enabled" class="disabled upp" colspan="2" translate="disabled" ng-click="togglePwr(c)"></td>
+          <td class="upp" ng-if="c.enabled" ng-click="togglePwr(c)">
+            <svg class="icon secondary-disabled" ng-if="statusRetracted(c) == 3"><use xlink:href="#power"><title class="cap">{{'on' | translate}}</title></use></svg>
+            <svg class="icon warning" ng-if="statusRetracted(c) == 2"><use xlink:href="#no-power"><title class="cap">{{'off' | translate}}</title></use></svg>
+            <span class="disabled" translate="disabled" ng-if="statusRetracted(c) == 1"></span>
+          </td>
+          <td class="upp" ng-if="c.enabled"  ng-click="togglePwr(c)">
+            <svg class="icon secondary-disabled" ng-if="statusDeployed(c) == 3"><use xlink:href="#power"><title class="cap">{{'on' | translate}}</title></use></svg>
+            <svg class="icon warning" ng-if="statusDeployed(c) == 2"><use xlink:href="#no-power"><title class="cap">{{'off' | translate}}</title></use></svg>
+            <span class="disabled" translate="disabled" ng-if="statusDeployed(c) == 1"></span>
+          </td>
         </tr>
       </tbody>
     </table>
