@@ -91,7 +91,7 @@ angular.module('app').config(['$translateProvider', 'localeFormatProvider', func
     'Heat Sink Launcher': 'Éjecteur de dissipateur thermique',
     huge: 'Très grand',
     hull: 'Coque',
-    hr: 'Ensemble de mesures permettant de',
+    hr: 'Ensemble de mesures permettant de renforcer la coque',
     'Imperial Hammer': 'Marteau impérial',
     import: 'Importer',
     'import all': 'Importer tout',
