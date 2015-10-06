@@ -418,11 +418,10 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     var costs = $scope.ammoList = [];
     var total = 0, i, l, item;
 
-    for (var g in { common: 1, internal: 1, hardpoints: 1}) {
+    for (var g in { common: 1, internal: 1, hardpoints: 1 }) {
       var slotGroup = ship[g];
       for (i = 0, l = slotGroup.length; i < l; i++) {
         var q = 0;
-        console.log(slotGroup[i]);
         if (slotGroup[i].id) {
           //special cases needed for fuel, SCB and AFMU since they don't use standard ammo/clip
           if (slotGroup[i].c.grp == 'ft') {
