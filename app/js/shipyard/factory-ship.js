@@ -287,15 +287,21 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     }
   };
 
-  Ship.prototype.getSlotStatus = function(slot, deployed) {
+  Ship.prototype.getSlotStatus = function(slot, status) {
     if (!slot.c) { // Empty Slot
       return 0;   // No Status (Not possible)
     } else if (!slot.enabled) {
       return 1;   // Disabled
-    } else if (deployed && !slot.c.retractedOnly) {  // Certain component (e.g. Detaild Surface scanner) are power only while retracted
+    } else if (status == 0) {
+      if (slot.c.retractedOnly || (slot.cat === 1 && !slot.c.passive)) {
+        return 0;  // No Status (Not possible)
+      } else {
+        return this.priorityBands[slot.priority].retractedSum >= this.powerAvailable / 2 ? 2 : 3;    // Offline : Online
+      }
+    } else if (status == 1 && !slot.c.retractedOnly) {  // Certain component (e.g. Detaild Surface scanner) are power only while retracted
       return this.priorityBands[slot.priority].deployedSum >= this.powerAvailable ? 2 : 3; // Offline : Online
       // Active hardpoints have no retracted status
-    } else if ((deployed && slot.c.retractedOnly) || (slot.cat === 1 && !slot.c.passive)) {
+    } else if ((status == 2 && slot.c.retractedOnly) || (slot.cat === 1 && !slot.c.passive)) {
       return 0;  // No Status (Not possible)
     }
     return this.priorityBands[slot.priority].retractedSum >= this.powerAvailable ? 2 : 3;    // Offline : Online

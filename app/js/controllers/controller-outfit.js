@@ -336,12 +336,16 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     win.triggerHandler('render');
   };
 
+  $scope.status50pct = function(slot) {
+    return ship.getSlotStatus(slot, 0);
+  };
+
   $scope.statusRetracted = function(slot) {
-    return ship.getSlotStatus(slot, false);
+    return ship.getSlotStatus(slot, 1);
   };
 
   $scope.statusDeployed = function(slot) {
-    return ship.getSlotStatus(slot, true);
+    return ship.getSlotStatus(slot, 2);
   };
 
   $scope.setRetrofitBase = function() {
