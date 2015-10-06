@@ -229,6 +229,7 @@
           <th style="width:3em;" class="sortable" ng-click="sortPwr('type')" translate="TYPE"></th>
           <th style="width:4em;" class="sortable" ng-click="sortPwr('priority')" translate="PRI"></th>
           <th colspan="2" class="sortable" ng-click="sortPwr('c.power')" translate="PWR"></th>
+          <th style="width:3em;" class="sortable" ng-click="sortPwr(status50pct)" translate="50%"></th>
           <th style="width:3em;" class="sortable" ng-click="sortPwr(statusRetracted)" translate="ret"></th>
           <th style="width:3em;" class="sortable" ng-click="sortPwr(statusDeployed)" translate="dep"></th>
         </tr>
@@ -253,6 +254,11 @@
           <td class="ri" style="width:3.25em;" ng-click="togglePwr(c)">{{fPwr(c.c.power)}}</td>
           <td class="ri" style="width:3em;" ng-click="togglePwr(c)"><u>{{f1Pct(c.c.power/ship.powerAvailable)}}</u></td>
           <td ng-if="!c.enabled" class="disabled upp" colspan="2" translate="disabled" ng-click="togglePwr(c)"></td>
+          <td class="upp" ng-if="c.enabled" ng-click="togglePwr(c)">
+            <svg class="icon secondary-disabled" ng-if="status50pct(c) == 3"><use xlink:href="#power"><title class="cap">{{'on' | translate}}</title></use></svg>
+            <svg class="icon warning" ng-if="status50pct(c) == 2"><use xlink:href="#no-power"><title class="cap">{{'off' | translate}}</title></use></svg>
+            <span class="disabled" translate="disabled" ng-if="status50pct(c) == 1"></span>
+          </td>
           <td class="upp" ng-if="c.enabled" ng-click="togglePwr(c)">
             <svg class="icon secondary-disabled" ng-if="statusRetracted(c) == 3"><use xlink:href="#power"><title class="cap">{{'on' | translate}}</title></use></svg>
             <svg class="icon warning" ng-if="statusRetracted(c) == 2"><use xlink:href="#no-power"><title class="cap">{{'off' | translate}}</title></use></svg>
