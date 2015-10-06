@@ -8,7 +8,8 @@
       "cost": 612220,
       "power": 1.8,
       "ammo": 10000,
-      "repair": 120
+      "repair": 120,
+      "ammocost": 100
     },
     {
       "id": "1e",
@@ -18,7 +19,8 @@
       "cost": 1836660,
       "power": 2.4,
       "ammo": 9000,
-      "repair": 144
+      "repair": 144,
+      "ammocost": 100
     },
     {
       "id": "1d",
@@ -28,7 +30,8 @@
       "cost": 5509980,
       "power": 3,
       "ammo": 10000,
-      "repair": 200
+      "repair": 200,
+      "ammocost": 100
     },
     {
       "id": "1c",
@@ -38,7 +41,8 @@
       "cost": 16529941,
       "power": 3.45,
       "ammo": 12000,
-      "repair": 276
+      "repair": 276,
+      "ammocost": 100
     },
     {
       "id": "1b",
@@ -48,7 +52,8 @@
       "cost": 49589823,
       "power": 4.2,
       "ammo": 11000,
-      "repair": 308
+      "repair": 308,
+      "ammocost": 100
     },
     {
       "id": "1a",
@@ -58,7 +63,8 @@
       "cost": 340122,
       "power": 1.58,
       "ammo": 8700,
-      "repair": 104.4
+      "repair": 104.4,
+      "ammocost": 100
     },
     {
       "id": "19",
@@ -68,7 +74,8 @@
       "cost": 1020367,
       "power": 2.1,
       "ammo": 7800,
-      "repair": 124.8
+      "repair": 124.8,
+      "ammocost": 100
     },
     {
       "id": "18",
@@ -78,7 +85,8 @@
       "cost": 3061100,
       "power": 2.63,
       "ammo": 8700,
-      "repair": 174
+      "repair": 174,
+      "ammocost": 100
     },
     {
       "id": "17",
@@ -88,7 +96,8 @@
       "cost": 9183300,
       "power": 3.02,
       "ammo": 10400,
-      "repair": 239.2
+      "repair": 239.2,
+      "ammocost": 100
     },
     {
       "id": "16",
@@ -98,7 +107,8 @@
       "cost": 27549901,
       "power": 3.68,
       "ammo": 9600,
-      "repair": 268.8
+      "repair": 268.8,
+      "ammocost": 100
     },
     {
       "id": "15",
@@ -108,7 +118,8 @@
       "cost": 188957,
       "power": 1.4,
       "ammo": 7400,
-      "repair": 88.8
+      "repair": 88.8,
+      "ammocost": 100
     },
     {
       "id": "14",
@@ -118,7 +129,8 @@
       "cost": 566870,
       "power": 1.86,
       "ammo": 6700,
-      "repair": 107.2
+      "repair": 107.2,
+      "ammocost": 100
     },
     {
       "id": "13",
@@ -128,7 +140,8 @@
       "cost": 1700611,
       "power": 2.33,
       "ammo": 7400,
-      "repair": 148
+      "repair": 148,
+      "ammocost": 100
     },
     {
       "id": "12",
@@ -138,7 +151,8 @@
       "cost": 5101834,
       "power": 2.67,
       "ammo": 8900,
-      "repair": 204.7
+      "repair": 204.7,
+      "ammocost": 100
     },
     {
       "id": "11",
@@ -148,7 +162,8 @@
       "cost": 15305501,
       "power": 3.26,
       "ammo": 8100,
-      "repair": 226.8
+      "repair": 226.8,
+      "ammocost": 100
     },
     {
       "id": "10",
@@ -158,7 +173,8 @@
       "cost": 104976,
       "power": 1.17,
       "ammo": 6100,
-      "repair": 73.2
+      "repair": 73.2,
+      "ammocost": 100
     },
     {
       "id": "0v",
@@ -168,7 +184,8 @@
       "cost": 314928,
       "power": 1.56,
       "ammo": 5500,
-      "repair": 88
+      "repair": 88,
+      "ammocost": 100
     },
     {
       "id": "0u",
@@ -178,7 +195,8 @@
       "cost": 944784,
       "power": 1.95,
       "ammo": 6100,
-      "repair": 122
+      "repair": 122,
+      "ammocost": 100
     },
     {
       "id": "0t",
@@ -188,7 +206,8 @@
       "cost": 2834352,
       "power": 2.24,
       "ammo": 7300,
-      "repair": 167.9
+      "repair": 167.9,
+      "ammocost": 100
     },
     {
       "id": "0s",
@@ -198,7 +217,8 @@
       "cost": 8503056,
       "power": 2.73,
       "ammo": 6700,
-      "repair": 187.6
+      "repair": 187.6,
+      "ammocost": 100
     },
     {
       "id": "0r",
@@ -208,7 +228,8 @@
       "cost": 58320,
       "power": 0.99,
       "ammo": 4900,
-      "repair": 58.8
+      "repair": 58.8,
+      "ammocost": 100
     },
     {
       "id": "0q",
@@ -218,7 +239,8 @@
       "cost": 174960,
       "power": 1.32,
       "ammo": 4400,
-      "repair": 70.4
+      "repair": 70.4,
+      "ammocost": 100
     },
     {
       "id": "0p",
@@ -228,7 +250,8 @@
       "cost": 524880,
       "power": 1.65,
       "ammo": 4900,
-      "repair": 98
+      "repair": 98,
+      "ammocost": 100
     },
     {
       "id": "0o",
@@ -238,7 +261,8 @@
       "cost": 1574640,
       "power": 1.9,
       "ammo": 5900,
-      "repair": 135.7
+      "repair": 135.7,
+      "ammocost": 100
     },
     {
       "id": "0n",
@@ -248,7 +272,8 @@
       "cost": 4723920,
       "power": 2.31,
       "ammo": 5400,
-      "repair": 151.2
+      "repair": 151.2,
+      "ammocost": 100
     },
     {
       "id": "0m",
@@ -258,7 +283,8 @@
       "cost": 32400,
       "power": 0.81,
       "ammo": 3600,
-      "repair": 43.2
+      "repair": 43.2,
+      "ammocost": 100
     },
     {
       "id": "0l",
@@ -268,7 +294,8 @@
       "cost": 97200,
       "power": 1.08,
       "ammo": 3200,
-      "repair": 51.2
+      "repair": 51.2,
+      "ammocost": 100
     },
     {
       "id": "0k",
@@ -278,7 +305,8 @@
       "cost": 291600,
       "power": 1.35,
       "ammo": 3600,
-      "repair": 72
+      "repair": 72,
+      "ammocost": 100
     },
     {
       "id": "0j",
@@ -288,7 +316,8 @@
       "cost": 874800,
       "power": 1.55,
       "ammo": 4300,
-      "repair": 98.9
+      "repair": 98.9,
+      "ammocost": 100
     },
     {
       "id": "0i",
@@ -298,7 +327,8 @@
       "cost": 2624400,
       "power": 1.89,
       "ammo": 4000,
-      "repair": 112
+      "repair": 112,
+      "ammocost": 100
     },
     {
       "id": "0h",
@@ -308,7 +338,8 @@
       "cost": 18000,
       "power": 0.68,
       "ammo": 2300,
-      "repair": 27.6
+      "repair": 27.6,
+      "ammocost": 100
     },
     {
       "id": "0g",
@@ -318,7 +349,8 @@
       "cost": 54000,
       "power": 0.9,
       "ammo": 2100,
-      "repair": 33.6
+      "repair": 33.6,
+      "ammocost": 100
     },
     {
       "id": "0f",
@@ -328,7 +360,8 @@
       "cost": 162000,
       "power": 1.13,
       "ammo": 2300,
-      "repair": 46
+      "repair": 46,
+      "ammocost": 100
     },
     {
       "id": "0e",
@@ -338,7 +371,8 @@
       "cost": 486000,
       "power": 1.29,
       "ammo": 2800,
-      "repair": 64.4
+      "repair": 64.4,
+      "ammocost": 100
     },
     {
       "id": "0d",
@@ -348,7 +382,8 @@
       "cost": 1458000,
       "power": 1.58,
       "ammo": 2500,
-      "repair": 70
+      "repair": 70,
+      "ammocost": 100
     },
     {
       "id": "0c",
@@ -358,7 +393,8 @@
       "cost": 10000,
       "power": 0.54,
       "ammo": 1000,
-      "repair": 12
+      "repair": 12,
+      "ammocost": 100
     },
     {
       "id": "0b",
@@ -368,7 +404,8 @@
       "cost": 30000,
       "power": 0.72,
       "ammo": 900,
-      "repair": 14.4
+      "repair": 14.4,
+      "ammocost": 100
     },
     {
       "id": "0a",
@@ -378,7 +415,8 @@
       "cost": 90000,
       "power": 0.9,
       "ammo": 1000,
-      "repair": 20
+      "repair": 20,
+      "ammocost": 100
     },
     {
       "id": "09",
@@ -388,7 +426,8 @@
       "cost": 270000,
       "power": 1.04,
       "ammo": 1200,
-      "repair": 27.6
+      "repair": 27.6,
+      "ammocost": 100
     },
     {
       "id": "08",
@@ -398,7 +437,8 @@
       "cost": 810000,
       "power": 1.26,
       "ammo": 1100,
-      "repair": 30.8
+      "repair": 30.8,
+      "ammocost": 100
     }
   ]
 }

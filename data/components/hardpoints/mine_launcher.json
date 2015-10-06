@@ -13,7 +13,8 @@
       "armourpen": "C",
       "thermload": 2,
       "clip": 1,
-      "ammo": 24
+      "ammo": 24,
+      "ammocost": 209
     },
     {
       "id": "2k",
@@ -28,7 +29,8 @@
       "armourpen": "C",
       "thermload": 3,
       "clip": 3,
-      "ammo": 24
+      "ammo": 24,
+      "ammocost": 209
     }
   ]
 }

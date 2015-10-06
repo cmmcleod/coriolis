@@ -74,12 +74,12 @@
           </td>
           <td>{{fRound(ship.totalDps)}}</td>
           <td>
-            {{ship.armour}}
+            {{fCrd(ship.armour)}}
             <span ng-if="ship.armourAdded || ship.armourMultiplier > 1">
             (<span ng-if="ship.armourMultiplier > 1">{{fRPct(ship.armourMultiplier)}}</span><span ng-if="ship.armourAdded && ship.armourMultiplier > 1">&nbsp;</span><span ng-if="ship.armourAdded">+ {{ship.armourAdded}}</span>)
             </span>
           </td>
-          <td>{{fRound(ship.shieldStrength)}} <u translate>MJ</u> <span ng-if="ship.shieldMultiplier > 1 && ship.shieldStrength > 0">({{fRPct(ship.shieldMultiplier)}})</span></td>
+          <td>{{fCrd(ship.shieldStrength)}} <u translate>MJ</u> <span ng-if="ship.shieldMultiplier > 1 && ship.shieldStrength > 0">({{fRPct(ship.shieldMultiplier)}})</span></td>
           <td>{{ship.hullMass}} <u translate>T</u></td>
           <td>{{fRound(ship.unladenMass)}} <u translate>T</u></td>
           <td>{{fRound(ship.ladenMass)}} <u translate>T</u></td>
@@ -273,8 +273,9 @@
     <table class="tabs">
       <thead>
         <tr>
-          <th style="width:50%" ng-class="{active: costTab == 'retrofit'}" ng-click="updateCostTab('retrofit')" translate="retrofit costs"></th>
-          <th style="width:50%" ng-class="{active: costTab == 'costs'}" ng-click="updateCostTab('costs')" translate="costs"></th>
+          <th style="width:34%" ng-class="{active: costTab == 'ammo'}" ng-click="updateCostTab('ammo')" translate="reload costs"></th>
+          <th style="width:33%" ng-class="{active: costTab == 'retrofit'}" ng-click="updateCostTab('retrofit')" translate="retrofit costs"></th>
+          <th style="width:33%" ng-class="{active: costTab == 'costs'}" ng-click="updateCostTab('costs')" translate="costs"></th>
         </tr>
       </thead>
     </table>
@@ -352,6 +353,38 @@
 
           </td>
         </tr>
+      </table>
+    </div>
+
+    <div ng-if="costTab == 'ammo'">
+      <div class="scroll-x">
+        <table style="width:100%">
+	  <thead>
+	    <tr class="main">
+	      <th colspan="2" class="sortable le" ng-click="sortAmmo('ammoName | translate')" translate="component"></th>
+	      <th colspan="1" class="sortable le" ng-click="sortAmmo('ammoMax | translate')" translate="quantity"></th>
+	      <th colspan="1" class="sortable le" ng-click="sortAmmo('ammoUnitCost | translate')" translate="unit cost"></th>
+	      <th class="sortable le" ng-click="sortAmmo('ammoTotalCost')">
+	        {{'total cost' | translate}} <u class="optional-hide" ng-if="discounts.ammo < 1">-[{{fRPct(1 - discounts.ammo)}}]</u>
+	      </th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr class="highlight" ng-repeat="item in ammoList | orderBy:ammoPredicate:ammoDesc">
+	      <td style="width:1em;">{{item.ammoClassRating}}</td>
+	      <td class="le shorten cap">{{item.ammoName | translate}}</td>
+	      <td class="ri">{{fCrd(item.ammoMax)}}</td>
+	      <td class="ri">{{fCrd(item.ammoUnitCost)}} <u translate>CR</u></td>
+	      <td class="ri">{{fCrd(item.ammoTotalCost)}} <u translate>CR</u></td>
+	    </tr>
+	  </tbody>
+	</table>
+      </div>
+      <table class="total">
+        <tr class="ri">
+	  <td class="lbl" translate="total"></td>
+	  <td>{{fCrd(ammoTotal)}} <u translate>CR</u></td>
+	</tr>
       </table>
     </div>
   </div>

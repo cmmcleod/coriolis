@@ -13,7 +13,8 @@
       "armourpen": "F",
       "thermload": 2,
       "clip": 1,
-      "ammo": 10
+      "ammo": 10,
+      "ammocost": 30
     },
     {
       "id": "01",
@@ -42,7 +43,8 @@
       "armourpen": "F",
       "thermload": 0,
       "clip": 1,
-      "ammo": 3
+      "ammo": 3,
+      "ammocost": 25
     },
     {
       "id": "03",
@@ -57,7 +59,8 @@
       "armourpen": "F",
       "thermload": 1,
       "clip": 50,
-      "ammo": 10000
+      "ammo": 10000,
+      "ammocost": 1
     }
   ]
 }
