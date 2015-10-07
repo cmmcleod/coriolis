@@ -22,8 +22,8 @@
       <div class="dbl" >
         <div><ul ng-repeat="shipId in buildsList">
           {{ships[shipId].properties.name}}
-          <li ng-repeat="(name, build) in allBuilds[shipId]">
-            <a ui-sref-active="active" class="name" ui-sref="outfit({shipId:shipId, code:build, bn:name})" ng-bind="name"></a>
+          <li ng-repeat="(i, name) in cleanedBuildList(shipId)">
+            <a ui-sref-active="active" class="name" ui-sref="outfit({shipId:shipId, code:allBuilds[shipId][name], bn:name})" ng-bind="name"></a>
           </li>
         </ul></div>
       </div>
@@ -36,7 +36,7 @@
     </div>
     <div class="menu-list" ng-if="openedMenu=='comp'" ng-click="$event.stopPropagation();" style="white-space: nowrap;">
       <span class="cap" ng-if="!bs.hasComparisons" translate="none created"></span>
-      <a ng-repeat="(name, comp) in allComparisons" ui-sref-active="active" class="block name" ui-sref="compare({name:name})" ng-bind="name"></a>
+      <a ng-repeat="(i, name) in allComparisons" ui-sref-active="active" class="block name" ui-sref="compare({name:name})" ng-bind="name"></a>
       <hr />
       <a ui-sref="compare({name: 'all'})" class="block cap" translate="compare all"></a>
       <a ui-sref="compare({name: null})" class="block cap" translate="create new"></a>

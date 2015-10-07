@@ -10,7 +10,7 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$window', '$rootSc
       scope.ships = ships;
       scope.allBuilds = Persist.builds;
       scope.buildsList = Object.keys(scope.allBuilds).sort();
-      scope.allComparisons = Persist.comparisons;
+      scope.allComparisons = Object.keys(Persist.comparisons).sort();
       scope.bs = Persist.state;
 
       var win = angular.element($window);   // Angularized window object for event triggering
@@ -57,6 +57,10 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$window', '$rootSc
         });
       };
 
+      scope.cleanedBuildList = function(shipId) {
+        return Object.keys(scope.allBuilds[shipId]);
+      };
+
       scope.openMenu = function(e, menu) {
         e.stopPropagation();
         if (menu == scope.openedMenu) {
@@ -68,6 +72,11 @@ angular.module('app').directive('shipyardHeader', ['lodash', '$window', '$rootSc
           scope.openedMenu = null;
           return;
         }
+
+        if (menu == 'comp') {
+          scope.allComparisons = Object.keys(Persist.comparisons).sort();
+        }
+
         scope.openedMenu = menu;
       };
 
