@@ -18,7 +18,8 @@
       "clip": 5,
       "mjdps" : 6.89,
       "ssdam" : 27.85,
-      "ammo": 100
+      "ammo": 100,
+      "ammocost": 200
     },
     {
       "id": "2b",
@@ -38,7 +39,8 @@
       "clip": 5,
       "mjdps" : 20.98,
       "ssdam" : 92.82,
-      "ammo": 100
+      "ammo": 100,
+      "ammocost": 200
     },
     {
       "id": "2c",
@@ -58,7 +60,8 @@
       "clip": 5,
       "mjdps" : 25.55,
       "ssdam" : 123.76,
-      "ammo": 100
+      "ammo": 100,
+      "ammocost": 200
     },
     {
       "id": "Ap",

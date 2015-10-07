@@ -14,6 +14,7 @@
       "grp": "tp",
       "clip": 1,
       "ammo": 0,
+      "ammocost": 15000,
       "missile": "S"
     },
     {
@@ -30,6 +31,7 @@
       "grp": "tp",
       "clip": 2,
       "ammo": 0,
+      "ammocost": 15000,
       "missile": "S"
     }
   ]

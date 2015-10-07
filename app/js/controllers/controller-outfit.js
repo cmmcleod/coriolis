@@ -40,6 +40,8 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   $scope.retroPredicate = 'netCost';
   $scope.costDesc = true;
   $scope.costPredicate = 'c.cost';
+  $scope.ammoDesc = false;
+  $scope.ammoPredicate = 'ammoName';
   $scope.costTab = Persist.getCostTab() || 'costs';
 
   if ($scope.savedCode) {
@@ -422,8 +424,13 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   };
 
   $scope.sortRetrofit = function(key) {
-      $scope.retroDesc = $scope.retroPredicate == key ? !$scope.retroDesc : $scope.retroDesc;
-      $scope.retroPredicate = key;
+    $scope.retroDesc = $scope.retroPredicate == key ? !$scope.retroDesc : $scope.retroDesc;
+    $scope.retroPredicate = key;
+  };
+
+  $scope.sortAmmo = function(key) {
+    $scope.ammoDesc = $scope.ammoPredicate == key ? !$scope.ammoDesc : $scope.ammoDesc;
+    $scope.ammoPredicate = key;
   };
 
   /**
@@ -538,6 +545,48 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
       }
     }
     $scope.retrofitTotal = total;
+    updateAmmoCosts();
+  }
+
+  function updateAmmoCosts() {
+    var costs = $scope.ammoList = [];
+    var total = 0, i, l, item;
+
+    for (var g in { common: 1, internal: 1, hardpoints: 1 }) {
+      var slotGroup = ship[g];
+      for (i = 0, l = slotGroup.length; i < l; i++) {
+        var q = 0;
+        if (slotGroup[i].id) {
+          //special cases needed for fuel, SCB and AFMU since they don't use standard ammo/clip
+          if (slotGroup[i].c.grp == 'ft') {
+            q = slotGroup[i].c.capacity;
+            slotGroup[i].c.ammocost = 50;
+          }
+          if (slotGroup[i].c.grp == 'scb') {
+            q = slotGroup[i].c.cells;
+          }
+          if (slotGroup[i].c.grp == 'am') {
+            q = slotGroup[i].c.ammo;
+          }
+          //calculate ammo costs only if a cost is specified
+          if (slotGroup[i].c.ammocost > 0) {
+            if (q == 0) {
+              q = slotGroup[i].c.clip + slotGroup[i].c.ammo;
+            }
+            item = {
+              ammoClassRating: slotGroup[i].c.class + slotGroup[i].c.rating,
+              ammoName: slotGroup[i].c.name || slotGroup[i].c.grp,
+              ammoMax: q,
+              ammoUnitCost: slotGroup[i].c.ammocost,
+              ammoTotalCost: q * slotGroup[i].c.ammocost
+            };
+            costs.push(item);
+            total += item.ammoTotalCost;
+          }
+        }
+      }
+    }
+    $scope.ammoTotal = total;
   }
 
   // Hide any open menu/slot/etc if the background is clicked

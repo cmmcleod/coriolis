@@ -18,7 +18,8 @@
       "clip": 5,
       "mjdps": 8.13,
       "ssdam" : 37.13,
-      "ammo": 100
+      "ammo": 100,
+      "ammocost": 20
     },
     {
       "id": "1r",
@@ -38,7 +39,8 @@
       "clip": 5,
       "mjdps": 10.97,
       "ssdam" : 30.94,
-      "ammo": 100
+      "ammo": 100,
+      "ammocost": 20
     },
     {
       "id": "1n",
@@ -58,7 +60,8 @@
       "clip": 5,
       "mjdps": 8.13,
       "ssdam" : 22.28,
-      "ammo": 100
+      "ammo": 100,
+      "ammocost": 20
     },
     {
       "id": "1o",
@@ -78,7 +81,8 @@
       "clip": 5,
       "mjdps" : 7.95,
       "ssdam" : 21.04,
-      "ammo": 100
+      "ammo": 100,
+      "ammocost": 20
     },
     {
       "id": "1p",
@@ -98,7 +102,8 @@
       "clip": 5,
       "mjdps" : 3.58,
       "ssdam" : 12.38,
-      "ammo": 100
+      "ammo": 100,
+      "ammocost": 20
     },
     {
       "id": "1k",
@@ -118,7 +123,8 @@
       "clip": 5,
       "mjdps" : 6.00,
       "ssdam" : 15.47,
-      "ammo": 100
+      "ammo": 100,
+      "ammocost": 20
     },
     {
       "id": "1l",
@@ -138,7 +144,8 @@
       "clip": 5,
       "mjdps" : 6.24,
       "ssdam" : 15.47,
-      "ammo": 100
+      "ammo": 100,
+      "ammocost": 20
     },
     {
       "id": "1m",
@@ -158,7 +165,8 @@
       "clip": 5,
       "mjdps" : 2.41,
       "ssdam" : 7.74,
-      "ammo": 100
+      "ammo": 100,
+      "ammocost": 20
     },
     {
       "id": "1h",
@@ -178,7 +186,8 @@
       "clip": 5,
       "mjdps" : 4.00,
       "ssdam" : 9.59,
-      "ammo": 100
+      "ammo": 100,
+      "ammocost": 20
     },
     {
       "id": "1i",
@@ -198,7 +207,8 @@
       "clip": 5,
       "mjdps" : 3.80,
       "ssdam" : 8.97,
-      "ammo": 100
+      "ammo": 100,
+      "ammocost": 20
     },
     {
       "id": "1j",
@@ -218,7 +228,8 @@
       "clip": 5,
       "mjdps" : 1.35,
       "ssdam" : 4.13,
-      "ammo": 100
+      "ammo": 100,
+      "ammocost": 20
     }
   ]
 }
