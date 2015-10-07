@@ -63,11 +63,11 @@
 
   h1 {
     cursor: pointer;
-  }
 
-  .icon {
-    float: right;
-    margin: 0.1em 0.3em 0 0;
+    .icon {
+      float: right;
+      margin: 0.1em 0.3em 0 0;
+    }
   }
 
   .select {
@@ -233,6 +233,19 @@ table.total {
   rect {
     stroke-width: 1px;
     stroke: #000;
+  }
+
+}
+
+svg g {
+  .threshold {
+    stroke: @secondary-disabled !important;
+    fill: @secondary-disabled !important;
+
+    &.exceeded {
+      stroke: @warning !important;
+      fill: @warning !important;
+    }
   }
 }
 

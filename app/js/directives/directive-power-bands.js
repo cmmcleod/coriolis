@@ -38,7 +38,7 @@ angular.module('app').directive('powerBands', ['$window', '$translate', '$rootSc
       });
 
       // Create Y Axis SVG Elements
-      vis.append('g').attr('class', 'watt axis');
+      var wattAxisGroup = vis.append('g').attr('class', 'watt axis');
       vis.append('g').attr('class', 'pct axis');
       var retText = vis.append('text').attr('x', -3).style('text-anchor', 'end').attr('dy', '0.5em').attr('class', 'primary upp');
       var depText = vis.append('text').attr('x', -3).style('text-anchor', 'end').attr('dy', '0.5em').attr('class', 'primary upp');
@@ -94,12 +94,25 @@ angular.module('app').directive('powerBands', ['$window', '$translate', '$rootSc
         retracted.selectAll('text').remove();
         deployed.selectAll('rect').remove();
         deployed.selectAll('text').remove();
+        wattAxisGroup.selectAll('line.threshold').remove();
 
         // Update X & Y Axis
         wattScale.range([0, w]).domain([0, maxPwr]).clamp(true);
         pctScale.range([0, w]).domain([0, maxPwr / available]).clamp(true);
-        vis.selectAll('.watt.axis').call(wattAxis);
+        wattAxisGroup.call(wattAxis);
         vis.selectAll('.pct.axis').attr('transform', 'translate(0,' + innerHeight + ')').call(pctAxis);
+
+        var pwrWarningClass = 'threshold' + (bands[0].retractedSum * 2 >= available ? ' exceeded' : '') ;
+        vis.selectAll('.pct.axis g:nth-child(6)').selectAll('line, text').attr('class', pwrWarningClass);
+
+        wattAxisGroup.append('line')
+          .attr('x1', pctScale(0.5))
+          .attr('x2', pctScale(0.5))
+          .attr('y1', 0)
+          .attr('y2', innerHeight)
+          .attr('class', pwrWarningClass);
+
+
 
         retText.attr('y', repY);
         depText.attr('y', depY);
