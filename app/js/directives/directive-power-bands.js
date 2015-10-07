@@ -102,7 +102,7 @@ angular.module('app').directive('powerBands', ['$window', '$translate', '$rootSc
         wattAxisGroup.call(wattAxis);
         vis.selectAll('.pct.axis').attr('transform', 'translate(0,' + innerHeight + ')').call(pctAxis);
 
-        var pwrWarningClass = 'threshold' + (bands[0].retractedSum * 2 >= available ? ' exceeded' : '') ;
+        var pwrWarningClass = 'threshold' + (bands[0].retractedSum * 2 >= available ? ' exceeded' : '');
         vis.selectAll('.pct.axis g:nth-child(6)').selectAll('line, text').attr('class', pwrWarningClass);
 
         wattAxisGroup.append('line')
