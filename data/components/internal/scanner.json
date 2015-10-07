@@ -38,11 +38,10 @@
       "grp": "sc",
       "name": "Detailed Surface Scanner",
       "class": 1,
-      "retractedOnly": 1,
       "rating": "C",
       "cost": 250000,
       "mass": 1.3,
-      "power": 0.6,
+      "power": 0,
       "rangeLS": 0.33
     }
   ]
