@@ -1,6 +1,6 @@
 angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable', 'shipyard', 'ngLodash', 'app.templates', 'pascalprecht.translate'])
-.run(['$rootScope', '$location', '$window', '$document', '$state', '$translate', 'localeFormat', 'Persist', 'Discounts', 'Languages',
-function($rootScope, $location, $window, $doc, $state, $translate, localeFormat, Persist, Discounts, Languages) {
+.run(['$rootScope', '$location', '$window', '$document', '$state', '$translate', 'localeFormat', 'Persist', 'Discounts', 'Languages', 'SizeMap',
+function($rootScope, $location, $window, $doc, $state, $translate, localeFormat, Persist, Discounts, Languages, SizeMap) {
   // App is running as a standalone web app on tablet/mobile
   var isStandAlone;
   // This was causing issues on Windows phones ($window.external was causing Angular js to throw an exception). Backup is to try this and set isStandAlone to false if this fails.
@@ -43,6 +43,7 @@ function($rootScope, $location, $window, $doc, $state, $translate, localeFormat,
   $rootScope.insurance = { opts: [{ name: 'standard', pct: 0.05 }, { name: 'alpha', pct: 0.025 }, { name: 'beta', pct: 0.0375 }] };
   $rootScope.discounts = { opts: Discounts };
   $rootScope.sizeRatio = Persist.getSizeRatio();
+  $rootScope.SZM = SizeMap;
   $rootScope.title = 'Coriolis';
 
   $rootScope.changeLanguage = function() {

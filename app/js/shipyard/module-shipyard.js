@@ -10,15 +10,16 @@ angular.module('shipyard', ['ngLodash'])
   // Create 'angularized' references to DB. This will aid testing
   .constant('ShipsDB', DB.ships)
   .constant('ComponentsDB', DB.components)
-  .value('ArmourMultiplier', [
+  .constant('ArmourMultiplier', [
     1,      // Lightweight
     1.4,    // Reinforced
     1.945,  // Military
     1.945,  // Mirrored
     1.945   // Reactive
   ])
+  .constant('SizeMap', ['', 'small', 'medium', 'large', 'capital'])
   // Map to lookup group labels/names for component grp, used for JSON Serialization
-  .value('GroupMap', {
+  .constant('GroupMap', {
     // Common
     pp: 'Power Plant',
     t: 'Thrusters',
@@ -64,7 +65,7 @@ angular.module('shipyard', ['ngLodash'])
     sb: 'Shield Booster',
     tp: 'Torpedo Pylon'
   })
-  .value('MountMap', {
+  .constant('MountMap', {
     'F': 'Fixed',
     'G': 'Gimballed',
     'T': 'Turret',
@@ -78,7 +79,7 @@ angular.module('shipyard', ['ngLodash'])
    *
    * @type {Array}
    */
-  .value('ShipFacets', [
+  .constant('ShipFacets', [
     {                   // 0
       title: 'agility',
       props: ['agility'],
@@ -161,7 +162,7 @@ angular.module('shipyard', ['ngLodash'])
   /**
    * Set of all available / theoretical discounts
    */
-  .value('Discounts', {
+  .constant('Discounts', {
     '0%': 1,
     '5%': 0.95,
     '10%': 0.90,
