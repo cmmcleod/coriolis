@@ -8,9 +8,6 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    */
   function powerUsageType(slot, component) {
     if (component) {
-      if (component.retractedOnly) {
-        return 'retOnly';
-      }
       if (component.passive) {
         return 'retracted';
       }
@@ -29,6 +26,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.id = id;
     this.cargoHatch = { c: Components.cargoHatch(), type: 'SYS' };
     this.bulkheads = { incCost: true, maxClass: 8 };
+    this.availCS = Components.forShip(id);
 
     for (var p in properties) { this[p] = properties[p]; }  // Copy all base properties from shipData
 
@@ -70,6 +68,91 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       { deployed: 0, retracted: 0, retOnly: 0 }
     ];
   }
+
+  //*********//
+  // GETTERS //
+  //*********//
+
+  Ship.prototype.getAvailableComponents = function() {
+    return this.availCS;
+  };
+
+  Ship.prototype.getSlotStatus = function(slot, deployed) {
+    if (!slot.c) { // Empty Slot
+      return 0;   // No Status (Not possible to be active in this state)
+    } else if (!slot.enabled) {
+      return 1;   // Disabled
+    } else if (deployed) {
+      return this.priorityBands[slot.priority].deployedSum >= this.powerAvailable ? 2 : 3; // Offline : Online
+      // Active hardpoints have no retracted status
+    } else if ((slot.cat === 1 && !slot.c.passive)) {
+      return 0;  // No Status (Not possible to be active in this state)
+    }
+    return this.priorityBands[slot.priority].retractedSum >= this.powerAvailable ? 2 : 3;    // Offline : Online
+  };
+
+/**
+   * Calculate jump range using the installed FSD and the
+   * specified mass which can be more or less than ships actual mass
+   * @param  {number} mass Mass in tons
+   * @param  {number} fuel Fuel available in tons
+   * @return {number}      Jump range in Light Years
+   */
+  Ship.prototype.getJumpRangeForMass = function(mass, fuel) {
+    return calcJumpRange(mass, this.common[2].c, fuel);
+  };
+
+  /**
+   * Find an internal slot that has an installed component of the specific group.
+   *
+   * @param  {string} group Component group/type
+   * @return {number}       The index of the slot in ship.internal
+   */
+  Ship.prototype.findInternalByGroup = function(group) {
+    var index;
+    if (group == 'sg' || group == 'psg') {
+      index = _.findIndex(this.internal, function(slot) {
+        return slot.c && (slot.c.grp == 'sg' || slot.c.grp == 'psg');
+      });
+    } else {
+      index = _.findIndex(this.internal, function(slot) {
+        return slot.c && slot.c.grp == group;
+      });
+    }
+
+    if (index !== -1) {
+      return this.internal[index];
+    }
+    return null;
+  };
+
+  //**********************//
+  // Mutate / Update Ship //
+  //**********************//
+
+  /**
+   * Recalculate all item costs and total based on discounts.
+   * @param  {number} shipCostMultiplier      Ship cost multiplier discount (e.g. 0.9 === 10% discount)
+   * @param  {number} componentCostMultiplier Component cost multiplier discount (e.g. 0.75 === 25% discount)
+   */
+  Ship.prototype.applyDiscounts = function(shipCostMultiplier, componentCostMultiplier) {
+    var total = 0;
+    var costList = this.costList;
+
+    for (var i = 0, l = costList.length; i < l; i++) {
+      var item = costList[i];
+      if (item.c && item.c.cost) {
+        item.discountedCost = item.c.cost * (item.type == 'SHIP' ? shipCostMultiplier : componentCostMultiplier);
+        if (item.incCost) {
+          total += item.discountedCost;
+        }
+      }
+    }
+    this.shipCostMultiplier = shipCostMultiplier;
+    this.componentCostMultiplier = componentCostMultiplier;
+    this.totalCost = total;
+    return this;
+  };
 
   /**
    * Builds/Updates the ship instance with the components[comps] passed in.
@@ -156,108 +239,54 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
 
     // Update aggragated stats
     if (comps) {
-      this.updatePower();
-      this.updateJumpStats();
-      this.updateShieldStrength();
-      this.updateTopSpeed();
+      this.updatePower()
+          .updateJumpStats()
+          .updateShieldStrength()
+          .updateTopSpeed();
     }
+
+    return this;
   };
 
-  Ship.prototype.useBulkhead = function(index, preventUpdate) {
-    var oldBulkhead = this.bulkheads.c;
-    this.bulkheads.id = index;
-    this.bulkheads.c = Components.bulkheads(this.id, index);
-    this.bulkheads.discountedCost = this.bulkheads.c.cost * this.componentCostMultiplier;
-    this.armourMultiplier = ArmourMultiplier[index];
-    this.updateStats(this.bulkheads, this.bulkheads.c, oldBulkhead, preventUpdate);
+  Ship.prototype.emptyHardpoints = function() {
+    for (var i = this.hardpoints.length; i--; ) {
+      this.use(this.hardpoints[i], null, null);
+    }
+    return this;
   };
 
-  /**
-   * Update a slot with a the component if the id is different from the current id for this slot.
-   * Has logic handling components that you may only have 1 of (Shield Generator or Refinery).
-   *
-   * @param {object}  slot            The component slot
-   * @param {string}  id              Unique ID for the selected component
-   * @param {object}  component       Properties for the selected component
-   * @param {boolean} preventUpdate   If true, do not update aggregated stats
-   */
-  Ship.prototype.use = function(slot, id, component, preventUpdate) {
-    if (slot.id != id) { // Selecting a different component
-      // Slot is an internal slot, is not being emptied, and the selected component group/type must be of unique
-      if (slot.cat == 2 && component && _.includes(['psg', 'sg', 'rf', 'fs'], component.grp)) {
-        // Find another internal slot that already has this type/group installed
-        var similarSlot = this.findInternalByGroup(component.grp);
-        // If another slot has an installed component with of the same type
-        if (!preventUpdate && similarSlot && similarSlot !== slot) {
-          this.updateStats(similarSlot, null, similarSlot.c, true);  // Update stats but don't trigger a global update
-          similarSlot.id = similarSlot.c = null;  // Empty the slot
-          similarSlot.discountedCost = 0;
-        }
+  Ship.prototype.emptyInternal = function() {
+    for (var i = this.internal.length; i--; ) {
+      this.use(this.internal[i], null, null);
+    }
+    return this;
+  };
+
+  Ship.prototype.emptyUtility = function() {
+    for (var i = this.hardpoints.length; i--; ) {
+      if (!this.hardpoints[i].maxClass) {
+        this.use(this.hardpoints[i], null, null);
       }
-      var oldComponent = slot.c;
-      slot.id = id;
-      slot.c = component;
-      slot.discountedCost = (component && component.cost) ? component.cost * this.componentCostMultiplier : 0;
-      this.updateStats(slot, component, oldComponent, preventUpdate);
     }
+    return this;
   };
 
-
-  /**
-   * Calculate jump range using the installed FSD and the
-   * specified mass which can be more or less than ships actual mass
-   * @param  {number} mass Mass in tons
-   * @param  {number} fuel Fuel available in tons
-   * @return {number}      Jump range in Light Years
-   */
-  Ship.prototype.jumpRangeWithMass = function(mass, fuel) {
-    return calcJumpRange(mass, this.common[2].c, fuel);
-  };
-
-  /**
-   * Find an internal slot that has an installed component of the specific group.
-   *
-   * @param  {string} group Component group/type
-   * @return {number}       The index of the slot in ship.internal
-   */
-  Ship.prototype.findInternalByGroup = function(group) {
-    var index;
-    if (group == 'sg' || group == 'psg') {
-      index = _.findIndex(this.internal, function(slot) {
-        return slot.c && (slot.c.grp == 'sg' || slot.c.grp == 'psg');
-      });
-    } else {
-      index = _.findIndex(this.internal, function(slot) {
-        return slot.c && slot.c.grp == group;
-      });
-    }
-
-    if (index !== -1) {
-      return this.internal[index];
-    }
-    return null;
-  };
-
-  /**
-   * Will change the priority of the specified slot if the new priority is valid
-   * @param  {object} slot        The slot to be updated
-   * @param  {number} newPriority The new priority to be set
-   * @return {boolean}            Returns true if the priority was changed (within range)
-   */
-  Ship.prototype.changePriority = function(slot, newPriority) {
-    if (newPriority >= 0 && newPriority < this.priorityBands.length) {
-      var oldPriority = slot.priority;
-      slot.priority = newPriority;
-
-      if (slot.enabled) { // Only update power if the slot is enabled
-        var usage = powerUsageType(slot, slot.c);
-        this.priorityBands[oldPriority][usage] -= slot.c.power;
-        this.priorityBands[newPriority][usage] += slot.c.power;
-        this.updatePower();
+  Ship.prototype.emptyWeapons = function() {
+    for (var i = this.hardpoints.length; i--; ) {
+      if (this.hardpoints[i].maxClass) {
+        this.use(this.hardpoints[i], null, null);
       }
-      return true;
     }
-    return false;
+    return this;
+  };
+
+  /**
+   * Optimize for the lower mass build that can still boost and power the ship
+   * without power management.
+   * @param  {object} c Common Component overrides
+   */
+  Ship.prototype.optimizeMass = function(c) {
+    return this.emptyHardpoints().emptyInternal().useLightestCommon(c);
   };
 
   Ship.prototype.setCostIncluded = function(item, included) {
@@ -265,6 +294,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       this.totalCost += included ? item.discountedCost : -item.discountedCost;
     }
     item.incCost = included;
+    return this;
   };
 
   Ship.prototype.setSlotEnabled = function(slot, enabled) {
@@ -285,20 +315,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
         this.updatePower();
       }
     }
-  };
-
-  Ship.prototype.getSlotStatus = function(slot, deployed) {
-    if (!slot.c) { // Empty Slot
-      return 0;   // No Status (Not possible)
-    } else if (!slot.enabled) {
-      return 1;   // Disabled
-    } else if (deployed && !slot.c.retractedOnly) {  // Certain component (e.g. Detaild Surface scanner) are power only while retracted
-      return this.priorityBands[slot.priority].deployedSum >= this.powerAvailable ? 2 : 3; // Offline : Online
-      // Active hardpoints have no retracted status
-    } else if ((deployed && slot.c.retractedOnly) || (slot.cat === 1 && !slot.c.passive)) {
-      return 0;  // No Status (Not possible)
-    }
-    return this.priorityBands[slot.priority].retractedSum >= this.powerAvailable ? 2 : 3;    // Offline : Online
+    return this;
   };
 
   /**
@@ -380,6 +397,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       this.updateJumpStats();
       this.updateShieldStrength();
     }
+    return this;
   };
 
   Ship.prototype.updatePower = function() {
@@ -395,17 +413,20 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.powerAvailable = this.common[0].c.pGen;
     this.powerRetracted = prevRetracted;
     this.powerDeployed = prevDeployed;
+    return this;
   };
 
   Ship.prototype.updateTopSpeed = function() {
     var speeds = calcSpeed(this.unladenMass + this.fuelCapacity, this.speed, this.boost, this.common[1].c, this.pipSpeed);
     this.topSpeed = speeds['4 Pips'];
     this.topBoost = speeds.boost;
+    return this;
   };
 
   Ship.prototype.updateShieldStrength = function() {
     var sgSlot = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
     this.shieldStrength = sgSlot && sgSlot.enabled ? calcShieldStrength(this.hullMass, this.baseShieldStrength, sgSlot.c, this.shieldMultiplier) : 0;
+    return this;
   };
 
   /**
@@ -419,29 +440,133 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     this.unladenTotalRange = calcTotalRange(this.unladenMass, fsd, this.fuelCapacity);
     this.ladenTotalRange = calcTotalRange(this.unladenMass + this.cargoCapacity, fsd, this.fuelCapacity);
     this.maxJumpCount = Math.ceil(this.fuelCapacity / fsd.maxfuel);
+    return this;
+  };
+
+
+  /**
+   * Update a slot with a the component if the id is different from the current id for this slot.
+   * Has logic handling components that you may only have 1 of (Shield Generator or Refinery).
+   *
+   * @param {object}  slot            The component slot
+   * @param {string}  id              Unique ID for the selected component
+   * @param {object}  component       Properties for the selected component
+   * @param {boolean} preventUpdate   If true, do not update aggregated stats
+   */
+  Ship.prototype.use = function(slot, id, component, preventUpdate) {
+    if (slot.id != id) { // Selecting a different component
+      // Slot is an internal slot, is not being emptied, and the selected component group/type must be of unique
+      if (slot.cat == 2 && component && _.includes(['psg', 'sg', 'rf', 'fs'], component.grp)) {
+        // Find another internal slot that already has this type/group installed
+        var similarSlot = this.findInternalByGroup(component.grp);
+        // If another slot has an installed component with of the same type
+        if (!preventUpdate && similarSlot && similarSlot !== slot) {
+          this.updateStats(similarSlot, null, similarSlot.c, true);  // Update stats but don't trigger a global update
+          similarSlot.id = similarSlot.c = null;  // Empty the slot
+          similarSlot.discountedCost = 0;
+        }
+      }
+      var oldComponent = slot.c;
+      slot.id = id;
+      slot.c = component;
+      slot.discountedCost = (component && component.cost) ? component.cost * this.componentCostMultiplier : 0;
+      this.updateStats(slot, component, oldComponent, preventUpdate);
+    }
+    return this;
   };
 
   /**
-   * Recalculate all item costs and total based on discounts.
-   * @param  {number} shipCostMultiplier      Ship cost multiplier discount (e.g. 0.9 === 10% discount)
-   * @param  {number} componentCostMultiplier Component cost multiplier discount (e.g. 0.75 === 25% discount)
+   * [useBulkhead description]
+   * @param  {[type]} index         [description]
+   * @param  {[type]} preventUpdate [description]
+   * @return {[type]}               [description]
    */
-  Ship.prototype.applyDiscounts = function(shipCostMultiplier, componentCostMultiplier) {
-    var total = 0;
-    var costList = this.costList;
+  Ship.prototype.useBulkhead = function(index, preventUpdate) {
+    var oldBulkhead = this.bulkheads.c;
+    this.bulkheads.id = index;
+    this.bulkheads.c = Components.bulkheads(this.id, index);
+    this.bulkheads.discountedCost = this.bulkheads.c.cost * this.componentCostMultiplier;
+    this.armourMultiplier = ArmourMultiplier[index];
+    this.updateStats(this.bulkheads, this.bulkheads.c, oldBulkhead, preventUpdate);
 
-    for (var i = 0, l = costList.length; i < l; i++) {
-      var item = costList[i];
-      if (item.c && item.c.cost) {
-        item.discountedCost = item.c.cost * (item.type == 'SHIP' ? shipCostMultiplier : componentCostMultiplier);
-        if (item.incCost) {
-          total += item.discountedCost;
-        }
-      }
+    return this;
+  };
+
+  /**
+   * [useCommon description]
+   * @param  {[type]} rating [description]
+   * @return {[type]}        [description]
+   */
+  Ship.prototype.useCommon = function(rating) {
+    for (var i = this.common.length - 1; i--; ) { // All except Fuel Tank
+      var id = this.common[i].maxClass + rating;
+      this.use(this.common[i], id, Components.common(i, id));
     }
-    this.shipCostMultiplier = shipCostMultiplier;
-    this.componentCostMultiplier = componentCostMultiplier;
-    this.totalCost = total;
+    return this;
+  };
+
+  /**
+   * Use the lightest common components unless otherwise specified
+   * @param  {object} c Component overrides
+   */
+  Ship.prototype.useLightestCommon = function(c) {
+    c = c || {};
+
+    var common = this.common,
+        pd = c.pd || this.availCS.lightestPowerDist(this.boostEnergy), // Find lightest Power Distributor that can still boost;
+        fsd = c.fsd || common[2].maxClass + 'A',
+        ls = c.ls || common[3].maxClass + 'D',
+        s = c.s || common[5].maxClass + 'D',
+        updated;
+
+    this.useBulkhead(0)
+        .use(common[2], fsd, Components.common(2, fsd))   // FSD
+        .use(common[3], ls, Components.common(3, ls))     // Life Support
+        .use(common[5], s, Components.common(5, s))       // Sensors
+        .use(common[4], pd, Components.common(4, pd));    // Power Distributor
+
+    // Thrusters and Powerplant must be determined after all other components are mounted
+    // Loop at least once to determine absolute lightest PD and TH
+    do {
+      updated = false;
+      // Find lightest Thruster that still works for the ship at max mass
+      var th = c.th || this.availCS.lightestThruster(this.ladenMass);
+      if (th != common[1].id) {
+        this.use(common[1], th, Components.common(1, th));
+        updated = true;
+      }
+      // Find lightest Power plant that can power the ship
+      var pp = c.pp || this.availCS.lightestPowerPlant(Math.max(this.powerRetracted, this.powerDeployed), c.ppRating);
+
+      if (pp != common[0].id) {
+        this.use(common[0], pp, Components.common(0, pp));
+        updated = true;
+      }
+    } while (updated);
+
+    return this;
+  };
+
+  /**
+   * Will change the priority of the specified slot if the new priority is valid
+   * @param  {object} slot        The slot to be updated
+   * @param  {number} newPriority The new priority to be set
+   * @return {boolean}            Returns true if the priority was changed (within range)
+   */
+  Ship.prototype.changePriority = function(slot, newPriority) {
+    if (newPriority >= 0 && newPriority < this.priorityBands.length) {
+      var oldPriority = slot.priority;
+      slot.priority = newPriority;
+
+      if (slot.enabled) { // Only update power if the slot is enabled
+        var usage = powerUsageType(slot, slot.c);
+        this.priorityBands[oldPriority][usage] -= slot.c.power;
+        this.priorityBands[newPriority][usage] += slot.c.power;
+        this.updatePower();
+      }
+      return true;
+    }
+    return false;
   };
 
   return Ship;
