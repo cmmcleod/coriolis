@@ -20,6 +20,11 @@ angular.module('app').controller('ComparisonController', ['lodash', '$rootScope'
   $scope.addBuild = function(id, name, code) {
     var data = Ships[id];   // Get ship properties
     code = code ? code : Persist.builds[id][name]; // Retrieve build code if not passed
+
+    if (!code) {  // No build found
+      return;
+    }
+
     var b = new Ship(id, data.properties, data.slots); // Create a new Ship instance
     Serializer.toShip(b, code);  // Populate components from code
     // Extend ship instance and add properties below
