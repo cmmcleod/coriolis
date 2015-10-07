@@ -27,7 +27,7 @@ function done(err, json) { this(err,json); }
 
 function writeDB(err, arr) {
   var ships = {}, internal = {}, hardpoints = {};
-  var shipOrder = Object.keys(arr[0]).sort();
+  var shipOrder = Object.keys(arr[0]).sort(function(a,b) { return arr[0][a].properties.name < arr[0][b].properties.name ? -1 : 1; });
   var internalOrder = Object.keys(arr[3]).sort();
   var hpOrder = [
     "pl",
