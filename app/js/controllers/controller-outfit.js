@@ -230,11 +230,19 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     updateState(Serializer.fromShip(ship.useCommon(rating)));
   };
 
+  $scope.useHardpoint = function(group, mount) {
+    updateState(Serializer.fromShip(ship.useWeapon(group, mount)));
+  };
+
+  $scope.useUtility = function(group, rating) {
+    updateState(Serializer.fromShip(ship.useUtility(group, rating)));
+  };
+
   $scope.emptyInternal = function() {
     updateState(Serializer.fromShip(ship.emptyInternal()));
   };
 
-  $scope.emptyWeapons = function() {
+  $scope.emptyHardpoints = function() {
     updateState(Serializer.fromShip(ship.emptyWeapons()));
   };
 

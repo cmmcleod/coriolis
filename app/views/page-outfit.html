@@ -99,12 +99,12 @@
       </h1>
       <div class="select" ng-if="selectedSlot=='standard'">
         <ul>
+          <li class="lc" ng-click="optimizeCommon()" translate="Optimize"></li>
           <li class="c" ng-click="useCommon('E')">E</li>
           <li class="c" ng-click="useCommon('D')">D</li>
           <li class="c" ng-click="useCommon('C')">C</li>
           <li class="c" ng-click="useCommon('D')">B</li>
           <li class="c" ng-click="useCommon('A')">A</li>
-          <li class="lc" ng-click="optimizeCommon()" translate="Optimize"></li>
         </ul>
         <div class="select-group cap" translate="builds / roles"></div>
         <ul>
@@ -214,8 +214,8 @@
       </h1>
       <div class="select" ng-if="selectedSlot=='internal'">
         <ul>
-          <li class="lc" ng-click="emptyInternal()" translate="Empty"></li>
-          <li class="lc" ng-click="fillWithCargo()" translate="Cargo"></li>
+          <li class="lc" ng-click="emptyInternal()" translate="empty all"></li>
+          <li class="lc" ng-click="fillWithCargo()" translate="cargo"></li>
         </ul>
       </div>
     </div>
@@ -228,14 +228,32 @@
   </div>
 
   <div id="hardpoints" class="group">
-    <div class="section-menu" ng-class="{selected: selectedSlot=='hardpoints'}" context-menu="emptyWeapons()" ng-click="selectSlot($event, 'hardpoints')">
+    <div class="section-menu" ng-class="{selected: selectedSlot=='hardpoints'}" context-menu="emptyHardpoints()" ng-click="selectSlot($event, 'hardpoints')">
       <h1>
         {{'hardpoints' | translate}}
         <svg class="icon"><use xlink:href="#equalizer"></use></svg>
       </h1>
-      <div class="select" ng-if="selectedSlot=='hardpoints'">
+      <div class="select hardpoint" ng-if="selectedSlot=='hardpoints'">
         <ul>
-          <li class="lc" ng-click="emptyWeapons()" translate="Empty"></li>
+          <li class="lc" ng-click="emptyHardpoints()" translate="empty all"></li>
+        </ul>
+        <div class="select-group cap" translate="pl"></div>
+        <ul>
+          <li class="c" ng-click="useHardpoint('pl','F')"><svg class="icon lg"><use xlink:href="#mount-F"></use></svg></li>
+          <li class="c" ng-click="useHardpoint('pl','G')"><svg class="icon lg"><use xlink:href="#mount-G"></use></svg></li>
+          <li class="c" ng-click="useHardpoint('pl','T')"><svg class="icon lg"><use xlink:href="#mount-T"></use></svg></li>
+        </ul>
+        <div class="select-group cap" translate="ul"></div>
+        <ul>
+          <li class="c" ng-click="useHardpoint('ul','F')"><svg class="icon lg"><use xlink:href="#mount-F"></use></svg></li>
+          <li class="c" ng-click="useHardpoint('ul','G')"><svg class="icon lg"><use xlink:href="#mount-G"></use></svg></li>
+          <li class="c" ng-click="useHardpoint('ul','T')"><svg class="icon lg"><use xlink:href="#mount-T"></use></svg></li>
+        </ul>
+        <div class="select-group cap" translate="bl"></div>
+        <ul>
+          <li class="c" ng-click="useHardpoint('bl','F')"><svg class="icon lg"><use xlink:href="#mount-F"></use></svg></li>
+          <li class="c" ng-click="useHardpoint('bl','G')"><svg class="icon lg"><use xlink:href="#mount-G"></use></svg></li>
+          <li class="c" ng-click="useHardpoint('bl','T')"><svg class="icon lg"><use xlink:href="#mount-T"></use></svg></li>
         </ul>
       </div>
     </div>
@@ -255,7 +273,15 @@
       </h1>
       <div class="select" ng-if="selectedSlot=='utility'">
         <ul>
-          <li class="lc" ng-click="emptyUtility()" translate="Empty"></li>
+          <li class="lc" ng-click="emptyUtility()" translate="empty all"></li>
+        </ul>
+        <div class="select-group cap" translate="sb"></div>
+        <ul>
+          <li class="c" ng-click="useUtility('sb','E')">E</li>
+          <li class="c" ng-click="useUtility('sb','D')">D</li>
+          <li class="c" ng-click="useUtility('sb','C')">C</li>
+          <li class="c" ng-click="useUtility('sb','B')">B</li>
+          <li class="c" ng-click="useUtility('sb','A')">A</li>
         </ul>
       </div>
     </div>

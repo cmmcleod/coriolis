@@ -97,7 +97,7 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
    *
    * @param  {string} groupName [Optional] Full name or abbreviated name for component group
    * @param  {integer} clss     Component Class
-   * @param  {string} rating    Component Rating
+   * @param  {string} rating    [Optional] Component Rating
    * @param  {string} name      [Optional] Long/unique name for component -e.g. 'Heat Sink Launcher'
    * @param  {string} mode      Mount mode/type - [F]ixed, [G]imballed, [T]urret
    * @param  {string} missile   [Optional] Missile type - [D]umbfire, [S]eeker
@@ -122,7 +122,7 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
     for (var g in groups) {
       var group = groups[g];
       for (var i = 0, l = group.length; i < l; i++) {
-        if (group[i].class == clss && group[i].rating == rating && group[i].mode == mode
+        if (group[i].class == clss && (!rating || group[i].rating == rating) && group[i].mode == mode
             && ((!name && !group[i].name) || group[i].name == name)
             && ((!missile && !group[i].missile) || group[i].missile == missile)
             ) {

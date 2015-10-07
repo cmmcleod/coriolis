@@ -547,6 +547,29 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     return this;
   };
 
+  Ship.prototype.useUtility = function(group, rating) {
+    var component = Components.findHardpoint(group, 0, rating);
+    for (var i = this.hardpoints.length; i--; ) {
+      if (!this.hardpoints[i].maxClass) {
+        this.use(this.hardpoints[i], component.id, component);
+      }
+    }
+    return this;
+  };
+
+  Ship.prototype.useWeapon = function(group, mount) {
+    var hps = this.hardpoints;
+    for (var i = hps.length; i--; ) {
+      if (hps[i].maxClass) {
+        var component = Components.findHardpoint(group, hps[i].maxClass, null, null, mount);
+        if (component) {
+          this.use(hps[i], component.id, component);
+        }
+      }
+    }
+    return this;
+  };
+
   /**
    * Will change the priority of the specified slot if the new priority is valid
    * @param  {object} slot        The slot to be updated
