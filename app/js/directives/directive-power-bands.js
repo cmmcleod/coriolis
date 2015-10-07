@@ -162,7 +162,8 @@ angular.module('app').directive('powerBands', ['$window', '$translate', '$rootSc
       }
 
       function getClass(selected, sum, avail) {
-        return selected ? 'secondary' : (sum >= avail) ? 'warning' : 'primary';
+        // Round to avoid floating point precision errors
+        return selected ? 'secondary' : ((Math.round(sum * 100) / 100) >= avail) ? 'warning' : 'primary';
       }
 
       function bandText(val, index) {
