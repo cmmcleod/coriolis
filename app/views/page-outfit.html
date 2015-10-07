@@ -434,8 +434,8 @@
 	  <thead>
 	    <tr class="main">
 	      <th colspan="2" class="sortable le" ng-click="sortAmmo('ammoName | translate')" translate="component"></th>
-	      <th colspan="1" class="sortable le" ng-click="sortAmmo('ammoMax | translate')" translate="quantity"></th>
-	      <th colspan="1" class="sortable le" ng-click="sortAmmo('ammoUnitCost | translate')" translate="unit cost"></th>
+	      <th colspan="1" class="sortable le" ng-click="sortAmmo('ammoMax')" translate="quantity"></th>
+	      <th colspan="1" class="sortable le" ng-click="sortAmmo('ammoUnitCost')" translate="unit cost"></th>
 	      <th class="sortable le" ng-click="sortAmmo('ammoTotalCost')">
 	        {{'total cost' | translate}} <u class="optional-hide" ng-if="discounts.ammo < 1">-[{{fRPct(1 - discounts.ammo)}}]</u>
 	      </th>
