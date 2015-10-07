@@ -47,6 +47,9 @@ describe("Serializer Service", function() {
       testBuildB = Serializer.fromDetailedBuild(anacondaTestExport);
 
       for(var p in testBuildB) {
+        if (p == 'availCS') {
+          continue;
+        }
         expect(testBuildB[p]).toEqual(testBuildA[p], p + ' does not match');
       }
 

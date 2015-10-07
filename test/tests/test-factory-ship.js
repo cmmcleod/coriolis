@@ -54,18 +54,27 @@ describe("Ship Factory", function() {
     testShip.buildWith(buildA);
 
     for(var p in testShip) {
+      if (p == 'availCS') {
+        continue;
+      }
       expect(testShip[p]).toEqual(shipA[p], p + ' does not match');
     }
 
     testShip.buildWith(buildB);
 
     for(var p in testShip) {
+      if (p == 'availCS') {
+        continue;
+      }
       expect(testShip[p]).toEqual(shipB[p], p + ' does not match');
     }
 
     testShip.buildWith(buildA);
 
     for(var p in testShip) {
+      if (p == 'availCS') {
+        continue;
+      }
       expect(testShip[p]).toEqual(shipA[p], p + ' does not match');
     }
   });
