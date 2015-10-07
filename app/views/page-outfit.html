@@ -13,14 +13,8 @@
       <button class="danger" ng-click="deleteBuild()" ng-disabled="!savedCode">
         <svg class="icon lg"><use xlink:href="#bin"></use></svg>
       </button>
-      <button ui-sref="outfit({shipId: ship.id,code:null, bn: buildName})" ng-disabled="!code">
+      <button ng-click="resetBuild()" ng-disabled="!code">
         <svg class="icon lg"><use xlink:href="#switch"></use></svg><span class="button-lbl" translate="reset"></span>
-      </button>
-      <button ng-click="aRatedBuild()">
-        <svg class="icon lg"><use xlink:href="#a"></use></svg><span class="button-lbl" translate="A-Rated"></span>
-      </button>
-      <button ng-click="optimizeMassBuild()">
-        <svg class="icon lg"><use xlink:href="#feather"></use></svg><span class="button-lbl" translate="optimize mass"></span>
       </button>
       <button ng-click="exportBuild($event)"  ng-disabled="!buildName">
         <svg class="icon lg"><use xlink:href="#download"></use></svg><span class="button-lbl" translate="export"></span>
@@ -60,7 +54,7 @@
       </thead>
       <tbody>
         <tr>
-          <td class="cap" ng-bind="['','small','medium','large','capital'][ship.class] | translate"></td>
+          <td class="cap" ng-bind="SZM[ship.class] | translate"></td>
           <td>{{ship.agility}}/10</td>
           <td>
             <span ng-if="th.c.maxmass >= ship.ladenMass">{{fCrd(ship.topSpeed)}} <u translate>m/s</u></span>
@@ -98,7 +92,28 @@
   </div>
 
   <div id="standard" class="group">
-    <h1 translate="standard"></h1>
+    <div class="section-menu" ng-class="{selected: selectedSlot=='standard'}" context-menu="optimizeCommon()" ng-click="selectSlot($event, 'standard')">
+      <h1>
+        {{'standard' | translate}}
+        <svg class="icon"><use xlink:href="#equalizer"></use></svg>
+      </h1>
+      <div class="select" ng-if="selectedSlot=='standard'">
+        <ul>
+          <li class="c" ng-click="useCommon('E')">E</li>
+          <li class="c" ng-click="useCommon('D')">D</li>
+          <li class="c" ng-click="useCommon('C')">C</li>
+          <li class="c" ng-click="useCommon('D')">B</li>
+          <li class="c" ng-click="useCommon('A')">A</li>
+          <li class="lc" ng-click="optimizeCommon()" translate="Optimize"></li>
+        </ul>
+        <div class="select-group cap" translate="builds / roles"></div>
+        <ul>
+          <li class="lc" ng-click="aRatedBuild()" translate="A-Rated"></li>
+          <li class="lc" ng-click="optimizeCargo()" translate="Trader"></li>
+          <li class="lc" ng-click="optimizeExplorer()" translate="Explorer"></li>
+        </ul>
+      </div>
+    </div>
     <div class="slot" ng-click="selectSlot($event, ship.bulkheads)" ng-class="{selected: selectedSlot==ship.bulkheads}">
       <div class="details">
         <div class="sz"><span>8</span></div>
@@ -192,7 +207,18 @@
   </div>
 
   <div id="internal" class="group">
-    <h1 translate="internal compartments"></h1>
+    <div class="section-menu" ng-class="{selected: selectedSlot=='internal'}" context-menu="emptyInternal()" ng-click="selectSlot($event, 'internal')">
+      <h1>
+        {{'internal compartments' | translate}}
+        <svg class="icon"><use xlink:href="#equalizer"></use></svg>
+      </h1>
+      <div class="select" ng-if="selectedSlot=='internal'">
+        <ul>
+          <li class="lc" ng-click="emptyInternal()" translate="Empty"></li>
+          <li class="lc" ng-click="fillWithCargo()" translate="Cargo"></li>
+        </ul>
+      </div>
+    </div>
     <div class="slot" ng-repeat="i in ship.internal" ng-click="selectSlot($event, i)" context-menu="select('i', i, $event, 'empty')" ng-class="{selected: selectedSlot==i}">
       <div slot-internal class="details" slot="i" fuel="ship.fuelCapacity"></div>
       <div class="select" ng-if="selectedSlot==i" ng-click="select('i',i,$event)">
@@ -202,7 +228,17 @@
   </div>
 
   <div id="hardpoints" class="group">
-    <h1 translate="hardpoints"></h1>
+    <div class="section-menu" ng-class="{selected: selectedSlot=='hardpoints'}" context-menu="emptyWeapons()" ng-click="selectSlot($event, 'hardpoints')">
+      <h1>
+        {{'hardpoints' | translate}}
+        <svg class="icon"><use xlink:href="#equalizer"></use></svg>
+      </h1>
+      <div class="select" ng-if="selectedSlot=='hardpoints'">
+        <ul>
+          <li class="lc" ng-click="emptyWeapons()" translate="Empty"></li>
+        </ul>
+      </div>
+    </div>
     <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '!0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
       <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]"></div>
       <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
@@ -212,7 +248,17 @@
   </div>
 
   <div id="utility" class="group">
-    <h1 translate="utility mounts"></h1>
+    <div class="section-menu" ng-class="{selected: selectedSlot=='utility'}" context-menu="emptyUtility()" ng-click="selectSlot($event, 'utility')">
+      <h1>
+        {{'utility mounts' | translate}}
+        <svg class="icon"><use xlink:href="#equalizer"></use></svg>
+      </h1>
+      <div class="select" ng-if="selectedSlot=='utility'">
+        <ul>
+          <li class="lc" ng-click="emptyUtility()" translate="Empty"></li>
+        </ul>
+      </div>
+    </div>
     <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
       <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]"></div>
       <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
@@ -327,12 +373,12 @@
             <tr ng-if="!retrofitList || retrofitList.length == 0">
               <td colspan="5" style="padding: 3em 0;" translate="PHRASE_NO_RETROCH"></td>
             </tr>
-            <tr class="highlight" ng-repeat="item in retrofitList | orderBy:retroPredicate:retroDesc">
-              <td style="width:1em;">{{item.sellClassRating}}</td>
+            <tr class="highlight" ng-repeat="item in retrofitList | orderBy:retroPredicate:retroDesc" ng-click="toggleRetrofitCost(item.retroItem)" ng-class="{disabled: !item.retroItem.incCost}">
+              <td  style="width:1em;">{{item.sellClassRating}}</td>
               <td class="le shorten cap">{{item.sellName | translate}}</td>
               <td style="width:1em;">{{item.buyClassRating}}</td>
               <td class="le shorten cap">{{item.buyName | translate}}</td>
-              <td class="ri" ng-class="item.netCost > 0 ? 'warning' : 'secondary-disabled'">{{ fCrd(item.netCost)}} <u translate>CR</u></td>
+              <td class="ri" ng-class="item.retroItem.incCost ? item.netCost > 0 ? 'warning' : 'secondary-disabled' : 'disabled'">{{ fCrd(item.netCost)}} <u translate>CR</u></td>
             </tr>
           </tbody>
         </table>

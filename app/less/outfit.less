@@ -51,6 +51,31 @@
   transform: scaleX(-1);         /* standard */
 }
 
+.section-menu {
+  position: relative;
+  z-index: 1;
+
+  &.selected {
+    h1 {
+      background-color: @primary;
+    }
+  }
+
+  h1 {
+    cursor: pointer;
+  }
+
+  .icon {
+    float: right;
+    margin: 0.1em 0.3em 0 0;
+  }
+
+  .select {
+    box-sizing: border-box;
+    left: 0;
+  }
+}
+
 #build {
   float: right;
   line-height: 2em;

@@ -13,6 +13,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   }
 
   $scope.buildName = $p.bn;
+  $scope.ships = Ships;
   $rootScope.title = ship.name + ($scope.buildName ? ' - ' + $scope.buildName : '');
   $scope.ship = ship;
   $scope.pp = ship.common[0];   // Power Plant
@@ -27,7 +28,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   $scope.costList = ship.costList;
   $scope.powerList = ship.powerList;
   $scope.priorityBands = ship.priorityBands;
-  $scope.availCS = Components.forShip(ship.id);
+  $scope.availCS = ship.getAvailableComponents();
   $scope.selectedSlot = null;
   $scope.savedCode = Persist.getBuild(ship.id, $scope.buildName);
   $scope.canSave = Persist.isEnabled();
@@ -59,7 +60,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     yMax: ship.unladenRange,
     yMin: 0,
     func: function(cargo) { // X Axis is Cargo
-      return ship.jumpRangeWithMass(ship.unladenMass + $scope.fuel + cargo, $scope.fuel);
+      return ship.getJumpRangeForMass(ship.unladenMass + $scope.fuel + cargo, $scope.fuel);
     }
   };
   $scope.jrChart = {
@@ -184,24 +185,28 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     }
   };
 
+  $scope.resetBuild = function() {
+    ship.buildWith(data.defaults);  // Populate with default components
+    updateState(null);
+  };
+
   /**
    * Strip ship to A-class and biggest A-class shield generator with military bulkheads
    */
   $scope.aRatedBuild = function() {
-    for (var i = 0, l = ship.common.length - 1; i < l; i++) { // All except Fuel Tank
-      var id = ship.common[i].maxClass + 'A';
-      ship.use(ship.common[i], id, Components.common(i, id));
-    }
-    ship.hardpoints.forEach(function(slot) { ship.use(slot, null, null); });
-    ship.internal.forEach(function(slot) { ship.use(slot, null, null); });
+    ship
+        .useBulkhead(2)     // Military Composite
+        .useCommon('A')
+        .emptyHardpoints()
+        .emptyInternal();
+
     ship.internal.some(function(slot) {
-      if (typeof slot.eligible === 'undefined') { // Assuming largest slot can hold an eligible shield
-        id = Components.findInternalId('Shield Generator', slot.maxClass, 'A');
-        ship.use(slot, id, Components.internal(id));
+      if (!slot.eligible || slot.eligible.sg) { // Assuming largest slot can hold an eligible shield
+        var sg = Components.findInternal('sg', slot.maxClass, 'A');
+        ship.use(slot, sg.id, sg);
         return true;
       }
     });
-    ship.useBulkhead(2);
     updateState(Serializer.fromShip(ship));
   };
 
@@ -210,21 +215,115 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
    * without power management.
    */
   $scope.optimizeMassBuild = function() {
-    var common = ship.common;
-    ship.hardpoints.forEach(function(slot) { ship.use(slot, null, null); });
-    ship.internal.forEach(function(slot) { ship.use(slot, null, null); });
-    ship.useBulkhead(0);
-    ship.use(common[2], common[2].maxClass + 'A', Components.common(2, common[2].maxClass + 'A')); // FSD
-    ship.use(common[3], common[3].maxClass + 'D', Components.common(3, common[3].maxClass + 'D')); // Life Support
-    ship.use(common[5], common[5].maxClass + 'D', Components.common(5, common[5].maxClass + 'D')); // Sensors
+    updateState(Serializer.fromShip(ship.optimizeMass()));
+  };
 
-    var pd = $scope.availCS.lightestPowerDist(ship.boostEnergy); // Find lightest Power Distributor that can still boost
-    ship.use(ship.common[4], pd, Components.common(4, pd));
-    var th = $scope.availCS.lightestThruster(ship.ladenMass); // Find lightest Thruster that still works for the ship at max mass
-    ship.use(ship.common[1], th, Components.common(1, th));
-    var pp = $scope.availCS.lightestPowerPlant(ship.powerRetracted); // Find lightest Power plant that can power the ship
-    ship.use(ship.common[0], pp, Components.common(0, pp));
+  /**
+   * Optimize for the lower mass build that can still boost and power the ship
+   * without power management.
+   */
+  $scope.optimizeCommon = function() {
+    updateState(Serializer.fromShip(ship.useLightestCommon()));
+  };
 
+  $scope.useCommon = function(rating) {
+    updateState(Serializer.fromShip(ship.useCommon(rating)));
+  };
+
+  $scope.emptyInternal = function() {
+    updateState(Serializer.fromShip(ship.emptyInternal()));
+  };
+
+  $scope.emptyWeapons = function() {
+    updateState(Serializer.fromShip(ship.emptyWeapons()));
+  };
+
+  $scope.emptyUtility = function() {
+    updateState(Serializer.fromShip(ship.emptyUtility()));
+  };
+
+  $scope.fillWithCargo = function() {
+    ship.internal.forEach(function(slot) {
+      var id = Components.findInternalId('cr', slot.maxClass, 'E');
+      ship.use(slot, id, Components.internal(id));
+    });
+    updateState(Serializer.fromShip(ship));
+  };
+
+  /**
+   * Fill all internal slots with Cargo Racks, and optmize internal components.
+   * Hardpoints are not altered.
+   */
+  $scope.optimizeCargo = function() {
+    ship.internal.forEach(function(slot) {
+      var id = Components.findInternalId('cr', slot.maxClass, 'E');
+      ship.use(slot, id, Components.internal(id));
+    });
+    ship.useLightestCommon();
+    updateState(Serializer.fromShip(ship));
+  };
+
+  /**
+   * Optimize common and internal components, hardpoints for exploration
+   */
+  $scope.optimizeExplorer = function() {
+    var intLength = ship.internal.length,
+        heatSinkCount = 2,  // Fit 2 heat sinks if possible
+        afmUnitCount = 2,   // Fit 2 AFM Units if possible
+        sgSlot,
+        fuelScoopSlot,
+        sgId = $scope.availCS.lightestShieldGenerator(ship.hullMass),
+        sg = Components.internal(sgId);
+
+    ship.setSlotEnabled(ship.cargoHatch, false)
+        .use(ship.internal[--intLength], '2f', Components.internal('2f'))      // Advanced Discovery Scanner
+        .use(ship.internal[--intLength], '2i', Components.internal('2i'));      // Detailed Surface Scanner
+
+    for (var i = 0; i < intLength; i++) {
+      var slot = ship.internal[i];
+      var nextSlot = (i + 1) < intLength ? ship.internal[i + 1] : null;
+      if (!fuelScoopSlot && (!slot.eligible || slot.eligible.fs)) {             // Fit best possible Fuel Scoop
+        var fuelScoopId = Components.findInternalId('fs', slot.maxClass, 'A');
+        fuelScoopSlot = slot;
+        ship.use(fuelScoopSlot, fuelScoopId, Components.internal(fuelScoopId));
+        ship.setSlotEnabled(fuelScoopSlot, true);
+
+      // Mount a Shield generator if possible AND an AFM Unit has been mounted already (Guarantees at least 1 AFM Unit)
+      } else if (!sgSlot && afmUnitCount < 2 && sg.class <= slot.maxClass && (!slot.eligible || slot.eligible.sg) && (!nextSlot || nextSlot.maxClass < sg.class)) {
+        sgSlot = slot;
+        ship.use(sgSlot, sgId, sg);
+        ship.setSlotEnabled(sgSlot, true);
+      } else if (afmUnitCount > 0 && (!slot.eligible || slot.eligible.am)) {
+        afmUnitCount--;
+        var id = Components.findInternalId('am', slot.maxClass, 'A'); // Best AFM Unit for slot
+        ship.use(slot, id, Components.internal(id));
+        ship.setSlotEnabled(slot, false);   // Disabled power for AFM Unit
+
+      } else {
+        ship.use(slot, null, null);
+      }
+    }
+
+    ship.hardpoints.forEach(function(s) {
+      if (s.maxClass == 0 && heatSinkCount) {       // Mount up to 2 heatsinks
+        ship.use(s, '02', Components.hardpoints('02'));
+        ship.setSlotEnabled(s, heatSinkCount == 2); // Only enable a single Heatsink
+        heatSinkCount--;
+      } else {
+        ship.use(s, null, null);
+      }
+    });
+
+    if (sgSlot) {
+      // The SG and Fuel scoop to not need to be powered at the same time
+      if (sgSlot.c.power > fuelScoopSlot.c.power) { // The Shield generator uses the most power
+        ship.setSlotEnabled(fuelScoopSlot, false);
+      } else {                                    // The Fuel scoop uses the most power
+        ship.setSlotEnabled(sgSlot, false);
+      }
+    }
+
+    ship.useLightestCommon({ pd: '1D', ppRating: 'A' });
     updateState(Serializer.fromShip(ship));
   };
 
@@ -290,6 +389,15 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     ship.setCostIncluded(item, !item.incCost);
   };
 
+/**
+   * Toggle cost of the selected component for retrofitting comparison
+   * @param  {object} item The component being toggled
+   */
+  $scope.toggleRetrofitCost = function(item) {
+    retrofitShip.setCostIncluded(item, !item.incCost);
+    updateRetrofitCosts();
+  };
+
   /**
    * [sortCost description]
    * @param  {[type]} key [description]
@@ -353,6 +461,19 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     updateRetrofitCosts();
   };
 
+  $scope.updateCostTab = function(tab) {
+    Persist.setCostTab(tab);
+    $scope.costTab = tab;
+  };
+
+  $scope.ppWarning = function(pp) {
+    return pp.pGen < ship.powerRetracted;
+  };
+
+  $scope.pdWarning = function(pd) {
+    return pd.enginecapacity < ship.boostEnergy;
+  };
+
   // Utilify functions
 
   function updateState(code) {
@@ -376,10 +497,13 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
         buyName: ship.bulkheads.c.name,
         sellClassRating: retrofitShip.bulkheads.c.class + retrofitShip.bulkheads.c.rating,
         sellName: retrofitShip.bulkheads.c.name,
-        netCost: ship.bulkheads.discountedCost - retrofitShip.bulkheads.discountedCost
+        netCost: ship.bulkheads.discountedCost - retrofitShip.bulkheads.discountedCost,
+        retroItem: retrofitShip.bulkheads
       };
       costs.push(item);
-      total += item.netCost;
+      if (retrofitShip.bulkheads.incCost) {
+        total += item.netCost;
+      }
     }
 
     for (var g in { common: 1, internal: 1, hardpoints: 1 }) {
@@ -387,7 +511,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
       var slotGroup = ship[g];
       for (i = 0, l = slotGroup.length; i < l; i++) {
         if (slotGroup[i].id != retroSlotGroup[i].id) {
-          item = { netCost: 0 };
+          item = { netCost: 0, retroItem: retroSlotGroup[i] };
           if (slotGroup[i].id) {
             item.buyName = slotGroup[i].c.name || slotGroup[i].c.grp;
             item.buyClassRating = slotGroup[i].c.class + slotGroup[i].c.rating;
@@ -399,25 +523,14 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
             item.netCost -= retroSlotGroup[i].discountedCost;
           }
           costs.push(item);
-          total += item.netCost;
+          if (retroSlotGroup[i].incCost) {
+            total += item.netCost;
+          }
         }
       }
     }
     $scope.retrofitTotal = total;
   }
-
-  $scope.updateCostTab = function(tab) {
-    Persist.setCostTab(tab);
-    $scope.costTab = tab;
-  };
-
-  $scope.ppWarning = function(pp) {
-    return pp.pGen < ship.powerRetracted;
-  };
-
-  $scope.pdWarning = function(pd) {
-    return pd.enginecapacity < ship.boostEnergy;
-  };
 
   // Hide any open menu/slot/etc if the background is clicked
   $scope.$on('close', function() {
