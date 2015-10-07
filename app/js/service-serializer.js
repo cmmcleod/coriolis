@@ -143,11 +143,10 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
     var internal = _.map(comps.internal, function(c) { return c ? Components.findInternalId(c.group, c.class, c.rating, c.name) : 0; });
 
     var hardpoints = _.map(comps.hardpoints, function(c) {
-      return c ? Components.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount], c.missile) : 0;
-    });
-    hardpoints = hardpoints.concat(_.map(comps.utility, function(c) {
-      return c ? Components.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount]) : 0;
-    }));
+        return c ? Components.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount], c.missile) : 0;
+      }).concat(_.map(comps.utility, function(c) {
+        return c ? Components.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount]) : 0;
+      }));
 
     // The ordering of these arrays must match the order in which they are read in Ship.buildWith
     priorities = priorities.concat(_.map(comps.hardpoints, function(c) { return (!c || c.priority === undefined) ? 0 : c.priority - 1; }),

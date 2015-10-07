@@ -38,46 +38,85 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
     return null;
   };
 
-  this.findInternalId = function(groupName, clss, rating, name) {
+  /**
+   * Finds an internal Component based on Class, Rating, Group and/or name.
+   * At least one ofGroup name or unique component name must be provided
+   *
+   * @param  {string} groupName [Optional] Full name or abbreviated name for component group
+   * @param  {integer} clss     Component Class
+   * @param  {string} rating    Component Rating
+   * @param  {string} name      [Optional] Long/unique name for component -e.g. 'Advanced Discover Scanner'
+   * @return {String}           The id of the component if found, null if not found
+   */
+  this.findInternal = function(groupName, clss, rating, name) {
     var groups = {};
 
     if (groupName) {
-      var grpCode = GrpNameToCodeMap[groupName];
-      if (grpCode && !C.internal[grpCode]) {
-        throw 'Invalid internal group: ' + groupName;
+      if (C.internal[groupName]) {
+        groups[groupName] = C.internal[groupName];
+      } else {
+        var grpCode = GrpNameToCodeMap[groupName];
+        if (grpCode && C.internal[grpCode]) {
+          groups[grpCode] = C.internal[grpCode];
+        }
       }
-      groups[grpCode] = C.internal[grpCode];
     } else if (name) {
       groups = C.internal;
-    } else {
-      throw 'Invalid group or name not provided';
     }
 
     for (var g in groups) {
       var group = groups[g];
       for (var i = 0, l = group.length; i < l; i++) {
         if (group[i].class == clss && group[i].rating == rating && ((!name && !group[i].name) || group[i].name == name)) {
-          return group[i].id;
+          return group[i];
         }
       }
     }
 
-    return 0;
+    return null;
   };
 
-  this.findHardpointId = function(groupName, clss, rating, name, mode, missile) {
+  /**
+   * Finds an internal Component ID based on Class, Rating, Group and/or name.
+   * At least one ofGroup name or unique component name must be provided
+   *
+   * @param  {string} groupName [Optional] Full name or abbreviated name for component group
+   * @param  {integer} clss     Component Class
+   * @param  {string} rating    Component Rating
+   * @param  {string} name      [Optional] Long/unique name for component -e.g. 'Advanced Discover Scanner'
+   * @return {String}           The id of the component if found, null if not found
+   */
+  this.findInternalId = function(groupName, clss, rating, name) {
+    var i = this.findInternal(groupName, clss, rating, name);
+    return i ? i.id : 0;
+  };
+
+  /**
+   * Finds a hardpoint Component based on Class, Rating, Group and/or name.
+   * At least one ofGroup name or unique component name must be provided
+   *
+   * @param  {string} groupName [Optional] Full name or abbreviated name for component group
+   * @param  {integer} clss     Component Class
+   * @param  {string} rating    Component Rating
+   * @param  {string} name      [Optional] Long/unique name for component -e.g. 'Heat Sink Launcher'
+   * @param  {string} mode      Mount mode/type - [F]ixed, [G]imballed, [T]urret
+   * @param  {string} missile   [Optional] Missile type - [D]umbfire, [S]eeker
+   * @return {String}           The id of the component if found, null if not found
+   */
+  this.findHardpoint = function(groupName, clss, rating, name, mode, missile) {
     var groups = {};
 
     if (groupName) {
-      var grpCode = GrpNameToCodeMap[groupName];
-      if (grpCode && !C.hardpoints[grpCode]) {
-        throw 'Invalid internal group: ' + groupName;
+      if (C.hardpoints[groupName]) {
+        groups[groupName] = C.hardpoints[groupName];
+      } else {
+        var grpCode = GrpNameToCodeMap[groupName];
+        if (grpCode && C.hardpoints[grpCode]) {
+          groups[grpCode] = C.hardpoints[grpCode];
+        }
       }
-      groups[grpCode] = C.hardpoints[grpCode];
     } else if (name) {
       groups = C.hardpoints;
-    } else {
-      throw 'Invalid group or name not provided';
     }
 
     for (var g in groups) {
@@ -87,12 +126,29 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
             && ((!name && !group[i].name) || group[i].name == name)
             && ((!missile && !group[i].missile) || group[i].missile == missile)
             ) {
-          return group[i].id;
+          return group[i];
         }
       }
     }
 
-    return 0;
+    return null;
+  };
+
+  /**
+   * Finds a hardpoint Component ID based on Class, Rating, Group and/or name.
+   * At least one of Group name or unique component name must be provided
+   *
+   * @param  {string} groupName [Optional] Full name or abbreviated name for component group
+   * @param  {integer} clss     Component Class
+   * @param  {string} rating    Component Rating
+   * @param  {string} name      [Optional] Long/unique name for component -e.g. 'Heat Sink Launcher'
+   * @param  {string} mode      Mount mode/type - [F]ixed, [G]imballed, [T]urret
+   * @param  {string} missile   [Optional] Missile type - [D]umbfire, [S]eeker
+   * @return {String}           The id of the component if found, null if not found
+   */
+  this.findHardpointId = function(groupName, clss, rating, name, mode, missile) {
+    var h = this.findHardpoint(groupName, clss, rating, name, mode, missile);
+    return h ? h.id : 0;
   };
 
   /**

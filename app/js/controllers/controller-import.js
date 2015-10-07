@@ -145,11 +145,11 @@ angular.module('app').controller('ImportController', ['lodash', '$rootScope', '$
 
           group = _.find(GroupMap, equalsIgnoreCase, name);
 
-          var hpid = Components.findHardpointId(group, cl, rating, group ? null : name, mount, missile);
+          var hp = Components.findHardpoint(group, cl, rating, group ? null : name, mount, missile);
 
-          if (!hpid) { throw 'Unknown component: "' + line + '"'; }
+          if (!hp) { throw 'Unknown component: "' + line + '"'; }
 
-          ship.use(slot, hpid, Components.hardpoints(hpid), true);
+          ship.use(slot, hp.id, hp, true);
 
         } else if (typeSize == 'BH') {
           var bhId = bhMap[name.toLowerCase()];
@@ -177,11 +177,11 @@ angular.module('app').controller('ImportController', ['lodash', '$rootScope', '$
 
         group = _.find(GroupMap, equalsIgnoreCase, name);
 
-        var intId = Components.findInternalId(group, cl, rating, group ? null : name);
+        var intComp = Components.findInternal(group, cl, rating, group ? null : name);
 
-        if (!intId) { throw 'Unknown component: "' + line + '"'; }
+        if (!intComp) { throw 'Unknown component: "' + line + '"'; }
 
-        ship.use(slot, intId, Components.internal(intId));
+        ship.use(slot, intComp.id, intComp);
       }
     }
 
