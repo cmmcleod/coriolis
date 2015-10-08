@@ -561,10 +561,18 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     var hps = this.hardpoints;
     for (var i = hps.length; i--; ) {
       if (hps[i].maxClass) {
-        var component = Components.findHardpoint(group, hps[i].maxClass, null, null, mount);
-        if (component) {
-          this.use(hps[i], component.id, component);
-        }
+        var size = hps[i].maxClass, component;
+        do {
+          if (group == 'mr') {
+            component = Components.findHardpoint(group, size, null, null, 'F', mount);
+          } else {
+            component = Components.findHardpoint(group, size, null, null, mount);
+          }
+          if (component) {
+            this.use(hps[i], component.id, component);
+            break;
+          }
+        } while (!component && (--size > 0));
       }
     }
     return this;

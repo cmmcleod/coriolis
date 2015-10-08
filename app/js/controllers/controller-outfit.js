@@ -260,6 +260,21 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     updateState(Serializer.fromShip(ship));
   };
 
+  $scope.fillWithCells = function() {
+    var chargeCap = 0; // Capacity of single activation
+    ship.internal.forEach(function(slot) {
+      var id = Components.findInternalId('scb', slot.maxClass, 'A');
+      if ((!slot.c || (slot.c.grp != 'sg' && slot.c.grp != 'psg')) && (!slot.eligible || slot.eligible.scb)) { // Check eligibility because of Orca, don't overwrite generator
+        ship.use(slot, id, Components.internal(id));
+        chargeCap += Components.internal(id).recharge;
+        if (chargeCap >= ship.shieldStrength) {
+          ship.setSlotEnabled(slot, false); // Don't waste cell capacity on overcharge
+        }
+      }
+    });
+    updateState(Serializer.fromShip(ship));
+  };
+
   /**
    * Fill all internal slots with Cargo Racks, and optmize internal components.
    * Hardpoints are not altered.
