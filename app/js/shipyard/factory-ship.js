@@ -461,7 +461,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
         var similarSlot = this.findInternalByGroup(component.grp);
         // If another slot has an installed component with of the same type
         if (!preventUpdate && similarSlot && similarSlot !== slot) {
-          this.updateStats(similarSlot, null, similarSlot.c, true);  // Update stats but don't trigger a global update
+          this.updateStats(similarSlot, null, similarSlot.c);
           similarSlot.id = similarSlot.c = null;  // Empty the slot
           similarSlot.discountedCost = 0;
         }
