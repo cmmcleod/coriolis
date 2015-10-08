@@ -268,37 +268,6 @@
           <li class="c" ng-click="useHardpoint('c','G')"><svg class="icon lg"><use xlink:href="#mount-G"></use></svg></li>
           <li class="c" ng-click="useHardpoint('c','T')"><svg class="icon lg"><use xlink:href="#mount-T"></use></svg></li>
         </ul>
-        <div class="select-group cap" translate="fc"></div>
-        <ul>
-          <li class="c" ng-click="useHardpoint('fc','F')"><svg class="icon lg"><use xlink:href="#mount-F"></use></svg></li>
-          <li class="c" ng-click="useHardpoint('fc','G')"><svg class="icon lg"><use xlink:href="#mount-G"></use></svg></li>
-          <li class="c" ng-click="useHardpoint('fc','T')"><svg class="icon lg"><use xlink:href="#mount-T"></use></svg></li>
-        </ul>
-        <div class="select-group cap" translate="rg"></div>
-        <ul>
-          <li class="c" ng-click="useHardpoint('rg','F')"><svg class="icon lg"><use xlink:href="#mount-F"></use></svg></li>
-        </ul>
-        <div class="select-group cap" translate="pa"></div>
-        <ul>
-          <li class="c" ng-click="useHardpoint('pa','F')"><svg class="icon lg"><use xlink:href="#mount-F"></use></svg></li>
-        </ul>
-        <div class="select-group cap" translate="mr"></div>
-        <ul>
-          <li class="c" ng-click="useHardpoint('mr','F','D')"><svg class="icon lg"><use xlink:href="#mount-F"></use></svg> <span>D</span></li>
-          <li class="c" ng-click="useHardpoint('mr','F','S')"><svg class="icon lg"><use xlink:href="#mount-F"></use></svg> <span>S</span></li>
-        </ul>
-        <div class="select-group cap" translate="tp"></div>
-        <ul>
-          <li class="c" ng-click="useHardpoint('tp','F')"><svg class="icon lg"><use xlink:href="#mount-F"></use></svg></li>
-        </ul>
-        <div class="select-group cap" translate="nl"></div>
-        <ul>
-          <li class="c" ng-click="useHardpoint('nl','F')"><svg class="icon lg"><use xlink:href="#mount-F"></use></svg></li>
-        </ul>
-        <div class="select-group cap" translate="ml"></div>
-        <ul>
-          <li class="c" ng-click="useHardpoint('ml','F')"><svg class="icon lg"><use xlink:href="#mount-F"></use></svg></li>
-        </ul>
       </div>
     </div>
     <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '!0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
