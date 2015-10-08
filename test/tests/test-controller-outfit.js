@@ -41,7 +41,7 @@ describe("Outfit Controller", function() {
       expect(scope.retrofitTotal).toEqual(1173200);
       expect(scope.retrofitList.length).toEqual(3);
       scope.select('i', scope.ship.internal[3], eventStub, "11"); // Use 6A Auto field maintenance unit
-      expect(scope.retrofitTotal).toEqual(16478701);
+      expect(scope.retrofitTotal).toEqual(16478700);
       expect(scope.retrofitList.length).toEqual(4);
     });
 

@@ -4,7 +4,7 @@
       "name": "Orca",
       "manufacturer": "Saud Kruger",
       "class": 3,
-      "hullCost": 47798079,
+      "hullCost": 47798080,
       "speed": 300,
       "boost": 380,
       "boostEnergy": 17,
@@ -15,7 +15,7 @@
       "masslock": 13,
       "pipSpeed": 0.08375
     },
-    "retailCost": 48539887,
+    "retailCost": 48539890,
     "slots": {
       "common": [
         5,

@@ -4,7 +4,7 @@
       "name": "Asp Explorer",
       "manufacturer": "Lakon",
       "class": 2,
-      "hullCost": 6135658,
+      "hullCost": 6135660,
       "speed": 250,
       "boost": 340,
       "boostEnergy": 14,
@@ -15,7 +15,7 @@
       "masslock": 11,
       "pipSpeed": 0.13
     },
-    "retailCost": 6661153,
+    "retailCost": 6661150,
     "slots": {
       "common": [
         5,

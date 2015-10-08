@@ -4,7 +4,7 @@
       "name": "Federal Assault Ship",
       "manufacturer": "Core Dynamics",
       "class": 2,
-      "hullCost": 19071993,
+      "hullCost": 19072000,
       "speed": 210,
       "boost": 350,
       "boostEnergy": 21,
@@ -15,7 +15,7 @@
       "masslock": 14,
       "pipSpeed": 0.11125
     },
-    "retailCost": 19814205,
+    "retailCost": 19814210,
     "slots": {
       "common": [
         6,

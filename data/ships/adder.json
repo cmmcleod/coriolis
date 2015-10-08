@@ -4,7 +4,7 @@
       "name": "Adder",
       "manufacturer": "Zorgon Peterson",
       "class": 1,
-      "hullCost": 39993,
+      "hullCost": 40000,
       "speed": 220,
       "boost": 320,
       "boostEnergy": 9,
@@ -15,7 +15,7 @@
       "masslock": 7,
       "pipSpeed": 0.13625
     },
-    "retailCost": 87808,
+    "retailCost": 87810,
     "slots": {
       "common": [
         3,

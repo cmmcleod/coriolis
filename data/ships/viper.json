@@ -4,7 +4,7 @@
       "name": "Viper",
       "manufacturer": "Faulcon DeLacy",
       "class": 1,
-      "hullCost": 95893,
+      "hullCost": 95900,
       "speed": 320,
       "boost": 400,
       "boostEnergy": 11,
@@ -15,7 +15,7 @@
       "masslock": 7,
       "pipSpeed": 0.09375
     },
-    "retailCost": 142931,
+    "retailCost": 142930,
     "slots": {
       "common": [
         3,

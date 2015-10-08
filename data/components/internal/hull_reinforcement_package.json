@@ -1,94 +1,18 @@
 {
   "hr": [
-    {
-      "id": "2e",
-      "grp": "hr",
-      "class": 5,
-      "rating": "E",
-      "cost": 150000,
-      "mass": 64,
-      "armouradd": 160
-    },
-    {
-      "id": "2d",
-      "grp": "hr",
-      "class": 5,
-      "rating": "D",
-      "cost": 450000,
-      "mass": 32,
-      "armouradd": 240
-    },
-    {
-      "id": "2c",
-      "grp": "hr",
-      "class": 4,
-      "rating": "E",
-      "cost": 65000,
-      "mass": 32,
-      "armouradd": 80
-    },
-    {
-      "id": "2b",
-      "grp": "hr",
-      "class": 4,
-      "rating": "D",
-      "cost": 195000,
-      "mass": 16,
-      "armouradd": 120
-    },
-    {
-      "id": "2a",
-      "grp": "hr",
-      "class": 3,
-      "rating": "E",
-      "cost": 28000,
-      "mass": 16,
-      "armouradd": 40
-    },
-    {
-      "id": "29",
-      "grp": "hr",
-      "class": 3,
-      "rating": "D",
-      "cost": 84000,
-      "mass": 8,
-      "armouradd": 60
-    },
-    {
-      "id": "28",
-      "grp": "hr",
-      "class": 2,
-      "rating": "E",
-      "cost": 12000,
-      "mass": 8,
-      "armouradd": 20
-    },
-    {
-      "id": "27",
-      "grp": "hr",
-      "class": 2,
-      "rating": "D",
-      "cost": 36000,
-      "mass": 4,
-      "armouradd": 30
-    },
-    {
-      "id": "26",
-      "grp": "hr",
-      "class": 1,
-      "rating": "E",
-      "cost": 5000,
-      "mass": 4,
-      "armouradd": 10
-    },
-    {
-      "id": "25",
-      "grp": "hr",
-      "class": 1,
-      "rating": "D",
-      "cost": 15000,
-      "mass": 2,
-      "armouradd": 15
-    }
+    { "id": "2e", "grp": "hr", "class": 5, "rating": "E", "cost": 150000, "mass": 64, "armouradd": 160 },
+    { "id": "2d", "grp": "hr", "class": 5, "rating": "D", "cost": 450000, "mass": 32, "armouradd": 240 },
+
+    { "id": "2c", "grp": "hr", "class": 4, "rating": "E", "cost": 65000, "mass": 32, "armouradd": 80 },
+    { "id": "2b", "grp": "hr", "class": 4, "rating": "D", "cost": 195000, "mass": 16, "armouradd": 120 },
+
+    { "id": "2a", "grp": "hr", "class": 3, "rating": "E", "cost": 28000, "mass": 16, "armouradd": 40 },
+    { "id": "29", "grp": "hr", "class": 3, "rating": "D", "cost": 84000, "mass": 8, "armouradd": 60 },
+
+    { "id": "28", "grp": "hr", "class": 2, "rating": "E", "cost": 12000, "mass": 8, "armouradd": 20 },
+    { "id": "27", "grp": "hr", "class": 2, "rating": "D", "cost": 36000, "mass": 4, "armouradd": 30 },
+
+    { "id": "26", "grp": "hr", "class": 1, "rating": "E", "cost": 5000, "mass": 4, "armouradd": 10 },
+    { "id": "25", "grp": "hr", "class": 1, "rating": "D", "cost": 15000, "mass": 2, "armouradd": 15 }
   ]
 }

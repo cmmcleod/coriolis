@@ -1,204 +1,27 @@
 {
   "fi": [
-    {
-      "id": "6p",
-      "grp": "fi",
-      "class": 4,
-      "rating": "E",
-      "cost": 263424,
-      "mass": 10,
-      "power": 0.25,
-      "rangeRating": "B"
-    },
-    {
-      "id": "6o",
-      "grp": "fi",
-      "class": 4,
-      "rating": "D",
-      "cost": 790272,
-      "mass": 4,
-      "power": 0.33,
-      "rangeRating": "A"
-    },
-    {
-      "id": "6n",
-      "grp": "fi",
-      "class": 4,
-      "rating": "C",
-      "cost": 2370816,
-      "mass": 10,
-      "power": 0.41,
-      "rangeRating": "A"
-    },
-    {
-      "id": "6m",
-      "grp": "fi",
-      "class": 4,
-      "rating": "B",
-      "cost": 7112448,
-      "mass": 16,
-      "power": 0.49,
-      "rangeRating": "A"
-    },
-    {
-      "id": "6l",
-      "grp": "fi",
-      "class": 4,
-      "rating": "A",
-      "cost": 21337344,
-      "mass": 10,
-      "power": 0.57,
-      "rangeRating": "A"
-    },
-    {
-      "id": "6k",
-      "grp": "fi",
-      "class": 3,
-      "rating": "E",
-      "cost": 94080,
-      "mass": 5,
-      "power": 0.2,
-      "rangeRating": "C"
-    },
-    {
-      "id": "6j",
-      "grp": "fi",
-      "class": 3,
-      "rating": "D",
-      "cost": 282240,
-      "mass": 2,
-      "power": 0.27,
-      "rangeRating": "B"
-    },
-    {
-      "id": "6i",
-      "grp": "fi",
-      "class": 3,
-      "rating": "C",
-      "cost": 846720,
-      "mass": 5,
-      "power": 0.34,
-      "rangeRating": "B"
-    },
-    {
-      "id": "6h",
-      "grp": "fi",
-      "class": 3,
-      "rating": "B",
-      "cost": 2540160,
-      "mass": 8,
-      "power": 0.41,
-      "rangeRating": "B"
-    },
-    {
-      "id": "6g",
-      "grp": "fi",
-      "class": 3,
-      "rating": "A",
-      "cost": 7620480,
-      "mass": 5,
-      "power": 0.48,
-      "rangeRating": "A"
-    },
-    {
-      "id": "6f",
-      "grp": "fi",
-      "class": 2,
-      "rating": "E",
-      "cost": 33600,
-      "mass": 2.5,
-      "power": 0.17,
-      "rangeRating": "D"
-    },
-    {
-      "id": "6e",
-      "grp": "fi",
-      "class": 2,
-      "rating": "D",
-      "cost": 100800,
-      "mass": 1,
-      "power": 0.22,
-      "rangeRating": "C"
-    },
-    {
-      "id": "6d",
-      "grp": "fi",
-      "class": 2,
-      "rating": "C",
-      "cost": 302400,
-      "mass": 2.5,
-      "power": 0.28,
-      "rangeRating": "C"
-    },
-    {
-      "id": "6c",
-      "grp": "fi",
-      "class": 2,
-      "rating": "B",
-      "cost": 907200,
-      "mass": 4,
-      "power": 0.34,
-      "rangeRating": "C"
-    },
-    {
-      "id": "6b",
-      "grp": "fi",
-      "class": 2,
-      "rating": "A",
-      "cost": 2721600,
-      "mass": 2.5,
-      "power": 0.39,
-      "rangeRating": "B"
-    },
-    {
-      "id": "6a",
-      "grp": "fi",
-      "class": 1,
-      "rating": "E",
-      "cost": 12000,
-      "mass": 1.3,
-      "power": 0.14,
-      "rangeRating": "E"
-    },
-    {
-      "id": "69",
-      "grp": "fi",
-      "class": 1,
-      "rating": "D",
-      "cost": 36000,
-      "mass": 0.5,
-      "power": 0.18,
-      "rangeRating": "D"
-    },
-    {
-      "id": "68",
-      "grp": "fi",
-      "class": 1,
-      "rating": "C",
-      "cost": 108000,
-      "mass": 1.3,
-      "power": 0.23,
-      "rangeRating": "D"
-    },
-    {
-      "id": "67",
-      "grp": "fi",
-      "class": 1,
-      "rating": "B",
-      "cost": 324000,
-      "mass": 2,
-      "power": 0.28,
-      "rangeRating": "D"
-    },
-    {
-      "id": "66",
-      "grp": "fi",
-      "class": 1,
-      "rating": "A",
-      "cost": 972000,
-      "mass": 1.3,
-      "power": 0.32,
-      "rangeRating": "C"
-    }
+    { "id": "6p", "grp": "fi", "class": 4, "rating": "E", "cost": 263420, "mass": 10, "power": 0.25, "rangeRating": "B" },
+    { "id": "6o", "grp": "fi", "class": 4, "rating": "D", "cost": 790270, "mass": 4, "power": 0.33, "rangeRating": "A" },
+    { "id": "6n", "grp": "fi", "class": 4, "rating": "C", "cost": 2370820, "mass": 10, "power": 0.41, "rangeRating": "A" },
+    { "id": "6m", "grp": "fi", "class": 4, "rating": "B", "cost": 7112450, "mass": 16, "power": 0.49, "rangeRating": "A" },
+    { "id": "6l", "grp": "fi", "class": 4, "rating": "A", "cost": 21337340, "mass": 10, "power": 0.57, "rangeRating": "A" },
+
+    { "id": "6k", "grp": "fi", "class": 3, "rating": "E", "cost": 94080, "mass": 5, "power": 0.2, "rangeRating": "C" },
+    { "id": "6j", "grp": "fi", "class": 3, "rating": "D", "cost": 282240, "mass": 2, "power": 0.27, "rangeRating": "B" },
+    { "id": "6i", "grp": "fi", "class": 3, "rating": "C", "cost": 846720, "mass": 5, "power": 0.34, "rangeRating": "B" },
+    { "id": "6h", "grp": "fi", "class": 3, "rating": "B", "cost": 2540160, "mass": 8, "power": 0.41, "rangeRating": "B" },
+    { "id": "6g", "grp": "fi", "class": 3, "rating": "A", "cost": 7620480, "mass": 5, "power": 0.48, "rangeRating": "A" },
+
+    { "id": "6f", "grp": "fi", "class": 2, "rating": "E", "cost": 33600, "mass": 2.5, "power": 0.17, "rangeRating": "D" },
+    { "id": "6e", "grp": "fi", "class": 2, "rating": "D", "cost": 100800, "mass": 1, "power": 0.22, "rangeRating": "C" },
+    { "id": "6d", "grp": "fi", "class": 2, "rating": "C", "cost": 302400, "mass": 2.5, "power": 0.28, "rangeRating": "C" },
+    { "id": "6c", "grp": "fi", "class": 2, "rating": "B", "cost": 907200, "mass": 4, "power": 0.34, "rangeRating": "C" },
+    { "id": "6b", "grp": "fi", "class": 2, "rating": "A", "cost": 2721600, "mass": 2.5, "power": 0.39, "rangeRating": "B" },
+
+    { "id": "6a", "grp": "fi", "class": 1, "rating": "E", "cost": 12000, "mass": 1.3, "power": 0.14, "rangeRating": "E" },
+    { "id": "69", "grp": "fi", "class": 1, "rating": "D", "cost": 36000, "mass": 0.5, "power": 0.18, "rangeRating": "D" },
+    { "id": "68", "grp": "fi", "class": 1, "rating": "C", "cost": 108000, "mass": 1.3, "power": 0.23, "rangeRating": "D" },
+    { "id": "67", "grp": "fi", "class": 1, "rating": "B", "cost": 324000, "mass": 2, "power": 0.28, "rangeRating": "D" },
+    { "id": "66", "grp": "fi", "class": 1, "rating": "A", "cost": 972000, "mass": 1.3, "power": 0.32, "rangeRating": "C" }
   ]
 }

@@ -1,364 +1,51 @@
 {
   "fs": [
-    {
-      "id": "3q",
-      "grp": "fs",
-      "class": 8,
-      "rating": "E",
-      "cost": 1083910,
-      "power": 0.48,
-      "rate": 720
-    },
-    {
-      "id": "3p",
-      "grp": "fs",
-      "class": 8,
-      "rating": "D",
-      "cost": 4516291,
-      "power": 0.64,
-      "rate": 960
-    },
-    {
-      "id": "3o",
-      "grp": "fs",
-      "class": 8,
-      "rating": "C",
-      "cost": 18065165,
-      "power": 0.8,
-      "rate": 1200
-    },
-    {
-      "id": "3n",
-      "grp": "fs",
-      "class": 8,
-      "rating": "B",
-      "cost": 72260660,
-      "power": 0.96,
-      "rate": 1440
-    },
-    {
-      "id": "3m",
-      "grp": "fs",
-      "class": 8,
-      "rating": "A",
-      "cost": 289042541,
-      "power": 1.12,
-      "rate": 1680
-    },
-    {
-      "id": "3l",
-      "grp": "fs",
-      "class": 7,
-      "rating": "E",
-      "cost": 341927,
-      "power": 0.41,
-      "rate": 534
-    },
-    {
-      "id": "3k",
-      "grp": "fs",
-      "class": 7,
-      "rating": "D",
-      "cost": 1424698,
-      "power": 0.55,
-      "rate": 712
-    },
-    {
-      "id": "3j",
-      "grp": "fs",
-      "class": 7,
-      "rating": "C",
-      "cost": 5698790,
-      "power": 0.69,
-      "rate": 890
-    },
-    {
-      "id": "3i",
-      "grp": "fs",
-      "class": 7,
-      "rating": "B",
-      "cost": 22795161,
-      "power": 0.83,
-      "rate": 1068
-    },
-    {
-      "id": "3h",
-      "grp": "fs",
-      "class": 7,
-      "rating": "A",
-      "cost": 91180644,
-      "power": 0.97,
-      "rate": 1245
-    },
-    {
-      "id": "3g",
-      "grp": "fs",
-      "class": 6,
-      "rating": "E",
-      "cost": 107864,
-      "power": 0.35,
-      "rate": 376
-    },
-    {
-      "id": "3f",
-      "grp": "fs",
-      "class": 6,
-      "rating": "D",
-      "cost": 449431,
-      "power": 0.47,
-      "rate": 502
-    },
-    {
-      "id": "3e",
-      "grp": "fs",
-      "class": 6,
-      "rating": "C",
-      "cost": 1797726,
-      "power": 0.59,
-      "rate": 627
-    },
-    {
-      "id": "3d",
-      "grp": "fs",
-      "class": 6,
-      "rating": "B",
-      "cost": 7190903,
-      "power": 0.71,
-      "rate": 752
-    },
-    {
-      "id": "3c",
-      "grp": "fs",
-      "class": 6,
-      "rating": "A",
-      "cost": 28763610,
-      "power": 0.83,
-      "rate": 878
-    },
-    {
-      "id": "3b",
-      "grp": "fs",
-      "class": 5,
-      "rating": "E",
-      "cost": 34026,
-      "power": 0.3,
-      "rate": 247
-    },
-    {
-      "id": "3a",
-      "grp": "fs",
-      "class": 5,
-      "rating": "D",
-      "cost": 141776,
-      "power": 0.4,
-      "rate": 330
-    },
-    {
-      "id": "39",
-      "grp": "fs",
-      "class": 5,
-      "rating": "C",
-      "cost": 567106,
-      "power": 0.5,
-      "rate": 412
-    },
-    {
-      "id": "38",
-      "grp": "fs",
-      "class": 5,
-      "rating": "B",
-      "cost": 2268424,
-      "power": 0.6,
-      "rate": 494
-    },
-    {
-      "id": "37",
-      "grp": "fs",
-      "class": 5,
-      "rating": "A",
-      "cost": 9073694,
-      "power": 0.7,
-      "rate": 577
-    },
-    {
-      "id": "36",
-      "grp": "fs",
-      "class": 4,
-      "rating": "E",
-      "cost": 10734,
-      "power": 0.25,
-      "rate": 147
-    },
-    {
-      "id": "35",
-      "grp": "fs",
-      "class": 4,
-      "rating": "D",
-      "cost": 44724,
-      "power": 0.33,
-      "rate": 196
-    },
-    {
-      "id": "34",
-      "grp": "fs",
-      "class": 4,
-      "rating": "C",
-      "cost": 178898,
-      "power": 0.41,
-      "rate": 245
-    },
-    {
-      "id": "33",
-      "grp": "fs",
-      "class": 4,
-      "rating": "B",
-      "cost": 715591,
-      "power": 0.49,
-      "rate": 294
-    },
-    {
-      "id": "32",
-      "grp": "fs",
-      "class": 4,
-      "rating": "A",
-      "cost": 2862364,
-      "power": 0.57,
-      "rate": 342
-    },
-    {
-      "id": "31",
-      "grp": "fs",
-      "class": 3,
-      "rating": "E",
-      "cost": 3386,
-      "power": 0.2,
-      "rate": 75
-    },
-    {
-      "id": "30",
-      "grp": "fs",
-      "class": 3,
-      "rating": "D",
-      "cost": 14109,
-      "power": 0.27,
-      "rate": 100
-    },
-    {
-      "id": "2v",
-      "grp": "fs",
-      "class": 3,
-      "rating": "C",
-      "cost": 56435,
-      "power": 0.34,
-      "rate": 126
-    },
-    {
-      "id": "2u",
-      "grp": "fs",
-      "class": 3,
-      "rating": "B",
-      "cost": 225738,
-      "power": 0.41,
-      "rate": 151
-    },
-    {
-      "id": "2t",
-      "grp": "fs",
-      "class": 3,
-      "rating": "A",
-      "cost": 902954,
-      "power": 0.48,
-      "rate": 176
-    },
-    {
-      "id": "2s",
-      "grp": "fs",
-      "class": 2,
-      "rating": "E",
-      "cost": 1068,
-      "power": 0.17,
-      "rate": 32
-    },
-    {
-      "id": "2r",
-      "grp": "fs",
-      "class": 2,
-      "rating": "D",
-      "cost": 4451,
-      "power": 0.22,
-      "rate": 43
-    },
-    {
-      "id": "2q",
-      "grp": "fs",
-      "class": 2,
-      "rating": "C",
-      "cost": 17803,
-      "power": 0.28,
-      "rate": 54
-    },
-    {
-      "id": "2p",
-      "grp": "fs",
-      "class": 2,
-      "rating": "B",
-      "cost": 71211,
-      "power": 0.34,
-      "rate": 65
-    },
-    {
-      "id": "2o",
-      "grp": "fs",
-      "class": 2,
-      "rating": "A",
-      "cost": 284844,
-      "power": 0.39,
-      "rate": 75
-    },
-    {
-      "id": "2n",
-      "grp": "fs",
-      "class": 1,
-      "rating": "E",
-      "cost": 309,
-      "power": 0.14,
-      "rate": 18
-    },
-    {
-      "id": "2m",
-      "grp": "fs",
-      "class": 1,
-      "rating": "D",
-      "cost": 1285,
-      "power": 0.18,
-      "rate": 24
-    },
-    {
-      "id": "2l",
-      "grp": "fs",
-      "class": 1,
-      "rating": "C",
-      "cost": 5142,
-      "power": 0.23,
-      "rate": 30
-    },
-    {
-      "id": "2k",
-      "grp": "fs",
-      "class": 1,
-      "rating": "B",
-      "cost": 20568,
-      "power": 0.28,
-      "rate": 36
-    },
-    {
-      "id": "2j",
-      "grp": "fs",
-      "class": 1,
-      "rating": "A",
-      "cost": 82270,
-      "power": 0.32,
-      "rate": 42
-    }
+    { "id": "3q", "grp": "fs", "class": 8, "rating": "E", "cost": 1083910, "power": 0.48, "rate": 720 },
+    { "id": "3p", "grp": "fs", "class": 8, "rating": "D", "cost": 4516290, "power": 0.64, "rate": 960 },
+    { "id": "3o", "grp": "fs", "class": 8, "rating": "C", "cost": 18065160, "power": 0.8, "rate": 1200 },
+    { "id": "3n", "grp": "fs", "class": 8, "rating": "B", "cost": 72260660, "power": 0.96, "rate": 1440 },
+    { "id": "3m", "grp": "fs", "class": 8, "rating": "A", "cost": 289042540, "power": 1.12, "rate": 1680 },
+
+    { "id": "3l", "grp": "fs", "class": 7, "rating": "E", "cost": 341930, "power": 0.41, "rate": 534 },
+    { "id": "3k", "grp": "fs", "class": 7, "rating": "D", "cost": 1424700, "power": 0.55, "rate": 712 },
+    { "id": "3j", "grp": "fs", "class": 7, "rating": "C", "cost": 5698790, "power": 0.69, "rate": 890 },
+    { "id": "3i", "grp": "fs", "class": 7, "rating": "B", "cost": 22795160, "power": 0.83, "rate": 1068 },
+    { "id": "3h", "grp": "fs", "class": 7, "rating": "A", "cost": 91180640, "power": 0.97, "rate": 1245 },
+
+    { "id": "3g", "grp": "fs", "class": 6, "rating": "E", "cost": 107860, "power": 0.35, "rate": 376 },
+    { "id": "3f", "grp": "fs", "class": 6, "rating": "D", "cost": 449430, "power": 0.47, "rate": 502 },
+    { "id": "3e", "grp": "fs", "class": 6, "rating": "C", "cost": 1797730, "power": 0.59, "rate": 627 },
+    { "id": "3d", "grp": "fs", "class": 6, "rating": "B", "cost": 7190900, "power": 0.71, "rate": 752 },
+    { "id": "3c", "grp": "fs", "class": 6, "rating": "A", "cost": 28763610, "power": 0.83, "rate": 878 },
+
+    { "id": "3b", "grp": "fs", "class": 5, "rating": "E", "cost": 34030, "power": 0.3, "rate": 247 },
+    { "id": "3a", "grp": "fs", "class": 5, "rating": "D", "cost": 141780, "power": 0.4, "rate": 330 },
+    { "id": "39", "grp": "fs", "class": 5, "rating": "C", "cost": 567110, "power": 0.5, "rate": 412 },
+    { "id": "38", "grp": "fs", "class": 5, "rating": "B", "cost": 2268420, "power": 0.6, "rate": 494 },
+    { "id": "37", "grp": "fs", "class": 5, "rating": "A", "cost": 9073690, "power": 0.7, "rate": 577 },
+
+    { "id": "36", "grp": "fs", "class": 4, "rating": "E", "cost": 10730, "power": 0.25, "rate": 147 },
+    { "id": "35", "grp": "fs", "class": 4, "rating": "D", "cost": 44720, "power": 0.33, "rate": 196 },
+    { "id": "34", "grp": "fs", "class": 4, "rating": "C", "cost": 178900, "power": 0.41, "rate": 245 },
+    { "id": "33", "grp": "fs", "class": 4, "rating": "B", "cost": 715590, "power": 0.49, "rate": 294 },
+    { "id": "32", "grp": "fs", "class": 4, "rating": "A", "cost": 2862360, "power": 0.57, "rate": 342 },
+
+    { "id": "31", "grp": "fs", "class": 3, "rating": "E", "cost": 3390, "power": 0.2, "rate": 75 },
+    { "id": "30", "grp": "fs", "class": 3, "rating": "D", "cost": 14110, "power": 0.27, "rate": 100 },
+    { "id": "2v", "grp": "fs", "class": 3, "rating": "C", "cost": 56440, "power": 0.34, "rate": 126 },
+    { "id": "2u", "grp": "fs", "class": 3, "rating": "B", "cost": 225740, "power": 0.41, "rate": 151 },
+    { "id": "2t", "grp": "fs", "class": 3, "rating": "A", "cost": 902950, "power": 0.48, "rate": 176 },
+
+    { "id": "2s", "grp": "fs", "class": 2, "rating": "E", "cost": 1070, "power": 0.17, "rate": 32 },
+    { "id": "2r", "grp": "fs", "class": 2, "rating": "D", "cost": 4450, "power": 0.22, "rate": 43 },
+    { "id": "2q", "grp": "fs", "class": 2, "rating": "C", "cost": 17800, "power": 0.28, "rate": 54 },
+    { "id": "2p", "grp": "fs", "class": 2, "rating": "B", "cost": 71210, "power": 0.34, "rate": 65 },
+    { "id": "2o", "grp": "fs", "class": 2, "rating": "A", "cost": 284840, "power": 0.39, "rate": 75 },
+
+    { "id": "2n", "grp": "fs", "class": 1, "rating": "E", "cost": 310, "power": 0.14, "rate": 18 },
+    { "id": "2m", "grp": "fs", "class": 1, "rating": "D", "cost": 1290, "power": 0.18, "rate": 24 },
+    { "id": "2l", "grp": "fs", "class": 1, "rating": "C", "cost": 5140, "power": 0.23, "rate": 30 },
+    { "id": "2k", "grp": "fs", "class": 1, "rating": "B", "cost": 20570, "power": 0.28, "rate": 36 },
+    { "id": "2j", "grp": "fs", "class": 1, "rating": "A", "cost": 82270, "power": 0.32, "rate": 42 }
   ]
 }

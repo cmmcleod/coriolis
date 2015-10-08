@@ -4,7 +4,7 @@
       "name": "Type-6 Transporter",
       "manufacturer": "Lakon",
       "class": 2,
-      "hullCost": 865782,
+      "hullCost": 865790,
       "speed": 220,
       "boost": 350,
       "boostEnergy": 11,
@@ -15,7 +15,7 @@
       "masslock": 8,
       "pipSpeed": 0.1475
     },
-    "retailCost": 1045945,
+    "retailCost": 1045950,
     "slots": {
       "common": [
         3,

@@ -251,7 +251,7 @@
   },
   "stats": {
     "class": 3,
-    "hullCost": 141889932,
+    "hullCost": 141889930,
     "speed": 180,
     "topSpeed": 186.5,
     "boost": 240,
@@ -272,7 +272,7 @@
     "armourAdded": 240,
     "armourMultiplier": 1.95,
     "shieldMultiplier": 1.4,
-    "totalCost": 882362049,
+    "totalCost": 882362060,
     "unladenMass": 1179.2,
     "totalDps": 29,
     "powerAvailable": 36,

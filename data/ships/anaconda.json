@@ -4,7 +4,7 @@
       "name": "Anaconda",
       "manufacturer": "Faulcon DeLacy",
       "class": 3,
-      "hullCost": 141889932,
+      "hullCost": 141889930,
       "speed": 180,
       "boost": 240,
       "boostEnergy": 29,
@@ -15,7 +15,7 @@
       "masslock": 23,
       "pipSpeed": 0.13875
     },
-    "retailCost": 146969451,
+    "retailCost": 146969450,
     "slots": {
       "common": [
         8,
