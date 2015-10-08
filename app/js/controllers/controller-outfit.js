@@ -232,8 +232,8 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     updateState(Serializer.fromShip(ship.useCommon(rating)));
   };
 
-  $scope.useHardpoint = function(group, mount) {
-    updateState(Serializer.fromShip(ship.useWeapon(group, mount)));
+  $scope.useHardpoint = function(group, mount, missile) {
+    updateState(Serializer.fromShip(ship.useWeapon(group, mount, missile)));
   };
 
   $scope.useUtility = function(group, rating) {
