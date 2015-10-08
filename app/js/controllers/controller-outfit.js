@@ -267,9 +267,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
       if ((!slot.c || (slot.c.grp != 'sg' && slot.c.grp != 'psg')) && (!slot.eligible || slot.eligible.scb)) { // Check eligibility because of Orca, don't overwrite generator
         ship.use(slot, id, Components.internal(id));
         chargeCap += Components.internal(id).recharge;
-        if (chargeCap >= ship.shieldStrength) {
-          ship.setSlotEnabled(slot, false); // Don't waste cell capacity on overcharge
-        }
+        ship.setSlotEnabled(slot, chargeCap <= ship.shieldStrength); // Don't waste cell capacity on overcharge
       }
     });
     updateState(Serializer.fromShip(ship));
