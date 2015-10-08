@@ -232,8 +232,8 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     updateState(Serializer.fromShip(ship.useCommon(rating)));
   };
 
-  $scope.useHardpoint = function(group, mount) {
-    updateState(Serializer.fromShip(ship.useWeapon(group, mount)));
+  $scope.useHardpoint = function(group, mount, missile) {
+    updateState(Serializer.fromShip(ship.useWeapon(group, mount, missile)));
   };
 
   $scope.useUtility = function(group, rating) {
@@ -256,6 +256,19 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     ship.internal.forEach(function(slot) {
       var id = Components.findInternalId('cr', slot.maxClass, 'E');
       ship.use(slot, id, Components.internal(id));
+    });
+    updateState(Serializer.fromShip(ship));
+  };
+
+  $scope.fillWithCells = function() {
+    var chargeCap = 0; // Capacity of single activation
+    ship.internal.forEach(function(slot) {
+      var id = Components.findInternalId('scb', slot.maxClass, 'A');
+      if ((!slot.c || (slot.c.grp != 'sg' && slot.c.grp != 'psg')) && (!slot.eligible || slot.eligible.scb)) { // Check eligibility because of Orca, don't overwrite generator
+        ship.use(slot, id, Components.internal(id));
+        chargeCap += Components.internal(id).recharge;
+        ship.setSlotEnabled(slot, chargeCap <= ship.shieldStrength); // Don't waste cell capacity on overcharge
+      }
     });
     updateState(Serializer.fromShip(ship));
   };
