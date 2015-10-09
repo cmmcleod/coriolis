@@ -255,7 +255,9 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   $scope.fillWithCargo = function() {
     ship.internal.forEach(function(slot) {
       var id = Components.findInternalId('cr', slot.maxClass, 'E');
-      ship.use(slot, id, Components.internal(id));
+      if (!slot.c) {
+        ship.use(slot, id, Components.internal(id));
+      }
     });
     updateState(Serializer.fromShip(ship));
   };
@@ -268,6 +270,16 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
         ship.use(slot, id, Components.internal(id));
         chargeCap += Components.internal(id).recharge;
         ship.setSlotEnabled(slot, chargeCap <= ship.shieldStrength); // Don't waste cell capacity on overcharge
+      }
+    });
+    updateState(Serializer.fromShip(ship));
+  };
+
+  $scope.fillWithArmor = function() {
+    ship.internal.forEach(function(slot) {
+      var id = Components.findInternalId('hr', slot.maxClass, 'D');
+      if (!slot.c) {
+        ship.use(slot, id, Components.internal(id));
       }
     });
     updateState(Serializer.fromShip(ship));
