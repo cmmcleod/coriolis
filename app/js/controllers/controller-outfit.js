@@ -266,7 +266,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     var chargeCap = 0; // Capacity of single activation
     ship.internal.forEach(function(slot) {
       var id = Components.findInternalId('scb', slot.maxClass, 'A');
-      if ((!slot.c || (slot.c.grp != 'sg' && slot.c.grp != 'psg')) && (!slot.eligible || slot.eligible.scb)) { // Check eligibility because of Orca, don't overwrite generator
+      if (!slot.c && (!slot.eligible || slot.eligible.scb)) { // Check eligibility because of Orca, don't overwrite generator
         ship.use(slot, id, Components.internal(id));
         chargeCap += Components.internal(id).recharge;
         ship.setSlotEnabled(slot, chargeCap <= ship.shieldStrength); // Don't waste cell capacity on overcharge
