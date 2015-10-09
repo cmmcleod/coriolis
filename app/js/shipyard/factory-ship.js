@@ -547,24 +547,24 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     return this;
   };
 
-  Ship.prototype.useUtility = function(group, rating) {
+  Ship.prototype.useUtility = function(group, rating, clobber) {
     var component = Components.findHardpoint(group, 0, rating);
     for (var i = this.hardpoints.length; i--; ) {
-      if (!this.hardpoints[i].maxClass) {
+      if ((clobber || !this.hardpoints[i].c) && !this.hardpoints[i].maxClass) {
         this.use(this.hardpoints[i], component.id, component);
       }
     }
     return this;
   };
 
-  Ship.prototype.useWeapon = function(group, mount, missile) {
+  Ship.prototype.useWeapon = function(group, mount, clobber, missile) {
     var hps = this.hardpoints;
     for (var i = hps.length; i--; ) {
       if (hps[i].maxClass) {
         var size = hps[i].maxClass, component;
         do {
           component = Components.findHardpoint(group, size, null, null, mount, missile);
-          if (component) {
+          if ((clobber || !hps[i].c) && component) {
             this.use(hps[i], component.id, component);
             break;
           }

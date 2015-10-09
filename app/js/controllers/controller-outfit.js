@@ -232,12 +232,12 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     updateState(Serializer.fromShip(ship.useCommon(rating)));
   };
 
-  $scope.useHardpoint = function(group, mount, missile) {
-    updateState(Serializer.fromShip(ship.useWeapon(group, mount, missile)));
+  $scope.useHardpoint = function(group, mount, clobber, missile) {
+    updateState(Serializer.fromShip(ship.useWeapon(group, mount, clobber, missile)));
   };
 
-  $scope.useUtility = function(group, rating) {
-    updateState(Serializer.fromShip(ship.useUtility(group, rating)));
+  $scope.useUtility = function(group, rating, clobber) {
+    updateState(Serializer.fromShip(ship.useUtility(group, rating, clobber)));
   };
 
   $scope.emptyInternal = function() {
@@ -255,7 +255,9 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   $scope.fillWithCargo = function() {
     ship.internal.forEach(function(slot) {
       var id = Components.findInternalId('cr', slot.maxClass, 'E');
-      ship.use(slot, id, Components.internal(id));
+      if (!slot.c) {
+        ship.use(slot, id, Components.internal(id));
+      }
     });
     updateState(Serializer.fromShip(ship));
   };
@@ -264,10 +266,20 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     var chargeCap = 0; // Capacity of single activation
     ship.internal.forEach(function(slot) {
       var id = Components.findInternalId('scb', slot.maxClass, 'A');
-      if ((!slot.c || (slot.c.grp != 'sg' && slot.c.grp != 'psg')) && (!slot.eligible || slot.eligible.scb)) { // Check eligibility because of Orca, don't overwrite generator
+      if (!slot.c && (!slot.eligible || slot.eligible.scb)) { // Check eligibility because of Orca, don't overwrite generator
         ship.use(slot, id, Components.internal(id));
         chargeCap += Components.internal(id).recharge;
         ship.setSlotEnabled(slot, chargeCap <= ship.shieldStrength); // Don't waste cell capacity on overcharge
+      }
+    });
+    updateState(Serializer.fromShip(ship));
+  };
+
+  $scope.fillWithArmor = function() {
+    ship.internal.forEach(function(slot) {
+      var id = Components.findInternalId('hr', Math.min(slot.maxClass, 5), 'D'); // Hull reinforcements top out at 5D
+      if (!slot.c) {
+        ship.use(slot, id, Components.internal(id));
       }
     });
     updateState(Serializer.fromShip(ship));
