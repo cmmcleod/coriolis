@@ -277,7 +277,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
 
   $scope.fillWithArmor = function() {
     ship.internal.forEach(function(slot) {
-      var id = Components.findInternalId('hr', slot.maxClass, 'D');
+      var id = Components.findInternalId('hr', Math.min(slot.maxClass, 5), 'D'); // Hull reinforcements top out at 5D
       if (!slot.c) {
         ship.use(slot, id, Components.internal(id));
       }
