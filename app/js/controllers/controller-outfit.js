@@ -193,26 +193,6 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   };
 
   /**
-   * Strip ship to A-class and biggest A-class shield generator with military bulkheads
-   */
-  $scope.aRatedBuild = function() {
-    ship
-        .useBulkhead(2)     // Military Composite
-        .useCommon('A')
-        .emptyHardpoints()
-        .emptyInternal();
-
-    ship.internal.some(function(slot) {
-      if (!slot.eligible || slot.eligible.sg) { // Assuming largest slot can hold an eligible shield
-        var sg = Components.findInternal('sg', slot.maxClass, 'A');
-        ship.use(slot, sg.id, sg);
-        return true;
-      }
-    });
-    updateState(Serializer.fromShip(ship));
-  };
-
-  /**
    * Optimize for the lower mass build that can still boost and power the ship
    * without power management.
    */
@@ -277,9 +257,9 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
 
   $scope.fillWithArmor = function() {
     ship.internal.forEach(function(slot) {
-      var id = Components.findInternalId('hr', Math.min(slot.maxClass, 5), 'D'); // Hull reinforcements top out at 5D
-      if (!slot.c) {
-        ship.use(slot, id, Components.internal(id));
+      var hr = Components.findInternal('hr', Math.min(slot.maxClass, 5), 'D'); // Hull reinforcements top out at 5D
+      if (!slot.c && hr) {
+        ship.use(slot, hr.id, hr);
       }
     });
     updateState(Serializer.fromShip(ship));
@@ -330,7 +310,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
         ship.setSlotEnabled(sgSlot, true);
       } else if (afmUnitCount > 0 && (!slot.eligible || slot.eligible.am)) {
         afmUnitCount--;
-        var id = Components.findInternalId('am', slot.maxClass, 'A'); // Best AFM Unit for slot
+        var id = Components.findInternalId('am', slot.maxClass, 'B'); // Best B-Rated AFM Unit for slot (more ammo)
         ship.use(slot, id, Components.internal(id));
         ship.setSlotEnabled(slot, false);   // Disabled power for AFM Unit
 
