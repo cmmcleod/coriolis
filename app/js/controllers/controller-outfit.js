@@ -310,8 +310,8 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
         ship.setSlotEnabled(sgSlot, true);
       } else if (afmUnitCount > 0 && (!slot.eligible || slot.eligible.am)) {
         afmUnitCount--;
-        var id = Components.findInternalId('am', slot.maxClass, 'B'); // Best B-Rated AFM Unit for slot (more ammo)
-        ship.use(slot, id, Components.internal(id));
+        var am = Components.findInternal('am', slot.maxClass, afmUnitCount ? 'B' : 'A');
+        ship.use(slot, am.id, am);
         ship.setSlotEnabled(slot, false);   // Disabled power for AFM Unit
 
       } else {
