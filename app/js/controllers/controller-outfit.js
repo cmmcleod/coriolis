@@ -232,12 +232,12 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     updateState(Serializer.fromShip(ship.useCommon(rating)));
   };
 
-  $scope.useHardpoint = function(group, mount, missile) {
-    updateState(Serializer.fromShip(ship.useWeapon(group, mount, missile)));
+  $scope.useHardpoint = function(group, mount, clobber, missile) {
+    updateState(Serializer.fromShip(ship.useWeapon(group, mount, clobber, missile)));
   };
 
-  $scope.useUtility = function(group, rating) {
-    updateState(Serializer.fromShip(ship.useUtility(group, rating)));
+  $scope.useUtility = function(group, rating, clobber) {
+    updateState(Serializer.fromShip(ship.useUtility(group, rating, clobber)));
   };
 
   $scope.emptyInternal = function() {
