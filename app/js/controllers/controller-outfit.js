@@ -12,7 +12,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     ship.buildWith(data.defaults);  // Populate with default components
   }
 
-  $scope.buildName = $p.bn;
+  $scope.buildName = $p.bn ? $window.decodeURIComponent($p.bn) : null;
   $scope.ships = Ships;
   $rootScope.title = ship.name + ($scope.buildName ? ' - ' + $scope.buildName : '');
   $scope.ship = ship;
