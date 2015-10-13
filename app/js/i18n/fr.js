@@ -46,7 +46,7 @@ angular.module('app').config(['$translateProvider', 'localeFormatProvider', func
     cells: 'Cellules',
     'Chaff Launcher': 'Lanceur de paillettes',
     close: 'fermer',
-    cc: 'Contrôleur de prospecteur',
+    cc: 'Contrôleur de Collecteur',
     compare: 'comparer',
     'compare all': 'tout comparer',
     comparison: 'comparaison',
