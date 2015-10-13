@@ -609,12 +609,11 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     }
     //total fuel, or if slider isn't at max, use that value and only if scoop not present
     if (!scoop) {
-      q = $scope.fuel != ship.fuelCapacity ? $scope.fuel : ship.fuelCapacity;
       item = {
         ammoName: 'fuel',
-        ammoMax: q,
+        ammoMax: $scope.fuel,
         ammoUnitCost: 50,
-        ammoTotalCost: q * 50
+        ammoTotalCost: $scope.fuel * 50
       };
       costs.push(item);
       total += item.ammoTotalCost;
