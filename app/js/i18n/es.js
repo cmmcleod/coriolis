@@ -115,6 +115,7 @@ angular.module('app').config(['$translateProvider', 'localeFormatProvider', func
     'large': 'Grande',
     'ls': 'Soporte vital',
     'Lightweight Alloy': 'Aleaci\u00f3n ligera',
+    'limpets': 'Drones',
     'lock factor': 'factor de bloqueo',
     'mass': 'Masa',
     'max': 'm\u00e1x',

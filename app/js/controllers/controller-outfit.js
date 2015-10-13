@@ -461,6 +461,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
 
   $scope.fuelChange = function(fuel) {
     $scope.fuel = fuel;
+    updateAmmoCosts();
     win.triggerHandler('render');
   };
 
@@ -555,20 +556,17 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
 
   function updateAmmoCosts() {
     var costs = $scope.ammoList = [];
-    var controllers = [];
-    var total = 0, i, l, item, q;
+    var total = 0, i, l, item, q, limpets = 0, scoop = false;
 
     for (var g in { common: 1, internal: 1, hardpoints: 1 }) {
       var slotGroup = ship[g];
       for (i = 0, l = slotGroup.length; i < l; i++) {
         if (slotGroup[i].id) {
-          //special cases needed for fuel, SCB, AFMU, and limpet controllers since they don't use standard ammo/clip
-          var isLimpet = false;
+          //special cases needed for SCB, AFMU, and limpet controllers since they don't use standard ammo/clip
           q = 0;
           switch (slotGroup[i].c.grp) {
-            case 'ft':
-              q = slotGroup[i].c.capacity;
-              slotGroup[i].c.ammocost = 50;
+            case 'fs': //skip fuel calculation if scoop present
+              scoop = true;
               break;
             case 'scb':
               q = slotGroup[i].c.cells;
@@ -577,12 +575,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
               q = slotGroup[i].c.ammo;
               break;
             case 'fx': case 'hb': case 'cc': case 'pc':
-              isLimpet = true;
-              if (!ship.cargoCapacity) { //skip ammo costs if no cargo space for limpets
-                continue;
-              }
-              q = ship.cargoCapacity;
-              slotGroup[i].c.ammocost = 101;
+              limpets = ship.cargoCapacity;
               break;
             default:
               q = slotGroup[i].c.clip + slotGroup[i].c.ammo;
@@ -596,22 +589,35 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
               ammoUnitCost: slotGroup[i].c.ammocost,
               ammoTotalCost: q * slotGroup[i].c.ammocost
             };
-            if (isLimpet) { //add total limpet cost once and finalize costs entry later
-              controllers.push(item);
-              total += controllers.length == 1 ? item.ammoTotalCost : 0;
-            } else {
-              costs.push(item);
-              total += item.ammoTotalCost;
-            }
+            costs.push(item);
+            total += item.ammoTotalCost;
           }
         }
       }
     }
-    q = Math.ceil(ship.cargoCapacity / controllers.length);
-    for (i = 0; i < controllers.length; i++) {
-      controllers[i].ammoTotalCost = q * 101;
-      controllers[i].ammoMax = (i == 0) && (q != ship.cargoCapacity / controllers.length) ? q-- : q; // handle rounding error with first controller
-      costs.push(controllers[i]);
+
+    //limpets if controllers exist and cargo space available
+    if (limpets > 0) {
+      item = {
+        ammoName: 'limpets',
+        ammoMax: ship.cargoCapacity,
+        ammoUnitCost: 101,
+        ammoTotalCost: ship.cargoCapacity * 101
+      };
+      costs.push(item);
+      total += item.ammoTotalCost;
+    }
+    //total fuel, or if slider isn't at max, use that value and only if scoop not present
+    if (!scoop) {
+      q = $scope.fuel != ship.fuelCapacity ? $scope.fuel : ship.fuelCapacity;
+      item = {
+        ammoName: 'fuel',
+        ammoMax: q,
+        ammoUnitCost: 50,
+        ammoTotalCost: q * 50
+      };
+      costs.push(item);
+      total += item.ammoTotalCost;
     }
     $scope.ammoTotal = total;
   }

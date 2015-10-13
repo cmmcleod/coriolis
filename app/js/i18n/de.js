@@ -115,6 +115,7 @@ angular.module('app').config(['$translateProvider', 'localeFormatProvider', func
     laden: 'Beladen',
     language: 'Sprache',
     large: 'Groß',
+    limpets: 'Krallen',
     ls: 'Lebenserhaltung',
     'Lightweight Alloy': 'Leichte Legierung',
     'lock factor': 'Massensperrefaktor',

@@ -105,6 +105,7 @@ angular.module('app').config(['$translateProvider', function($translateProvider)
     laden: 'laden',
     language: 'language',
     large: 'large',
+    'limpets': 'Limpets',
     ls: 'life support',
     'Lightweight Alloy': 'Lightweight Alloy',
     'lock factor': 'lock factor',

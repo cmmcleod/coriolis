@@ -106,6 +106,7 @@ angular.module('app').config(['$translateProvider', 'localeFormatProvider', func
     large: 'large',
     ls: 'Systèmes de survie',
     'Lightweight Alloy': 'alliage léger',
+    'limpets': 'Patelles',
     'lock factor': 'facteur inhibition de masse',
     LS: 'SL',
     LY: 'AL',
