@@ -607,7 +607,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
       costs.push(item);
       total += item.ammoTotalCost;
     }
-    //total fuel, or if slider isn't at max, use that value and only if scoop not present
+    //calculate refuel costs if no scoop present
     if (!scoop) {
       item = {
         ammoName: 'fuel',
