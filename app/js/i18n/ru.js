@@ -124,6 +124,7 @@ angular.module('app').config(['$translateProvider', 'localeFormatProvider', func
     large: 'большой',
     ls: 'Система жизнеобеспечения',
     'Lightweight Alloy': 'Легкий сплав',
+    'limpets': 'Дроны',
     'lock factor': 'Масс. блок',
     LS: 'Св.сек',
     LY: 'Св.лет',
