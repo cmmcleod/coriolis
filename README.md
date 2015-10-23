@@ -23,7 +23,7 @@ See the [Developer's Guide](https://github.com/cmmcleod/coriolis/wiki/Developer'
 
 ### Ship and Component Database
 
-See [Data wiki](https://github.com/cmmcleod/coriolis/wiki/Database) for details on structure, etc.
+See the [Data wiki](https://github.com/cmmcleod/coriolis-data/wiki) for details on structure, etc.
 
 
 ## License
