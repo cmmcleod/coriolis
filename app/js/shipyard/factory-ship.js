@@ -195,7 +195,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     for (i = 0; i < cl; i++) {
       common[i].cat = 0;
       common[i].enabled = enabled ? enabled[i + 1] * 1 : true;
-      common[i].priority = priorities ? priorities[i + 1] * 1 : 0;
+      common[i].priority = priorities && priorities[i + 1] ? priorities[i + 1] * 1 : 0;
       common[i].type = 'SYS';
       common[i].c = common[i].id = null; // Resetting 'old' component if there was one
       common[i].discountedCost = 0;
@@ -212,7 +212,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     for (i = 0, l = hps.length; i < l; i++) {
       hps[i].cat = 1;
       hps[i].enabled = enabled ? enabled[cl + i] * 1 : true;
-      hps[i].priority = priorities ? priorities[cl + i] * 1 : 0;
+      hps[i].priority = priorities && priorities[cl + i] ? priorities[cl + i] * 1 : 0;
       hps[i].type = hps[i].maxClass ? 'WEP' : 'SYS';
       hps[i].c = hps[i].id = null; // Resetting 'old' component if there was one
       hps[i].discountedCost = 0;
@@ -227,7 +227,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     for (i = 0, l = internal.length; i < l; i++) {
       internal[i].cat = 2;
       internal[i].enabled = enabled ? enabled[cl + i] * 1 : true;
-      internal[i].priority = priorities ? priorities[cl + i] * 1 : 0;
+      internal[i].priority = priorities && priorities[cl + i] ? priorities[cl + i] * 1 : 0;
       internal[i].type = 'SYS';
       internal[i].id = internal[i].c = null; // Resetting 'old' component if there was one
       internal[i].discountedCost = 0;

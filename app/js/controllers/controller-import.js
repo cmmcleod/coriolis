@@ -26,8 +26,8 @@ angular.module('app').controller('ImportController', ['lodash', '$rootScope', '$
     if (!shipData) {
       throw '"' + shipId + '" is not a valid Ship Id!';
     }
-    if (typeof name != 'string' || name.length < 3) {
-      throw shipData.properties.name + ' build "' + name + '" must be a string at least 3 characters long!';
+    if (typeof name != 'string' || name.length == 0) {
+      throw shipData.properties.name + ' build "' + name + '" must be a string at least 1 character long!';
     }
     if (typeof code != 'string' || code.length < 10) {
       throw shipData.properties.name + ' build "' + name + '" is not valid!';
@@ -43,6 +43,10 @@ angular.module('app').controller('ImportController', ['lodash', '$rootScope', '$
     var ship;
     if (!detailedBuild.name) {
       throw 'Build Name missing!';
+    }
+
+    if (!detailedBuild.name.trim()) {
+      throw 'Build Name must be a string at least 1 character long!';
     }
 
     try {
@@ -213,7 +217,7 @@ angular.module('app').controller('ImportController', ['lodash', '$rootScope', '$
 
         if (importData instanceof Array) {   // Must be detailed export json
           importDetailedArray(importData);
-        } else if (importData.ship && importData.name) { // Using JSON from a single ship build export
+        } else if (importData.ship && typeof importData.name !== undefined) { // Using JSON from a single ship build export
           importDetailedArray([importData]); // Convert to array with singleobject
         } else { // Using Backup JSON
           importBackup(importData);
