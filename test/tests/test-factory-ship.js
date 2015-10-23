@@ -44,7 +44,7 @@ describe("Ship Factory", function() {
 
     var buildA = cobra.defaults;
     var buildB = {
-      common:['4A', '4A', '4A', '3D', '3A', '3A', '4C'],
+      standard:['4A', '4A', '4A', '3D', '3A', '3A', '4C'],
       hardpoints: ['0s', '0s', '2d', '2d', 0, '04'],
       internal: ['45', '03', '2b', '2o', '27', '53']
     };

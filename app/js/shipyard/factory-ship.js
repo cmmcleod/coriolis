@@ -20,7 +20,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    *
    * @param {string} id         Unique ship Id / Key
    * @param {object} properties Basic ship properties such as name, manufacturer, mass, etc
-   * @param {object} slots      Collection of slot groups (standard/common, internal, hardpoints) with their max class size.
+   * @param {object} slots      Collection of slot groups (standard/standard, internal, hardpoints) with their max class size.
    */
   function Ship(id, properties, slots) {
     this.id = id;
@@ -32,7 +32,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
 
     for (var slotType in slots) {   // Initialize all slots
       var slotGroup = slots[slotType];
-      var group = this[slotType] = [];   // Initialize Slot group (Common, Hardpoints, Internal)
+      var group = this[slotType] = [];   // Initialize Slot group (Standard, Hardpoints, Internal)
       for (var i = 0; i < slotGroup.length; i++) {
         if (typeof slotGroup[i] == 'object') {
           group.push({ id: null, c: null, incCost: true, maxClass: slotGroup[i].class, eligible: slotGroup[i].eligible });
@@ -44,18 +44,18 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     // Make a Ship 'slot'/item similar to other slots
     this.c = { incCost: true, type: 'SHIP', discountedCost: this.hullCost, c: { name: this.name, cost: this.hullCost } };
 
-    this.costList = _.union(this.internal, this.common, this.hardpoints);
+    this.costList = _.union(this.internal, this.standard, this.hardpoints);
     this.costList.push(this.bulkheads);  // Add The bulkheads
     this.costList.unshift(this.c); // Add the ship itself to the list
 
     this.powerList = _.union(this.internal, this.hardpoints);
     this.powerList.unshift(this.cargoHatch);
-    this.powerList.unshift(this.common[1]);  // Add Thrusters
-    this.powerList.unshift(this.common[5]);  // Add Sensors
-    this.powerList.unshift(this.common[4]);  // Add Power Distributor
-    this.powerList.unshift(this.common[3]);  // Add Life Support
-    this.powerList.unshift(this.common[2]);  // Add FSD
-    this.powerList.unshift(this.common[0]);  // Add Power Plant
+    this.powerList.unshift(this.standard[1]);  // Add Thrusters
+    this.powerList.unshift(this.standard[5]);  // Add Sensors
+    this.powerList.unshift(this.standard[4]);  // Add Power Distributor
+    this.powerList.unshift(this.standard[3]);  // Add Life Support
+    this.powerList.unshift(this.standard[2]);  // Add FSD
+    this.powerList.unshift(this.standard[0]);  // Add Power Plant
 
     this.shipCostMultiplier = 1;
     this.componentCostMultiplier = 1;
@@ -99,7 +99,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    * @return {number}      Jump range in Light Years
    */
   Ship.prototype.getJumpRangeForMass = function(mass, fuel) {
-    return calcJumpRange(mass, this.common[2].c, fuel);
+    return calcJumpRange(mass, this.standard[2].c, fuel);
   };
 
   /**
@@ -160,10 +160,10 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    */
   Ship.prototype.buildWith = function(comps, priorities, enabled) {
     var internal = this.internal,
-        common = this.common,
+        standard = this.standard,
         hps = this.hardpoints,
         bands = this.priorityBands,
-        cl = common.length,
+        cl = standard.length,
         i, l;
 
     // Reset Cumulative stats
@@ -193,20 +193,20 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     }
 
     for (i = 0; i < cl; i++) {
-      common[i].cat = 0;
-      common[i].enabled = enabled ? enabled[i + 1] * 1 : true;
-      common[i].priority = priorities && priorities[i + 1] ? priorities[i + 1] * 1 : 0;
-      common[i].type = 'SYS';
-      common[i].c = common[i].id = null; // Resetting 'old' component if there was one
-      common[i].discountedCost = 0;
+      standard[i].cat = 0;
+      standard[i].enabled = enabled ? enabled[i + 1] * 1 : true;
+      standard[i].priority = priorities && priorities[i + 1] ? priorities[i + 1] * 1 : 0;
+      standard[i].type = 'SYS';
+      standard[i].c = standard[i].id = null; // Resetting 'old' component if there was one
+      standard[i].discountedCost = 0;
 
       if (comps) {
-        this.use(common[i], comps.common[i], Components.common(i, comps.common[i]), true);
+        this.use(standard[i], comps.standard[i], Components.standard(i, comps.standard[i]), true);
       }
     }
 
-    common[1].type = 'ENG'; // Thrusters
-    common[2].type = 'ENG'; // FSD
+    standard[1].type = 'ENG'; // Thrusters
+    standard[2].type = 'ENG'; // FSD
     cl++; // Increase accounts for Cargo Scoop
 
     for (i = 0, l = hps.length; i < l; i++) {
@@ -283,10 +283,10 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
   /**
    * Optimize for the lower mass build that can still boost and power the ship
    * without power management.
-   * @param  {object} c Common Component overrides
+   * @param  {object} c Standard Component overrides
    */
   Ship.prototype.optimizeMass = function(c) {
-    return this.emptyHardpoints().emptyInternal().useLightestCommon(c);
+    return this.emptyHardpoints().emptyInternal().useLightestStandard(c);
   };
 
   Ship.prototype.setCostIncluded = function(item, included) {
@@ -322,7 +322,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    * Updates the ship's cumulative and aggregated stats based on the component change.
    */
   Ship.prototype.updateStats = function(slot, n, old, preventUpdate) {
-    var powerChange = slot == this.common[0];
+    var powerChange = slot == this.standard[0];
 
     if (old) {  // Old component now being removed
       switch (old.grp) {
@@ -410,14 +410,14 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       prevDeployed = band.deployedSum = prevDeployed + band.deployed + band.retracted;
     }
 
-    this.powerAvailable = this.common[0].c.pGen;
+    this.powerAvailable = this.standard[0].c.pGen;
     this.powerRetracted = prevRetracted;
     this.powerDeployed = prevDeployed;
     return this;
   };
 
   Ship.prototype.updateTopSpeed = function() {
-    var speeds = calcSpeed(this.unladenMass + this.fuelCapacity, this.speed, this.boost, this.common[1].c, this.pipSpeed);
+    var speeds = calcSpeed(this.unladenMass + this.fuelCapacity, this.speed, this.boost, this.standard[1].c, this.pipSpeed);
     this.topSpeed = speeds['4 Pips'];
     this.topBoost = speeds.boost;
     return this;
@@ -433,7 +433,7 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
    * Jump Range and total range calculations
    */
   Ship.prototype.updateJumpStats = function() {
-    var fsd = this.common[2].c;   // Frame Shift Drive;
+    var fsd = this.standard[2].c;   // Frame Shift Drive;
     this.unladenRange = calcJumpRange(this.unladenMass + fsd.maxfuel, fsd, this.fuelCapacity); // Include fuel weight for jump
     this.fullTankRange = calcJumpRange(this.unladenMass + this.fuelCapacity, fsd, this.fuelCapacity); // Full Tanke
     this.ladenRange = calcJumpRange(this.ladenMass, fsd, this.fuelCapacity);
@@ -493,37 +493,37 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
   };
 
   /**
-   * [useCommon description]
+   * [useStandard description]
    * @param  {[type]} rating [description]
    * @return {[type]}        [description]
    */
-  Ship.prototype.useCommon = function(rating) {
-    for (var i = this.common.length - 1; i--; ) { // All except Fuel Tank
-      var id = this.common[i].maxClass + rating;
-      this.use(this.common[i], id, Components.common(i, id));
+  Ship.prototype.useStandard = function(rating) {
+    for (var i = this.standard.length - 1; i--; ) { // All except Fuel Tank
+      var id = this.standard[i].maxClass + rating;
+      this.use(this.standard[i], id, Components.standard(i, id));
     }
     return this;
   };
 
   /**
-   * Use the lightest common components unless otherwise specified
+   * Use the lightest standard components unless otherwise specified
    * @param  {object} c Component overrides
    */
-  Ship.prototype.useLightestCommon = function(c) {
+  Ship.prototype.useLightestStandard = function(c) {
     c = c || {};
 
-    var common = this.common,
+    var standard = this.standard,
         pd = c.pd || this.availCS.lightestPowerDist(this.boostEnergy), // Find lightest Power Distributor that can still boost;
-        fsd = c.fsd || common[2].maxClass + 'A',
-        ls = c.ls || common[3].maxClass + 'D',
-        s = c.s || common[5].maxClass + 'D',
+        fsd = c.fsd || standard[2].maxClass + 'A',
+        ls = c.ls || standard[3].maxClass + 'D',
+        s = c.s || standard[5].maxClass + 'D',
         updated;
 
     this.useBulkhead(0)
-        .use(common[2], fsd, Components.common(2, fsd))   // FSD
-        .use(common[3], ls, Components.common(3, ls))     // Life Support
-        .use(common[5], s, Components.common(5, s))       // Sensors
-        .use(common[4], pd, Components.common(4, pd));    // Power Distributor
+        .use(standard[2], fsd, Components.standard(2, fsd))   // FSD
+        .use(standard[3], ls, Components.standard(3, ls))     // Life Support
+        .use(standard[5], s, Components.standard(5, s))       // Sensors
+        .use(standard[4], pd, Components.standard(4, pd));    // Power Distributor
 
     // Thrusters and Powerplant must be determined after all other components are mounted
     // Loop at least once to determine absolute lightest PD and TH
@@ -531,15 +531,15 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
       updated = false;
       // Find lightest Thruster that still works for the ship at max mass
       var th = c.th || this.availCS.lightestThruster(this.ladenMass);
-      if (th != common[1].id) {
-        this.use(common[1], th, Components.common(1, th));
+      if (th != standard[1].id) {
+        this.use(standard[1], th, Components.standard(1, th));
         updated = true;
       }
       // Find lightest Power plant that can power the ship
       var pp = c.pp || this.availCS.lightestPowerPlant(Math.max(this.powerRetracted, this.powerDeployed), c.ppRating);
 
-      if (pp != common[0].id) {
-        this.use(common[0], pp, Components.common(0, pp));
+      if (pp != standard[0].id) {
+        this.use(standard[0], pp, Components.standard(0, pp));
         updated = true;
       }
     } while (updated);

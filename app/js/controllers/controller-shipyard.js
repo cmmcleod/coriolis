@@ -1,4 +1,4 @@
-angular.module('app').controller('ShipyardController', ['$rootScope', '$scope', 'ShipsDB', 'Ship', 'Components', function($rootScope, $scope, ShipsDB, Ship, Components) {
+  angular.module('app').controller('ShipyardController', ['$rootScope', '$scope', 'ShipsDB', 'Ship', 'Components', function($rootScope, $scope, ShipsDB, Ship, Components) {
   $rootScope.title = 'Coriolis - Shipyard';
   $scope.shipPredicate = 'properties.name';
   $scope.shipDesc = false;
@@ -31,7 +31,7 @@ angular.module('app').controller('ShipyardController', ['$rootScope', '$scope', 
     summary.retailCost = ship.totalCost;            // Record Stock/Default/retail cost
     ship.optimizeMass({ pd: '1D' });                // Optimize Mass with 1D PD for maximum possible jump range
     summary.maxJumpRange = ship.unladenRange;          // Record Jump Range
-    ship.optimizeMass({ th: ship.common[1].maxClass + 'A' }); // Optmize mass with Max Thrusters
+    ship.optimizeMass({ th: ship.standard[1].maxClass + 'A' }); // Optmize mass with Max Thrusters
     summary.topSpeed = ship.topSpeed;
     summary.topBoost = ship.topBoost;
 

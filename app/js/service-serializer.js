@@ -16,7 +16,7 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
 
     var data = [
       ship.bulkheads.id,
-      _.map(ship.common, mapGroup, power),
+      _.map(ship.standard, mapGroup, power),
       _.map(ship.hardpoints, mapGroup, power),
       _.map(ship.internal, mapGroup, power),
       '.',
@@ -36,7 +36,7 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
    * @param {string}  dataString  The string to deserialize
    */
   this.toShip = function(ship, dataString) {
-    var common = new Array(ship.common.length),
+    var standard = new Array(ship.standard.length),
         hardpoints = new Array(ship.hardpoints.length),
         internal = new Array(ship.internal.length),
         parts = dataString.split('.'),
@@ -52,12 +52,12 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
       priorities = LZString.decompressFromBase64(parts[2].replace(/-/g, '/')).split('');
     }
 
-    decodeToArray(code, internal, decodeToArray(code, hardpoints, decodeToArray(code, common, 1)));
+    decodeToArray(code, internal, decodeToArray(code, hardpoints, decodeToArray(code, standard, 1)));
 
     ship.buildWith(
       {
         bulkheads: code.charAt(0) * 1,
-        common: common,
+        standard: standard,
         hardpoints: hardpoints,
         internal: internal
       },
@@ -67,7 +67,7 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
   };
 
   this.toDetailedBuild = function(buildName, ship, code) {
-    var standard = ship.common,
+    var standard = ship.standard,
         hardpoints = ship.hardpoints,
         internal = ship.internal;
 
@@ -128,7 +128,7 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
       throw 'Invalid bulkheads: ' + standard.bulkheads;
     }
 
-    var common = _.map(
+    var standardIds = _.map(
       ['powerPlant', 'thrusters', 'frameShiftDrive', 'lifeSupport', 'powerDistributor', 'sensors', 'fuelTank'],
       function(c) {
         if (!standard[c].class || !standard[c].rating) {
@@ -156,7 +156,7 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
                              _.map(comps.utility, function(c) { return (!c || c.enabled === undefined) ? true : c.enabled * 1; }),
                              _.map(comps.internal, function(c) { return (!c || c.enabled === undefined) ? true : c.enabled * 1; }));
 
-    ship.buildWith({ bulkheads: bulkheads, common: common, hardpoints: hardpoints, internal: internal }, priorities, enabled);
+    ship.buildWith({ bulkheads: bulkheads, standard: standardIds, hardpoints: hardpoints, internal: internal }, priorities, enabled);
 
     return ship;
   };

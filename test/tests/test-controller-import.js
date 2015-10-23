@@ -83,7 +83,7 @@ describe('Import Controller', function() {
       scope.importString = angular.toJson(importData).replace('Dream', '');
       scope.validateImport();
       expect(scope.importValid).toBeFalsy();
-      expect(scope.errorMsg).toEqual('Imperial Clipper build "" must be a string at least 3 characters long!');
+      expect(scope.errorMsg).toEqual('Imperial Clipper build "" must be a string at least 1 character long!');
 
       invalidImportData = angular.copy(importData);
       invalidImportData.builds.asp = null;   // Remove Asp Miner build used in comparison

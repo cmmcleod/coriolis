@@ -1,0 +1,43 @@
+{
+  "8E":{ "id":"py", "grp": "pp", "class": 8, "rating": "E", "cost": 2007240, "mass": 160, "pGen": 24, "eff": "F" },
+  "8D":{ "id":"px", "grp": "pp", "class": 8, "rating": "D", "cost": 6021720, "mass": 64, "pGen": 27, "eff": "D" },
+  "8C":{ "id":"pw", "grp": "pp", "class": 8, "rating": "C", "cost": 18065170, "mass": 80, "pGen": 30, "eff": "C" },
+  "8B":{ "id":"pv", "grp": "pp", "class": 8, "rating": "B", "cost": 54195500, "mass": 128, "pGen": 33, "eff": "C" },
+  "8A":{ "id":"pu", "grp": "pp", "class": 8, "rating": "A", "cost": 162586490, "mass": 80, "pGen": 36, "eff": "B" },
+
+  "7E":{ "id":"pt", "grp": "pp", "class": 7, "rating": "E", "cost": 633200, "mass": 80, "pGen": 20, "eff": "F" },
+  "7D":{ "id":"ps", "grp": "pp", "class": 7, "rating": "D", "cost": 1899600, "mass": 32, "pGen": 22.5, "eff": "D" },
+  "7C":{ "id":"pr", "grp": "pp", "class": 7, "rating": "C", "cost": 5698790, "mass": 40, "pGen": 25, "eff": "C" },
+  "7B":{ "id":"pq", "grp": "pp", "class": 7, "rating": "B", "cost": 17096370, "mass": 64, "pGen": 27.5, "eff": "C" },
+  "7A":{ "id":"pp", "grp": "pp", "class": 7, "rating": "A", "cost": 51289110, "mass": 40, "pGen": 30, "eff": "B" },
+
+  "6E":{ "id":"po", "grp": "pp", "class": 6, "rating": "E", "cost": 199750, "mass": 40, "pGen": 16.8, "eff": "F" },
+  "6D":{ "id":"pn", "grp": "pp", "class": 6, "rating": "D", "cost": 599240, "mass": 16, "pGen": 18.9, "eff": "D" },
+  "6C":{ "id":"pm", "grp": "pp", "class": 6, "rating": "C", "cost": 1797730, "mass": 20, "pGen": 21, "eff": "C" },
+  "6B":{ "id":"pl", "grp": "pp", "class": 6, "rating": "B", "cost": 5393180, "mass": 32, "pGen": 23.1, "eff": "C" },
+  "6A":{ "id":"pk", "grp": "pp", "class": 6, "rating": "A", "cost": 16179530, "mass": 20, "pGen": 25.2, "eff": "B" },
+
+  "5E":{ "id":"pj", "grp": "pp", "class": 5, "rating": "E", "cost": 63010, "mass": 20, "pGen": 13.6, "eff": "F" },
+  "5D":{ "id":"pi", "grp": "pp", "class": 5, "rating": "D", "cost": 189040, "mass": 8, "pGen": 15.3, "eff": "D" },
+  "5C":{ "id":"ph", "grp": "pp", "class": 5, "rating": "C", "cost": 567110, "mass": 10, "pGen": 17, "eff": "C" },
+  "5B":{ "id":"pg", "grp": "pp", "class": 5, "rating": "B", "cost": 1701320, "mass": 16, "pGen": 18.7, "eff": "C" },
+  "5A":{ "id":"pf", "grp": "pp", "class": 5, "rating": "A", "cost": 5103950, "mass": 10, "pGen": 20.4, "eff": "B" },
+
+  "4E":{ "id":"pe", "grp": "pp", "class": 4, "rating": "E", "cost": 19880, "mass": 10, "pGen": 10.4, "eff": "F" },
+  "4D":{ "id":"pd", "grp": "pp", "class": 4, "rating": "D", "cost": 59630, "mass": 4, "pGen": 11.7, "eff": "D" },
+  "4C":{ "id":"pc", "grp": "pp", "class": 4, "rating": "C", "cost": 178900, "mass": 5, "pGen": 13, "eff": "C" },
+  "4B":{ "id":"pb", "grp": "pp", "class": 4, "rating": "B", "cost": 536690, "mass": 8, "pGen": 14.3, "eff": "C" },
+  "4A":{ "id":"pa", "grp": "pp", "class": 4, "rating": "A", "cost": 1610080, "mass": 5, "pGen": 15.6, "eff": "B" },
+
+  "3E":{ "id":"p9", "grp": "pp", "class": 3, "rating": "E", "cost": 6270, "mass": 5, "pGen": 8, "eff": "F" },
+  "3D":{ "id":"p8", "grp": "pp", "class": 3, "rating": "D", "cost": 18810, "mass": 2, "pGen": 9, "eff": "D" },
+  "3C":{ "id":"p7", "grp": "pp", "class": 3, "rating": "C", "cost": 56440, "mass": 2.5, "pGen": 10, "eff": "C" },
+  "3B":{ "id":"p6", "grp": "pp", "class": 3, "rating": "B", "cost": 169300, "mass": 4, "pGen": 11, "eff": "C" },
+  "3A":{ "id":"p5", "grp": "pp", "class": 3, "rating": "A", "cost": 507910, "mass": 2.5, "pGen": 12, "eff": "B" },
+
+  "2E":{ "id":"p4", "grp": "pp", "class": 2, "rating": "E", "cost": 1980, "mass": 2.5, "pGen": 6.4, "eff": "F" },
+  "2D":{ "id":"p3", "grp": "pp", "class": 2, "rating": "D", "cost": 5930, "mass": 1, "pGen": 7.2, "eff": "D" },
+  "2C":{ "id":"p2", "grp": "pp", "class": 2, "rating": "C", "cost": 17800, "mass": 1.3, "pGen": 8, "eff": "C" },
+  "2B":{ "id":"p1", "grp": "pp", "class": 2, "rating": "B", "cost": 53410, "mass": 2, "pGen": 8.8, "eff": "C" },
+  "2A":{ "id":"p0", "grp": "pp", "class": 2, "rating": "A", "cost": 160220, "mass": 1.3, "pGen": 9.6, "eff": "B" }
+}

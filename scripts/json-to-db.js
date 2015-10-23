@@ -7,16 +7,16 @@ var db_filename = './app/js/db.js';
 async.parallel([
   function(cb) { jsonConcat({ dest: null, src: './data/ships' }, done.bind(cb)); },
   function(cb) {
-    var common = [
-      JSON.parse(fs.readFileSync('./data/components/common/power_plant.json', 'utf8')),
-      JSON.parse(fs.readFileSync('./data/components/common/thrusters.json', 'utf8')),
-      JSON.parse(fs.readFileSync('./data/components/common/frame_shift_drive.json', 'utf8')),
-      JSON.parse(fs.readFileSync('./data/components/common/life_support.json', 'utf8')),
-      JSON.parse(fs.readFileSync('./data/components/common/power_distributor.json', 'utf8')),
-      JSON.parse(fs.readFileSync('./data/components/common/sensors.json', 'utf8')),
-      JSON.parse(fs.readFileSync('./data/components/common/fuel_tank.json', 'utf8'))
+    var standard = [
+      JSON.parse(fs.readFileSync('./data/components/standard/power_plant.json', 'utf8')),
+      JSON.parse(fs.readFileSync('./data/components/standard/thrusters.json', 'utf8')),
+      JSON.parse(fs.readFileSync('./data/components/standard/frame_shift_drive.json', 'utf8')),
+      JSON.parse(fs.readFileSync('./data/components/standard/life_support.json', 'utf8')),
+      JSON.parse(fs.readFileSync('./data/components/standard/power_distributor.json', 'utf8')),
+      JSON.parse(fs.readFileSync('./data/components/standard/sensors.json', 'utf8')),
+      JSON.parse(fs.readFileSync('./data/components/standard/fuel_tank.json', 'utf8'))
     ];
-    cb(null, common);
+    cb(null, standard);
   },
   function(cb) { jsonConcat({ dest: null, src: './data/components/hardpoints' }, done.bind(cb)); },
   function(cb) { jsonConcat({ dest: null, src: './data/components/internal' }, done.bind(cb)); },
@@ -65,7 +65,7 @@ function writeDB(err, arr) {
     var db = {
       ships: ships,
       components: {
-        common: arr[1],
+        standard: arr[1],
         hardpoints: hardpoints,
         internal: internal,
         bulkheads: arr[4]

@@ -13,28 +13,28 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function(_) {
     return maxClass;
   }
 
-  function ComponentSet(components, mass, maxCommonArr, maxInternal, maxHardPoint) {
+  function ComponentSet(components, mass, maxStandardArr, maxInternal, maxHardPoint) {
     this.mass = mass;
-    this.common = {};
+    this.standard = {};
     this.internal = {};
     this.hardpoints = {};
     this.hpClass = {};
     this.intClass = {};
 
-    this.common[0] = filter(components.common[0], maxCommonArr[0], 0, mass);  // Power Plant
-    this.common[2] = filter(components.common[2], maxCommonArr[2], 0, mass);  // FSD
-    this.common[4] = filter(components.common[4], maxCommonArr[4], 0, mass);  // Power Distributor
-    this.common[6] = filter(components.common[6], maxCommonArr[6], 0, mass);  // Fuel Tank
+    this.standard[0] = filter(components.standard[0], maxStandardArr[0], 0, mass);  // Power Plant
+    this.standard[2] = filter(components.standard[2], maxStandardArr[2], 0, mass);  // FSD
+    this.standard[4] = filter(components.standard[4], maxStandardArr[4], 0, mass);  // Power Distributor
+    this.standard[6] = filter(components.standard[6], maxStandardArr[6], 0, mass);  // Fuel Tank
 
     // Thrusters, filter components by class only (to show full list of ratings for that class)
-    var minThrusterClass = _.reduce(components.common[1], function(minClass, thruster) {
+    var minThrusterClass = _.reduce(components.standard[1], function(minClass, thruster) {
       return (thruster.maxmass >= mass && thruster.class < minClass) ? thruster.class : minClass;
-    }, maxCommonArr[1]);
-    this.common[1] = filter(components.common[1], maxCommonArr[1], minThrusterClass, 0);  // Thrusters
+    }, maxStandardArr[1]);
+    this.standard[1] = filter(components.standard[1], maxStandardArr[1], minThrusterClass, 0);  // Thrusters
 
     // Slots where component class must be equal to slot class
-    this.common[3] = filter(components.common[3], maxCommonArr[3], maxCommonArr[3], 0);     // Life Supprt
-    this.common[5] = filter(components.common[5], maxCommonArr[5], maxCommonArr[5], mass);  // Sensors
+    this.standard[3] = filter(components.standard[3], maxStandardArr[3], maxStandardArr[3], 0);     // Life Supprt
+    this.standard[5] = filter(components.standard[5], maxStandardArr[5], maxStandardArr[5], mass);  // Sensors
 
     for (var h in components.hardpoints) {
       this.hardpoints[h] = filter(components.hardpoints[h], maxHardPoint, 0, mass);
@@ -94,7 +94,7 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function(_) {
   }
 
   ComponentSet.prototype.lightestPowerDist = function(boostEnergy) {
-    var pds = this.common[4];
+    var pds = this.standard[4];
     var pd = pds[0];
 
     for (var i = 1; i < pds.length; i++) {
@@ -106,7 +106,7 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function(_) {
   };
 
   ComponentSet.prototype.lightestThruster = function(ladenMass) {
-    var ths = this.common[1];
+    var ths = this.standard[1];
     var th = ths[0];
 
     for (var i = 1; i < ths.length; i++) {
@@ -129,7 +129,7 @@ angular.module('shipyard').factory('ComponentSet', ['lodash', function(_) {
   };
 
   ComponentSet.prototype.lightestPowerPlant = function(powerUsed, rating) {
-    var pps = this.common[0];
+    var pps = this.standard[0];
     var pp = null;
 
     for (var i = 0; i < pps.length; i++) {

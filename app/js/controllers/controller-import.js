@@ -9,7 +9,7 @@ angular.module('app').controller('ImportController', ['lodash', '$rootScope', '$
   var textBuildRegex = new RegExp('^\\[([\\w \\-]+)\\]\n');
   var lineRegex = new RegExp('^([\\dA-Z]{1,2}): (\\d)([A-I])[/]?([FGT])?([SD])? ([\\w\\- ]+)');
   var mountMap = { 'H': 4, 'L': 3, 'M': 2, 'S': 1, 'U': 0 };
-  var commonMap = { 'RB': 0, 'TM': 1, 'FH': 2, 'EC': 3, 'PC': 4, 'SS': 5, 'FS': 6 };
+  var standardMap = { 'RB': 0, 'TM': 1, 'FH': 2, 'EC': 3, 'PC': 4, 'SS': 5, 'FS': 6 };
   var bhMap = { 'lightweight alloy': 0, 'reinforced alloy': 1, 'military grade composite': 2, 'mirrored surface composite': 3, 'reactive surface composite': 4 };
 
   function isEmptySlot(slot) {
@@ -137,7 +137,7 @@ angular.module('app').controller('ImportController', ['lodash', '$rootScope', '$
       var name = parts[6].trim();
       var slot, group;
 
-      if (isNaN(typeSize)) {  // Common or Hardpoint
+      if (isNaN(typeSize)) {  // Standard or Hardpoint
         if (typeSize.length == 1) { // Hardpoint
           var slotClass = mountMap[typeSize];
 
@@ -162,12 +162,12 @@ angular.module('app').controller('ImportController', ['lodash', '$rootScope', '$
 
           ship.useBulkhead(bhId, true);
 
-        } else if (commonMap[typeSize] != undefined) {
-          var commonIndex = commonMap[typeSize];
+        } else if (standardMap[typeSize] != undefined) {
+          var standardIndex = standardMap[typeSize];
 
-          if (ship.common[commonIndex].maxClass < cl) { throw name + ' exceeds max class for the ' + ship.name; }
+          if (ship.standard[standardIndex].maxClass < cl) { throw name + ' exceeds max class for the ' + ship.name; }
 
-          ship.use(ship.common[commonIndex], cl + rating, Components.common(commonIndex, cl + rating), true);
+          ship.use(ship.standard[standardIndex], cl + rating, Components.standard(standardIndex, cl + rating), true);
 
         } else {
           throw 'Unknown component: "' + line + '"';

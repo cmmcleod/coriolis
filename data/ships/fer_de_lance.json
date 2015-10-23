@@ -17,7 +17,7 @@
     },
     "retailCost": 51567040,
     "slots": {
-      "common": [
+      "standard": [
         5,
         5,
         4,
@@ -48,7 +48,7 @@
       ]
     },
     "defaults": {
-      "common": [
+      "standard": [
         "5E",
         "5E",
         "4E",

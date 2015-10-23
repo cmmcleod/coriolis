@@ -16,13 +16,13 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
   $scope.ships = Ships;
   $rootScope.title = ship.name + ($scope.buildName ? ' - ' + $scope.buildName : '');
   $scope.ship = ship;
-  $scope.pp = ship.common[0];   // Power Plant
-  $scope.th = ship.common[1];   // Thruster
-  $scope.fsd = ship.common[2];  // Frame Shrift Drive
-  $scope.ls = ship.common[3];   // Life Support
-  $scope.pd = ship.common[4];   // Power Distributor
-  $scope.ss = ship.common[5];   // Sensors
-  $scope.ft = ship.common[6];   // Fuel Tank
+  $scope.pp = ship.standard[0];   // Power Plant
+  $scope.th = ship.standard[1];   // Thruster
+  $scope.fsd = ship.standard[2];  // Frame Shrift Drive
+  $scope.ls = ship.standard[3];   // Life Support
+  $scope.pd = ship.standard[4];   // Power Distributor
+  $scope.ss = ship.standard[5];   // Sensors
+  $scope.ft = ship.standard[6];   // Fuel Tank
   $scope.hps = ship.hardpoints;
   $scope.internal = ship.internal;
   $scope.costList = ship.costList;
@@ -166,7 +166,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
       } else if (type == 'h') {
         ship.use(slot, id, Components.hardpoints(id));
       } else if (type == 'c') {
-        ship.use(slot, id, Components.common(ship.common.indexOf(slot), id));
+        ship.use(slot, id, Components.standard(ship.standard.indexOf(slot), id));
       } else if (type == 'i') {
         ship.use(slot, id, Components.internal(id));
       } else if (type == 'b') {
@@ -204,12 +204,12 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
    * Optimize for the lower mass build that can still boost and power the ship
    * without power management.
    */
-  $scope.optimizeCommon = function() {
-    updateState(Serializer.fromShip(ship.useLightestCommon()));
+  $scope.optimizeStandard = function() {
+    updateState(Serializer.fromShip(ship.useLightestStandard()));
   };
 
-  $scope.useCommon = function(rating) {
-    updateState(Serializer.fromShip(ship.useCommon(rating)));
+  $scope.useStandard = function(rating) {
+    updateState(Serializer.fromShip(ship.useStandard(rating)));
   };
 
   $scope.useHardpoint = function(group, mount, clobber, missile) {
@@ -274,12 +274,12 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
       var id = Components.findInternalId('cr', slot.maxClass, 'E');
       ship.use(slot, id, Components.internal(id));
     });
-    ship.useLightestCommon();
+    ship.useLightestStandard();
     updateState(Serializer.fromShip(ship));
   };
 
   /**
-   * Optimize common and internal components, hardpoints for exploration
+   * Optimize standard and internal components, hardpoints for exploration
    */
   $scope.optimizeExplorer = function() {
     var intLength = ship.internal.length,
@@ -338,7 +338,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
       }
     }
 
-    ship.useLightestCommon({ pd: '1D', ppRating: 'A' });
+    ship.useLightestStandard({ pd: '1D', ppRating: 'A' });
     updateState(Serializer.fromShip(ship));
   };
 
@@ -527,7 +527,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
       }
     }
 
-    for (var g in { common: 1, internal: 1, hardpoints: 1 }) {
+    for (var g in { standard: 1, internal: 1, hardpoints: 1 }) {
       var retroSlotGroup = retrofitShip[g];
       var slotGroup = ship[g];
       for (i = 0, l = slotGroup.length; i < l; i++) {
@@ -558,7 +558,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
     var costs = $scope.ammoList = [];
     var total = 0, i, l, item, q, limpets = 0, scoop = false;
 
-    for (var g in { common: 1, internal: 1, hardpoints: 1 }) {
+    for (var g in { standard: 1, internal: 1, hardpoints: 1 }) {
       var slotGroup = ship[g];
       for (i = 0, l = slotGroup.length; i < l; i++) {
         if (slotGroup[i].id) {

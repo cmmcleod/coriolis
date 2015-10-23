@@ -1,0 +1,43 @@
+{
+  "8E": { "id":"Fy", "grp": "fd", "class": 8, "rating": "E", "cost": 0, "mass": 160, "power": 0, "optmass": 0, "maxfuel": 0, "fuelmul": 0.011, "fuelpower": 2.9 },
+  "8D": { "id":"Fx", "grp": "fd", "class": 8, "rating": "D", "cost": 0, "mass": 64, "power": 0, "optmass": 0, "maxfuel": 0, "fuelmul": 0.01, "fuelpower": 2.9 },
+  "8C": { "id":"Fw", "grp": "fd", "class": 8, "rating": "C", "cost": 0, "mass": 160, "power": 0, "optmass": 0, "maxfuel": 0, "fuelmul": 0.008, "fuelpower": 2.9 },
+  "8B": { "id":"Fv", "grp": "fd", "class": 8, "rating": "B", "cost": 0, "mass": 256, "power": 0, "optmass": 0, "maxfuel": 0, "fuelmul": 0.01, "fuelpower": 2.9 },
+  "8A": { "id":"Fu", "grp": "fd", "class": 8, "rating": "A", "cost": 0, "mass": 160, "power": 0, "optmass": 0, "maxfuel": 0, "fuelmul": 0.012, "fuelpower": 2.9 },
+
+  "7E": { "id":"Ft", "grp": "fd", "class": 7, "rating": "E", "cost": 0, "mass": 80, "power": 0, "optmass": 0, "maxfuel": 0, "fuelmul": 0.011, "fuelpower": 2.75 },
+  "7D": { "id":"Fs", "grp": "fd", "class": 7, "rating": "D", "cost": 0, "mass": 32, "power": 0, "optmass": 0, "maxfuel": 0, "fuelmul": 0.01, "fuelpower": 2.75 },
+  "7C": { "id":"Fr", "grp": "fd", "class": 7, "rating": "C", "cost": 0, "mass": 80, "power": 0, "optmass": 0, "maxfuel": 0, "fuelmul": 0.008, "fuelpower": 2.75 },
+  "7B": { "id":"Fq", "grp": "fd", "class": 7, "rating": "B", "cost": 0, "mass": 128, "power": 0, "optmass": 0, "maxfuel": 0, "fuelmul": 0.01, "fuelpower": 2.75 },
+  "7A": { "id":"Fp", "grp": "fd", "class": 7, "rating": "A", "cost": 0, "mass": 80, "power": 0, "optmass": 0, "maxfuel": 0, "fuelmul": 0.012, "fuelpower": 2.75 },
+
+  "6E": { "id":"Fo", "grp": "fd", "class": 6, "rating": "E", "cost": 199750, "mass": 40, "power": 0.4, "optmass": 960, "maxfuel": 5.3, "fuelmul": 0.011, "fuelpower": 2.6 },
+  "6D": { "id":"Fn", "grp": "fd", "class": 6, "rating": "D", "cost": 599240, "mass": 16, "power": 0.45, "optmass": 1080, "maxfuel": 5.3, "fuelmul": 0.01, "fuelpower": 2.6 },
+  "6C": { "id":"Fm", "grp": "fd", "class": 6, "rating": "C", "cost": 1797730, "mass": 40, "power": 0.5, "optmass": 1200, "maxfuel": 5.3, "fuelmul": 0.008, "fuelpower": 2.6 },
+  "6B": { "id":"Fl", "grp": "fd", "class": 6, "rating": "B", "cost": 5393180, "mass": 64, "power": 0.63, "optmass": 1500, "maxfuel": 6.6, "fuelmul": 0.01, "fuelpower": 2.6 },
+  "6A": { "id":"Fk", "grp": "fd", "class": 6, "rating": "A", "cost": 16179530, "mass": 40, "power": 0.75, "optmass": 1800, "maxfuel": 8, "fuelmul": 0.012, "fuelpower": 2.6 },
+
+  "5E": { "id":"Fj", "grp": "fd", "class": 5, "rating": "E", "cost": 63010, "mass": 20, "power": 0.32, "optmass": 560, "maxfuel": 3.3, "fuelmul": 0.011, "fuelpower": 2.45 },
+  "5D": { "id":"Fi", "grp": "fd", "class": 5, "rating": "D", "cost": 189040, "mass": 8, "power": 0.36, "optmass": 630, "maxfuel": 3.3, "fuelmul": 0.01, "fuelpower": 2.45 },
+  "5C": { "id":"Fh", "grp": "fd", "class": 5, "rating": "C", "cost": 567110, "mass": 20, "power": 0.4, "optmass": 700, "maxfuel": 3.3, "fuelmul": 0.008, "fuelpower": 2.45 },
+  "5B": { "id":"Fg", "grp": "fd", "class": 5, "rating": "B", "cost": 1701320, "mass": 32, "power": 0.5, "optmass": 875, "maxfuel": 4.1, "fuelmul": 0.01, "fuelpower": 2.45 },
+  "5A": { "id":"Ff", "grp": "fd", "class": 5, "rating": "A", "cost": 5103950, "mass": 20, "power": 0.6, "optmass": 1050, "maxfuel": 5, "fuelmul": 0.012, "fuelpower": 2.45 },
+
+  "4E": { "id":"Fe", "grp": "fd", "class": 4, "rating": "E", "cost": 19880, "mass": 10, "power": 0.24, "optmass": 280, "maxfuel": 2, "fuelmul": 0.011, "fuelpower": 2.3 },
+  "4D": { "id":"Fd", "grp": "fd", "class": 4, "rating": "D", "cost": 59630, "mass": 4, "power": 0.27, "optmass": 315, "maxfuel": 2, "fuelmul": 0.01, "fuelpower": 2.3 },
+  "4C": { "id":"Fc", "grp": "fd", "class": 4, "rating": "C", "cost": 178900, "mass": 10, "power": 0.3, "optmass": 350, "maxfuel": 2, "fuelmul": 0.008, "fuelpower": 2.3 },
+  "4B": { "id":"Fb", "grp": "fd", "class": 4, "rating": "B", "cost": 536690, "mass": 16, "power": 0.38, "optmass": 438, "maxfuel": 2.5, "fuelmul": 0.01, "fuelpower": 2.3 },
+  "4A": { "id":"Fa", "grp": "fd", "class": 4, "rating": "A", "cost": 1610080, "mass": 10, "power": 0.45, "optmass": 525, "maxfuel": 3, "fuelmul": 0.012, "fuelpower": 2.3 },
+
+  "3E": { "id":"F9", "grp": "fd", "class": 3, "rating": "E", "cost": 6270, "mass": 5, "power": 0.24, "optmass": 80, "maxfuel": 1.2, "fuelmul": 0.011, "fuelpower": 2.15 },
+  "3D": { "id":"F8", "grp": "fd", "class": 3, "rating": "D", "cost": 18810, "mass": 2, "power": 0.27, "optmass": 90, "maxfuel": 1.2, "fuelmul": 0.01, "fuelpower": 2.15 },
+  "3C": { "id":"F7", "grp": "fd", "class": 3, "rating": "C", "cost": 56440, "mass": 5, "power": 0.3, "optmass": 100, "maxfuel": 1.2, "fuelmul": 0.008, "fuelpower": 2.15 },
+  "3B": { "id":"F6", "grp": "fd", "class": 3, "rating": "B", "cost": 169300, "mass": 8, "power": 0.38, "optmass": 125, "maxfuel": 1.5, "fuelmul": 0.01, "fuelpower": 2.15 },
+  "3A": { "id":"F5", "grp": "fd", "class": 3, "rating": "A", "cost": 507910, "mass": 5, "power": 0.45, "optmass": 150, "maxfuel": 1.8, "fuelmul": 0.012, "fuelpower": 2.15 },
+
+  "2E": { "id":"F4", "grp": "fd", "class": 2, "rating": "E", "cost": 1980, "mass": 2.5, "power": 0.16, "optmass": 48, "maxfuel": 0.6, "fuelmul": 0.011, "fuelpower": 2 },
+  "2D": { "id":"F3", "grp": "fd", "class": 2, "rating": "D", "cost": 5930, "mass": 1, "power": 0.18, "optmass": 54, "maxfuel": 0.6, "fuelmul": 0.01, "fuelpower": 2 },
+  "2C": { "id":"F2", "grp": "fd", "class": 2, "rating": "C", "cost": 17800, "mass": 2.5, "power": 0.2, "optmass": 60, "maxfuel": 0.6, "fuelmul": 0.008, "fuelpower": 2 },
+  "2B": { "id":"F1", "grp": "fd", "class": 2, "rating": "B", "cost": 53410, "mass": 4, "power": 0.25, "optmass": 75, "maxfuel": 0.8, "fuelmul": 0.01, "fuelpower": 2 },
+  "2A": { "id":"F0", "grp": "fd", "class": 2, "rating": "A", "cost": 160220, "mass": 2.5, "power": 0.3, "optmass": 90, "maxfuel": 0.9, "fuelmul": 0.012, "fuelpower": 2 }
+}

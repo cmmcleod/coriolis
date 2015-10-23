@@ -10,8 +10,8 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
     return { name: 'Cargo Hatch', class: 1, rating: 'H', power: 0.6 };
   };
 
-  this.common = function(typeIndex, componentId) {
-    return C.common[typeIndex][componentId];
+  this.standard = function(typeIndex, componentId) {
+    return C.standard[typeIndex][componentId];
   };
 
   this.hardpoints = function(id) {
@@ -175,7 +175,7 @@ angular.module('shipyard').service('Components', ['lodash', 'ComponentsDB', 'Shi
   this.forShip = function(shipId) {
     var ship = Ships[shipId];
     var maxInternal = isNaN(ship.slots.internal[0]) ? ship.slots.internal[0].class : ship.slots.internal[0];
-    return new ComponentSet(C, ship.minMassFilter || ship.properties.hullMass + 5, ship.slots.common, maxInternal, ship.slots.hardpoints[0]);
+    return new ComponentSet(C, ship.minMassFilter || ship.properties.hullMass + 5, ship.slots.standard, maxInternal, ship.slots.hardpoints[0]);
   };
 
 }]);

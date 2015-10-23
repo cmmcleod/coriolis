@@ -18,7 +18,7 @@ describe('Database', function() {
 
   it('has ships and components', function() {
     expect(DB.ships).toBeDefined()
-    expect(DB.components.common).toBeDefined();
+    expect(DB.components.standard).toBeDefined();
     expect(DB.components.hardpoints).toBeDefined();
     expect(DB.components.internal).toBeDefined();
     expect(DB.components.bulkheads).toBeDefined();
@@ -59,8 +59,8 @@ describe('Database', function() {
       for (var p = 0; p < shipProperties.length; p++) {
         expect(DB.ships[s].properties[shipProperties[p]]).toBeDefined(shipProperties[p] + ' is missing for ' + s);
       }
-      expect(DB.ships[s].slots.common.length).toEqual(7, s + ' is missing common slots');
-      expect(DB.ships[s].defaults.common.length).toEqual(7, s + ' is missing common defaults');
+      expect(DB.ships[s].slots.standard.length).toEqual(7, s + ' is missing standard slots');
+      expect(DB.ships[s].defaults.standard.length).toEqual(7, s + ' is missing standard defaults');
       expect(DB.ships[s].slots.hardpoints.length).toEqual(DB.ships[s].defaults.hardpoints.length, s + ' hardpoint slots and defaults dont match');
       expect(DB.ships[s].slots.internal.length).toEqual(DB.ships[s].defaults.internal.length, s + ' hardpoint slots and defaults dont match');
       expect(DB.ships[s].retailCost).toBeGreaterThan(DB.ships[s].properties.hullCost, s + ' has invalid retail cost');
@@ -69,8 +69,8 @@ describe('Database', function() {
   });
 
   it('has components with a group defined', function() {
-    for (var i = 0; i < DB.components.common.length; i++) {
-      var group = DB.components.common[i];
+    for (var i = 0; i < DB.components.standard.length; i++) {
+      var group = DB.components.standard[i];
       for (var c in group) {
         expect(group[c].grp).toBeDefined('Common component has no group defined, Type: ' + i + ', ID: ' + c);
       }

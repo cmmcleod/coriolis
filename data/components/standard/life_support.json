@@ -1,0 +1,49 @@
+{
+  "8E": { "id":"lD", "grp": "ls", "class": 8, "rating": "E", "cost": 0, "mass": 160, "power": 0, "time": 300 },
+  "8D": { "id":"lC", "grp": "ls", "class": 8, "rating": "D", "cost": 0, "mass": 64, "power": 0, "time": 450 },
+  "8C": { "id":"lB", "grp": "ls", "class": 8, "rating": "C", "cost": 0, "mass": 160, "power": 0, "time": 600 },
+  "8B": { "id":"lA", "grp": "ls", "class": 8, "rating": "B", "cost": 0, "mass": 256, "power": 0, "time": 900 },
+  "8A": { "id":"lz", "grp": "ls", "class": 8, "rating": "A", "cost": 0, "mass": 160, "power": 0, "time": 1500 },
+
+  "7E": { "id":"ly", "grp": "ls", "class": 7, "rating": "E", "cost": 0, "mass": 80, "power": 0, "time": 300 },
+  "7D": { "id":"lx", "grp": "ls", "class": 7, "rating": "D", "cost": 0, "mass": 32, "power": 0, "time": 450 },
+  "7C": { "id":"lw", "grp": "ls", "class": 7, "rating": "C", "cost": 0, "mass": 80, "power": 0, "time": 600 },
+  "7B": { "id":"lv", "grp": "ls", "class": 7, "rating": "B", "cost": 0, "mass": 128, "power": 0, "time": 900 },
+  "7A": { "id":"lu", "grp": "ls", "class": 7, "rating": "A", "cost": 0, "mass": 80, "power": 0, "time": 1500 },
+
+  "6E": { "id":"lt", "grp": "ls", "class": 6, "rating": "E", "cost": 88980, "mass": 40, "power": 0.64, "time": 300 },
+  "6D": { "id":"ls", "grp": "ls", "class": 6, "rating": "D", "cost": 222440, "mass": 16, "power": 0.72, "time": 450 },
+  "6C": { "id":"lr", "grp": "ls", "class": 6, "rating": "C", "cost": 556110, "mass": 40, "power": 0.8, "time": 600 },
+  "6B": { "id":"lq", "grp": "ls", "class": 6, "rating": "B", "cost": 1390280, "mass": 64, "power": 0.88, "time": 900 },
+  "6A": { "id":"lp", "grp": "ls", "class": 6, "rating": "A", "cost": 3475690, "mass": 40, "power": 0.96, "time": 1500 },
+
+  "5E": { "id":"lo", "grp": "ls", "class": 5, "rating": "E", "cost": 31780, "mass": 20, "power": 0.57, "time": 300 },
+  "5D": { "id":"ln", "grp": "ls", "class": 5, "rating": "D", "cost": 79440, "mass": 8, "power": 0.64, "time": 450 },
+  "5C": { "id":"lm", "grp": "ls", "class": 5, "rating": "C", "cost": 198610, "mass": 20, "power": 0.71, "time": 600 },
+  "5B": { "id":"ll", "grp": "ls", "class": 5, "rating": "B", "cost": 496530, "mass": 32, "power": 0.78, "time": 900 },
+  "5A": { "id":"lk", "grp": "ls", "class": 5, "rating": "A", "cost": 1241320, "mass": 20, "power": 0.85, "time": 1500 },
+
+  "4E": { "id":"lj", "grp": "ls", "class": 4, "rating": "E", "cost": 11350, "mass": 10, "power": 0.5, "time": 300 },
+  "4D": { "id":"li", "grp": "ls", "class": 4, "rating": "D", "cost": 28370, "mass": 4, "power": 0.56, "time": 450 },
+  "4C": { "id":"lh", "grp": "ls", "class": 4, "rating": "C", "cost": 70930, "mass": 10, "power": 0.62, "time": 600 },
+  "4B": { "id":"lg", "grp": "ls", "class": 4, "rating": "B", "cost": 177330, "mass": 16, "power": 0.68, "time": 900 },
+  "4A": { "id":"lf", "grp": "ls", "class": 4, "rating": "A", "cost": 443330, "mass": 10, "power": 0.74, "time": 1500 },
+
+  "3E": { "id":"le", "grp": "ls", "class": 3, "rating": "E", "cost": 4050, "mass": 5, "power": 0.42, "time": 300 },
+  "3D": { "id":"ld", "grp": "ls", "class": 3, "rating": "D", "cost": 10130, "mass": 2, "power": 0.48, "time": 450 },
+  "3C": { "id":"lc", "grp": "ls", "class": 3, "rating": "C", "cost": 25330, "mass": 5, "power": 0.53, "time": 600 },
+  "3B": { "id":"lb", "grp": "ls", "class": 3, "rating": "B", "cost": 63330, "mass": 8, "power": 0.58, "time": 900 },
+  "3A": { "id":"la", "grp": "ls", "class": 3, "rating": "A", "cost": 158330, "mass": 5, "power": 0.64, "time": 1500 },
+
+  "2E": { "id":"l9", "grp": "ls", "class": 2, "rating": "E", "cost": 1450, "mass": 2.5, "power": 0.37, "time": 300 },
+  "2D": { "id":"l8", "grp": "ls", "class": 2, "rating": "D", "cost": 3620, "mass": 1, "power": 0.41, "time": 450 },
+  "2C": { "id":"l7", "grp": "ls", "class": 2, "rating": "C", "cost": 9050, "mass": 2.5, "power": 0.46, "time": 600 },
+  "2B": { "id":"l6", "grp": "ls", "class": 2, "rating": "B", "cost": 22620, "mass": 4, "power": 0.51, "time": 900 },
+  "2A": { "id":"l5", "grp": "ls", "class": 2, "rating": "A", "cost": 56550, "mass": 2.5, "power": 0.55, "time": 1500 },
+
+  "1E": { "id":"l4", "grp": "ls", "class": 1, "rating": "E", "cost": 520, "mass": 1.3, "power": 0.32, "time": 300 },
+  "1D": { "id":"l3", "grp": "ls", "class": 1, "rating": "D", "cost": 1290, "mass": 0.5, "power": 0.36, "time": 450 },
+  "1C": { "id":"l2", "grp": "ls", "class": 1, "rating": "C", "cost": 3230, "mass": 1.3, "power": 0.4, "time": 600 },
+  "1B": { "id":"l1", "grp": "ls", "class": 1, "rating": "B", "cost": 8080, "mass": 2, "power": 0.44, "time": 900 },
+  "1A": { "id":"l0", "grp": "ls", "class": 1, "rating": "A", "cost": 20200, "mass": 1.3, "power": 0.48, "time": 1500 }
+}

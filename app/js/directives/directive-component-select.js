@@ -6,7 +6,7 @@ angular.module('app').directive('componentSelect', ['$translate', function($tran
     var prevClass = null, prevRating = null;
     for (var i = 0; i < opts.length; i++) {
       var o = opts[i];
-      var id = o.id || (o.class + o.rating);  // Common components' ID is their class and rating
+      var id = o.id || (o.class + o.rating);  // Standard components' ID is their class and rating
 
       if (i > 0 && opts.length > 3 && o.class != prevClass && (o.rating != prevRating || o.mode) && o.grp != 'pa') {
         list.push('<br/>');

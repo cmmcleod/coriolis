@@ -20,7 +20,7 @@ angular.module('shipyard', ['ngLodash'])
   .constant('SizeMap', ['', 'small', 'medium', 'large', 'capital'])
   // Map to lookup group labels/names for component grp, used for JSON Serialization
   .constant('GroupMap', {
-    // Common
+    // Standard
     pp: 'Power Plant',
     t: 'Thrusters',
     fsd: 'Frame Shift Drive',
