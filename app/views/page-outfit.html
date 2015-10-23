@@ -405,7 +405,7 @@
               <th colspan="2" class="sortable le" ng-click="sortRetrofit('sellName | translate')" translate="sell"></th>
               <th colspan="2" class="sortable le" ng-click="sortRetrofit('buyName | translate')" translate="buy"></th>
               <th class="sortable le" ng-click="sortRetrofit('netCost')">
-                {{'net cost' | translate}} <u class="optional-hide" ng-if="discounts.components < 1">-[{{fRPct(1 - discounts.components)}}]</u>
+                {{'net cost' | translate}} <u class="optional-hide" ng-if="discounts.components < 1">[-{{fRPct(1 - discounts.components)}}]</u>
               </th>
             </tr>
           </thead>
