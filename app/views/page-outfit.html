@@ -92,19 +92,19 @@
   </div>
 
   <div id="standard" class="group">
-    <div class="section-menu" ng-class="{selected: selectedSlot=='standard'}" context-menu="optimizeCommon()" ng-click="selectSlot($event, 'standard')">
+    <div class="section-menu" ng-class="{selected: selectedSlot=='standard'}" context-menu="optimizeStandard()" ng-click="selectSlot($event, 'standard')">
       <h1>
         {{'standard' | translate}}
         <svg class="icon"><use xlink:href="#equalizer"></use></svg>
       </h1>
       <div class="select" ng-if="selectedSlot=='standard'">
         <ul>
-          <li class="lc" ng-click="optimizeCommon()" translate="Optimize"></li>
-          <li class="c" ng-click="useCommon('E')">E</li>
-          <li class="c" ng-click="useCommon('D')">D</li>
-          <li class="c" ng-click="useCommon('C')">C</li>
-          <li class="c" ng-click="useCommon('B')">B</li>
-          <li class="c" ng-click="useCommon('A')">A</li>
+          <li class="lc" ng-click="optimizeStandard()" translate="Optimize"></li>
+          <li class="c" ng-click="useStandard('E')">E</li>
+          <li class="c" ng-click="useStandard('D')">D</li>
+          <li class="c" ng-click="useStandard('C')">C</li>
+          <li class="c" ng-click="useStandard('B')">B</li>
+          <li class="c" ng-click="useStandard('A')">A</li>
         </ul>
         <div class="select-group cap" translate="builds / roles"></div>
         <ul>
@@ -139,7 +139,7 @@
         <div class="l cap">{{'efficiency' | translate}}: {{pp.c.eff}}</div>
         <div class="l cap">{{'power' | translate}}: {{pp.c.pGen}} <u translate>MW</u></div>
       </div>
-      <div component-select class="select" s="pp" warning="ppWarning" opts="availCS.common[0]" ng-if="selectedSlot==pp" ng-click="select('c',pp,$event)"></div>
+      <div component-select class="select" s="pp" warning="ppWarning" opts="availCS.standard[0]" ng-if="selectedSlot==pp" ng-click="select('c',pp,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, th)" ng-class="{selected: selectedSlot==th}">
       <div class="details"  ng-class="{'warning': th.c.maxmass < ship.ladenMass}">
@@ -150,7 +150,7 @@
         <div class="l">{{'optimal mass' | translate}}: {{th.c.optmass}} <u translate>T</u></div>
         <div class="l">{{'max mass' | translate}}: {{th.c.maxmass}} <u translate>T</u></div>
       </div>
-      <div component-select class="select" s="th" mass="ship.ladenMass" opts="availCS.common[1]" ng-if="selectedSlot==th" ng-click="select('c',th,$event)"></div>
+      <div component-select class="select" s="th" mass="ship.ladenMass" opts="availCS.standard[1]" ng-if="selectedSlot==th" ng-click="select('c',th,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, fsd)" ng-class="{selected: selectedSlot==fsd}">
       <div class="details">
@@ -161,7 +161,7 @@
         <div class="l cap">{{'optimal mass' | translate}}: {{fsd.c.optmass}} <u translate>T</u></div>
         <div class="l cap">{{'max' | translate}} {{'fuel' | translate}}: {{fsd.c.maxfuel}} <u translate>T</u></div>
       </div>
-      <div component-select class="select" s="fsd" opts="availCS.common[2]" ng-if="selectedSlot==fsd" ng-click="select('c',fsd,$event)"></div>
+      <div component-select class="select" s="fsd" opts="availCS.standard[2]" ng-if="selectedSlot==fsd" ng-click="select('c',fsd,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, ls)" ng-class="{selected: selectedSlot==ls}">
       <div class="details">
@@ -171,7 +171,7 @@
         <div class="cb"></div>
         <div class="l cap">{{'time' | translate}}: {{fTime(ls.c.time)}}</div>
       </div>
-      <div component-select class="select" s="ls" opts="availCS.common[3]" ng-if="selectedSlot==ls" ng-click="select('c',ls,$event)"></div>
+      <div component-select class="select" s="ls" opts="availCS.standard[3]" ng-if="selectedSlot==ls" ng-click="select('c',ls,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, pd)" ng-class="{selected: selectedSlot==pd}">
       <div class="details" ng-class="{warning: pd.c.enginecapacity < ship.boostEnergy}">
@@ -183,7 +183,7 @@
         <div class="l">{{'SYS' | translate}}: {{pd.c.systemcapacity}} <u translate>MJ</u> / {{pd.c.systemrecharge}} <u translate>MW</u></div>
         <div class="l">{{'ENG' | translate}}: {{pd.c.enginecapacity}} <u translate>MJ</u> / {{pd.c.enginerecharge}} <u translate>MW</u></div>
       </div>
-      <div component-select class="select" s="pd" warning="pdWarning" opts="availCS.common[4]" ng-if="selectedSlot==pd" ng-click="select('c',pd,$event)"></div>
+      <div component-select class="select" s="pd" warning="pdWarning" opts="availCS.standard[4]" ng-if="selectedSlot==pd" ng-click="select('c',pd,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, ss)" ng-class="{selected: selectedSlot==ss}">
       <div class="details">
@@ -193,7 +193,7 @@
         <div class="cb"></div>
         <div class="l cap">{{'range' | translate}}: {{ss.c.range}} <u translate>km</u></div>
       </div>
-      <div component-select class="select" s="ss" opts="availCS.common[5]" ng-if="selectedSlot==ss" ng-click="select('c',ss,$event)"></div>
+      <div component-select class="select" s="ss" opts="availCS.standard[5]" ng-if="selectedSlot==ss" ng-click="select('c',ss,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, ft)" ng-class="{selected: selectedSlot==ft}">
       <div class="details">
@@ -201,7 +201,7 @@
         <div class="l">{{ft.id}} {{'ft' | translate}}</div>
         <div class="r">{{ft.c.capacity}} <u translate>T</u></div>
       </div>
-      <div component-select class="select" s="ft" opts="availCS.common[6]" ng-if="selectedSlot==ft" ng-click="select('c',ft,$event)"></div>
+      <div component-select class="select" s="ft" opts="availCS.standard[6]" ng-if="selectedSlot==ft" ng-click="select('c',ft,$event)"></div>
     </div>
   </div>
 
