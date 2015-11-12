@@ -28,7 +28,7 @@ See the [Data wiki](https://github.com/cmmcleod/coriolis-data/wiki) for details 
 
 ## License
 
-All Data and [associated JSON](https://github.com/cmmcleod/coriolis/tree/master/data) files are intellectual property and copyright of Frontier Developments plc ('Frontier', 'Frontier Developments') and are subject to their
+All Data and [associated JSON](https://github.com/cmmcleod/coriolis-data) files are intellectual property and copyright of Frontier Developments plc ('Frontier', 'Frontier Developments') and are subject to their
 [terms and conditions](https://www.frontierstore.net/terms-and-conditions/).
 
 The code (Javascript, CSS, HTML, and SVG files only) specificially for Coriolis.io is released under the MIT License.
