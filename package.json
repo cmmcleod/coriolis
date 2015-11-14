@@ -1,6 +1,6 @@
 {
   "name": "coriolis_shipyard",
-  "version": "1.9.0",
+  "version": "2.0.0-alpha",
   "repository": {
     "type": "git",
     "url": "https://github.com/cmmcleod/coriolis"
@@ -11,14 +11,11 @@
   "engine": "node >= 0.12.2",
   "license": "MIT",
   "devDependencies": {
-    "angular-mocks": "1.4.x",
     "async": "0.9.x",
     "del": "1.2.x",
     "gulp": "3.9.x",
-    "gulp-angular-templatecache": "1.6.x",
     "gulp-concat": "2.5.x",
     "gulp-eslint": "0.13.x",
-    "gulp-htmlmin": "1.1.x",
     "gulp-jasmine": "2.0.x",
     "gulp-jsonlint": "1.1.x",
     "gulp-less": "3.0.x",
@@ -40,9 +37,14 @@
     "karma-json-fixtures-preprocessor": "0.0.4",
     "karma-mocha-reporter": "1.0.x",
     "karma-phantomjs-launcher": "0.2.x",
-    "main-bower-files": "2.8.x",
     "phantomjs": "1.9.x",
     "run-sequence": "1.1.x",
     "uglify-js": "2.4.x"
+  },
+  "dependencies": {
+    "classnames": "^2.2.0",
+    "fbemitter": "^2.0.0",
+    "react": "^0.14.2",
+    "react-dom": "^0.14.2"
   }
 }

@@ -1,0 +1,118 @@
+import { Component } from 'react';
+
+export default class Header extends Component {
+
+
+  render() {
+    let openedMenu = this.state.openedMenu;
+    if (this.props.appCacheUpdate) {
+      return <div id="app-update" onClick={window.location.reload}>{ 'PHRASE_UPDATE_RDY' | translate }</div>;
+    }
+
+    return (
+      <header>
+        <a class="l" ui-sref="shipyard" style="margin-right: 1em;" title="Ships"><svg class="icon xl"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#coriolis"></use></svg></a>
+
+        <div class="l menu">
+          <div class="menu-header" ng-class="{selected: openedMenu=='s'}" ng-click="openMenu($event,'s')">
+            <svg class="icon warning"><use xlink:href="#rocket"></use></svg><span class="menu-item-label"> {{'ships' | translate}}</span>
+          </div>
+          {openedMenu == 's' ? this.getShipsMenu() : null}
+        </div>
+
+        <div class="l menu">
+          <div class="menu-header" ng-class="{selected: openedMenu=='b', disabled: !bs.hasBuilds}" ng-click="openMenu($event,'b')">
+            <svg class="icon warning" ng-class="{'warning-disabled': !bs.hasBuilds}"><use xlink:href="#hammer"></use></svg><span class="menu-item-label"> {{'builds' | translate}}</span>
+          </div>
+          {openedMenu == 'b' ? this.getBuildsMenu() : null}
+        </div>
+
+        <div class="l menu">
+          <div class="menu-header" ng-class="{selected: openedMenu=='comp', disabled: !bs.hasBuilds}" ng-click="openMenu($event,'comp')">
+            <svg class="icon warning" ng-class="{'warning-disabled': !bs.hasBuilds}"><use xlink:href="#stats-bars"></use></svg><span class="menu-item-label"> {{'compare' | translate}}</span>
+          </div>
+          {openedMenu == 'comp' ? this.getComparisonsMenu() : null}
+        </div>
+
+        <div class="r menu">
+          <div class="menu-header" ng-class="{selected: openedMenu=='settings'}" ng-click="openMenu($event,'settings')">
+            <svg class="icon xl warning"><use xlink:href="#cogs"></use></svg><span class="menu-item-label"> {{'settings' | translate}}</span>
+          </div>
+          {openedMenu == 'settings' ? this.getSettingsMenu() : null}
+        </div>
+      </header>
+    );
+  }
+
+  getShipsMenu() {
+    return (<div class="menu-list dbl no-wrap">
+            <a class="block" ng-repeat="(shipId,ship) in ships" ui-sref-active="active" ui-sref="outfit({shipId:shipId, code:null, bn:null})">{{::ship.properties.name}}</a>
+          </div>);
+  }
+
+  getBuildsMenu() {
+    return (<div class="menu-list" ng-if="openedMenu=='b'" ng-click="$event.stopPropagation();">
+            <div class="dbl" >
+              <div><ul ng-repeat="shipId in buildsList">
+                {{ships[shipId].properties.name}}
+                <li ng-repeat="(i, name) in cleanedBuildList(shipId)">
+                  <a ui-sref-active="active" class="name" ui-sref="outfit({shipId:shipId, code:allBuilds[shipId][name], bn:name})" ng-bind="name"></a>
+                </li>
+              </ul></div>
+            </div>
+          </div>);
+  }
+
+  getComparisonsMenu() {
+    return (<div class="menu-list" ng-if="openedMenu=='comp'" ng-click="$event.stopPropagation();" style="white-space: nowrap;">
+            <span class="cap" ng-if="!bs.hasComparisons" translate="none created"></span>
+            <a ng-repeat="(i, name) in allComparisons" ui-sref-active="active" class="block name" ui-sref="compare({name:name})" ng-bind="name"></a>
+            <hr />
+            <a ui-sref="compare({name: 'all'})" class="block cap" translate="compare all"></a>
+            <a ui-sref="compare({name: null})" class="block cap" translate="create new"></a>
+          </div>);
+  }
+
+  getSettingsMenu() {
+    return (<div class="menu-list no-wrap cap" ng-if="openedMenu=='settings'" ng-click="$event.stopPropagation();">
+            <ul>
+              {{'language' | translate}}
+              <li><select class="cap" ng-model="language.current" ng-options="langCode as langName for (langCode,langName) in language.opts" ng-change="changeLanguage()"></select></li>
+            </ul><br>
+            <ul>
+              {{'insurance' | translate}}
+              <li><select class="cap" ng-model="insurance.current" ng-options="ins.name | translate for (i,ins) in insurance.opts" ng-change="updateInsurance()"></select></li>
+            </ul><br>
+            <ul>
+              {{'ship' | translate}} {{'discount' | translate}}
+              <li><select class="cap" ng-model="discounts.ship" ng-options="i for (i,d) in discounts.opts" ng-change="updateDiscount()"></select></li>
+            </ul><br>
+            <ul>
+              {{'component' | translate}} {{'discount' | translate}}
+              <li><select class="cap" ng-model="discounts.components" ng-options="i for (i,d) in discounts.opts" ng-change="updateDiscount()"></select></li>
+            </ul>
+            <hr />
+            <ul>
+              {{'builds' | translate}} & {{'comparisons' | translate}}
+              <li><a href="#" class="block" ng-click="backup($event)" translate="backup"></a></li>
+              <li><a href="#" class="block" ng-click="detailedExport($event)" translate="detailed export"></a></li>
+              <li><a href="#" class="block" ui-sref="modal.import" translate="import"></a></li>
+              <li><a href="#" class="block" ui-sref="modal.delete" translate="delete all"></a></li>
+            </ul>
+            <hr />
+            <table style="width: 300px;background-color:transparent">
+              <tr>
+                <td style="width: 20px"><u>A</u></td>
+                <td slider min="0.65" def="sizeRatio" max="1.2" on-change="textSizeChange(val)" ignore-resize="true"></td>
+                <td style="width: 20px"><span style="font-size: 30px">A</span></td>
+              </tr>
+              <tr>
+               <td></td><td style="text-align:center" class="primary-disabled cap" ng-click="resetTextSize()" translate="reset"></td><td></td>
+              </tr>
+            </table>
+            <hr />
+            <a href="#" ui-sref="modal.about" class="block" translate="about"></a>
+          </div>);
+  }
+
+}
