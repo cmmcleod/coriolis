@@ -24,6 +24,7 @@ angular.module('app').config(['$translateProvider', function($translateProvider)
     'build name': 'Build Name',
     builds: 'builds',
     bh: 'bulkheads',
+    'bsg': 'Bi-Weave Shield Generator',
     ul: 'Burst Laser',
     buy: 'buy',
     cancel: 'cancel',

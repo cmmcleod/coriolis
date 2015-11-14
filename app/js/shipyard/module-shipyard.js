@@ -41,6 +41,7 @@ angular.module('shipyard', ['ngLodash'])
     scb: 'Shield Cell Bank',
     sg: 'Shield Generator',
     psg: 'Prismatic Shield Generator',
+    bsg: 'Bi-Weave Shield Generator',
     dc: 'Docking Computer',
     fx: 'Fuel Transfer Limpet Controller',
     pc: 'Prospector Limpet Controller',
