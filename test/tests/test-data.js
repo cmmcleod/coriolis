@@ -76,10 +76,24 @@ describe('Database', function() {
         expect(ids[id]).toBeFalsy('ID already exists: ' + id);
         expect(group[c].eddbID).toBeDefined('Standard component' + id + ' is missing EDDB ID');
         //validateEDDBId('Standard', group[c]);
-        expect(group[c].grp).toBeDefined('Common component has no group defined, Type: ' + i + ', ID: ' + c);
+        expect(group[c].grp).toBeDefined('Standard component has no group defined, Type: ' + i + ', ID: ' + c);
         ids[id] = true;
       }
     }
+
+    for (var s in DB.components.bulkheads) {
+      var bulkheadSet = DB.components.bulkheads[s];
+      for (var b in bulkheadSet) {
+        var id = bulkheadSet[b].id;
+        expect(ids[id]).toBeFalsy('ID already exists: ' + id);
+        expect(bulkheadSet[b].eddbID).toBeDefined('Bulkhead component' + id + ' is missing EDDB ID');
+        //validateEDDBId('Bulkheads', group[c]);
+        expect(bulkheadSet[b].cost).toBeDefined('Bulkhead has no cost defined, ID: ' + id);
+        expect(bulkheadSet[b].mass).toBeDefined('Bulkhead has no mass defined, ID: ' + id);
+        ids[id] = true;
+      }
+    }
+
   });
 
   it('has valid hardpoints', function() {
