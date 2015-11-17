@@ -547,13 +547,8 @@ angular.module('shipyard').factory('Ship', ['Components', 'calcShieldStrength', 
     return this;
   };
 
-  Ship.prototype.useUtility = function(group, rating, clobber) {
-    var component;
-    if (group == 'cm') {
-      component = Components.findHardpoint(group, 0, null, rating); //overload Rating as Name for countermeasures
-    } else {
-      component = Components.findHardpoint(group, 0, rating);
-    }
+  Ship.prototype.useUtility = function(group, rating, name, clobber) {
+    var component = Components.findHardpoint(group, 0, rating, name);
     for (var i = this.hardpoints.length; i--; ) {
       if ((clobber || !this.hardpoints[i].c) && !this.hardpoints[i].maxClass) {
         this.use(this.hardpoints[i], component.id, component);
