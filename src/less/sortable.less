@@ -1,0 +1,31 @@
+.sortable {
+  .user-select-none();
+  cursor: pointer;
+}
+
+.as-sortable-item, .as-sortable-placeholder {
+  display: inline-block;
+  float: left;
+}
+
+.as-sortable-item {
+  -ms-touch-action: none;
+  touch-action: none;
+}
+
+.as-sortable-item-handle {
+  display: block;
+}
+
+.as-sortable-drag {
+  margin: 0;
+  padding:0;
+  opacity: .8;
+  position: absolute;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.as-sortable-hidden {
+  display: none !important;
+}
