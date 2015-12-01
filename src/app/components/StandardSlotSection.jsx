@@ -36,7 +36,7 @@ export default class StandardSlotSection extends SlotSection {
   }
 
   _getSlots() {
-    let { formats, translate, units } = this.context.language;
+    let { translate, units } = this.context.language;
     let slots = new Array(8);
     let open = this._openMenu;
     let select = this._selectModule;
@@ -45,7 +45,6 @@ export default class StandardSlotSection extends SlotSection {
     let st = ship.standard;
     let avail = ship.getAvailableModules().standard;
     let bulkheads = ship.bulkheads;
-    let bulkheadIndex = bulkheads.id;
     let currentMenu = this.state.currentMenu;
 
     slots[0] = (
@@ -61,11 +60,11 @@ export default class StandardSlotSection extends SlotSection {
         {currentMenu === bulkheads &&
           <div className='select' onClick={ e => e.stopPropagation() }>
             <ul>
-              <li onClick={selBulkhead.bind(this, 0)} className={cn('lc', { active: bulkheads.id=='0' })}>{translate('Lightweight Alloy')}</li>
-              <li onClick={selBulkhead.bind(this, 1)} className={cn('lc', { active: bulkheads.id=='1' })}>{translate('Reinforced Alloy')}</li>
-              <li onClick={selBulkhead.bind(this, 2)} className={cn('lc', { active: bulkheads.id=='2' })}>{translate('Military Grade Composite')}</li>
-              <li onClick={selBulkhead.bind(this, 3)} className={cn('lc', { active: bulkheads.id=='3' })}>{translate('Mirrored Surface Composite')}</li>
-              <li onClick={selBulkhead.bind(this, 4)} className={cn('lc', { active: bulkheads.id=='4' })}>{translate('Reactive Surface Composite')}</li>
+              <li onClick={selBulkhead.bind(this, 0)} className={cn('lc', { active: bulkheads.id == '0' })}>{translate('Lightweight Alloy')}</li>
+              <li onClick={selBulkhead.bind(this, 1)} className={cn('lc', { active: bulkheads.id == '1' })}>{translate('Reinforced Alloy')}</li>
+              <li onClick={selBulkhead.bind(this, 2)} className={cn('lc', { active: bulkheads.id == '2' })}>{translate('Military Grade Composite')}</li>
+              <li onClick={selBulkhead.bind(this, 3)} className={cn('lc', { active: bulkheads.id == '3' })}>{translate('Mirrored Surface Composite')}</li>
+              <li onClick={selBulkhead.bind(this, 4)} className={cn('lc', { active: bulkheads.id == '4' })}>{translate('Reactive Surface Composite')}</li>
             </ul>
           </div>
         }

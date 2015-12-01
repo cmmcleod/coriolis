@@ -12,12 +12,16 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf build",
-    "build:prod": "NODE_ENV=production webpack --config webpack.config.prod.js",
-    "build": "npm run clean && npm run build:prod",
     "start": "node devServer.js",
-    "lint": "eslint src"
+    "lint": "eslint ./src",
+    "prod-serve": "nginx -p $(pwd) -c nginx.conf",
+    "prod-stop": "kill -QUIT $(cat nginx.pid)",
+    "build": "npm run clean && NODE_ENV=production webpack -d -p --config webpack.config.prod.js",
+    "rsync": "rsync -e 'ssh -i $CORIOLIS_PEM' -a --delete build/ $CORIOLIS_USER@$CORIOLIS_HOST:~/www",
+    "deploy": "npm run lint && npm run build && npm run rsync"
   },
   "devDependencies": {
+    "appcache-webpack-plugin": "^1.2.1",
     "babel-core": "^5.4.7",
     "babel-eslint": "^3.1.9",
     "babel-loader": "^5.1.2",
@@ -27,11 +31,10 @@
     "eslint-plugin-react": "^2.3.0",
     "express": "^4.13.3",
     "file-loader": "^0.8.4",
-    "install": "^0.3.0",
+    "html-webpack-plugin": "^1.7.0",
     "json-loader": "^0.5.3",
     "less": "^2.5.3",
     "less-loader": "^2.2.1",
-    "npm": "^3.4.0",
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-hmr": "^1.0.0",
     "redbox-react": "^1.0.1",
@@ -39,12 +42,12 @@
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.6",
     "webpack": "^1.9.6",
-    "webpack-dev-middleware": "^1.2.0",
-    "webpack-hot-middleware": "^2.0.0"
+    "webpack-dev-server": "^1.14.0"
   },
   "dependencies": {
     "classnames": "^2.2.0",
     "d3": "^3.5.9",
+    "extract-text-webpack-plugin": "^0.9.1",
     "fbemitter": "^2.0.0",
     "lz-string": "^1.4.4",
     "react": "^0.14.2",

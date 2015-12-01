@@ -24,7 +24,6 @@ export default class AvailableModulesMenu extends TranslatedComponent {
 
     for (let i = 0; i < modules.length; i++) {
       let m = modules[i];
-      let classRating =  m.class + m.rating;
       let mount = null;
       let classes = cn(m.name ? 'lc' : 'c', {
         active: mountedModule && mountedModule.id === m.id,
@@ -87,7 +86,6 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       list.push(<div className={'empty-c upp'} key={'empty'} onClick={this.props.onSelect.bind(null, null)} >{translate('empty')}</div>);
       for (let g in modules) {
         let grp = modules[g];
-        let grpCode = grp[Object.keys(grp)[0]].grp; // Nasty operation to get the grp property of the first/any single component
         list.push(<div ref={g} key={g} className={'select-group cap'}>{translate(g)}</div>);
         list.push(buildGroup(g, modules[g]));
       }

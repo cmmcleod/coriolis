@@ -136,6 +136,7 @@ export default class ShipyardPage extends Page {
   }
 
   render() {
+    let translate = this.context.language.translate;
     let shipSummaries = this.shipSummaries;
     let shipPredicate = this.state.shipPredicate;
     let shipPredicateIndex = this.state.shipPredicateIndex;
@@ -169,11 +170,6 @@ export default class ShipyardPage extends Page {
         return -1;
       }
     });
-
-    let formats = this.context.language.formats;
-    let fInt = formats.int;
-    let fRound = formats.round;
-    let translate = this.context.language.translate;
 
     for (let s of shipSummaries) {
       shipRows.push(s.rowElement);
