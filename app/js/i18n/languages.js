@@ -15,7 +15,7 @@ angular.module('app').config(['$translateProvider', function($translateProvider)
 }])
 .value('Languages', {
   en: 'English',
-  de: 'Deutsh',
+  de: 'Deutsch',
   it: 'Italiano',
   es: 'Español',
   fr: 'Français',
