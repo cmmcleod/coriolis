@@ -12,29 +12,38 @@ export default class UtilitySlotSection extends SlotSection {
   }
 
   _empty() {
-
+    this.props.ship.emptyUtility();
+    this.props.onChange();
+    this._close();
   }
 
-  _use(grp, rating) {
+  _use(group, rating, name, event) {
+    this.props.ship.useUtility(group, rating, name, event.getModifierState('Alt'));
+    this.props.onChange();
+    this._close();
+  }
 
+  _contextMenu() {
+    this._empty();
   }
 
   _getSlots() {
     let slots = [];
     let hardpoints = this.props.ship.hardpoints;
     let availableModules = this.props.ship.getAvailableModules();
-    let currentMenu = this.state.currentMenu;
+    let currentMenu = this.props.currentMenu;
 
     for (let i = 0, l = hardpoints.length; i < l; i++) {
       let h = hardpoints[i];
       if (h.maxClass === 0) {
         slots.push(<HardpointSlot
           key={i}
-          size={h.maxClass}
-          modules={availableModules.getHps(h.maxClass)}
+          maxClass={h.maxClass}
+          availableModules={() => availableModules.getHps(h.maxClass)}
           onOpen={this._openMenu.bind(this,h)}
           onSelect={this._selectModule.bind(this, h)}
           selected={currentMenu == h}
+          enabled={h.enabled}
           m={h.m}
         />);
       }
@@ -52,11 +61,15 @@ export default class UtilitySlotSection extends SlotSection {
       </ul>
       <div className='select-group cap'>{translate('sb')}</div>
       <ul>
-        <li className='c' onClick={_use.bind(this, 'sb', 'E')}>E</li>
-        <li className='c' onClick={_use.bind(this, 'sb', 'D')}>D</li>
-        <li className='c' onClick={_use.bind(this, 'sb', 'C')}>C</li>
-        <li className='c' onClick={_use.bind(this, 'sb', 'B')}>B</li>
-        <li className='c' onClick={_use.bind(this, 'sb', 'A')}>A</li>
+        <li className='c' onClick={_use.bind(this, 'sb', 'E', null)}>E</li>
+        <li className='c' onClick={_use.bind(this, 'sb', 'D', null)}>D</li>
+        <li className='c' onClick={_use.bind(this, 'sb', 'C', null)}>C</li>
+        <li className='c' onClick={_use.bind(this, 'sb', 'B', null)}>B</li>
+        <li className='c' onClick={_use.bind(this, 'sb', 'A', null)}>A</li>
+      </ul>
+      <div className='select-group cap'>{translate('cm')}</div>
+      <ul>
+        <li className='lc' onClick={_use.bind(this, 'cm', null, 'Heat Sink Launcher')}>{translate('Heat Sink Launcher')}</li>
       </ul>
     </div>;
   }

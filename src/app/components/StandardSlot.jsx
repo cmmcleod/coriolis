@@ -7,7 +7,7 @@ export default class StandardSlot extends TranslatedComponent {
 
   static propTypes = {
     slot: React.PropTypes.object,
-    modules: React.PropTypes.oneOfType([ React.PropTypes.object, React.PropTypes.array ]).isRequired,
+    modules: React.PropTypes.array.isRequired,
     onSelect: React.PropTypes.func.isRequired,
     onOpen: React.PropTypes.func.isRequired,
     selected: React.PropTypes.bool,
@@ -17,7 +17,7 @@ export default class StandardSlot extends TranslatedComponent {
 
   render() {
     let { translate, formats, units } = this.context.language;
-    let slot = this.props.slot
+    let { slot, warning } = this.props;
     let m = slot.m;
     let classRating = m.class + m.rating;
     let menu;
@@ -34,7 +34,7 @@ export default class StandardSlot extends TranslatedComponent {
 
     return (
       <div className={cn('slot', {selected: this.props.selected})} onClick={this.props.onOpen}>
-        <div className={'details'}>
+        <div className={cn('details', {warning: warning && warning(slot.m)})}>
           <div className={'sz'}>{slot.maxClass}</div>
           <div>
             <div className={'l'}>{classRating + ' ' + translate(m.grp)}</div>

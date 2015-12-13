@@ -1,14 +1,23 @@
 import { ModuleNameToGroup, BulkheadNames } from './Constants';
 import ModuleSet from './ModuleSet';
-import Ships from './Ships';
-import Modules from './Modules';
+import { Ships, Modules } from 'coriolis-data';
 
 export function cargoHatch() {
   return { name: 'Cargo Hatch', class: 1, rating: 'H', power: 0.6 };
 };
 
-export function standard(typeIndex, componentId) {
-  return Modules.standard[typeIndex][componentId];
+export function standard(typeIndex, id) {
+  let standard = Modules.standard[typeIndex];
+  if (standard[id]) {
+    return standard[id];
+  } else {
+    for (let k in standard) {
+      if (standard[k].id == id){
+        return standard[k];
+      }
+    }
+  }
+  return null;
 };
 
 export function hardpoints(id) {
@@ -149,17 +158,26 @@ export function findHardpointId(groupName, clss, rating, name, mount, missile) {
 }
 
 /**
- * Looks up the bulkhead component for a specific ship and bulkhead
+ * Looks up the bulkhead module for a specific ship and bulkhead
  * @param  {string} shipId       Unique ship Id/Key
- * @param  {number} bulkheadsId  Id/Index for the specified bulkhead
+ * @param  {string|number} bulkheadsId  Id/Index for the specified bulkhead
  * @return {object}             The bulkhead component object
  */
-export function bulkheads(shipId, bulkheadsId) {
-  return Modules.bulkheads[shipId][bulkheadsId];
+export function bulkheads(shipId, index) {
+  let bulkhead = Ships[shipId].bulkheads[index];
+  bulkhead.class = 8;
+  bulkhead.rating = 'I';
+  bulkhead.name = BulkheadNames[index]
+
+  return bulkhead;
 }
 
 export function bulkheadIndex(bulkheadName) {
-  return Bulkheads.indexOf(bulkheadName);
+  return BulkheadNames.indexOf(bulkheadName);
+}
+
+export function isShieldGenerator(g) {
+  return g == 'sg' || g == 'psg' || g == 'bsg';
 }
 
 /**

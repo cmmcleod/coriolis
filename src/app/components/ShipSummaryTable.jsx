@@ -11,10 +11,6 @@ export default class ShipSummaryTable extends TranslatedComponent {
     ship: React.PropTypes.object.isRequired
   }
 
-  shouldComponentUpdate() {
-    return true;
-  }
-
   render() {
     let ship = this.props.ship;
     let language = this.context.language;

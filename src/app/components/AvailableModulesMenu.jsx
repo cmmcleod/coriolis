@@ -31,13 +31,13 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         disabled: m.maxmass && (mass + (m.mass ? m.mass : 0)) > m.maxmass
       });
 
-      switch(m.mode) {
+      switch(m.mount) {
          case 'F': mount = <MountFixed className={'lg'} />; break;
          case 'G': mount = <MountGimballed className={'lg'}/>; break;
          case 'T': mount = <MountTurret className={'lg'}/>; break;
       }
 
-      if (i > 0 && modules.length > 3 && m.class != prevClass && (m.rating != prevRating || m.mode) && m.grp != 'pa') {
+      if (i > 0 && modules.length > 3 && m.class != prevClass && (m.rating != prevRating || m.mount) && m.grp != 'pa') {
         elems.push(<br key={m.grp + i} />);
       }
 
@@ -77,15 +77,12 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     );
 
     if (modules instanceof Array) {
-      console.log(modules[0].grp, modules);
       list = buildGroup(modules[0].grp, modules);
     } else {
-      console.log('menu object')
       list = [];
       // At present time slots with grouped options (Hardpoints and Internal) can be empty
       list.push(<div className={'empty-c upp'} key={'empty'} onClick={this.props.onSelect.bind(null, null)} >{translate('empty')}</div>);
       for (let g in modules) {
-        let grp = modules[g];
         list.push(<div ref={g} key={g} className={'select-group cap'}>{translate(g)}</div>);
         list.push(buildGroup(g, modules[g]));
       }

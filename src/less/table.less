@@ -8,10 +8,6 @@ table {
     color: @primary;
     text-decoration: none;
   }
-
-  [ng-click] {
-    cursor: pointer;
-  }
 }
 
 thead {
@@ -67,8 +63,17 @@ tbody tr {
   td {
     line-height: 1.4em;
     padding: 0 0.3em;
-  }
 
+    &.val {
+      border: 1px solid @primary-disabled;
+    }
+    &.lbl {
+      border: 1px solid @primary-disabled;
+      text-transform: uppercase;
+      color: @primary-bg;
+      background-color: @primary-disabled;
+    }
+  }
 }
 
 td {

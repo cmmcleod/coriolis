@@ -1,5 +1,5 @@
-import { ModuleGroupToName, MountMap } from './Constants';
-import Ships from './Ships';
+import { ModuleGroupToName, MountMap, BulkheadNames } from './Constants';
+import { Ships } from 'coriolis-data';
 import Ship from './Ship';
 import ModuleUtils from './ModuleUtils';
 import LZString from 'lz-string';
@@ -8,121 +8,29 @@ import LZString from 'lz-string';
  * Service managing seralization and deserialization of models for use in URLs and persistene.
  */
 
-/**
- * Utility function to retrieve a safe string for selected component for a slot.
- * Used for serialization to code only.
- * TODO: comment on binding
- * @private
- * @param  {object} slot The slot object.
- * @return {string}      The id of the selected component or '-' if none selected
- */
-function mapGroup(slot) {
-  this.enabled.push(slot.enabled ? 1 : 0);
-  this.priorities.push(slot.priority);
-
-  return slot.id === null ? '-' : slot.id;
-}
-
-function decodeToArray(code, arr, codePos) {
-  for (let i = 0; i < arr.length; i++) {
-    if (code.charAt(codePos) == '-') {
-      arr[i] = 0;
-      codePos++;
-    } else {
-      arr[i] = code.substring(codePos, codePos + 2);
-      codePos += 2;
-    }
-  }
-  return codePos;
-}
-
 function slotToSchema(slot) {
-  if (slot.c) {
+  if (slot.m) {
     let o = {
-      class: slot.c.class,
-      rating: slot.c.rating,
+      class: slot.m.class,
+      rating: slot.m.rating,
       enabled: Boolean(slot.enabled),
       priority: slot.priority + 1,
-      group: ModuleGroupToName[slot.c.grp]
+      group: ModuleGroupToName[slot.m.grp]
     };
 
-    if (slot.c.name) {
-      o.name = slot.c.name;
+    if (slot.m.name) {
+      o.name = slot.m.name;
     }
-    if (slot.c.mode) {
-      o.mount = MountMap[slot.c.mode];
+    if (slot.m.mount) {
+      o.mount = MountMap[slot.m.mount];
     }
-    if (slot.c.missile) {
-      o.missile = slot.c.missile;
+    if (slot.m.missile) {
+      o.missile = slot.m.missile;
     }
     return o;
   }
   return null;
 }
-
-
-/**
- * Serializes the ships selected components for all slots to a URL friendly string.
- * @param {Ship} ship   The ship to be serialized.
- * @return {string}     Encoded string of components
- */
-export function fromShip(ship) {
-  let power = {
-    enabled: [ship.cargoHatch.enabled ? 1 : 0],
-    priorities: [ship.cargoHatch.priority]
-  };
-
-  let data = [
-    ship.bulkheads.id,
-    _.map(ship.standard, mapGroup, power),
-    _.map(ship.hardpoints, mapGroup, power),
-    _.map(ship.internal, mapGroup, power),
-    '.',
-    LZString.compressToBase64(power.enabled.join('')).replace(/\//g, '-'),
-    '.',
-    LZString.compressToBase64(power.priorities.join('')).replace(/\//g, '-')
-  ];
-
-  return _.flatten(data).join('');
-};
-
-/**
- * Updates an existing ship instance's slots with components determined by the
- * code.
- *
- * @param {Ship}    ship        The ship instance to be updated
- * @param {string}  dataString  The string to deserialize
- */
-export function toShip(ship, dataString) {
-  var standard = new Array(ship.standard.length),
-      hardpoints = new Array(ship.hardpoints.length),
-      internal = new Array(ship.internal.length),
-      parts = dataString.split('.'),
-      priorities = null,
-      enabled = null,
-      code = parts[0];
-
-  if (parts[1]) {
-    enabled = LZString.decompressFromBase64(parts[1].replace(/-/g, '/')).split('');
-  }
-
-  if (parts[2]) {
-    priorities = LZString.decompressFromBase64(parts[2].replace(/-/g, '/')).split('');
-  }
-
-  decodeToArray(code, internal, decodeToArray(code, hardpoints, decodeToArray(code, standard, 1)));
-
-  ship.buildWith(
-    {
-      bulkheads: code.charAt(0) * 1,
-      standard: standard,
-      hardpoints: hardpoints,
-      internal: internal
-    },
-    priorities,
-    enabled
-  );
-};
 
 export function toDetailedBuild(buildName, ship, code) {
   var standard = ship.standard,
@@ -135,25 +43,25 @@ export function toDetailedBuild(buildName, ship, code) {
     ship: ship.name,
     references: [{
       name: 'Coriolis.io',
-      url: $state.href('outfit', { shipId: ship.id, code: code, bn: buildName }, { absolute: true }),
+      url: `http://coriolis.io/outfit/${ship.id}/${code}?bn=${encodeURIComponent(buildName)}`,
       code: code,
       shipId: ship.id
     }],
     components: {
       standard: {
-        bulkheads: ship.bulkheads.c.name,
+        bulkheads: BulkheadNames[ship.bulkheads.index],
         cargoHatch: { enabled: Boolean(ship.cargoHatch.enabled), priority: ship.cargoHatch.priority + 1 },
-        powerPlant: { class: standard[0].c.class, rating: standard[0].c.rating, enabled: Boolean(standard[0].enabled), priority: standard[0].priority + 1 },
-        thrusters: { class: standard[1].c.class, rating: standard[1].c.rating, enabled: Boolean(standard[1].enabled), priority: standard[1].priority + 1 },
-        frameShiftDrive: { class: standard[2].c.class, rating: standard[2].c.rating, enabled: Boolean(standard[2].enabled), priority: standard[2].priority + 1 },
-        lifeSupport: { class: standard[3].c.class, rating: standard[3].c.rating, enabled: Boolean(standard[3].enabled), priority: standard[3].priority + 1 },
-        powerDistributor: { class: standard[4].c.class, rating: standard[4].c.rating, enabled: Boolean(standard[4].enabled), priority: standard[4].priority + 1 },
-        sensors: { class: standard[5].c.class, rating: standard[5].c.rating, enabled: Boolean(standard[5].enabled), priority: standard[5].priority + 1 },
-        fuelTank: { class: standard[6].c.class, rating: standard[6].c.rating, enabled: Boolean(standard[6].enabled), priority: standard[6].priority + 1 }
+        powerPlant: { class: standard[0].m.class, rating: standard[0].m.rating, enabled: Boolean(standard[0].enabled), priority: standard[0].priority + 1 },
+        thrusters: { class: standard[1].m.class, rating: standard[1].m.rating, enabled: Boolean(standard[1].enabled), priority: standard[1].priority + 1 },
+        frameShiftDrive: { class: standard[2].m.class, rating: standard[2].m.rating, enabled: Boolean(standard[2].enabled), priority: standard[2].priority + 1 },
+        lifeSupport: { class: standard[3].m.class, rating: standard[3].m.rating, enabled: Boolean(standard[3].enabled), priority: standard[3].priority + 1 },
+        powerDistributor: { class: standard[4].m.class, rating: standard[4].m.rating, enabled: Boolean(standard[4].enabled), priority: standard[4].priority + 1 },
+        sensors: { class: standard[5].m.class, rating: standard[5].m.rating, enabled: Boolean(standard[5].enabled), priority: standard[5].priority + 1 },
+        fuelTank: { class: standard[6].m.class, rating: standard[6].m.rating, enabled: Boolean(standard[6].enabled), priority: standard[6].priority + 1 }
       },
-      hardpoints: _.map(_.filter(hardpoints, function(slot) { return slot.maxClass > 0; }), slotToSchema),
-      utility: _.map(_.filter(hardpoints, function(slot) { return slot.maxClass === 0; }), slotToSchema),
-      internal: _.map(internal, slotToSchema)
+      hardpoints: hardpoints.filter(slot => slot.maxClass > 0).map(slotToSchema),
+      utility: hardpoints.filter(slot => slot.maxClass === 0).map(slotToSchema),
+      internal: internal.map(slotToSchema)
     },
     stats: {}
   };

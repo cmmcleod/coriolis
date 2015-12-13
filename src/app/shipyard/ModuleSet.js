@@ -126,11 +126,12 @@ export default class ModuleSet {
     return sg;
   };
 
-  lightestPowerPlant(powerUsed, rating) {
+  lightestPowerPlant(powerNeeded, rating) {
     var pp = this.standard[0][0];
 
     for (let p of this.standard[0]) {
-      if (p.mass < pp.mass && p.pGen >= powerUsed) {
+      // Provides enough power, is lighter or the same mass as current power plant but better output/efficiency
+      if (p.pGen >= powerNeeded && (p.mass < pp.mass || (p.mass == pp.mass && p.pGen > pp.pGen))) {
         pp = p;
       }
     }

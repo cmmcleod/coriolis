@@ -48,11 +48,12 @@ div, a, li {
 
 .page {
   margin: 0;
-  padding: 0.5em 0.5em;
+  padding: 0.5em 0;
   width: 100%;
   min-height: 100%;
   clear: both;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .l {
@@ -98,6 +99,10 @@ div, a, li {
 .scroll-x {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+}
+
+.ptr {
+  cursor: pointer;
 }
 
 h1 {

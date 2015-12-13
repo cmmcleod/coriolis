@@ -65,7 +65,7 @@ export default class ModalImport extends TranslatedComponent {
 
   static propTypes = {
     title: React.propTypes.string,
-    promise: : React.propTypes.func,
+    promise: React.propTypes.func,
     data: React.propTypes.oneOfType[React.propTypes.string, React.propTypes.object]
   };
 
@@ -322,7 +322,7 @@ export default class ModalImport extends TranslatedComponent {
     }
 
     if (this.state.discounts) {
-      Persist.setDiscount((this.state.discounts);
+      Persist.setDiscount(this.state.discounts);
     }
 
     if (this.state.insurance) {
@@ -369,6 +369,7 @@ export default class ModalImport extends TranslatedComponent {
               </td>
             </tr>
           );
+        }
 
         comparisonTable = (
           <table className='l' style={{ overflow:'hidden', margin: '1em 0', width: '100%'}} >
@@ -397,7 +398,7 @@ export default class ModalImport extends TranslatedComponent {
           let hasBuild = Persist.hasBuild(shipId, b.useName);
           buildRows.push(
             <tr className='cb'>
-              <td>{{Ships[shipId].properties.name}}</td>
+              <td>{Ships[shipId].properties.name}</td>
               <td><input type='text' value={b.useName}/></td>
               <td style={{ textAlign: 'center' }} className={cn({ warning: hasBuild, disabled: b.useName == ''})}>
                 <span>{translate(b.useName == '' ? 'skip'  : (hasBuild ? 'overwrite' : 'create'))}></span>

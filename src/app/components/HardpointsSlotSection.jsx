@@ -13,27 +13,35 @@ export default class HardpointsSlotSection extends SlotSection {
   }
 
   _empty() {
-
+    this.props.ship.emptyWeapons();
+    this.props.onChange();
+    this._close();
   }
 
-  _fill(grp, mount) {
+  _fill(group, mount, event) {
+    this.props.ship.useWeapon(group, mount, null, event.getModifierState('Alt'));
+    this.props.onChange();
+    this._close();
+  }
 
+  _contextMenu() {
+    this._empty();
   }
 
   _getSlots() {
     let slots = [];
     let hardpoints = this.props.ship.hardpoints;
     let availableModules = this.props.ship.getAvailableModules();
-    let currentMenu = this.state.currentMenu;
+    let currentMenu = this.props.currentMenu;
 
     for (let i = 0, l = hardpoints.length; i < l; i++) {
       let h = hardpoints[i];
       if (h.maxClass) {
         slots.push(<HardpointSlot
           key={i}
-          size={h.maxClass}
-          modules={availableModules.getHps(h.maxClass)}
-          onOpen={this._openMenu.bind(this,h)}
+          maxClass={h.maxClass}
+          availableModules={() => availableModules.getHps(h.maxClass)}
+          onOpen={this._openMenu.bind(this, h)}
           onSelect={this._selectModule.bind(this, h)}
           selected={currentMenu == h}
           m={h.m}

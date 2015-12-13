@@ -1,8 +1,8 @@
 import React from 'react';
+import cn from 'classnames';
 import SlotSection from './SlotSection';
 import StandardSlot from './StandardSlot';
-import cn from 'classnames';
-import { ArmourMultiplier } from '../shipyard/Constants';
+import * as ModuleUtils from '../shipyard/ModuleUtils';
 
 export default class StandardSlotSection extends SlotSection {
 
@@ -15,24 +15,97 @@ export default class StandardSlotSection extends SlotSection {
   }
 
   _fill(rating) {
-
+    this.props.ship.useStandard(rating);
+    this.props.onChange();
+    this._close();
   }
 
   _optimizeStandard() {
-
+    this.props.ship.useLightestStandard();
+    this.props.onChange();
+    this._close();
   }
 
   _optimizeCargo() {
-
+    let ship = this.props.ship;
+    ship.internal.forEach((slot) => {
+      var id = ModuleUtils.findInternalId('cr', slot.maxClass, 'E');
+      ship.use(slot, ModuleUtils.internal(id));
+    });
+    ship.useLightestStandard();
+    this.props.onChange();
+    this._close();
   }
 
   _optimizeExplorer() {
+    let ship = this.props.ship,
+        intLength = ship.internal.length,
+        heatSinkCount = 2,  // Fit 2 heat sinks if possible
+        afmUnitCount = 2,   // Fit 2 AFM Units if possible
+        sgSlot,
+        fuelScoopSlot,
+        sg = ship.getAvailableModules().lightestShieldGenerator(ship.hullMass);
 
+    ship.setSlotEnabled(ship.cargoHatch, false)
+        .use(ship.internal[--intLength], ModuleUtils.internal('2f'))      // Advanced Discovery Scanner
+        .use(ship.internal[--intLength], ModuleUtils.internal('2i'));      // Detailed Surface Scanner
+
+    for (let i = 0; i < intLength; i++) {
+      let slot = ship.internal[i];
+      let nextSlot = (i + 1) < intLength ? ship.internal[i + 1] : null;
+      if (!fuelScoopSlot && (!slot.eligible || slot.eligible.fs)) {             // Fit best possible Fuel Scoop
+        fuelScoopSlot = slot;
+        ship.use(fuelScoopSlot, ModuleUtils.findInternal('fs', slot.maxClass, 'A'));
+        ship.setSlotEnabled(fuelScoopSlot, true);
+
+      // Mount a Shield generator if possible AND an AFM Unit has been mounted already (Guarantees at least 1 AFM Unit)
+      } else if (!sgSlot && afmUnitCount < 2 && sg.class <= slot.maxClass && (!slot.eligible || slot.eligible.sg) && (!nextSlot || nextSlot.maxClass < sg.class)) {
+        sgSlot = slot;
+        ship.use(sgSlot, sg);
+        ship.setSlotEnabled(sgSlot, true);
+      } else if (afmUnitCount > 0 && (!slot.eligible || slot.eligible.am)) {
+        afmUnitCount--;
+        let am = ModuleUtils.findInternal('am', slot.maxClass, afmUnitCount ? 'B' : 'A');
+        ship.use(slot, am);
+        ship.setSlotEnabled(slot, false);   // Disabled power for AFM Unit
+
+      } else {
+        ship.use(slot, null);
+      }
+    }
+
+    ship.hardpoints.forEach((s) => {
+      if (s.maxClass == 0 && heatSinkCount) {       // Mount up to 2 heatsinks
+        ship.use(s, ModuleUtils.hardpoints('02'));
+        ship.setSlotEnabled(s, heatSinkCount == 2); // Only enable a single Heatsink
+        heatSinkCount--;
+      } else {
+        ship.use(s, null);
+      }
+    });
+
+    if (sgSlot) {
+      // The SG and Fuel scoop to not need to be powered at the same time
+      if (sgSlot.m.power > fuelScoopSlot.m.power) { // The Shield generator uses the most power
+        ship.setSlotEnabled(fuelScoopSlot, false);
+      } else {                                    // The Fuel scoop uses the most power
+        ship.setSlotEnabled(sgSlot, false);
+      }
+    }
+
+    ship.useLightestStandard({ pd: '1D', ppRating: 'A' });
+    this.props.onChange();
+    this._close();
   }
 
   _selectBulkhead(bulkheadIndex) {
     this.props.ship.useBulkhead(bulkheadIndex);
-    this._closeMenu();
+    this.props.onChange();
+    this._close();
+  }
+
+  _contextMenu() {
+    this._optimizeStandard();
   }
 
   _getSlots() {
@@ -45,7 +118,7 @@ export default class StandardSlotSection extends SlotSection {
     let st = ship.standard;
     let avail = ship.getAvailableModules().standard;
     let bulkheads = ship.bulkheads;
-    let currentMenu = this.state.currentMenu;
+    let currentMenu = this.props.currentMenu;
 
     slots[0] = (
       <div key='bh' className={cn('slot', {selected: currentMenu === bulkheads})} onClick={open.bind(this, bulkheads)}>
@@ -76,9 +149,9 @@ export default class StandardSlotSection extends SlotSection {
       slot={st[0]}
       modules={avail[0]}
       onOpen={open.bind(this, st[0])}
-      onSelect={select.bind(this, 1, st[0])}
+      onSelect={select.bind(this, st[0])}
       selected={currentMenu == st[0]}
-      warning={(m) => m.pGen < ship.powerRetracted}
+      warning={m => m.pGen < ship.powerRetracted}
     />;
 
     slots[2] = <StandardSlot
@@ -86,9 +159,9 @@ export default class StandardSlotSection extends SlotSection {
       slot={st[1]}
       modules={avail[1]}
       onOpen={open.bind(this, st[1])}
-      onSelect={select.bind(this, 2, st[1])}
+      onSelect={select.bind(this, st[1])}
       selected={currentMenu == st[1]}
-      warning={(m) => m.maxmass < ship.ladenMass}
+      warning={m => m.maxmass < ship.ladenMass}
     />;
 
 
@@ -97,7 +170,7 @@ export default class StandardSlotSection extends SlotSection {
       slot={st[2]}
       modules={avail[2]}
       onOpen={open.bind(this, st[2])}
-      onSelect={select.bind(this, 3, st[2])}
+      onSelect={select.bind(this, st[2])}
       selected={currentMenu == st[2]}
     />;
 
@@ -106,7 +179,7 @@ export default class StandardSlotSection extends SlotSection {
       slot={st[3]}
       modules={avail[3]}
       onOpen={open.bind(this, st[3])}
-      onSelect={select.bind(this, 4, st[3])}
+      onSelect={select.bind(this, st[3])}
       selected={currentMenu == st[3]}
     />;
 
@@ -115,7 +188,7 @@ export default class StandardSlotSection extends SlotSection {
       slot={st[4]}
       modules={avail[4]}
       onOpen={open.bind(this, st[4])}
-      onSelect={select.bind(this, 5, st[4])}
+      onSelect={select.bind(this, st[4])}
       selected={currentMenu == st[4]}
       warning= {m => m.enginecapacity < ship.boostEnergy}
     />;
@@ -125,7 +198,7 @@ export default class StandardSlotSection extends SlotSection {
       slot={st[5]}
       modules={avail[5]}
       onOpen={open.bind(this, st[5])}
-      onSelect={select.bind(this, 6, st[5])}
+      onSelect={select.bind(this, st[5])}
       selected={currentMenu == st[5]}
       warning= {m => m.enginecapacity < ship.boostEnergy}
     />;
@@ -135,7 +208,7 @@ export default class StandardSlotSection extends SlotSection {
       slot={st[6]}
       modules={avail[6]}
       onOpen={open.bind(this, st[6])}
-      onSelect={select.bind(this, 7, st[6])}
+      onSelect={select.bind(this, st[6])}
       selected={currentMenu == st[6]}
       warning= {m => m.capacity < st[2].m.maxfuel}  // Show warning when fuel tank is smaller than FSD Max Fuel
     />;

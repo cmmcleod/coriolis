@@ -8,12 +8,16 @@ export default class Page extends React.Component {
     language: React.PropTypes.object.isRequired
   };
 
+  static propTypes = {
+    currentMenu: React.PropTypes.any
+  };
+
   constructor(props) {
     super(props);
 
     // Autobind private functions
     Object.getOwnPropertyNames(this.constructor.prototype).forEach(prop => {
-      if(prop.charAt(0) == '_' && typeof this[prop] === "function") {
+      if(prop.charAt(0) == '_' && typeof this[prop] === 'function') {
         this[prop] = this[prop].bind(this);
       }
     });

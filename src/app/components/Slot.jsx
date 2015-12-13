@@ -2,27 +2,46 @@ import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
 import cn from 'classnames';
 import AvailableModulesMenu from './AvailableModulesMenu';
-import { contextMenuHandler } from '../utils/InterfaceEvents';
+import { wrapCtxMenu } from '../utils/InterfaceEvents';
 
 export default class Slot extends TranslatedComponent {
 
   static propTypes = {
-    modules: React.PropTypes.oneOfType([ React.PropTypes.object, React.PropTypes.array ]).isRequired,
+    availableModules: React.PropTypes.func.isRequired,
     onSelect: React.PropTypes.func.isRequired,
     onOpen: React.PropTypes.func.isRequired,
-    size: React.PropTypes.number.isRequired,
+    maxClass: React.PropTypes.number.isRequired,
     selected: React.PropTypes.bool,
     m: React.PropTypes.object,
     shipMass: React.PropTypes.number,
     warning: React.PropTypes.func,
   };
 
-  getClassNames() {
+  constructor(props) {
+    super(props);
+
+    this._contextMenu = wrapCtxMenu(this._contextMenu.bind(this));
+    this._getMaxClassLabel = this._getMaxClassLabel.bind(this);
+  }
+
+  // Must be implemented by subclasses:
+  // _getSlotDetails()
+
+  _getClassNames() {
     return null;
   }
 
-  getSize() {
-    return this.props.size;
+  /**
+   * Get the label for the slot size/class
+   * Should be overriden if necessary
+   * @return {string} label
+   */
+  _getMaxClassLabel() {
+    return this.props.maxClass;
+  }
+
+  _contextMenu(event) {
+    this.props.onSelect(null,null);
   }
 
   render() {
@@ -32,15 +51,15 @@ export default class Slot extends TranslatedComponent {
     let slotDetails, menu;
 
     if (m) {
-      slotDetails = this.getSlotDetails(m, translate, language.formats, language.units);  // Must be implemented by sub classes
+      slotDetails = this._getSlotDetails(m, translate, language.formats, language.units);  // Must be implemented by sub classes
     } else {
       slotDetails = <div className={'empty'}>{translate('empty')}</div>;
     }
 
     if (this.props.selected) {
       menu = <AvailableModulesMenu
-        className={this.getClassNames()}
-        modules={this.props.modules}
+        className={this._getClassNames()}
+        modules={this.props.availableModules()}
         shipMass={this.props.shipMass}
         m={m}
         onSelect={this.props.onSelect}
@@ -49,9 +68,9 @@ export default class Slot extends TranslatedComponent {
     }
 
     return (
-      <div className={cn('slot', {selected: this.props.selected})} onClick={this.props.onOpen} onContextMenu={ this.contextmenu === false ? null : contextMenuHandler(this.props.onSelect.bind(null, null))}>
+      <div className={cn('slot', {selected: this.props.selected})} onClick={this.props.onOpen} onContextMenu={this._contextMenu}>
         <div className={'details'}>
-          <div className={'sz'}>{this.getSize(translate)}</div>
+          <div className={'sz'}>{this._getMaxClassLabel(translate)}</div>
           {slotDetails}
         </div>
         {menu}

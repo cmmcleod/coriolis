@@ -4,7 +4,7 @@ import Link from './Link';
 import ActiveLink from './ActiveLink';
 import cn from 'classnames';
 import { Cogs, CoriolisLogo, Hammer, Rocket, StatsBars } from './SvgIcons';
-import Ships from '../shipyard/Ships';
+import { Ships } from 'coriolis-data';
 import InterfaceEvents from '../utils/InterfaceEvents';
 import Persist from '../stores/Persist';
 import ModalDeleteAll from './ModalDeleteAll';
@@ -13,21 +13,12 @@ export default class Header extends TranslatedComponent {
 
   constructor(props) {
     super(props);
-    this.state = {
-      openedMenu: null
-    };
-
-    this._close = this._close.bind(this);
     this.shipOrder = Object.keys(Ships).sort();
-  }
-
-  _close() {
-    this.setState({ openedMenu: null });
   }
 
   _setInsurance(e) {
     e.stopPropagation();
-    Persist.setInsurance('Beta'); // TODO: get insurance name
+    Persist.setInsurance('beta'); // TODO: get insurance name
   }
 
   _setModuleDiscount(e) {
@@ -43,7 +34,6 @@ export default class Header extends TranslatedComponent {
   _showDeleteAll(e) {
     e.preventDefault();
     InterfaceEvents.showModal(<ModalDeleteAll />);
-    this._close();
   };
 
   _showBackup(e) {
@@ -76,21 +66,21 @@ export default class Header extends TranslatedComponent {
     Persist.setSizeRatio(1);
   }
 
-  _openMenu(event, openedMenu) {
+  _openMenu(event, menu) {
     event.stopPropagation();
 
-    if (this.state.openedMenu == openedMenu) {
-      openedMenu = null;
+    if (this.props.currentMenu == menu) {
+      menu = null;
     }
 
-    this.setState({ openedMenu });
+    InterfaceEvents.openMenu(menu);
   }
 
   _getShipsMenu() {
     let shipList = [];
 
     for (let s in Ships) {
-      shipList.push(<ActiveLink key={s} href={'/outfitting/' + s} className={'block'}>{Ships[s].properties.name}</ActiveLink>);
+      shipList.push(<ActiveLink key={s} href={'/outfit/' + s} className={'block'}>{Ships[s].properties.name}</ActiveLink>);
     }
 
     return (
@@ -108,7 +98,7 @@ export default class Header extends TranslatedComponent {
         let shipBuilds = [];
         let buildNameOrder = Object.keys(builds[shipId]).sort();
         for (let buildName of buildNameOrder) {
-          let href = ['/outfitting/', shipId, '/', builds[shipId][buildName], '?bn=', buildName].join('');
+          let href = ['/outfit/', shipId, '/', builds[shipId][buildName], '?bn=', buildName].join('');
           shipBuilds.push(<li key={shipId + '-' + buildName} ><ActiveLink href={href} className={'block'}>{buildName}</ActiveLink></li>);
         }
         buildList.push(<ul key={shipId}>{Ships[shipId].properties.name}{shipBuilds}</ul>);
@@ -196,21 +186,13 @@ export default class Header extends TranslatedComponent {
     );
   }
 
-  componentWillMount() {
-    this.closeAllListener = InterfaceEvents.addListener('closeAll', this._close);
-  }
-
-  componentWillUnmount() {
-    this.closeAllListener.remove();
-  }
-
   render() {
     let translate = this.context.language.translate;
-    let openedMenu = this.state.openedMenu;
+    let openedMenu = this.props.currentMenu;
     let hasBuilds = Persist.hasBuilds();
 
     if (this.props.appCacheUpdate) {
-      return <div id="app-update" onClick={window.location.reload}>{ 'PHRASE_UPDATE_RDY' | translate }</div>;
+      return <div id="app-update" onClick={() => window.location.reload() }>{translate('PHRASE_UPDATE_RDY')}</div>;
     }
 
     return (

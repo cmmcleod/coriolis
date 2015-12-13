@@ -53,7 +53,7 @@ class Persist extends EventEmitter {
     let comparisonJson = _get(LS_KEY_COMPARISONS);
 
     this.builds = buildJson ? buildJson : {};
-    this.comparisons = comparisonJson ? comparisonJson: {};
+    this.comparisons = comparisonJson ? comparisonJson : {};
     this.buildCount = Object.keys(this.builds).length;
     this.langCode = _getString(LS_KEY_LANG) || 'en';
     this.insurance = _getString(LS_KEY_INSURANCE);
@@ -89,7 +89,7 @@ class Persist extends EventEmitter {
       this.builds[shipId][name] = code;
       _put(LS_KEY_BUILDS, this.builds);
       if (newBuild) {
-        this.emit('builds', this.builds);
+        this.emit('buildSaved', shipId, name, code);
       }
     }
   };
@@ -109,8 +109,19 @@ class Persist extends EventEmitter {
     return null;
   };
 
-  getBuilds() {
+  getBuilds(shipId) {
+    if(shipId && shipId.length > 0) {
+      return this.builds[shipId];
+    }
     return this.builds;
+  }
+
+  getBuildsNamesFor(shipId) {
+    if (this.builds[shipId]) {
+      return Object.keys(this.builds[shipId]).sort();
+    } else {
+      return [];
+    }
   }
 
   hasBuild(shipId, name) {
@@ -146,7 +157,7 @@ class Persist extends EventEmitter {
         }
       }
       _put(LS_KEY_COMPARISONS, this.comparisons);
-      this.emit('builds', this.builds);
+      this.emit('buildDeleted', shipId, name);
     }
   };
 
@@ -275,7 +286,7 @@ class Persist extends EventEmitter {
    * Get the saved ship discount
    * @return {number} val Discount value/amount
    */
-  getComponentDiscount() {
+  getModuleDiscount() {
     return this.discounts[1];
   };
 

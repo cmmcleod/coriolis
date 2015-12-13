@@ -3,17 +3,17 @@ import Slot from './Slot';
 
 export default class HardpointSlot extends Slot {
 
-  getClassNames() {
-    return this.props.size > 0 ? 'hardpoint' : null;
+  _getClassNames() {
+    return this.props.maxClass > 0 ? 'hardpoint' : null;
   }
 
-  getSize(translate){
-    return translate(['U','S','M','L','H'][this.props.size]);
+  _getMaxClassLabel(translate){
+    return translate(['U','S','M','L','H'][this.props.maxClass]);
   }
 
-  getSlotDetails(m, translate, formats, u) {
+  _getSlotDetails(m, translate, formats, u) {
     if (m) {
-      let classRating = `${m.class}${m.rating}${m.mode ? '/' + m.mode : ''}${m.missile ? m.missile : ''}`;
+      let classRating = `${m.class}${m.rating}${m.mount ? '/' + m.mount : ''}${m.missile ? m.missile : ''}`;
       return (
         <div>
           <div className={'l'}>{classRating + ' ' + translate(m.name || m.grp)}</div>

@@ -4,7 +4,7 @@ import { Infinite } from './SvgIcons';
 
 export default class InternalSlot extends Slot {
 
-  getSlotDetails(m, translate, formats, u) {
+  _getSlotDetails(m, translate, formats, u) {
     if (m) {
       let classRating = m.class + m.rating;
 

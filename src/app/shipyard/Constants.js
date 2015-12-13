@@ -24,6 +24,7 @@ export const ModuleGroupToName = {
   fs: 'Fuel Scoop',
   sc: 'Scanner',
   am: 'Auto Field-Maintenance Unit',
+  bsg: 'Bi-Weave Shield Generator',
   cr: 'Cargo Rack',
   fi: 'Frame Shift Drive Interdictor',
   hb: 'Hatch Breaker Limpet Controller',
@@ -31,6 +32,7 @@ export const ModuleGroupToName = {
   rf: 'Refinery',
   scb: 'Shield Cell Bank',
   sg: 'Shield Generator',
+  pv: 'Planetary Vehicle Hanger',
   psg: 'Prismatic Shield Generator',
   dc: 'Docking Computer',
   fx: 'Fuel Transfer Limpet Controller',
@@ -89,88 +91,98 @@ export const BulkheadNames = [
  * @type {Array}
  */
 export const ShipFacets = [
-  {                   // 0
-    title: 'agility',
-    props: ['agility'],
-    unit: '',
-    fmt: 'fCrd'
-  },
-  {                   // 1
-    title: 'speed',
-    props: ['topSpeed', 'topBoost'],
-    lbls: ['thrusters', 'boost'],
-    unit: 'm/s',
-    fmt: 'fCrd'
-  },
-  {                   // 2
-    title: 'armour',
-    props: ['armour'],
-    unit: '',
-    fmt: 'fCrd'
-  },
-  {                   // 3
-    title: 'shields',
-    props: ['shieldStrength'],
-    unit: 'MJ',
-    fmt: 'fRound'
-  },
-  {                   // 4
-    title: 'jump range',
-    props: ['unladenRange', 'fullTankRange', 'ladenRange'],
-    lbls: ['max', 'full tank', 'laden'],
-    unit: 'LY',
-    fmt: 'fRound'
-  },
-  {                   // 5
-    title: 'mass',
-    props: ['unladenMass', 'ladenMass'],
-    lbls: ['unladen', 'laden'],
-    unit: 'T',
-    fmt: 'fRound'
-  },
-  {                   // 6
-    title: 'cargo',
-    props: ['cargoCapacity'],
-    unit: 'T',
-    fmt: 'fRound'
-  },
-  {                   // 7
-    title: 'fuel',
-    props: ['fuelCapacity'],
-    unit: 'T',
-    fmt: 'fRound'
-  },
-  {                   // 8
-    title: 'power',
-    props: ['powerRetracted', 'powerDeployed', 'powerAvailable'],
-    lbls: ['retracted', 'deployed', 'available'],
-    unit: 'MW',
-    fmt: 'fPwr'
-  },
-  {                   // 9
-    title: 'cost',
-    props: ['totalCost'],
-    unit: 'CR',
-    fmt: 'fCrd'
-  },
-  {                   // 10
-    title: 'total range',
-    props: ['unladenTotalRange', 'ladenTotalRange'],
-    lbls: ['unladen', 'laden'],
-    unit: 'LY',
-    fmt: 'fRound'
-  },
-  {                   // 11
-    title: 'DPS',
-    props: ['totalDps'],
-    lbls: ['DPS'],
-    unit: '',
-    fmt: 'fRound'
-  }
+    {                   // 0
+      title: 'agility',
+      props: ['agility'],
+      unit: '',
+      fmt: 'fCrd'
+    },
+    {                   // 1
+      title: 'speed',
+      props: ['topSpeed', 'topBoost'],
+      lbls: ['thrusters', 'boost'],
+      unit: 'm/s',
+      fmt: 'fCrd'
+    },
+    {                   // 2
+      title: 'armour',
+      props: ['armour'],
+      unit: '',
+      fmt: 'fCrd'
+    },
+    {                   // 3
+      title: 'shields',
+      props: ['shieldStrength'],
+      unit: 'MJ',
+      fmt: 'fRound'
+    },
+    {                   // 4
+      title: 'jump range',
+      props: ['unladenRange', 'fullTankRange', 'ladenRange'],
+      lbls: ['max', 'full tank', 'laden'],
+      unit: 'LY',
+      fmt: 'fRound'
+    },
+    {                   // 5
+      title: 'mass',
+      props: ['unladenMass', 'ladenMass'],
+      lbls: ['unladen', 'laden'],
+      unit: 'T',
+      fmt: 'fRound'
+    },
+    {                   // 6
+      title: 'cargo',
+      props: ['cargoCapacity'],
+      unit: 'T',
+      fmt: 'fRound'
+    },
+    {                   // 7
+      title: 'fuel',
+      props: ['fuelCapacity'],
+      unit: 'T',
+      fmt: 'fRound'
+    },
+    {                   // 8
+      title: 'power',
+      props: ['powerRetracted', 'powerDeployed', 'powerAvailable'],
+      lbls: ['retracted', 'deployed', 'available'],
+      unit: 'MW',
+      fmt: 'fPwr'
+    },
+    {                   // 9
+      title: 'cost',
+      props: ['totalCost'],
+      unit: 'CR',
+      fmt: 'fCrd'
+    },
+    {                   // 10
+      title: 'total range',
+      props: ['unladenTotalRange', 'ladenTotalRange'],
+      lbls: ['unladen', 'laden'],
+      unit: 'LY',
+      fmt: 'fRound'
+    },
+    {                   // 11
+      title: 'DPS',
+      props: ['totalDps'],
+      lbls: ['DPS'],
+      unit: '',
+      fmt: 'fRound'
+    }
 ];
-  /**
-   * Set of all available / theoretical discounts
-   */
+
+/**
+ * Set of all insurance levels
+ */
+export const Insurance = {
+  'standard': 0.05,
+  'alpha': 0.025,
+  'beta': 0.0375
+};
+
+/**
+ * Set of all available / theoretical discounts
+ */
 export const Discounts = {
   '0%': 1,
   '5%': 0.95,
@@ -179,4 +191,3 @@ export const Discounts = {
   '20%': 0.80,
   '25%': 0.75
 };
-

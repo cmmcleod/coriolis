@@ -20,6 +20,12 @@ export default class Coriolis extends React.Component {
   constructor() {
     super();
     this._setPage = this._setPage.bind(this);
+    this._openMenu = this._openMenu.bind(this);
+    this._closeMenu = this._closeMenu.bind(this);
+    this._showModal = this._showModal.bind(this);
+    this._hideModal = this._hideModal.bind(this);
+    this._onLanguageChange = this._onLanguageChange.bind(this)
+    this._keyDown = this._keyDown.bind(this);
 
     this.state = {
       page: null,
@@ -28,22 +34,20 @@ export default class Coriolis extends React.Component {
     };
 
     Router('', (r) => this._setPage(ShipyardPage, r));
-    // Router('/', (ctx) => this._setPage(ShipyardPage, ctx));
-    Router('/outfitting/:ship', (r) => this._setPage(OutfittingPage, r));
-    Router('/outfitting/:ship/:code', (r) => this._setPage(OutfittingPage, r));
+    Router('/outfit/:ship/:code?', (r) => this._setPage(OutfittingPage, r));
     // Router('/compare/:name', compare);
     // Router('/comparison/:code', comparison);
-    // Router('/settings', settings);
     Router('/about', (r) => this._setPage(AboutPage, r));
     Router('*', (r) => this._setPage(null, r));
   }
 
   _setPage(page, route) {
-    this.setState({ page, route });
+    this.setState({ page, route, currentMenu: null });
   }
 
   _onError(msg, scriptUrl, line, col, errObj) {
-      this._setPage(<div>Some errors occured!!</div>);
+    console.log('WINDOW ERROR', arguments);
+    //this._setPage(<div>Some errors occured!!</div>);
   }
 
   _onLanguageChange(lang) {
@@ -53,8 +57,8 @@ export default class Coriolis extends React.Component {
   _keyDown(e) {
     switch (e.keyCode) {
       case 27:
-        InterfaceEvents.closeAll();
         this._hideModal();
+        this._closeMenu();
         break;
     }
   }
@@ -70,6 +74,18 @@ export default class Coriolis extends React.Component {
     }
   }
 
+  _openMenu(currentMenu) {
+    if (this.state.currentMenu != currentMenu) {
+      this.setState({ currentMenu });
+    }
+  }
+
+  _closeMenu() {
+    if (this.state.currentMenu) {
+      this.setState({ currentMenu: null });
+    }
+  }
+
   getChildContext() {
     return {
       language: this.state.language,
@@ -82,28 +98,30 @@ export default class Coriolis extends React.Component {
     if (window.applicationCache) {
       window.applicationCache.addEventListener('updateready', () => {
         if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-          this.setState({appCacheUpdate: true}); // Browser downloaded a new app cache.
+          this.setState({ appCacheUpdate: true }); // Browser downloaded a new app cache.
         }
-      }, false);
+      });
     }
 
     window.onerror = this._onError.bind(this);
-    document.addEventListener('keydown', this._keyDown.bind(this));
-    Persist.addListener('language', this._onLanguageChange.bind(this));
-    Persist.addListener('language', this._onLanguageChange.bind(this));
-    InterfaceEvents.addListener('showModal', this._showModal.bind(this));
-    InterfaceEvents.addListener('hideModal', this._hideModal.bind(this));
+    window.addEventListener('resize', InterfaceEvents.windowResized);
+    document.addEventListener('keydown', this._keyDown);
+    Persist.addListener('language', this._onLanguageChange);
+    Persist.addListener('language', this._onLanguageChange);
+    InterfaceEvents.addListener('openMenu', this._openMenu);
+    InterfaceEvents.addListener('closeMenu', this._closeMenu);
+    InterfaceEvents.addListener('showModal', this._showModal);
+    InterfaceEvents.addListener('hideModal', this._hideModal);
 
     Router.start();
   }
 
-
   render() {
     return (
-      <div onClick={InterfaceEvents.closeAll}>
-        <Header appCacheUpdate={this.state.appCacheUpdate} />
-        {this.state.page? <this.state.page /> : <NotFoundPage/>}
-        {this.state.modal}
+      <div onClick={this._closeMenu}>
+        <Header appCacheUpdate={this.state.appCacheUpdate} currentMenu={this.state.currentMenu} />
+        { this.state.page ? <this.state.page currentMenu={this.state.currentMenu} /> : <NotFoundPage/> }
+        { this.state.modal }
       </div>
     );
   }

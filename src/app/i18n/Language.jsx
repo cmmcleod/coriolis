@@ -34,28 +34,29 @@ export function getLanguage(langCode) {
 
   return {
     formats: {
-      gen: gen,
-      int: d3Locale.numberFormat(',.0f'),
-      pwr: d3Locale.numberFormat(',.2f'),
-      round: (d) => gen(d3.round(d, 2)),
-      pct: d3Locale.numberFormat('.2%'),
-      pct1: d3Locale.numberFormat('.1%'),
-      rPct: d3.format('%'),
+      gen: gen,                               // General number format (.e.g 1,001,001.1234)
+      int: d3Locale.numberFormat(',.0f'),     // Fixed to 0 decimal places (.e.g 1,001)
+      f2: d3Locale.numberFormat(',.2f'),      // Fixed to 2 decimal places (.e.g 1,001.10)
+      pct: d3Locale.numberFormat('.2%'),      // % to 2 decimal places (.e.g 5.40%)
+      pct1: d3Locale.numberFormat('.1%'),     // % to 1 decimal places (.e.g 5.4%)
+      r2: d3Locale.numberFormat('.2r'),       // Rounded to 2 decimal places (.e.g 5.12, 4.10)
+      rPct: d3.format('%'),                   // % to 0 decimal places (.e.g 5%)
+      round: (d) => gen(d3.round(d, 2)),      // Rounded to 0-2 decimal places (.e.g 5.12, 4.1)
       time: (d) => Math.floor(d / 60) + ':' + ('00' + Math.floor(d % 60)).substr(-2, 2)
     },
     translate,
     units: {
       CR: <u>{' ' + translate('CR')}</u>,     // Credits
-      kg: <u>{' ' + translate('kg')}</u>,    // Kilograms
-      kgs: <u>{' ' + translate('kg/s')}</u>, // Kilograms per second
-      km: <u>{' ' + translate('km')}</u>,    // Kilometers
-      Ls: <u>{' ' + translate('Ls')}</u>,    // Light Seconds
-      LY: <u>{' ' + translate('LY')}</u>,    // Light Years
-      MJ: <u>{' ' + translate('MJ')}</u>,    // Mega Joules
-      ms: <u>{' ' + translate('m/s')}</u>,   // Meters per second
-      MW: <u>{' ' + translate('MW')}</u>,    // Mega Watts (same as Mega Joules per second)
-      ps: <u>{translate('/s')}</u>,    // per second
-      T: <u>{' ' + translate('T')}</u>,      // Metric Tons
+      kg: <u>{' ' + translate('kg')}</u>,     // Kilograms
+      kgs: <u>{' ' + translate('kg/s')}</u>,  // Kilograms per second
+      km: <u>{' ' + translate('km')}</u>,     // Kilometers
+      Ls: <u>{' ' + translate('Ls')}</u>,     // Light Seconds
+      LY: <u>{' ' + translate('LY')}</u>,     // Light Years
+      MJ: <u>{' ' + translate('MJ')}</u>,     // Mega Joules
+      ms: <u>{' ' + translate('m/s')}</u>,    // Meters per second
+      MW: <u>{' ' + translate('MW')}</u>,     // Mega Watts (same as Mega Joules per second)
+      ps: <u>{translate('/s')}</u>,           // per second
+      T: <u>{' ' + translate('T')}</u>,       // Metric Tons
     }
   }
 
@@ -63,10 +64,9 @@ export function getLanguage(langCode) {
 
 export const Languages = {
   en: 'English',
-  de: 'Deutsh',
+  de: 'Deutsch',
   it: 'Italiano',
   es: 'Español',
   fr: 'Français',
   ru: 'ру́сский'
 };
-

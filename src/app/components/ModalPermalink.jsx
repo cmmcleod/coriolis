@@ -30,10 +30,10 @@ export default class ModalPermalink extends TranslatedComponent {
       <h2>{translate('permalink')}</h2>
       <br/>
       <h3>{translate('URL')}</h3>
-      <input value={this.props.url} size=40 onFocus={ (e) => e.target.select() }/>
+      <input value={this.props.url} size={40} onFocus={ (e) => e.target.select() }/>
       <br/><br/>
       <h3 >{translate('shortened')}</h3>
-      <input value={this.state.shortenedUrl} size=25 onFocus={ (e) => e.target.select() }/>
+      <input value={this.state.shortenedUrl} size={25} onFocus={ (e) => e.target.select() }/>
       <br/><br/>
       <button className={'r dismiss cap'} onClick={InterfaceEvents.hideModal}>{translate('close')}</button>
     </div>;

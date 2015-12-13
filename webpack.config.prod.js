@@ -23,14 +23,12 @@ CopyDirPlugin.prototype.apply = function(compiler) {
     }.bind(this));
 };
 
-
 module.exports = {
   entry: {
     app: path.resolve(__dirname, 'src/app/index'),
     lib: ['d3', 'react', 'react-dom', 'classnames', 'fbemitter', 'lz-string']
   },
   resolve: {
-    // When requiring, you don't need to add these extensions
     extensions: ['', '.js', '.jsx', '.json', '.less'],
     alias: {
       'd3': d3Path,
@@ -42,7 +40,8 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'build'),
     filename: '[name].[hash:6].js',
-    publicPath: '//cdn.coriolis.io/'
+    chunkFilename: '[name].[hash:6]',
+    publicPath: process.env.CDN || '/'
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
@@ -54,7 +53,7 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin('lib', 'lib.[hash:6].js'),
     new HtmlWebpackPlugin({
         inject: false,
-        appCache: 'coriolis.appcache'
+        appCache: 'coriolis.appcache',
         minify: {
           collapseBooleanAttributes: true,
           collapseWhitespace: true,
@@ -74,6 +73,7 @@ module.exports = {
         allChunks: true
     }),
     new CopyDirPlugin(path.join(__dirname, 'src/schemas'), 'schemas'),
+    new CopyDirPlugin(path.join(__dirname, 'src/images/logo/*'), ''),
     new AppCachePlugin({
       network: ['*'],
       settings: ['prefer-online'],
@@ -84,6 +84,11 @@ module.exports = {
   module: {
     noParse: [d3Path, reactPath, lzStringPath],
     loaders: [
+      // Expose non-parsed globally scoped libs
+      { test: reactPath, loader: "expose?React" },
+      { test: d3Path, loader: "expose?d3" },
+      { test: lzStringPath, loader: "expose?LZString" },
+
       { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader','css-loader') },
       { test: /\.less$/, loader: ExtractTextPlugin.extract('style-loader','css-loader!less-loader') },
       { test: /\.(js|jsx)$/, loaders: [ 'babel' ], include: path.join(__dirname, 'src') },
@@ -92,9 +97,7 @@ module.exports = {
       { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' },
-      { test: /\.xml$/, loader: 'file' },
-      { test: /\.(png|jpg|jpeg|gif|ico)$/, loader: 'file-loader?name=/images/[name].[hash:6].[ext]'  }
+      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' }
     ]
   }
 };

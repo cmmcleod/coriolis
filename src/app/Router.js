@@ -1,5 +1,4 @@
 import Persist from './stores/Persist';
-import InterfaceEvents from './utils/InterfaceEvents';
 
 function isStandAlone() {
   try {
@@ -49,7 +48,7 @@ Router.start = function(){
       Router('/');
     }
   } else {
-    var url = location.pathname + location.search + location.hash;
+    var url = location.pathname + location.search;
     Router.replace(url, null, true, true);
   }
 };
@@ -64,10 +63,11 @@ Router.start = function(){
  */
 Router.go = function(path, state) {
   gaTrack(path);
-  InterfaceEvents.closeAll();
   var ctx = new Context(path, state);
   Router.dispatch(ctx);
-  if (!ctx.unhandled) ctx.pushState();
+  if (!ctx.unhandled) {
+    history.pushState(ctx.state, ctx.title, ctx.canonicalPath);
+  }
   return ctx;
 };
 
@@ -80,12 +80,11 @@ Router.go = function(path, state) {
  * @api public
  */
 
-Router.replace = function(path, state, init, dispatch) {
+Router.replace = function(path, state, dispatch) {
   gaTrack(path);
   var ctx = new Context(path, state);
-  ctx.init = init;
-  if (dispatch !== false) Router.dispatch(ctx);
-  ctx.save();
+  if (dispatch) Router.dispatch(ctx);
+  history.replaceState(ctx.state, ctx.title, ctx.canonicalPath);
   return ctx;
 };
 
@@ -119,8 +118,10 @@ Router.dispatch = function(ctx){
 
 function unhandled(ctx) {
   var current = window.location.pathname + window.location.search;
-  if (current == ctx.canonicalPath) return;
-  window.location = ctx.canonicalPath;
+  if (current != ctx.canonicalPath) {
+    window.location = ctx.canonicalPath;
+  }
+  return ctx;
 }
 
 /**
@@ -142,42 +143,13 @@ function Context(path, state) {
   this.state.path = path;
   this.querystring = ~i ? path.slice(i + 1) : '';
   this.pathname = ~i ? path.slice(0, i) : path;
-  this.params = [];
+  this.params = {};
 
-  // fragment
-  this.hash = '';
-  if (!~this.path.indexOf('#')) return;
-  var parts = this.path.split('#');
-  this.path = parts[0];
-  this.hash = parts[1] || '';
-  this.querystring = this.querystring.split('#')[0];
+  this.querystring.split('&').forEach((str) =>{
+    let query = str.split('=');
+    this.params[query[0]] =  decodeURIComponent(query[1]);
+  }, this);
 }
-
-/**
- * Expose `Context`.
- */
-
-Router.Context = Context;
-
-/**
- * Push state.
- *
- * @api private
- */
-
-Context.prototype.pushState = function(){
-  history.pushState(this.state, this.title, this.canonicalPath);
-};
-
-/**
- * Save the context state.
- *
- * @api public
- */
-
-Context.prototype.save = function(){
-  history.replaceState(this.state, this.title, this.canonicalPath);
-};
 
 /**
  * Initialize `Route` with the given HTTP `path`,
@@ -202,12 +174,6 @@ function Route(path, options) {
     , options.sensitive
     , options.strict);
 }
-
-/**
- * Expose `Route`.
- */
-
-Router.Route = Route;
 
 /**
  * Return route middleware with
@@ -247,22 +213,33 @@ Route.prototype.match = function(path, params){
   for (var i = 1, len = m.length; i < len; ++i) {
     var key = keys[i - 1];
 
-    var val = 'string' == typeof m[i]
-      ? decodeURIComponent(m[i])
-      : m[i];
+    var val = 'string' == typeof m[i] ? decodeURIComponent(m[i]) : m[i];
 
     if (key) {
-      params[key.name] = undefined !== params[key.name]
-        ? params[key.name]
-        : val;
-    } else {
-      params.push(val);
+      params[key.name] = undefined !== params[key.name] ? params[key.name] : val;
     }
   }
 
   return true;
 };
 
+
+/**
+ * Check if the app is running in stand alone mode.
+ * @return {Boolean} true if running in Standalone mode
+ */
+function isStandAlone() {
+  try {
+    return window.navigator.standalone || (window.external && window.external.msIsSiteMode && window.external.msIsSiteMode());
+  } catch (ex) {
+    return false;
+  }
+}
+
+/**
+ * Track a page view in Google Analytics
+ * @param  {string} path
+ */
 function gaTrack(path) {
   if (window.ga) {
     window.ga('send', 'pageview', { page: path });
@@ -314,7 +291,7 @@ function pathtoRegexp(path, keys, sensitive, strict) {
 function onpopstate(e) {
   if (e.state) {
     var path = e.state.path;
-    Router.replace(path, e.state);
+    Router.replace(path, e.state, true);
   }
 }
 
