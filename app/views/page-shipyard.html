@@ -7,6 +7,7 @@
           <th rowspan="2" class="sortable le" ng-click="sortShips('name')" translate="ship"></th>
           <th rowspan="2" class="sortable" ng-click="sortShips('manufacturer')" translate="manufacturer"></th>
           <th rowspan="2" class="sortable" ng-click="sortShips('class')" translate="size"></th>
+          <th rowspan="2" class="sortable" ng-click="sortShips('agility')" translate="agility"></th>
           <th colspan="4" translate="base"></th>
           <th colspan="4" translate="max"></th>
           <th colspan="5" class="sortable" ng-click="sortShips('hpCount')" translate="hardpoints"></th>
@@ -49,6 +50,7 @@
           <td class="le" ng-bind="s.manufacturer"></td>
           <!-- Pad Size -->
           <td class="cap" ng-bind="SZM[s.class] | translate"></td>
+          <td class="ri" ng-bind="s.agility"></td>
           <!-- Base -->
           <td class="ri">{{fCrd(s.speed)}} <u translate>m/s</u></td>
           <td class="ri">{{fCrd(s.boost)}} <u translate>m/s</u></td>
