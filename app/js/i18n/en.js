@@ -154,6 +154,7 @@ angular.module('app').config(['$translateProvider', function($translateProvider)
     proceed: 'proceed',
     pc: 'Prospector Limpet Controller',
     pl: 'Pulse Laser',
+    pv: 'Planetary Vehicle Hangar',
     PWR: 'PWR',
     rg: 'Rail Gun',
     range: 'range',

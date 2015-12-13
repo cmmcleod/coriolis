@@ -46,6 +46,7 @@ angular.module('shipyard', ['ngLodash'])
     fx: 'Fuel Transfer Limpet Controller',
     pc: 'Prospector Limpet Controller',
     cc: 'Collector Limpet Controller',
+    pv: 'Planetary Vehicle Hangar',
 
     // Hard Points
     bl: 'Beam Laser',

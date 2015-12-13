@@ -8,6 +8,7 @@
   <div class="l" ng-if="c.c.maxmass">{{'max mass' | translate}}: {{c.c.maxmass}} <u translate="T"></u></div>
   <div class="l" ng-if="c.c.bins">{{c.c.bins}} <u translate="bins"></u></div>
   <div class="l" ng-if="c.c.rate">{{'rate' | translate}}: {{c.c.rate}} <u>kg/s</u>&nbsp;&nbsp;&nbsp;{{'refuel time' | translate}}: {{$r.fTime(fuel * 1000 / c.c.rate)}}</div>
+  <div class="l" ng-if="c.c.vehicles">{{'vehicles' | translate}}: {{c.c.vehicles}}</div>
   <div class="l" ng-if="c.c.ammo">{{'ammo' | translate}}: {{$r.fCrd(c.c.ammo)}}</div>
   <div class="l" ng-if="c.c.cells">{{'cells' | translate}}: {{c.c.cells}}</div>
   <div class="l" ng-if="c.c.recharge">{{'recharge' | translate}}: {{c.c.recharge}} <u>MJ</u>&nbsp;&nbsp;&nbsp;{{'total' | translate}}: {{c.c.cells * c.c.recharge}} <u>MJ</u></div>

@@ -556,7 +556,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
 
   function updateAmmoCosts() {
     var costs = $scope.ammoList = [];
-    var total = 0, i, l, item, q, limpets = 0, scoop = false;
+    var total = 0, i, l, item, q, limpets = 0, srvs = 0, scoop = false;
 
     for (var g in { standard: 1, internal: 1, hardpoints: 1 }) {
       var slotGroup = ship[g];
@@ -577,6 +577,9 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
             case 'fx': case 'hb': case 'cc': case 'pc':
               limpets = ship.cargoCapacity;
               break;
+            case 'pv':
+              srvs += slotGroup[i].c.vehicles;
+              break;
             default:
               q = slotGroup[i].c.clip + slotGroup[i].c.ammo;
           }
@@ -596,6 +599,17 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
       }
     }
 
+     //limpets if controllers exist and cargo space available
+    if (srvs > 0) {
+      item = {
+        ammoName: 'SRVs',
+        ammoMax: srvs,
+        ammoUnitCost: 6005,
+        ammoTotalCost: srvs * 6005
+      };
+      costs.push(item);
+      total += item.ammoTotalCost;
+    }
     //limpets if controllers exist and cargo space available
     if (limpets > 0) {
       item = {
