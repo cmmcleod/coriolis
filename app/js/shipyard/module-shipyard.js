@@ -166,6 +166,7 @@ angular.module('shipyard', ['ngLodash'])
    */
   .constant('Discounts', {
     '0%': 1,
+    '2.5%': 0.975,
     '5%': 0.95,
     '10%': 0.90,
     '15%': 0.85,

@@ -3423,7 +3423,8 @@
           "class": 1,
           "rating": "A",
           "group": "Fuel Scoop"
-        }
+        },
+        null
       ]
     },
     "stats": {
