@@ -578,7 +578,7 @@ angular.module('app').controller('OutfitController', ['$window', '$rootScope', '
               limpets = ship.cargoCapacity;
               break;
             case 'pv':
-              srvs += slotGroup[i].c.vehicles;
+              srvs += slotGroup[i].c.bays;
               break;
             default:
               q = slotGroup[i].c.clip + slotGroup[i].c.ammo;
