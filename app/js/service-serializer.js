@@ -72,7 +72,7 @@ angular.module('app').service('Serializer', ['lodash', 'GroupMap', 'MountMap', '
         internal = ship.internal;
 
     var data = {
-      $schema: 'http://cdn.coriolis.io/schemas/ship-loadout/2.json#',
+      $schema: 'http://cdn.coriolis.io/schemas/ship-loadout/3.json#',
       name: buildName,
       ship: ship.name,
       references: [{
