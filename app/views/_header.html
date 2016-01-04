@@ -9,7 +9,7 @@
     <div class="menu-header" ng-class="{selected: openedMenu=='s'}" ng-click="openMenu($event,'s')">
       <svg class="icon warning"><use xlink:href="#rocket"></use></svg><span class="menu-item-label"> {{'ships' | translate}}</span>
     </div>
-    <div class="menu-list dbl no-wrap" ng-if="openedMenu=='s'">
+    <div class="menu-list dbl no-wrap animated-dropdown" ng-if="openedMenu=='s'">
       <a class="block" ng-repeat="(shipId,ship) in ships" ui-sref-active="active" ui-sref="outfit({shipId:shipId, code:null, bn:null})">{{::ship.properties.name}}</a>
     </div>
   </div>
@@ -18,7 +18,7 @@
     <div class="menu-header" ng-class="{selected: openedMenu=='b', disabled: !bs.hasBuilds}" ng-click="openMenu($event,'b')">
       <svg class="icon warning" ng-class="{'warning-disabled': !bs.hasBuilds}"><use xlink:href="#hammer"></use></svg><span class="menu-item-label"> {{'builds' | translate}}</span>
     </div>
-    <div class="menu-list" ng-if="openedMenu=='b'" ng-click="$event.stopPropagation();">
+    <div class="menu-list animated-dropdown" ng-if="openedMenu=='b'" ng-click="$event.stopPropagation();">
       <div class="dbl" >
         <div><ul ng-repeat="shipId in buildsList">
           {{ships[shipId].properties.name}}
@@ -34,7 +34,7 @@
     <div class="menu-header" ng-class="{selected: openedMenu=='comp', disabled: !bs.hasBuilds}" ng-click="openMenu($event,'comp')">
       <svg class="icon warning" ng-class="{'warning-disabled': !bs.hasBuilds}"><use xlink:href="#stats-bars"></use></svg><span class="menu-item-label"> {{'compare' | translate}}</span>
     </div>
-    <div class="menu-list" ng-if="openedMenu=='comp'" ng-click="$event.stopPropagation();" style="white-space: nowrap;">
+    <div class="menu-list animated-dropdown" ng-if="openedMenu=='comp'" ng-click="$event.stopPropagation();" style="white-space: nowrap;">
       <span class="cap" ng-if="!bs.hasComparisons" translate="none created"></span>
       <a ng-repeat="(i, name) in allComparisons" ui-sref-active="active" class="block name" ui-sref="compare({name:name})" ng-bind="name"></a>
       <hr />
@@ -47,7 +47,7 @@
     <div class="menu-header" ng-class="{selected: openedMenu=='settings'}" ng-click="openMenu($event,'settings')">
       <svg class="icon xl warning"><use xlink:href="#cogs"></use></svg><span class="menu-item-label"> {{'settings' | translate}}</span>
     </div>
-    <div class="menu-list no-wrap cap" ng-if="openedMenu=='settings'" ng-click="$event.stopPropagation();">
+    <div class="menu-list no-wrap cap animated-dropdown" ng-if="openedMenu=='settings'" ng-click="$event.stopPropagation();">
       <ul>
         {{'language' | translate}}
         <li><select class="cap" ng-model="language.current" ng-options="langCode as langName for (langCode,langName) in language.opts" ng-change="changeLanguage()"></select></li>

@@ -27,11 +27,15 @@
     "ng-sortable": "~1.2.1",
     "lz-string": "~1.4.4",
     "angular": "~1.4.0",
-    "angular-translate": "~2.7.2"
+    "angular-translate": "~2.7.2",
+    "angular-animate": "~1.4.8"
   },
   "overrides": {
     "angular": {
       "main": "angular.min.js"
+    },
+    "angular-animate": {
+      "main": "angular-animate.min.js"
     },
     "angular-ui-router": {
       "main": "release/angular-ui-router.min.js"

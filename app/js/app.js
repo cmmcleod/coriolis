@@ -1,4 +1,4 @@
-angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable', 'shipyard', 'ngLodash', 'app.templates', 'pascalprecht.translate'])
+angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ui.sortable', 'shipyard', 'ngLodash', 'app.templates', 'pascalprecht.translate', 'ngAnimate'])
 .run(['$rootScope', '$location', '$window', '$document', '$state', '$translate', 'localeFormat', 'Persist', 'Discounts', 'Languages', 'SizeMap',
 function($rootScope, $location, $window, $doc, $state, $translate, localeFormat, Persist, Discounts, Languages, SizeMap) {
   // App is running as a standalone web app on tablet/mobile

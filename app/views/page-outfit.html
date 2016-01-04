@@ -97,7 +97,7 @@
         {{'standard' | translate}}
         <svg class="icon"><use xlink:href="#equalizer"></use></svg>
       </h1>
-      <div class="select" ng-if="selectedSlot=='standard'">
+      <div class="select animated-dropdown" ng-if="selectedSlot=='standard'">
         <ul>
           <li class="lc" ng-click="optimizeStandard()" translate="Optimize"></li>
           <li class="c" ng-click="useStandard('E')">E</li>
@@ -120,7 +120,7 @@
         <div class="r">{{ship.bulkheads.c.mass}} <u translate>T</u></div>
         <div class="cl l">{{ship.bulkheads.c.name | translate}}</div>
       </div>
-      <div class="select" ng-if="selectedSlot==ship.bulkheads" ng-click="select('b',ship.bulkheads,$event)">
+      <div class="select animated-dropdown" ng-if="selectedSlot==ship.bulkheads" ng-click="select('b',ship.bulkheads,$event)">
         <ul>
           <li class="lc" ng-class="{active: ship.bulkheads.id=='0'}" cpid="0" translate="Lightweight Alloy"></li>
           <li class="lc" ng-class="{active: ship.bulkheads.id=='1'}" cpid="1" translate="Reinforced Alloy"></li>
@@ -139,7 +139,7 @@
         <div class="l cap">{{'efficiency' | translate}}: {{pp.c.eff}}</div>
         <div class="l cap">{{'power' | translate}}: {{pp.c.pGen}} <u translate>MW</u></div>
       </div>
-      <div component-select class="select" s="pp" warning="ppWarning" opts="availCS.standard[0]" ng-if="selectedSlot==pp" ng-click="select('c',pp,$event)"></div>
+      <div component-select class="select animated-dropdown" s="pp" warning="ppWarning" opts="availCS.standard[0]" ng-if="selectedSlot==pp" ng-click="select('c',pp,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, th)" ng-class="{selected: selectedSlot==th}">
       <div class="details"  ng-class="{'warning': th.c.maxmass < ship.ladenMass}">
@@ -150,7 +150,7 @@
         <div class="l">{{'optimal mass' | translate}}: {{th.c.optmass}} <u translate>T</u></div>
         <div class="l">{{'max mass' | translate}}: {{th.c.maxmass}} <u translate>T</u></div>
       </div>
-      <div component-select class="select" s="th" mass="ship.ladenMass" opts="availCS.standard[1]" ng-if="selectedSlot==th" ng-click="select('c',th,$event)"></div>
+      <div component-select class="select animated-dropdown" s="th" mass="ship.ladenMass" opts="availCS.standard[1]" ng-if="selectedSlot==th" ng-click="select('c',th,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, fsd)" ng-class="{selected: selectedSlot==fsd}">
       <div class="details">
@@ -161,7 +161,7 @@
         <div class="l cap">{{'optimal mass' | translate}}: {{fsd.c.optmass}} <u translate>T</u></div>
         <div class="l cap">{{'max' | translate}} {{'fuel' | translate}}: {{fsd.c.maxfuel}} <u translate>T</u></div>
       </div>
-      <div component-select class="select" s="fsd" opts="availCS.standard[2]" ng-if="selectedSlot==fsd" ng-click="select('c',fsd,$event)"></div>
+      <div component-select class="select animated-dropdown" s="fsd" opts="availCS.standard[2]" ng-if="selectedSlot==fsd" ng-click="select('c',fsd,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, ls)" ng-class="{selected: selectedSlot==ls}">
       <div class="details">
@@ -171,7 +171,7 @@
         <div class="cb"></div>
         <div class="l cap">{{'time' | translate}}: {{fTime(ls.c.time)}}</div>
       </div>
-      <div component-select class="select" s="ls" opts="availCS.standard[3]" ng-if="selectedSlot==ls" ng-click="select('c',ls,$event)"></div>
+      <div component-select class="select animated-dropdown" s="ls" opts="availCS.standard[3]" ng-if="selectedSlot==ls" ng-click="select('c',ls,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, pd)" ng-class="{selected: selectedSlot==pd}">
       <div class="details" ng-class="{warning: pd.c.enginecapacity < ship.boostEnergy}">
@@ -183,7 +183,7 @@
         <div class="l">{{'SYS' | translate}}: {{pd.c.systemcapacity}} <u translate>MJ</u> / {{pd.c.systemrecharge}} <u translate>MW</u></div>
         <div class="l">{{'ENG' | translate}}: {{pd.c.enginecapacity}} <u translate>MJ</u> / {{pd.c.enginerecharge}} <u translate>MW</u></div>
       </div>
-      <div component-select class="select" s="pd" warning="pdWarning" opts="availCS.standard[4]" ng-if="selectedSlot==pd" ng-click="select('c',pd,$event)"></div>
+      <div component-select class="select animated-dropdown" s="pd" warning="pdWarning" opts="availCS.standard[4]" ng-if="selectedSlot==pd" ng-click="select('c',pd,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, ss)" ng-class="{selected: selectedSlot==ss}">
       <div class="details">
@@ -193,7 +193,7 @@
         <div class="cb"></div>
         <div class="l cap">{{'range' | translate}}: {{ss.c.range}} <u translate>km</u></div>
       </div>
-      <div component-select class="select" s="ss" opts="availCS.standard[5]" ng-if="selectedSlot==ss" ng-click="select('c',ss,$event)"></div>
+      <div component-select class="select animated-dropdown" s="ss" opts="availCS.standard[5]" ng-if="selectedSlot==ss" ng-click="select('c',ss,$event)"></div>
     </div>
     <div class="slot" ng-click="selectSlot($event, ft)" ng-class="{selected: selectedSlot==ft}">
       <div class="details">
@@ -201,7 +201,7 @@
         <div class="l">{{ft.id}} {{'ft' | translate}}</div>
         <div class="r">{{ft.c.capacity}} <u translate>T</u></div>
       </div>
-      <div component-select class="select" s="ft" opts="availCS.standard[6]" ng-if="selectedSlot==ft" ng-click="select('c',ft,$event)"></div>
+      <div component-select class="select animated-dropdown" s="ft" opts="availCS.standard[6]" ng-if="selectedSlot==ft" ng-click="select('c',ft,$event)"></div>
     </div>
   </div>
 
@@ -211,7 +211,7 @@
         {{'internal compartments' | translate}}
         <svg class="icon"><use xlink:href="#equalizer"></use></svg>
       </h1>
-      <div class="select" ng-if="selectedSlot=='internal'">
+      <div class="select animated-dropdown" ng-if="selectedSlot=='internal'">
         <ul>
           <li class="lc" ng-click="emptyInternal()" translate="empty all"></li>
           <li class="lc" ng-click="fillWithCargo()" translate="cargo"></li>
@@ -222,7 +222,7 @@
     </div>
     <div class="slot" ng-repeat="i in ship.internal" ng-click="selectSlot($event, i)" context-menu="select('i', i, $event, 'empty')" ng-class="{selected: selectedSlot==i}">
       <div slot-internal class="details" slot="i" fuel="ship.fuelCapacity"></div>
-      <div class="select" ng-if="selectedSlot==i" ng-click="select('i',i,$event)">
+      <div class="select animated-dropdown" ng-if="selectedSlot==i" ng-click="select('i',i,$event)">
         <div component-select s="i" groups="availCS.getInts(i.maxClass, i.eligible)"></div>
       </div>
     </div>
@@ -234,7 +234,7 @@
         {{'hardpoints' | translate}}
         <svg class="icon"><use xlink:href="#equalizer"></use></svg>
       </h1>
-      <div class="select hardpoint" ng-if="selectedSlot=='hardpoints'">
+      <div class="select hardpoint animated-dropdown" ng-if="selectedSlot=='hardpoints'">
         <ul>
           <li class="lc" ng-click="emptyHardpoints()" translate="empty all"></li>
         </ul>
@@ -272,7 +272,7 @@
     </div>
     <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '!0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
       <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]"></div>
-      <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
+      <div class="select animated-dropdown" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
         <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
       </div>
     </div>
@@ -284,7 +284,7 @@
         {{'utility mounts' | translate}}
         <svg class="icon"><use xlink:href="#equalizer"></use></svg>
       </h1>
-      <div class="select" ng-if="selectedSlot=='utility'">
+      <div class="select animated-dropdown" ng-if="selectedSlot=='utility'">
         <ul>
           <li class="lc" ng-click="emptyUtility()" translate="empty all"></li>
         </ul>
@@ -304,7 +304,7 @@
     </div>
     <div class="slot" ng-repeat="h in ship.hardpoints | filter:{maxClass: '0'}" ng-click="selectSlot($event, h)"  context-menu="select('h', h, $event, 'empty')"  ng-class="{selected: selectedSlot==h}">
       <div slot-hardpoint class="details" hp="h" size="HPC[h.maxClass]"></div>
-      <div class="select" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
+      <div class="select animated-dropdown" ng-class="{hardpoint: h.maxClass > 0}" ng-if="selectedSlot==h" ng-click="select('h',h,$event)">
         <div component-select s="h" groups="availCS.getHps(h.maxClass)"></div>
       </div>
     </div>
