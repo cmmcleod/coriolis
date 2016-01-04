@@ -151,3 +151,22 @@ footer {
     text-align: right;
   }
 }
+
+.animated-dropdown {
+  &.ng-enter,
+  &.ng-leave {
+    transition: .3s;
+  }
+
+  &.ng-enter,
+  &.ng-leave.ng-leave-active {
+    transform: translateY(-5px);
+    opacity: 0;
+  }
+
+  &.ng-leave,
+  &.ng-enter.ng-enter-active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
