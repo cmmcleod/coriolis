@@ -31,7 +31,7 @@ angular.module('app').directive('comparisonTable', ['$state', '$translate', '$ro
     var body = [];
 
     if (builds.length === 0) {
-      return '<td colspan="100" class="cen">No builds added to comparison!</td';
+      return '<td colspan="100" class="cen">No builds added to comparison!</td>';
     }
 
     for (var i = 0, l = builds.length; i < l; i++) {
