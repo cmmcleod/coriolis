@@ -1,6 +1,6 @@
 {
   "$schema":            "http://json-schema.org/draft-04/schema#",
-  "id":                 "http://cdn.coriolis.io/schemas/ship-loadout/2.json#",
+  "id":                 "http://cdn.coriolis.io/schemas/ship-loadout/3.json#",
   "title":              "Ship Loadout",
   "type":               "object",
   "description":        "The details for a specific ship build/loadout",

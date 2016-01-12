@@ -38,7 +38,7 @@ export function toDetailedBuild(buildName, ship, code) {
       internal = ship.internal;
 
   var data = {
-    $schema: 'http://cdn.coriolis.io/schemas/ship-loadout/2.json#',
+    $schema: 'http://cdn.coriolis.io/schemas/ship-loadout/3.json#',
     name: buildName,
     ship: ship.name,
     references: [{
@@ -76,7 +76,7 @@ export function toDetailedBuild(buildName, ship, code) {
 };
 
 export function fromDetailedBuild(detailedBuild) {
-  var shipId = _.findKey(ShipsDB, { properties: { name: detailedBuild.ship } });
+  var shipId = Object.keys(Ships).find((shipId) => Ships[shipId].properties.name.toLowerCase() == detailedBuild.ship.toLowerCase());
 
   if (!shipId) {
     throw 'No such ship: ' + detailedBuild.ship;
@@ -133,9 +133,9 @@ export function toDetailedExport(builds) {
   for (var shipId in builds) {
     for (var buildName in builds[shipId]) {
       var code = builds[shipId][buildName];
-      var shipData = ShipsDB[shipId];
+      var shipData = Ships[shipId];
       var ship = new Ship(shipId, shipData.properties, shipData.slots);
-      toShip(ship, code);
+      ship.buildFrom(code);
       data.push(toDetailedBuild(buildName, ship, code));
     }
   }

@@ -42,7 +42,7 @@ export default class StandardSlot extends TranslatedComponent {
             <div className={'cb'}>
                 { m.optmass ? <div className={'l'}>{translate('optimal mass') + ': '}{m.optmass}{units.T}</div> : null }
                 { m.maxmass ? <div className={'l'}>{translate('max mass') + ': '}{m.maxmass}{units.T}</div> : null }
-                { m.range ? <div className={'l'}>{translate('range')} {m.range}{units.km}</div> : null }
+                { m.range ? <div className={'l'}>{translate('range')}: {m.range}{units.km}</div> : null }
                 { m.time ? <div className={'l'}>{translate('time')}: {formats.time(m.time)}</div> : null }
                 { m.eff ? <div className={'l'}>{translate('efficiency')}: {m.eff}</div> : null }
                 { m.pGen ? <div className={'l'}>{translate('power')}: {m.pGen}{units.MW}</div> : null }

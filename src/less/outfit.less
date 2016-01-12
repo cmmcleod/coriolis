@@ -114,12 +114,6 @@
   });
 }
 
-.sortable {
-  &:hover {
-    color: @primary;
-  }
-}
-
 .shorten {
   overflow: hidden;
   max-width: 8em;
@@ -225,15 +219,13 @@
 
 }
 
-svg g {
-  .threshold {
-    stroke: @secondary-disabled !important;
-    fill: @secondary-disabled !important;
+.threshold {
+  stroke: @secondary-disabled !important;
+  fill: @secondary-disabled !important;
 
-    &.exceeded {
-      stroke: @warning !important;
-      fill: @warning !important;
-    }
+  &.exceeded {
+    stroke: @warning !important;
+    fill: @warning !important;
   }
 }
 

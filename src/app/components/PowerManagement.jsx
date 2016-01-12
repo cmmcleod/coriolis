@@ -1,6 +1,8 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
+import InterfaceEvents from '../utils/InterfaceEvents';
 import PowerBands from './PowerBands';
 import { slotName, nameComparator } from '../utils/SlotFunctions';
 import { Power, NoPower } from './SvgIcons';
@@ -22,61 +24,43 @@ export default class PowerManagement extends TranslatedComponent {
   constructor(props) {
     super(props);
     this._renderPowerRows = this._renderPowerRows.bind(this);
-    this._sortName = this._sortName.bind(this);
-    this._sortType = this._sortType.bind(this);
-    this._sortPriority = this._sortPriority.bind(this);
-    this._sortPower = this._sortPower.bind(this);
-    this._sortRetracted = this._sortRetracted.bind(this);
-    this._sortDeployed = this._sortDeployed.bind(this);
+    this._updateWidth = this._updateWidth.bind(this);
+    this._sort = this._sort.bind(this);
 
-    this.state = {};  // State is initialized through componentWillMount
+    this.state = {
+      predicate: 'n',
+      desc: true,
+      width: 0
+    };
   }
 
   _sortOrder(predicate) {
     let desc = this.state.desc;
+
     if (predicate == this.state.predicate) {
       desc = !desc;
+
     } else {
       desc = true;
-    }
-
-    if (!desc) {
-      this.props.ship.powerList.reverse();
     }
     this.setState({ predicate, desc });
   }
 
-  _sortName() {
-    let translate = this.context.language.translate;
-    this.props.ship.powerList.sort(nameComparator(translate));
-    this._sortOrder('n');
-  }
+  _sort(ship, predicate, desc) {
+    let powerList = ship.powerList;
 
-  _sortType() {
-    this.props.ship.powerList.sort((a, b) => a.type.localeCompare(b.type));
-    this._sortOrder('t');
-  }
+    switch (predicate) {
+      case 'n': powerList.sort(nameComparator(this.context.language.translate)); break;
+      case 't': powerList.sort((a, b) => a.type.localeCompare(b.type)); break;
+      case 'pri': powerList.sort((a, b) => a.priority - b.priority);break;
+      case 'pwr': powerList.sort((a, b) => (a.m ? a.m.power : 0) - (b.m ? b.m.power : 0)); break;
+      case 'r': powerList.sort((a, b) => ship.getSlotStatus(a) - ship.getSlotStatus(b)); break;
+      case 'd': powerList.sort((a, b) => ship.getSlotStatus(a, true) - ship.getSlotStatus(b, true)); break;
+    }
 
-  _sortPriority() {
-    this.props.ship.powerList.sort((a, b) => a.priority - b.priority);
-    this._sortOrder('pri');
-  }
-
-  _sortPower() {
-    this.props.ship.powerList.sort((a, b) => (a.m ? a.m.power : 0) - (b.m ? b.m.power : 0));
-    this._sortOrder('pwr');
-  }
-
-  _sortRetracted() {
-    let ship = this.props.ship;
-    this.props.ship.powerList.sort((a, b) => ship.getSlotStatus(a) - ship.getSlotStatus(b));
-    this._sortOrder('ret');
-  }
-
-  _sortDeployed() {
-    let ship = this.props.ship;
-    this.props.ship.powerList.sort((a, b) => ship.getSlotStatus(a, true) - ship.getSlotStatus(b, true));
-    this._sortOrder('dep');
+    if (!desc) {
+      powerList.reverse();
+    }
   }
 
   _priority(slot, inc) {
@@ -128,14 +112,30 @@ export default class PowerManagement extends TranslatedComponent {
     return powerRows;
   }
 
+  _updateWidth() {
+    this.setState({ width: findDOMNode(this).offsetWidth });
+  }
+
   componentWillMount(){
-    this._sortName();
-    // Listen to window resize
+    this._sort(this.props.ship, this.state.predicate, this.state.desc);
+    this.resizeListener = InterfaceEvents.addListener('windowResized', this._updateWidth);
+  }
+
+  componentDidMount() {
+    this._updateWidth();
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    // Can optimize this later: only sort when
+    // - predicate/desc changes
+    // - modules/language change AND sorting by type, name
+    // - power changes and sorting by pwr
+    // - enabled/disabled changes and sorting by priority
+    this._sort(nextProps.ship, nextState.predicate, nextState.desc);
   }
 
   componentWillUnmount(){
-    // remove window listener
-    // remove mouse move listener / touch listner?
+    this.resizeListener.remove();
   }
 
   render() {
@@ -143,18 +143,19 @@ export default class PowerManagement extends TranslatedComponent {
     let { translate, formats } = this.context.language;
     let pwr = formats.f2;
     let pp = ship.standard[0].m;
+    let sortOrder = this._sortOrder;
 
     return (
       <div className='group half' id='componentPriority'>
         <table style={{ width: '100%' }}>
           <thead>
             <tr className='main'>
-              <th colSpan='2' className='sortable le' onClick={this._sortName} >{translate('module')}</th>
-              <th style={{ width: '3em' }} className='sortable' onClick={this._sortType} >{translate('type')}</th>
-              <th style={{ width: '4em' }} className='sortable' onClick={this._sortPriority} >{translate('pri')}</th>
-              <th colSpan='2' className='sortable' onClick={this._sortPower} >{translate('PWR')}</th>
-              <th style={{ width: '3em' }} className='sortable' onClick={this._sortRetracted} >{translate('ret')}</th>
-              <th style={{ width: '3em' }} className='sortable' onClick={this._sortDeployed} >{translate('dep')}</th>
+              <th colSpan='2' className='sortable le' onClick={sortOrder.bind(this, 'n')} >{translate('module')}</th>
+              <th style={{ width: '3em' }} className='sortable' onClick={sortOrder.bind(this, 't')} >{translate('type')}</th>
+              <th style={{ width: '4em' }} className='sortable' onClick={sortOrder.bind(this, 'pri')} >{translate('pri')}</th>
+              <th colSpan='2' className='sortable' onClick={sortOrder.bind(this, 'pwr')} >{translate('PWR')}</th>
+              <th style={{ width: '3em' }} className='sortable' onClick={sortOrder.bind(this, 'r')} >{translate('ret')}</th>
+              <th style={{ width: '3em' }} className='sortable' onClick={sortOrder.bind(this, 'd')} >{translate('dep')}</th>
             </tr>
           </thead>
           <tbody>
@@ -172,7 +173,7 @@ export default class PowerManagement extends TranslatedComponent {
             {this._renderPowerRows(ship, translate, pwr, formats.pct1)}
           </tbody>
         </table>
-        <PowerBands code={code} available={ship.standard[0].m.pGen} bands={ship.priorityBands} />
+        <PowerBands width={this.state.width} code={code} available={ship.standard[0].m.pGen} bands={ship.priorityBands} />
       </div>
     );
   }

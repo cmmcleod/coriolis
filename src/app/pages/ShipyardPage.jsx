@@ -91,12 +91,13 @@ export default class ShipyardPage extends Page {
       <td className='le'><Link href={'/outfit/' + s.id}>{s.name}</Link></td>
       <td className='le'>{s.manufacturer}</td>
       <td className='cap'>{translate(SizeMap[s.class])}</td>
-      <td className='ri'>{fInt(s.speed)}{u.ms}</td>
-      <td className='ri'>{fInt(s.boost)}{u.ms}</td>
+      <td>{s.agility}</td>
+      <td className='ri'>{fInt(s.speed)}{u['m/s']}</td>
+      <td className='ri'>{fInt(s.boost)}{u['m/s']}</td>
       <td className='ri'>{s.baseArmour}</td>
       <td className='ri'>{fInt(s.baseShieldStrength)}{u.MJ}</td>
-      <td className='ri'>{fInt(s.topSpeed)}{u.ms}</td>
-      <td className='ri'>{fInt(s.topBoost)}{u.ms}</td>
+      <td className='ri'>{fInt(s.topSpeed)}{u['m/s']}</td>
+      <td className='ri'>{fInt(s.topBoost)}{u['m/s']}</td>
       <td className='ri'>{fRound(s.maxJumpRange)}{u.LY}</td>
       <td className='ri'>{fInt(s.maxCargo)}{u.T}</td>
       <td className={cn({ disabled: !s.hp[1] })}>{s.hp[1]}</td>
@@ -169,6 +170,7 @@ export default class ShipyardPage extends Page {
                 <th rowSpan={2} className='sortable le' onClick={sortShips('name')}>{translate('ship')}</th>
                 <th rowSpan={2} className='sortable' onClick={sortShips('manufacturer')}>{translate('manufacturer')}</th>
                 <th rowSpan={2} className='sortable' onClick={sortShips('class')}>{translate('size')}</th>
+                <th rowSpan={2} className='sortable' onClick={sortShips('agility')}>{translate('agility')}</th>
                 <th colSpan={4}>{translate('base')}</th>
                 <th colSpan={4}>{translate('max')}</th>
                 <th colSpan={5} className='sortable' onClick={sortShips('hpCount')}>{translate('hardpoints')}</th>

@@ -83,7 +83,6 @@ export default class InternalSlotSection extends SlotSection {
         enabled={s.enabled}
         m={s.m}
         fuel={fuelCapacity}
-        shipMass={ladenMass}
       />);
     }
 

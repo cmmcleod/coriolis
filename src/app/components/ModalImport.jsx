@@ -3,7 +3,7 @@ import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
 import InterfaceEvents from '../utils/InterfaceEvents';
 import Persist from '../stores/Persist';
-import Ships from '../shipyard/Ships';
+import { Ships } from 'coriolis-data';
 import Ship from '../shipyard/Ship';
 import * as ModuleUtils from '../shipyard/ModuleUtils';
 import { Download } from './SvgIcons';
@@ -36,7 +36,8 @@ function validateBuild(shipId, code, name) {
     throw shipData.properties.name + ' build "' + name + '" is not valid!';
   }
   try {
-    Serializer.toShip(new Ship(shipId, shipData.properties, shipData.slots), code);
+    let ship = new Ship(shipId, shipData.properties, shipData.slots);
+    ship.buildFrom(code);
   } catch (e) {
     throw shipData.properties.name + ' build "' + name + '" is not valid!';
   }
@@ -58,16 +59,10 @@ function detailedJsonToBuild(detailedBuild) {
     throw detailedBuild.ship + ' Build "' + detailedBuild.name + '": Invalid data';
   }
 
-  return { shipId: ship.id, name: detailedBuild.name, code: Serializer.fromShip(ship) };
+  return { shipId: ship.id, name: detailedBuild.name, code: ship.toString() };
 }
 
 export default class ModalImport extends TranslatedComponent {
-
-  static propTypes = {
-    title: React.propTypes.string,
-    promise: React.propTypes.func,
-    data: React.propTypes.oneOfType[React.propTypes.string, React.propTypes.object]
-  };
 
   constructor(props) {
     super(props);
@@ -84,7 +79,11 @@ export default class ModalImport extends TranslatedComponent {
     };
 
     this._process = this._process.bind(this);
+    this._import = this._import.bind(this);
     this._importBackup = this._importBackup.bind(this);
+    this._importDetailedArray = this._importDetailedArray.bind(this);
+    this._importTextBuild = this._importTextBuild.bind(this);
+    this._validateImport = this._validateImport.bind(this);
   }
 
   _importBackup(importData) {
@@ -121,7 +120,7 @@ export default class ModalImport extends TranslatedComponent {
   _importDetailedArray(importArr) {
     let builds = {};
     for (let i = 0, l = importArr.length; i < l; i++) {
-      let build = this._detailedJsonToBuild(importArr[i]);
+      let build = detailedJsonToBuild(importArr[i]);
       if (!builds[build.shipId]) {
         builds[build.shipId] = {};
       }
@@ -226,16 +225,17 @@ export default class ModalImport extends TranslatedComponent {
     this.setState({ builds });
   }
 
-  _validateImport() {
+  _validateImport(e) {
     let importData = null;
-    let importString = $scope.importString.trim();
+    let importString = e.target.value;
     this.setState({
       builds: null,
       comparisons: null,
       discounts: null,
       errorMsg: null,
       importValid: false,
-      insurance: null
+      insurance: null,
+      importString,
     });
 
     if (!importString) {
@@ -246,7 +246,7 @@ export default class ModalImport extends TranslatedComponent {
       if (textBuildRegex.test(importString)) {  // E:D Shipyard build text
         importTextBuild(importString);
       } else {                                  // JSON Build data
-        importData = angular.fromJson($scope.importString);
+        importData = JSON.parse(importString);
 
         if (!importData || typeof importData != 'object') {
           throw 'Must be an object or array!';
@@ -272,7 +272,7 @@ export default class ModalImport extends TranslatedComponent {
     let builds = null, comparisons = null;
 
     if (this.state.builds) {
-      builds = $scope.builds;
+      builds = this.state.builds;
       for (let shipId in builds) {
         for (let buildName in builds[shipId]) {
           let code = builds[shipId][buildName];
@@ -286,7 +286,7 @@ export default class ModalImport extends TranslatedComponent {
     }
 
     if (this.state.comparisons) {
-      let comparisons = $scope.comparisons;
+      let comparisons = this.state.comparisons;
       for (let name in comparisons) {
         comparisons[name].useName = name;
       }
@@ -341,19 +341,20 @@ export default class ModalImport extends TranslatedComponent {
 
   render() {
     let translate = this.context.language.translate;
+    let state = this.state;
     let importStage;
 
-    if (this.state.processed) {
+    if (!state.processed) {
       importStage = (
         <div>
-          <textarea className='cb json' onCange={this.validateImport.bind(this)} placeholder={translate('PHRASE_IMPORT') | translate} />
-          <button className='l cap' onClick={this.process.bind(this)} disabled={!this.state.importValid} >{translate('proceed')}</button>
-          <div className='l warning' style={{ marginLeft:'3em' }}>{this.state.errorMsg}</div>
+          <textarea className='cb json' onChange={this._validateImport} defaultValue={this.state.importString} placeholder={translate('PHRASE_IMPORT')} />
+          <button className='l cap' onClick={this._process} disabled={!state.importValid} >{translate('proceed')}</button>
+          <div className='l warning' style={{ marginLeft:'3em' }}>{state.errorMsg}</div>
         </div>
       );
     } else {
       let comparisonTable, edit, buildRows = [];
-      if (this.state.comparisons) {
+      if (state.comparisons) {
         let comparisonRows = [];
 
         for (let name in comparisons) {
@@ -387,7 +388,7 @@ export default class ModalImport extends TranslatedComponent {
       }
 
       if(this.state.canEdit) {
-        edit = <button className='l cap' style={{ marginLeft: '2em' }} ng-click={() => this.setState({processed: false})}>{translate('edit data')}</button>
+        edit = <button className='l cap' style={{ marginLeft: '2em' }} onClick={() => this.setState({processed: false})}>{translate('edit data')}</button>
       }
 
       let builds = this.state.builds;
@@ -410,11 +411,11 @@ export default class ModalImport extends TranslatedComponent {
 
       importStage = (
         <div>
-          <table className='l' style='overflow:hidden;margin: 1em 0; width: 100%;'>
+          <table className='l' style={{ overflow:'hidden', margin: '1em 0', width: '100%'}}>
             <thead>
               <tr>
-                <th style='text-align:left' >{translate('ship')}</th>
-                <th style='text-align:left' >{translate('build name')}</th>
+                <th style={{ textAlign: 'left' }} >{translate('ship')}</th>
+                <th style={{ textAlign: 'left' }} >{translate('build name')}</th>
                 <th >{translate('action')}</th>
               </tr>
             </thead>
@@ -422,9 +423,7 @@ export default class ModalImport extends TranslatedComponent {
               {buildRows}
             </tbody>
           </table>
-
           {comparisonTable}
-
           <button className='cl l' onClick={this._import}><Download/> {translate('import')}</button>
           {edit}
         </div>

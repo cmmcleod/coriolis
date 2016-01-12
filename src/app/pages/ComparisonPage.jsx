@@ -1,215 +1,344 @@
 import React from 'react';
 import Page from './Page';
-import Ships from '../shipyard/Ships';
+import Router from '../Router';
 import cn from 'classnames';
+import { Ships } from 'coriolis-data';
 import Ship from '../shipyard/Ship';
-import * as ModuleUtils from '../shipyard/ModuleUtils';
-import { SizeMap } from '../shipyard/Constants';
-import Link from '../components/Link';
+import Serializer from '../shipyard/Serializer';
+import InterfaceEvents from '../utils/InterfaceEvents';
+import Persist from '../stores/Persist';
+import { SizeMap, ShipFacets } from '../shipyard/Constants';
+import ComparisonTable from '../components/ComparisonTable';
+import ModalCompare from '../components/ModalCompare';
+import { FloppyDisk, Bin, Download, Embed, Rocket, LinkIcon } from '../components/SvgIcons';
+
+
+function sortBy(predicate) {
+  return (a, b) => {
+    if (a[predicate] === b[predicate]) {
+      return 0;
+    }
+    if (typeof a[predicate] == 'string') {
+      return a[predicate].toLowerCase() > b[predicate].toLowerCase() ? 1 : -1;
+    }
+    return a[predicate] > b[predicate] ? 1 : -1;
+  };
+}
 
 export default class ComparisonPage extends Page {
 
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      title: 'Coriolis - Shipyard',
-      shipPredicate: 'name',
-      shipDesc: false
-    };
-    this.context = context;
-    this.shipSummaries = [];
-
-    for (let s in Ships) {
-      this.shipSummaries.push(this._shipSummary(s, Ships[s]));
-    }
+    this._sortShips = this._sortShips.bind(this);
+    this._buildsSelected = this._buildsSelected.bind(this);
+    this.state = this._initState(props, context);
   }
+
+  _initState(props, context) {
+    let defaultFacets = [9, 6, 4, 1, 3, 2]; // Reverse order of Armour, Shields, Speed, Jump Range, Cargo Capacity, Cost
+    let params = context.route.params;
+    let code = params.code;
+    let name = params.name ? decodeURIComponent(params.name) : null;
+    let newName = '';
+    let compareMode = !code;
+    let facets = [];
+    let builds = [];
+    let saved = false;
+    let predicate = 'name';
+    let desc = false;
+    let importObj = {};
+
+    if (compareMode) {
+      if (name == 'all') {
+        let allBuilds = Persist.getBuilds();
+        newName = name;
+        for (let shipId in allBuilds) {
+          for (let buildName in allBuilds[shipId]) {
+            builds.push(this._createBuild(shipId, buildName, allBuilds[shipId][buildName]));
+          }
+        }
+      } else {
+
+        let comparisonData = Persist.getComparison(name);
+        if (comparisonData) {
+          defaultFacets = comparisonData.facets;
+          comparisonData.builds.forEach((b) => builds.push(this._createBuild(b.shipId, b.buildName)));
+          saved = true;
+          newName = name;
+        }
+      }
+    } else {
+      try {
+        let comparisonData = Serializer.toComparison(code);
+        defaultFacets = comparisonData.f;
+        newName = name = comparisonData.n;
+        predicate = comparisonData.p;
+        desc = comparisonData.d;
+        comparisonData.b.forEach((build) => {
+          builds.push(this._createBuild(build.s, build.n, build.c));
+          if (!importObj[build.s]) {
+            importObj[build.s] = {};
+          }
+          importObj[build.s][build.n] = build.c;
+        });
+      } catch (e) {
+        throw { type: 'bad-comparison', message: e.message, details: e };
+      }
+    }
+
+    for (let i = 0; i < ShipFacets.length; i++) {
+        facets.push(Object.assign({ index: i }, ShipFacets[i]));
+    }
+
+    let selectedFacets = [];
+
+    for (let fi of defaultFacets) {
+      let facet = facets.splice(fi, 1)[0];
+      facet.active = true;
+      selectedFacets.unshift(facet);
+    }
+
+    facets = selectedFacets.concat(facets);
+console.log(selectedFacets);
+    builds.sort(sortBy(predicate));
+
+    return {
+      title: 'Coriolis - Compare',
+      predicate,
+      desc,
+      facets,
+      builds,
+      compareMode,
+      code,
+      name,
+      newName,
+      saved,
+      importObj
+    };
+  }
+
+  _createBuild(id, name, code) {
+    code = code ? code : Persist.getBuild(id, name); // Retrieve build code if not passed
+
+    if (!code) {  // No build found
+      return;
+    }
+
+    let data = Ships[id];   // Get ship properties
+    let b = new Ship(id, data.properties, data.slots); // Create a new Ship instance
+    b.buildFrom(code);  // Populate components from code
+    b.buildName = name;
+    return b;
+  };
 
   /**
    * Sort ships
    * @param  {object} key Sort predicate
    */
-  _sortShips(shipPredicate, shipPredicateIndex) {
-    let shipDesc = this.state.shipDesc;
-
-    if (typeof shipPredicateIndex == 'object') {
-      shipPredicateIndex = undefined;
+  _sortShips(predicate) {
+    let { builds, desc } = this.state;
+    if (this.state.predicate == predicate) {
+      desc = !desc;
     }
 
-    if (this.state.shipPredicate == shipPredicate && this.state.shipPredicateIndex == shipPredicateIndex) {
-      shipDesc = !shipDesc;
+    builds.sort(sortBy(predicate));
+
+    if (desc) {
+      builds.reverse();
     }
 
-    this.setState({ shipPredicate, shipDesc, shipPredicateIndex });
+    this.setState({ predicate, desc });
   };
 
-  _shipRowElement(s, translate, u, fInt, fRound) {
-    return <tr key={s.id} className={'highlight'}>
-      <td className={'le'}><Link href={'/outfitting/' + s.id}>{s.name}</Link></td>
-      <td className={'le'}>{s.manufacturer}</td>
-      <td className={'cap'}>{translate(SizeMap[s.class])}</td>
-      <td className={'ri'}>{fInt(s.speed)}{u.ms}</td>
-      <td className={'ri'}>{fInt(s.boost)}{u.ms}</td>
-      <td className={'ri'}>{s.baseArmour}</td>
-      <td className={'ri'}>{fInt(s.baseShieldStrength)}{u.MJ}</td>
-      <td className={'ri'}>{fInt(s.topSpeed)}{u.ms}</td>
-      <td className={'ri'}>{fInt(s.topBoost)}{u.ms}</td>
-      <td className={'ri'}>{fRound(s.maxJumpRange)}{u.LY}</td>
-      <td className={'ri'}>{fInt(s.maxCargo)}{u.T}</td>
-      <td className={cn({ disabled: !s.hp[1] })}>{s.hp[1]}</td>
-      <td className={cn({ disabled: !s.hp[2] })}>{s.hp[2]}</td>
-      <td className={cn({ disabled: !s.hp[3] })}>{s.hp[3]}</td>
-      <td className={cn({ disabled: !s.hp[4] })}>{s.hp[4]}</td>
-      <td className={cn({ disabled: !s.hp[0] })}>{s.hp[0]}</td>
-      <td className={cn({ disabled: !s.int[0] })}>{s.int[0]}</td>
-      <td className={cn({ disabled: !s.int[1] })}>{s.int[1]}</td>
-      <td className={cn({ disabled: !s.int[2] })}>{s.int[2]}</td>
-      <td className={cn({ disabled: !s.int[3] })}>{s.int[3]}</td>
-      <td className={cn({ disabled: !s.int[4] })}>{s.int[4]}</td>
-      <td className={cn({ disabled: !s.int[5] })}>{s.int[5]}</td>
-      <td className={cn({ disabled: !s.int[6] })}>{s.int[6]}</td>
-      <td className={cn({ disabled: !s.int[7] })}>{s.int[7]}</td>
-      <td className={'ri'}>{fInt(s.hullMass)}{u.T}</td>
-      <td className={'ri'}>{s.masslock}</td>
-      <td className={'ri'}>{fInt(s.retailCost)}{u.CR}</td>
-    </tr>;
+  _selectBuilds() {
+    InterfaceEvents.showModal(React.cloneElement(
+      <ModalCompare onSelect={this._buildsSelected}/>,
+      { builds: this.state.builds }
+    ));
   }
 
-  _renderSummaries(language) {
-    let fInt = language.formats.int;
-    let fRound = language.formats.round;
-    let translate = language.translate;
-    let u = language.units;
-    // Regenerate ship rows on prop change
-    for (let s of this.shipSummaries) {
-      s.rowElement = this._shipRowElement(s, translate, u, fInt, fRound);
+  _buildsSelected(newBuilds) {
+    InterfaceEvents.hideModal();
+    let builds = [];
+
+    for (let b of newBuilds) {
+      builds.push(this._createBuild(b.id, b.buildName));
+    }
+
+    this.setState({ builds });
+  }
+
+  _toggleFacet(facet) {
+    facet.active = !facet.active;
+    this.setState({ facets: [].concat(this.state.facets), saved: false });
+  }
+
+  _facetDrag(e) {
+    this.dragged = e.currentTarget;
+    let placeholder = this.placeholder = document.createElement("li");
+    placeholder.style.width = this.dragged.offsetWidth + 'px';
+    placeholder.className = "facet-placeholder";
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData("text/html", e.currentTarget);
+  }
+
+  _facetDrop(e) {
+    this.dragged.parentNode.removeChild(this.placeholder);
+    let facets = this.state.facets;
+    let frm = Number(this.dragged.dataset.i);
+    let to = Number(this.over.dataset.i);
+
+    if (frm < to) {
+      to--;
+    }
+    if (this.nodeAfter) {
+      to++;
+    }
+
+    facets.splice(to, 0, facets.splice(frm, 1)[0]);
+    this.dragged.style.display = null;
+    this.setState({ facets: [].concat(facets) });
+  }
+
+  _facetDragOver(e) {
+    e.preventDefault();
+
+    if(e.target.className == "facet-placeholder") {
+      return;
+    }
+
+    this.over = e.target;
+    this.dragged.style.display = "none";
+    let relX = e.clientX - this.over.getBoundingClientRect().left;
+    let width = this.over.offsetWidth / 2;
+    let parent = e.target.parentNode;
+
+    if (parent == e.currentTarget) {
+      if(relX > width) {
+        this.nodeAfter = true;
+        parent.insertBefore(this.placeholder, e.target.nextElementSibling);
+      }
+      else {
+        this.nodeAfter = false;
+        parent.insertBefore(this.placeholder, e.target);
+      }
     }
   }
 
-  componentWillUpdate(nextProps, nextState, nextContext) {
-    if (this.context.language !== nextContext.language) {
-      this._renderSummaries(language);
+  _onNameChange(e) {
+    this.setState({ newName: e.target.value, saved: false });
+  }
+
+  _delete() {
+    Persist.deleteComparison(this.state.name);
+    Router.go('/compare');
+  }
+
+  _import() {
+
+  }
+
+  _save() {
+    let { newName, builds, facets } = this.state;
+
+    let selectedFacets = [];
+    facets.forEach((f) => {
+      if (f.active) {
+        selectedFacets.unshift(f.index);
+      }
+    });
+console.log(selectedFacets);
+    //Persist.saveComparison(newName, builds, selectedFacets);
+    Router.replace(`/compare/${encodeURIComponent(this.state.newName)}`)
+    this.setState ({ name: newName, saved: true });
+  }
+
+  /**
+   * Generates the long permalink URL
+   * @return {string} The long permalink URL
+   */
+  _genPermalink() {
+    let { facets, builds, name, predicate, desc } = this.state;
+    let selectedFacets = [];
+
+    for (let f of facets){
+      if (f.active) {
+        selectedFacets.unshift(f.index);
+      }
+    }
+
+    let code = Serializer.fromComparison(name, builds, selectedFacets, predicate, desc);
+    // send code to permalink modal
+  }
+
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (this.context.route !== nextContext.route) {  // Only reinit state if the route has changed
+      this.setState(this._initState(nextProps, nextContext));
     }
   }
 
   render() {
-    let shipSummaries = this.shipSummaries;
-    let shipPredicate = this.state.shipPredicate;
-    let shipPredicateIndex = this.state.shipPredicateIndex;
-    let shipRows = [];
-    let sortShips = (predicate, index) => this._sortShips.bind(this, predicate, index);
-
-    // Sort shipsOverview
-    shipSummaries.sort((a, b) => {
-      let valA = a[shipPredicate], valB = b[shipPredicate];
-
-      if (shipPredicateIndex != undefined) {
-        valA = valA[shipPredicateIndex];
-        valB = valB[shipPredicateIndex];
-      }
-
-      if (!this.state.shipDesc) {
-        let val = valA;
-        valA = valB;
-        valB = val;
-      }
-
-      if(valA == valB) {
-        if (a.name > b.name) {
-          return 1;
-        } else {
-          return -1;
-        }
-      } else if (valA > valB) {
-        return 1;
-      } else {
-        return -1;
-      }
-    });
-
-    let formats = this.context.language.formats;
-    let fInt = formats.int;
-    let fRound = formats.round;
     let translate = this.context.language.translate;
+    let compareHeader;
+    let {newName, name, saved, builds, facets, predicate, desc } = this.state;
 
-    for (let s of shipSummaries) {
-      shipRows.push(s.rowElement);
+    if (this.state.compareMode) {
+      compareHeader = <tr>
+        <td className='head'>{translate('comparison')}</td>
+        <td>
+          <input value={newName} onChange={this._onNameChange} placeholder={translate('Enter Name')} maxLength='50' />
+          <button onClick={this._save} disabled={!newName || newName == 'all' || saved}>
+            <FloppyDisk  className='lg'/><span className='button-lbl'>{translate('save')}</span>
+          </button>
+          <button onClick={this._delete} disabled={name == 'all' || !saved}><Bin className='lg warning'/></button>
+          <button onClick={this._selectBuilds}>
+            <Rocket className='lg'/><span className='button-lbl'>{translate('builds')}</span>
+          </button>
+          <button className='r' ng-click='permalink($event)' ng-disabled='builds.length == 0'>
+            <LinkIcon className='lg'/><span className='button-lbl'>{translate('permalink')}</span>
+          </button>
+          <button className='r' ng-click='embed($event)' ng-disabled='builds.length == 0'>
+            <Embed className='lg'/><span className='button-lbl'>{translate('forum')}</span>
+          </button>
+        </td>
+      </tr>;
+    } else {
+      compareHeader = <tr>
+        <td className='head'>{translate('comparison')}</td>
+        <td>
+          <h3>{name}</h3>
+          <button className='r' onClick={this._import}><Download className='lg'/>{translate('import')}</button>
+        </td>
+      </tr>;
     }
 
     return (
-      <div className={'page'}>
-        {/*<table id='comparison'>
-          <tr ng-show='compareMode'>
-            <td class='head' translate='comparison'></td>
-            <td>
-              <input ng-model='name' ng-change='nameChange()' placeholder={translate('enter name')}  maxlength={50} />
-              <button ng-click='save()'disabled{!name || name == 'all' || saved}>
-                <svg class='icon lg '><use xlink:href='#floppy-disk'></use></svg><span class='button-lbl'> {{'save' | translate}}</span>
-              </button>
-              <button ng-click='delete()' ng-disabled='name == 'all' || !saved'><svg class='icon lg warning '><use xlink:href='#bin'></use></svg></button>
-              <button ng-click='selectBuilds(true, $event)'>
-            <svg class='icon lg '><use xlink:href='#rocket'></use></svg><span class='button-lbl'> {{'builds' | translate}}</span>
-              </button>
-              <button class='r' ng-click='permalink($event)' ng-disabled='builds.length == 0'>
-                <svg class='icon lg '><use xlink:href='#link'></use></svg><span class='button-lbl'> {{'permalink' | translate}}</span>
-              </button>
-              <button class='r' ng-click='embed($event)' ng-disabled='builds.length == 0'>
-                <svg class='icon lg '><use xlink:href='#embed'></use></svg><span class='button-lbl'> {{'forum' | translate}}</span>
-                </button>
-            </td>
-          </tr>
-          <tr ng-show='!compareMode'>
-            <td class='head' translate='comparison'></td>
-            <td>
-              <h3 ng-bind='name'></h3>
-              <button class='r' ui-sref='modal.import({obj:importObj})'><svg class='icon lg '><use xlink:href='#download'></use></svg> {{'import' | translate}}</button>
-            </td>
-          </tr>
-          <tr>
-            <td class='head' translate='compare'></td>
-            <td>
-              <ul id='facet-container' as-sortable='facetSortOpts' ng-model='facets' class='sortable' update='tblUpdate'>
-                <li ng-repeat='(i,f) in facets' as-sortable-item class='facet' ng-class='{active: f.active}' ng-click='toggleFacet(i)'>
-                  <div as-sortable-item-handle>&#x2194; <span ng-bind='f.title | translate'></span></div>
-                </li>
-              </ul>
-            </td>
+      <div className={'page'} style={{ fontSize: this.context.sizeRatio + 'em'}}>
+        <table id='comparison'>
+          <tbody>
+            {compareHeader}
+            <tr key='facets'>
+              <td className='head'>{translate('compare')}</td>
+              <td>
+                <ul id='facet-container' onDragOver={this._facetDragOver}>
+                  {facets.map((f, i) =>
+                    <li key={f.title} data-i={i} draggable='true' onDragStart={this._facetDrag} onDragEnd={this._facetDrop} className={cn('facet', {active: f.active})} onClick={this._toggleFacet.bind(this, f)}>
+                      {'↔  ' + translate(f.title)}
+                    </li>
+                  )}
+                </ul>
+              </td>
             </tr>
+          </tbody>
         </table>
 
-        <div class='scroll-x'>
-          <table id='comp-tbl' comparison-table ng-click='handleClick($event)'></table>
-        </div>
+        <ComparisonTable builds={builds} facets={facets} onSort={this._sortShips} predicate={predicate} desc={desc} />
 
-        <div ng-repeat='f in facets | filter:{active:true}' ng-if='builds.length > 0' class='chart' bar-chart facet='f' data='builds'>
+        {/*<div ng-repeat='f in facets | filter:{active:true}' ng-if='builds.length > 0' className='chart' bar-chart facet='f' data='builds'>
           <h3 ng-click='sort(f.props[0])' >{{f.title | translate}}</h3>
-        </div>
+        </div>*/}
 
-        <div class='modal-bg' ng-show='showBuilds' ng-click='selectBuilds(false, $event)'>
-          <div class='modal' ui-view='modal-content' ng-click='$event.stopPropagation()'>
-            <h3 translate='PHRASE_SELECT_BUILDS'></h3>
-            <div id='build-select'>
-              <table>
-                <thead><tr><th colspan='2' translate='available'></th></tr></thead>
-                <tbody>
-                  <tr ng-repeat='b in unusedBuilds | orderBy:'name'' ng-click='addBuild(b.id, b.buildName)'>
-                    <td class='tl' ng-bind='b.name'></td><td class='tl' ng-bind='b.buildName'></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h1>⇆</h1>
-              <table>
-                <thead><tr><th colspan='2' translate='added'></th></tr></thead>
-                <tbody>
-                  <tr ng-repeat='b in builds | orderBy:'name'' ng-click='removeBuild(b.id, b.buildName)'>
-                    <td class='tl' ng-bind='b.name'></td><td class='tl' ng-bind='b.buildName'></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <br/>
-            <button class='r dismiss cap' ng-click='selectBuilds(false, $event)' translate='done'></button>
-          </div>
-        </div> */}
       </div>
     );
   }

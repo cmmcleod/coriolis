@@ -7,7 +7,7 @@ export default class ModalExport extends TranslatedComponent {
   static propTypes = {
     title: React.PropTypes.string,
     promise: React.PropTypes.func,
-    data: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object])
+    data: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object, React.PropTypes.array])
   };
 
   constructor(props) {

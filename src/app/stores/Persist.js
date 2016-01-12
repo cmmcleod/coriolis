@@ -88,9 +88,7 @@ class Persist extends EventEmitter {
       let newBuild = !this.builds[shipId][name];
       this.builds[shipId][name] = code;
       _put(LS_KEY_BUILDS, this.builds);
-      if (newBuild) {
-        this.emit('buildSaved', shipId, name, code);
-      }
+      this.emit('buildSaved', shipId, name, code);
     }
   };
 
@@ -232,7 +230,7 @@ class Persist extends EventEmitter {
     data[LS_KEY_BUILDS] = this.getBuilds();
     data[LS_KEY_COMPARISONS] = this.getComparisons();
     data[LS_KEY_INSURANCE] = this.getInsurance();
-    data[LS_KEY_DISCOUNTS] = this.getDiscount();
+    data[LS_KEY_DISCOUNTS] = this.discounts;
     return data;
   };
 

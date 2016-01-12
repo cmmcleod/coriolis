@@ -9,6 +9,11 @@ import d3 from 'd3';
 
 let fallbackTerms = EN.terms;
 
+/**
+ * Get the units, translation and format functions for the specified language
+ * @param  {string} langCode ISO Language code
+ * @return {object}          Language units, translation and format functions
+ */
 export function getLanguage(langCode) {
   let lang, translate;
 
@@ -53,15 +58,20 @@ export function getLanguage(langCode) {
       Ls: <u>{' ' + translate('Ls')}</u>,     // Light Seconds
       LY: <u>{' ' + translate('LY')}</u>,     // Light Years
       MJ: <u>{' ' + translate('MJ')}</u>,     // Mega Joules
-      ms: <u>{' ' + translate('m/s')}</u>,    // Meters per second
+      'm/s': <u>{' ' + translate('m/s')}</u>,    // Meters per second
       MW: <u>{' ' + translate('MW')}</u>,     // Mega Watts (same as Mega Joules per second)
       ps: <u>{translate('/s')}</u>,           // per second
+      pm: <u>{translate('/min')}</u>,         // per minute
       T: <u>{' ' + translate('T')}</u>,       // Metric Tons
     }
   }
 
 }
 
+/**
+ * The list of available languages
+ * @type {Object}
+ */
 export const Languages = {
   en: 'English',
   de: 'Deutsch',

@@ -165,7 +165,7 @@ export function findHardpointId(groupName, clss, rating, name, mount, missile) {
  */
 export function bulkheads(shipId, index) {
   let bulkhead = Ships[shipId].bulkheads[index];
-  bulkhead.class = 8;
+  bulkhead.class = 1;
   bulkhead.rating = 'I';
   bulkhead.name = BulkheadNames[index]
 

@@ -149,8 +149,16 @@ export default class Ship {
    * @param  {number} fuel Fuel available in tons
    * @return {number}      Jump range in Light Years
    */
-  getJumpRangeForMass(mass, fuel) {
-    return Calc.jumpRange(mass, this.standard[2].m, fuel);
+  getJumpRangeWith(fuel, cargo) {
+    return Calc.jumpRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
+  }
+
+  getFastestRangeWith(fuel, cargo) {
+    return Calc.totalRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
+  }
+
+  getSpeedsWith(fuel, cargo) {
+    return Calc.speed(this.unladenMass + fuel + cargo, this.speed, this.boost, this.standard[1].m, this.pipSpeed);
   }
 
   /**

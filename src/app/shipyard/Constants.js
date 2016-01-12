@@ -94,80 +94,78 @@ export const ShipFacets = [
     {                   // 0
       title: 'agility',
       props: ['agility'],
-      unit: '',
-      fmt: 'fCrd'
+      fmt: 'int'
     },
     {                   // 1
       title: 'speed',
       props: ['topSpeed', 'topBoost'],
       lbls: ['thrusters', 'boost'],
       unit: 'm/s',
-      fmt: 'fCrd'
+      fmt: 'int'
     },
     {                   // 2
       title: 'armour',
       props: ['armour'],
       unit: '',
-      fmt: 'fCrd'
+      fmt: 'int'
     },
     {                   // 3
       title: 'shields',
       props: ['shieldStrength'],
       unit: 'MJ',
-      fmt: 'fRound'
+      fmt: 'round'
     },
     {                   // 4
       title: 'jump range',
       props: ['unladenRange', 'fullTankRange', 'ladenRange'],
       lbls: ['max', 'full tank', 'laden'],
       unit: 'LY',
-      fmt: 'fRound'
+      fmt: 'round'
     },
     {                   // 5
       title: 'mass',
       props: ['unladenMass', 'ladenMass'],
       lbls: ['unladen', 'laden'],
       unit: 'T',
-      fmt: 'fRound'
+      fmt: 'round'
     },
     {                   // 6
       title: 'cargo',
       props: ['cargoCapacity'],
       unit: 'T',
-      fmt: 'fRound'
+      fmt: 'round'
     },
     {                   // 7
       title: 'fuel',
       props: ['fuelCapacity'],
       unit: 'T',
-      fmt: 'fRound'
+      fmt: 'int'
     },
     {                   // 8
       title: 'power',
       props: ['powerRetracted', 'powerDeployed', 'powerAvailable'],
       lbls: ['retracted', 'deployed', 'available'],
       unit: 'MW',
-      fmt: 'fPwr'
+      fmt: 'f2'
     },
     {                   // 9
       title: 'cost',
       props: ['totalCost'],
       unit: 'CR',
-      fmt: 'fCrd'
+      fmt: 'int'
     },
     {                   // 10
       title: 'total range',
       props: ['unladenTotalRange', 'ladenTotalRange'],
       lbls: ['unladen', 'laden'],
       unit: 'LY',
-      fmt: 'fRound'
+      fmt: 'round'
     },
     {                   // 11
       title: 'DPS',
       props: ['totalDps'],
       lbls: ['DPS'],
-      unit: '',
-      fmt: 'fRound'
+      fmt: 'round'
     }
 ];
 
@@ -185,8 +183,10 @@ export const Insurance = {
  */
 export const Discounts = {
   '0%': 1,
+  '2.5%': 0.975,
   '5%': 0.95,
   '10%': 0.90,
+  '12.5%': 0.875,
   '15%': 0.85,
   '20%': 0.80,
   '25%': 0.75

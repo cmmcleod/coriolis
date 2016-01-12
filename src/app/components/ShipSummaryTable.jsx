@@ -3,7 +3,6 @@ import TranslatedComponent from './TranslatedComponent';
 import cn from 'classnames';
 import { SizeMap } from '../shipyard/Constants';
 import { Warning } from './SvgIcons';
-import shallowEqual from '../utils/shallowEqual';
 
 export default class ShipSummaryTable extends TranslatedComponent {
 
@@ -63,8 +62,8 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <tr>
               <td className='cap'>{translate(SizeMap[ship.class])}</td>
               <td>{ship.agility}/10</td>
-              <td>{ ship.canThrust() ? <span>{int(ship.topSpeed)} {u.ms}</span> : <span className='warning'>0 <Warning/></span> }</td>
-              <td>{ ship.canBoost() ? <span>{int(ship.topBoost)} {u.ms}</span> : <span className='warning'>0 <Warning/></span> }</td>
+              <td>{ ship.canThrust() ? <span>{int(ship.topSpeed)} {u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
+              <td>{ ship.canBoost() ? <span>{int(ship.topBoost)} {u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
               <td>{round(ship.totalDps)}</td>
               <td>{int(ship.armour)} {armourDetails}</td>
               <td>{int(ship.shieldStrength)} {u.MJ} { ship.shieldMultiplier > 1 && ship.shieldStrength > 0 ? <u>({formats.rPct(ship.shieldMultiplier)})</u> : null }</td>

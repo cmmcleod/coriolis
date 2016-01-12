@@ -1,4 +1,5 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import Page from './Page';
 import cn from 'classnames';
 import Router from '../Router';
@@ -7,7 +8,7 @@ import InterfaceEvents from '../utils/InterfaceEvents';
 import { Ships } from 'coriolis-data';
 import Ship from '../shipyard/Ship';
 import { toDetailedBuild } from '../shipyard/Serializer';
-import { FloppyDisk, Bin, Switch, Download, Reload } from '../components/SvgIcons';
+import { FloppyDisk, Bin, Switch, Download, Reload, Fuel } from '../components/SvgIcons';
 import ShipSummaryTable from '../components/ShipSummaryTable';
 import StandardSlotSection from '../components/StandardSlotSection';
 import HardpointsSlotSection from '../components/HardpointsSlotSection';
@@ -17,6 +18,7 @@ import LineChart from '../components/LineChart';
 import PowerManagement from '../components/PowerManagement';
 import CostSection from '../components/CostSection';
 import ModalExport from '../components/ModalExport';
+import Slider from '../components/Slider';
 
 const SPEED_SERIES = ['boost', '4 Pips', '2 Pips', '0 Pips'];
 const SPEED_COLORS = ['#0088d2', '#ff8c0d', '#D26D00', '#c06400'];
@@ -50,6 +52,8 @@ export default class OutfittingPage extends Page {
       ship.buildWith(data.defaults);  // Populate with default components
     }
 
+    let fuelCapacity = ship.fuelCapacity;
+
     return {
       title: 'Outfitting - ' + data.properties.name,
       costTab: Persist.getCostTab() || 'costs',
@@ -57,7 +61,12 @@ export default class OutfittingPage extends Page {
       shipId,
       ship,
       code,
-      savedCode
+      savedCode,
+      fuelCapacity,
+      fuelLevel: 1,
+      jumpRangeChartFunc: ship.getJumpRangeWith.bind(ship, fuelCapacity),
+      totalRangeChartFunc: ship.getFastestRangeWith.bind(ship, fuelCapacity),
+      speedChartFunc: ship.getSpeedsWith.bind(ship, fuelCapacity)
     };
   }
 
@@ -107,10 +116,15 @@ export default class OutfittingPage extends Page {
   }
 
   _shipUpdated() {
-    let { shipId, buildName } = this.state;
-    let newCode = this.state.ship.toString();
-    this._updateRoute(shipId, newCode, buildName);
-    this.setState({ code: newCode });
+    let { shipId, buildName, ship, fuelCapacity } = this.state;
+    let code = ship.toString();
+
+    if (fuelCapacity != ship.fuelCapacity) {
+      this._fuelChange(this.state.fuelLevel);
+    }
+
+    this._updateRoute(shipId, code, buildName);
+    this.setState({ code });
   }
 
   _updateRoute(shipId, code, buildName) {
@@ -123,16 +137,47 @@ export default class OutfittingPage extends Page {
     Router.replace(`/outfit/${shipId}/${code}${qStr}`);
   }
 
+  _fuelChange(fuelLevel) {
+    let ship = this.state.ship;
+    let fuelCapacity = ship.fuelCapacity;
+    let fuel = fuelCapacity * fuelLevel;
+    this.setState({
+      fuelLevel,
+      fuelCapacity,
+      jumpRangeChartFunc: ship.getJumpRangeWith.bind(ship, fuel),
+      totalRangeChartFunc: ship.getFastestRangeWith.bind(ship, fuel),
+      speedChartFunc: ship.getSpeedsWith.bind(ship, fuel)
+    });
+  }
+
+  _updateDimensions() {
+    this.setState({
+      chartWidth: findDOMNode(this.refs.chartThird).offsetWidth
+    });
+  }
+
   componentWillReceiveProps(nextProps, nextContext) {
     if (this.context.route !== nextContext.route) {  // Only reinit state if the route has changed
       this.setState(this._initState(nextContext));
     }
   }
 
+  componentWillMount(){
+    this.resizeListener = InterfaceEvents.addListener('windowResized', this._updateDimensions);
+  }
+
+  componentDidMount(){
+    this._updateDimensions();
+  }
+
+  componentWillUnmount(){
+    this.resizeListener.remove();
+  }
+
   render() {
-    let { translate, units } = this.context.language;
+    let { translate, units, formats } = this.context.language;
     let state = this.state;
-    let { ship, code, savedCode, buildName } = state;
+    let { ship, code, savedCode, buildName, chartWidth } = state;
     let menu = this.props.currentMenu;
     let shipUpdated = this._shipUpdated;
     let hStr = ship.getHardpointsString();
@@ -140,7 +185,7 @@ export default class OutfittingPage extends Page {
     let iStr = ship.getInternalString();
 
     return (
-      <div id='outfit' className={'page'}>
+      <div id='outfit' className={'page'} style={{ fontSize: (this.context.sizeRatio * 0.9) + 'em'}}>
         <div id='overview'>
           <h1>{ship.name}</h1>
           <div id='build'>
@@ -164,22 +209,21 @@ export default class OutfittingPage extends Page {
         </div>
 
         <ShipSummaryTable ship={ship} code={code} />
-
         <StandardSlotSection ship={ship} code={sStr} onChange={shipUpdated} currentMenu={menu} />
         <InternalSlotSection ship={ship} code={iStr} onChange={shipUpdated} currentMenu={menu} />
         <HardpointsSlotSection ship={ship} code={hStr} onChange={shipUpdated} currentMenu={menu} />
         <UtilitySlotSection ship={ship} code={hStr} onChange={shipUpdated} currentMenu={menu} />
-
         <PowerManagement ship={ship} code={code} onChange={shipUpdated} />
-        <CostSection ship={ship} shipId={state.shipId} buildName={buildName} code={sStr + hStr + iStr} />
+        <CostSection ship={ship} buildName={buildName} code={sStr + hStr + iStr} />
 
-        <div className='group third'>
+        <div ref='chartThird' className='group third'>
           <h1>{translate('jump range')}</h1>
           <LineChart
+            width={chartWidth}
             xMax={ship.cargoCapacity}
             yMax={ship.unladenRange}
-            xUnit={units.T}
-            yUnit={units.LY}
+            xUnit={translate('T')}
+            yUnit={translate('LY')}
             yLabel={translate('jump range')}
             xLabel={translate('cargo')}
             func={state.jumpRangeChartFunc}
@@ -189,10 +233,11 @@ export default class OutfittingPage extends Page {
         <div className='group third'>
           <h1>{translate('total range')}</h1>
           <LineChart
+            width={chartWidth}
             xMax={ship.cargoCapacity}
-            yMax={ship.boostSpeed}
-            xUnit={units.T}
-            yUnit={units.ms}
+            yMax={ship.unladenTotalRange}
+            xUnit={translate('T')}
+            yUnit={translate('LY')}
             yLabel={translate('total range')}
             xLabel={translate('cargo')}
             func={state.totalRangeChartFunc}
@@ -202,25 +247,30 @@ export default class OutfittingPage extends Page {
         <div className='group third'>
           <h1>{translate('speed')}</h1>
           <LineChart
+            width={chartWidth}
             xMax={ship.cargoCapacity}
-            yMax={ship.boostSpeed}
-            xUnit={units.T}
-            yUnit={units.ms}
+            yMax={ship.topBoost + 10}
+            xUnit={translate('T')}
+            yUnit={translate('m/s')}
             yLabel={translate('speed')}
             series={SPEED_SERIES}
-            color={SPEED_COLORS}
+            colors={SPEED_COLORS}
             xLabel={translate('cargo')}
             func={state.speedChartFunc}
           />
         </div>
 
-      {/*
-        <div class='group half'>
-          <div slider max='ship.fuelCapacity' unit=''T'' on-change='::fuelChange(val)' style='position:relative; margin: 0 auto;'>
-              <svg class='icon xl primary-disabled' style='position:absolute;height: 100%;'><use xlink:href='#fuel'></use></svg>
-          </div>
+        <div className='group half'>
+          <table style={{ width: '100%', lineHeight: '1em'}}>
+            <tbody >
+              <tr>
+                <td style={{ verticalAlign: 'top', padding:0 }}><Fuel className='xl primary-disabled' /></td>
+                <td><Slider axis={true} onChange={this._fuelChange} axisUnit={translate('T')} percent={state.fuelLevel} max={state.fuelCapacity} /></td>
+                <td className='primary' style={{ width: '10em', verticalAlign: 'top', fontSize: '0.9em' }}>{formats.f2(state.fuelLevel * ship.fuelCapacity)}{units.T} {formats.pct1(state.fuelLevel)}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      */}
 
       </div>
     );
