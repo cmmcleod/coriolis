@@ -12,7 +12,7 @@ let fallbackTerms = EN.terms;
 /**
  * Get the units, translation and format functions for the specified language
  * @param  {string} langCode ISO Language code
- * @return {object}          Language units, translation and format functions
+ * @return {Object}          Language units, translation and format functions
  */
 export function getLanguage(langCode) {
   let lang, translate;
@@ -39,15 +39,16 @@ export function getLanguage(langCode) {
 
   return {
     formats: {
-      gen: gen,                               // General number format (.e.g 1,001,001.1234)
+      gen,                                    // General number format (.e.g 1,001,001.1234)
       int: d3Locale.numberFormat(',.0f'),     // Fixed to 0 decimal places (.e.g 1,001)
       f2: d3Locale.numberFormat(',.2f'),      // Fixed to 2 decimal places (.e.g 1,001.10)
+      s2: d3Locale.numberFormat('.2s'),       // SI Format to 2 decimal places (.e.g 1.1k)
       pct: d3Locale.numberFormat('.2%'),      // % to 2 decimal places (.e.g 5.40%)
       pct1: d3Locale.numberFormat('.1%'),     // % to 1 decimal places (.e.g 5.4%)
-      r2: d3Locale.numberFormat('.2r'),       // Rounded to 2 decimal places (.e.g 5.12, 4.10)
+      r2: d3Locale.numberFormat('.2r'),       // Rounded to 2 significant numbers (.e.g 512 => 510, 4.122 => 4.1)
       rPct: d3.format('%'),                   // % to 0 decimal places (.e.g 5%)
       round: (d) => gen(d3.round(d, 2)),      // Rounded to 0-2 decimal places (.e.g 5.12, 4.1)
-      time: (d) => Math.floor(d / 60) + ':' + ('00' + Math.floor(d % 60)).substr(-2, 2)
+      time: (d) => (d < 0 ? '-' : '') + Math.floor(Math.abs(d) / 60) + ':' + ('00' + Math.floor(Math.abs(d) % 60)).substr(-2, 2)
     },
     translate,
     units: {
@@ -64,8 +65,7 @@ export function getLanguage(langCode) {
       pm: <u>{translate('/min')}</u>,         // per minute
       T: <u>{' ' + translate('T')}</u>,       // Metric Tons
     }
-  }
-
+  };
 }
 
 /**

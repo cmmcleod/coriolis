@@ -1,5 +1,3 @@
-
-
 /**
  * Generate a BBCode (Forum) compatible table from comparisons
  * @param  {Function} translate Translate language function
@@ -9,8 +7,8 @@
  * @param  {string} link        Link to the comparison
  * @return {string}             the BBCode
  */
-export default function comparisonBBCode(translate, formats, facets, builds, link) {
-  var colCount = 2, b, i, j, k, f, fl, p, pl, l = [];
+export function comparisonBBCode(translate, formats, facets, builds, link) {
+  let colCount = 2, b, i, j, k, f, fl, p, pl, l = [];
 
   for (i = 0; i < facets.length; i++) {
     if (facets[i].active) {

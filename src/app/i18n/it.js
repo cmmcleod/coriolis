@@ -20,7 +20,7 @@ export const terms = {
   action: 'azione',
   added: 'aggiunto',
   Advanced: 'Avanzato',
-  agility: 'agilità',
+  maneuverability: 'agilità',
   ammo: 'munizioni',
   PHRASE_CONFIRMATION: 'Sei sicuro ?',
   armour: 'armatura',

@@ -20,6 +20,14 @@ function powerUsageType(slot, modul) {
   return slot.cat != 1 ? 'retracted' : 'deployed';
 }
 
+/**
+ * Populates the category array with module IDs from
+ * the provided code
+ * @param  {string} code    Serialized ship code
+ * @param  {Array}  arr     Category array
+ * @param  {number} codePos Current position/Index of code string
+ * @return {number}         Next position/Index of code string
+ */
 function decodeToArray(code, arr, codePos) {
   for (let i = 0; i < arr.length; i++) {
     if (code.charAt(codePos) == '-') {
@@ -46,7 +54,7 @@ function reduceToIDs(idArray, slot, slotIndex) {
 }
 
 /**
- * Ship model used to track all ship ModuleUtils and properties.
+ * Ship Model - Encapsulates and models in-game ship behavior
  */
 export default class Ship {
 
@@ -89,7 +97,7 @@ export default class Ship {
       this.hardpoints
     );
     this.shipCostMultiplier = 1;
-    this.modulCostMultiplier = 1;
+    this.moduleCostMultiplier = 1;
     this.priorityBands = [
       { deployed: 0, retracted: 0, },
       { deployed: 0, retracted: 0, },
@@ -99,23 +107,33 @@ export default class Ship {
     ];
   }
 
-  //*********//
-  // GETTERS //
-  //*********//
+  /* GETTERS */
 
+  /**
+   * [getAvailableModules description]
+   * @return {[type]} [description]
+   */
   getAvailableModules() {
     return this.availCS;
   }
 
+  /**
+   * Can the ship thrust/move
+   * @return {[type]} True if thrusters operational
+   */
   canThrust() {
-    return this.getSlotStatus(this.standard[1]) == 3      // Thrusters are powered
-        && this.ladenMass < this.standard[1].m.maxmass;   // Max mass not exceeded
+    return this.getSlotStatus(this.standard[1]) == 3 &&   // Thrusters are powered
+        this.ladenMass < this.standard[1].m.maxmass;      // Max mass not exceeded
   }
 
+  /**
+   * Can the ship boost
+   * @return {[type]} True if boost capable
+   */
   canBoost() {
-    return this.canThrust()                                       // Thrusters operational
-        && this.getSlotStatus(this.standard[4]) == 3              // Power distributor operational
-        && this.boostEnergy <= this.standard[4].m.enginecapacity;  // PD capacitor is sufficient for boost
+    return this.canThrust() &&                                  // Thrusters operational
+        this.getSlotStatus(this.standard[4]) == 3 &&            // Power distributor operational
+        this.boostEnergy <= this.standard[4].m.enginecapacity;  // PD capacitor is sufficient for boost
   }
 
   /**
@@ -124,7 +142,7 @@ export default class Ship {
    *  1 - Disabled (Switched off)
    *  2 - Offline (Insufficient power available)
    *  3 - Online
-   * @param  {[type]} slot        [description]
+   * @param  {Object} slot        Slot model
    * @param  {boolean} deployed   True - power used when hardpoints are deployed
    * @return {number}             status index
    */
@@ -145,18 +163,54 @@ export default class Ship {
   /**
    * Calculate jump range using the installed FSD and the
    * specified mass which can be more or less than ships actual mass
-   * @param  {number} mass Mass in tons
-   * @param  {number} fuel Fuel available in tons
-   * @return {number}      Jump range in Light Years
+   * @param  {number} fuel  Fuel available in tons
+   * @param  {number} cargo Cargo in tons
+   * @return {number}       Jump range in Light Years
    */
   getJumpRangeWith(fuel, cargo) {
     return Calc.jumpRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
   }
 
+  /**
+   * Get the laden jump range based on a potential change in mass, fuel, or FSD
+   * @param  {number} massDelta Optional - Change in laden mass (mass + cargo + fuel)
+   * @param  {number} fuel      Optional - Available fuel (defaults to max fuel based on FSD)
+   * @param  {Object} fsd       Optional - Frame Shift Drive (or use mounted FSD)
+   * @return {number}           Jump range in Light Years
+   */
+  getLadenRange(massDelta, fuel, fsd) {
+    return Calc.jumpRange(this.ladenMass + (massDelta || 0), fsd || this.standard[2].m, fuel);
+  }
+
+  /**
+   * Get the unladen jump range based on a potential change in mass, fuel, or FSD
+   * @param  {number} massDelta Optional - Change in ship mass
+   * @param  {number} fuel      Optional - Available fuel (defaults to lesser of fuel capacity or max fuel based on FSD)
+   * @param  {Object} fsd       Optional - Frame Shift Drive (or use mounted FSD)
+   * @return {number}           Jump range in Light Years
+   */
+  getUnladenRange(massDelta, fuel, fsd) {
+    fsd = fsd || this.standard[2].m;
+    return Calc.jumpRange(this.unladenMass + (massDelta || 0) +  Math.min(fsd.maxfuel, fuel || this.fuelCapacity), fsd || this.standard[2].m, fuel);
+  }
+
+  /**
+   * Calculate cumulative (total) jump range when making longest jumps using the installed FSD and the
+   * specified mass which can be more or less than ships actual mass
+   * @param  {number} fuel  Fuel available in tons
+   * @param  {number} cargo Cargo in tons
+   * @return {number}       Total/Cumulative Jump range in Light Years
+   */
   getFastestRangeWith(fuel, cargo) {
     return Calc.totalRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
   }
 
+  /**
+   * Get the top speeds at cargo and fuel tonnage
+   * @param  {number} fuel  Fuel available in tons
+   * @param  {number} cargo Cargo in tons
+   * @return {Object}       Speed at pip settings and boost
+   */
   getSpeedsWith(fuel, cargo) {
     return Calc.speed(this.unladenMass + fuel + cargo, this.speed, this.boost, this.standard[1].m, this.pipSpeed);
   }
@@ -168,7 +222,7 @@ export default class Ship {
    * @return {number}       The index of the slot in ship.internal
    */
   findInternalByGroup(group) {
-    var index;
+    let index;
     if (ModuleUtils.isShieldGenerator(group)) {
       return this.internal.find(slot => slot.m && ModuleUtils.isShieldGenerator(slot.m.grp));
     } else {
@@ -176,6 +230,10 @@ export default class Ship {
     }
   }
 
+  /**
+   * Serializes the ship to a string
+   * @return {string} Serialized ship 'code'
+   */
   toString() {
     return [
       this.getStandardString(),
@@ -188,6 +246,10 @@ export default class Ship {
     ].join('');
   }
 
+  /**
+   * Serializes the standard modules to a string
+   * @return {string} Serialized standard modules 'code'
+   */
   getStandardString() {
     if(!this.serialized.standard) {
       this.serialized.standard = this.bulkheads.index + this.standard.reduce((arr, slot, i) => {
@@ -198,6 +260,10 @@ export default class Ship {
     return this.serialized.standard;
   }
 
+  /**
+   * Serializes the internal modules to a string
+   * @return {string} Serialized internal modules 'code'
+   */
   getInternalString() {
     if(!this.serialized.internal) {
       this.serialized.internal = this.internal.reduce(reduceToIDs, new Array(this.internal.length)).join('');
@@ -205,6 +271,10 @@ export default class Ship {
     return this.serialized.internal;
   }
 
+  /**
+   * Serializes the hardpoints and utility modules to a string
+   * @return {string} Serialized hardpoints and utility modules 'code'
+   */
   getHardpointsString() {
     if(!this.serialized.hardpoints) {
       this.serialized.hardpoints = this.hardpoints.reduce(reduceToIDs, new Array(this.hardpoints.length)).join('');
@@ -212,48 +282,58 @@ export default class Ship {
     return this.serialized.hardpoints;
   }
 
+  /**
+   * Get the serialized module active/inactive settings
+   * @return {string} Serialized active/inactive settings
+   */
   getPowerEnabledString() {
     return this.serialized.enabled;
   }
 
+  /**
+   * Get the serialized module priority settings
+   * @return {string} Serialized priority settings
+   */
   getPowerPrioritesString() {
     return this.serialized.priorities;
   }
 
-  //**********************//
-  // Mutate / Update Ship //
-  //**********************//
+  /* Mutate / Update Ship */
 
   /**
    * Recalculate all item costs and total based on discounts.
    * @param  {number} shipCostMultiplier      Ship cost multiplier discount (e.g. 0.9 === 10% discount)
-   * @param  {number} modulCostMultiplier Module cost multiplier discount (e.g. 0.75 === 25% discount)
+   * @param  {number} moduleCostMultiplier Module cost multiplier discount (e.g. 0.75 === 25% discount)
+   * @return {this} The current ship instance for chaining
    */
-  applyDiscounts(shipCostMultiplier, modulCostMultiplier) {
-    var total = 0;
-    var costList = this.costList;
+  applyDiscounts(shipCostMultiplier, moduleCostMultiplier) {
+    let total = 0;
+    let costList = this.costList;
 
-    for (var i = 0, l = costList.length; i < l; i++) {
-      var item = costList[i];
+    for (let i = 0, l = costList.length; i < l; i++) {
+      let item = costList[i];
       if (item.m && item.m.cost) {
-        item.discountedCost = item.m.cost * (item.type == 'SHIP' ? shipCostMultiplier : modulCostMultiplier);
+        item.discountedCost = item.m.cost * (item.type == 'SHIP' ? shipCostMultiplier : moduleCostMultiplier);
         if (item.incCost) {
           total += item.discountedCost;
         }
       }
     }
     this.shipCostMultiplier = shipCostMultiplier;
-    this.modulCostMultiplier = modulCostMultiplier;
+    this.moduleCostMultiplier = moduleCostMultiplier;
     this.totalCost = total;
     return this;
   }
 
   /**
    * Builds/Updates the ship instance with the ModuleUtils[comps] passed in.
-   * @param {object} comps Collection of ModuleUtils used to build the ship
+   * @param {Object} comps Collection of ModuleUtils used to build the ship
+   * @param {array} priorities Slot priorities
+   * @param {Array} enabled    Slot active/inactive
+   * @return {this} The current ship instance for chaining
    */
   buildWith(comps, priorities, enabled) {
-    var internal = this.internal,
+    let internal = this.internal,
         standard = this.standard,
         hps = this.hardpoints,
         bands = this.priorityBands,
@@ -350,7 +430,7 @@ export default class Ship {
    * @param {string}  serializedString  The string to deserialize
    */
   buildFrom(serializedString) {
-    var standard = new Array(this.standard.length),
+    let standard = new Array(this.standard.length),
         hardpoints = new Array(this.hardpoints.length),
         internal = new Array(this.internal.length),
         parts = serializedString.split('.'),
@@ -371,31 +451,43 @@ export default class Ship {
     this.buildWith(
       {
         bulkheads: code.charAt(0) * 1,
-        standard: standard,
-        hardpoints: hardpoints,
-        internal: internal
+        standard,
+        hardpoints,
+        internal
       },
       priorities,
       enabled
     );
   };
 
+  /**
+   * Empties all hardpoints and utility slots
+   * @return {this} The current ship instance for chaining
+   */
   emptyHardpoints() {
-    for (var i = this.hardpoints.length; i--; ) {
+    for (let i = this.hardpoints.length; i--;) {
       this.use(this.hardpoints[i], null);
     }
     return this;
   }
 
+  /**
+   * Empties all Internal slots
+   * @return {this} The current ship instance for chaining
+   */
   emptyInternal() {
-    for (var i = this.internal.length; i--; ) {
+    for (let i = this.internal.length; i--;) {
       this.use(this.internal[i], null);
     }
     return this;
   }
 
+  /**
+   * Empties all Utility slots
+   * @return {this} The current ship instance for chaining
+   */
   emptyUtility() {
-    for (var i = this.hardpoints.length; i--; ) {
+    for (let i = this.hardpoints.length; i--;) {
       if (!this.hardpoints[i].maxClass) {
         this.use(this.hardpoints[i], null);
       }
@@ -403,8 +495,12 @@ export default class Ship {
     return this;
   }
 
+  /**
+   * Empties all hardpoints
+   * @return {this} The current ship instance for chaining
+   */
   emptyWeapons() {
-    for (var i = this.hardpoints.length; i--; ) {
+    for (let i = this.hardpoints.length; i--;) {
       if (this.hardpoints[i].maxClass) {
         this.use(this.hardpoints[i], null);
       }
@@ -416,11 +512,18 @@ export default class Ship {
    * Optimize for the lower mass build that can still boost and power the ship
    * without power management.
    * @param  {object} m Standard Module overrides
+   * @return {this} The current ship instance for chaining
    */
   optimizeMass(m) {
     return this.emptyHardpoints().emptyInternal().useLightestStandard(m);
   }
 
+  /**
+   * Include/Exclude a item/slot in cost calculations
+   * @param {Object} item       Slot or item
+   * @param {Boolean} included  Cost included
+   * @return {this} The current ship instance for chaining
+   */
   setCostIncluded(item, included) {
     if (item.incCost != included && item.m) {
       this.totalCost += included ? item.discountedCost : -item.discountedCost;
@@ -429,6 +532,12 @@ export default class Ship {
     return this;
   }
 
+  /**
+   * Set slot active/inactive
+   * @param {Object} slot    Slot model
+   * @param {Boolean} enabled  True - active
+   * @return {this} The current ship instance for chaining
+   */
   setSlotEnabled(slot, enabled) {
     if (slot.enabled != enabled) { // Enabled state is changing
       slot.enabled = enabled;
@@ -459,11 +568,11 @@ export default class Ship {
    */
   setSlotPriority(slot, newPriority) {
     if (newPriority >= 0 && newPriority < this.priorityBands.length) {
-      var oldPriority = slot.priority;
+      let oldPriority = slot.priority;
       slot.priority = newPriority;
 
       if (slot.enabled) { // Only update power if the slot is enabled
-        var usage = powerUsageType(slot, slot.m);
+        let usage = powerUsageType(slot, slot.m);
         this.priorityBands[oldPriority][usage] -= slot.m.power;
         this.priorityBands[newPriority][usage] += slot.m.power;
         this.updatePowerPrioritesString();
@@ -483,15 +592,15 @@ export default class Ship {
    * @return {this}                   The ship instance (for chaining operations)
    */
   updateStats(slot, n, old, preventUpdate) {
-    var powerChange = slot == this.standard[0];
+    let powerChange = slot == this.standard[0];
 
     if (old) {  // Old modul now being removed
       switch (old.grp) {
         case 'ft':
-          this.fuelCapacity -= old.capacity;
+          this.fuelCapacity -= old.fuel;
           break;
         case 'cr':
-          this.cargoCapacity -= old.capacity;
+          this.cargoCapacity -= old.cargo;
           break;
         case 'hr':
           this.armourAdded -= old.armouradd;
@@ -502,7 +611,7 @@ export default class Ship {
       }
 
       if (slot.incCost && old.cost) {
-        this.totalCost -= old.cost * this.modulCostMultiplier;
+        this.totalCost -= old.cost * this.moduleCostMultiplier;
       }
 
       if (old.power && slot.enabled) {
@@ -519,10 +628,10 @@ export default class Ship {
     if (n) {
       switch (n.grp) {
         case 'ft':
-          this.fuelCapacity += n.capacity;
+          this.fuelCapacity += n.fuel;
           break;
         case 'cr':
-          this.cargoCapacity += n.capacity;
+          this.cargoCapacity += n.cargo;
           break;
         case 'hr':
           this.armourAdded += n.armouradd;
@@ -533,7 +642,7 @@ export default class Ship {
       }
 
       if (slot.incCost && n.cost) {
-        this.totalCost += n.cost * this.modulCostMultiplier;
+        this.totalCost += n.cost * this.moduleCostMultiplier;
       }
 
       if (n.power && slot.enabled) {
@@ -561,12 +670,16 @@ export default class Ship {
     return this;
   }
 
+  /**
+   * Update all power calculations
+   * @return {this} The ship instance (for chaining operations)
+   */
   updatePower() {
-    var bands = this.priorityBands;
-    var prevRetracted = 0, prevDeployed = 0;
+    let bands = this.priorityBands;
+    let prevRetracted = 0, prevDeployed = 0;
 
-    for (var i = 0, l = bands.length; i < l; i++) {
-      var band = bands[i];
+    for (let i = 0, l = bands.length; i < l; i++) {
+      let band = bands[i];
       prevRetracted = band.retractedSum = prevRetracted + band.retracted;
       prevDeployed = band.deployedSum = prevDeployed + band.deployed + band.retracted;
     }
@@ -577,33 +690,47 @@ export default class Ship {
     return this;
   };
 
+  /**
+   * Update top speed and boost
+   * @return {this} The ship instance (for chaining operations)
+   */
   updateTopSpeed() {
-    var speeds = Calc.speed(this.unladenMass + this.fuelCapacity, this.speed, this.boost, this.standard[1].m, this.pipSpeed);
+    let speeds = Calc.speed(this.unladenMass + this.fuelCapacity, this.speed, this.boost, this.standard[1].m, this.pipSpeed);
     this.topSpeed = speeds['4 Pips'];
     this.topBoost = speeds.boost;
     return this;
   }
 
+  /**
+   * Update Shield strength
+   * @return {this} The ship instance (for chaining operations)
+   */
   updateShieldStrength() {
-    var sgSlot = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
+    let sgSlot = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
     this.shieldStrength = sgSlot && sgSlot.enabled ? Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sgSlot.m, this.shieldMultiplier) : 0;
     return this;
   }
 
   /**
    * Jump Range and total range calculations
+   * @return {this} The ship instance (for chaining operations)
    */
   updateJumpStats() {
-    var fsd = this.standard[2].m;   // Frame Shift Drive;
-    this.unladenRange = Calc.jumpRange(this.unladenMass + fsd.maxfuel, fsd, this.fuelCapacity); // Include fuel weight for jump
-    this.fullTankRange = Calc.jumpRange(this.unladenMass + this.fuelCapacity, fsd, this.fuelCapacity); // Full Tanke
-    this.ladenRange = Calc.jumpRange(this.ladenMass, fsd, this.fuelCapacity);
-    this.unladenTotalRange = Calc.totalRange(this.unladenMass, fsd, this.fuelCapacity);
-    this.ladenTotalRange = Calc.totalRange(this.unladenMass + this.cargoCapacity, fsd, this.fuelCapacity);
-    this.maxJumpCount = Math.ceil(this.fuelCapacity / fsd.maxfuel);
+    let fsd = this.standard[2].m;   // Frame Shift Drive;
+    let { unladenMass, ladenMass, fuelCapacity } = this;
+    this.unladenRange = this.getUnladenRange(); // Includes fuel weight for jump
+    this.fullTankRange = Calc.jumpRange(unladenMass + fuelCapacity, fsd); // Full Tank
+    this.ladenRange = this.getLadenRange(); // Includes full tank and caro
+    this.unladenTotalRange = Calc.totalRange(unladenMass, fsd, fuelCapacity);
+    this.ladenTotalRange = Calc.totalRange(unladenMass + this.cargoCapacity, fsd, fuelCapacity);
+    this.maxJumpCount = Math.ceil(fuelCapacity / fsd.maxfuel);
     return this;
   }
 
+  /**
+   * Update the serialized power priorites string
+   * @return {this} The ship instance (for chaining operations)
+   */
   updatePowerPrioritesString() {
     let priorities = [this.cargoHatch.priority];
 
@@ -621,6 +748,10 @@ export default class Ship {
     return this;
   }
 
+  /**
+   * Update the serialized power active/inactive string
+   * @return {this} The ship instance (for chaining operations)
+   */
   updatePowerEnabledString() {
     let enabled = [this.cargoHatch.enabled ? 1 : 0];
 
@@ -642,17 +773,17 @@ export default class Ship {
    * Update a slot with a the modul if the id is different from the current id for this slot.
    * Has logic handling ModuleUtils that you may only have 1 of (Shield Generator or Refinery).
    *
-   * @param {object}  slot            The modul slot
-   * @param {string}  id              Unique ID for the selected module
-   * @param {object}  modul           Properties for the selected module
-   * @param {boolean} preventUpdate   If true, do not update aggregated stats
+   * @param {Object}  slot            The modul slot
+   * @param {Object}  m               Properties for the selected module
+   * @param {Boolean} preventUpdate   If true, do not update aggregated stats
+   * @return {this} The ship instance (for chaining operations)
    */
   use(slot, m, preventUpdate) {
     if (slot.m != m) { // Selecting a different modul
       // Slot is an internal slot, is not being emptied, and the selected modul group/type must be of unique
       if (slot.cat == 2 && m && UNIQUE_MODULES.indexOf(m.grp) != -1) {
         // Find another internal slot that already has this type/group installed
-        var similarSlot = this.findInternalByGroup(m.grp);
+        let similarSlot = this.findInternalByGroup(m.grp);
         // If another slot has an installed modul with of the same type
         if (!preventUpdate && similarSlot && similarSlot !== slot) {
           this.updateStats(similarSlot, null, similarSlot.m);
@@ -660,9 +791,9 @@ export default class Ship {
           similarSlot.discountedCost = 0;
         }
       }
-      var oldModule = slot.m;
+      let oldModule = slot.m;
       slot.m = m;
-      slot.discountedCost = (m && m.cost) ? m.cost * this.modulCostMultiplier : 0;
+      slot.discountedCost = (m && m.cost) ? m.cost * this.moduleCostMultiplier : 0;
       this.updateStats(slot, m, oldModule, preventUpdate);
 
       switch (slot.cat) {
@@ -675,16 +806,16 @@ export default class Ship {
   }
 
   /**
-   * [useBulkhead description]
-   * @param  {[type]} index         [description]
-   * @param  {[type]} preventUpdate [description]
-   * @return {[type]}               [description]
+   * Mount the specified bulkhead type (index)
+   * @param  {number} index           Bulkhead index [0-4]
+   * @param  {Boolean} preventUpdate  Prevent summary update
+   * @return {this} The ship instance (for chaining operations)
    */
   useBulkhead(index, preventUpdate) {
-    var oldBulkhead = this.bulkheads.m;
+    let oldBulkhead = this.bulkheads.m;
     this.bulkheads.index = index;
     this.bulkheads.m = ModuleUtils.bulkheads(this.id, index);
-    this.bulkheads.discountedCost = this.bulkheads.m.cost * this.modulCostMultiplier;
+    this.bulkheads.discountedCost = this.bulkheads.m.cost * this.moduleCostMultiplier;
     this.armourMultiplier = ArmourMultiplier[index];
     this.updateStats(this.bulkheads, this.bulkheads.m, oldBulkhead, preventUpdate);
     this.serialized.standard = null;
@@ -692,13 +823,14 @@ export default class Ship {
   }
 
   /**
-   * [useStandard description]
-   * @param  {[type]} rating [description]
-   * @return {[type]}        [description]
+   * Set all standard slots to use the speficied rating and class based on
+   * the slot's max class
+   * @param  {string} rating Module Rating (A-E)
+   * @return {this} The ship instance (for chaining operations)
    */
   useStandard(rating) {
-    for (var i = this.standard.length - 1; i--; ) { // All except Fuel Tank
-      var id = this.standard[i].maxClass + rating;
+    for (let i = this.standard.length - 1; i--;) { // All except Fuel Tank
+      let id = this.standard[i].maxClass + rating;
       this.use(this.standard[i], ModuleUtils.standard(i, id));
     }
     return this;
@@ -707,6 +839,7 @@ export default class Ship {
   /**
    * Use the lightest standard ModuleUtils unless otherwise specified
    * @param  {object} m Module overrides
+   * @return {this} The ship instance (for chaining operations)
    */
   useLightestStandard(m) {
     m = m || {};
@@ -747,9 +880,17 @@ export default class Ship {
     return this;
   }
 
+  /**
+   * Fill all utility slots with the specified module
+   * @param  {string} group   Group name
+   * @param  {string} rating  Rating [A-I]
+   * @param  {string} name    Module name
+   * @param  {boolean} clobber Overwrite non-empty slots
+   * @return {this} The ship instance (for chaining operations)
+   */
   useUtility(group, rating, name, clobber) {
     let m = ModuleUtils.findHardpoint(group, 0, rating, name);
-    for (let i = this.hardpoints.length; i--; ) {
+    for (let i = this.hardpoints.length; i--;) {
       if ((clobber || !this.hardpoints[i].m) && !this.hardpoints[i].maxClass) {
         this.use(this.hardpoints[i], m);
       }
@@ -757,9 +898,17 @@ export default class Ship {
     return this;
   }
 
+  /**
+   * [useWeapon description]
+   * @param  {[type]} group   [description]
+   * @param  {[type]} mount   [description]
+   * @param  {[type]} missile [description]
+   * @param  {boolean} clobber Overwrite non-empty slots
+   * @return {this} The ship instance (for chaining operations)
+   */
   useWeapon(group, mount, missile, clobber) {
     let hps = this.hardpoints;
-    for (let i = hps.length; i--; ) {
+    for (let i = hps.length; i--;) {
       if (hps[i].maxClass) {
         let size = hps[i].maxClass, m;
         do {

@@ -2,41 +2,61 @@ import React from 'react';
 import cn from 'classnames';
 import SlotSection from './SlotSection';
 import StandardSlot from './StandardSlot';
+import { diffDetails } from '../utils/SlotFunctions';
 import * as ModuleUtils from '../shipyard/ModuleUtils';
 
+/**
+ * Standard Slot section
+ */
 export default class StandardSlotSection extends SlotSection {
 
+  /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   * @param  {Object} context React Component context
+   */
   constructor(props, context) {
     super(props, context, 'standard', 'standard');
 
     this._optimizeStandard = this._optimizeStandard.bind(this);
     this._optimizeCargo = this._optimizeCargo.bind(this);
     this._optimizeExplorer = this._optimizeExplorer.bind(this);
+    this._hideDiff = this._hideDiff.bind(this);
   }
 
+  /**
+   * Fill all standard slots with the specificed rating (using max class)
+   * @param  {String} rating [A-E]
+   */
   _fill(rating) {
     this.props.ship.useStandard(rating);
     this.props.onChange();
     this._close();
   }
 
+  /**
+   * Use the lightest/optimal available standard modules
+   */
   _optimizeStandard() {
     this.props.ship.useLightestStandard();
     this.props.onChange();
     this._close();
   }
 
+  /**
+   * Trader build
+   */
   _optimizeCargo() {
     let ship = this.props.ship;
-    ship.internal.forEach((slot) => {
-      var id = ModuleUtils.findInternalId('cr', slot.maxClass, 'E');
-      ship.use(slot, ModuleUtils.internal(id));
-    });
+    ship.internal.forEach((slot) => ship.use(slot, ModuleUtils.findInternal('cr', slot.maxClass, 'E')));
     ship.useLightestStandard();
     this.props.onChange();
     this._close();
   }
 
+  /**
+   * Explorer build
+   */
   _optimizeExplorer() {
     let ship = this.props.ship,
         intLength = ship.internal.length,
@@ -68,7 +88,6 @@ export default class StandardSlotSection extends SlotSection {
         let am = ModuleUtils.findInternal('am', slot.maxClass, afmUnitCount ? 'B' : 'A');
         ship.use(slot, am);
         ship.setSlotEnabled(slot, false);   // Disabled power for AFM Unit
-
       } else {
         ship.use(slot, null);
       }
@@ -98,46 +117,89 @@ export default class StandardSlotSection extends SlotSection {
     this._close();
   }
 
+  /**
+   * Use the specified bulkhead
+   * @param  {number} bulkheadIndex 0 - 4
+   */
   _selectBulkhead(bulkheadIndex) {
     this.props.ship.useBulkhead(bulkheadIndex);
+    this.context.tooltip();
     this.props.onChange();
     this._close();
   }
 
+  /**
+   * On right click optimize the standard modules
+   */
   _contextMenu() {
     this._optimizeStandard();
   }
 
+  /**
+   * Show the bulkhead diff tooltip
+   * @param  {number} bhIndex Potential Bulkhead alternative
+   * @param  {SyntheticEvent} event   Event
+   */
+  _bhDiff(bhIndex, event) {
+    let ship = this.props.ship;
+    this.context.tooltip(
+      diffDetails.call(ship, this.context.language, ModuleUtils.bulkheads(ship.id, bhIndex), ship.bulkheads.m),
+      event.currentTarget.getBoundingClientRect()
+    );
+  }
+
+  /**
+   * Hide the diff tooltip
+   */
+  _hideDiff() {
+    this.context.tooltip();
+  }
+
+  /**
+   * Generate the slot React Components
+   * @return {Array} Array of Slots
+   */
   _getSlots() {
     let { translate, units } = this.context.language;
+    let { ship, currentMenu } = this.props;
     let slots = new Array(8);
     let open = this._openMenu;
     let select = this._selectModule;
     let selBulkhead = this._selectBulkhead;
-    let ship = this.props.ship
     let st = ship.standard;
     let avail = ship.getAvailableModules().standard;
-    let bulkheads = ship.bulkheads;
-    let currentMenu = this.props.currentMenu;
+    let bh = ship.bulkheads;
 
     slots[0] = (
-      <div key='bh' className={cn('slot', {selected: currentMenu === bulkheads})} onClick={open.bind(this, bulkheads)}>
-        <div className={'details'}>
-          <div className={'sz'}>8</div>
-          <div>
-            <div className={'l'}>{translate('bh')}</div>
-            <div className={'r'}>{bulkheads.m.mass}{units.T}</div>
-            <div className={'cl l'}>{translate(bulkheads.m.name)}</div>
+      <div key='bh' className={cn('slot', { selected: currentMenu === bh })} onClick={open.bind(this, bh)}>
+        <div className={'details-container'}>
+          <div className={'details'}>
+            <div className={'sz'}>8</div>
+            <div>
+              <div className={'l'}>{translate('bh')}</div>
+              <div className={'r'}>{bh.m.mass}{units.T}</div>
+              <div className={'cl l'}>{translate(bh.m.name)}</div>
+            </div>
           </div>
         </div>
-        {currentMenu === bulkheads &&
+        {currentMenu === bh &&
           <div className='select' onClick={ e => e.stopPropagation() }>
             <ul>
-              <li onClick={selBulkhead.bind(this, 0)} className={cn('lc', { active: bulkheads.id == '0' })}>{translate('Lightweight Alloy')}</li>
-              <li onClick={selBulkhead.bind(this, 1)} className={cn('lc', { active: bulkheads.id == '1' })}>{translate('Reinforced Alloy')}</li>
-              <li onClick={selBulkhead.bind(this, 2)} className={cn('lc', { active: bulkheads.id == '2' })}>{translate('Military Grade Composite')}</li>
-              <li onClick={selBulkhead.bind(this, 3)} className={cn('lc', { active: bulkheads.id == '3' })}>{translate('Mirrored Surface Composite')}</li>
-              <li onClick={selBulkhead.bind(this, 4)} className={cn('lc', { active: bulkheads.id == '4' })}>{translate('Reactive Surface Composite')}</li>
+              <li onClick={selBulkhead.bind(this, 0)} onMouseOver={this._bhDiff.bind(this, 0)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 0 })}>
+                  {translate('Lightweight Alloy')}
+              </li>
+              <li onClick={selBulkhead.bind(this, 1)} onMouseOver={this._bhDiff.bind(this, 1)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 1 })}>
+                {translate('Reinforced Alloy')}
+              </li>
+              <li onClick={selBulkhead.bind(this, 2)} onMouseOver={this._bhDiff.bind(this, 2)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 2 })}>
+                {translate('Military Grade Composite')}
+              </li>
+              <li onClick={selBulkhead.bind(this, 3)} onMouseOver={this._bhDiff.bind(this, 3)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 3 })}>
+                {translate('Mirrored Surface Composite')}
+              </li>
+              <li onClick={selBulkhead.bind(this, 4)} onMouseOver={this._bhDiff.bind(this, 4)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 4 })}>
+                {translate('Reactive Surface Composite')}
+              </li>
             </ul>
           </div>
         }
@@ -151,6 +213,7 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[0])}
       onSelect={select.bind(this, st[0])}
       selected={currentMenu == st[0]}
+      ship={ship}
       warning={m => m.pGen < ship.powerRetracted}
     />;
 
@@ -161,6 +224,7 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[1])}
       onSelect={select.bind(this, st[1])}
       selected={currentMenu == st[1]}
+      ship={ship}
       warning={m => m.maxmass < ship.ladenMass}
     />;
 
@@ -171,6 +235,7 @@ export default class StandardSlotSection extends SlotSection {
       modules={avail[2]}
       onOpen={open.bind(this, st[2])}
       onSelect={select.bind(this, st[2])}
+      ship={ship}
       selected={currentMenu == st[2]}
     />;
 
@@ -180,6 +245,7 @@ export default class StandardSlotSection extends SlotSection {
       modules={avail[3]}
       onOpen={open.bind(this, st[3])}
       onSelect={select.bind(this, st[3])}
+      ship={ship}
       selected={currentMenu == st[3]}
     />;
 
@@ -190,6 +256,7 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[4])}
       onSelect={select.bind(this, st[4])}
       selected={currentMenu == st[4]}
+      ship={ship}
       warning= {m => m.enginecapacity < ship.boostEnergy}
     />;
 
@@ -200,6 +267,7 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[5])}
       onSelect={select.bind(this, st[5])}
       selected={currentMenu == st[5]}
+      ship={ship}
       warning= {m => m.enginecapacity < ship.boostEnergy}
     />;
 
@@ -210,12 +278,18 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[6])}
       onSelect={select.bind(this, st[6])}
       selected={currentMenu == st[6]}
-      warning= {m => m.capacity < st[2].m.maxfuel}  // Show warning when fuel tank is smaller than FSD Max Fuel
+      ship={ship}
+      warning= {m => m.fuel < st[2].m.maxfuel}  // Show warning when fuel tank is smaller than FSD Max Fuel
     />;
 
     return slots;
   }
 
+  /**
+   * Generate the section drop-down menu
+   * @param  {Function} translate Translate function
+   * @return {React.Component}    Section menu
+   */
   _getSectionMenu(translate) {
     let _fill = this._fill;
 

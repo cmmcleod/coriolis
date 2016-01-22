@@ -62,7 +62,7 @@ export const ModuleGroupToName = {
 let GrpNameToCodeMap = {};
 
 for (let grp in ModuleGroupToName) {
-  GrpNameToCodeMap[ModuleGroupToName[grp]] = grp;
+  GrpNameToCodeMap[ModuleGroupToName[grp].toLowerCase()] = grp;
 }
 
 export const ModuleNameToGroup = GrpNameToCodeMap;
@@ -94,78 +94,89 @@ export const ShipFacets = [
     {                   // 0
       title: 'agility',
       props: ['agility'],
-      fmt: 'int'
+      fmt: 'int',
+      i: 0
     },
     {                   // 1
       title: 'speed',
       props: ['topSpeed', 'topBoost'],
       lbls: ['thrusters', 'boost'],
       unit: 'm/s',
-      fmt: 'int'
+      fmt: 'int',
+      i: 1
     },
     {                   // 2
       title: 'armour',
       props: ['armour'],
-      unit: '',
-      fmt: 'int'
+      fmt: 'int',
+      i: 2
     },
     {                   // 3
       title: 'shields',
       props: ['shieldStrength'],
       unit: 'MJ',
-      fmt: 'round'
+      fmt: 'int',
+      i: 3
     },
     {                   // 4
       title: 'jump range',
       props: ['unladenRange', 'fullTankRange', 'ladenRange'],
       lbls: ['max', 'full tank', 'laden'],
       unit: 'LY',
-      fmt: 'round'
+      fmt: 'round',
+      i: 4
     },
     {                   // 5
       title: 'mass',
       props: ['unladenMass', 'ladenMass'],
       lbls: ['unladen', 'laden'],
       unit: 'T',
-      fmt: 'round'
+      fmt: 'round',
+      i: 5
     },
     {                   // 6
       title: 'cargo',
       props: ['cargoCapacity'],
       unit: 'T',
-      fmt: 'round'
+      fmt: 'int',
+      i: 6
     },
     {                   // 7
       title: 'fuel',
       props: ['fuelCapacity'],
       unit: 'T',
-      fmt: 'int'
+      fmt: 'int',
+      i: 7
     },
     {                   // 8
       title: 'power',
       props: ['powerRetracted', 'powerDeployed', 'powerAvailable'],
       lbls: ['retracted', 'deployed', 'available'],
       unit: 'MW',
-      fmt: 'f2'
+      fmt: 'f2',
+      i: 8
     },
     {                   // 9
       title: 'cost',
       props: ['totalCost'],
       unit: 'CR',
-      fmt: 'int'
+      fmt: 'int',
+      i: 9
     },
     {                   // 10
       title: 'total range',
       props: ['unladenTotalRange', 'ladenTotalRange'],
       lbls: ['unladen', 'laden'],
       unit: 'LY',
-      fmt: 'round'
+      fmt: 'round',
+      i: 10
     },
     {                   // 11
       title: 'DPS',
       props: ['totalDps'],
       lbls: ['DPS'],
-      fmt: 'round'
+      fmt: 'round',
+      i: 11
     }
 ];
 

@@ -1,5 +1,9 @@
 import Persist from './stores/Persist';
 
+/**
+ * Determine if the app is running in mobile/tablet 'standalone' mode
+ * @return {Boolean} True if the app is in standalone mode
+ */
 function isStandAlone() {
   try {
     return window.navigator.standalone || (window.external && window.external.msIsSiteMode && window.external.msIsSiteMode());
@@ -9,8 +13,7 @@ function isStandAlone() {
 }
 
 /**
- * Register `path` with callback `fn()`,
- * or route `path`, or `Router.start()`.
+ * Register path with callback fn(), or route path`, or Router.start().
  *
  *   Router('*', fn);
  *   Router('/user/:id', load, user);
@@ -18,15 +21,15 @@ function isStandAlone() {
  *   Router('/user/' + user.id);
  *   Router();
  *
- * @param {String} path
- * @param {Function} fn...
+ * @param {String} path path
+ * @param {Function} fn Callbacks (fn, fn, ...)
  * @api public
  */
 function Router(path, fn) {
-    var route = new Route(path);
-    for (var i = 1; i < arguments.length; ++i) {
-      Router.callbacks.push(route.middleware(arguments[i]));
-    }
+  let route = new Route(path);
+  for (let i = 1; i < arguments.length; ++i) {
+    Router.callbacks.push(route.middleware(arguments[i]));
+  }
 }
 
 /**
@@ -35,20 +38,19 @@ function Router(path, fn) {
 
 Router.callbacks = [];
 
-Router.start = function(){
+Router.start = function() {
   window.addEventListener('popstate', onpopstate, false);
 
   if (isStandAlone()) {
-    var state = Persist.getState();
+    let state = Persist.getState();
     // If a previous state has been stored, load that state
     if (state && state.name && state.params) {
       Router(this.props.initialPath || '/');
-      //$state.go(state.name, state.params, { location: 'replace' });
     } else {
       Router('/');
     }
   } else {
-    var url = location.pathname + location.search;
+    let url = location.pathname + location.search;
     Router.replace(url, null, true, true);
   }
 };
@@ -56,14 +58,14 @@ Router.start = function(){
 /**
  * Show `path` with optional `state` object.
  *
- * @param {String} path
- * @param {Object} state
- * @return {Context}
+ * @param {String} path Path
+ * @param {Object} state Additional state
+ * @return {Context} New Context
  * @api public
  */
 Router.go = function(path, state) {
   gaTrack(path);
-  var ctx = new Context(path, state);
+  let ctx = new Context(path, state);
   Router.dispatch(ctx);
   if (!ctx.unhandled) {
     history.pushState(ctx.state, ctx.title, ctx.canonicalPath);
@@ -74,15 +76,15 @@ Router.go = function(path, state) {
 /**
  * Replace `path` with optional `state` object.
  *
- * @param {String} path
- * @param {Object} state
- * @return {Context}
+ * @param {String} path path
+ * @param {Object} state State
+ * @param {Boolean} dispatch If true dispatch the route / trigger update
+ * @return {Context} New Context
  * @api public
  */
-
 Router.replace = function(path, state, dispatch) {
   gaTrack(path);
-  var ctx = new Context(path, state);
+  let ctx = new Context(path, state);
   if (dispatch) Router.dispatch(ctx);
   history.replaceState(ctx.state, ctx.title, ctx.canonicalPath);
   return ctx;
@@ -91,15 +93,18 @@ Router.replace = function(path, state, dispatch) {
 /**
  * Dispatch the given `ctx`.
  *
- * @param {Object} ctx
+ * @param {Context} ctx Context
  * @api private
  */
+Router.dispatch = function(ctx) {
+  let i = 0;
 
-Router.dispatch = function(ctx){
-  var i = 0;
-
+  /**
+   * Handle the next route
+   * @return {Function} Unhandled
+   */
   function next() {
-    var fn = Router.callbacks[i++];
+    let fn = Router.callbacks[i++];
     if (!fn) return unhandled(ctx);
     fn(ctx, next);
   }
@@ -112,12 +117,12 @@ Router.dispatch = function(ctx){
  * popstate then redirect. If you wish to handle
  * 404s on your own use `Router('*', callback)`.
  *
- * @param {Context} ctx
+ * @param {Context} ctx Context
+ * @return {Context} context
  * @api private
  */
-
 function unhandled(ctx) {
-  var current = window.location.pathname + window.location.search;
+  let current = window.location.pathname + window.location.search;
   if (current != ctx.canonicalPath) {
     window.location = ctx.canonicalPath;
   }
@@ -128,13 +133,12 @@ function unhandled(ctx) {
  * Initialize a new "request" `Context`
  * with the given `path` and optional initial `state`.
  *
- * @param {String} path
- * @param {Object} state
+ * @param {String} path Path
+ * @param {Object} state State
  * @api public
  */
-
 function Context(path, state) {
-  var i = path.indexOf('?');
+  let i = path.indexOf('?');
 
   this.canonicalPath = path;
   this.path = path || '/';
@@ -160,33 +164,28 @@ function Context(path, state) {
  *   - `sensitive`    enable case-sensitive routes
  *   - `strict`       enable strict matching for trailing slashes
  *
- * @param {String} path
- * @param {Object} options.
+ * @param {String} path Path
+ * @param {Object} options Options
  * @api private
  */
-
 function Route(path, options) {
   options = options || {};
   this.path = path;
   this.method = 'GET';
-  this.regexp = pathtoRegexp(path
-    , this.keys = []
-    , options.sensitive
-    , options.strict);
+  this.regexp = pathtoRegexp(path, this.keys = [], options.sensitive, options.strict);
 }
 
 /**
  * Return route middleware with
  * the given callback `fn()`.
  *
- * @param {Function} fn
- * @return {Function}
+ * @param {Function} fn Route function
+ * @return {Function} Callback
  * @api public
  */
-
-Route.prototype.middleware = function(fn){
-  var self = this;
-  return function(ctx, next){
+Route.prototype.middleware = function(fn) {
+  let self = this;
+  return function(ctx, next) {
     if (self.match(ctx.path, ctx.params)) return fn(ctx, next);
     next();
   };
@@ -196,24 +195,23 @@ Route.prototype.middleware = function(fn){
  * Check if this route matches `path`, if so
  * populate `params`.
  *
- * @param {String} path
- * @param {Array} params
- * @return {Boolean}
+ * @param {String} path Path
+ * @param {Array} params Path params
+ * @return {Boolean} True if path matches
  * @api private
  */
-
-Route.prototype.match = function(path, params){
-  var keys = this.keys
-    , qsIndex = path.indexOf('?')
-    , pathname = ~qsIndex ? path.slice(0, qsIndex) : path
-    , m = this.regexp.exec(decodeURIComponent(pathname));
+Route.prototype.match = function(path, params) {
+  let keys = this.keys,
+      qsIndex = path.indexOf('?'),
+      pathname = ~qsIndex ? path.slice(0, qsIndex) : path,
+      m = this.regexp.exec(decodeURIComponent(pathname));
 
   if (!m) return false;
 
-  for (var i = 1, len = m.length; i < len; ++i) {
-    var key = keys[i - 1];
+  for (let i = 1, len = m.length; i < len; ++i) {
+    let key = keys[i - 1];
 
-    var val = 'string' == typeof m[i] ? decodeURIComponent(m[i]) : m[i];
+    let val = 'string' == typeof m[i] ? decodeURIComponent(m[i]) : m[i];
 
     if (key) {
       params[key.name] = undefined !== params[key.name] ? params[key.name] : val;
@@ -223,22 +221,9 @@ Route.prototype.match = function(path, params){
   return true;
 };
 
-
-/**
- * Check if the app is running in stand alone mode.
- * @return {Boolean} true if running in Standalone mode
- */
-function isStandAlone() {
-  try {
-    return window.navigator.standalone || (window.external && window.external.msIsSiteMode && window.external.msIsSiteMode());
-  } catch (ex) {
-    return false;
-  }
-}
-
 /**
  * Track a page view in Google Analytics
- * @param  {string} path
+ * @param  {string} path Path to track
  */
 function gaTrack(path) {
   if (window.ga) {
@@ -255,29 +240,28 @@ function gaTrack(path) {
  * key names. For example "/user/:id" will
  * then contain ["id"].
  *
- * @param  {String|RegExp|Array} path
- * @param  {Array} keys
- * @param  {Boolean} sensitive
- * @param  {Boolean} strict
- * @return {RegExp}
+ * @param  {String|RegExp|Array} path Path template(s)
+ * @param  {Array} keys keys
+ * @param  {Boolean} sensitive Case sensitive
+ * @param  {Boolean} strict Strict matching
+ * @return {RegExp} Regular expression
  * @api private
  */
-
 function pathtoRegexp(path, keys, sensitive, strict) {
   if (path instanceof RegExp) return path;
   if (path instanceof Array) path = '(' + path.join('|') + ')';
   path = path
     .concat(strict ? '' : '/?')
     .replace(/\/\(/g, '(?:/')
-    .replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?/g, function(_, slash, format, key, capture, optional){
+    .replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?/g, function(_, slash, format, key, capture, optional) {
       keys.push({ name: key, optional: !! optional });
       slash = slash || '';
-      return ''
-        + (optional ? '' : slash)
-        + '(?:'
-        + (optional ? slash : '')
-        + (format || '') + (capture || (format && '([^/.]+?)' || '([^/]+?)')) + ')'
-        + (optional || '');
+      return '' +
+        (optional ? '' : slash) +
+        '(?:' +
+        (optional ? slash : '') +
+        (format || '') + (capture || (format && '([^/.]+?)' || '([^/]+?)')) + ')' +
+        (optional || '');
     })
     .replace(/([\/.])/g, '\\$1')
     .replace(/\*/g, '(.*)');
@@ -286,11 +270,11 @@ function pathtoRegexp(path, keys, sensitive, strict) {
 
 /**
  * Handle "populate" events.
+ * @param  {Event} e Event object
  */
-
 function onpopstate(e) {
   if (e.state) {
-    var path = e.state.path;
+    let path = e.state.path;
     Router.replace(path, e.state, true);
   }
 }

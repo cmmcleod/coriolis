@@ -1,13 +1,16 @@
 import { ModuleGroupToName, MountMap, BulkheadNames } from './Constants';
 import { Ships } from 'coriolis-data';
 import Ship from './Ship';
-import ModuleUtils from './ModuleUtils';
+import * as ModuleUtils from './ModuleUtils';
 import LZString from 'lz-string';
 
-/**
- * Service managing seralization and deserialization of models for use in URLs and persistene.
- */
+const STANDARD = ['powerPlant', 'thrusters', 'frameShiftDrive', 'lifeSupport', 'powerDistributor', 'sensors', 'fuelTank'];
 
+/**
+ * Generates ship-loadout JSON Schema slot object
+ * @param  {Object} slot Slot model
+ * @return {Object}      JSON Schema Slot
+ */
 function slotToSchema(slot) {
   if (slot.m) {
     let o = {
@@ -32,19 +35,26 @@ function slotToSchema(slot) {
   return null;
 }
 
-export function toDetailedBuild(buildName, ship, code) {
-  var standard = ship.standard,
+/**
+ * Generates an object conforming to the ship-loadout JSON schema from a Ship model
+ * @param  {string} buildName The build name
+ * @param  {Ship} ship        Ship instance
+ * @return {Object}           ship-loadout object
+ */
+export function toDetailedBuild(buildName, ship) {
+  let standard = ship.standard,
       hardpoints = ship.hardpoints,
-      internal = ship.internal;
+      internal = ship.internal,
+      code = ship.toString();
 
-  var data = {
+  let data = {
     $schema: 'http://cdn.coriolis.io/schemas/ship-loadout/3.json#',
     name: buildName,
     ship: ship.name,
     references: [{
       name: 'Coriolis.io',
-      url: `http://coriolis.io/outfit/${ship.id}/${code}?bn=${encodeURIComponent(buildName)}`,
-      code: code,
+      url: `https://coriolis.io/outfit/${ship.id}/${code}?bn=${encodeURIComponent(buildName)}`,
+      code,
       shipId: ship.id
     }],
     components: {
@@ -66,7 +76,7 @@ export function toDetailedBuild(buildName, ship, code) {
     stats: {}
   };
 
-  for (var stat in ship) {
+  for (let stat in ship) {
     if (!isNaN(ship[stat])) {
       data.stats[stat] = Math.round(ship[stat] * 100) / 100;
     }
@@ -75,66 +85,75 @@ export function toDetailedBuild(buildName, ship, code) {
   return data;
 };
 
+/**
+ * Instantiates a ship from a ship-loadout  object
+ * @param  {Object} detailedBuild ship-loadout object
+ * @return {Ship} Ship instance
+ */
 export function fromDetailedBuild(detailedBuild) {
-  var shipId = Object.keys(Ships).find((shipId) => Ships[shipId].properties.name.toLowerCase() == detailedBuild.ship.toLowerCase());
+  let shipId = Object.keys(Ships).find((shipId) => Ships[shipId].properties.name.toLowerCase() == detailedBuild.ship.toLowerCase());
 
   if (!shipId) {
     throw 'No such ship: ' + detailedBuild.ship;
   }
 
-  var comps = detailedBuild.components;
-  var standard = comps.standard;
-  var priorities = [ standard.cargoHatch && standard.cargoHatch.priority !== undefined ? standard.cargoHatch.priority - 1 : 0 ];
-  var enabled = [ standard.cargoHatch && standard.cargoHatch.enabled !== undefined ? standard.cargoHatch.enabled : true ];
-  var shipData = ShipsDB[shipId];
-  var ship = new Ship(shipId, shipData.properties, shipData.slots);
-  var bulkheads = ModuleUtils.bulkheadIndex(standard.bulkheads);
+  let comps = detailedBuild.components;
+  let stn = comps.standard;
+  let priorities = [stn.cargoHatch && stn.cargoHatch.priority !== undefined ? stn.cargoHatch.priority - 1 : 0];
+  let enabled = [stn.cargoHatch && stn.cargoHatch.enabled !== undefined ? stn.cargoHatch.enabled : true];
+  let shipData = Ships[shipId];
+  let ship = new Ship(shipId, shipData.properties, shipData.slots);
+  let bulkheads = ModuleUtils.bulkheadIndex(stn.bulkheads);
 
   if (bulkheads < 0) {
-    throw 'Invalid bulkheads: ' + standard.bulkheads;
+    throw 'Invalid bulkheads: ' + stn.bulkheads;
   }
 
-  var standardIds = _.map(
-    ['powerPlant', 'thrusters', 'frameShiftDrive', 'lifeSupport', 'powerDistributor', 'sensors', 'fuelTank'],
-    function(c) {
-      if (!standard[c].class || !standard[c].rating) {
-        throw 'Invalid value for ' + c;
-      }
-      priorities.push(standard[c].priority === undefined ? 0 : standard[c].priority - 1);
-      enabled.push(standard[c].enabled === undefined ? true : standard[c].enabled);
-      return standard[c].class + standard[c].rating;
+  let standard = STANDARD.map((c) => {
+    if (!stn[c].class || !stn[c].rating) {
+      throw 'Invalid value for ' + c;
     }
-  );
+    priorities.push(stn[c].priority === undefined ? 0 : stn[c].priority - 1);
+    enabled.push(stn[c].enabled === undefined ? true : stn[c].enabled);
+    return stn[c].class + stn[c].rating;
+  });
 
-  var internal = _.map(comps.internal, function(c) { return c ? ModuleUtils.findInternalId(c.group, c.class, c.rating, c.name) : 0; });
+  let internal = comps.internal.map(c => c ? ModuleUtils.findInternalId(c.group, c.class, c.rating, c.name) : 0);
 
-  var hardpoints = _.map(comps.hardpoints, function(c) {
-      return c ? ModuleUtils.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount], c.missile) : 0;
-    }).concat(_.map(comps.utility, function(c) {
-      return c ? ModuleUtils.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount]) : 0;
-    }));
+  let hardpoints = comps.hardpoints
+    .map(c => c ? ModuleUtils.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount], c.missile) : 0)
+    .concat(comps.utility.map(c => c ? ModuleUtils.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount]) : 0));
 
   // The ordering of these arrays must match the order in which they are read in Ship.buildWith
-  priorities = priorities.concat(_.map(comps.hardpoints, function(c) { return (!c || c.priority === undefined) ? 0 : c.priority - 1; }),
-                                 _.map(comps.utility, function(c) { return (!c || c.priority === undefined) ? 0 : c.priority - 1; }),
-                                 _.map(comps.internal, function(c) { return (!c || c.priority === undefined) ? 0 : c.priority - 1; }));
-  enabled = enabled.concat(_.map(comps.hardpoints, function(c) { return (!c || c.enabled === undefined) ? true : c.enabled * 1; }),
-                           _.map(comps.utility, function(c) { return (!c || c.enabled === undefined) ? true : c.enabled * 1; }),
-                           _.map(comps.internal, function(c) { return (!c || c.enabled === undefined) ? true : c.enabled * 1; }));
+  priorities = priorities.concat(
+    comps.hardpoints.map(c => (!c || c.priority === undefined) ? 0 : c.priority - 1),
+    comps.utility.map(c => (!c || c.priority === undefined) ? 0 : c.priority - 1),
+    comps.internal.map(c => (!c || c.priority === undefined) ? 0 : c.priority - 1)
+  );
+  enabled = enabled.concat(
+    comps.hardpoints.map(c => (!c || c.enabled === undefined) ? true : c.enabled * 1),
+    comps.utility.map(c => (!c || c.enabled === undefined) ? true : c.enabled * 1),
+    comps.internal.map(c => (!c || c.enabled === undefined) ? true : c.enabled * 1)
+  );
 
-  ship.buildWith({ bulkheads: bulkheads, standard: standardIds, hardpoints: hardpoints, internal: internal }, priorities, enabled);
+  ship.buildWith({ bulkheads, standard, hardpoints, internal }, priorities, enabled);
 
   return ship;
 };
 
+/**
+ * Generates an array of ship-loadout JSON Schema object for export
+ * @param  {Array} builds   Array of ship builds
+ * @return {Array}         Array of of ship-loadout objects
+ */
 export function toDetailedExport(builds) {
-  var data = [];
+  let data = [];
 
-  for (var shipId in builds) {
-    for (var buildName in builds[shipId]) {
-      var code = builds[shipId][buildName];
-      var shipData = Ships[shipId];
-      var ship = new Ship(shipId, shipData.properties, shipData.slots);
+  for (let shipId in builds) {
+    for (let buildName in builds[shipId]) {
+      let code = builds[shipId][buildName];
+      let shipData = Ships[shipId];
+      let ship = new Ship(shipId, shipData.properties, shipData.slots);
       ship.buildFrom(code);
       data.push(toDetailedBuild(buildName, ship, code));
     }
@@ -142,22 +161,31 @@ export function toDetailedExport(builds) {
   return data;
 };
 
+/**
+ * Serializes a comparion and all of the ships to zipped
+ * Base 64 encoded JSON.
+ * @param  {string} name        Comparison name
+ * @param  {array} builds       Array of ship builds
+ * @param  {array} facets       Selected facets
+ * @param  {string} predicate   sort predicate
+ * @param  {boolean} desc       sort order
+ * @return {string}             Zipped Base 64 encoded JSON
+ */
 export function fromComparison(name, builds, facets, predicate, desc) {
-  var shipBuilds = [];
-
-  builds.forEach(function(b) {
-    shipBuilds.push({ s: b.id, n: b.buildName, c: fromShip(b) });
-  }.bind(this));
-
-  return LZString.compressToBase64(angular.toJson({
+  return LZString.compressToBase64(JSON.stringify({
     n: name,
-    b: shipBuilds,
+    b: builds.map((b) => { return { s: b.id, n: b.buildName, c: b.toString() }; }),
     f: facets,
     p: predicate,
     d: desc ? 1 : 0
   })).replace(/\//g, '-');
 };
 
+/**
+ * Parses the comarison data string back to an object.
+ * @param  {string} code Zipped Base 64 encoded JSON comparison data
+ * @return {Object} Comparison data object
+ */
 export function toComparison(code) {
   return JSON.parse(LZString.decompressFromBase64(code.replace(/-/g, '/')));
 };

@@ -1,13 +1,13 @@
 import React from 'react';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
-import InterfaceEvents from '../utils/InterfaceEvents';
 import Persist from '../stores/Persist';
 import { Ships } from 'coriolis-data';
 import Ship from '../shipyard/Ship';
+import { ModuleNameToGroup } from '../shipyard/Constants';
 import * as ModuleUtils from '../shipyard/ModuleUtils';
+import { fromDetailedBuild } from '../shipyard/Serializer';
 import { Download } from './SvgIcons';
-
 
 const textBuildRegex = new RegExp('^\\[([\\w \\-]+)\\]\n');
 const lineRegex = new RegExp('^([\\dA-Z]{1,2}): (\\d)([A-I])[/]?([FGT])?([SD])? ([\\w\\- ]+)');
@@ -15,14 +15,31 @@ const mountMap = { 'H': 4, 'L': 3, 'M': 2, 'S': 1, 'U': 0 };
 const standardMap = { 'RB': 0, 'TM': 1, 'FH': 2, 'EC': 3, 'PC': 4, 'SS': 5, 'FS': 6 };
 const bhMap = { 'lightweight alloy': 0, 'reinforced alloy': 1, 'military grade composite': 2, 'mirrored surface composite': 3, 'reactive surface composite': 4 };
 
+/**
+ * Check is slot is empty
+ * @param  {Object}  slot Slot model
+ * @return {Boolean}      True if empty
+ */
 function isEmptySlot(slot) {
   return slot.maxClass == this && slot.m === null;
 }
 
+/**
+ * Equal ignore case utility function. Must be bound to a string
+ * @param  {string} str String
+ * @return {Boolean}     True if equal
+ */
 function equalsIgnoreCase(str) {
   return str.toLowerCase() == this.toLowerCase();
 }
 
+/**
+ * Determine if a build is valid
+ * @param  {string} shipId Ship ID
+ * @param  {string} code   Serialzied ship build 'code'
+ * @param  {string} name   Build name
+ * @throws {string} If build is not valid
+ */
 function validateBuild(shipId, code, name) {
   let shipData = Ships[shipId];
 
@@ -43,6 +60,11 @@ function validateBuild(shipId, code, name) {
   }
 }
 
+/**
+ * Convert a ship-loadout JSON object to a Coriolis build
+ * @param  {Object} detailedBuild ship-loadout
+ * @return {Object}               Coriolis build
+ */
 function detailedJsonToBuild(detailedBuild) {
   let ship;
   if (!detailedBuild.name) {
@@ -54,7 +76,7 @@ function detailedJsonToBuild(detailedBuild) {
   }
 
   try {
-    ship = Serializer.fromDetailedBuild(detailedBuild);
+    ship = fromDetailedBuild(detailedBuild);
   } catch (e) {
     throw detailedBuild.ship + ' Build "' + detailedBuild.name + '": Invalid data';
   }
@@ -62,8 +84,15 @@ function detailedJsonToBuild(detailedBuild) {
   return { shipId: ship.id, name: detailedBuild.name, code: ship.toString() };
 }
 
+/**
+ * Import Modal
+ */
 export default class ModalImport extends TranslatedComponent {
 
+  /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   */
   constructor(props) {
     super(props);
 
@@ -86,6 +115,11 @@ export default class ModalImport extends TranslatedComponent {
     this._validateImport = this._validateImport.bind(this);
   }
 
+  /**
+   * Import a Coriolis backup
+   * @param  {Object} importData Backup Data
+   * @throws {string} If import fails
+   */
   _importBackup(importData) {
     if (importData.builds && typeof importData.builds == 'object') {
       for (let shipId in importData.builds) {
@@ -117,6 +151,10 @@ export default class ModalImport extends TranslatedComponent {
     }
   }
 
+  /**
+   * Import an array of ship-loadout objects / builds
+   * @param  {Array} importArr  Array of ship-loadout JSON Schema builds
+   */
   _importDetailedArray(importArr) {
     let builds = {};
     for (let i = 0, l = importArr.length; i < l; i++) {
@@ -129,6 +167,11 @@ export default class ModalImport extends TranslatedComponent {
     this.setState({ builds });
   }
 
+  /**
+   * Import a text build from ED Shipyard
+   * @param  {string} buildStr Build string
+   * @throws {string} If parse / import fails
+   */
   _importTextBuild(buildStr) {
     let buildName = textBuildRegex.exec(buildStr)[1].trim();
     let shipName = buildName.toLowerCase();
@@ -173,43 +216,40 @@ export default class ModalImport extends TranslatedComponent {
 
           if (cl > slotClass) { throw cl + rating + ' ' + name + ' exceeds slot size: "' + line + '"'; }
 
-          slot = _.find(ship.hardpoints, isEmptySlot, slotClass);
+          slot = ship.hardpoints.find(isEmptySlot, slotClass);
 
           if (!slot) { throw 'No hardpoint slot available for: "' + line + '"'; }
 
-          group = _.find(GroupMap, equalsIgnoreCase, name);
+          group = ModuleNameToGroup[name.trim()];
 
           let hp = ModuleUtils.findHardpoint(group, cl, rating, group ? null : name, mount, missile);
 
           if (!hp) { throw 'Unknown component: "' + line + '"'; }
 
           ship.use(slot, hp, true);
-
         } else if (typeSize == 'BH') {
           let bhId = bhMap[name.toLowerCase()];
 
           if (bhId === undefined) { throw 'Unknown bulkhead: "' + line + '"'; }
 
           ship.useBulkhead(bhId, true);
-
         } else if (standardMap[typeSize] != undefined) {
           let standardIndex = standardMap[typeSize];
 
           if (ship.standard[standardIndex].maxClass < cl) { throw name + ' exceeds max class for the ' + ship.name; }
 
           ship.use(ship.standard[standardIndex], cl + rating, ModuleUtils.standard(standardIndex, cl + rating), true);
-
         } else {
           throw 'Unknown component: "' + line + '"';
         }
       } else {
         if (cl > typeSize) { throw cl + rating + ' ' + name + ' exceeds slot size: "' + line + '"'; }
 
-        slot = _.find(ship.internal, isEmptySlot, typeSize);
+        slot = ship.internal.find(isEmptySlot, typeSize);
 
         if (!slot) { throw 'No internal slot available for: "' + line + '"'; }
 
-        group = _.find(GroupMap, equalsIgnoreCase, name);
+        group = ModuleNameToGroup[name.trim()];
 
         let intComp = ModuleUtils.findInternal(group, cl, rating, group ? null : name);
 
@@ -221,13 +261,18 @@ export default class ModalImport extends TranslatedComponent {
 
     let builds = {};
     builds[shipId] = {};
-    builds[shipId]['Imported ' + buildName] = Serializer.fromShip(ship);
+    builds[shipId]['Imported ' + buildName] = ship.toString();
     this.setState({ builds });
   }
 
-  _validateImport(e) {
+  /**
+   * Validate the import string / text box contents
+   * @param  {SyntheticEvent} event Event
+   * @throws {string} If validation fails
+   */
+  _validateImport(event) {
     let importData = null;
-    let importString = e.target.value;
+    let importString = event.target.value;
     this.setState({
       builds: null,
       comparisons: null,
@@ -244,7 +289,7 @@ export default class ModalImport extends TranslatedComponent {
 
     try {
       if (textBuildRegex.test(importString)) {  // E:D Shipyard build text
-        importTextBuild(importString);
+        this._importTextBuild(importString);
       } else {                                  // JSON Build data
         importData = JSON.parse(importString);
 
@@ -268,6 +313,9 @@ export default class ModalImport extends TranslatedComponent {
     this.setState({ importValid: true });
   };
 
+  /**
+   * Process imported data
+   */
   _process() {
     let builds = null, comparisons = null;
 
@@ -278,7 +326,7 @@ export default class ModalImport extends TranslatedComponent {
           let code = builds[shipId][buildName];
           // Update builds object such that orginal name retained, but can be renamed
           builds[shipId][buildName] = {
-            code: code,
+            code,
             useName: buildName
           };
         }
@@ -295,8 +343,10 @@ export default class ModalImport extends TranslatedComponent {
     this.setState({ processed: true, builds, comparisons });
   };
 
+  /**
+   * Import parsed, processed data and save
+   */
   _import() {
-
     if (this.state.builds) {
       let builds = this.state.builds;
       for (let shipId in builds) {
@@ -329,16 +379,33 @@ export default class ModalImport extends TranslatedComponent {
       Persist.setInsurance(this.state.insurance);
     }
 
-    InterfaceEvents.hideModal();
+    this.context.hideModal();
   };
 
+  /**
+   * Capture build name changes
+   * @param  {Object} build         Build import object
+   * @param  {SyntheticEvent} e     Event
+   */
+  _changeBuildName(build, e) {
+    build.useName = e.target.value;
+    this.forceUpdate();
+  }
+
+  /**
+   * If imported data is already provided process immediately on mount
+   */
   componentWillMount() {
     if (this.props.importingBuilds) {
-      this.setState({ builds: this.props.importingBuilds, canEdit : false});
+      this.setState({ builds: this.props.importingBuilds, canEdit : false });
       this._process();
     }
   }
 
+  /**
+   * Render the import modal
+   * @return {React.Component} Modal contents
+   */
   render() {
     let translate = this.context.language.translate;
     let state = this.state;
@@ -357,27 +424,27 @@ export default class ModalImport extends TranslatedComponent {
       if (state.comparisons) {
         let comparisonRows = [];
 
-        for (let name in comparisons) {
-          let comparison = comparisons[name];
+        for (let name in state.comparisons) {
+          let comparison = state.comparisons[name];
           let hasComparison = Persist.hasComparison(name);
           comparisonRows.push(
             <tr key={name} className='cb'>
               <td>
                 <input type='text' value={comparison.useName}/>
               </td>
-              <td style={{ textAlign:'center' }} className={ cn({ warning: hasComparison, disabled: comparison.useName == '' }) }>
-                <span>{translate(comparison.useName == '' ? 'skip' : (hasComparison ? 'overwrite' : 'create'))}></span>
+              <td style={{ textAlign:'center' }} className={ cn('cap', { warning: hasComparison, disabled: comparison.useName == '' }) }>
+                {translate(comparison.useName == '' ? 'skip' : (hasComparison ? 'overwrite' : 'create'))}>
               </td>
             </tr>
           );
         }
 
         comparisonTable = (
-          <table className='l' style={{ overflow:'hidden', margin: '1em 0', width: '100%'}} >
+          <table className='l' style={{ overflow:'hidden', margin: '1em 0', width: '100%' }} >
             <thead>
               <tr>
                 <th style={{ textAlign:'left' }}>{translate('comparison')}</th>
-                <th >{translate('action')}</th>
+                <th>{translate('action')}</th>
               </tr>
             </thead>
             <tbody>
@@ -388,7 +455,7 @@ export default class ModalImport extends TranslatedComponent {
       }
 
       if(this.state.canEdit) {
-        edit = <button className='l cap' style={{ marginLeft: '2em' }} onClick={() => this.setState({processed: false})}>{translate('edit data')}</button>
+        edit = <button className='l cap' style={{ marginLeft: '2em' }} onClick={() => this.setState({ processed: false })}>{translate('edit data')}</button>;
       }
 
       let builds = this.state.builds;
@@ -398,11 +465,11 @@ export default class ModalImport extends TranslatedComponent {
           let b = shipBuilds[buildName];
           let hasBuild = Persist.hasBuild(shipId, b.useName);
           buildRows.push(
-            <tr className='cb'>
+            <tr key={shipId + buildName} className='cb'>
               <td>{Ships[shipId].properties.name}</td>
-              <td><input type='text' value={b.useName}/></td>
-              <td style={{ textAlign: 'center' }} className={cn({ warning: hasBuild, disabled: b.useName == ''})}>
-                <span>{translate(b.useName == '' ? 'skip'  : (hasBuild ? 'overwrite' : 'create'))}></span>
+              <td><input type='text' onChange={this._changeBuildName.bind(this, b)} value={b.useName}/></td>
+              <td style={{ textAlign: 'center' }} className={cn('cap', { warning: hasBuild, disabled: b.useName == '' })}>
+                {translate(b.useName == '' ? 'skip'  : (hasBuild ? 'overwrite' : 'create'))}
               </td>
             </tr>
           );
@@ -411,12 +478,12 @@ export default class ModalImport extends TranslatedComponent {
 
       importStage = (
         <div>
-          <table className='l' style={{ overflow:'hidden', margin: '1em 0', width: '100%'}}>
+          <table className='l' style={{ overflow:'hidden', margin: '1em 0', width: '100%' }}>
             <thead>
               <tr>
                 <th style={{ textAlign: 'left' }} >{translate('ship')}</th>
                 <th style={{ textAlign: 'left' }} >{translate('build name')}</th>
-                <th >{translate('action')}</th>
+                <th>{translate('action')}</th>
               </tr>
             </thead>
             <tbody>
@@ -433,7 +500,7 @@ export default class ModalImport extends TranslatedComponent {
     return <div className='modal' onClick={ (e) => e.stopPropagation() }>
       <h2 >{translate('import')}</h2>
       {importStage}
-      <button className={'r dismiss cap'} onClick={InterfaceEvents.hideModal}>{translate('close')}</button>
+      <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>
     </div>;
   }
 }

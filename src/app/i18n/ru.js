@@ -21,7 +21,7 @@ export const terms = {
   added: 'Добавлено',
   Advanced: 'Продвинутый',
   'Advanced Discovery Scanner': 'Продвинутый астросканер',
-  agility: 'Маневренность',
+  maneuverability: 'Маневренность',
   alpha: 'Альфа',
   ammo: 'Боекомплект',
   PHRASE_CONFIRMATION: 'Вы уверены?',

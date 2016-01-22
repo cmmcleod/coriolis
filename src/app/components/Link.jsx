@@ -1,20 +1,32 @@
 import React from 'react';
 import Router from '../Router';
-import shallowEqual from '../utils/shallowEqual';
+import { shallowEqual } from '../utils/UtilityFunctions';
 
+/**
+ * Link wrapper component
+ */
 export default class Link extends React.Component {
 
+  /**
+   * Determine if a component should be rerendered
+   * @param  {object} nextProps Next properties
+   * @return {boolean}          true if update is needed
+   */
   shouldComponentUpdate(nextProps) {
     return !shallowEqual(this.props, nextProps);
   }
 
-  handler = (event) => {
-    if (event.getModifierState
-      && ( event.getModifierState('Shift')
-      || event.getModifierState('Alt')
-      || event.getModifierState('Control')
-      || event.getModifierState('Meta')
-      || event.button > 1)) {
+  /**
+   * Link click handler
+   * @param  {SyntheticEvent} event Event
+   */
+  handler(event) {
+    if (event.getModifierState &&
+      (event.getModifierState('Shift') ||
+      event.getModifierState('Alt') ||
+      event.getModifierState('Control') ||
+      event.getModifierState('Meta') ||
+      event.button > 1)) {
       return;
     }
     event.nativeEvent && event.preventDefault && event.preventDefault();
@@ -24,8 +36,12 @@ export default class Link extends React.Component {
     }
   }
 
+  /**
+   * Renders the link
+   * @return {React.Component} A href element
+   */
   render() {
-    return <a {...this.props} onClick={this.handler}>{this.props.children}</a>
+    return <a {...this.props} onClick={this.handler.bind(this)}>{this.props.children}</a>;
   }
 
 }

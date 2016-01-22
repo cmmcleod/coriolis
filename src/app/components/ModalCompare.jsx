@@ -1,17 +1,24 @@
 import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
-import InterfaceEvents from '../utils/InterfaceEvents';
 import { Ships } from 'coriolis-data';
 import Persist from '../stores/Persist';
 
+/**
+ * Build ship and name comparator
+ * @param  {Object} a [description]
+ * @param  {Object} b [description]
+ * @return {number}   1, 0, -1
+ */
 function buildComparator(a, b) {
   if (a.name == b.name) {
-    return a.buildName > b.buildName;
+    return a.buildName.localeCompare(b.buildName);
   }
-  return a.name > b.name;
+  return a.name.localeCompare(b.name);
 }
 
-
+/**
+ * Compare builds modal
+ */
 export default class ModalCompare extends TranslatedComponent {
 
   static propTypes = {
@@ -21,52 +28,71 @@ export default class ModalCompare extends TranslatedComponent {
 
   static defaultProps = {
     builds: []
-  }
+  };
 
+  /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   */
   constructor(props) {
     super(props);
     let builds = props.builds;
     let allBuilds = Persist.getBuilds();
     let unusedBuilds = [];
+    let usedBuilds = [];
 
     for (let id in allBuilds) {
       for (let buildName in allBuilds[id]) {
-        if (!builds.find((e) => e.buildName == buildName && e.id == id)) {
-          unusedBuilds.push({ id, buildName, name: Ships[id].properties.name })
-        }
+        let b = { id, buildName, name: Ships[id].properties.name };
+        builds.find((e) => e.buildName == buildName && e.id == id) ? usedBuilds.push(b) : unusedBuilds.push(b);
       }
     }
 
-    builds.sort(buildComparator);
+    usedBuilds.sort(buildComparator);
     unusedBuilds.sort(buildComparator);
 
-    this.state = { builds, unusedBuilds };
+    this.state = { usedBuilds, unusedBuilds, used: usedBuilds.length };
   }
 
+  /**
+   * Add a build to the compare list
+   * @param {number} buildIndex Idnex of build in list
+   */
   _addBuild(buildIndex) {
-    let { builds, unusedBuilds } = this.state;
-    builds.push(unusedBuilds[buildIndex]);
-    unusedBuilds = unusedBuilds.splice(buildIndex, 1);
-    builds.sort(buildComparator);
+    let { usedBuilds, unusedBuilds } = this.state;
+    usedBuilds.push(unusedBuilds[buildIndex]);
+    unusedBuilds.splice(buildIndex, 1);
+    usedBuilds.sort(buildComparator);
 
-    this.setState({ builds, unusedBuilds });
+    this.setState({ used: usedBuilds.length });
   }
 
+  /**
+   * Remove a build from the compare list
+   * @param {number} buildIndex Idnex of build in list
+   */
   _removeBuild(buildIndex) {
-    let { builds, unusedBuilds } = this.state;
-    unusedBuilds.push(builds[buildIndex]);
-    builds = builds.splice(buildIndex, 1);
+    let { usedBuilds, unusedBuilds } = this.state;
+    unusedBuilds.push(usedBuilds[buildIndex]);
+    usedBuilds.splice(buildIndex, 1);
     unusedBuilds.sort(buildComparator);
 
-    this.setState({ builds, unusedBuilds });
+    this.setState({ used: usedBuilds.length });
   }
 
+  /**
+   * OK Action - Use selected builds
+   */
   _selectBuilds() {
-    this.props.onSelect(this.state.builds);
+    this.props.onSelect(this.state.usedBuilds);
   }
 
+  /**
+   * Render the modal
+   * @return {React.Component} Modal Content
+   */
   render() {
-    let { builds, unusedBuilds } = this.state;
+    let { usedBuilds, unusedBuilds } = this.state;
     let translate = this.context.language.translate;
 
     let availableBuilds = unusedBuilds.map((build, i) =>
@@ -76,7 +102,7 @@ export default class ModalCompare extends TranslatedComponent {
       </tr>
     );
 
-    let selectedBuilds = builds.map((build, i) =>
+    let selectedBuilds = usedBuilds.map((build, i) =>
       <tr key={i} onClick={this._removeBuild.bind(this, i)}>
         <td className='tl'>{build.name}</td><
         td className='tl'>{build.buildName}</td>
@@ -102,7 +128,7 @@ export default class ModalCompare extends TranslatedComponent {
       </div>
       <br/>
       <button className='cap' onClick={this._selectBuilds.bind(this)}>{translate('Ok')}</button>
-      <button className='r cap' onClick={() => InterfaceEvents.hideModal()}>{translate('Cancel')}</button>
+      <button className='r cap' onClick={() => this.context.hideModal()}>{translate('Cancel')}</button>
     </div>;
   }
 }

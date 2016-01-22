@@ -1,9 +1,24 @@
 
-
+/**
+ * Filter eligble modules based on parameters
+ * @param  {Array}  arr       Available modules array
+ * @param  {number} maxClass  Max class
+ * @param  {number} minClass  Minimum class
+ * @param  {number} mass      Mass
+ * @return {Array}            Fitlered module subset
+ */
 function filter(arr, maxClass, minClass, mass) {
   return arr.filter(m => m.class <= maxClass && m.class >= minClass && (m.maxmass === undefined || mass <= m.maxmass));
 }
 
+/**
+ * Filter eligble modules based on parameters
+ * @param  {Object} data      Available modules object
+ * @param  {number} maxClass  Max class
+ * @param  {number} minClass  Minimum class
+ * @param  {number} mass      Mass
+ * @return {Array}            Fitlered module subset
+ */
 function filterToArray(data, maxClass, minClass, mass) {
   let arr = [];
 
@@ -17,8 +32,19 @@ function filterToArray(data, maxClass, minClass, mass) {
   return arr;
 }
 
+/**
+ * The available module set for a specific ship
+ */
 export default class ModuleSet {
 
+  /**
+   * Instantiate the module set
+   * @param  {Object} modules        All Modules
+   * @param  {number} mass           Ship mass
+   * @param  {Array}  maxStandardArr Array of standard slots classes/sizes
+   * @param  {Array}  maxInternal    Array of internal slots classes/sizes
+   * @param  {Array}  maxHardPoint   Array of hardpoint slots classes/sizes
+   */
   constructor(modules, mass, maxStandardArr, maxInternal, maxHardPoint) {
     this.mass = mass;
     this.standard = {};
@@ -80,12 +106,12 @@ export default class ModuleSet {
    * @return {object}           A map of all eligible modules by group
    */
   getHps(c, eligible) {
-    var o = {};
-    for (var key in this.hardpoints) {
+    let o = {};
+    for (let key in this.hardpoints) {
       if (eligible && !eligible[key]) {
         continue;
       }
-      var data = filter(this.hardpoints[key], c, c ? 1 : 0, this.mass);
+      let data = filter(this.hardpoints[key], c, c ? 1 : 0, this.mass);
       if (data.length) {  // If group is not empty
         o[key] = data;
       }
@@ -93,8 +119,14 @@ export default class ModuleSet {
     return o;
   }
 
+  /**
+   * Find the lightest Power Distributor that provides sufficient
+   * energy to boost.
+   * @param  {number} boostEnergy [description]
+   * @return {Object}             Power Distributor
+   */
   lightestPowerDist(boostEnergy) {
-    var pd = this.standard[4][0];
+    let pd = this.standard[4][0];
 
     for (let p of this.standard[4]) {
       if (p.mass < pd.mass && p.enginecapacity >= boostEnergy) {
@@ -104,8 +136,13 @@ export default class ModuleSet {
     return pd;
   };
 
+  /**
+   * Finds the lightest Thruster that can handle the specified tonnage
+   * @param  {number} ladenMass Ship laden mass (mass + cargo + fuel)
+   * @return {Object}           Thruster
+   */
   lightestThruster(ladenMass) {
-    var th = this.standard[1][0];
+    let th = this.standard[1][0];
 
     for (let t of this.standard[1]) {
       if (t.mass < th.mass && t.maxmass >= ladenMass) {
@@ -115,8 +152,13 @@ export default class ModuleSet {
     return th;
   };
 
+  /**
+   * Finds the lightest usable Shield Generator
+   * @param  {number} hullMass  Ship hull mass
+   * @return {Object}           Thruster
+   */
   lightestShieldGenerator(hullMass) {
-    var sg = this.internal.sg[0];
+    let sg = this.internal.sg[0];
 
     for (let s of this.internal.sg) {
       if (s.mass < sg.mass && s.minmass <= hullMass && s.maxmass > hullMass) {
@@ -126,8 +168,13 @@ export default class ModuleSet {
     return sg;
   };
 
-  lightestPowerPlant(powerNeeded, rating) {
-    var pp = this.standard[0][0];
+  /**
+   * Find the lightest Power Plant that provides sufficient power
+   * @param  {number} powerNeeded Power requirements in MJ
+   * @return {Object}             Power Plant
+   */
+  lightestPowerPlant(powerNeeded) {
+    let pp = this.standard[0][0];
 
     for (let p of this.standard[0]) {
       // Provides enough power, is lighter or the same mass as current power plant but better output/efficiency

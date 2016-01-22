@@ -20,7 +20,7 @@ export const terms = {
   added: 'ajouté',
   Advanced: 'Avancé',
   'Advanced Discovery Scanner': 'Détecteur découverte avancé',
-  agility: 'manœuvrabilité',
+  maneuverability: 'manœuvrabilité',
   ammo: 'munitions',
   PHRASE_CONFIRMATION: 'Êtes-vous sûr ?',
   armour: 'Armure',

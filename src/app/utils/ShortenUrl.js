@@ -10,15 +10,19 @@ const SHORTEN_API = 'https://www.googleapis.com/urlshortener/v1/url?key=';
  */
 export default function shortenUrl(url, success, error) {
   if (window.navigator.onLine) {
-    request.post(SHORTEN_API + window.CORIOLIS_GAPI_KEY)
-      .send({ longUrl: url })
-      .end(function(err, response) {
-        if (err) {
-          error('Error');
-        } else {
-          success(response.data.id);
-        }
-      });
+    try {
+      request.post(SHORTEN_API + window.CORIOLIS_GAPI_KEY)
+        .send({ longUrl: url })
+        .end(function(err, response) {
+          if (err) {
+            error(response.statusText == 'OK' ? 'Bad Request' : response.statusText);
+          } else {
+            success(response.body.id);
+          }
+        });
+    } catch (e) {
+      error(e.message ? e.message : e);
+    }
   } else {
     error('Not Online');
   }

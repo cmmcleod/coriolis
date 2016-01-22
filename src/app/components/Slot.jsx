@@ -2,8 +2,12 @@ import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
 import cn from 'classnames';
 import AvailableModulesMenu from './AvailableModulesMenu';
-import { wrapCtxMenu } from '../utils/InterfaceEvents';
+import { diffDetails } from '../utils/SlotFunctions';
+import { wrapCtxMenu } from '../utils/UtilityFunctions';
 
+/**
+ * Abstract Slot
+ */
 export default class Slot extends TranslatedComponent {
 
   static propTypes = {
@@ -13,10 +17,17 @@ export default class Slot extends TranslatedComponent {
     maxClass: React.PropTypes.number.isRequired,
     selected: React.PropTypes.bool,
     m: React.PropTypes.object,
-    shipMass: React.PropTypes.number,
+    ship: React.PropTypes.object.isRequired,
     warning: React.PropTypes.func,
+    drag: React.PropTypes.func,
+    drop: React.PropTypes.func,
+    dropClass: React.PropTypes.string
   };
 
+  /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   */
   constructor(props) {
     super(props);
 
@@ -27,6 +38,11 @@ export default class Slot extends TranslatedComponent {
   // Must be implemented by subclasses:
   // _getSlotDetails()
 
+  /**
+   * Get the CSS class name for the slot. Can/should be overriden
+   * as necessary.
+   * @return {string} CSS Class name
+   */
   _getClassNames() {
     return null;
   }
@@ -40,14 +56,22 @@ export default class Slot extends TranslatedComponent {
     return this.props.maxClass;
   }
 
+  /**
+   * Empty slot on right-click
+   * @param  {SyntheticEvent} event Event
+   */
   _contextMenu(event) {
     this.props.onSelect(null,null);
   }
 
+  /**
+   * Render the slot
+   * @return {React.Component} The slot
+   */
   render() {
     let language = this.context.language;
     let translate = language.translate;
-    let m = this.props.m;
+    let { ship, m, dropClass, dragOver, onOpen, selected, onSelect, warning, shipMass, availableModules } = this.props;
     let slotDetails, menu;
 
     if (m) {
@@ -59,18 +83,19 @@ export default class Slot extends TranslatedComponent {
     if (this.props.selected) {
       menu = <AvailableModulesMenu
         className={this._getClassNames()}
-        modules={this.props.availableModules()}
-        shipMass={this.props.shipMass}
+        modules={availableModules()}
+        shipMass={ship.hullMass}
         m={m}
-        onSelect={this.props.onSelect}
-        warning={this.props.warning}
+        onSelect={onSelect}
+        warning={warning}
+        diffDetails={diffDetails.bind(ship, this.context.language)}
       />;
     }
 
     return (
-      <div className={cn('slot', {selected: this.props.selected})} onClick={this.props.onOpen} onContextMenu={this._contextMenu}>
-        <div className={'details'}>
-          <div className={'sz'}>{this._getMaxClassLabel(translate)}</div>
+      <div className={cn('slot', dropClass, { selected })} onClick={onOpen} onContextMenu={this._contextMenu} onDragOver={dragOver}>
+        <div className='details-container'>
+          <div className='sz'>{this._getMaxClassLabel(translate)}</div>
           {slotDetails}
         </div>
         {menu}

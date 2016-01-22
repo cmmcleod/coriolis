@@ -14,7 +14,7 @@
   color: @fg;
   fill: @fg;
 
-  .details {
+  .details-container {
     min-height: 2.7em;
     padding: 0.25em 0;
     box-sizing: border-box;
@@ -22,6 +22,11 @@
     height: 100%;
     cursor: pointer;
     text-transform: none;
+  }
+
+  .details {
+    min-height: 2.2em;
+    background-color: @primary-bg;
   }
 
   .name {
@@ -74,6 +79,59 @@
         color: @primary;
         background-color: @primary-bg;
         border-right: 1px solid @primary;
+    }
+    .details {
+      background-color: transparent;
+    }
+  }
+
+  &.eligible {
+    border: 1px solid @secondary-disabled;
+    .sz {
+        color: @secondary-disabled;
+        border-right: 1px solid @secondary-disabled;
+    }
+    .details {
+      background-color: transparent;
+    }
+  }
+
+  &.ineligible {
+    cursor: no-drop;
+    color: @disabled;
+    fill: @disabled;
+    border: 1px solid @disabled;
+    .sz {
+        color: @disabled;
+        border-right: 1px solid @disabled;
+    }
+  }
+
+  &.dropEmpty {
+    color: @warning-disabled;
+    fill: @warning-disabled;
+    border: 1px solid @warning-disabled;
+    .sz {
+        color: @warning-disabled;
+        border-right: 1px solid @warning-disabled;
+    }
+    .details {
+      background-color: transparent;
+    }
+  }
+
+  &.drop {
+    color: @secondary-bg;
+    fill: @secondary-bg;
+    border: 1px solid @secondary;
+    background-color: @secondary-disabled;
+    .sz {
+        color: @secondary;
+        background-color: @primary-bg;
+        border-right: 1px solid @secondary;
+    }
+    .details {
+      background-color: transparent;
     }
   }
 }

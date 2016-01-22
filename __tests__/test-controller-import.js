@@ -1,4 +1,4 @@
-describe('Import Controller', function() {
+xdescribe('Import Controller', function() {
   beforeEach(module('app'));
 
   var importController, $rootScope, $stateParams, scope;

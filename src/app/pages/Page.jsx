@@ -1,15 +1,22 @@
 import React from 'react';
-import shallowEqual from '../utils/shallowEqual';
+import { shallowEqual } from '../utils/UtilityFunctions';
 
 /**
- * @class Abstract Page
+ * Abstract/Base Page
  */
 export default class Page extends React.Component {
 
   static contextTypes = {
     route: React.PropTypes.object.isRequired,
     language: React.PropTypes.object.isRequired,
-    sizeRatio: React.PropTypes.number.isRequired
+    sizeRatio: React.PropTypes.number.isRequired,
+    openMenu: React.PropTypes.func.isRequired,
+    closeMenu: React.PropTypes.func.isRequired,
+    showModal: React.PropTypes.func.isRequired,
+    hideModal: React.PropTypes.func.isRequired,
+    tooltip: React.PropTypes.func.isRequired,
+    termtip: React.PropTypes.func.isRequired,
+    onWindowResize: React.PropTypes.func.isRequired
   };
 
   static propTypes = {
@@ -32,19 +39,16 @@ export default class Page extends React.Component {
   }
 
   /**
-   * Translated components are 'pure' components that only render when
-   * props, state, or context changes. This method performs a shallow comparison to
-   * determine change.
+   * Pages are 'pure' components that only render when props, state, or context changes.
+   * This method performs a shallow comparison to determine change.
    *
-   * @param  {object} nextProps
-   * @param  {objec} nextState
-   * @param  {objec} nextContext
-   * @return {boolean}            True if props, state, or context has changed
+   * @param  {Object} np  Next/Incoming properties
+   * @param  {Object} ns  Next/Incoming state
+   * @param  {Object} nc  Next/Incoming context
+   * @return {Boolean}    True if props, state, or context has changed
    */
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    return !shallowEqual(this.props, nextProps)
-        || !shallowEqual(this.state, nextState)
-        || !shallowEqual(this.context, nextContext)
+  shouldComponentUpdate(np, ns, nc) {
+    return !shallowEqual(this.props, np) || !shallowEqual(this.state, ns) || !shallowEqual(this.context, nc);
   }
 
   /**

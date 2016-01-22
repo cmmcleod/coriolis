@@ -4,9 +4,12 @@ import { Ships } from 'coriolis-data';
 import Persist from '../stores/Persist';
 import Ship from '../shipyard/Ship';
 import { Insurance } from '../shipyard/Constants';
-import { slotName, nameComparator } from '../utils/SlotFunctions';
+import { slotName, slotComparator } from '../utils/SlotFunctions';
 import TranslatedComponent from './TranslatedComponent';
 
+/**
+ * Cost Section
+ */
 export default class CostSection extends TranslatedComponent {
 
   static PropTypes = {
@@ -15,6 +18,10 @@ export default class CostSection extends TranslatedComponent {
     buildName: React.PropTypes.string
   };
 
+  /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   */
   constructor(props) {
     super(props);
     this._costsTab = this._costsTab.bind(this);
@@ -52,10 +59,17 @@ export default class CostSection extends TranslatedComponent {
     };
   }
 
+  /**
+   * Create a ship instance to base/reference retrofit changes from
+   * @param  {string} shipId       Ship Id
+   * @param  {string} name         Build name
+   * @param  {Ship} retrofitShip   Existing retrofit ship
+   * @return {Ship}                Retrofit ship
+   */
   _buildRetrofitShip(shipId, name, retrofitShip) {
     let data = Ships[shipId];   // Retrieve the basic ship properties, slots and defaults
 
-    if (!retrofitShip) {
+    if (!retrofitShip) {  // Don't create a new instance unless needed
       retrofitShip = new Ship(shipId, data.properties, data.slots);  // Create a new Ship for retrofit comparison
     }
 
@@ -67,15 +81,28 @@ export default class CostSection extends TranslatedComponent {
     return retrofitShip;
   }
 
+  /**
+   * Get the default retrofit build name if it exists
+   * @param  {string} shipId       Ship Id
+   * @param  {string} name         Build name
+   * @return {string}              Build name or null
+   */
   _defaultRetrofitName(shipId, name) {
     return Persist.hasBuild(shipId, name) ? name : null;
   }
 
+  /**
+   * Show selected tab
+   * @param  {string} tab Tab name
+   */
   _showTab(tab) {
     Persist.setCostTab(tab);
     this.setState({ tab });
   }
 
+  /**
+   * Update prices on discount change
+   */
   _onDiscountChanged() {
     let shipDiscount = Persist.getShipDiscount();
     let moduleDiscount = Persist.getModuleDiscount();
@@ -84,13 +111,17 @@ export default class CostSection extends TranslatedComponent {
     this.setState({ shipDiscount, moduleDiscount });
   }
 
+  /**
+   * Update insurance on change
+   * @param  {string} insuranceName Insurance level name
+   */
   _onInsuranceChanged(insuranceName) {
     this.setState({ insurance: Insurance[insuranceName] });
   }
 
   /**
    * Repopulate modules on retrofit ship from existing build
-   * @param  {string} retrofitName Build name to base the retrofit ship on
+   * @param  {SyntheticEvent} event Build name to base the retrofit ship on
    */
   _onBaseRetrofitChange(event) {
     let retrofitName = event.target.value;
@@ -105,6 +136,12 @@ export default class CostSection extends TranslatedComponent {
     this.setState({ retrofitName });
   }
 
+  /**
+   * On build save
+   * @param  {string} shipId       Ship Id
+   * @param  {string} name         Build name
+   * @param  {string} code         Serialized ship 'code'
+   */
   _onBuildSaved(shipId, name, code) {
     if(this.state.retrofitName == name) {
       this.state.retrofitShip.buildFrom(code);  // Repopulate modules from saved build
@@ -114,6 +151,12 @@ export default class CostSection extends TranslatedComponent {
     }
   }
 
+  /**
+   * On build deleted
+   * @param  {string} shipId       Ship Id
+   * @param  {string} name         Build name
+   * @param  {string} code         Serialized ship 'code'
+   */
   _onBuildDeleted(shipId, name, code) {
     if(this.state.retrofitName == name) {
       this.state.retrofitShip.buildWith(Ships[shipId].defaults);  // Retrofit ship becomes stock build
@@ -122,11 +165,19 @@ export default class CostSection extends TranslatedComponent {
     this.setState({ buildOptions: Persist.getBuildsNamesFor(shipId) });
   }
 
+  /**
+   * Toggle item cost inclusion in overall total
+   * @param  {Object} item Cost item
+   */
   _toggleCost(item) {
     this.props.ship.setCostIncluded(item, !item.incCost);
     this.setState({ total: this.props.ship.totalCost });
   }
 
+  /**
+   * Toggle item cost inclusion in retrofit total
+   * @param  {Object} item Cost item
+   */
   _toggleRetrofitCost(item) {
     let retrofitTotal = this.state.retrofitTotal;
     item.retroItem.incCost = !item.retroItem.incCost;
@@ -134,6 +185,10 @@ export default class CostSection extends TranslatedComponent {
     this.setState({ retrofitTotal });
   }
 
+  /**
+   * Set cost list sort predicate
+   * @param  {string} predicate sort predicate
+   */
   _sortCostBy(predicate) {
     let { costPredicate, costDesc } = this.state;
 
@@ -144,20 +199,27 @@ export default class CostSection extends TranslatedComponent {
     this.setState({ costPredicate: predicate, costDesc });
   }
 
+  /**
+   * Sort cost list
+   * @param  {Ship} ship        Ship instance
+   * @param  {string} predicate Sort predicate
+   * @param  {Boolean} desc     Sort descending
+   */
   _sortCost(ship, predicate, desc) {
     let costList = ship.costList;
+    let translate = this.context.language.translate;
 
     if (predicate == 'm') {
-      costList.sort(nameComparator(this.context.language.translate));
+      costList.sort(slotComparator(translate, null, desc));
     } else {
-      costList.sort((a, b) => (a.m && a.m.cost ? a.m.cost : 0) - (b.m && b.m.cost ? b.m.cost : 0));
-    }
-
-    if (!desc) {
-      costList.reverse();
+      costList.sort(slotComparator(translate, (a, b) => (a.m.cost || 0) - (b.m.cost || 0), desc));
     }
   }
 
+  /**
+   * Set ammo list sort predicate
+   * @param  {string} predicate sort predicate
+   */
   _sortAmmoBy(predicate) {
     let { ammoPredicate, ammoDesc } = this.state;
 
@@ -168,19 +230,26 @@ export default class CostSection extends TranslatedComponent {
     this.setState({ ammoPredicate: predicate, ammoDesc });
   }
 
+  /**
+   * Sort ammo cost list
+   * @param  {Array} ammoCosts  Ammo cost list
+   * @param  {string} predicate Sort predicate
+   * @param  {Boolean} desc     Sort descending
+   */
   _sortAmmo(ammoCosts, predicate, desc) {
+    let translate = this.context.language.translate;
 
     if (predicate == 'm') {
-      ammoCosts.sort(nameComparator(this.context.language.translate));
+      ammoCosts.sort(slotComparator(translate, null, desc));
     } else {
-      ammoCosts.sort((a, b) => a[predicate] - b[predicate]);
-    }
-
-    if (!desc) {
-      ammoCosts.reverse();
+      ammoCosts.sort(slotComparator(translate, (a, b) => a[predicate] - b[predicate], desc));
     }
   }
 
+  /**
+   * Set retrofit list sort predicate
+   * @param  {string} predicate sort predicate
+   */
   _sortRetrofitBy(predicate) {
     let { retroPredicate, retroDesc } = this.state;
 
@@ -191,6 +260,12 @@ export default class CostSection extends TranslatedComponent {
     this.setState({ retroPredicate: predicate, retroDesc });
   }
 
+  /**
+   * Sort retrofit cost list
+   * @param  {Array} retrofitCosts  Retrofit cost list
+   * @param  {string} predicate     Sort predicate
+   * @param  {Boolean} desc         Sort descending
+   */
   _sortRetrofit(retrofitCosts, predicate, desc) {
     let translate = this.context.language.translate;
 
@@ -205,6 +280,10 @@ export default class CostSection extends TranslatedComponent {
     }
   }
 
+  /**
+   * Render the cost tab
+   * @return {React.Component} Tab contents
+   */
   _costsTab() {
     let { ship } = this.props;
     let { total, shipDiscount, moduleDiscount, insurance } = this.state;
@@ -250,6 +329,10 @@ export default class CostSection extends TranslatedComponent {
     </div>;
   }
 
+  /**
+   * Render the retofit tab
+   * @return {React.Component} Tab contents
+   */
   _retrofitTab() {
     let { retrofitTotal, retrofitCosts, moduleDiscount, retrofitName } = this.state;
     let { translate, formats, units } = this.context.language;
@@ -268,11 +351,11 @@ export default class CostSection extends TranslatedComponent {
             <td className='le shorten cap'>{translate(item.sellName)}</td>
             <td style={{ width: '1em' }}>{item.buyClassRating}</td>
             <td className='le shorten cap'>{translate(item.buyName)}</td>
-            <td colSpan='2' className={cn('ri', item.retroItem.incCost ? item.netCost > 0 ? 'warning' : 'secondary-disabled' : 'disabled' )}>{int(item.netCost)}{units.CR}</td>
+            <td colSpan='2' className={cn('ri', item.retroItem.incCost ? item.netCost > 0 ? 'warning' : 'secondary-disabled' : 'disabled')}>{int(item.netCost)}{units.CR}</td>
         </tr>);
       }
     } else {
-      rows = <tr><td colSpan='7' style={{ padding: '3em 0' }}>{translate('PHRASE_NO_RETROCH')}</td></tr>
+      rows = <tr><td colSpan='7' style={{ padding: '3em 0' }}>{translate('PHRASE_NO_RETROCH')}</td></tr>;
     }
 
     return <div>
@@ -284,7 +367,7 @@ export default class CostSection extends TranslatedComponent {
               <th colSpan='2' className='sortable le' onClick={this._sortRetrofitBy.bind(this, 'buyName')}>{translate('buy')}</th>
               <th colSpan='2' className='sortable le' onClick={this._sortRetrofitBy.bind(this, 'cr')}>
                 {translate('net cost')}
-                {moduleDiscount < 1 && <u className='optional-hide'>{`[${translate('modules')} -${formats.rPct(1 - moduleDiscount)}]`}</u>}
+                {moduleDiscount < 1 && <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('modules')} -${formats.rPct(1 - moduleDiscount)}]`}</u>}
               </th>
             </tr>
           </thead>
@@ -301,7 +384,7 @@ export default class CostSection extends TranslatedComponent {
               <td className='val cen' style={{ borderRight: 'none', width: '1em' }}><u className='primary-disabled'>&#9662;</u></td>
               <td className='val' style={{ borderLeft:'none', padding: 0 }}>
                 <select style={{ width: '100%', padding: 0 }} value={retrofitName} onChange={this._onBaseRetrofitChange}>
-                {options}
+                  {options}
                 </select>
               </td>
             </tr>
@@ -311,9 +394,15 @@ export default class CostSection extends TranslatedComponent {
     </div>;
   }
 
+
+  /**
+   * Update retrofit costs
+   * @param  {Ship} ship          Ship instance
+   * @param  {Ship} retrofitShip  Retrofit Ship instance
+   */
   _updateRetrofit(ship, retrofitShip) {
     let retrofitCosts = [];
-    var retrofitTotal = 0, i, l, item;
+    let retrofitTotal = 0, i, l, item;
 
     if (ship.bulkheads.index != retrofitShip.bulkheads.index) {
       item = {
@@ -330,9 +419,9 @@ export default class CostSection extends TranslatedComponent {
       }
     }
 
-    for (var g in { standard: 1, internal: 1, hardpoints: 1 }) {
-      var retroSlotGroup = retrofitShip[g];
-      var slotGroup = ship[g];
+    for (let g in { standard: 1, internal: 1, hardpoints: 1 }) {
+      let retroSlotGroup = retrofitShip[g];
+      let slotGroup = ship[g];
       for (i = 0, l = slotGroup.length; i < l; i++) {
         if (slotGroup[i].m != retroSlotGroup[i].m) {
           item = { netCost: 0, retroItem: retroSlotGroup[i] };
@@ -358,6 +447,10 @@ export default class CostSection extends TranslatedComponent {
     this._sortRetrofit(retrofitCosts, this.state.retroPredicate, this.state.retroDesc);
   }
 
+  /**
+   * Render the ammo tab
+   * @return {React.Component} Tab contents
+   */
   _ammoTab() {
     let { ammoTotal, ammoCosts } = this.state;
     let { translate, formats, units } = this.context.language;
@@ -400,6 +493,7 @@ export default class CostSection extends TranslatedComponent {
 
   /**
    * Recalculate all ammo costs
+   * @param  {Ship} ship  Ship instance
    */
   _updateAmmoCosts(ship) {
     let ammoCosts = [], ammoTotal = 0, item, q, limpets = 0, srvs = 0, scoop = false;
@@ -408,10 +502,10 @@ export default class CostSection extends TranslatedComponent {
       let slotGroup = ship[g];
       for (let i = 0, l = slotGroup.length; i < l; i++) {
         if (slotGroup[i].m) {
-          //special cases needed for SCB, AFMU, and limpet controllers since they don't use standard ammo/clip
+          // Special cases needed for SCB, AFMU, and limpet controllers since they don't use standard ammo/clip
           q = 0;
           switch (slotGroup[i].m.grp) {
-            case 'fs': //skip fuel calculation if scoop present
+            case 'fs': // Skip fuel calculation if scoop present
               scoop = true;
               break;
             case 'scb':
@@ -429,7 +523,7 @@ export default class CostSection extends TranslatedComponent {
             default:
               q = slotGroup[i].m.clip + slotGroup[i].m.ammo;
           }
-          //calculate ammo costs only if a cost is specified
+          // Calculate ammo costs only if a cost is specified
           if (slotGroup[i].m.ammocost > 0) {
             item = {
               m: slotGroup[i].m,
@@ -444,7 +538,7 @@ export default class CostSection extends TranslatedComponent {
       }
     }
 
-    //limpets if controllers exist and cargo space available
+    // Limpets if controllers exist and cargo space available
     if (limpets > 0) {
       item = {
         m: { name: 'limpets', class: '', rating: '' },
@@ -466,7 +560,7 @@ export default class CostSection extends TranslatedComponent {
       ammoCosts.push(item);
       ammoTotal += item.total;
     }
-    //calculate refuel costs if no scoop present
+    // Calculate refuel costs if no scoop present
     if (!scoop) {
       item = {
         m: { name: 'fuel', class: '', rating: '' },
@@ -482,7 +576,10 @@ export default class CostSection extends TranslatedComponent {
     this._sortAmmo(ammoCosts, this.state.ammoPredicate, this.state.ammoDesc);
   }
 
-  componentWillMount(){
+  /**
+   * Add listeners on mount and update costs
+   */
+  componentWillMount() {
     this.listeners = [
       Persist.addListener('discounts', this._onDiscountChanged.bind(this)),
       Persist.addListener('insurance', this._onInsuranceChanged.bind(this)),
@@ -494,13 +591,18 @@ export default class CostSection extends TranslatedComponent {
     this._sortCost(this.props.ship);
   }
 
+  /**
+   * Update state based on property and context changes
+   * @param  {Object} nextProps   Incoming/Next properties
+   * @param  {Object} nextContext Incoming/Next context
+   */
   componentWillReceiveProps(nextProps, nextContext) {
     let retrofitShip = this.state.retrofitShip;
 
     if (nextProps.ship != this.props.ship) { // Ship has changed
       let nextId = nextProps.ship.id;
       let retrofitName = this._defaultRetrofitName(nextId, nextProps.buildName);
-      retrofitShip = this._buildRetrofitShip(nextId, retrofitName, nextId == this.props.ship.id ? retrofitShip : null );
+      retrofitShip = this._buildRetrofitShip(nextId, retrofitName, nextId == this.props.ship.id ? retrofitShip : null);
       this.setState({
         retrofitShip,
         retrofitName,
@@ -515,6 +617,11 @@ export default class CostSection extends TranslatedComponent {
     }
   }
 
+  /**
+   * Sort lists before render
+   * @param  {Object} nextProps   Incoming/Next properties
+   * @param  {Object} nextState Incoming/Next state
+   */
   componentWillUpdate(nextProps, nextState) {
     let state = this.state;
 
@@ -536,10 +643,17 @@ export default class CostSection extends TranslatedComponent {
     }
   }
 
-  componentWillUnmount(){
+  /**
+   * Remove listeners
+   */
+  componentWillUnmount() {
     this.listeners.forEach(l => l.remove());
   }
 
+  /**
+   * Render the Cost section
+   * @return {React.Component} Contents
+   */
   render() {
     let tab = this.state.tab;
     let translate = this.context.language.translate;
@@ -558,9 +672,9 @@ export default class CostSection extends TranslatedComponent {
         <table className='tabs'>
           <thead>
             <tr>
-              <th style={{ width:'33%' }} className={cn({active: tab == 'costs'})} onClick={this._showTab.bind(this, 'costs')} >{translate('costs')}</th>
-              <th style={{ width:'33%' }} className={cn({active: tab == 'retrofit'})} onClick={this._showTab.bind(this, 'retrofit')} >{translate('retrofit costs')}</th>
-              <th style={{ width:'34%' }} className={cn({active: tab == 'ammo'})} onClick={this._showTab.bind(this, 'ammo')} >{translate('reload costs')}</th>
+              <th style={{ width:'33%' }} className={cn({ active: tab == 'costs' })} onClick={this._showTab.bind(this, 'costs')} >{translate('costs')}</th>
+              <th style={{ width:'33%' }} className={cn({ active: tab == 'retrofit' })} onClick={this._showTab.bind(this, 'retrofit')} >{translate('retrofit costs')}</th>
+              <th style={{ width:'34%' }} className={cn({ active: tab == 'ammo' })} onClick={this._showTab.bind(this, 'ammo')} >{translate('reload costs')}</th>
             </tr>
           </thead>
         </table>

@@ -27,7 +27,8 @@ module.exports = {
     new HtmlWebpackPlugin({
         inject: false,
         template: path.join(__dirname, "src/index.html"),
-        version: pkgJson.version
+        version: pkgJson.version,
+        gapiKey: process.env.CORIOLIS_GAPI_KEY || '',
     }),
     new ExtractTextPlugin('app.css', {
         allChunks: true

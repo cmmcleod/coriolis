@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * Horizontal Slider
+ */
 export default class Slider extends React.Component {
 
   static defaultProps = {
@@ -16,6 +19,10 @@ export default class Slider extends React.Component {
     onChange: React.PropTypes.func.isRequired,
   };
 
+  /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   */
   constructor(props) {
     super(props);
 
@@ -23,27 +30,47 @@ export default class Slider extends React.Component {
     this.up = this.up.bind(this);
   }
 
+  /**
+   * On Mouse down handler
+   * @param  {SyntheticEvent} e Event
+   */
   down(e) {
     let rect = e.currentTarget.getBoundingClientRect();
-    this.move = this.updatePercent.bind(this, rect.left, rect.width);
+    this.move = this._updatePercent.bind(this, rect.left, rect.width);
     this.move(e);
-    document.addEventListener("mousemove", this.move);
-    document.addEventListener("mouseup", this.up);
+    document.addEventListener('mousemove', this.move);
+    document.addEventListener('mouseup', this.up);
   }
 
+  /**
+   * On Mouse up handler
+   */
   up() {
-    document.removeEventListener("mousemove", this.move);
-    document.removeEventListener("mouseup", this.up);
+    document.removeEventListener('mousemove', this.move);
+    document.removeEventListener('mouseup', this.up);
   }
 
-  componentWillUnmount(){
-    this.up();
-  }
-
-  updatePercent(left, width, event) {
+  /**
+   * Update the slider percentage
+   * @param  {number} left  Slider left position
+   * @param  {number} width Slider width
+   * @param  {Event} event  Event
+   */
+  _updatePercent(left, width, event) {
     this.props.onChange(Math.min(Math.max((event.clientX - left) / width, 0), 1));
   }
 
+  /**
+   * Remove listeners on unmount
+   */
+  componentWillUnmount() {
+    this.up();
+  }
+
+  /**
+   * Render the slider
+   * @return {React.Component} The slider
+   */
   render() {
     let pctStr = (this.props.percent * 100) + '%';
     let { axis, axisUnit, min, max } = this.props;
@@ -51,9 +78,9 @@ export default class Slider extends React.Component {
 
     if (axis) {
       axisGroup = <g style={{ fontSize: '.7em' }}>
-        <text className='primary-disabled' y="3em" x="0" style={{ textAnchor: 'middle' }}>{min + axisUnit}</text>
-        <text className='primary-disabled' y="3em" x="50%" style={{ textAnchor: 'middle' }}>{(min + max / 2) + axisUnit}</text>
-        <text className='primary-disabled' y="3em" x="99%" style={{ textAnchor: 'middle' }}>{max + axisUnit}</text>
+        <text className='primary-disabled' y='3em' x='0' style={{ textAnchor: 'middle' }}>{min + axisUnit}</text>
+        <text className='primary-disabled' y='3em' x='50%' style={{ textAnchor: 'middle' }}>{(min + max / 2) + axisUnit}</text>
+        <text className='primary-disabled' y='3em' x='99%' style={{ textAnchor: 'middle' }}>{max + axisUnit}</text>
       </g>;
     }
 

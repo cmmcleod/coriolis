@@ -1,12 +1,12 @@
 {
-  "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/2.json#",
+  "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/3.json#",
   "name": "Test",
   "ship": "Anaconda",
   "references": [
     {
       "name": "Coriolis.io",
-      "url": "http://localhost:3300/outfit/anaconda/48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.Iw18QDBNA%3D%3D%3D.AwhMJBGaei%2BJCyyiA%3D%3D%3D?bn=Test",
-      "code": "48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.Iw18QDBNA===.AwhMJBGaei+JCyyiA===",
+      "url": "http://localhost:3300/outfit/anaconda/48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA?bn=Test?bn=Test",
+      "code": "48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA",
       "shipId": "anaconda"
     }
   ],
@@ -264,12 +264,12 @@
     "masslock": 23,
     "pipSpeed": 0.14,
     "shipCostMultiplier": 1,
-    "componentCostMultiplier": 1,
+    "moduleCostMultiplier": 1,
     "fuelCapacity": 32,
     "cargoCapacity": 128,
     "ladenMass": 1339.2,
-    "armour": 2078,
-    "armourAdded": 240,
+    "armour": 2228,
+    "armourAdded": 390,
     "armourMultiplier": 1.95,
     "shieldMultiplier": 1.4,
     "totalCost": 882362060,

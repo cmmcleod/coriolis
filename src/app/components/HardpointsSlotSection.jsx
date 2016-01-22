@@ -4,35 +4,60 @@ import HardpointSlot from './HardpointSlot';
 import cn from 'classnames';
 import { MountFixed, MountGimballed, MountTurret } from '../components/SvgIcons';
 
+/**
+ * Hardpoint slot section
+ */
 export default class HardpointsSlotSection extends SlotSection {
 
+  /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   * @param  {Object} context React Component context
+   */
   constructor(props, context) {
     super(props, context, 'hardpoints', 'hardpoints');
 
     this._empty = this._empty.bind(this);
   }
 
+  /**
+   * Empty all slots
+   */
   _empty() {
     this.props.ship.emptyWeapons();
     this.props.onChange();
     this._close();
   }
 
+  /**
+   * Fill slots with specified module
+   * @param  {string} group           Group name
+   * @param  {string} mount           Mount Type - F, G, T
+   * @param  {SyntheticEvent} event   Event
+   */
   _fill(group, mount, event) {
     this.props.ship.useWeapon(group, mount, null, event.getModifierState('Alt'));
     this.props.onChange();
     this._close();
   }
 
+  /**
+   * Empty all on section header right click
+   */
   _contextMenu() {
     this._empty();
   }
 
+  /**
+   * Generate the slot React Components
+   * @return {Array} Array of Slots
+   */
   _getSlots() {
+    let { ship, currentMenu } = this.props;
+    let { originSlot, targetSlot } = this.state;
     let slots = [];
-    let hardpoints = this.props.ship.hardpoints;
-    let availableModules = this.props.ship.getAvailableModules();
-    let currentMenu = this.props.currentMenu;
+    let hardpoints = ship.hardpoints;
+    let availableModules = ship.getAvailableModules();
 
     for (let i = 0, l = hardpoints.length; i < l; i++) {
       let h = hardpoints[i];
@@ -44,6 +69,11 @@ export default class HardpointsSlotSection extends SlotSection {
           onOpen={this._openMenu.bind(this, h)}
           onSelect={this._selectModule.bind(this, h)}
           selected={currentMenu == h}
+          drag={this._drag.bind(this, h)}
+          dragOver={this._dragOverSlot.bind(this, h)}
+          drop={this._drop}
+          dropClass={this._dropClass(h, originSlot, targetSlot)}
+          ship={ship}
           m={h.m}
         />);
       }
@@ -52,6 +82,11 @@ export default class HardpointsSlotSection extends SlotSection {
     return slots;
   }
 
+  /**
+   * Generate the section drop-down menu
+   * @param  {Function} translate Translate function
+   * @return {React.Component}    Section menu
+   */
   _getSectionMenu(translate) {
     let _fill = this._fill;
 

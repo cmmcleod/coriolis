@@ -2,8 +2,15 @@ import React from 'react';
 import Page from './Page';
 import { CoriolisLogo, GitHub } from '../components/SvgIcons';
 
+/**
+ * About Page
+ */
 export default class AboutPage extends Page {
 
+  /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -11,6 +18,10 @@ export default class AboutPage extends Page {
     };
   }
 
+  /**
+   * Render the Page
+   * @return {React.Component} The page contents
+   */
   render() {
     return <div className={'page'} style={{ textAlign: 'left', maxWidth: 800, margin: '0 auto' }}>
       <h1><CoriolisLogo style={{ marginRight: '0.4em' }} className='xl'/><span className='warning'>Coriolis</span></h1>

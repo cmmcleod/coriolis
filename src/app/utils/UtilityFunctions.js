@@ -1,11 +1,26 @@
 
 /**
+ * Wraps the callback/context menu handler such that the default
+ * operation can proceed if the SHIFT key is held while right-clicked
+ * @param  {Function} cb Callback for contextMenu
+ * @return {Function}    Wrapped contextmenu handler
+ */
+export function wrapCtxMenu(cb) {
+  return (event) => {
+    if (!event.getModifierState('Shift')) {
+      event.preventDefault();
+      cb.call(null, event);
+    }
+  };
+}
+
+/**
  * Compares A and B and return true using strict comparison (===)
  * @param  {any} objA   A
  * @param  {any} objB   B
  * @return {boolean}    true if A === B OR A properties === B properties
  */
-export default function shallowEqual(objA, objB) {
+export function shallowEqual(objA, objB) {
   if (objA === objB) {
     return true;
   }

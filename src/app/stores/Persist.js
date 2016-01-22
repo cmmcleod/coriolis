@@ -8,6 +8,7 @@ const LS_KEY_INSURANCE = 'insurance';
 const LS_KEY_DISCOUNTS = 'discounts';
 const LS_KEY_STATE = 'state';
 const LS_KEY_SIZE_RATIO = 'sizeRatio';
+const LS_KEY_TOOLTIPS = 'tooltips';
 
 let LS;
 
@@ -20,21 +21,40 @@ try {
   LS = null;
 }
 
+/**
+ * Safe localstorage put
+ * @param  {string} key key
+ * @param  {any} value data to store
+ */
 function _put(key, value) {
   if (LS) {
     LS.setItem(key, typeof value != 'string' ? JSON.stringify(value) : value);
   }
 }
 
+/**
+ * Safe localstorage get string
+ * @param  {string} key key
+ * @return {string} The stored string
+ */
 function _getString(key) {
   return LS.getItem(key);
 }
 
+/**
+ * Safe localstorage get
+ * @param  {string} key key
+ * @return {object | number} The stored data
+ */
 function _get(key) {
   let str = _getString(key);
   return str ? JSON.parse(str) : null;
 }
 
+/**
+ * Safe localstorage delete
+ * @param  {string} key key
+ */
 function _delete(key) {
   if (LS) {
     LS.removeItem(key);
@@ -43,34 +63,62 @@ function _delete(key) {
 
 
 /**
- * [description]
+ * Persist store / service for all user settings. Currently uses localstorage only
  */
 class Persist extends EventEmitter {
 
+  /**
+   * Create an instance
+   */
   constructor() {
     super();
     let buildJson = _get(LS_KEY_BUILDS);
     let comparisonJson = _get(LS_KEY_COMPARISONS);
+    let tips = _get(LS_KEY_TOOLTIPS);
 
     this.builds = buildJson ? buildJson : {};
     this.comparisons = comparisonJson ? comparisonJson : {};
     this.buildCount = Object.keys(this.builds).length;
     this.langCode = _getString(LS_KEY_LANG) || 'en';
     this.insurance = _getString(LS_KEY_INSURANCE);
-    this.discounts = _get(LS_KEY_DISCOUNTS);
+    this.discounts = _get(LS_KEY_DISCOUNTS) || [1, 1];
     this.costTab = _getString(LS_KEY_COST_TAB);
     this.state =  _get(LS_KEY_STATE);
     this.sizeRatio = _get(LS_KEY_SIZE_RATIO) || 1;
+    this.tooltipsEnabled = tips === null ? true : tips;
   }
 
+  /**
+   * Get the current language code
+   * @return {stirng} language code
+   */
   getLangCode() {
     return this.langCode;
   };
 
+  /**
+   * Update and save the current language
+   * @param {string} langCode language code
+   */
   setLangCode(langCode) {
     this.langCode = langCode;
     _put(LS_KEY_LANG, langCode);
     this.emit('language', langCode);
+  }
+
+  /**
+   * Show tooltips setting
+   * @param  {boolean} show Optional - update setting
+   * @return {boolean} True if tooltips should be shown
+   */
+  showTooltips(show) {
+    if (show !== undefined) {
+      this.tooltipsEnabled = !!show;
+      _put(LS_KEY_TOOLTIPS, this.tooltipsEnabled);
+      this.emit('tooltips', this.tooltipsEnabled);
+    }
+
+    return this.tooltipsEnabled;
   }
 
   /**
@@ -107,6 +155,11 @@ class Persist extends EventEmitter {
     return null;
   };
 
+  /**
+   *  Get all builds (object) or builds for a specific ship (array)
+   * @param  {string} shipId Optional Ship Id
+   * @return {Object | Array} Object if Ship Id is not provided
+   */
   getBuilds(shipId) {
     if(shipId && shipId.length > 0) {
       return this.builds[shipId];
@@ -114,6 +167,11 @@ class Persist extends EventEmitter {
     return this.builds;
   }
 
+  /**
+   * Get an array of all builds names for a ship
+   * @param  {string} shipId Ship Id
+   * @return {Array}  Array of string or empty array
+   */
   getBuildsNamesFor(shipId) {
     if (this.builds[shipId]) {
       return Object.keys(this.builds[shipId]).sort();
@@ -122,10 +180,20 @@ class Persist extends EventEmitter {
     }
   }
 
+  /**
+   * Check if a build has been saved
+   * @param  {string} shipId  Ship Id
+   * @param  {string} name    Build name
+   * @return {Boolean}        True if the build exists
+   */
   hasBuild(shipId, name) {
     return this.builds[shipId] && this.builds[shipId][name];
   }
 
+  /**
+   * Check if any builds have been saved
+   * @return {Boolean} True if any builds have been saved
+   */
   hasBuilds() {
     return Object.keys(this.builds).length > 0;
   }
@@ -145,9 +213,9 @@ class Persist extends EventEmitter {
       }
       _put(LS_KEY_BUILDS, this.builds);
       // Check if the build was used in existing comparisons
-      var comps = this.comparisons;
-      for (var c in comps) {
-        for (var i = 0; i < comps[c].builds.length; i++) {  // For all builds in the current comparison
+      let comps = this.comparisons;
+      for (let c in comps) {
+        for (let i = 0; i < comps[c].builds.length; i++) {  // For all builds in the current comparison
           if (comps[c].builds[i].shipId == shipId && comps[c].builds[i].buildName == name) {
             comps[c].builds.splice(i, 1);
             break;  // A build is unique per comparison
@@ -171,7 +239,7 @@ class Persist extends EventEmitter {
       this.comparisons[name] = {};
     }
     this.comparisons[name] = {
-      facets: facets,
+      facets,
       builds: builds.map(b => { return { shipId: b.id || b.shipId, buildName: b.buildName }; })
     };
     _put(LS_KEY_COMPARISONS, this.comparisons);
@@ -190,14 +258,27 @@ class Persist extends EventEmitter {
     return null;
   };
 
+  /**
+   * Get all saved comparisons
+   * @return {Object} All comparisons
+   */
   getComparisons() {
     return this.comparisons;
   }
 
+  /**
+   * Check if a comparison has been saved
+   * @param  {string}  name Comparison name
+   * @return {Boolean}      True if a comparison has been saved
+   */
   hasComparison(name) {
     return !!this.comparisons[name];
   }
 
+  /**
+   * Check if any comparisons have been saved
+   * @return {Boolean} True if any comparisons have been saved
+   */
   hasComparisons() {
     return Object.keys(this.comparisons).length > 0;
   }
@@ -222,11 +303,15 @@ class Persist extends EventEmitter {
     this.comparisons = {};
     _delete(LS_KEY_BUILDS);
     _delete(LS_KEY_COMPARISONS);
-    this.emit('deletedall');
+    this.emit('deletedAll');
   };
 
+  /**
+   * Get all saved data and settings
+   * @return {Object} Data and settings
+   */
   getAll() {
-    var data = {};
+    let data = {};
     data[LS_KEY_BUILDS] = this.getBuilds();
     data[LS_KEY_COMPARISONS] = this.getComparisons();
     data[LS_KEY_INSURANCE] = this.getInsurance();
@@ -244,17 +329,17 @@ class Persist extends EventEmitter {
 
   /**
    * Persist selected insurance type
-   * @param {string} name Insurance type name
+   * @param {string} insurance Insurance type name
    */
   setInsurance(insurance) {
-    this.insurance = insurance
+    this.insurance = insurance;
     _put(LS_KEY_INSURANCE, insurance);
     this.emit('insurance', insurance);
   };
 
   /**
-   * Persist selected discount
-   * @param {number} val Discount value/amount
+   * Persist selected ship discount
+   * @param {number} shipDiscount Discount value/amount
    */
   setShipDiscount(shipDiscount) {
     this.discounts[0] = shipDiscount;
@@ -271,8 +356,8 @@ class Persist extends EventEmitter {
   };
 
   /**
-   * Persist selected discount
-   * @param {number} val Discount value/amount
+   * Persist selected module discount
+   * @param {number} moduleDiscount Discount value/amount
    */
   setModuleDiscount(moduleDiscount) {
     this.discounts[1] = moduleDiscount;
@@ -290,7 +375,7 @@ class Persist extends EventEmitter {
 
   /**
    * Persist selected cost tab
-   * @param {number} val Discount value/amount
+   * @param {number} tabName Cost tab name
    */
   setCostTab(tabName) {
     this.costTab = tabName;
@@ -310,7 +395,7 @@ class Persist extends EventEmitter {
    * @return {object} state State object containing state name and params
    */
   getState() {
-     return this.state;
+    return this.state;
   };
 
   /**
@@ -332,7 +417,7 @@ class Persist extends EventEmitter {
 
   /**
    * Save the current size ratio to localstorage
-   * @param {number} sizeRatio
+   * @param {number} sizeRatio Size ratio scale
    */
   setSizeRatio(sizeRatio) {
     if (sizeRatio != this.sizeRatio) {

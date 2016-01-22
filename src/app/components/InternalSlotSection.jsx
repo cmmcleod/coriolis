@@ -4,9 +4,16 @@ import SlotSection from './SlotSection';
 import InternalSlot from './InternalSlot';
 import * as ModuleUtils from '../shipyard/ModuleUtils';
 
-
+/**
+ * Internal slot section
+ */
 export default class InternalSlotSection extends SlotSection {
 
+  /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   * @param  {Object} context React Component context
+   */
   constructor(props, context) {
     super(props, context, 'internal', 'internal compartments');
 
@@ -16,12 +23,19 @@ export default class InternalSlotSection extends SlotSection {
     this._fillWithArmor = this._fillWithArmor.bind(this);
   }
 
+  /**
+   * Empty all slots
+   */
   _empty() {
     this.props.ship.emptyInternal();
     this.props.onChange();
     this._close();
   }
 
+  /**
+   * Fill all slots with cargo racks
+   * @param  {SyntheticEvent} event Event
+   */
   _fillWithCargo(event) {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
@@ -34,6 +48,10 @@ export default class InternalSlotSection extends SlotSection {
     this._close();
   }
 
+  /**
+   * Fill all slots with Shield Cell Banks
+   * @param  {SyntheticEvent} event Event
+   */
   _fillWithCells(event) {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
@@ -49,6 +67,10 @@ export default class InternalSlotSection extends SlotSection {
     this._close();
   }
 
+  /**
+   * Fill all slots with Hull Reinforcement Packages
+   * @param  {SyntheticEvent} event Event
+   */
   _fillWithArmor(event) {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
@@ -61,18 +83,27 @@ export default class InternalSlotSection extends SlotSection {
     this._close();
   }
 
+  /**
+   * Empty all on section header right click
+   */
   _contextMenu() {
     this._empty();
   }
 
+  /**
+   * Generate the slot React Components
+   * @return {Array} Array of Slots
+   */
   _getSlots() {
     let slots = [];
     let { currentMenu, ship } = this.props;
-    let {internal, fuelCapacity, ladenMass } = ship;
+    let { originSlot, targetSlot } = this.state;
+    let { internal, fuelCapacity, ladenMass } = ship;
     let availableModules = ship.getAvailableModules();
 
     for (let i = 0, l = internal.length; i < l; i++) {
       let s = internal[i];
+
       slots.push(<InternalSlot
         key={i}
         maxClass={s.maxClass}
@@ -82,13 +113,23 @@ export default class InternalSlotSection extends SlotSection {
         selected={currentMenu == s}
         enabled={s.enabled}
         m={s.m}
+        drag={this._drag.bind(this, s)}
+        dragOver={this._dragOverSlot.bind(this, s)}
+        drop={this._drop}
+        dropClass={this._dropClass(s, originSlot, targetSlot)}
         fuel={fuelCapacity}
+        ship={ship}
       />);
     }
 
     return slots;
   }
 
+  /**
+   * Generate the section drop-down menu
+   * @param  {Function} translate Translate function
+   * @return {React.Component}    Section menu
+   */
   _getSectionMenu(translate) {
     return <div className='select' onClick={e => e.stopPropagation()}>
       <ul>

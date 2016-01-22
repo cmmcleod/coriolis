@@ -20,7 +20,7 @@ export const terms = {
   'action': 'Acci\u00f3n',
   'added': 'A\u00f1adido',
   'Advanced Discovery Scanner': 'Esc\u00e1ner de exploraci\u00f3n avanzado',
-  'agility': 'Maniobrabilidad',
+  maneuverability: 'Maniobrabilidad',
   'alpha': 'Alfa',
   'ammo': 'Munici\u00f3n',
   'PHRASE_CONFIRMATION': '\u00bfEst\u00e1s seguro?',

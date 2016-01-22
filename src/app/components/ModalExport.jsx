@@ -1,20 +1,26 @@
 import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
-import InterfaceEvents from '../utils/InterfaceEvents';
 
+/**
+ * Export Modal
+ */
 export default class ModalExport extends TranslatedComponent {
 
   static propTypes = {
     title: React.PropTypes.string,
-    promise: React.PropTypes.func,
+    generator: React.PropTypes.func,
     data: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object, React.PropTypes.array])
   };
 
+  /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   */
   constructor(props) {
     super(props);
     let exportJson;
 
-    if (props.promise) {
+    if (props.generator) {
       exportJson = 'Generating...';
     } else if(typeof props.data == 'string') {
       exportJson = props.data;
@@ -25,16 +31,25 @@ export default class ModalExport extends TranslatedComponent {
     this.state = { exportJson };
   }
 
-  componentWillMount(){
-    // When promise is done update exportJson accordingly
+  /**
+   * If generator is provided, execute on mount
+   */
+  componentWillMount() {
+    if (this.props.generator) {
+      this.props.generator((str) => this.setState({ exportJson: str }));
+    }
   }
 
+  /**
+   * Render the modal
+   * @return {React.Component} Modal Content
+   */
   render() {
     let translate = this.context.language.translate;
     let description;
 
     if (this.props.description) {
-      description = <div>{translate(this.props.description)}</div>
+      description = <div>{translate(this.props.description)}</div>;
     }
 
     return <div className='modal' onClick={ (e) => e.stopPropagation() }>
@@ -43,7 +58,7 @@ export default class ModalExport extends TranslatedComponent {
       <div>
         <textarea className='cb json' onFocus={ (e) => e.target.select() } readOnly value={this.state.exportJson} />
       </div>
-      <button className={'r dismiss cap'} onClick={InterfaceEvents.hideModal}>{translate('close')}</button>
+      <button className='r dismiss cap' onClick={this.context.hideModal}>{translate('close')}</button>
     </div>;
   }
 }

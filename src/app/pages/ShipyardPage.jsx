@@ -7,22 +7,38 @@ import * as ModuleUtils from '../shipyard/ModuleUtils';
 import { SizeMap } from '../shipyard/Constants';
 import Link from '../components/Link';
 
+/**
+ * Counts the hardpoints by class/size
+ * @param  {Object} slot Hardpoint Slot model
+ */
 function countHp(slot) {
   this.hp[slot.maxClass]++;
   this.hpCount++;
 }
 
+/**
+ * Counts the internal slots and aggregated properties
+ * @param  {Object} slot Internal Slots
+ */
 function countInt(slot) {
-  var crEligible = !slot.eligible || slot.eligible.cr;
+  let crEligible = !slot.eligible || slot.eligible.cr;
   this.int[slot.maxClass - 1]++;  // Subtract 1 since there is no Class 0 Internal compartment
   this.intCount++;
-  this.maxCargo += crEligible ? ModuleUtils.findInternal('cr', slot.maxClass, 'E').capacity : 0;
+  this.maxCargo += crEligible ? ModuleUtils.findInternal('cr', slot.maxClass, 'E').cargo : 0;
 }
 
 let cachedShipSummaries = null;
 
+/**
+ * The Shipyard summary page
+ */
 export default class ShipyardPage extends Page {
 
+  /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   * @param  {Object} context React Component context
+   */
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -43,8 +59,9 @@ export default class ShipyardPage extends Page {
   }
 
   /**
-   * Sort ships
-   * @param  {object} key Sort predicate
+   * Update state with the specified sort predicates
+   * @param  {String} shipPredicate      Sort predicate - property name
+   * @param  {number} shipPredicateIndex Sort predicate - property index
    */
   _sortShips(shipPredicate, shipPredicateIndex) {
     let shipDesc = this.state.shipDesc;
@@ -60,6 +77,12 @@ export default class ShipyardPage extends Page {
     this.setState({ shipPredicate, shipDesc, shipPredicateIndex });
   };
 
+  /**
+   * Generate Ship summary and aggregated properties
+   * @param  {String} shipId   Ship Id
+   * @param  {Object} shipData Ship Default Data
+   * @return {Object}          Ship summary and aggregated properties
+   */
   _shipSummary(shipId, shipData) {
     let summary = {
       id: shipId,
@@ -86,6 +109,15 @@ export default class ShipyardPage extends Page {
     return summary;
   }
 
+  /**
+   * Generate the table row summary for the ship
+   * @param  {Object} s           Ship summary
+   * @param  {Function} translate Translate function
+   * @param  {Object} u           Localized unit map
+   * @param  {Function} fInt      Localized integer formatter
+   * @param  {Function} fRound    Localized round formatter
+   * @return {React.Component}    Table Row
+   */
   _shipRowElement(s, translate, u, fInt, fRound) {
     return <tr key={s.id} className='highlight'>
       <td className='le'><Link href={'/outfit/' + s.id}>{s.name}</Link></td>
@@ -114,11 +146,15 @@ export default class ShipyardPage extends Page {
       <td className={cn({ disabled: !s.int[6] })}>{s.int[6]}</td>
       <td className={cn({ disabled: !s.int[7] })}>{s.int[7]}</td>
       <td className='ri'>{fInt(s.hullMass)}{u.T}</td>
-      <td className='ri'>{s.masslock}</td>
+      <td>{s.masslock}</td>
       <td className='ri'>{fInt(s.retailCost)}{u.CR}</td>
     </tr>;
   }
 
+  /**
+   * Render the Page
+   * @return {React.Component} The page contents
+   */
   render() {
     let { translate, formats, units } = this.context.language;
     let fInt = formats.int;
@@ -127,6 +163,8 @@ export default class ShipyardPage extends Page {
     let shipPredicate = this.state.shipPredicate;
     let shipPredicateIndex = this.state.shipPredicateIndex;
     let shipRows = [];
+    let hide = this.context.tooltip.bind(null, null);
+    let tip = this.context.termtip;
     let sortShips = (predicate, index) => this._sortShips.bind(this, predicate, index);
 
     // Sort shipsOverview
@@ -170,13 +208,13 @@ export default class ShipyardPage extends Page {
                 <th rowSpan={2} className='sortable le' onClick={sortShips('name')}>{translate('ship')}</th>
                 <th rowSpan={2} className='sortable' onClick={sortShips('manufacturer')}>{translate('manufacturer')}</th>
                 <th rowSpan={2} className='sortable' onClick={sortShips('class')}>{translate('size')}</th>
-                <th rowSpan={2} className='sortable' onClick={sortShips('agility')}>{translate('agility')}</th>
+                <th rowSpan={2} className='sortable' onMouseEnter={tip.bind(null, 'maneuverability')} onMouseLeave={hide} onClick={sortShips('agility')}>{translate('mnv')}</th>
                 <th colSpan={4}>{translate('base')}</th>
                 <th colSpan={4}>{translate('max')}</th>
                 <th colSpan={5} className='sortable' onClick={sortShips('hpCount')}>{translate('hardpoints')}</th>
                 <th colSpan={8} className='sortable' onClick={sortShips('intCount')}>{translate('internal compartments')}</th>
                 <th rowSpan={2} className='sortable' onClick={sortShips('hullMass')}>{translate('hull')}</th>
-                <th rowSpan={2} className='sortable' onClick={sortShips('masslock')}>{translate('MLF')}</th>
+                <th rowSpan={2} className='sortable' onMouseEnter={tip.bind(null, 'mass lock factor')} onMouseLeave={hide} onClick={sortShips('masslock')} >{translate('MLF')}</th>
                 <th rowSpan={2} className='sortable' onClick={sortShips('retailCost')}>{translate('cost')}</th>
               </tr>
               <tr>

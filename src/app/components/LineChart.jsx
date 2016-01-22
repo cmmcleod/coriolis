@@ -4,15 +4,18 @@ import d3 from 'd3';
 import TranslatedComponent from './TranslatedComponent';
 
 const RENDER_POINTS = 20;   // Only render 20 points on the graph
-const MARGIN = { top: 15, right: 15, bottom: 35, left: 60 }
+const MARGIN = { top: 15, right: 15, bottom: 35, left: 60 };
 
+/**
+ * Line Chart
+ */
 export default class LineChart extends TranslatedComponent {
 
   static defaultProps = {
     xMin: 0,
     yMin: 0,
     colors: ['#ff8c0d']
-  }
+  };
 
   static PropTypes = {
     width: React.PropTypes.number.isRequired,
@@ -29,6 +32,11 @@ export default class LineChart extends TranslatedComponent {
     colors: React.PropTypes.array,
   };
 
+  /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   * @param  {Object} context React Component context
+   */
   constructor(props, context) {
     super(props);
 
@@ -42,11 +50,12 @@ export default class LineChart extends TranslatedComponent {
     let markerElems = [];
     let detailElems = [<text key={'lbl'} className='label x' y='1.25em'/>];
     let xScale = d3.scale.linear();
+    let xAxisScale = d3.scale.linear();
     let yScale = d3.scale.linear();
     let series = props.series;
     let seriesLines = [];
 
-    this.xAxis = d3.svg.axis().scale(xScale).outerTickSize(0).orient('bottom');
+    this.xAxis = d3.svg.axis().scale(xAxisScale).outerTickSize(0).orient('bottom');
     this.yAxis = d3.svg.axis().scale(yScale).ticks(6).outerTickSize(0).orient('left');
 
     for(let i = 0, l = series ? series.length : 1; i < l; i++) {
@@ -58,6 +67,7 @@ export default class LineChart extends TranslatedComponent {
 
     this.state = {
       xScale,
+      xAxisScale,
       yScale,
       seriesLines,
       detailElems,
@@ -66,15 +76,19 @@ export default class LineChart extends TranslatedComponent {
     };
   }
 
+  /**
+   * Update tooltip content
+   * @param  {number} xPos x coordinate
+   */
   _tooltip(xPos) {
     let { xLabel, yLabel, xUnit, yUnit, func, series } = this.props;
-    let { xScale, yScale } = this.state;
+    let { xScale, yScale, innerWidth } = this.state;
     let { formats, translate } = this.context.language;
     let x0 = xScale.invert(xPos),
         y0 = func(x0),
         tips = this.tipContainer,
         yTotal = 0,
-        flip = (x0 / xScale.domain()[1] > 0.65),
+        flip = (xPos / innerWidth > 0.65),
         tipWidth = 0,
         tipHeightPx = tips.selectAll('rect').node().getBoundingClientRect().height;
 
@@ -100,32 +114,53 @@ export default class LineChart extends TranslatedComponent {
     this.markersContainer.selectAll('circle').attr('cx', xPos).attr('cy', (d, i) => yScale(series ? y0[series[i]] : y0));
   }
 
-  _updateDimensions(props, sizeRatio) {
+  /**
+   * Update dimensions based on properties and scale
+   * @param  {Object} props   React Component properties
+   * @param  {number} scale  size ratio / scale
+   */
+  _updateDimensions(props, scale) {
     let { width, xMax, xMin, yMin, yMax } = props;
     let innerWidth = width - MARGIN.left - MARGIN.right;
-    let outerHeight = Math.round(width * 0.5 * sizeRatio);
+    let outerHeight = Math.round(width * 0.5 * scale);
     let innerHeight = outerHeight - MARGIN.top - MARGIN.bottom;
 
     this.state.xScale.range([0, innerWidth]).domain([xMin, xMax || 1]).clamp(true);
+    this.state.xAxisScale.range([0, innerWidth]).domain([xMin, xMax]).clamp(true);
     this.state.yScale.range([innerHeight, 0]).domain([yMin, yMax]);
     this.setState({ innerWidth, outerHeight, innerHeight });
   }
 
+  /**
+   * Show tooltip
+   * @param  {SyntheticEvent} e Event
+   */
   _showTip(e) {
     this._moveTip(e);
     this.tipContainer.style('display', null);
     this.markersContainer.style('display', null);
   }
 
+  /**
+   * Move and update tooltip
+   * @param  {SyntheticEvent} e Event
+   */
   _moveTip(e) {
     this._tooltip(Math.round(e.clientX - e.target.getBoundingClientRect().left));
   }
 
+  /**
+   * Hide tooltip
+   */
   _hideTip() {
     this.tipContainer.style('display', 'none');
     this.markersContainer.style('display', 'none');
   }
 
+  /**
+   * Update series data generated from props
+   * @param  {Object} props   React Component properties
+   */
   _updateSeriesData(props) {
     let { func, xMin, xMax, series } = props;
     let delta = (xMax - xMin) / RENDER_POINTS;
@@ -134,23 +169,31 @@ export default class LineChart extends TranslatedComponent {
     if (delta) {
       seriesData = new Array(RENDER_POINTS);
       for (let i = 0, x = xMin; i < RENDER_POINTS; i++) {
-        seriesData[i] = [ x, func(x) ];
+        seriesData[i] = [x, func(x)];
         x += delta;
       }
-      seriesData[RENDER_POINTS - 1] = [ xMax, func(xMax) ];
+      seriesData[RENDER_POINTS - 1] = [xMax, func(xMax)];
     } else {
       let yVal = func(xMin);
-      seriesData = [ [0, yVal], [1, yVal]];
+      seriesData = [[0, yVal], [1, yVal]];
     }
 
     this.setState({ seriesData });
   }
 
-  componentWillMount(){
+  /**
+   * Update dimensions and series data based on props and context.
+   */
+  componentWillMount() {
     this._updateDimensions(this.props, this.context.sizeRatio);
     this._updateSeriesData(this.props);
   }
 
+  /**
+   * Update state based on property and context changes
+   * @param  {Object} nextProps   Incoming/Next properties
+   * @param  {Object} nextContext Incoming/Next conext
+   */
   componentWillReceiveProps(nextProps, nextContext) {
     let { func, xMin, xMax, yMin, yMax, width } = nextProps;
     let props = this.props;
@@ -166,6 +209,10 @@ export default class LineChart extends TranslatedComponent {
     }
   }
 
+  /**
+   * Render the chart
+   * @return {React.Component} Chart SVG
+   */
   render() {
     if (!this.props.width) {
       return null;
@@ -192,7 +239,7 @@ export default class LineChart extends TranslatedComponent {
           </text>
         </g>
         <g ref={(g) => this.tipContainer = d3.select(g)} className='tooltip' style={{ display: 'none' }}>
-          <rect className='tip' style={{height: tipHeight + 'em'}}></rect>
+          <rect className='tip' style={{ height: tipHeight + 'em' }}></rect>
           {detailElems}
         </g>
         <g ref={(g) => this.markersContainer = d3.select(g)} style={{ display: 'none' }}>

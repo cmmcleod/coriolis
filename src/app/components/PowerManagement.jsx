@@ -2,9 +2,8 @@ import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
-import InterfaceEvents from '../utils/InterfaceEvents';
 import PowerBands from './PowerBands';
-import { slotName, nameComparator } from '../utils/SlotFunctions';
+import { slotName, slotComparator } from '../utils/SlotFunctions';
 import { Power, NoPower } from './SvgIcons';
 
 const POWER = [
@@ -14,6 +13,9 @@ const POWER = [
   <Power className='secondary-disabled' />
 ];
 
+/**
+ * Power Management Section
+ */
 export default class PowerManagement extends TranslatedComponent {
   static PropTypes = {
     ship: React.PropTypes.object.isRequired,
@@ -21,6 +23,10 @@ export default class PowerManagement extends TranslatedComponent {
     onChange: React.PropTypes.func.isRequired
   };
 
+  /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   */
   constructor(props) {
     super(props);
     this._renderPowerRows = this._renderPowerRows.bind(this);
@@ -34,51 +40,77 @@ export default class PowerManagement extends TranslatedComponent {
     };
   }
 
+  /**
+   * Set the sort order and sort
+   * @param  {string} predicate Sort predicate
+   */
   _sortOrder(predicate) {
     let desc = this.state.desc;
 
     if (predicate == this.state.predicate) {
       desc = !desc;
-
     } else {
       desc = true;
     }
+
+    this._sort(this.props.ship, predicate, desc);
     this.setState({ predicate, desc });
   }
 
+  /**
+   * Sorts the power list
+   * @param  {Ship} ship          Ship instance
+   * @param  {string} predicate   Sort predicate
+   * @param  {Boolean} desc       Sort order descending
+   */
   _sort(ship, predicate, desc) {
     let powerList = ship.powerList;
+    let comp = slotComparator.bind(null, this.context.language.translate);
 
     switch (predicate) {
-      case 'n': powerList.sort(nameComparator(this.context.language.translate)); break;
-      case 't': powerList.sort((a, b) => a.type.localeCompare(b.type)); break;
-      case 'pri': powerList.sort((a, b) => a.priority - b.priority);break;
-      case 'pwr': powerList.sort((a, b) => (a.m ? a.m.power : 0) - (b.m ? b.m.power : 0)); break;
-      case 'r': powerList.sort((a, b) => ship.getSlotStatus(a) - ship.getSlotStatus(b)); break;
-      case 'd': powerList.sort((a, b) => ship.getSlotStatus(a, true) - ship.getSlotStatus(b, true)); break;
+      case 'n': comp = comp(null, desc); break;
+      case 't': comp = comp((a, b) => a.type.localeCompare(b.type), desc); break;
+      case 'pri': comp = comp((a, b) => a.priority - b.priority, desc); break;
+      case 'pwr': comp = comp((a, b) => a.m.power - b.m.power, desc); break;
+      case 'r': comp = comp((a, b) => ship.getSlotStatus(a) - ship.getSlotStatus(b), desc); break;
+      case 'd': comp = comp((a, b) => ship.getSlotStatus(a, true) - ship.getSlotStatus(b, true), desc); break;
     }
 
-    if (!desc) {
-      powerList.reverse();
-    }
+    powerList.sort(comp);
   }
 
+  /**
+   * Update slot priority
+   * @param  {Object} slot Slot model
+   * @param  {number} inc  increment / decrement
+   */
   _priority(slot, inc) {
     if (this.props.ship.setSlotPriority(slot, slot.priority + inc)) {
       this.props.onChange();
     }
   }
 
+  /**
+   * Toggle slot active/inactive
+   * @param  {Object} slot Slot model
+   */
   _toggleEnabled(slot) {
     this.props.ship.setSlotEnabled(slot, !slot.enabled);
     this.props.onChange();
   }
 
+  /**
+   * Generate/Render table rows
+   * @param  {Ship} ship          Ship instance
+   * @param  {Function} translate Translate function
+   * @param  {Function} pwr       Localized Power formatter
+   * @param  {Function} pct       Localized Percent formatter
+   * @return {Array}              Array of React.Component table rows
+   */
   _renderPowerRows(ship, translate, pwr, pct) {
-
     let powerRows = [];
 
-    for (var i = 0, l = ship.powerList.length; i < l; i++) {
+    for (let i = 0, l = ship.powerList.length; i < l; i++) {
       let slot = ship.powerList[i];
 
       if (slot.m && slot.m.power) {
@@ -102,7 +134,7 @@ export default class PowerManagement extends TranslatedComponent {
             {' ' + (slot.priority + 1) + ' '}
             <span className='ptr' onClick={this._priority.bind(this, slot, 1)}>&#9658;</span>
           </td>
-          <td className='ri ptr' style={{ width: '3.25em'}} onClick={toggleEnabled}>{pwr(m.power)}</td>
+          <td className='ri ptr' style={{ width: '3.25em' }} onClick={toggleEnabled}>{pwr(m.power)}</td>
           <td className='ri ptr' style={{ width: '3em' }} onClick={toggleEnabled}><u>{pct(m.power / ship.powerAvailable)}</u></td>
           {retractedElem}
           {deployedElem}
@@ -112,32 +144,50 @@ export default class PowerManagement extends TranslatedComponent {
     return powerRows;
   }
 
+  /**
+   * Update power bands width from DOM
+   */
   _updateWidth() {
     this.setState({ width: findDOMNode(this).offsetWidth });
   }
 
-  componentWillMount(){
+  /**
+   * Add listeners when about to mount and sort power list
+   */
+  componentWillMount() {
     this._sort(this.props.ship, this.state.predicate, this.state.desc);
-    this.resizeListener = InterfaceEvents.addListener('windowResized', this._updateWidth);
+    this.resizeListener = this.context.onWindowResize(this._updateWidth);
   }
 
+  /**
+   * Trigger DOM updates on mount
+   */
   componentDidMount() {
     this._updateWidth();
   }
 
+  /**
+   * Sort power list if the ship instance has changed
+   * @param  {Object} nextProps   Incoming/Next properties
+   * @param  {Object} nextState   Incoming/Next state
+   */
   componentWillUpdate(nextProps, nextState) {
-    // Can optimize this later: only sort when
-    // - predicate/desc changes
-    // - modules/language change AND sorting by type, name
-    // - power changes and sorting by pwr
-    // - enabled/disabled changes and sorting by priority
-    this._sort(nextProps.ship, nextState.predicate, nextState.desc);
+    if (this.props.ship != nextProps.ship) {
+      this._sort(nextProps.ship, nextState.predicate, nextState.desc);
+    }
   }
 
-  componentWillUnmount(){
+  /**
+   * Remove listeners on unmount
+   */
+  componentWillUnmount() {
     this.resizeListener.remove();
   }
 
+  /**
+   * Render power management section
+   * @return {React.Component} contents
+   */
   render() {
     let { ship, code } = this.props;
     let { translate, formats } = this.context.language;

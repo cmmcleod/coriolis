@@ -5,6 +5,9 @@ import cn from 'classnames';
 import { SizeMap } from '../shipyard/Constants';
 
 
+/**
+ * Comparison Table
+ */
 export default class ComparisonTable extends TranslatedComponent {
 
   static propTypes = {
@@ -12,16 +15,27 @@ export default class ComparisonTable extends TranslatedComponent {
     builds: React.PropTypes.array.isRequired,
     onSort: React.PropTypes.func.isRequired,
     predicate: React.PropTypes.string.isRequired, // Used only to test again prop changes for shouldRender
-    desc: React.PropTypes.bool.isRequired, // Used only to test again prop changes for shouldRender
-  }
+    desc: React.PropTypes.oneOfType([React.PropTypes.bool.isRequired, React.PropTypes.number.isRequired]), // Used only to test again prop changes for shouldRender
+  };
 
+  /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   * @param  {Object} context React Component context
+   */
   constructor(props, context) {
     super(props, context);
     this._buildHeaders = this._buildHeaders.bind(this);
-
     this.state = this._buildHeaders(props.facets, props.onSort, context.language.translate);
   }
 
+  /**
+   * Build table headers
+   * @param  {Array} facets        Facets list
+   * @param  {Function} onSort      Sort callback
+   * @param  {Function} translate   Translate function
+   * @return {Object}               Header Components
+   */
   _buildHeaders(facets, onSort, translate) {
     let header = [
       <th key='ship' rowSpan='2' className='sortable' onClick={onSort.bind(null, 'name')}>{translate('ship')}</th>,
@@ -39,7 +53,7 @@ export default class ComparisonTable extends TranslatedComponent {
 
         if (pl > 1) {
           for (let i = 0; i < pl; i++) {
-            subHeader.push(<th key={p[i]} className={cn('sortable', { lft: i === 0 } )}  onClick={onSort.bind(null, p[i])} >{translate(f.lbls[i])}</th>);
+            subHeader.push(<th key={p[i]} className={cn('sortable', { lft: i === 0 })} onClick={onSort.bind(null, p[i])} >{translate(f.lbls[i])}</th>);
           }
         }
       }
@@ -48,6 +62,14 @@ export default class ComparisonTable extends TranslatedComponent {
     return { header, subHeader };
   }
 
+  /**
+   * Generate a table row for the build
+   * @param  {Object} build       Ship build
+   * @param  {Array} facets       Facets list
+   * @param  {Object} formats     Localized formats map
+   * @param  {Object} units       Localized untis map
+   * @return {React.Component}    Table row
+   */
   _buildRow(build, facets, formats, units) {
     let url = `/outfit/${build.id}/${build.toString()}?bn=${build.buildName}`;
     let cells = [
@@ -66,6 +88,11 @@ export default class ComparisonTable extends TranslatedComponent {
     return <tr key={build.id + build.buildName} className='tr'>{cells}</tr>;
   }
 
+  /**
+   * Update state based on property and context changes
+   * @param  {Object} nextProps   Incoming/Next properties
+   * @param  {Object} nextContext Incoming/Next conext
+   */
   componentWillReceiveProps(nextProps, nextContext) {
     // If facets or language has changed re-render header
     if (nextProps.facets != this.props.facets || nextContext.language != this.context.language) {
@@ -73,6 +100,10 @@ export default class ComparisonTable extends TranslatedComponent {
     }
   }
 
+  /**
+   * Render the table
+   * @return {React.Component} Comparison table
+   */
   render() {
     let { builds, facets } = this.props;
     let { header, subHeader } = this.state;
@@ -97,6 +128,5 @@ export default class ComparisonTable extends TranslatedComponent {
         </table>
       </div>
     );
-
   }
 }

@@ -4,11 +4,11 @@
  *
  * @param  {number} mass Mass of a ship: laden, unlanden, partially laden, etc
  * @param  {object} fsd  The FDS object/component with maxfuel, fuelmul, fuelpower, optmass
- * @param  {number} fuel Optional - The fuel consumed during the jump (must be less than the drives max fuel per jump)
+ * @param  {number} fuel Optional - The fuel consumed during the jump
  * @return {number}      Distance in Light Years
  */
 export function jumpRange(mass, fsd, fuel) {
-    return Math.pow(Math.min(fuel === undefined ? fsd.maxfuel : fuel, fsd.maxfuel) / fsd.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass;
+  return Math.pow(Math.min(fuel === undefined ? fsd.maxfuel : fuel, fsd.maxfuel) / fsd.fuelmul, 1 / fsd.fuelpower) * fsd.optmass / mass;
 }
 
 /**
@@ -20,15 +20,15 @@ export function jumpRange(mass, fsd, fuel) {
  * @return {number}      Distance in Light Years
  */
 export function totalRange(mass, fsd, fuel) {
-  var fuelRemaining = fuel % fsd.maxfuel;  // Fuel left after making N max jumps
-  var jumps = Math.floor(fuel / fsd.maxfuel);
+  let fuelRemaining = fuel % fsd.maxfuel;  // Fuel left after making N max jumps
+  let jumps = Math.floor(fuel / fsd.maxfuel);
   mass += fuelRemaining;
   // Going backwards, start with the last jump using the remaining fuel
-  var totalRange = fuelRemaining > 0 ? Math.pow(fuelRemaining / fsd.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass : 0;
+  let totalRange = fuelRemaining > 0 ? Math.pow(fuelRemaining / fsd.fuelmul, 1 / fsd.fuelpower) * fsd.optmass / mass : 0;
   // For each max fuel jump, calculate the max jump range based on fuel mass left in the tank
-  for (var j = 0; j < jumps; j++) {
+  for (let j = 0; j < jumps; j++) {
     mass += fsd.maxfuel;
-    totalRange += Math.pow(fsd.maxfuel / fsd.fuelmul, 1 / fsd.fuelpower ) * fsd.optmass / mass;
+    totalRange += Math.pow(fsd.maxfuel / fsd.fuelmul, 1 / fsd.fuelpower) * fsd.optmass / mass;
   }
   return totalRange;
 };
@@ -43,7 +43,7 @@ export function totalRange(mass, fsd, fuel) {
  * @return {number}            Approximate shield strengh in MJ
  */
 export function shieldStrength(mass, shields, sg, multiplier) {
-  var opt;
+  let opt;
   if (mass < sg.minmass) {
     return shields * multiplier * sg.minmul;
   }
@@ -57,7 +57,7 @@ export function shieldStrength(mass, shields, sg, multiplier) {
   } else {
     opt = (sg.optmass - mass) / (sg.maxmass - sg.optmass);
     opt = -1 + Math.pow(1 + opt, 2.425);
-    return shields * multiplier * ( (-1 * opt * sg.maxmul) + ((1 + opt) * sg.optmul) );
+    return shields * multiplier * ((-1 * opt * sg.maxmul) + ((1 + opt) * sg.optmul));
   }
 }
 
@@ -72,8 +72,8 @@ export function shieldStrength(mass, shields, sg, multiplier) {
  * @return {object}             Approximate speed by pips
  */
 export function speed(mass, baseSpeed, baseBoost, thrusters, pipSpeed) {
-  var multiplier = mass > thrusters.maxmass ? 0 : ((1 - thrusters.M) + (thrusters.M * Math.pow(3 - (2 * Math.max(0.5, mass / thrusters.optmass)), thrusters.P)));
-  var speed = baseSpeed * multiplier;
+  let multiplier = mass > thrusters.maxmass ? 0 : ((1 - thrusters.M) + (thrusters.M * Math.pow(3 - (2 * Math.max(0.5, mass / thrusters.optmass)), thrusters.P)));
+  let speed = baseSpeed * multiplier;
 
   return {
     '0 Pips': speed * (1 - (pipSpeed * 4)),
