@@ -32,29 +32,35 @@ export default class Slider extends React.Component {
 
   /**
    * On Mouse down handler
-   * @param  {SyntheticEvent} e Event
+   * @param  {SyntheticEvent} event Event
    */
-  down(e) {
-    let rect = e.currentTarget.getBoundingClientRect();
-    this.move = this._updatePercent.bind(this, rect.left, rect.width);
-    this.move(e);
-    document.addEventListener('mousemove', this.move);
-    document.addEventListener('mouseup', this.up);
+  down(event) {
+    if (this.move) {
+      this.up(event);
+    } else {
+      let rect = event.currentTarget.getBoundingClientRect();
+      this.move = this._updatePercent.bind(this, rect.left, rect.width);
+      this.move(event);
+      document.addEventListener('mousemove', this.move, true);
+      document.addEventListener('mouseup', this.up, true);
+    }
   }
 
   /**
    * On Mouse up handler
+   * @param  {Event} event  DOM Event
    */
-  up() {
-    document.removeEventListener('mousemove', this.move);
-    document.removeEventListener('mouseup', this.up);
+  up(event) {
+    document.removeEventListener('mousemove', this.move, true);
+    document.removeEventListener('mouseup', this.up, true);
+    this.move = null;
   }
 
   /**
    * Update the slider percentage
    * @param  {number} left  Slider left position
    * @param  {number} width Slider width
-   * @param  {Event} event  Event
+   * @param  {Event} event  DOM Event
    */
   _updatePercent(left, width, event) {
     this.props.onChange(Math.min(Math.max((event.clientX - left) / width, 0), 1));
@@ -88,7 +94,7 @@ export default class Slider extends React.Component {
       <rect className='primary' style={{ opacity: 0.3 }} y='0.25em' rx='0.3em' ry='0.3em' width='100%' height='0.7em' />
       <rect className='primary-disabled'y='0.45em' rx='0.15em' ry='0.15em' width={pctStr} height='0.3em' />
       <circle className='primary' r='0.6em' cy='0.6em' cx={pctStr} />
-      <rect width='100%' height='100%' fillOpacity='0' onMouseDown={this.down}/>
+      <rect width='100%' height='100%' fillOpacity='0' onMouseDown={this.down} onClick={this.click} />
       {axisGroup}
     </svg>;
   }

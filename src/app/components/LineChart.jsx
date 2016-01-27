@@ -88,9 +88,12 @@ export default class LineChart extends TranslatedComponent {
         y0 = func(x0),
         tips = this.tipContainer,
         yTotal = 0,
-        flip = (xPos / innerWidth > 0.65),
+        flip = (xPos / innerWidth > 0.60),
         tipWidth = 0,
         tipHeightPx = tips.selectAll('rect').node().getBoundingClientRect().height;
+
+
+    xPos = xScale(x0); // Clamp xPos
 
     tips.selectAll('text.label.y').text(function(d, i) {
       let yVal = series ? y0[series[i]] : y0;
@@ -110,7 +113,7 @@ export default class LineChart extends TranslatedComponent {
     tips.attr('transform', 'translate(' + xPos + ',' + tipY + ')');
     tips.selectAll('text.label').attr('x', flip ? -12 : 12).style('text-anchor', flip ? 'end' : 'start');
     tips.selectAll('text.label.x').text(formats.f2(x0)).append('tspan').attr('class', 'metric').text(' ' + xUnit);
-    tips.selectAll('rect').attr('width', tipWidth + 4).attr('x', flip ? -tipWidth - 12 : 8).style('text-anchor', flip ? 'end' : 'start');
+    tips.selectAll('rect').attr('width', tipWidth + 4).attr('x', flip ? -tipWidth - 12 : 8).attr('y', 0).style('text-anchor', flip ? 'end' : 'start');
     this.markersContainer.selectAll('circle').attr('cx', xPos).attr('cy', (d, i) => yScale(series ? y0[series[i]] : y0));
   }
 
@@ -136,9 +139,10 @@ export default class LineChart extends TranslatedComponent {
    * @param  {SyntheticEvent} e Event
    */
   _showTip(e) {
-    this._moveTip(e);
+    e.preventDefault();
     this.tipContainer.style('display', null);
     this.markersContainer.style('display', null);
+    this._moveTip(e);
   }
 
   /**
@@ -146,13 +150,16 @@ export default class LineChart extends TranslatedComponent {
    * @param  {SyntheticEvent} e Event
    */
   _moveTip(e) {
-    this._tooltip(Math.round(e.clientX - e.target.getBoundingClientRect().left));
+    let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    this._tooltip(Math.round(clientX - e.currentTarget.getBoundingClientRect().left));
   }
 
   /**
    * Hide tooltip
+   * @param  {SyntheticEvent} e Event
    */
-  _hideTip() {
+  _hideTip(e) {
+    e.preventDefault();
     this.tipContainer.style('display', 'none');
     this.markersContainer.style('display', 'none');
   }
@@ -238,8 +245,8 @@ export default class LineChart extends TranslatedComponent {
             <tspan className='metric'>{` (${yUnit})`}</tspan>
           </text>
         </g>
-        <g ref={(g) => this.tipContainer = d3.select(g)} className='tooltip' style={{ display: 'none' }}>
-          <rect className='tip' style={{ height: tipHeight + 'em' }}></rect>
+        <g ref={(g) => this.tipContainer = d3.select(g)} style={{ display: 'none' }}>
+          <rect className='tooltip' height={tipHeight + 'em'}></rect>
           {detailElems}
         </g>
         <g ref={(g) => this.markersContainer = d3.select(g)} style={{ display: 'none' }}>

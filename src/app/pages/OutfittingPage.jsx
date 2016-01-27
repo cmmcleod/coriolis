@@ -328,10 +328,10 @@ export default class OutfittingPage extends Page {
         </div>
 
         <div className='group half'>
-          <table style={{ width: '100%', lineHeight: '1em' }}>
+          <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
             <tbody >
               <tr>
-                <td style={{ verticalAlign: 'top', padding:0 }}><Fuel className='xl primary-disabled' /></td>
+                <td style={{ verticalAlign: 'top', padding: 0, width: '2.5em' }}><Fuel className='xl primary-disabled' /></td>
                 <td><Slider axis={true} onChange={this._fuelChange} axisUnit={translate('T')} percent={fuelLevel} max={fuelCapacity} /></td>
                 <td className='primary' style={{ width: '10em', verticalAlign: 'top', fontSize: '0.9em' }}>{formats.f2(fuelLevel * fuelCapacity)}{units.T} {formats.pct1(fuelLevel)}</td>
               </tr>

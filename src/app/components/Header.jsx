@@ -260,7 +260,7 @@ export default class Header extends TranslatedComponent {
         <br/>
         <span className='cap ptr' onClick={this._toggleTooltips} >
           {translate('tooltips')}
-          <div className={cn({ disabled: !tips, 'primary-disabled': tips })} style={{ marginLeft: '0.5em', display: 'inline-block' }}>{(tips ? '✔' : '✖')}</div>
+          <div className={cn({ disabled: !tips, 'primary-disabled': tips })} style={{ marginLeft: '0.5em', display: 'inline-block' }}>{(tips ? '✓' : '✗')}</div>
         </span>
         <br/>
         {translate('insurance')}

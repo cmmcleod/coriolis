@@ -130,9 +130,9 @@ export default class PowerManagement extends TranslatedComponent {
           <td className='ptr le shorten cap' onClick={toggleEnabled}>{slotName(translate, slot)}</td>
           <td className='ptr' onClick={toggleEnabled}><u>{translate(slot.type)}</u></td>
           <td>
-            <span className='flip ptr' onClick={this._priority.bind(this, slot, -1)}>&#9658;</span>
+            <span className='flip ptr btn' onClick={this._priority.bind(this, slot, -1)}>&#9658;</span>
             {' ' + (slot.priority + 1) + ' '}
-            <span className='ptr' onClick={this._priority.bind(this, slot, 1)}>&#9658;</span>
+            <span className='ptr btn' onClick={this._priority.bind(this, slot, 1)}>&#9658;</span>
           </td>
           <td className='ri ptr' style={{ width: '3.25em' }} onClick={toggleEnabled}>{pwr(m.power)}</td>
           <td className='ri ptr' style={{ width: '3em' }} onClick={toggleEnabled}><u>{pct(m.power / ship.powerAvailable)}</u></td>

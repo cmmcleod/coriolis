@@ -10,6 +10,8 @@ Coriolis was created using assets and imagery from Elite: Dangerous, with the pe
 
 ## Contributing
 
+Chat to us on [HipChat](https://www.hipchat.com/gfYQiZcmy)!
+
 Please [submit issues](https://github.com/cmmcleod/coriolis/issues), or better yet [pull requests](https://github.com/cmmcleod/coriolis/pulls) for any corrections or additions to the database or the code.
 
 ### Feature Requests, Suggestions & Bugs

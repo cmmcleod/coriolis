@@ -613,6 +613,7 @@ export default class CostSection extends TranslatedComponent {
     if (nextProps.ship != this.props.ship || nextProps.code != this.props.code) {
       this._updateAmmoCosts(nextProps.ship);
       this._updateRetrofit(nextProps.ship, retrofitShip);
+      this.setState({ total: nextProps.ship.totalCost });
       this._sortCost(nextProps.ship);
     }
   }

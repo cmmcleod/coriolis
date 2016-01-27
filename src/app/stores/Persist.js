@@ -14,8 +14,8 @@ let LS;
 
 // Safe check to determine if localStorage is enabled
 try {
-  localStorage.setItem('s', 1);
-  localStorage.removeItem('s');
+  localStorage.setItem('test_string', 1);
+  localStorage.removeItem('test_string');
   LS = localStorage;
 } catch(e) {
   LS = null;
@@ -38,7 +38,7 @@ function _put(key, value) {
  * @return {string} The stored string
  */
 function _getString(key) {
-  return LS.getItem(key);
+  return LS ? LS.getItem(key) : null;
 }
 
 /**
@@ -80,7 +80,7 @@ class Persist extends EventEmitter {
     this.comparisons = comparisonJson ? comparisonJson : {};
     this.buildCount = Object.keys(this.builds).length;
     this.langCode = _getString(LS_KEY_LANG) || 'en';
-    this.insurance = _getString(LS_KEY_INSURANCE);
+    this.insurance = _getString(LS_KEY_INSURANCE) || 'standard';
     this.discounts = _get(LS_KEY_DISCOUNTS) || [1, 1];
     this.costTab = _getString(LS_KEY_COST_TAB);
     this.state =  _get(LS_KEY_STATE);
@@ -129,16 +129,13 @@ class Persist extends EventEmitter {
    * @param  {string} code   The serialized code
    */
   saveBuild(shipId, name, code) {
-    if (LS) {
-      if (!this.builds[shipId]) {
-        this.builds[shipId] = {};
-      }
-      let newBuild = !this.builds[shipId][name];
-      this.builds[shipId][name] = code;
-      _put(LS_KEY_BUILDS, this.builds);
-      this.emit('buildSaved', shipId, name, code);
+    if (!this.builds[shipId]) {
+      this.builds[shipId] = {};
     }
-  };
+    this.builds[shipId][name] = code;
+    _put(LS_KEY_BUILDS, this.builds);
+    this.emit('buildSaved', shipId, name, code);
+  }
 
   /**
    * Get the serialized code/string for a build. Returns null if a
@@ -153,7 +150,7 @@ class Persist extends EventEmitter {
       return this.builds[shipId][name];
     }
     return null;
-  };
+  }
 
   /**
    *  Get all builds (object) or builds for a specific ship (array)
@@ -225,7 +222,7 @@ class Persist extends EventEmitter {
       _put(LS_KEY_COMPARISONS, this.comparisons);
       this.emit('buildDeleted', shipId, name);
     }
-  };
+  }
 
   /**
    * Persist a comparison in localstorage.
@@ -244,7 +241,7 @@ class Persist extends EventEmitter {
     };
     _put(LS_KEY_COMPARISONS, this.comparisons);
     this.emit('comparisons', this.comparisons);
-  };
+  }
 
   /**
    * [getComparison description]
@@ -256,7 +253,7 @@ class Persist extends EventEmitter {
       return this.comparisons[name];
     }
     return null;
-  };
+  }
 
   /**
    * Get all saved comparisons
@@ -293,7 +290,7 @@ class Persist extends EventEmitter {
       _put(LS_KEY_COMPARISONS, this.comparisons);
       this.emit('comparisons', this.comparisons);
     }
-  };
+  }
 
   /**
    * Delete all builds and comparisons from localStorage
@@ -304,7 +301,7 @@ class Persist extends EventEmitter {
     _delete(LS_KEY_BUILDS);
     _delete(LS_KEY_COMPARISONS);
     this.emit('deletedAll');
-  };
+  }
 
   /**
    * Get all saved data and settings
@@ -317,25 +314,25 @@ class Persist extends EventEmitter {
     data[LS_KEY_INSURANCE] = this.getInsurance();
     data[LS_KEY_DISCOUNTS] = this.discounts;
     return data;
-  };
+  }
 
   /**
    * Get the saved insurance type
    * @return {string} The name of the saved insurance type of null
    */
   getInsurance() {
-    return this.insurance;
-  };
+    return this.insurance.toLowerCase();
+  }
 
   /**
    * Persist selected insurance type
    * @param {string} insurance Insurance type name
    */
   setInsurance(insurance) {
-    this.insurance = insurance;
+    this.insurance = insurance.toLowerCase();
     _put(LS_KEY_INSURANCE, insurance);
     this.emit('insurance', insurance);
-  };
+  }
 
   /**
    * Persist selected ship discount
@@ -345,7 +342,7 @@ class Persist extends EventEmitter {
     this.discounts[0] = shipDiscount;
     _put(LS_KEY_DISCOUNTS, this.discounts);
     this.emit('discounts', this.discounts);
-  };
+  }
 
   /**
    * Get the saved ship discount
@@ -363,7 +360,7 @@ class Persist extends EventEmitter {
     this.discounts[1] = moduleDiscount;
     _put(LS_KEY_DISCOUNTS, this.discounts);
     this.emit('discounts', this.discounts);
-  };
+  }
 
   /**
    * Get the saved ship discount
@@ -371,7 +368,7 @@ class Persist extends EventEmitter {
    */
   getModuleDiscount() {
     return this.discounts[1];
-  };
+  }
 
   /**
    * Persist selected cost tab
@@ -380,7 +377,7 @@ class Persist extends EventEmitter {
   setCostTab(tabName) {
     this.costTab = tabName;
     _put(LS_KEY_COST_TAB, tabName);
-  };
+  }
 
   /**
    * Get the saved  discount
@@ -388,7 +385,7 @@ class Persist extends EventEmitter {
    */
   getCostTab() {
     return this.costTab;
-  };
+  }
 
   /**
    * Retrieve the last router state from local storage
@@ -396,7 +393,7 @@ class Persist extends EventEmitter {
    */
   getState() {
     return this.state;
-  };
+  }
 
   /**
    * Save the current router state to localstorage
@@ -405,7 +402,7 @@ class Persist extends EventEmitter {
   setState(state) {
     this.state = state;
     _put(LS_KEY_STATE, state);
-  };
+  }
 
   /**
    * Retrieve the last router state from local storage
@@ -413,7 +410,7 @@ class Persist extends EventEmitter {
    */
   getSizeRatio() {
     return this.sizeRatio;
-  };
+  }
 
   /**
    * Save the current size ratio to localstorage
@@ -425,7 +422,7 @@ class Persist extends EventEmitter {
       _put(LS_KEY_SIZE_RATIO, sizeRatio);
       this.emit('sizeRatio', sizeRatio);
     }
-  };
+  }
 
   /**
    * Check if localStorage is enabled/active

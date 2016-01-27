@@ -238,13 +238,11 @@ export default class Coriolis extends React.Component {
    * @return {React.Component} The main app
    */
   render() {
-    return (
-      <div onClick={this._closeMenu}>
-        <Header appCacheUpdate={this.state.appCacheUpdate} currentMenu={this.state.currentMenu} />
-        { this.state.page ? <this.state.page currentMenu={this.state.currentMenu} /> : <NotFoundPage/> }
-        { this.state.modal }
-        { this.state.tooltip }
-      </div>
-    );
+    return <div onClick={this._closeMenu}>
+      <Header appCacheUpdate={this.state.appCacheUpdate} currentMenu={this.state.currentMenu} />
+      { this.state.page ? <this.state.page currentMenu={this.state.currentMenu} /> : <NotFoundPage/> }
+      { this.state.modal }
+      { this.state.tooltip }
+    </div>;
   }
 }

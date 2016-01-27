@@ -415,12 +415,10 @@ export default class Ship {
       this.updatePower()
           .updateJumpStats()
           .updateShieldStrength()
-          .updateTopSpeed()
-          .updatePowerPrioritesString()
-          .updatePowerEnabledString();
+          .updateTopSpeed();
     }
 
-    return this;
+    return this.updatePowerPrioritesString().updatePowerEnabledString();
   }
 
   /**
@@ -570,12 +568,12 @@ export default class Ship {
     if (newPriority >= 0 && newPriority < this.priorityBands.length) {
       let oldPriority = slot.priority;
       slot.priority = newPriority;
+      this.updatePowerPrioritesString();
 
       if (slot.enabled) { // Only update power if the slot is enabled
         let usage = powerUsageType(slot, slot.m);
         this.priorityBands[oldPriority][usage] -= slot.m.power;
         this.priorityBands[newPriority][usage] += slot.m.power;
-        this.updatePowerPrioritesString();
         this.updatePower();
       }
       return true;

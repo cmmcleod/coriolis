@@ -5,6 +5,7 @@ import cn from 'classnames';
 
 /**
  * Returns true if the current window location equals the link
+ * @param {string} href  URL/Href
  * @return {boolean} If matches
  */
 function isActive(href) {
