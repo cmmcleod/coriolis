@@ -121,7 +121,7 @@ export default class Coriolis extends React.Component {
    * @param  {React.Component} content Modal Content
    */
   _showModal(content) {
-    let modal = <div className='modal-bg' onClick={(e) => this._hideModal() }>{content}</div>;
+    let modal = <div className='modal-bg' onTouchTap={(e) => this._hideModal() }>{content}</div>;
     this.setState({ modal });
   }
 
@@ -238,7 +238,7 @@ export default class Coriolis extends React.Component {
    * @return {React.Component} The main app
    */
   render() {
-    return <div onClick={this._closeMenu}>
+    return <div onTouchTap={this._closeMenu}>
       <Header appCacheUpdate={this.state.appCacheUpdate} currentMenu={this.state.currentMenu} />
       { this.state.page ? <this.state.page currentMenu={this.state.currentMenu} /> : <NotFoundPage/> }
       { this.state.modal }

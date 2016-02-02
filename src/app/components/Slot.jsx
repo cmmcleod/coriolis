@@ -92,8 +92,10 @@ export default class Slot extends TranslatedComponent {
       />;
     }
 
+    // TODO: implement touch dragging
+
     return (
-      <div className={cn('slot', dropClass, { selected })} onClick={onOpen} onContextMenu={this._contextMenu} onDragOver={dragOver}>
+      <div className={cn('slot', dropClass, { selected })} onTouchTap={onOpen} onContextMenu={this._contextMenu} onDragOver={dragOver}>
         <div className='details-container'>
           <div className='sz'>{this._getMaxClassLabel(translate)}</div>
           {slotDetails}

@@ -1,27 +1,20 @@
 import Ship from '../src/app/shipyard/Ship';
 import { Ships } from 'coriolis-data';
 import * as Serializer from '../src/app/shipyard/Serializer';
+import jsen from 'jsen';
 
-describe("Serializer Service", function() {
-
+describe("Serializer", function() {
   const anacondaTestExport = require.requireActual('./fixtures/anaconda-test-detailed-export-v3');
   const code = anacondaTestExport.references[0].code;
   const anaconda = Ships.anaconda;
+  const validate = jsen(require('../src/schemas/ship-loadout/3'));
 
   describe("To Detailed Build", function() {
+    let testBuild = new Ship('anaconda', anaconda.properties, anaconda.slots).buildFrom(code);
+    let exportData = Serializer.toDetailedBuild('Test', testBuild);
 
-    let testBuild, exportData;
-
-    beforeEach(function() {
-      testBuild = new Ship('anaconda', anaconda.properties, anaconda.slots);
-      testBuild.buildFrom(code);
-      exportData = Serializer.toDetailedBuild('Test', testBuild);
-    });
-
-    xit("conforms to the v2 ship-loadout schema", function() {
-      // var validate = jsen(require('../schemas/ship-loadout/3'));
-      // var valid = validate(exportData);
-      expect(valid).toBeTruthy();
+    it("conforms to the v3 ship-loadout schema", function() {
+      expect(validate(exportData)).toBe(true);
     });
 
     it("contains the correct components and stats", function() {
@@ -29,6 +22,21 @@ describe("Serializer Service", function() {
       expect(exportData.stats).toEqual(anacondaTestExport.stats);
       expect(exportData.ship).toEqual(anacondaTestExport.ship);
       expect(exportData.name).toEqual(anacondaTestExport.name);
+    });
+
+  });
+
+  describe("Export Detailed Builds", function() {
+    const expectedExport = require('./fixtures/valid-detailed-export');
+    const builds = require('./fixtures/expected-builds');
+    const exportData = Serializer.toDetailedExport(builds);
+
+    it("conforms to the v3 ship-loadout schema", function() {
+      expect(exportData instanceof Array).toBe(true);
+
+      for (let detailedBuild of exportData) {
+        expect(validate(detailedBuild)).toBe(true);
+      }
     });
 
   });
@@ -50,5 +58,6 @@ describe("Serializer Service", function() {
     });
 
   });
+
 
 });

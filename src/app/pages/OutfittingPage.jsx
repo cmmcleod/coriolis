@@ -76,9 +76,9 @@ export default class OutfittingPage extends Page {
       savedCode,
       fuelCapacity,
       fuelLevel: 1,
-      jumpRangeChartFunc: ship.getJumpRangeWith.bind(ship, fuelCapacity),
-      totalRangeChartFunc: ship.getFastestRangeWith.bind(ship, fuelCapacity),
-      speedChartFunc: ship.getSpeedsWith.bind(ship, fuelCapacity)
+      jumpRangeChartFunc: ship.calcJumpRangeWith.bind(ship, fuelCapacity),
+      totalRangeChartFunc: ship.calcFastestRangeWith.bind(ship, fuelCapacity),
+      speedChartFunc: ship.calcSpeedsWith.bind(ship, fuelCapacity)
     };
   }
 
@@ -188,9 +188,9 @@ export default class OutfittingPage extends Page {
     this.setState({
       fuelLevel,
       fuelCapacity,
-      jumpRangeChartFunc: ship.getJumpRangeWith.bind(ship, fuel),
-      totalRangeChartFunc: ship.getFastestRangeWith.bind(ship, fuel),
-      speedChartFunc: ship.getSpeedsWith.bind(ship, fuel)
+      jumpRangeChartFunc: ship.calcJumpRangeWith.bind(ship, fuel),
+      totalRangeChartFunc: ship.calcFastestRangeWith.bind(ship, fuel),
+      speedChartFunc: ship.calcSpeedsWith.bind(ship, fuel)
     });
   }
 
@@ -240,11 +240,11 @@ export default class OutfittingPage extends Page {
    * @return {React.Component} The page contents
    */
   render() {
-    let { translate, units, formats, termtip } = this.context.language;
-    let tip = this.context.termtip;
-    let hide = this.context.tooltip.bind(null, null);
     let state = this.state;
+    let { language, termtip, tooltip, sizeRatio, onWindowResize } = this.context;
+    let { translate, units, formats } = language;
     let { ship, code, savedCode, buildName, chartWidth, fuelCapacity, fuelLevel } = state;
+    let hide = tooltip.bind(null, null);
     let menu = this.props.currentMenu;
     let shipUpdated = this._shipUpdated;
     let hStr = ship.getHardpointsString();
@@ -252,24 +252,24 @@ export default class OutfittingPage extends Page {
     let iStr = ship.getInternalString();
 
     return (
-      <div id='outfit' className={'page'} style={{ fontSize: (this.context.sizeRatio * 0.9) + 'em' }}>
+      <div id='outfit' className={'page'} style={{ fontSize: (sizeRatio * 0.9) + 'em' }}>
         <div id='overview'>
           <h1>{ship.name}</h1>
           <div id='build'>
             <input value={buildName} onChange={this._buildNameChange} placeholder={translate('Enter Name')} maxsize={50} />
-            <button onClick={this._saveBuild} disabled={!buildName || savedCode && code == savedCode} onMouseOver={tip.bind(null, 'save')} onMouseOut={hide}>
+            <button onTouchTap={this._saveBuild} disabled={!buildName || savedCode && code == savedCode} onMouseOver={termtip.bind(null, 'save')} onMouseOut={hide}>
               <FloppyDisk className='lg' />
             </button>
-            <button onClick={this._reloadBuild} disabled={!savedCode || code == savedCode} onMouseOver={tip.bind(null, 'reload')} onMouseOut={hide}>
+            <button onTouchTap={this._reloadBuild} disabled={!savedCode || code == savedCode} onMouseOver={termtip.bind(null, 'reload')} onMouseOut={hide}>
               <Reload className='lg'/>
             </button>
-            <button className={'danger'} onClick={this._deleteBuild} disabled={!savedCode} onMouseOver={tip.bind(null, 'delete')} onMouseOut={hide}>
+            <button className={'danger'} onTouchTap={this._deleteBuild} disabled={!savedCode} onMouseOver={termtip.bind(null, 'delete')} onMouseOut={hide}>
               <Bin className='lg'/>
             </button>
-            <button onClick={this._resetBuild} disabled={!code} onMouseOver={tip.bind(null, 'reset')} onMouseOut={hide}>
+            <button onTouchTap={this._resetBuild} disabled={!code} onMouseOver={termtip.bind(null, 'reset')} onMouseOut={hide}>
               <Switch className='lg'/>
             </button>
-            <button onClick={this._exportBuild} disabled={!buildName} onMouseOver={tip.bind(null, 'export')} onMouseOut={hide}>
+            <button onTouchTap={this._exportBuild} disabled={!buildName} onMouseOver={termtip.bind(null, 'export')} onMouseOut={hide}>
               <Download className='lg'/>
             </button>
           </div>
@@ -331,9 +331,21 @@ export default class OutfittingPage extends Page {
           <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
             <tbody >
               <tr>
-                <td style={{ verticalAlign: 'top', padding: 0, width: '2.5em' }}><Fuel className='xl primary-disabled' /></td>
-                <td><Slider axis={true} onChange={this._fuelChange} axisUnit={translate('T')} percent={fuelLevel} max={fuelCapacity} /></td>
-                <td className='primary' style={{ width: '10em', verticalAlign: 'top', fontSize: '0.9em' }}>{formats.f2(fuelLevel * fuelCapacity)}{units.T} {formats.pct1(fuelLevel)}</td>
+                <td style={{ verticalAlign: 'top', padding: 0, width: '2.5em' }} onMouseEnter={termtip.bind(null, 'fuel level')} onMouseLeave={hide}>
+                  <Fuel className='xl primary-disabled' />
+                </td>
+                <td>
+                  <Slider
+                      axis={true}
+                      onChange={this._fuelChange}
+                      axisUnit={translate('T')}
+                      percent={fuelLevel}
+                      max={fuelCapacity}
+                      scale={sizeRatio}
+                      onResize={onWindowResize}
+                  />
+                </td>
+                <td className='primary' style={{ width: '10em', verticalAlign: 'top', fontSize: '0.9em', textAlign: 'left' }}>{formats.f2(fuelLevel * fuelCapacity)}{units.T} {formats.pct1(fuelLevel)}</td>
               </tr>
             </tbody>
           </table>

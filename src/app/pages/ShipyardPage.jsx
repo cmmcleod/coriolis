@@ -205,44 +205,44 @@ export default class ShipyardPage extends Page {
           <table style={{ fontSize:'0.85em', whiteSpace:'nowrap', margin: '0 auto' }} align='center'>
             <thead>
               <tr className='main'>
-                <th rowSpan={2} className='sortable le' onClick={sortShips('name')}>{translate('ship')}</th>
-                <th rowSpan={2} className='sortable' onClick={sortShips('manufacturer')}>{translate('manufacturer')}</th>
-                <th rowSpan={2} className='sortable' onClick={sortShips('class')}>{translate('size')}</th>
-                <th rowSpan={2} className='sortable' onMouseEnter={tip.bind(null, 'maneuverability')} onMouseLeave={hide} onClick={sortShips('agility')}>{translate('mnv')}</th>
+                <th rowSpan={2} className='sortable le' onTouchTap={sortShips('name')}>{translate('ship')}</th>
+                <th rowSpan={2} className='sortable' onTouchTap={sortShips('manufacturer')}>{translate('manufacturer')}</th>
+                <th rowSpan={2} className='sortable' onTouchTap={sortShips('class')}>{translate('size')}</th>
+                <th rowSpan={2} className='sortable' onMouseEnter={tip.bind(null, 'maneuverability')} onMouseLeave={hide} onTouchTap={sortShips('agility')}>{translate('mnv')}</th>
                 <th colSpan={4}>{translate('base')}</th>
                 <th colSpan={4}>{translate('max')}</th>
-                <th colSpan={5} className='sortable' onClick={sortShips('hpCount')}>{translate('hardpoints')}</th>
-                <th colSpan={8} className='sortable' onClick={sortShips('intCount')}>{translate('internal compartments')}</th>
-                <th rowSpan={2} className='sortable' onClick={sortShips('hullMass')}>{translate('hull')}</th>
-                <th rowSpan={2} className='sortable' onMouseEnter={tip.bind(null, 'mass lock factor')} onMouseLeave={hide} onClick={sortShips('masslock')} >{translate('MLF')}</th>
-                <th rowSpan={2} className='sortable' onClick={sortShips('retailCost')}>{translate('cost')}</th>
+                <th colSpan={5} className='sortable' onTouchTap={sortShips('hpCount')}>{translate('hardpoints')}</th>
+                <th colSpan={8} className='sortable' onTouchTap={sortShips('intCount')}>{translate('internal compartments')}</th>
+                <th rowSpan={2} className='sortable' onTouchTap={sortShips('hullMass')}>{translate('hull')}</th>
+                <th rowSpan={2} className='sortable' onMouseEnter={tip.bind(null, 'mass lock factor')} onMouseLeave={hide} onTouchTap={sortShips('masslock')} >{translate('MLF')}</th>
+                <th rowSpan={2} className='sortable' onTouchTap={sortShips('retailCost')}>{translate('cost')}</th>
               </tr>
               <tr>
                 {/*  Base */}
-                <th className='sortable lft' onClick={sortShips('speed')}>{translate('speed')}</th>
-                <th className='sortable' onClick={sortShips('boost')}>{translate('boost')}</th>
-                <th className='sortable' onClick={sortShips('baseArmour')}>{translate('armour')}</th>
-                <th className='sortable' onClick={sortShips('baseShieldStrength')}>{translate('shields')}</th>
+                <th className='sortable lft' onTouchTap={sortShips('speed')}>{translate('speed')}</th>
+                <th className='sortable' onTouchTap={sortShips('boost')}>{translate('boost')}</th>
+                <th className='sortable' onTouchTap={sortShips('baseArmour')}>{translate('armour')}</th>
+                <th className='sortable' onTouchTap={sortShips('baseShieldStrength')}>{translate('shields')}</th>
                 {/*  Max */}
-                <th className='sortable lft' onClick={sortShips('topSpeed')}>{translate('speed')}</th>
-                <th className='sortable' onClick={sortShips('topBoost')}>{translate('boost')}</th>
-                <th className='sortable' onClick={sortShips('maxJumpRange')}>{translate('jump')}</th>
-                <th className='sortable' onClick={sortShips('maxCargo')}>{translate('cargo')}</th>
+                <th className='sortable lft' onTouchTap={sortShips('topSpeed')}>{translate('speed')}</th>
+                <th className='sortable' onTouchTap={sortShips('topBoost')}>{translate('boost')}</th>
+                <th className='sortable' onTouchTap={sortShips('maxJumpRange')}>{translate('jump')}</th>
+                <th className='sortable' onTouchTap={sortShips('maxCargo')}>{translate('cargo')}</th>
                 {/*  Hardpoints */}
-                <th className='sortable lft' onClick={sortShips('hp',1)}>{translate('S')}</th>
-                <th className='sortable' onClick={sortShips('hp', 2)}>{translate('M')}</th>
-                <th className='sortable' onClick={sortShips('hp', 3)}>{translate('L')}</th>
-                <th className='sortable' onClick={sortShips('hp', 4)}>{translate('H')}</th>
-                <th className='sortable' onClick={sortShips('hp', 0)}>{translate('U')}</th>
+                <th className='sortable lft' onTouchTap={sortShips('hp',1)}>{translate('S')}</th>
+                <th className='sortable' onTouchTap={sortShips('hp', 2)}>{translate('M')}</th>
+                <th className='sortable' onTouchTap={sortShips('hp', 3)}>{translate('L')}</th>
+                <th className='sortable' onTouchTap={sortShips('hp', 4)}>{translate('H')}</th>
+                <th className='sortable' onTouchTap={sortShips('hp', 0)}>{translate('U')}</th>
                 {/*  Internal */}
-                <th className='sortable lft' onClick={sortShips('int', 0)} >1</th>
-                <th className='sortable' onClick={sortShips('int', 1)} >2</th>
-                <th className='sortable' onClick={sortShips('int', 2)} >3</th>
-                <th className='sortable' onClick={sortShips('int', 3)} >4</th>
-                <th className='sortable' onClick={sortShips('int', 4)} >5</th>
-                <th className='sortable' onClick={sortShips('int', 5)} >6</th>
-                <th className='sortable' onClick={sortShips('int', 6)} >7</th>
-                <th className='sortable' onClick={sortShips('int', 7)} >8</th>
+                <th className='sortable lft' onTouchTap={sortShips('int', 0)} >1</th>
+                <th className='sortable' onTouchTap={sortShips('int', 1)} >2</th>
+                <th className='sortable' onTouchTap={sortShips('int', 2)} >3</th>
+                <th className='sortable' onTouchTap={sortShips('int', 3)} >4</th>
+                <th className='sortable' onTouchTap={sortShips('int', 4)} >5</th>
+                <th className='sortable' onTouchTap={sortShips('int', 5)} >6</th>
+                <th className='sortable' onTouchTap={sortShips('int', 6)} >7</th>
+                <th className='sortable' onTouchTap={sortShips('int', 7)} >8</th>
               </tr>
             </thead>
             <tbody>

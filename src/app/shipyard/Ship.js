@@ -110,14 +110,6 @@ export default class Ship {
   /* GETTERS */
 
   /**
-   * [getAvailableModules description]
-   * @return {[type]} [description]
-   */
-  getAvailableModules() {
-    return this.availCS;
-  }
-
-  /**
    * Can the ship thrust/move
    * @return {[type]} True if thrusters operational
    */
@@ -134,6 +126,86 @@ export default class Ship {
     return this.canThrust() &&                                  // Thrusters operational
         this.getSlotStatus(this.standard[4]) == 3 &&            // Power distributor operational
         this.boostEnergy <= this.standard[4].m.enginecapacity;  // PD capacitor is sufficient for boost
+  }
+
+    /**
+   * Calculate hypothetical jump range using the installed FSD and the
+   * specified mass which can be more or less than ships actual mass
+   * @param  {number} fuel  Fuel available in tons
+   * @param  {number} cargo Cargo in tons
+   * @return {number}       Jump range in Light Years
+   */
+  calcJumpRangeWith(fuel, cargo) {
+    return Calc.jumpRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
+  }
+
+  /**
+   * Calculate the hypothetical laden jump range based on a potential change in mass, fuel, or FSD
+   * @param  {number} massDelta Optional - Change in laden mass (mass + cargo + fuel)
+   * @param  {number} fuel      Optional - Available fuel (defaults to max fuel based on FSD)
+   * @param  {Object} fsd       Optional - Frame Shift Drive (or use mounted FSD)
+   * @return {number}           Jump range in Light Years
+   */
+  calcLadenRange(massDelta, fuel, fsd) {
+    return Calc.jumpRange(this.ladenMass + (massDelta || 0), fsd || this.standard[2].m, fuel);
+  }
+
+  /**
+   * Calculate the hypothetical unladen jump range based on a potential change in mass, fuel, or FSD
+   * @param  {number} massDelta Optional - Change in ship mass
+   * @param  {number} fuel      Optional - Available fuel (defaults to lesser of fuel capacity or max fuel based on FSD)
+   * @param  {Object} fsd       Optional - Frame Shift Drive (or use mounted FSD)
+   * @return {number}           Jump range in Light Years
+   */
+  calcUnladenRange(massDelta, fuel, fsd) {
+    fsd = fsd || this.standard[2].m;
+    return Calc.jumpRange(this.unladenMass + (massDelta || 0) +  Math.min(fsd.maxfuel, fuel || this.fuelCapacity), fsd || this.standard[2].m, fuel);
+  }
+
+  /**
+   * Calculate cumulative (total) jump range when making longest jumps using the installed FSD and the
+   * specified mass which can be more or less than ships actual mass
+   * @param  {number} fuel  Fuel available in tons
+   * @param  {number} cargo Cargo in tons
+   * @return {number}       Total/Cumulative Jump range in Light Years
+   */
+  calcFastestRangeWith(fuel, cargo) {
+    return Calc.totalRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
+  }
+
+  /**
+   * Calculate the hypothetical top speeds at cargo and fuel tonnage
+   * @param  {number} fuel  Fuel available in tons
+   * @param  {number} cargo Cargo in tons
+   * @return {Object}       Speed at pip settings and boost
+   */
+  calcSpeedsWith(fuel, cargo) {
+    return Calc.speed(this.unladenMass + fuel + cargo, this.speed, this.boost, this.standard[1].m, this.pipSpeed);
+  }
+
+  /**
+   * Calculate the hypothetical shield strength for the ship using the specified parameters
+   * @param  {Object} sg              [optional] Shield Generator to use
+   * @param  {number} multiplierDelta [optional] Change to shield multiplier (+0.2, - 0.12, etc)
+   * @return {number}                 Shield strength in MH
+   */
+  calcShieldStrengthWith(sg, multiplierDelta) {
+    if (!sg) {
+      let sgSlot = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
+      if (!sgSlot) {
+        return 0;
+      }
+      sg = sgSlot.m;
+    }
+    return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, this.shieldMultiplier + (multiplierDelta || 0));
+  }
+
+  /**
+   * [getAvailableModules description]
+   * @return {[type]} [description]
+   */
+  getAvailableModules() {
+    return this.availCS;
   }
 
   /**
@@ -158,61 +230,6 @@ export default class Ship {
       return 0;  // No Status (Not possible to be active in this state)
     }
     return this.priorityBands[slot.priority].retractedSum >= this.powerAvailable ? 2 : 3;    // Offline : Online
-  }
-
-  /**
-   * Calculate jump range using the installed FSD and the
-   * specified mass which can be more or less than ships actual mass
-   * @param  {number} fuel  Fuel available in tons
-   * @param  {number} cargo Cargo in tons
-   * @return {number}       Jump range in Light Years
-   */
-  getJumpRangeWith(fuel, cargo) {
-    return Calc.jumpRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
-  }
-
-  /**
-   * Get the laden jump range based on a potential change in mass, fuel, or FSD
-   * @param  {number} massDelta Optional - Change in laden mass (mass + cargo + fuel)
-   * @param  {number} fuel      Optional - Available fuel (defaults to max fuel based on FSD)
-   * @param  {Object} fsd       Optional - Frame Shift Drive (or use mounted FSD)
-   * @return {number}           Jump range in Light Years
-   */
-  getLadenRange(massDelta, fuel, fsd) {
-    return Calc.jumpRange(this.ladenMass + (massDelta || 0), fsd || this.standard[2].m, fuel);
-  }
-
-  /**
-   * Get the unladen jump range based on a potential change in mass, fuel, or FSD
-   * @param  {number} massDelta Optional - Change in ship mass
-   * @param  {number} fuel      Optional - Available fuel (defaults to lesser of fuel capacity or max fuel based on FSD)
-   * @param  {Object} fsd       Optional - Frame Shift Drive (or use mounted FSD)
-   * @return {number}           Jump range in Light Years
-   */
-  getUnladenRange(massDelta, fuel, fsd) {
-    fsd = fsd || this.standard[2].m;
-    return Calc.jumpRange(this.unladenMass + (massDelta || 0) +  Math.min(fsd.maxfuel, fuel || this.fuelCapacity), fsd || this.standard[2].m, fuel);
-  }
-
-  /**
-   * Calculate cumulative (total) jump range when making longest jumps using the installed FSD and the
-   * specified mass which can be more or less than ships actual mass
-   * @param  {number} fuel  Fuel available in tons
-   * @param  {number} cargo Cargo in tons
-   * @return {number}       Total/Cumulative Jump range in Light Years
-   */
-  getFastestRangeWith(fuel, cargo) {
-    return Calc.totalRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
-  }
-
-  /**
-   * Get the top speeds at cargo and fuel tonnage
-   * @param  {number} fuel  Fuel available in tons
-   * @param  {number} cargo Cargo in tons
-   * @return {Object}       Speed at pip settings and boost
-   */
-  getSpeedsWith(fuel, cargo) {
-    return Calc.speed(this.unladenMass + fuel + cargo, this.speed, this.boost, this.standard[1].m, this.pipSpeed);
   }
 
   /**
@@ -426,6 +443,7 @@ export default class Ship {
    * code.
    *
    * @param {string}  serializedString  The string to deserialize
+   * @return {this} The current ship instance for chaining
    */
   buildFrom(serializedString) {
     let standard = new Array(this.standard.length),
@@ -446,7 +464,7 @@ export default class Ship {
 
     decodeToArray(code, internal, decodeToArray(code, hardpoints, decodeToArray(code, standard, 1)));
 
-    this.buildWith(
+    return this.buildWith(
       {
         bulkheads: code.charAt(0) * 1,
         standard,
@@ -716,9 +734,9 @@ export default class Ship {
   updateJumpStats() {
     let fsd = this.standard[2].m;   // Frame Shift Drive;
     let { unladenMass, ladenMass, fuelCapacity } = this;
-    this.unladenRange = this.getUnladenRange(); // Includes fuel weight for jump
+    this.unladenRange = this.calcUnladenRange(); // Includes fuel weight for jump
     this.fullTankRange = Calc.jumpRange(unladenMass + fuelCapacity, fsd); // Full Tank
-    this.ladenRange = this.getLadenRange(); // Includes full tank and caro
+    this.ladenRange = this.calcLadenRange(); // Includes full tank and caro
     this.unladenTotalRange = Calc.totalRange(unladenMass, fsd, fuelCapacity);
     this.ladenTotalRange = Calc.totalRange(unladenMass + this.cargoCapacity, fsd, fuelCapacity);
     this.maxJumpCount = Math.ceil(fuelCapacity / fsd.maxfuel);

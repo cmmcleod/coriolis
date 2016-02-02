@@ -41,7 +41,8 @@ export default class Link extends React.Component {
    * @return {React.Component} A href element
    */
   render() {
-    return <a {...this.props} onClick={this.handler.bind(this)}>{this.props.children}</a>;
+    let action = this.handler.bind(this);
+    return <a {...this.props} onTouchTap={action}>{this.props.children}</a>;
   }
 
 }

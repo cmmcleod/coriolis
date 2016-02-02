@@ -22,12 +22,13 @@ export default class ActiveLink extends Link {
    * @return {React.Component} The active link
    */
   render() {
+    let action = this.handler.bind(this);
     let className = this.props.className;
     if (isActive(this.props.href)) {
       className = cn(className, 'active');
     }
 
-    return <a {...this.props} className={className} onClick={this.handler.bind(this)}>{this.props.children}</a>;
+    return <a {...this.props} className={className} onTouchTap={action}>{this.props.children}</a>;
   }
 
 }

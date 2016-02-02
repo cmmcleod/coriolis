@@ -89,6 +89,11 @@ function detailedJsonToBuild(detailedBuild) {
  */
 export default class ModalImport extends TranslatedComponent {
 
+
+  static propTypes = {
+    builds: React.PropTypes.object,  // Optional: Import object
+  };
+
   /**
    * Constructor
    * @param  {Object} props   React Component properties
@@ -97,8 +102,8 @@ export default class ModalImport extends TranslatedComponent {
     super(props);
 
     this.state = {
-      builds: null,
-      canEdit: true,
+      builds: props.builds,
+      canEdit: !props.builds,
       comparisons: null,
       discounts: null,
       errorMsg: null,
@@ -326,13 +331,13 @@ export default class ModalImport extends TranslatedComponent {
     let builds = null, comparisons = null;
 
     if (this.state.builds) {
-      builds = this.state.builds;
-      for (let shipId in builds) {
-        for (let buildName in builds[shipId]) {
-          let code = builds[shipId][buildName];
-          // Update builds object such that orginal name retained, but can be renamed
+      builds = {};   // Create new builds object such that orginal name retained, but can be renamed
+      for (let shipId in this.state.builds) {
+        let shipbuilds = this.state.builds[shipId];
+        builds[shipId] = {};
+        for (let buildName in shipbuilds) {
           builds[shipId][buildName] = {
-            code,
+            code: shipbuilds[buildName],
             useName: buildName
           };
         }
@@ -340,9 +345,9 @@ export default class ModalImport extends TranslatedComponent {
     }
 
     if (this.state.comparisons) {
-      comparisons = this.state.comparisons;
-      for (let name in comparisons) {
-        comparisons[name].useName = name;
+      comparisons = {};
+      for (let name in this.state.comparisons) {
+        comparisons[name] = Object.assign({ useName: name }, this.state.comparisons[name]);
       }
     }
 
@@ -403,8 +408,7 @@ export default class ModalImport extends TranslatedComponent {
    * If imported data is already provided process immediately on mount
    */
   componentWillMount() {
-    if (this.props.importingBuilds) {
-      this.setState({ builds: this.props.importingBuilds, canEdit : false });
+    if (this.props.builds) {
       this._process();
     }
   }
@@ -504,7 +508,7 @@ export default class ModalImport extends TranslatedComponent {
       );
     }
 
-    return <div className='modal' onClick={ (e) => e.stopPropagation() }>
+    return <div className='modal' onTouchTap={ (e) => e.stopPropagation() } onClick={ (e) => e.stopPropagation() }>
       <h2 >{translate('import')}</h2>
       {importStage}
       <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>

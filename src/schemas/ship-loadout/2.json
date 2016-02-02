@@ -3,7 +3,7 @@
   "id":                 "http://cdn.coriolis.io/schemas/ship-loadout/2.json#",
   "title":              "Ship Loadout",
   "type":               "object",
-  "description":        "The details for a specific ship build/loadout",
+  "description":        "The details for a specific ship build/loadout. DEPRECATED in favor of Version 3",
   "required":           ["name", "ship", "components"],
   "properties": {
     "name": {

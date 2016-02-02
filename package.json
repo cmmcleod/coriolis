@@ -42,10 +42,12 @@
       "<rootDir>/node_modules/classnames",
       "<rootDir>/node_modules/d3",
       "<rootDir>/node_modules/lz-string",
+      "<rootDir>/node_modules/jsen",
       "<rootDir>/node_modules/coriolis-data",
       "<rootDir>/src/app/shipyard",
       "<rootDir>/src/app/i18n",
       "<rootDir>/src/app/utils",
+      "<rootDir>/src/schemas",
       "<rootDir>/__tests__"
     ]
   },
@@ -67,6 +69,7 @@
     "file-loader": "^0.8.4",
     "html-webpack-plugin": "^1.7.0",
     "jest-cli": "*",
+    "jsen": "^0.6.0",
     "json-loader": "^0.5.3",
     "less": "^2.5.3",
     "less-loader": "^2.2.1",
@@ -79,6 +82,7 @@
     "webpack-dev-server": "^1.14.0"
   },
   "dependencies": {
+    "babel-polyfill": "^6.3.14",
     "classnames": "^2.2.0",
     "d3": "^3.5.9",
     "fbemitter": "^2.0.0",

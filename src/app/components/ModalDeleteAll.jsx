@@ -22,11 +22,11 @@ export default class ModalDeleteAll extends TranslatedComponent {
   render() {
     let translate = this.context.language.translate;
 
-    return <div className='modal' onClick={(e) => e.stopPropagation()}>
+    return <div className='modal' onTouchTap={(e) => e.stopPropagation()}>
       <h2>{translate('delete all')}</h2>
       <p className='cen'>{translate('PHRASE_CONFIRMATION')}</p>
-      <button className='l cap' onClick={this._deleteAll.bind(this)}>{translate('yes')}</button>
-      <button className='r cap' onClick={this.context.hideModal}>{translate('no')}</button>
+      <button className='l cap' onTouchTap={this._deleteAll.bind(this)}>{translate('yes')}</button>
+      <button className='r cap' onTouchTap={this.context.hideModal}>{translate('no')}</button>
     </div>;
   }
 }

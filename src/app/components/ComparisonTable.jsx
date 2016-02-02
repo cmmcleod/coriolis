@@ -38,8 +38,8 @@ export default class ComparisonTable extends TranslatedComponent {
    */
   _buildHeaders(facets, onSort, translate) {
     let header = [
-      <th key='ship' rowSpan='2' className='sortable' onClick={onSort.bind(null, 'name')}>{translate('ship')}</th>,
-      <th key='build' rowSpan='2' className='sortable' onClick={onSort.bind(null, 'buildName')}>{translate('build')}</th>
+      <th key='ship' rowSpan='2' className='sortable' onTouchTap={onSort.bind(null, 'name')}>{translate('ship')}</th>,
+      <th key='build' rowSpan='2' className='sortable' onTouchTap={onSort.bind(null, 'buildName')}>{translate('build')}</th>
     ];
     let subHeader = [];
 
@@ -47,13 +47,13 @@ export default class ComparisonTable extends TranslatedComponent {
       if (f.active) {
         let p = f.props;
         let pl = p.length;
-        header.push(<th key={f.title} rowSpan={pl === 1 ? 2 : 1} colSpan={pl} className={cn({ sortable: pl === 1 })} onClick={pl === 1 ? onSort.bind(null, p[0]) : null }>
+        header.push(<th key={f.title} rowSpan={pl === 1 ? 2 : 1} colSpan={pl} className={cn({ sortable: pl === 1 })} onTouchTap={pl === 1 ? onSort.bind(null, p[0]) : null }>
           {translate(f.title)}
         </th>);
 
         if (pl > 1) {
           for (let i = 0; i < pl; i++) {
-            subHeader.push(<th key={p[i]} className={cn('sortable', { lft: i === 0 })} onClick={onSort.bind(null, p[i])} >{translate(f.lbls[i])}</th>);
+            subHeader.push(<th key={p[i]} className={cn('sortable', { lft: i === 0 })} onTouchTap={onSort.bind(null, p[i])} >{translate(f.lbls[i])}</th>);
           }
         }
       }

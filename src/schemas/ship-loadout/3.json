@@ -212,7 +212,7 @@
         "armourAdded":{
           "description":  "Armour added through Hull reinforcement",
           "type":         "integer",
-          "minimum":      1
+          "minimum":      0
         },
         "baseShieldStrength": {
           "type":         "integer",
@@ -225,7 +225,7 @@
         "boost": {
           "description":  "Maximum boost speed of the ships (4 pips, straight-line)",
           "type":         "number",
-          "minimum":      1
+          "minimum":      0
         },
         "cargoCapacity": {
           "type":         "integer",

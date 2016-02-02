@@ -49,11 +49,11 @@ export default class SlotSection extends TranslatedComponent {
    * @param  {SyntheticEvent} event Event
    */
   _openMenu(menu, event) {
+    event.preventDefault();
     event.stopPropagation();
     if (this.props.currentMenu === menu) {
       menu = null;
     }
-
     this.context.openMenu(menu);
   }
 
@@ -90,7 +90,6 @@ export default class SlotSection extends TranslatedComponent {
     e.stopPropagation();
     let os = this.state.originSlot;
     if (os) {
-      console.log('has origin');
       e.dataTransfer.dropEffect = os != targetSlot && targetSlot.maxClass >= os.m.class ? 'copyMove' : 'none';
       this.setState({ targetSlot });
     } else {
@@ -158,16 +157,6 @@ export default class SlotSection extends TranslatedComponent {
   }
 
   /**
-   * Toggle slot Active/Inactive
-   * @param  {Object} slot Slot
-   */
-  _togglePwr(slot) {
-    this.props.ship.setSlotEnabled(slot, !slot.enabled);
-    this.props.onChange();
-    this._close();
-  }
-
-  /**
    * Close current menu
    */
   _close() {
@@ -188,7 +177,7 @@ export default class SlotSection extends TranslatedComponent {
 
     return (
       <div id={this.sectionId} className={'group'}  onDragLeave={this._dragOverNone}>
-        <div className={cn('section-menu', { selected: sectionMenuOpened })} onClick={open} onContextMenu={ctx}>
+        <div className={cn('section-menu', { selected: sectionMenuOpened })} onTouchTap={open} onContextMenu={ctx}>
           <h1>{translate(this.sectionName)} <Equalizer/></h1>
           {sectionMenuOpened ? this._getSectionMenu(translate) : null }
         </div>

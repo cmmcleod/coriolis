@@ -52,13 +52,13 @@ export default class ModalExport extends TranslatedComponent {
       description = <div>{translate(this.props.description)}</div>;
     }
 
-    return <div className='modal' onClick={ (e) => e.stopPropagation() }>
+    return <div className='modal' onTouchTap={ (e) => e.stopPropagation() }>
       <h2>{translate(this.props.title || 'Export')}</h2>
       {description}
       <div>
         <textarea className='cb json' onFocus={ (e) => e.target.select() } readOnly value={this.state.exportJson} />
       </div>
-      <button className='r dismiss cap' onClick={this.context.hideModal}>{translate('close')}</button>
+      <button className='r dismiss cap' onTouchTap={this.context.hideModal}>{translate('close')}</button>
     </div>;
   }
 }

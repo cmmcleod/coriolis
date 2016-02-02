@@ -1,9 +1,9 @@
 {
   "$schema":            "http://json-schema.org/draft-04/schema#",
-  "id":                 "http://cdn.coriolis.io/schemas/ship-loadout/1-draft.json#",
+  "id":                 "http://cdn.coriolis.io/schemas/ship-loadout/1.json#",
   "title":              "Ship Loadout",
   "type":               "object",
-  "description":        "The details for a specific ship build/loadout",
+  "description":        "The details for a specific ship build/loadout. DEPRECATED in favor of Version 3",
   "required":           ["name", "ship", "components"],
   "properties": {
     "name": {

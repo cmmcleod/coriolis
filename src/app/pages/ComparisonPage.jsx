@@ -13,6 +13,7 @@ import BarChart from '../components/BarChart';
 import ModalCompare from '../components/ModalCompare';
 import ModalExport from '../components/ModalExport';
 import ModalPermalink from '../components/ModalPermalink';
+import ModalImport from '../components/ModalImport';
 import { FloppyDisk, Bin, Download, Embed, Rocket, LinkIcon } from '../components/SvgIcons';
 import ShortenUrl from '../utils/ShortenUrl';
 import { comparisonBBCode } from '../utils/BBCode';
@@ -295,7 +296,16 @@ export default class ComparisonPage extends Page {
    * Import the comparison builds
    */
   _import() {
-    // TODO: Implement
+    let builds = {};
+
+    for (let ship of this.state.builds) {
+      if (!builds[ship.id]) {
+        builds[ship.id] = {};
+      }
+      builds[ship.id][ship.buildName] = ship.toString();
+    }
+
+    this.context.showModal(<ModalImport builds={builds} />);
   }
 
   /**
@@ -332,7 +342,7 @@ export default class ComparisonPage extends Page {
 
     let code = fromComparison(name, builds, selectedFacets, predicate, desc);
     let loc = window.location;
-    return `${loc.protocol}://${loc.host}/comparison/${code}`;
+    return `${loc.protocol}//${loc.host}/comparison/${code}`;
   }
 
   /**
@@ -418,17 +428,17 @@ export default class ComparisonPage extends Page {
         <td className='head'>{translate('comparison')}</td>
         <td>
           <input value={newName} onChange={this._onNameChange} placeholder={translate('Enter Name')} maxLength='50' />
-          <button onClick={this._save} disabled={!newName || newName == 'all' || saved}>
+          <button onTouchTap={this._save} disabled={!newName || newName == 'all' || saved}>
             <FloppyDisk  className='lg'/><span className='button-lbl'>{translate('save')}</span>
           </button>
-          <button onClick={this._delete} disabled={name == 'all' || !saved}><Bin className='lg warning'/></button>
-          <button onClick={this._selectBuilds}>
+          <button onTouchTap={this._delete} disabled={name == 'all' || !saved}><Bin className='lg warning'/></button>
+          <button onTouchTap={this._selectBuilds}>
             <Rocket className='lg'/><span className='button-lbl'>{translate('builds')}</span>
           </button>
-          <button className='r' onClick={this._genPermalink} disabled={builds.length == 0}>
+          <button className='r' onTouchTap={this._genPermalink} disabled={builds.length == 0}>
             <LinkIcon className='lg'/><span className='button-lbl'>{translate('permalink')}</span>
           </button>
-          <button className='r' onClick={this._genBBcode} disabled={builds.length == 0}>
+          <button className='r' onTouchTap={this._genBBcode} disabled={builds.length == 0}>
             <Embed className='lg'/><span className='button-lbl'>{translate('forum')}</span>
           </button>
         </td>
@@ -438,7 +448,7 @@ export default class ComparisonPage extends Page {
         <td className='head'>{translate('comparison')}</td>
         <td>
           <h3>{name}</h3>
-          <button className='r' onClick={this._import}><Download className='lg'/>{translate('import')}</button>
+          <button className='r' onTouchTap={this._import}><Download className='lg'/>{translate('import')}</button>
         </td>
       </tr>;
     }
@@ -453,7 +463,7 @@ export default class ComparisonPage extends Page {
               <td>
                 <ul id='facet-container' onDragOver={this._facetDragOver}>
                   {facets.map((f, i) =>
-                    <li key={f.title} data-i={i} draggable='true' onDragStart={this._facetDrag} onDragEnd={this._facetDrop} className={cn('facet', { active: f.active })} onClick={this._toggleFacet.bind(this, f)}>
+                    <li key={f.title} data-i={i} draggable='true' onDragStart={this._facetDrag} onDragEnd={this._facetDrop} className={cn('facet', { active: f.active })} onTouchTap={this._toggleFacet.bind(this, f)}>
                       {'↔  ' + translate(f.title)}
                     </li>
                   )}
@@ -469,7 +479,7 @@ export default class ComparisonPage extends Page {
           <div className='chart' ref={'chartRef'}>{translate('PHRASE_NO_BUILDS')}</div> :
           facets.filter((f) => f.active).map((f, i) =>
             <div key={f.title} className='chart' ref={ i == 0 ? 'chartRef' : null}>
-              <h3 className='ptr' onClick={this._sortShips.bind(this, f.props[0])}>{translate(f.title)}</h3>
+              <h3 className='ptr' onTouchTap={this._sortShips.bind(this, f.props[0])}>{translate(f.title)}</h3>
               <BarChart
                 width={chartWidth}
                 data={builds}

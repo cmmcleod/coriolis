@@ -119,23 +119,23 @@ export default class PowerManagement extends TranslatedComponent {
         let retractedElem = null, deployedElem = null;
 
         if (slot.enabled) {
-          retractedElem = <td className='ptr upp' onClick={toggleEnabled}>{POWER[ship.getSlotStatus(slot, false)]}</td>;
-          deployedElem = <td className='ptr upp' onClick={toggleEnabled}>{POWER[ship.getSlotStatus(slot, true)]}</td>;
+          retractedElem = <td className='ptr upp' onTouchTap={toggleEnabled}>{POWER[ship.getSlotStatus(slot, false)]}</td>;
+          deployedElem = <td className='ptr upp' onTouchTap={toggleEnabled}>{POWER[ship.getSlotStatus(slot, true)]}</td>;
         } else {
-          retractedElem = <td className='ptr disabled upp' colSpan='2' onClick={toggleEnabled}>{translate('disabled')}</td>;
+          retractedElem = <td className='ptr disabled upp' colSpan='2' onTouchTap={toggleEnabled}>{translate('disabled')}</td>;
         }
 
         powerRows.push(<tr key={i} className={cn('highlight', { disabled: !slot.enabled })}>
-          <td className='ptr' style={{ width: '1em' }} onClick={toggleEnabled}>{m.class + m.rating}</td>
-          <td className='ptr le shorten cap' onClick={toggleEnabled}>{slotName(translate, slot)}</td>
-          <td className='ptr' onClick={toggleEnabled}><u>{translate(slot.type)}</u></td>
+          <td className='ptr' style={{ width: '1em' }} onTouchTap={toggleEnabled}>{m.class + m.rating}</td>
+          <td className='ptr le shorten cap' onTouchTap={toggleEnabled}>{slotName(translate, slot)}</td>
+          <td className='ptr' onTouchTap={toggleEnabled}><u>{translate(slot.type)}</u></td>
           <td>
-            <span className='flip ptr btn' onClick={this._priority.bind(this, slot, -1)}>&#9658;</span>
+            <span className='flip ptr btn' onTouchTap={this._priority.bind(this, slot, -1)}>&#9658;</span>
             {' ' + (slot.priority + 1) + ' '}
-            <span className='ptr btn' onClick={this._priority.bind(this, slot, 1)}>&#9658;</span>
+            <span className='ptr btn' onTouchTap={this._priority.bind(this, slot, 1)}>&#9658;</span>
           </td>
-          <td className='ri ptr' style={{ width: '3.25em' }} onClick={toggleEnabled}>{pwr(m.power)}</td>
-          <td className='ri ptr' style={{ width: '3em' }} onClick={toggleEnabled}><u>{pct(m.power / ship.powerAvailable)}</u></td>
+          <td className='ri ptr' style={{ width: '3.25em' }} onTouchTap={toggleEnabled}>{pwr(m.power)}</td>
+          <td className='ri ptr' style={{ width: '3em' }} onTouchTap={toggleEnabled}><u>{pct(m.power / ship.powerAvailable)}</u></td>
           {retractedElem}
           {deployedElem}
         </tr>);
@@ -200,12 +200,12 @@ export default class PowerManagement extends TranslatedComponent {
         <table style={{ width: '100%' }}>
           <thead>
             <tr className='main'>
-              <th colSpan='2' className='sortable le' onClick={sortOrder.bind(this, 'n')} >{translate('module')}</th>
-              <th style={{ width: '3em' }} className='sortable' onClick={sortOrder.bind(this, 't')} >{translate('type')}</th>
-              <th style={{ width: '4em' }} className='sortable' onClick={sortOrder.bind(this, 'pri')} >{translate('pri')}</th>
-              <th colSpan='2' className='sortable' onClick={sortOrder.bind(this, 'pwr')} >{translate('PWR')}</th>
-              <th style={{ width: '3em' }} className='sortable' onClick={sortOrder.bind(this, 'r')} >{translate('ret')}</th>
-              <th style={{ width: '3em' }} className='sortable' onClick={sortOrder.bind(this, 'd')} >{translate('dep')}</th>
+              <th colSpan='2' className='sortable le' onTouchTap={sortOrder.bind(this, 'n')} >{translate('module')}</th>
+              <th style={{ width: '3em' }} className='sortable' onTouchTap={sortOrder.bind(this, 't')} >{translate('type')}</th>
+              <th style={{ width: '4em' }} className='sortable' onTouchTap={sortOrder.bind(this, 'pri')} >{translate('pri')}</th>
+              <th colSpan='2' className='sortable' onTouchTap={sortOrder.bind(this, 'pwr')} >{translate('PWR')}</th>
+              <th style={{ width: '3em' }} className='sortable' onTouchTap={sortOrder.bind(this, 'r')} >{translate('ret')}</th>
+              <th style={{ width: '3em' }} className='sortable' onTouchTap={sortOrder.bind(this, 'd')} >{translate('dep')}</th>
             </tr>
           </thead>
           <tbody>

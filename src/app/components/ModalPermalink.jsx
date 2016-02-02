@@ -40,7 +40,7 @@ export default class ModalPermalink extends TranslatedComponent {
   render() {
     let translate = this.context.language.translate;
 
-    return <div className='modal' onClick={ (e) => e.stopPropagation() }>
+    return <div className='modal' onTouchTap={ (e) => e.stopPropagation() }>
       <h2>{translate('permalink')}</h2>
       <br/>
       <h3>{translate('URL')}</h3>
@@ -49,7 +49,7 @@ export default class ModalPermalink extends TranslatedComponent {
       <h3 >{translate('shortened')}</h3>
       <input value={this.state.shortenedUrl} readOnly size={25} onFocus={ (e) => e.target.select() }/>
       <br/><br/>
-      <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>
+      <button className={'r dismiss cap'} onTouchTap={this.context.hideModal}>{translate('close')}</button>
     </div>;
   }
 }

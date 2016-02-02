@@ -15,6 +15,17 @@ export function wrapCtxMenu(cb) {
 }
 
 /**
+ * Stop context menu / right-click propagation unless shift is held.
+ * @param  {SyntheticEvent} event Event
+ */
+export function stopCtxPropagation(event) {
+  if (!event.getModifierState('Shift')) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+}
+
+/**
  * Compares A and B and return true using strict comparison (===)
  * @param  {any} objA   A
  * @param  {any} objB   B

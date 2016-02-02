@@ -6,10 +6,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TU from 'react-testutils-additions';
 import Utils from './testUtils';
-import Persist from '../src/app/stores/Persist';
 import { getLanguage } from '../src/app/i18n/Language';
 
-describe('Import Controller', function() {
+describe('Import Modal', function() {
 
   const Persist = require('../src/app/stores/Persist').default;
   const ModalImport = require('../src/app/components/ModalImport').default;
@@ -90,8 +89,8 @@ describe('Import Controller', function() {
     });
 
     it('imports an old valid backup', function() {
-      let importData = require('./fixtures/old-valid-export');
-      let importStr = JSON.stringify(importData);
+      const importData = require('./fixtures/old-valid-export');
+      const importStr = JSON.stringify(importData);
 
       pasteText(importStr);
       expect(modal.state.builds).toEqual(importData.builds);
@@ -104,7 +103,7 @@ describe('Import Controller', function() {
     });
 
     it('catches an invalid backup', function() {
-      let importData = require('./fixtures/valid-backup');
+      const importData = require('./fixtures/valid-backup');
       let invalidImportData = Object.assign({}, importData);
       invalidImportData.builds.asp = null;   // Remove Asp Miner build used in comparison
 
@@ -131,7 +130,7 @@ describe('Import Controller', function() {
     beforeEach(reset);
 
     it('imports a valid v3 build', function() {
-      let importData = require('./fixtures/anaconda-test-detailed-export-v3');
+      const importData = require('./fixtures/anaconda-test-detailed-export-v3');
       pasteText(JSON.stringify(importData));
 
       expect(modal.state.importValid).toBeTruthy();
@@ -149,7 +148,7 @@ describe('Import Controller', function() {
     });
 
     it('catches an invalid build', function() {
-      let importData = require('./fixtures/anaconda-test-detailed-export-v3');
+      const importData = require('./fixtures/anaconda-test-detailed-export-v3');
       pasteText(JSON.stringify(importData).replace('components', 'comps'));
 
       expect(modal.state.importValid).toBeFalsy();
@@ -162,8 +161,8 @@ describe('Import Controller', function() {
     beforeEach(reset);
 
     it('imports all builds', function() {
-      let importData = require('./fixtures/valid-detailed-export');
-      let expectedBuilds = require('./fixtures/expected-builds');
+      const importData = require('./fixtures/valid-detailed-export');
+      const expectedBuilds = require('./fixtures/expected-builds');
 
       pasteText(JSON.stringify(importData));
       expect(modal.state.importValid).toBeTruthy();
@@ -185,7 +184,7 @@ describe('Import Controller', function() {
   describe('Import E:D Shipyard Builds', function() {
 
     it('imports a valid builds', function() {
-      let imports = require('./fixtures/ed-shipyard-import-valid');
+      const imports = require('./fixtures/ed-shipyard-import-valid');
 
       for (let i = 0; i < imports.length; i++ ) {
         reset();
@@ -203,7 +202,7 @@ describe('Import Controller', function() {
     });
 
     it('catches invalid builds', function() {
-      let imports = require('./fixtures/ed-shipyard-import-invalid');
+      const imports = require('./fixtures/ed-shipyard-import-invalid');
 
       for (let i = 0; i < imports.length; i++ ) {
         reset();
@@ -212,7 +211,21 @@ describe('Import Controller', function() {
         expect(modal.state.errorMsg).toEqual(imports[i].errorMsg);
       }
     });
+  });
 
+  describe('Imports from a Comparison', function() {
+
+    it('imports a valid comparison', function() {
+      const importBuilds = require('./fixtures/valid-backup').builds;
+      Persist.deleteAll();
+      render = TU.renderIntoDocument(<ContextProvider><ModalImport builds={importBuilds} /></ContextProvider>);
+      modal = TU.findRenderedComponentWithType(render, ModalImport);
+
+      expect(modal.state.processed).toBe(true);
+      expect(modal.state.errorMsg).toEqual(null);
+      clickImport();
+      expect(Persist.getBuilds()).toEqual(importBuilds);
+    });
   });
 
 });

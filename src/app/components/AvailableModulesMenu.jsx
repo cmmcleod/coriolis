@@ -1,6 +1,7 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import TranslatedComponent from './TranslatedComponent';
+import { stopCtxPropagation } from '../utils/UtilityFunctions';
 import cn from 'classnames';
 import { MountFixed, MountGimballed, MountTurret } from './SvgIcons';
 
@@ -30,6 +31,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
   constructor(props, context) {
     super(props);
     this._hideDiff = this._hideDiff.bind(this);
+    this._diffMove = this._diffMove.bind(this);
     this.state = { list: this._initList(props, context) };
   }
 
@@ -49,8 +51,8 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       m,
       warning,
       shipMass - (m && m.mass ? m.mass : 0),
-      (m) => {
-        this._hideDiff();
+      (m, event) => {
+        this._hideDiff(event);
         onSelect(m);
       }
     );
@@ -89,9 +91,10 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       let m = modules[i];
       let mount = null;
       let disabled = m.maxmass && (mass + (m.mass ? m.mass : 0)) > m.maxmass;
+      let active = mountedModule && mountedModule === m;
       let classes = cn(m.name ? 'lc' : 'c', {
-        active: mountedModule && mountedModule.id === m.id,
         warning: !disabled && warningFunc && warningFunc(m),
+        active,
         disabled
       });
 
@@ -105,11 +108,14 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         elems.push(<br key={m.grp + i} />);
       }
 
+      let showDiff = disabled || active ? null  : this._showDiff.bind(this, mountedModule, m);
+
       elems.push(
         <li
             key={m.id}
             className={classes}
-            onMouseOver={disabled ? null : this._showDiff.bind(this, mountedModule, m)}
+            onMouseEnter={showDiff}
+            onTouchStart={showDiff}
             onMouseLeave={this._hideDiff}
             onClick={disabled ? null : onSelect.bind(null, m)}
         >
@@ -132,15 +138,27 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    * @param  {SyntheticEvent} event Event
    */
   _showDiff(mm, m, event) {
+    event.preventDefault();
     if (this.props.diffDetails) {
       this.context.tooltip(this.props.diffDetails(m, mm), event.currentTarget.getBoundingClientRect());
     }
   }
 
+  _touchStart(event) {
+    event.preventDefault();
+    console.log(Object.assign({}, event));
+  }
+
+  _diffMove(event) {
+    console.log(Object.assign({}, event));
+  }
+
   /**
    * Hide diff tooltip
+   * @param  {SyntheticEvent} event Event
    */
-  _hideDiff() {
+  _hideDiff(event) {
+    event.preventDefault();
     this.context.tooltip();
   }
 
@@ -170,7 +188,15 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    */
   render() {
     return (
-      <div className={cn('select', this.props.className)} onScroll={this._hideDiff} onClick={(e) => e.stopPropagation() }>
+      <div
+          className={cn('select', this.props.className)}
+          onScroll={this._hideDiff}
+          onClick={(e) => e.stopPropagation() }
+          onTouchStart={this._touchStart}
+          onTouchEnd={this._hideDiff}
+          onTouchCancel={this._hideDiff}
+          onContextMenu={stopCtxPropagation}
+      >
         {this.state.list}
       </div>
     );

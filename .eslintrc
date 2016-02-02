@@ -25,6 +25,7 @@
             "ClassDeclaration": true
         }
     }],
+    "no-console": 2,
     "brace-style": [2, "1tbs", { "allowSingleLine": true }],
     "comma-style": [2, "last"],
     "indent": [2, 2, { "SwitchCase": 1, "VariableDeclarator": 2 }],

@@ -14,20 +14,20 @@
   &.n {
     margin-top: -6px;
     left: 50%;
-    .transform(translate(-50%, -100%));
+    .transform(translate3d(-50%, -100%, 0));
   }
   &.s {
     margin-top: 6px;
     left: 50%;
-    .transform(translate(-50%, 0));
+    .transform(translate3d(-50%, 0, 0));
   }
   &.e {
     margin-left: 6px;
-    .transform(translate(0, -50%));
+    .transform(translate3d(0, -50%, 0));
   }
   &.w {
     margin-left: -6px;
-    .transform(translate(-100%, -50%));
+    .transform(translate3d(-100%, -50%, 0));
   }
 }
 
@@ -37,6 +37,7 @@
   height: 0;
   position: absolute;
   z-index: 2;
+  .transform(translate3d(0, 0, 0)); // Fix iOS Safari 8 Scroll bug
 
   &.n {
     border-top: 6px solid @primary;

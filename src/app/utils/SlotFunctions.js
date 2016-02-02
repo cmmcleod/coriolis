@@ -1,5 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
+import { isShieldGenerator } from '../shipyard/ModuleUtils';
 import { Infinite } from '../components/SvgIcons';
 
 /**
@@ -80,12 +81,16 @@ const PROP_BLACKLIST = {
   fuelpower: 1,
   optmass: 1,
   maxmass: 1,
+  minmass: 1,
   passive: 1,
   thermload: 1,
   ammocost: 1,
   activepower: 1,
   cooldown: 1,
   chargeup: 1,
+  optmul: 1,
+  minmul: 1,
+  maxmul: 1,
   ssdam: 1,
   mjdps: 1,
   mjeps: 1,
@@ -98,7 +103,7 @@ const PROP_BLACKLIST = {
 const TERM_LOOKUP = {
   pGen: 'power',
   armouradd: 'armour',
-  shieldmul: 'shield',
+  shieldmul: 'multiplier',
   rof: 'ROF',
   dps: 'DPS'
 };
@@ -148,7 +153,7 @@ function diff(format, mVal, mmVal) {
     return <Infinite/>;
   } else {
     let diff = mVal - mmVal;
-    if (!diff || diff == mVal || Math.abs(diff) == Infinity) {
+    if (!diff || !mVal || diff == mVal || Math.abs(diff) == Infinity) {
       return format(mVal);
     }
     return `${format(mVal)} (${diff > 0 ? '+' : ''}${format(diff)})`;
@@ -157,10 +162,13 @@ function diff(format, mVal, mmVal) {
 
 /**
  * Returns a a summary and diff of the potential module
- * versus the currently mounted module if there is one
+ * versus the currently mounted module if there is one. Must be bound
+ * to a ship instance
+ *
+ * @this {Ship}
  * @param  {Object} language Current language
  * @param  {Object} m        Potential Module (cannot be null)
- * @param  {Object} mm       Currently mounted module (optional - null)
+ * @param  {Object} mm       Currently mounted module (optional - null if empty)
  * @return {React.Component} Component to be rendered
  */
 export function diffDetails(language, m, mm) {
@@ -171,6 +179,8 @@ export function diffDetails(language, m, mm) {
   let mmMass = mm.mass || 0;
   let massDiff = mMass - mmMass;
   let capDiff = (m.fuel || m.cargo || 0) - (mm.fuel || mm.cargo || 0);
+  let mAffectsShield = isShieldGenerator(m.grp)  || m.grp == 'sb';
+  let mmAffectsShield = isShieldGenerator(mm.grp) || mm.grp == 'sb';
 
   propDiffs.push(<div key='cost'>{translate('cost')}: <span className={diffClass(m.cost, mm.cost, true) }>{formats.int(m.cost || 0)}{units.CR}</span></div>);
   propDiffs.push(<div key='mass'>{translate('mass')}: <span className={diffClass(mMass, mm.mass, true)}>{diff(formats.round, mMass, mmMass)}{units.T}</span></div>);
@@ -187,10 +197,24 @@ export function diffDetails(language, m, mm) {
     }
   }
 
+  if (mAffectsShield || mmAffectsShield) {
+    let shield = this.calcShieldStrengthWith(); // Get shield strength regardless of slot active / inactive
+    let newShield = 0;
+
+    if (mAffectsShield) {
+      if (m.grp == 'sb') {  // Both m and mm must be utility modules if this is true
+        newShield = this.calcShieldStrengthWith(null, m.shieldmul - (mm.shieldmul || 0));
+      } else {
+        newShield = this.calcShieldStrengthWith(m);
+      }
+    }
+    propDiffs.push(<div key='shields'>{`${translate('shields')}: `}<span className={newShield > shield ? 'secondary' : 'warning'}>{diff(formats.int, newShield, shield)}{units.MJ}</span></div>);
+  }
+
   if (m.grp == 'fd' || massDiff || capDiff) {
     let fsd = m.grp == 'fd' ? m : null;
-    let maxRange = this.getUnladenRange(massDiff, m.fuel, fsd);
-    let ladenRange = this.getLadenRange(massDiff + capDiff, m.fuel, fsd);
+    let maxRange = this.calcUnladenRange(massDiff, m.fuel, fsd);
+    let ladenRange = this.calcLadenRange(massDiff + capDiff, m.fuel, fsd);
 
     if (maxRange != this.unladenRange) {
       propDiffs.push(<div key='maxRange'>{`${translate('max')} ${translate('jump range')}: `}<span className={maxRange > this.unladenRange ? 'secondary' : 'warning'}>{formats.round(maxRange)}{units.LY}</span></div>);

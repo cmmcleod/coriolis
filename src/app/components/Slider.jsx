@@ -1,4 +1,7 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
+
+const MARGIN_LR = 8; // Left/ Right margin
 
 /**
  * Horizontal Slider
@@ -8,7 +11,8 @@ export default class Slider extends React.Component {
   static defaultProps = {
     axis: false,
     min: 0,
-    max: 1
+    max: 1,
+    scale: 1  // SVG render scale
   };
 
   static PropTypes = {
@@ -16,6 +20,7 @@ export default class Slider extends React.Component {
     axisUnit: React.PropTypes.string,
     min: React.PropTypes.number,
     max: React.PropTypes.number,
+    scale: React.PropTypes.number,
     onChange: React.PropTypes.func.isRequired,
   };
 
@@ -25,52 +30,101 @@ export default class Slider extends React.Component {
    */
   constructor(props) {
     super(props);
+    this._down = this._down.bind(this);
+    this._move = this._move.bind(this);
+    this._up = this._up.bind(this);
+    this._updatePercent = this._updatePercent.bind(this);
+    this._updateDimensions = this._updateDimensions.bind(this);
 
-    this.down = this.down.bind(this);
-    this.up = this.up.bind(this);
+    this.state = { width: 0 };
   }
 
   /**
-   * On Mouse down handler
+   * On Mouse/Touch down handler
    * @param  {SyntheticEvent} event Event
    */
-  down(event) {
-    if (this.move) {
-      this.up(event);
-    } else {
-      let rect = event.currentTarget.getBoundingClientRect();
-      this.move = this._updatePercent.bind(this, rect.left, rect.width);
-      this.move(event);
-      document.addEventListener('mousemove', this.move, true);
-      document.addEventListener('mouseup', this.up, true);
+  _down(event) {
+    let rect = event.currentTarget.getBoundingClientRect();
+    this.left = rect.left;
+    this.width = rect.width;
+    this._move(event);
+  }
+
+  /**
+   * Update the slider percentage on move
+   * @param  {SyntheticEvent} event Event
+   */
+  _move(event) {
+    if(this.width !== null && this.left != null) {
+      let clientX = event.touches ? event.touches[0].clientX : event.clientX;
+      event.preventDefault();
+      this._updatePercent(clientX - this.left, this.width);
     }
   }
 
   /**
-   * On Mouse up handler
+   * On Mouse/Touch up handler
    * @param  {Event} event  DOM Event
    */
-  up(event) {
-    document.removeEventListener('mousemove', this.move, true);
-    document.removeEventListener('mouseup', this.up, true);
-    this.move = null;
+  _up(event) {
+    event.preventDefault();
+    this.left = null;
+    this.width = null;
+  }
+
+  /**
+   * Determine if the user is still dragging
+   * @param  {SyntheticEvent} event Event
+   */
+  _enter(event) {
+    if(event.buttons !== 1) {
+      this.left = null;
+      this.width = null;
+    }
   }
 
   /**
    * Update the slider percentage
-   * @param  {number} left  Slider left position
+   * @param  {number} pos   Slider drag position
    * @param  {number} width Slider width
    * @param  {Event} event  DOM Event
    */
-  _updatePercent(left, width, event) {
-    this.props.onChange(Math.min(Math.max((event.clientX - left) / width, 0), 1));
+  _updatePercent(pos, width) {
+    this.props.onChange(Math.min(Math.max(pos / width, 0), 1));
+  }
+
+  /**
+   * Update dimenions from rendered DOM
+   */
+  _updateDimensions() {
+    this.setState({
+      outerWidth: findDOMNode(this).offsetWidth
+    });
+  }
+
+  /**
+   * Add listeners when about to mount
+   */
+  componentWillMount() {
+    if (this.props.onResize) {
+      this.resizeListener = this.props.onResize(this._updateDimensions);
+    }
+  }
+
+  /**
+   * Trigger DOM updates on mount
+   */
+  componentDidMount() {
+    this._updateDimensions();
   }
 
   /**
    * Remove listeners on unmount
    */
   componentWillUnmount() {
-    this.up();
+    if (this.resizeListener) {
+      this.resizeListener.remove();
+    }
   }
 
   /**
@@ -78,24 +132,33 @@ export default class Slider extends React.Component {
    * @return {React.Component} The slider
    */
   render() {
-    let pctStr = (this.props.percent * 100) + '%';
-    let { axis, axisUnit, min, max } = this.props;
-    let axisGroup;
+    let outerWidth = this.state.outerWidth;
+    let { axis, axisUnit, min, max, scale } = this.props;
 
-    if (axis) {
-      axisGroup = <g style={{ fontSize: '.7em' }}>
-        <text className='primary-disabled' y='3em' x='0' style={{ textAnchor: 'middle' }}>{min + axisUnit}</text>
-        <text className='primary-disabled' y='3em' x='50%' style={{ textAnchor: 'middle' }}>{(min + max / 2) + axisUnit}</text>
-        <text className='primary-disabled' y='3em' x='99%' style={{ textAnchor: 'middle' }}>{max + axisUnit}</text>
-      </g>;
+    let style = {
+      width: '100%',
+      height: axis ? '2.5em' : '1.5em',
+      boxSizing: 'border-box'
+    };
+
+    if (!outerWidth) {
+      return <svg style={style} />;
     }
 
-    return <svg style={{ width: '100%', height: axis ? '2.5em' : '1.5em', padding: '0 0.6em', cursor: 'col-resize', boxSizing: 'border-box' }}>
-      <rect className='primary' style={{ opacity: 0.3 }} y='0.25em' rx='0.3em' ry='0.3em' width='100%' height='0.7em' />
-      <rect className='primary-disabled'y='0.45em' rx='0.15em' ry='0.15em' width={pctStr} height='0.3em' />
-      <circle className='primary' r='0.6em' cy='0.6em' cx={pctStr} />
-      <rect width='100%' height='100%' fillOpacity='0' onMouseDown={this.down} onClick={this.click} />
-      {axisGroup}
+    let margin = MARGIN_LR * scale;
+    let width = outerWidth - (margin * 2);
+    let pctPos = width * this.props.percent;
+
+    return <svg onMouseUp={this._up} onMouseEnter={this._enter.bind(this)} onMouseMove={this._move} onTouchEnd={this._up} style={style}>
+      <rect className='primary' style={{ opacity: 0.3 }} x={margin} y='0.25em' rx='0.3em' ry='0.3em' width={width} height='0.7em' />
+      <rect className='primary-disabled' x={margin} y='0.45em' rx='0.15em' ry='0.15em' width={pctPos} height='0.3em' />
+      <circle className='primary' r={margin} cy='0.6em' cx={pctPos + margin} />
+      <rect x={margin} width={width} height='100%' fillOpacity='0' style={{ cursor: 'col-resize' }} onMouseDown={this._down} onTouchMove={this._move} onTouchStart={this._down} />
+      {axis && <g style={{ fontSize: '.7em' }}>
+        <text className='primary-disabled' y='3em' x={margin} style={{ textAnchor: 'middle' }}>{min + axisUnit}</text>
+        <text className='primary-disabled' y='3em' x='50%' style={{ textAnchor: 'middle' }}>{(min + max / 2) + axisUnit}</text>
+        <text className='primary-disabled' y='3em' x='100%' style={{ textAnchor: 'end' }}>{max + axisUnit}</text>
+      </g>}
     </svg>;
   }
 }
