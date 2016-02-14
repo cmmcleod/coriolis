@@ -172,7 +172,7 @@ export default class StandardSlotSection extends SlotSection {
     let bh = ship.bulkheads;
 
     slots[0] = (
-      <div key='bh' className={cn('slot', { selected: currentMenu === bh })} onTouchTap={open.bind(this, bh)}>
+      <div key='bh' className={cn('slot', { selected: currentMenu === bh })} onClick={open.bind(this, bh)}>
         <div className={'details-container'}>
           <div className={'details'}>
             <div className={'sz'}>8</div>
@@ -184,21 +184,21 @@ export default class StandardSlotSection extends SlotSection {
           </div>
         </div>
         {currentMenu === bh &&
-          <div className='select' onTouchTap={ e => e.stopPropagation() }>
+          <div className='select' onClick={ e => e.stopPropagation() }>
             <ul>
-              <li onTouchTap={selBulkhead.bind(this, 0)} onMouseOver={this._bhDiff.bind(this, 0)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 0 })}>
+              <li onClick={selBulkhead.bind(this, 0)} onMouseOver={this._bhDiff.bind(this, 0)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 0 })}>
                   {translate('Lightweight Alloy')}
               </li>
-              <li onTouchTap={selBulkhead.bind(this, 1)} onMouseOver={this._bhDiff.bind(this, 1)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 1 })}>
+              <li onClick={selBulkhead.bind(this, 1)} onMouseOver={this._bhDiff.bind(this, 1)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 1 })}>
                 {translate('Reinforced Alloy')}
               </li>
-              <li onTouchTap={selBulkhead.bind(this, 2)} onMouseOver={this._bhDiff.bind(this, 2)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 2 })}>
+              <li onClick={selBulkhead.bind(this, 2)} onMouseOver={this._bhDiff.bind(this, 2)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 2 })}>
                 {translate('Military Grade Composite')}
               </li>
-              <li onTouchTap={selBulkhead.bind(this, 3)} onMouseOver={this._bhDiff.bind(this, 3)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 3 })}>
+              <li onClick={selBulkhead.bind(this, 3)} onMouseOver={this._bhDiff.bind(this, 3)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 3 })}>
                 {translate('Mirrored Surface Composite')}
               </li>
-              <li onTouchTap={selBulkhead.bind(this, 4)} onMouseOver={this._bhDiff.bind(this, 4)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 4 })}>
+              <li onClick={selBulkhead.bind(this, 4)} onMouseOver={this._bhDiff.bind(this, 4)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 4 })}>
                 {translate('Reactive Surface Composite')}
               </li>
             </ul>
@@ -294,19 +294,19 @@ export default class StandardSlotSection extends SlotSection {
   _getSectionMenu(translate) {
     let _fill = this._fill;
 
-    return <div className='select' onTouchTap={(e) => e.stopPropagation()} onContextMenu={stopCtxPropagation}>
+    return <div className='select' onClick={(e) => e.stopPropagation()} onContextMenu={stopCtxPropagation}>
       <ul>
-        <li className='lc' onTouchTap={this._optimizeStandard}>{translate('Optimize')}</li>
-        <li className='c' onTouchTap={_fill.bind(this, 'E')}>E</li>
-        <li className='c' onTouchTap={_fill.bind(this, 'D')}>D</li>
-        <li className='c' onTouchTap={_fill.bind(this, 'C')}>C</li>
-        <li className='c' onTouchTap={_fill.bind(this, 'B')}>B</li>
-        <li className='c' onTouchTap={_fill.bind(this, 'A')}>A</li>
+        <li className='lc' onClick={this._optimizeStandard}>{translate('Optimize')}</li>
+        <li className='c' onClick={_fill.bind(this, 'E')}>E</li>
+        <li className='c' onClick={_fill.bind(this, 'D')}>D</li>
+        <li className='c' onClick={_fill.bind(this, 'C')}>C</li>
+        <li className='c' onClick={_fill.bind(this, 'B')}>B</li>
+        <li className='c' onClick={_fill.bind(this, 'A')}>A</li>
       </ul>
       <div className='select-group cap'>{translate('builds / roles')}</div>
       <ul>
-        <li className='lc' onTouchTap={this._optimizeCargo}>{translate('Trader')}</li>
-        <li className='lc' onTouchTap={this._optimizeExplorer}>{translate('Explorer')}</li>
+        <li className='lc' onClick={this._optimizeCargo}>{translate('Trader')}</li>
+        <li className='lc' onClick={this._optimizeExplorer}>{translate('Explorer')}</li>
       </ul>
     </div>;
   }

@@ -1,5 +1,5 @@
 import Ship from '../src/app/shipyard/Ship';
-import { Ships } from 'coriolis-data';
+import { Ships } from 'coriolis-data/dist';
 import * as ModuleUtils from '../src/app/shipyard/ModuleUtils';
 
 describe("Ship Factory", function() {
@@ -22,8 +22,8 @@ describe("Ship Factory", function() {
       expect(ship.unladenRange).toBeGreaterThan(0, s + ' unladenRange');
       expect(ship.ladenRange).toBeGreaterThan(0, s + ' ladenRange');
       expect(ship.fuelCapacity).toBeGreaterThan(0, s + ' fuelCapacity');
-      expect(ship.unladenTotalRange).toBeGreaterThan(0, s + ' unladenTotalRange');
-      expect(ship.ladenTotalRange).toBeGreaterThan(0, s + ' ladenTotalRange');
+      expect(ship.unladenFastestRange).toBeGreaterThan(0, s + ' unladenFastestRange');
+      expect(ship.ladenFastestRange).toBeGreaterThan(0, s + ' ladenFastestRange');
       expect(ship.shieldStrength).toBeGreaterThan(0, s + ' shieldStrength');
       expect(ship.armour).toBeGreaterThan(0, s + ' armour');
       expect(ship.topSpeed).toBeGreaterThan(0, s + ' topSpeed');

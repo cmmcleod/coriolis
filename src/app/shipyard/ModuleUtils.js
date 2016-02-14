@@ -1,6 +1,6 @@
 import { ModuleNameToGroup, BulkheadNames } from './Constants';
 import ModuleSet from './ModuleSet';
-import { Ships, Modules } from 'coriolis-data';
+import { Ships, Modules } from 'coriolis-data/dist';
 
 /**
  * Created a cargo hatch model

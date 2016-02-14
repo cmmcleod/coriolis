@@ -211,7 +211,7 @@ export default class PowerBands extends TranslatedComponent {
           height={state.barHeight}
           x={Math.floor(Math.max(wattScale(b.retractedSum) - wattScale(b.retracted), 0))}
           y={1}
-          onTouchTap={this._selectRet.bind(this, i)}
+          onClick={this._selectRet.bind(this, i)}
           className={getClass(ret[i], b.retractedSum, available)}
         />);
 
@@ -223,7 +223,7 @@ export default class PowerBands extends TranslatedComponent {
             height={state.barHeight}
             x={wattScale(b.retractedSum) - (wattScale(b.retracted) / 2)}
             y={state.retY}
-            onTouchTap={this._selectRet.bind(this, i)}
+            onClick={this._selectRet.bind(this, i)}
             className='primary-bg'>{retLbl}</text>
           );
         }
@@ -238,7 +238,7 @@ export default class PowerBands extends TranslatedComponent {
           height={state.barHeight}
           x={Math.floor(Math.max(wattScale(b.deployedSum) - wattScale(b.retracted) - wattScale(b.deployed), 0))}
           y={state.barHeight + 1}
-          onTouchTap={this._selectDep.bind(this, i)}
+          onClick={this._selectDep.bind(this, i)}
           className={getClass(dep[i], b.deployedSum, available)}
         />);
 
@@ -250,7 +250,7 @@ export default class PowerBands extends TranslatedComponent {
             height={state.barHeight}
             x={wattScale(b.deployedSum) - ((wattScale(b.retracted) + wattScale(b.deployed)) / 2)}
             y={state.depY}
-            onTouchTap={this._selectDep.bind(this, i)}
+            onClick={this._selectDep.bind(this, i)}
             className='primary-bg'>{depLbl}</text>
           );
         }

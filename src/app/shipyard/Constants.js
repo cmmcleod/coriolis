@@ -164,8 +164,8 @@ export const ShipFacets = [
       i: 9
     },
     {                   // 10
-      title: 'total range',
-      props: ['unladenTotalRange', 'ladenTotalRange'],
+      title: 'fastest range',
+      props: ['unladenFastestRange', 'ladenFastestRange'],
       lbls: ['unladen', 'laden'],
       unit: 'LY',
       fmt: 'round',

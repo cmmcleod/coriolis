@@ -1,12 +1,14 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
-import Page from './Page';
+import { Ships } from 'coriolis-data/dist';
 import cn from 'classnames';
+import Page from './Page';
 import Router from '../Router';
 import Persist from '../stores/Persist';
-import { Ships } from 'coriolis-data';
 import Ship from '../shipyard/Ship';
 import { toDetailedBuild } from '../shipyard/Serializer';
+import { outfitURL } from '../utils/UrlGenerators';
+
 import { FloppyDisk, Bin, Switch, Download, Reload, Fuel } from '../components/SvgIcons';
 import ShipSummaryTable from '../components/ShipSummaryTable';
 import StandardSlotSection from '../components/StandardSlotSection';
@@ -51,9 +53,7 @@ export default class OutfittingPage extends Page {
     let savedCode = Persist.getBuild(shipId, buildName);
 
     if (!data) {
-      // TODO: throw Error for error page - Ship not found
-      // Router.errorPage(details) - something along these lines
-      throw { msg: 'Ship not found:' + shipId };
+      return { error: { message: 'Ship not found: ' + shipId } };
     }
 
     let ship = new Ship(shipId, data.properties, data.slots);          // Create a new Ship instance
@@ -67,6 +67,7 @@ export default class OutfittingPage extends Page {
     let fuelCapacity = ship.fuelCapacity;
 
     return {
+      error: null,
       title: 'Outfitting - ' + data.properties.name,
       costTab: Persist.getCostTab() || 'costs',
       buildName,
@@ -77,7 +78,7 @@ export default class OutfittingPage extends Page {
       fuelCapacity,
       fuelLevel: 1,
       jumpRangeChartFunc: ship.calcJumpRangeWith.bind(ship, fuelCapacity),
-      totalRangeChartFunc: ship.calcFastestRangeWith.bind(ship, fuelCapacity),
+      fastestRangeChartFunc: ship.calcFastestRangeWith.bind(ship, fuelCapacity),
       speedChartFunc: ship.calcSpeedsWith.bind(ship, fuelCapacity)
     };
   }
@@ -106,6 +107,7 @@ export default class OutfittingPage extends Page {
   _saveBuild() {
     let code = this.state.ship.toString();
     Persist.saveBuild(this.state.shipId, this.state.buildName, code);
+    this._updateRoute(this.state.shipId, code, this.state.buildName);
     this.setState({ code, savedCode: code });
   }
 
@@ -130,7 +132,7 @@ export default class OutfittingPage extends Page {
    */
   _deleteBuild() {
     Persist.deleteBuild(this.state.shipId, this.state.buildName);
-    Router.go(`/outfit/${this.state.shipId}`);
+    Router.go(outfitURL(this.state.shipId));
   }
 
   /**
@@ -168,13 +170,7 @@ export default class OutfittingPage extends Page {
    * @param  {string} buildName Current build name
    */
   _updateRoute(shipId, code, buildName) {
-    let qStr = '';
-
-    if (buildName) {
-      qStr = '?bn=' + encodeURIComponent(buildName);
-    }
-
-    Router.replace(`/outfit/${shipId}/${code}${qStr}`);
+    Router.replace(outfitURL(shipId, code, buildName));
   }
 
   /**
@@ -189,7 +185,7 @@ export default class OutfittingPage extends Page {
       fuelLevel,
       fuelCapacity,
       jumpRangeChartFunc: ship.calcJumpRangeWith.bind(ship, fuel),
-      totalRangeChartFunc: ship.calcFastestRangeWith.bind(ship, fuel),
+      fastestRangeChartFunc: ship.calcFastestRangeWith.bind(ship, fuel),
       speedChartFunc: ship.calcSpeedsWith.bind(ship, fuel)
     });
   }
@@ -198,9 +194,13 @@ export default class OutfittingPage extends Page {
    * Update dimenions from rendered DOM
    */
   _updateDimensions() {
-    this.setState({
-      chartWidth: findDOMNode(this.refs.chartThird).offsetWidth
-    });
+    let elem = findDOMNode(this.refs.chartThird);
+
+    if (elem) {
+      this.setState({
+        chartWidth: findDOMNode(this.refs.chartThird).offsetWidth
+      });
+    }
   }
 
   /**
@@ -239,17 +239,19 @@ export default class OutfittingPage extends Page {
    * Render the Page
    * @return {React.Component} The page contents
    */
-  render() {
-    let state = this.state;
-    let { language, termtip, tooltip, sizeRatio, onWindowResize } = this.context;
-    let { translate, units, formats } = language;
-    let { ship, code, savedCode, buildName, chartWidth, fuelCapacity, fuelLevel } = state;
-    let hide = tooltip.bind(null, null);
-    let menu = this.props.currentMenu;
-    let shipUpdated = this._shipUpdated;
-    let hStr = ship.getHardpointsString();
-    let sStr = ship.getStandardString();
-    let iStr = ship.getInternalString();
+  renderPage() {
+    let state = this.state,
+        { language, termtip, tooltip, sizeRatio, onWindowResize } = this.context,
+        { translate, units, formats } = language,
+        { ship, code, savedCode, buildName, chartWidth, fuelCapacity, fuelLevel } = state,
+        hide = tooltip.bind(null, null),
+        menu = this.props.currentMenu,
+        shipUpdated = this._shipUpdated,
+        canSave = buildName && code !== savedCode,
+        canReload = savedCode && canSave,
+        hStr = ship.getHardpointsString(),
+        sStr = ship.getStandardString(),
+        iStr = ship.getInternalString();
 
     return (
       <div id='outfit' className={'page'} style={{ fontSize: (sizeRatio * 0.9) + 'em' }}>
@@ -257,19 +259,19 @@ export default class OutfittingPage extends Page {
           <h1>{ship.name}</h1>
           <div id='build'>
             <input value={buildName} onChange={this._buildNameChange} placeholder={translate('Enter Name')} maxsize={50} />
-            <button onTouchTap={this._saveBuild} disabled={!buildName || savedCode && code == savedCode} onMouseOver={termtip.bind(null, 'save')} onMouseOut={hide}>
+            <button onClick={canSave && this._saveBuild} disabled={!canSave} onMouseOver={termtip.bind(null, 'save')} onMouseOut={hide}>
               <FloppyDisk className='lg' />
             </button>
-            <button onTouchTap={this._reloadBuild} disabled={!savedCode || code == savedCode} onMouseOver={termtip.bind(null, 'reload')} onMouseOut={hide}>
+            <button onClick={canReload && this._reloadBuild} disabled={!canReload} onMouseOver={termtip.bind(null, 'reload')} onMouseOut={hide}>
               <Reload className='lg'/>
             </button>
-            <button className={'danger'} onTouchTap={this._deleteBuild} disabled={!savedCode} onMouseOver={termtip.bind(null, 'delete')} onMouseOut={hide}>
+            <button className={'danger'} onClick={savedCode && this._deleteBuild} disabled={!savedCode} onMouseOver={termtip.bind(null, 'delete')} onMouseOut={hide}>
               <Bin className='lg'/>
             </button>
-            <button onTouchTap={this._resetBuild} disabled={!code} onMouseOver={termtip.bind(null, 'reset')} onMouseOut={hide}>
+            <button onClick={code && this._resetBuild} disabled={!code} onMouseOver={termtip.bind(null, 'reset')} onMouseOut={hide}>
               <Switch className='lg'/>
             </button>
-            <button onTouchTap={this._exportBuild} disabled={!buildName} onMouseOver={termtip.bind(null, 'export')} onMouseOut={hide}>
+            <button onClick={buildName && this._exportBuild} disabled={!buildName} onMouseOver={termtip.bind(null, 'export')} onMouseOut={hide}>
               <Download className='lg'/>
             </button>
           </div>
@@ -302,12 +304,12 @@ export default class OutfittingPage extends Page {
           <LineChart
             width={chartWidth}
             xMax={ship.cargoCapacity}
-            yMax={ship.unladenTotalRange}
+            yMax={ship.unladenFastestRange}
             xUnit={translate('T')}
             yUnit={translate('LY')}
-            yLabel={translate('total range')}
+            yLabel={translate('fastest range')}
             xLabel={translate('cargo')}
-            func={state.totalRangeChartFunc}
+            func={state.fastestRangeChartFunc}
           />
         </div>
 

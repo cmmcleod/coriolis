@@ -1,13 +1,16 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
+import Router from '../Router';
 import Persist from '../stores/Persist';
-import { Ships } from 'coriolis-data';
+import { Ships } from 'coriolis-data/dist';
 import Ship from '../shipyard/Ship';
 import { ModuleNameToGroup, Insurance } from '../shipyard/Constants';
 import * as ModuleUtils from '../shipyard/ModuleUtils';
 import { fromDetailedBuild } from '../shipyard/Serializer';
 import { Download } from './SvgIcons';
+import { outfitURL } from '../utils/UrlGenerators';
 
 const textBuildRegex = new RegExp('^\\[([\\w \\-]+)\\]\n');
 const lineRegex = new RegExp('^([\\dA-Z]{1,2}): (\\d)([A-I])[/]?([FGT])?([SD])? ([\\w\\- ]+)');
@@ -22,15 +25,6 @@ const bhMap = { 'lightweight alloy': 0, 'reinforced alloy': 1, 'military grade c
  */
 function isEmptySlot(slot) {
   return slot.maxClass == this && slot.m === null;
-}
-
-/**
- * Equal ignore case utility function. Must be bound to a string
- * @param  {string} str String
- * @return {Boolean}     True if equal
- */
-function equalsIgnoreCase(str) {
-  return str.toLowerCase() == this.toLowerCase();
 }
 
 /**
@@ -273,7 +267,7 @@ export default class ModalImport extends TranslatedComponent {
     let builds = {};
     builds[shipId] = {};
     builds[shipId]['Imported ' + buildName] = ship.toString();
-    this.setState({ builds });
+    this.setState({ builds, singleBuild: true });
   }
 
   /**
@@ -291,6 +285,7 @@ export default class ModalImport extends TranslatedComponent {
       errorMsg: null,
       importValid: false,
       insurance: null,
+      singleBuild: false,
       importString,
     });
 
@@ -312,6 +307,7 @@ export default class ModalImport extends TranslatedComponent {
           this._importDetailedArray(importData);
         } else if (importData.ship && typeof importData.name !== undefined) { // Using JSON from a single ship build export
           this._importDetailedArray([importData]); // Convert to array with singleobject
+          this.setState({ singleBuild: true });
         } else { // Using Backup JSON
           this._importBackup(importData);
         }
@@ -329,6 +325,16 @@ export default class ModalImport extends TranslatedComponent {
    */
   _process() {
     let builds = null, comparisons = null;
+
+    // If only importing a single build go straight to the outfitting page
+    if (this.state.singleBuild) {
+      builds = this.state.builds;
+      let shipId = Object.keys(builds)[0];
+      let name = Object.keys(builds[shipId])[0];
+      Router.go(outfitURL(shipId, builds[shipId][name], name));
+      return;
+    }
+
 
     if (this.state.builds) {
       builds = {};   // Create new builds object such that orginal name retained, but can be renamed
@@ -412,6 +418,14 @@ export default class ModalImport extends TranslatedComponent {
       this._process();
     }
   }
+  /**
+   * If textarea is shown focus on mount
+   */
+  componentDidMount() {
+    if (!this.props.builds && findDOMNode(this.refs.importField)) {
+      findDOMNode(this.refs.importField).focus();
+    }
+  }
 
   /**
    * Render the import modal
@@ -425,7 +439,7 @@ export default class ModalImport extends TranslatedComponent {
     if (!state.processed) {
       importStage = (
         <div>
-          <textarea className='cb json' onChange={this._validateImport} defaultValue={this.state.importString} placeholder={translate('PHRASE_IMPORT')} />
+          <textarea className='cb json' ref='importField' onChange={this._validateImport} defaultValue={this.state.importString} placeholder={translate('PHRASE_IMPORT')} />
           <button id='proceed' className='l cap' onClick={this._process} disabled={!state.importValid} >{translate('proceed')}</button>
           <div className='l warning' style={{ marginLeft:'3em' }}>{state.errorMsg}</div>
         </div>
@@ -508,7 +522,7 @@ export default class ModalImport extends TranslatedComponent {
       );
     }
 
-    return <div className='modal' onTouchTap={ (e) => e.stopPropagation() } onClick={ (e) => e.stopPropagation() }>
+    return <div className='modal' onClick={ (e) => e.stopPropagation() } onClick={ (e) => e.stopPropagation() }>
       <h2 >{translate('import')}</h2>
       {importStage}
       <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>

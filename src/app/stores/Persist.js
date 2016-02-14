@@ -14,8 +14,8 @@ let LS;
 
 // Safe check to determine if localStorage is enabled
 try {
-  localStorage.setItem('test_string', 1);
-  localStorage.removeItem('test_string');
+  localStorage.setItem('test', 'test');
+  localStorage.removeItem('test');
   LS = localStorage;
 } catch(e) {
   LS = null;
@@ -23,7 +23,7 @@ try {
 
 /**
  * Safe localstorage put
- * @param  {string} key key
+ * @param  {String} key key
  * @param  {any} value data to store
  */
 function _put(key, value) {
@@ -34,8 +34,8 @@ function _put(key, value) {
 
 /**
  * Safe localstorage get string
- * @param  {string} key key
- * @return {string} The stored string
+ * @param  {String} key key
+ * @return {String} The stored string
  */
 function _getString(key) {
   return LS ? LS.getItem(key) : null;
@@ -43,7 +43,7 @@ function _getString(key) {
 
 /**
  * Safe localstorage get
- * @param  {string} key key
+ * @param  {String} key key
  * @return {object | number} The stored data
  */
 function _get(key) {
@@ -53,7 +53,7 @@ function _get(key) {
 
 /**
  * Safe localstorage delete
- * @param  {string} key key
+ * @param  {String} key key
  */
 function _delete(key) {
   if (LS) {
@@ -64,8 +64,10 @@ function _delete(key) {
 
 /**
  * Persist store / service for all user settings. Currently uses localstorage only
+ * Should be treated as a singleton / single instance should be used hence why the default
+ * export is an instance (see end of this file).
  */
-class Persist extends EventEmitter {
+export class Persist extends EventEmitter {
 
   /**
    * Create an instance
@@ -75,22 +77,69 @@ class Persist extends EventEmitter {
     let buildJson = _get(LS_KEY_BUILDS);
     let comparisonJson = _get(LS_KEY_COMPARISONS);
     let tips = _get(LS_KEY_TOOLTIPS);
+    let discounts = _get(LS_KEY_DISCOUNTS);
 
+    this.onStorageChange = this.onStorageChange.bind(this);
+    this.langCode = _getString(LS_KEY_LANG) || 'en';
+    this.insurance = _getString(LS_KEY_INSURANCE) || 'standard';
+    this.discounts = discounts && !isNaN(discounts[0]) && !isNaN(discounts[1]) ? discounts : [1, 1];
     this.builds = buildJson ? buildJson : {};
     this.comparisons = comparisonJson ? comparisonJson : {};
     this.buildCount = Object.keys(this.builds).length;
-    this.langCode = _getString(LS_KEY_LANG) || 'en';
-    this.insurance = _getString(LS_KEY_INSURANCE) || 'standard';
-    this.discounts = _get(LS_KEY_DISCOUNTS) || [1, 1];
     this.costTab = _getString(LS_KEY_COST_TAB);
     this.state =  _get(LS_KEY_STATE);
     this.sizeRatio = _get(LS_KEY_SIZE_RATIO) || 1;
     this.tooltipsEnabled = tips === null ? true : tips;
+
+    if (LS) {
+      window.addEventListener('storage', this.onStorageChange);
+    }
+  }
+
+  /**
+   * Listen to storage changes from other windows/tabs
+   * and update accordingly
+   * @param  {StorageEvent} e Storage Event
+   */
+  onStorageChange(e) {
+    let newValue = e.newValue;
+
+    try {
+      switch(e.key) {
+        case LS_KEY_BUILDS:
+          this.builds = newValue ? JSON.parse(newValue) : {};
+          this.emit('builds');
+          break;
+        case LS_KEY_COMPARISONS:
+          this.comparisons = newValue ? JSON.parse(newValue) : {};
+          this.emit('comparisons');
+          break;
+        case LS_KEY_LANG:
+          this.langCode = newValue;
+          this.emit('language', newValue);
+          break;
+        case LS_KEY_INSURANCE:
+          this.insurance = newValue;
+          this.emit('insurance', newValue);
+          break;
+        case LS_KEY_DISCOUNTS:
+          this.discounts = JSON.parse(newValue);
+          this.emit('discounts', this.discounts);
+          break;
+        case LS_KEY_TOOLTIPS:
+          this.tooltipsEnabled = !!newValue && newValue.toLowerCase() == 'true';
+          this.emit('tooltips', this.tooltipsEnabled);
+          break;
+      }
+    } catch (e) {
+      // On JSON.Parse Error - don't sync or do anything
+      console && console.error && console.error('Localstorage Sync Error', e); // eslint-disable-line no-console
+    }
   }
 
   /**
    * Get the current language code
-   * @return {stirng} language code
+   * @return {String} language code
    */
   getLangCode() {
     return this.langCode;
@@ -98,7 +147,7 @@ class Persist extends EventEmitter {
 
   /**
    * Update and save the current language
-   * @param {string} langCode language code
+   * @param {String} langCode language code
    */
   setLangCode(langCode) {
     this.langCode = langCode;
@@ -124,9 +173,9 @@ class Persist extends EventEmitter {
   /**
    * Persist a ship build in local storage.
    *
-   * @param  {string} shipId The unique id for a model of ship
-   * @param  {string} name   The name of the build
-   * @param  {string} code   The serialized code
+   * @param  {String} shipId The unique id for a model of ship
+   * @param  {String} name   The name of the build
+   * @param  {String} code   The serialized code
    */
   saveBuild(shipId, name, code) {
     if (!this.builds[shipId]) {
@@ -134,16 +183,16 @@ class Persist extends EventEmitter {
     }
     this.builds[shipId][name] = code;
     _put(LS_KEY_BUILDS, this.builds);
-    this.emit('buildSaved', shipId, name, code);
+    this.emit('builds');
   }
 
   /**
    * Get the serialized code/string for a build. Returns null if a
    * build is not found.
    *
-   * @param  {string} shipId The unique id for a model of ship
-   * @param  {string} name   The name of the build
-   * @return {string}        The serialized build string.
+   * @param  {String} shipId The unique id for a model of ship
+   * @param  {String} name   The name of the build
+   * @return {String}        The serialized build string.
    */
   getBuild(shipId, name) {
     if (this.builds[shipId] && this.builds[shipId][name]) {
@@ -154,7 +203,7 @@ class Persist extends EventEmitter {
 
   /**
    *  Get all builds (object) or builds for a specific ship (array)
-   * @param  {string} shipId Optional Ship Id
+   * @param  {String} shipId Optional Ship Id
    * @return {Object | Array} Object if Ship Id is not provided
    */
   getBuilds(shipId) {
@@ -166,7 +215,7 @@ class Persist extends EventEmitter {
 
   /**
    * Get an array of all builds names for a ship
-   * @param  {string} shipId Ship Id
+   * @param  {String} shipId Ship Id
    * @return {Array}  Array of string or empty array
    */
   getBuildsNamesFor(shipId) {
@@ -179,8 +228,8 @@ class Persist extends EventEmitter {
 
   /**
    * Check if a build has been saved
-   * @param  {string} shipId  Ship Id
-   * @param  {string} name    Build name
+   * @param  {String} shipId  Ship Id
+   * @param  {String} name    Build name
    * @return {Boolean}        True if the build exists
    */
   hasBuild(shipId, name) {
@@ -199,8 +248,8 @@ class Persist extends EventEmitter {
    * Delete a build from local storage. It will also delete the ship build collection if
    * it becomes empty
    *
-   * @param  {string} shipId The unique id for a model of ship
-   * @param  {string} name   The name of the build
+   * @param  {String} shipId The unique id for a model of ship
+   * @param  {String} name   The name of the build
    */
   deleteBuild(shipId, name) {
     if (this.builds[shipId][name]) {
@@ -220,14 +269,14 @@ class Persist extends EventEmitter {
         }
       }
       _put(LS_KEY_COMPARISONS, this.comparisons);
-      this.emit('buildDeleted', shipId, name);
+      this.emit('builds');
     }
   }
 
   /**
    * Persist a comparison in localstorage.
    *
-   * @param  {string} name   The name of the comparison
+   * @param  {String} name   The name of the comparison
    * @param  {array} builds  Array of builds
    * @param  {array} facets  Array of facet indices
    */
@@ -240,13 +289,13 @@ class Persist extends EventEmitter {
       builds: builds.map(b => { return { shipId: b.id || b.shipId, buildName: b.buildName }; })
     };
     _put(LS_KEY_COMPARISONS, this.comparisons);
-    this.emit('comparisons', this.comparisons);
+    this.emit('comparisons');
   }
 
   /**
-   * [getComparison description]
-   * @param  {string} name [description]
-   * @return {object}      Object containing array of facets and ship id + build names
+   * Get a comparison
+   * @param  {String} name Comparison name
+   * @return {Object}      Object containing array of facets and ship id + build names
    */
   getComparison(name) {
     if (this.comparisons[name]) {
@@ -265,7 +314,7 @@ class Persist extends EventEmitter {
 
   /**
    * Check if a comparison has been saved
-   * @param  {string}  name Comparison name
+   * @param  {String}  name Comparison name
    * @return {Boolean}      True if a comparison has been saved
    */
   hasComparison(name) {
@@ -282,13 +331,13 @@ class Persist extends EventEmitter {
 
   /**
    * Removes the comparison from localstorage.
-   * @param  {string} name Comparison name
+   * @param  {String} name Comparison name
    */
   deleteComparison(name) {
     if (this.comparisons[name]) {
       delete this.comparisons[name];
       _put(LS_KEY_COMPARISONS, this.comparisons);
-      this.emit('comparisons', this.comparisons);
+      this.emit('comparisons');
     }
   }
 
@@ -298,8 +347,8 @@ class Persist extends EventEmitter {
   deleteAll() {
     this.builds = {};
     this.comparisons = {};
-    _delete(LS_KEY_BUILDS);
-    _delete(LS_KEY_COMPARISONS);
+    _put(LS_KEY_BUILDS, {});
+    _put(LS_KEY_COMPARISONS, {});
     this.emit('deletedAll');
   }
 
@@ -318,20 +367,20 @@ class Persist extends EventEmitter {
 
   /**
    * Get the saved insurance type
-   * @return {string} The name of the saved insurance type of null
+   * @return {String} The name of the saved insurance type of null
    */
   getInsurance() {
-    return this.insurance.toLowerCase();
+    return this.insurance;
   }
 
   /**
    * Persist selected insurance type
-   * @param {string} insurance Insurance type name
+   * @param {String} insurance Insurance type name
    */
   setInsurance(insurance) {
     this.insurance = insurance.toLowerCase();
-    _put(LS_KEY_INSURANCE, insurance);
-    this.emit('insurance', insurance);
+    _put(LS_KEY_INSURANCE, this.insurance);
+    this.emit('insurance', this.insurance);
   }
 
   /**
@@ -341,7 +390,7 @@ class Persist extends EventEmitter {
   setShipDiscount(shipDiscount) {
     this.discounts[0] = shipDiscount;
     _put(LS_KEY_DISCOUNTS, this.discounts);
-    this.emit('discounts', this.discounts);
+    this.emit('discounts');
   }
 
   /**
@@ -359,7 +408,7 @@ class Persist extends EventEmitter {
   setModuleDiscount(moduleDiscount) {
     this.discounts[1] = moduleDiscount;
     _put(LS_KEY_DISCOUNTS, this.discounts);
-    this.emit('discounts', this.discounts);
+    this.emit('discounts');
   }
 
   /**
@@ -389,7 +438,7 @@ class Persist extends EventEmitter {
 
   /**
    * Retrieve the last router state from local storage
-   * @return {object} state State object containing state name and params
+   * @return {Object} state State object containing state name and params
    */
   getState() {
     return this.state;
@@ -397,7 +446,7 @@ class Persist extends EventEmitter {
 
   /**
    * Save the current router state to localstorage
-   * @param {object} state State object containing state name and params
+   * @param {Object} state State object containing state name and params
    */
   setState(state) {
     this.state = state;
@@ -433,4 +482,5 @@ class Persist extends EventEmitter {
   }
 }
 
+// Export an instance as the default to use as a singleton
 export default new Persist();

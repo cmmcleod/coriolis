@@ -1,11 +1,11 @@
 {
   "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/3.json#",
-  "name": "Test",
+  "name": "Test My Ship",
   "ship": "Anaconda",
   "references": [
     {
       "name": "Coriolis.io",
-      "url": "http://localhost:3300/outfit/anaconda/48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA?bn=Test?bn=Test",
+      "url": "http://localhost:3300/outfit/anaconda/48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA?bn=Test%20My%20Ship",
       "code": "48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA",
       "shipId": "anaconda"
     }
@@ -281,8 +281,8 @@
     "unladenRange": 18.49,
     "fullTankRange": 18.12,
     "ladenRange": 16.39,
-    "unladenTotalRange": 73.21,
-    "ladenTotalRange": 66.15,
+    "unladenFastestRange": 73.21,
+    "ladenFastestRange": 66.15,
     "maxJumpCount": 4,
     "shieldStrength": 833
   }

@@ -117,8 +117,8 @@
       "unladenRange": 32.48,
       "fullTankRange": 30.27,
       "ladenRange": 19.61,
-      "unladenTotalRange": 176.71,
-      "ladenTotalRange": 112.92,
+      "unladenFastestRange": 176.71,
+      "ladenFastestRange": 112.92,
       "maxJumpCount": 6,
       "shieldStrength": 86.49
     }
@@ -251,8 +251,8 @@
       "unladenRange": 30.24,
       "fullTankRange": 28.32,
       "ladenRange": 19.8,
-      "unladenTotalRange": 164.89,
-      "ladenTotalRange": 114.03,
+      "unladenFastestRange": 164.89,
+      "ladenFastestRange": 114.03,
       "maxJumpCount": 6,
       "shieldStrength": 149.2
     }
@@ -381,8 +381,8 @@
       "unladenRange": 31.71,
       "fullTankRange": 29.61,
       "ladenRange": 23.58,
-      "unladenTotalRange": 172.68,
-      "ladenTotalRange": 136.46,
+      "unladenFastestRange": 172.68,
+      "ladenFastestRange": 136.46,
       "maxJumpCount": 6,
       "shieldStrength": 86.49
     }
@@ -513,8 +513,8 @@
       "unladenRange": 26.41,
       "fullTankRange": 24.97,
       "ladenRange": 17.36,
-      "unladenTotalRange": 172.04,
-      "ladenTotalRange": 118.55,
+      "unladenFastestRange": 172.04,
+      "ladenFastestRange": 118.55,
       "maxJumpCount": 7,
       "shieldStrength": 89.07
     }
@@ -655,8 +655,8 @@
       "unladenRange": 25.77,
       "fullTankRange": 24.39,
       "ladenRange": 17.98,
-      "unladenTotalRange": 167.93,
-      "ladenTotalRange": 122.84,
+      "unladenFastestRange": 167.93,
+      "ladenFastestRange": 122.84,
       "maxJumpCount": 7,
       "shieldStrength": 125.07
     }
@@ -793,8 +793,8 @@
       "unladenRange": 19.27,
       "fullTankRange": 18.95,
       "ladenRange": 15.43,
-      "unladenTotalRange": 67.34,
-      "ladenTotalRange": 54.75,
+      "unladenFastestRange": 67.34,
+      "ladenFastestRange": 54.75,
       "maxJumpCount": 4,
       "shieldStrength": 111.07
     }
@@ -956,8 +956,8 @@
       "unladenRange": 27.1,
       "fullTankRange": 25.58,
       "ladenRange": 21.94,
-      "unladenTotalRange": 176.39,
-      "ladenTotalRange": 150.58,
+      "unladenFastestRange": 176.39,
+      "ladenFastestRange": 150.58,
       "maxJumpCount": 7,
       "shieldStrength": 253.58
     }
@@ -1098,8 +1098,8 @@
       "unladenRange": 26.01,
       "fullTankRange": 25.42,
       "ladenRange": 17.19,
-      "unladenTotalRange": 90.67,
-      "ladenTotalRange": 61.04,
+      "unladenFastestRange": 90.67,
+      "ladenFastestRange": 61.04,
       "maxJumpCount": 4,
       "shieldStrength": 191.82
     }
@@ -1262,8 +1262,8 @@
       "unladenRange": 15.19,
       "fullTankRange": 14.99,
       "ladenRange": 14.99,
-      "unladenTotalRange": 53.15,
-      "ladenTotalRange": 53.15,
+      "unladenFastestRange": 53.15,
+      "ladenFastestRange": 53.15,
       "maxJumpCount": 4,
       "shieldStrength": 489.6
     }
@@ -1362,8 +1362,8 @@
       "unladenRange": 24.25,
       "fullTankRange": 23.73,
       "ladenRange": 23.73,
-      "unladenTotalRange": 84.56,
-      "ladenTotalRange": 84.56,
+      "unladenFastestRange": 84.56,
+      "ladenFastestRange": 84.56,
       "maxJumpCount": 4,
       "shieldStrength": 0
     }
@@ -1501,8 +1501,8 @@
       "unladenRange": 19.51,
       "fullTankRange": 18.58,
       "ladenRange": 13.09,
-      "unladenTotalRange": 152.32,
-      "ladenTotalRange": 106.49,
+      "unladenFastestRange": 152.32,
+      "ladenFastestRange": 106.49,
       "maxJumpCount": 8,
       "shieldStrength": 170.57
     }
@@ -1639,8 +1639,8 @@
       "unladenRange": 28.25,
       "fullTankRange": 26.6,
       "ladenRange": 16.67,
-      "unladenTotalRange": 183.67,
-      "ladenTotalRange": 113.69,
+      "unladenFastestRange": 183.67,
+      "ladenFastestRange": 113.69,
       "maxJumpCount": 7,
       "shieldStrength": 214.26
     }
@@ -1810,8 +1810,8 @@
       "unladenRange": 20.32,
       "fullTankRange": 19.46,
       "ladenRange": 14.65,
-      "unladenTotalRange": 133.17,
-      "ladenTotalRange": 99.65,
+      "unladenFastestRange": 133.17,
+      "ladenFastestRange": 99.65,
       "maxJumpCount": 7,
       "shieldStrength": 486.35
     }
@@ -1989,8 +1989,8 @@
       "unladenRange": 14.32,
       "fullTankRange": 13.89,
       "ladenRange": 13.46,
-      "unladenTotalRange": 94.42,
-      "ladenTotalRange": 91.49,
+      "unladenFastestRange": 94.42,
+      "ladenFastestRange": 91.49,
       "maxJumpCount": 7,
       "shieldStrength": 645.57
     }
@@ -2219,8 +2219,8 @@
       "unladenRange": 16.99,
       "fullTankRange": 16.68,
       "ladenRange": 15.91,
-      "unladenTotalRange": 67.35,
-      "ladenTotalRange": 64.2,
+      "unladenFastestRange": 67.35,
+      "ladenFastestRange": 64.2,
       "maxJumpCount": 4,
       "shieldStrength": 952
     }
@@ -2374,8 +2374,8 @@
       "unladenRange": 39.26,
       "fullTankRange": 37.65,
       "ladenRange": 21.21,
-      "unladenTotalRange": 153.79,
-      "ladenTotalRange": 85.82,
+      "unladenFastestRange": 153.79,
+      "ladenFastestRange": 85.82,
       "maxJumpCount": 4,
       "shieldStrength": 372.98
     }
@@ -2530,8 +2530,8 @@
       "unladenRange": 38.44,
       "fullTankRange": 36.89,
       "ladenRange": 21.04,
-      "unladenTotalRange": 150.62,
-      "ladenTotalRange": 85.16,
+      "unladenFastestRange": 150.62,
+      "ladenFastestRange": 85.16,
       "maxJumpCount": 4,
       "shieldStrength": 372.98
     }
@@ -2698,8 +2698,8 @@
       "unladenRange": 38.04,
       "fullTankRange": 30.11,
       "ladenRange": 23.03,
-      "unladenTotalRange": 675.7,
-      "ladenTotalRange": 501.97,
+      "unladenFastestRange": 675.7,
+      "ladenFastestRange": 501.97,
       "maxJumpCount": 20,
       "shieldStrength": 372.98
     }
@@ -2916,8 +2916,8 @@
       "unladenRange": 18.49,
       "fullTankRange": 18.12,
       "ladenRange": 16.39,
-      "unladenTotalRange": 73.21,
-      "ladenTotalRange": 66.15,
+      "unladenFastestRange": 73.21,
+      "ladenFastestRange": 66.15,
       "maxJumpCount": 4,
       "shieldStrength": 833
     }
@@ -3044,8 +3044,8 @@
       "unladenRange": 35.99,
       "fullTankRange": 33.36,
       "ladenRange": 33.36,
-      "unladenTotalRange": 232.28,
-      "ladenTotalRange": 232.28,
+      "unladenFastestRange": 232.28,
+      "ladenFastestRange": 232.28,
       "maxJumpCount": 7,
       "shieldStrength": 92.25
     }
@@ -3181,8 +3181,8 @@
       "unladenRange": 15.06,
       "fullTankRange": 14.86,
       "ladenRange": 14.86,
-      "unladenTotalRange": 42.5,
-      "ladenTotalRange": 42.5,
+      "unladenFastestRange": 42.5,
+      "ladenFastestRange": 42.5,
       "maxJumpCount": 3,
       "shieldStrength": 548.74
     }
@@ -3335,8 +3335,8 @@
       "unladenRange": 12.51,
       "fullTankRange": 12.38,
       "ladenRange": 12.38,
-      "unladenTotalRange": 35.35,
-      "ladenTotalRange": 35.35,
+      "unladenFastestRange": 35.35,
+      "ladenFastestRange": 35.35,
       "maxJumpCount": 3,
       "shieldStrength": 760.16
     }
@@ -3453,8 +3453,8 @@
       "unladenRange": 17.12,
       "fullTankRange": 16.71,
       "ladenRange": 16.71,
-      "unladenTotalRange": 42.4,
-      "ladenTotalRange": 42.4,
+      "unladenFastestRange": 42.4,
+      "ladenFastestRange": 42.4,
       "maxJumpCount": 3,
       "shieldStrength": 102
     }
@@ -3611,8 +3611,8 @@
       "unladenRange": 8.43,
       "fullTankRange": 8.09,
       "ladenRange": 7.25,
-      "unladenTotalRange": 81.5,
-      "ladenTotalRange": 72.9,
+      "unladenFastestRange": 81.5,
+      "ladenFastestRange": 72.9,
       "maxJumpCount": 10,
       "shieldStrength": 299.48
     }

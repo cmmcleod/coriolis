@@ -1,5 +1,5 @@
 import { ModuleGroupToName, MountMap, BulkheadNames } from './Constants';
-import { Ships } from 'coriolis-data';
+import { Ships } from 'coriolis-data/dist';
 import Ship from './Ship';
 import * as ModuleUtils from './ModuleUtils';
 import LZString from 'lz-string';

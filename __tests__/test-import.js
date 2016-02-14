@@ -10,6 +10,7 @@ import { getLanguage } from '../src/app/i18n/Language';
 
 describe('Import Modal', function() {
 
+  let MockRouter = require('../src/app/Router');
   const Persist = require('../src/app/stores/Persist').default;
   const ModalImport = require('../src/app/components/ModalImport').default;
   const mockContext = {
@@ -24,12 +25,15 @@ describe('Import Modal', function() {
     onWindowResize: jest.genMockFunction()
   };
 
+  MockRouter.go = jest.genMockFunction();
+
   let modal, render, ContextProvider = Utils.createContextProvider(mockContext);
 
   /**
    * Clear saved builds, and reset React DOM
    */
   function reset() {
+    MockRouter.go.mockClear();
     Persist.deleteAll();
     render = TU.renderIntoDocument(<ContextProvider><ModalImport /></ContextProvider>);
     modal = TU.findRenderedComponentWithType(render, ModalImport);
@@ -135,16 +139,9 @@ describe('Import Modal', function() {
 
       expect(modal.state.importValid).toBeTruthy();
       expect(modal.state.errorMsg).toEqual(null);
-
       clickProceed();
-
-      expect(modal.state.processed).toBeTruthy();
-
-      clickImport();
-
-      expect(Persist.getBuilds()).toEqual({
-        anaconda: { 'Test': '48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA' }
-      });
+      expect(MockRouter.go.mock.calls.length).toBe(1);
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda/48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA?bn=Test%20My%20Ship');
     });
 
     it('catches an invalid build', function() {
@@ -152,7 +149,7 @@ describe('Import Modal', function() {
       pasteText(JSON.stringify(importData).replace('components', 'comps'));
 
       expect(modal.state.importValid).toBeFalsy();
-      expect(modal.state.errorMsg).toEqual('Anaconda Build "Test": Invalid data');
+      expect(modal.state.errorMsg).toEqual('Anaconda Build "Test My Ship": Invalid data');
     });
   });
 
@@ -188,16 +185,13 @@ describe('Import Modal', function() {
 
       for (let i = 0; i < imports.length; i++ ) {
         reset();
-        pasteText(imports[i].buildText);
+        let fixture = imports[i];
+        pasteText(fixture.buildText);
         expect(modal.state.importValid).toBeTruthy();
-        expect(modal.state.errorMsg).toEqual(null, 'Build #' + i + ': ' + imports[i].buildName);
+        expect(modal.state.errorMsg).toEqual(null);
         clickProceed();
-        expect(modal.state.processed).toBeTruthy();
-        clickImport();
-        let allBuilds = Persist.getBuilds();
-        let shipBuilds = allBuilds ? allBuilds[imports[i].shipId] : null;
-        let build = shipBuilds ? shipBuilds[imports[i].buildName] : null;
-        expect(build).toEqual(imports[i].buildCode, 'Build #' + i + ': ' + imports[i].buildName);
+        expect(MockRouter.go.mock.calls.length).toBe(1);
+        expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/' + fixture.shipId + '/' + fixture.buildCode + '?bn=' + encodeURIComponent(fixture.buildName));
       }
     });
 

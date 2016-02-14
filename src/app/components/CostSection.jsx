@@ -1,6 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
-import { Ships } from 'coriolis-data';
+import { Ships } from 'coriolis-data/dist';
 import Persist from '../stores/Persist';
 import Ship from '../shipyard/Ship';
 import { Insurance } from '../shipyard/Constants';
@@ -46,7 +46,6 @@ export default class CostSection extends TranslatedComponent {
       retrofitName,
       shipDiscount,
       moduleDiscount,
-      total: props.ship.totalCost,
       insurance: Insurance[Persist.getInsurance()],
       tab: Persist.getCostTab(),
       buildOptions: Persist.getBuildsNamesFor(props.ship.id),
@@ -108,6 +107,7 @@ export default class CostSection extends TranslatedComponent {
     let moduleDiscount = Persist.getModuleDiscount();
     this.props.ship.applyDiscounts(shipDiscount, moduleDiscount);
     this.state.retrofitShip.applyDiscounts(shipDiscount, moduleDiscount);
+    this._updateRetrofit(this.props.ship, this.state.retrofitShip);
     this.setState({ shipDiscount, moduleDiscount });
   }
 
@@ -137,32 +137,28 @@ export default class CostSection extends TranslatedComponent {
   }
 
   /**
-   * On build save
-   * @param  {string} shipId       Ship Id
-   * @param  {string} name         Build name
-   * @param  {string} code         Serialized ship 'code'
+   * On builds changed check to see if the retrofit ship needs
+   * to be updated
    */
-  _onBuildSaved(shipId, name, code) {
-    if(this.state.retrofitName == name) {
-      this.state.retrofitShip.buildFrom(code);  // Repopulate modules from saved build
-      this._updateRetrofit(this.props.ship, this.state.retrofitShip);
-    } else {
-      this.setState({ buildOptions: Persist.getBuildsNamesFor(this.props.shipId) });
-    }
-  }
+  _onBuildsChanged() {
+    let update = false;
+    let ship = this.props.ship;
+    let { retrofitName, retrofitShip } = this.state;
 
-  /**
-   * On build deleted
-   * @param  {string} shipId       Ship Id
-   * @param  {string} name         Build name
-   * @param  {string} code         Serialized ship 'code'
-   */
-  _onBuildDeleted(shipId, name, code) {
-    if(this.state.retrofitName == name) {
-      this.state.retrofitShip.buildWith(Ships[shipId].defaults);  // Retrofit ship becomes stock build
+    if(!Persist.hasBuild(ship.id, retrofitName)) {
+      retrofitShip.buildWith(Ships[ship.id].defaults);  // Retrofit ship becomes stock build
       this.setState({ retrofitName: null });
+      update = true;
+    } else if (Persist.getBuild(ship.id, retrofitName) != retrofitShip.toString()) {
+      retrofitShip.buildFrom(Persist.getBuild(ship.id, retrofitName));  // Repopulate modules from saved build
+      update = true;
     }
-    this.setState({ buildOptions: Persist.getBuildsNamesFor(shipId) });
+
+    if (update) { // Update retrofit comparison
+      this._updateRetrofit(ship, retrofitShip);
+    }
+    // Update list of retrofit base build options
+    this.setState({ buildOptions: Persist.getBuildsNamesFor(ship.id) });
   }
 
   /**
@@ -171,7 +167,7 @@ export default class CostSection extends TranslatedComponent {
    */
   _toggleCost(item) {
     this.props.ship.setCostIncluded(item, !item.incCost);
-    this.setState({ total: this.props.ship.totalCost });
+    this.forceUpdate();
   }
 
   /**
@@ -286,7 +282,7 @@ export default class CostSection extends TranslatedComponent {
    */
   _costsTab() {
     let { ship } = this.props;
-    let { total, shipDiscount, moduleDiscount, insurance } = this.state;
+    let { shipDiscount, moduleDiscount, insurance } = this.state;
     let { translate, formats, units } = this.context.language;
     let rows = [];
 
@@ -295,9 +291,9 @@ export default class CostSection extends TranslatedComponent {
       if (item.m && item.m.cost) {
         let toggle = this._toggleCost.bind(this, item);
         rows.push(<tr key={i} className={cn('highlight', { disabled: !item.incCost })}>
-          <td className='ptr' style={{ width: '1em' }} onTouchTap={toggle}>{item.m.class + item.m.rating}</td>
-          <td className='le ptr shorten cap' onTouchTap={toggle}>{slotName(translate, item)}</td>
-          <td className='ri ptr' onTouchTap={toggle}>{formats.int(item.discountedCost)}{units.CR}</td>
+          <td className='ptr' style={{ width: '1em' }} onClick={toggle}>{item.m.class + item.m.rating}</td>
+          <td className='le ptr shorten cap' onClick={toggle}>{slotName(translate, item)}</td>
+          <td className='ri ptr' onClick={toggle}>{formats.int(item.discountedCost)}{units.CR}</td>
         </tr>);
       }
     }
@@ -306,23 +302,23 @@ export default class CostSection extends TranslatedComponent {
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr className='main'>
-            <th colSpan='2' className='sortable le' onTouchTap={this._sortCostBy.bind(this,'m')}>
+            <th colSpan='2' className='sortable le' onClick={this._sortCostBy.bind(this,'m')}>
               {translate('component')}
               {shipDiscount < 1 && <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('ship')} -${formats.pct1(1 - shipDiscount)}]`}</u>}
               {moduleDiscount < 1 && <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('modules')} -${formats.pct1(1 - moduleDiscount)}]`}</u>}
             </th>
-            <th className='sortable le' onTouchTap={this._sortCostBy.bind(this, 'cr')} >{translate('credits')}</th>
+            <th className='sortable le' onClick={this._sortCostBy.bind(this, 'cr')} >{translate('credits')}</th>
           </tr>
         </thead>
         <tbody>
           {rows}
           <tr className='ri'>
             <td colSpan='2' className='lbl' >{translate('total')}</td>
-            <td className='val'>{formats.int(total)}{units.CR}</td>
+            <td className='val'>{formats.int(ship.totalCost)}{units.CR}</td>
           </tr>
           <tr className='ri'>
             <td colSpan='2' className='lbl'>{translate('insurance')}</td>
-            <td className='val'>{formats.int(total * insurance)}{units.CR}</td>
+            <td className='val'>{formats.int(ship.totalCost * insurance)}{units.CR}</td>
           </tr>
         </tbody>
       </table>
@@ -346,12 +342,12 @@ export default class CostSection extends TranslatedComponent {
     if (retrofitCosts.length) {
       for (let i = 0, l = retrofitCosts.length; i < l; i++) {
         let item = retrofitCosts[i];
-        rows.push(<tr key={i} className={cn('highlight', { disabled: !item.retroItem.incCost })} onTouchTap={this._toggleRetrofitCost.bind(this, item)}>
-            <td style={{ width: '1em' }}>{item.sellClassRating}</td>
-            <td className='le shorten cap'>{translate(item.sellName)}</td>
-            <td style={{ width: '1em' }}>{item.buyClassRating}</td>
-            <td className='le shorten cap'>{translate(item.buyName)}</td>
-            <td colSpan='2' className={cn('ri', item.retroItem.incCost ? item.netCost > 0 ? 'warning' : 'secondary-disabled' : 'disabled')}>{int(item.netCost)}{units.CR}</td>
+        rows.push(<tr key={i} className={cn('highlight', { disabled: !item.retroItem.incCost })} onClick={this._toggleRetrofitCost.bind(this, item)}>
+            <td className='ptr' style={{ width: '1em' }}>{item.sellClassRating}</td>
+            <td className='le ptr shorten cap'>{translate(item.sellName)}</td>
+            <td className='ptr' style={{ width: '1em' }}>{item.buyClassRating}</td>
+            <td className='le ptr shorten cap'>{translate(item.buyName)}</td>
+            <td colSpan='2' className={cn('ri ptr', item.retroItem.incCost ? item.netCost > 0 ? 'warning' : 'secondary-disabled' : 'disabled')}>{int(item.netCost)}{units.CR}</td>
         </tr>);
       }
     } else {
@@ -363,11 +359,11 @@ export default class CostSection extends TranslatedComponent {
         <table style={{ width: '100%' }}>
           <thead>
             <tr className='main'>
-              <th colSpan='2' className='sortable le' onTouchTap={this._sortRetrofitBy.bind(this, 'sellName')}>{translate('sell')}</th>
-              <th colSpan='2' className='sortable le' onTouchTap={this._sortRetrofitBy.bind(this, 'buyName')}>{translate('buy')}</th>
-              <th colSpan='2' className='sortable le' onTouchTap={this._sortRetrofitBy.bind(this, 'cr')}>
+              <th colSpan='2' className='sortable le' onClick={this._sortRetrofitBy.bind(this, 'sellName')}>{translate('sell')}</th>
+              <th colSpan='2' className='sortable le' onClick={this._sortRetrofitBy.bind(this, 'buyName')}>{translate('buy')}</th>
+              <th colSpan='2' className='sortable le' onClick={this._sortRetrofitBy.bind(this, 'cr')}>
                 {translate('net cost')}
-                {moduleDiscount < 1 && <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('modules')} -${formats.rPct(1 - moduleDiscount)}]`}</u>}
+                {moduleDiscount < 1 && <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('modules')} -${formats.pct1(1 - moduleDiscount)}]`}</u>}
               </th>
             </tr>
           </thead>
@@ -473,10 +469,10 @@ export default class CostSection extends TranslatedComponent {
         <table style={{ width: '100%' }}>
           <thead>
             <tr className='main'>
-              <th colSpan='2' className='sortable le' onTouchTap={this._sortAmmoBy.bind(this, 'm')} >{translate('module')}</th>
-              <th colSpan='1' className='sortable le' onTouchTap={this._sortAmmoBy.bind(this, 'max')} >{translate('qty')}</th>
-              <th colSpan='1' className='sortable le' onTouchTap={this._sortAmmoBy.bind(this, 'cost')} >{translate('unit cost')}</th>
-              <th className='sortable le' onTouchTap={this._sortAmmoBy.bind(this, 'total')}>{translate('total cost')}</th>
+              <th colSpan='2' className='sortable le' onClick={this._sortAmmoBy.bind(this, 'm')} >{translate('module')}</th>
+              <th colSpan='1' className='sortable le' onClick={this._sortAmmoBy.bind(this, 'max')} >{translate('qty')}</th>
+              <th colSpan='1' className='sortable le' onClick={this._sortAmmoBy.bind(this, 'cost')} >{translate('unit cost')}</th>
+              <th className='sortable le' onClick={this._sortAmmoBy.bind(this, 'total')}>{translate('total cost')}</th>
             </tr>
           </thead>
           <tbody>
@@ -583,8 +579,7 @@ export default class CostSection extends TranslatedComponent {
     this.listeners = [
       Persist.addListener('discounts', this._onDiscountChanged.bind(this)),
       Persist.addListener('insurance', this._onInsuranceChanged.bind(this)),
-      Persist.addListener('buildSaved', this._onBuildSaved.bind(this)),
-      Persist.addListener('buildDeleted', this._onBuildDeleted.bind(this))
+      Persist.addListener('builds', this._onBuildsChanged.bind(this)),
     ];
     this._updateAmmoCosts(this.props.ship);
     this._updateRetrofit(this.props.ship, this.state.retrofitShip);
@@ -613,7 +608,6 @@ export default class CostSection extends TranslatedComponent {
     if (nextProps.ship != this.props.ship || nextProps.code != this.props.code) {
       this._updateAmmoCosts(nextProps.ship);
       this._updateRetrofit(nextProps.ship, retrofitShip);
-      this.setState({ total: nextProps.ship.totalCost });
       this._sortCost(nextProps.ship);
     }
   }
@@ -673,9 +667,9 @@ export default class CostSection extends TranslatedComponent {
         <table className='tabs'>
           <thead>
             <tr>
-              <th style={{ width:'33%' }} className={cn({ active: tab == 'costs' })} onTouchTap={this._showTab.bind(this, 'costs')} >{translate('costs')}</th>
-              <th style={{ width:'33%' }} className={cn({ active: tab == 'retrofit' })} onTouchTap={this._showTab.bind(this, 'retrofit')} >{translate('retrofit costs')}</th>
-              <th style={{ width:'34%' }} className={cn({ active: tab == 'ammo' })} onTouchTap={this._showTab.bind(this, 'ammo')} >{translate('reload costs')}</th>
+              <th style={{ width:'33%' }} className={cn({ active: tab == 'costs' })} onClick={this._showTab.bind(this, 'costs')} >{translate('costs')}</th>
+              <th style={{ width:'33%' }} className={cn({ active: tab == 'retrofit' })} onClick={this._showTab.bind(this, 'retrofit')} >{translate('retrofit costs')}</th>
+              <th style={{ width:'34%' }} className={cn({ active: tab == 'ammo' })} onClick={this._showTab.bind(this, 'ammo')} >{translate('reload costs')}</th>
             </tr>
           </thead>
         </table>

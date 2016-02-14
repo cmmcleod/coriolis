@@ -6,12 +6,14 @@ import Persist from './stores/Persist';
 
 import Header from './components/Header';
 import Tooltip from './components/Tooltip';
+import ModalImport from './components/ModalImport';
 
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
 import OutfittingPage from './pages/OutfittingPage';
 import ComparisonPage from './pages/ComparisonPage';
 import ShipyardPage from './pages/ShipyardPage';
+import ErrorDetails from './pages/ErrorDetails';
 
 /**
  * Coriolis App
@@ -28,7 +30,8 @@ export default class Coriolis extends React.Component {
     hideModal: React.PropTypes.func.isRequired,
     tooltip: React.PropTypes.func.isRequired,
     termtip: React.PropTypes.func.isRequired,
-    onWindowResize: React.PropTypes.func.isRequired
+    onWindowResize: React.PropTypes.func.isRequired,
+    onCommand: React.PropTypes.func.isRequired
   };
 
   /**
@@ -44,6 +47,7 @@ export default class Coriolis extends React.Component {
     this._tooltip = this._tooltip.bind(this);
     this._termtip = this._termtip.bind(this);
     this._onWindowResize = this._onWindowResize.bind(this);
+    this._onCommand = this._onCommand.bind(this);
     this._onLanguageChange = this._onLanguageChange.bind(this);
     this._onSizeRatioChange = this._onSizeRatioChange.bind(this);
     this._keyDown = this._keyDown.bind(this);
@@ -70,12 +74,15 @@ export default class Coriolis extends React.Component {
    * @param {Object} route The current route
    */
   _setPage(page, route) {
-    this.setState({ page, route, currentMenu: null });
+    this.setState({ page, route, currentMenu: null, modal: null, error: null });
   }
 
   /**
-   * Handle unexpected error
-   * TODO: Implement and fix to work with Webpack (dev + prod)
+   * Handle unexpected error. This is most likely an unhandled React Error which
+   * is also most likely unrecoverable. The best option is to catch as many details
+   * as possible so the user can report the error and provide a link to reload the page
+   * to reset the VM and clear any error state.
+   *
    * @param  {string} msg         Message
    * @param  {string} scriptUrl   URL
    * @param  {number} line        Line number
@@ -83,8 +90,16 @@ export default class Coriolis extends React.Component {
    * @param  {Object} errObj      Error Object
    */
   _onError(msg, scriptUrl, line, col, errObj) {
-    console.log('WINDOW ERROR', arguments);
-    //  this._setPage(<div>Some errors occured!!</div>);
+    console && console.error && console.error(arguments); // eslint-disable-line no-console
+    this.setState({
+      error: <ErrorDetails error={{ message: msg, details: { scriptUrl, line, col, error: JSON.stringify(errObj) } }}/>,
+      page: null,
+      currentMenu: null,
+      modal: null
+    });
+    // TODO: Improve in the event of React Errors
+    // Potentially ReactDOM.render into dom here instead
+    // ReactDOM.render(this, document.getElementById('coriolis'));
   }
 
   /**
@@ -108,11 +123,23 @@ export default class Coriolis extends React.Component {
    * @param  {Event} e  Keyboard Event
    */
   _keyDown(e) {
+    // .keyCode will eventually be replaced with .key
     switch (e.keyCode) {
-      case 27:
+      case 27:    // Escape Key
         this._hideModal();
         this._closeMenu();
         break;
+      case 73:     // 'i'
+        if (e.ctrlKey || e.metaKey) { // CTRL/CMD + i
+          e.preventDefault();
+          this._showModal(<ModalImport />);
+        }
+        break;
+      case 101010:  // 's'
+        if (e.ctrlKey || e.metaKey) { // CTRL/CMD + i
+          e.preventDefault();
+          this.emitter.emit('command', 'save');
+        }
     }
   }
 
@@ -121,7 +148,7 @@ export default class Coriolis extends React.Component {
    * @param  {React.Component} content Modal Content
    */
   _showModal(content) {
-    let modal = <div className='modal-bg' onTouchTap={(e) => this._hideModal() }>{content}</div>;
+    let modal = <div className='modal-bg' onClick={(e) => this._hideModal() }>{content}</div>;
     this.setState({ modal });
   }
 
@@ -169,16 +196,20 @@ export default class Coriolis extends React.Component {
 
   /**
    * Show the term tip
-   * @param  {string} term            Term
-   * @param  {[type]} orientation     Tooltip orientation (n,e,s,w)
+   * @param  {string} term            Term or Phrase
+   * @param  {Object} opts            Options - dontCap, orientation (n,e,s,w)
    * @param  {SyntheticEvent} event   Event
    */
-  _termtip(term, orientation, event) {
-    if (typeof orientation != 'string') {
-      event = orientation;
-      orientation = null;
+  _termtip(term, opts, event) {
+    if (opts && opts.nativeEvent) { // Opts is a SyntheticEvent
+      event = opts;
+      opts = { cap: true };
     }
-    this._tooltip(<div className='cap cen'>{this.state.language.translate(term)}</div>, event.currentTarget.getBoundingClientRect(), { orientation });
+    this._tooltip(
+      <div className={'cen' + (opts.cap ? ' cap' : '')}>{this.state.language.translate(term)}</div>,
+      event.currentTarget.getBoundingClientRect(),
+      opts
+    );
   }
 
   /**
@@ -188,6 +219,15 @@ export default class Coriolis extends React.Component {
    */
   _onWindowResize(listener) {
     return this.emitter.addListener('windowResize', listener);
+  }
+
+    /**
+   * Add a listener to global commands such as save,
+   * @param  {Function} listener Listener callback
+   * @return {Object}            Subscription token
+   */
+  _onCommand(listener) {
+    return this.emitter.addListener('command', listener);
   }
 
   /**
@@ -206,7 +246,8 @@ export default class Coriolis extends React.Component {
       hideModal: this._hideModal,
       tooltip: this._tooltip,
       termtip: this._termtip,
-      onWindowResize: this._onWindowResize
+      onWindowResize: this._onWindowResize,
+      onCommand: this._onCommand
     };
   }
 
@@ -238,9 +279,9 @@ export default class Coriolis extends React.Component {
    * @return {React.Component} The main app
    */
   render() {
-    return <div onTouchTap={this._closeMenu}>
+    return <div onClick={this._closeMenu}>
       <Header appCacheUpdate={this.state.appCacheUpdate} currentMenu={this.state.currentMenu} />
-      { this.state.page ? <this.state.page currentMenu={this.state.currentMenu} /> : <NotFoundPage/> }
+      { this.state.error ? this.state.error : this.state.page ? <this.state.page currentMenu={this.state.currentMenu} /> : <NotFoundPage/> }
       { this.state.modal }
       { this.state.tooltip }
     </div>;

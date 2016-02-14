@@ -98,7 +98,7 @@ export default class Slider extends React.Component {
    */
   _updateDimensions() {
     this.setState({
-      outerWidth: findDOMNode(this).offsetWidth
+      outerWidth: findDOMNode(this).getBoundingClientRect().width
     });
   }
 

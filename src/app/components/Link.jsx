@@ -8,6 +8,15 @@ import { shallowEqual } from '../utils/UtilityFunctions';
 export default class Link extends React.Component {
 
   /**
+   * Constructor
+   * @param  {Object} props   React Component properties
+   */
+  constructor(props) {
+    super(props);
+    this.handler = this.handler.bind(this);
+  }
+
+  /**
    * Determine if a component should be rerendered
    * @param  {object} nextProps Next properties
    * @return {boolean}          true if update is needed
@@ -21,18 +30,15 @@ export default class Link extends React.Component {
    * @param  {SyntheticEvent} event Event
    */
   handler(event) {
-    if (event.getModifierState &&
-      (event.getModifierState('Shift') ||
-      event.getModifierState('Alt') ||
-      event.getModifierState('Control') ||
-      event.getModifierState('Meta') ||
-      event.button > 1)) {
+    if (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey || event.button > 1) {
       return;
     }
-    event.nativeEvent && event.preventDefault && event.preventDefault();
+    event.preventDefault();
 
-    if (this.props.href) {
-      Router.go(encodeURI(this.props.href));
+    if (this.props.onClick) {
+      this.props.onClick(event);
+    } else if (this.props.href) {
+      Router.go(this.props.href);
     }
   }
 
@@ -41,8 +47,7 @@ export default class Link extends React.Component {
    * @return {React.Component} A href element
    */
   render() {
-    let action = this.handler.bind(this);
-    return <a {...this.props} onTouchTap={action}>{this.props.children}</a>;
+    return <a {...this.props} onClick={this.handler}>{this.props.children}</a>;
   }
 
 }

@@ -43,7 +43,7 @@ export default class StandardSlot extends TranslatedComponent {
     }
 
     return (
-      <div className={cn('slot', { selected: this.props.selected })} onTouchTap={this.props.onOpen}>
+      <div className={cn('slot', { selected: this.props.selected })} onClick={this.props.onOpen}>
         <div className={cn('details-container', { warning: warning && warning(slot.m) })}>
           <div className={'sz'}>{slot.maxClass}</div>
           <div>

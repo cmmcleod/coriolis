@@ -132,12 +132,12 @@ export default class InternalSlotSection extends SlotSection {
    * @return {React.Component}    Section menu
    */
   _getSectionMenu(translate) {
-    return <div className='select' onTouchTap={e => e.stopPropagation()} onContextMenu={stopCtxPropagation}>
+    return <div className='select' onClick={e => e.stopPropagation()} onContextMenu={stopCtxPropagation}>
       <ul>
-        <li className='lc' onTouchTap={this._empty}>{translate('empty all')}</li>
-        <li className='lc' onTouchTap={this._fillWithCargo}>{translate('cargo')}</li>
-        <li className='lc' onTouchTap={this._fillWithCells}>{translate('scb')}</li>
-        <li className='lc' onTouchTap={this._fillWithArmor}>{translate('hr')}</li>
+        <li className='lc' onClick={this._empty}>{translate('empty all')}</li>
+        <li className='lc' onClick={this._fillWithCargo}>{translate('cargo')}</li>
+        <li className='lc' onClick={this._fillWithCells}>{translate('scb')}</li>
+        <li className='lc' onClick={this._fillWithArmor}>{translate('hr')}</li>
       </ul>
     </div>;
   }

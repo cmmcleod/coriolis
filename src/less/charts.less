@@ -41,8 +41,9 @@ svg {
 
   }
 
-  .label {
+  .label, .text-tip {
     text-transform: capitalize;
+    fill: @fg;
   }
 
   .metric {
@@ -55,13 +56,16 @@ svg {
 
   .label {
     font-size: 0.75em;
-    fill: @fg;
+  }
+
+  .text-tip {
+    font-size: 0.8em
   }
 
   .tooltip {
     fill: @bgBlack;
     stroke: @secondary;
     stroke-width: 1px;
-    font-size: 0.75em
+    font-size: 0.8em
   }
 }

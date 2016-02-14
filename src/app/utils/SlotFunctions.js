@@ -19,7 +19,7 @@ export function slotName(translate, slot) {
  * @param  {Function} translate Translate function
  * @param  {Object} a           Slot object
  * @param  {Object} b           Slot object
- * @return {number}             1, 0, -1
+ * @return {Number}             1, 0, -1
  */
 export function nameComparator(translate, a, b) {
   return translate(a.name || a.grp).localeCompare(translate(b.name || b.grp));
@@ -97,7 +97,14 @@ const PROP_BLACKLIST = {
   M: 1,
   P: 1,
   mass: 1,
-  cost: 1
+  cost: 1,
+  recover: 1,
+  weaponcapacity: 1,
+  weaponrecharge: 1,
+  enginecapacity: 1,
+  enginerecharge: 1,
+  systemcapacity: 1,
+  systemrecharge: 1
 };
 
 const TERM_LOOKUP = {
@@ -127,10 +134,10 @@ const UNIT_LOOKUP = {
 
 /**
  * Determine the appropriate class based on diff value
- * @param  {number} a         Potential Module (cannot be null)
- * @param  {number} b         Currently mounted module (optional - null)
- * @param  {boolean} negative A positive diff has a negative implication
- * @return {string}           CSS Class name
+ * @param  {Number} a         Potential Module (cannot be null)
+ * @param  {Number} b         Currently mounted module (optional - null)
+ * @param  {Boolean} negative A positive diff has a negative implication
+ * @return {String}           CSS Class name
  */
 function diffClass(a, b, negative) {
   if (b === undefined || a === b) {
@@ -144,8 +151,8 @@ function diffClass(a, b, negative) {
 /**
  * Determine the displayable diff of a module's proprty
  * @param  {Function} format    Formatter
- * @param  {number} mVal        Potential Module property value
- * @param  {number} mmVal       Currently mounted module property value
+ * @param  {Number} mVal        Potential Module property value
+ * @param  {Number} mmVal       Currently mounted module property value
  * @return {string | React.Component} Component to be rendered
  */
 function diff(format, mVal, mmVal) {
@@ -208,7 +215,30 @@ export function diffDetails(language, m, mm) {
         newShield = this.calcShieldStrengthWith(m);
       }
     }
-    propDiffs.push(<div key='shields'>{`${translate('shields')}: `}<span className={newShield > shield ? 'secondary' : 'warning'}>{diff(formats.int, newShield, shield)}{units.MJ}</span></div>);
+    let sgDiffClass = Math.round((newShield - shield) * 100) / 100 == 0 ? 'muted' : (newShield > shield ? 'secondary' : 'warning');
+
+    propDiffs.push(<div key='shields'>{`${translate('shields')}: `}<span className={sgDiffClass}>{diff(formats.int, newShield, shield)}{units.MJ}</span></div>);
+  }
+
+  if (m.grp == 'pd') {
+    propDiffs.push(<div key='wep'>
+      {`${translate('WEP')}: `}
+      <span className={diffClass(m.weaponcapacity, mm.weaponcapacity)}>{m.weaponcapacity}{units.MJ}</span>
+      {' / '}
+      <span className={diffClass(m.weaponrecharge, mm.weaponrecharge)}>{m.weaponrecharge}{units.MW}</span>
+    </div>);
+    propDiffs.push(<div key='sys'>
+      {`${translate('SYS')}: `}
+      <span className={diffClass(m.systemcapacity, mm.systemcapacity)}>{m.systemcapacity}{units.MJ}</span>
+      {' / '}
+      <span className={diffClass(m.systemrecharge, mm.systemrecharge)}>{m.systemrecharge}{units.MW}</span>
+    </div>);
+    propDiffs.push(<div key='eng'>
+      {`${translate('ENG')}: `}
+      <span className={diffClass(m.enginecapacity, mm.enginecapacity)}>{m.enginecapacity}{units.MJ}</span>
+      {' / '}
+      <span className={diffClass(m.enginerecharge, mm.enginerecharge)}>{m.enginerecharge}{units.MW}</span>
+    </div>);
   }
 
   if (m.grp == 'fd' || massDiff || capDiff) {

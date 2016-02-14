@@ -1,6 +1,6 @@
 import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
-import { Ships } from 'coriolis-data';
+import { Ships } from 'coriolis-data/dist';
 import Persist from '../stores/Persist';
 
 /**
@@ -96,39 +96,47 @@ export default class ModalCompare extends TranslatedComponent {
     let translate = this.context.language.translate;
 
     let availableBuilds = unusedBuilds.map((build, i) =>
-      <tr key={i} onTouchTap={this._addBuild.bind(this, i)}>
+      <tr key={i} onClick={this._addBuild.bind(this, i)}>
         <td className='tl'>{build.name}</td>
         <td className='tl'>{build.buildName}</td>
       </tr>
     );
 
     let selectedBuilds = usedBuilds.map((build, i) =>
-      <tr key={i} onTouchTap={this._removeBuild.bind(this, i)}>
+      <tr key={i} onClick={this._removeBuild.bind(this, i)}>
         <td className='tl'>{build.name}</td><
         td className='tl'>{build.buildName}</td>
       </tr>
     );
 
-    return <div className='modal' onTouchTap={ (e) => e.stopPropagation() }>
+    return <div className='modal' onClick={ (e) => e.stopPropagation() }>
       <h3>{translate('PHRASE_SELECT_BUILDS')}</h3>
       <div id='build-select'>
-        <table>
-          <thead><tr><th colSpan='2'>{translate('available')}</th></tr></thead>
-          <tbody>
-            {availableBuilds}
-          </tbody>
-        </table>
+        <div className='build-section'>
+          <h1>{translate('available')}</h1>
+          <div>
+            <table>
+              <tbody>
+                {availableBuilds}
+              </tbody>
+            </table>
+          </div>
+        </div>
         <h1>⇆</h1>
-        <table>
-          <thead><tr><th colSpan='2'>{translate('added')}</th></tr></thead>
-          <tbody>
-            {selectedBuilds}
-          </tbody>
-        </table>
+        <div className='build-section'>
+          <h1>{translate('added')}</h1>
+          <div>
+            <table>
+              <tbody>
+                {selectedBuilds}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
       <br/>
-      <button className='cap' onTouchTap={this._selectBuilds.bind(this)}>{translate('Ok')}</button>
-      <button className='r cap' onTouchTap={() => this.context.hideModal()}>{translate('Cancel')}</button>
+      <button className='cap' onClick={this._selectBuilds.bind(this)}>{translate('Ok')}</button>
+      <button className='r cap' onClick={() => this.context.hideModal()}>{translate('Cancel')}</button>
     </div>;
   }
 }

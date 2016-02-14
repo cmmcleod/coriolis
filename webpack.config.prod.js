@@ -25,8 +25,8 @@ CopyDirPlugin.prototype.apply = function(compiler) {
 
 module.exports = {
   entry: {
-    app: path.resolve(__dirname, 'src/app/index'),
-    lib: ['d3', 'react', 'react-dom', 'classnames', 'fbemitter', 'lz-string']
+    app: ['babel-polyfill', path.resolve(__dirname, 'src/app/index')],
+    lib: ['babel-polyfill', 'd3', 'react', 'react-dom', 'classnames', 'fbemitter', 'lz-string']
   },
   resolve: {
     extensions: ['', '.js', '.jsx', '.json', '.less'],
@@ -39,9 +39,9 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'build'),
-    filename: '[name].[hash:6].js',
-    chunkFilename: '[name].[hash:6]',
-    publicPath: process.env.CDN || '/'
+    filename: '[name].[chunkhash:6].js',
+    chunkFilename: '[name].[chunkhash:6]',
+    publicPath: '/'
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
@@ -50,7 +50,7 @@ module.exports = {
       },
       'screw-ie8': true
     }),
-    new webpack.optimize.CommonsChunkPlugin('lib', 'lib.[hash:6].js'),
+    new webpack.optimize.CommonsChunkPlugin('lib', 'lib.[chunkhash:6].js'),
     new HtmlWebpackPlugin({
         inject: false,
         appCache: 'coriolis.appcache',

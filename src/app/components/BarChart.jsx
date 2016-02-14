@@ -40,18 +40,21 @@ export default class BarChart extends TranslatedComponent {
 
   static defaultProps = {
     colors: ['#7b6888', '#6b486b', '#3182bd', '#a05d56', '#d0743c'],
+    labels: null,
     unit: ''
   };
 
   static PropTypes = {
-    data: React.PropTypes.array.isRequired,
-    width: React.PropTypes.number.isRequired,
-    format: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string.isRequired,
-    unit: React.PropTypes.string.isRequired,
     colors: React.PropTypes.array,
+    data: React.PropTypes.array.isRequired,
+    desc: React.PropTypes.bool,
+    format: React.PropTypes.string.isRequired,
+    labels: React.PropTypes.array,
     predicate: React.PropTypes.string,
-    desc: React.PropTypes.bool
+    properties: React.PropTypes.array,
+    title: React.PropTypes.string.isRequired,
+    unit: React.PropTypes.string.isRequired,
+    width: React.PropTypes.number.isRequired
   };
 
   /**
@@ -76,25 +79,30 @@ export default class BarChart extends TranslatedComponent {
 
   /**
    * Generate and Show tooltip
-   * @param  {Object} build    Ship build
-   * @param  {string} property Property to display
+   * @param  {Object} build           Ship build
+   * @param  {string} property        Property to display
+   * @param  {number} propertyIndex   Property Label index
    */
-  _showTip(build, property) {
-    let { unit, format } = this.props;
+  _showTip(build, property, propertyIndex) {
+    let { unit, format, labels } = this.props;
     let { scale, y0, y1 } = this.state;
-    let { formats } = this.context.language;
+    let { translate, formats } = this.context.language;
     let fontSize = parseFloat(window.getComputedStyle(document.getElementById('coriolis')).getPropertyValue('font-size') || 16);
     let val = build[property];
+    let lblStr = labels ? translate(labels[propertyIndex]) + ': ' : '';
     let valStr = formats[format](val) + ' ' + unit;
-    let width = (valStr.length / 1.7) * fontSize;
-    let midPoint = width / 2;
     let valMidPoint = scale(val) / 2;
     let y = y0(bName(build)) + y1(property) - fontSize - 5;
+    let width = ((lblStr.length + valStr.length) / 1.8) * fontSize;
+    let midPoint = width / 2;
 
     let tooltip = <g>
       <g transform={`translate(${Math.max(0, valMidPoint - midPoint)},${y})`}>
         <rect className='primary-disabled' height={fontSize} width={width} />
-        <text x={midPoint} y={fontSize} dy='-0.4em' style={{ textAnchor: 'middle', fontSize: '0.7em' }}>{valStr}</text>
+        <text x={midPoint} y={fontSize} dy={fontSize / -4} style={{ textAnchor: 'middle', fontSize: '0.7em' }}>
+          <tspan style={{ textTransform: 'capitalize' }}>{lblStr}</tspan>
+          <tspan>{valStr}</tspan>
+        </text>
       </g>
       <path className='primary-disabled' d='M0,0L5,5L10,0Z' dy='1em' transform={`translate(${Math.max(0, valMidPoint - 5)},${y + fontSize})`} />
     </g>;
@@ -173,12 +181,12 @@ export default class BarChart extends TranslatedComponent {
       return null;
     }
 
-    let { label, unit, width, data, properties } = this.props;
+    let { title, unit, width, data, properties } = this.props;
     let { innerWidth, outerHeight, innerHeight, y0, y1, scale, color, tooltip } = this.state;
 
     let bars = data.map((build, i) =>
       <g key={i} transform={`translate(0,${y0(bName(build))})`}>
-        { properties.map((p) =>
+        { properties.map((p, propIndex) =>
           <rect
             key={p}
             x={0}
@@ -186,7 +194,7 @@ export default class BarChart extends TranslatedComponent {
             width={scale(build[p])}
             height={y1.rangeBand()}
             fill={color(p)}
-            onMouseOver={this._showTip.bind(this, build, p)}
+            onMouseOver={this._showTip.bind(this, build, p, propIndex)}
             onMouseOut={this._hideTip}
           />
         )}
@@ -199,7 +207,7 @@ export default class BarChart extends TranslatedComponent {
         {tooltip}
         <g className='x axis' ref={(elem) => d3.select(elem).call(this.xAxis)} transform={`translate(0,${innerHeight})`}>
           <text className='cap' y='30' dy='.1em' x={innerWidth / 2} style={{ textAnchor: 'middle' }}>
-            <tspan>{label}</tspan>
+            <tspan>{title}</tspan>
             { unit ? <tspan className='metric'>{` (${unit})`}</tspan> : null }
           </text>
         </g>

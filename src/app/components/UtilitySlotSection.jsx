@@ -91,21 +91,21 @@ export default class UtilitySlotSection extends SlotSection {
   _getSectionMenu(translate) {
     let _use = this._use;
 
-    return <div className='select' onTouchTap={(e) => e.stopPropagation()} onContextMenu={stopCtxPropagation}>
+    return <div className='select' onClick={(e) => e.stopPropagation()} onContextMenu={stopCtxPropagation}>
       <ul>
-        <li className='lc' onTouchTap={this._empty}>{translate('empty all')}</li>
+        <li className='lc' onClick={this._empty}>{translate('empty all')}</li>
       </ul>
       <div className='select-group cap'>{translate('sb')}</div>
       <ul>
-        <li className='c' onTouchTap={_use.bind(this, 'sb', 'E', null)}>E</li>
-        <li className='c' onTouchTap={_use.bind(this, 'sb', 'D', null)}>D</li>
-        <li className='c' onTouchTap={_use.bind(this, 'sb', 'C', null)}>C</li>
-        <li className='c' onTouchTap={_use.bind(this, 'sb', 'B', null)}>B</li>
-        <li className='c' onTouchTap={_use.bind(this, 'sb', 'A', null)}>A</li>
+        <li className='c' onClick={_use.bind(this, 'sb', 'E', null)}>E</li>
+        <li className='c' onClick={_use.bind(this, 'sb', 'D', null)}>D</li>
+        <li className='c' onClick={_use.bind(this, 'sb', 'C', null)}>C</li>
+        <li className='c' onClick={_use.bind(this, 'sb', 'B', null)}>B</li>
+        <li className='c' onClick={_use.bind(this, 'sb', 'A', null)}>A</li>
       </ul>
       <div className='select-group cap'>{translate('cm')}</div>
       <ul>
-        <li className='lc' onTouchTap={_use.bind(this, 'cm', null, 'Heat Sink Launcher')}>{translate('Heat Sink Launcher')}</li>
+        <li className='lc' onClick={_use.bind(this, 'cm', null, 'Heat Sink Launcher')}>{translate('Heat Sink Launcher')}</li>
       </ul>
     </div>;
   }

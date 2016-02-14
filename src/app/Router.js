@@ -151,7 +151,7 @@ function Context(path, state) {
 
   this.querystring.split('&').forEach((str) =>{
     let query = str.split('=');
-    this.params[query[0]] =  decodeURIComponent(query[1]);
+    this.params[query[0]] = decodeURIComponent(query[1]);
   }, this);
 }
 

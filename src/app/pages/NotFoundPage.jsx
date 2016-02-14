@@ -21,7 +21,7 @@ export default class NotFoundPage extends Page {
    * Render the Page
    * @return {React.Component} The page contents
    */
-  render() {
-    return <div className={'page'}>Page {JSON.stringify(this.props.context)} Not Found</div>;
+  renderPage() {
+    return <div className='page' style={{ marginTop: 30 }}>Page <small>{this.context.route.path}</small> Not Found</div>;
   }
 }

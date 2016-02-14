@@ -6,13 +6,14 @@ import Link from './Link';
 import ActiveLink from './ActiveLink';
 import cn from 'classnames';
 import { Cogs, CoriolisLogo, Hammer, Rocket, StatsBars } from './SvgIcons';
-import { Ships } from 'coriolis-data';
+import { Ships } from 'coriolis-data/dist';
 import Persist from '../stores/Persist';
 import { toDetailedExport } from '../shipyard/Serializer';
 import ModalDeleteAll from './ModalDeleteAll';
 import ModalExport from './ModalExport';
 import ModalImport from './ModalImport';
 import Slider from './Slider';
+import { outfitURL } from '../utils/UrlGenerators';
 
 const SIZE_MIN = 0.65;
 const SIZE_RANGE = 0.55;
@@ -181,11 +182,11 @@ export default class Header extends TranslatedComponent {
     let shipList = [];
 
     for (let s in Ships) {
-      shipList.push(<ActiveLink key={s} href={'/outfit/' + s} className='block'>{Ships[s].properties.name}</ActiveLink>);
+      shipList.push(<ActiveLink key={s} href={outfitURL(s)} className='block'>{Ships[s].properties.name}</ActiveLink>);
     }
 
     return (
-      <div className='menu-list dbl no-wrap' onTouchTap={ (e) => e.stopPropagation() }>
+      <div className='menu-list dbl no-wrap' onClick={ (e) => e.stopPropagation() }>
         {shipList}
       </div>
     );
@@ -203,7 +204,7 @@ export default class Header extends TranslatedComponent {
         let shipBuilds = [];
         let buildNameOrder = Object.keys(builds[shipId]).sort();
         for (let buildName of buildNameOrder) {
-          let href = ['/outfit/', shipId, '/', builds[shipId][buildName], '?bn=', buildName].join('');
+          let href = outfitURL(shipId, builds[shipId][buildName], buildName);
           shipBuilds.push(<li key={shipId + '-' + buildName} ><ActiveLink href={href} className='block'>{buildName}</ActiveLink></li>);
         }
         buildList.push(<ul key={shipId}>{Ships[shipId].properties.name}{shipBuilds}</ul>);
@@ -211,7 +212,7 @@ export default class Header extends TranslatedComponent {
     }
 
     return (
-      <div className='menu-list' onTouchTap={ (e) => e.stopPropagation() }>
+      <div className='menu-list' onClick={ (e) => e.stopPropagation() }>
         <div className='dbl'>{buildList}</div>
       </div>
     );
@@ -237,10 +238,10 @@ export default class Header extends TranslatedComponent {
     }
 
     return (
-      <div className='menu-list' onTouchTap={ (e) => e.stopPropagation() } style={{ whiteSpace: 'nowrap' }}>
+      <div className='menu-list' onClick={ (e) => e.stopPropagation() } style={{ whiteSpace: 'nowrap' }}>
         {comparisons}
         <hr />
-        <Link href='/compare/all' ui-sref="compare({name: 'all'})" className='block cap'>{translate('compare all')}</Link>
+        <Link href='/compare/all' className='block cap'>{translate('compare all')}</Link>
         <Link href='/compare' className='block cap'>{translate('create new')}</Link>
       </div>
     );
@@ -255,14 +256,14 @@ export default class Header extends TranslatedComponent {
     let tips = Persist.showTooltips();
 
     return (
-      <div className='menu-list no-wrap cap' onTouchTap={ (e) => e.stopPropagation() }>
+      <div className='menu-list no-wrap cap' onClick={ (e) => e.stopPropagation() }>
         <div style={{ lineHeight: '2em' }}>
         {translate('language')}
         <select className='cap' value={Persist.getLangCode()} onChange={this._setLanguage}>
           {this.languageOptions}
         </select>
         <br/>
-        <span className='cap ptr' onTouchTap={this._toggleTooltips} >
+        <span className='cap ptr' onClick={this._toggleTooltips} >
           {translate('tooltips')}
           <div className={cn({ disabled: !tips, 'primary-disabled': tips })} style={{ marginLeft: '0.5em', display: 'inline-block' }}>{(tips ? '✓' : '✗')}</div>
         </span>
@@ -285,10 +286,10 @@ export default class Header extends TranslatedComponent {
         <hr />
         <ul>
           {translate('builds')} & {translate('comparisons')}
-          <li><a href="#" className='block' onTouchTap={this._showBackup.bind(this)}>{translate('backup')}</a></li>
-          <li><a href="#" className='block' onTouchTap={this._showDetailedExport.bind(this)}>{translate('detailed export')}</a></li>
-          <li><a href="#" className='block' onTouchTap={this._showImport.bind(this)}>{translate('import')}</a></li>
-          <li><a href="#" onTouchTap={this._showDeleteAll.bind(this)}>{translate('delete all')}</a></li>
+          <li><Link href="#" className='block' onClick={this._showBackup.bind(this)}>{translate('backup')}</Link></li>
+          <li><Link href="#" className='block' onClick={this._showDetailedExport.bind(this)}>{translate('detailed export')}</Link></li>
+          <li><Link href="#" className='block' onClick={this._showImport.bind(this)}>{translate('import')}</Link></li>
+          <li><Link href="#" onClick={this._showDeleteAll.bind(this)}>{translate('delete all')}</Link></li>
         </ul>
         <hr />
         <table style={{ width: 300, backgroundColor: 'transparent' }}>
@@ -299,7 +300,7 @@ export default class Header extends TranslatedComponent {
               <td style={{ width: 20 }}><span style={{ fontSize: 30 }}>A</span></td>
             </tr>
             <tr>
-             <td colSpan='3' style={{ textAlign: 'center', cursor: 'pointer' }} className='primary-disabled cap' onTouchTap={this._resetTextSize.bind(this)}>{translate('reset')}</td>
+             <td colSpan='3' style={{ textAlign: 'center', cursor: 'pointer' }} className='primary-disabled cap' onClick={this._resetTextSize.bind(this)}>{translate('reset')}</td>
             </tr>
           </tbody>
         </table>
@@ -313,13 +314,13 @@ export default class Header extends TranslatedComponent {
    * Add listeners on mount
    */
   componentWillMount() {
-    Persist.addListener('language', () => this.forceUpdate());
-    Persist.addListener('insurance', () => this.forceUpdate());
-    Persist.addListener('discounts', () => this.forceUpdate());
-    Persist.addListener('deletedAll', () => this.forceUpdate());
-    Persist.addListener('buildSaved', () => this.forceUpdate());
-    Persist.addListener('buildDeleted', () => this.forceUpdate());
-    Persist.addListener('tooltips', () => this.forceUpdate());
+    let update = () => this.forceUpdate();
+    Persist.addListener('language', update);
+    Persist.addListener('insurance', update);
+    Persist.addListener('discounts', update);
+    Persist.addListener('deletedAll', update);
+    Persist.addListener('builds', update);
+    Persist.addListener('tooltips', update);
   }
 
   /**
@@ -347,36 +348,36 @@ export default class Header extends TranslatedComponent {
     let hasBuilds = Persist.hasBuilds();
 
     if (this.props.appCacheUpdate) {
-      return <div id="app-update" onTouchTap={() => window.location.reload() }>{translate('PHRASE_UPDATE_RDY')}</div>;
+      return <div id="app-update" onClick={() => window.location.reload() }>{translate('PHRASE_UPDATE_RDY')}</div>;
     }
 
     return (
       <header>
-        <Link className='l' href="/" style={{ marginRight: '1em' }} title="Home"><CoriolisLogo className='icon xl' /></Link>
+        <Link className='l' href='/' style={{ marginRight: '1em' }} title='Home'><CoriolisLogo className='icon xl' /></Link>
 
         <div className='l menu'>
-          <div className={cn('menu-header', { selected: openedMenu == 's' })} onTouchTap={this._openShips}>
+          <div className={cn('menu-header', { selected: openedMenu == 's' })} onClick={this._openShips}>
             <Rocket className='warning' /><span className='menu-item-label'>{' ' + translate('ships')}</span>
           </div>
           {openedMenu == 's' ? this._getShipsMenu() : null}
         </div>
 
         <div className='l menu'>
-          <div className={cn('menu-header', { selected: openedMenu == 'b', disabled: !hasBuilds })} onTouchTap={hasBuilds && this._openBuilds}>
+          <div className={cn('menu-header', { selected: openedMenu == 'b', disabled: !hasBuilds })} onClick={hasBuilds && this._openBuilds}>
             <Hammer className={cn('warning', { 'warning-disabled': !hasBuilds })} /><span className='menu-item-label'>{' ' + translate('builds')}</span>
           </div>
           {openedMenu == 'b' ? this._getBuildsMenu() : null}
         </div>
 
         <div className='l menu'>
-          <div className={cn('menu-header', { selected: openedMenu == 'comp', disabled: !hasBuilds })} onTouchTap={hasBuilds && this._openComp}>
+          <div className={cn('menu-header', { selected: openedMenu == 'comp', disabled: !hasBuilds })} onClick={hasBuilds && this._openComp}>
             <StatsBars className={cn('warning', { 'warning-disabled': !hasBuilds })} /><span className='menu-item-label'>{' ' + translate('compare')}</span>
           </div>
           {openedMenu == 'comp' ? this._getComparisonsMenu() : null}
         </div>
 
         <div className='r menu'>
-          <div className={cn('menu-header', { selected: openedMenu == 'settings' })} onTouchTap={this._openSettings}>
+          <div className={cn('menu-header', { selected: openedMenu == 'settings' })} onClick={this._openSettings}>
             <Cogs className='xl warning'/><span className='menu-item-label'>{translate('settings')}</span>
           </div>
           {openedMenu == 'settings' ? this._getSettingsMenu() : null}

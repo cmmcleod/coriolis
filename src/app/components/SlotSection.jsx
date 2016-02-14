@@ -177,7 +177,7 @@ export default class SlotSection extends TranslatedComponent {
 
     return (
       <div id={this.sectionId} className={'group'}  onDragLeave={this._dragOverNone}>
-        <div className={cn('section-menu', { selected: sectionMenuOpened })} onTouchTap={open} onContextMenu={ctx}>
+        <div className={cn('section-menu', { selected: sectionMenuOpened })} onClick={open} onContextMenu={ctx}>
           <h1>{translate(this.sectionName)} <Equalizer/></h1>
           {sectionMenuOpened ? this._getSectionMenu(translate) : null }
         </div>

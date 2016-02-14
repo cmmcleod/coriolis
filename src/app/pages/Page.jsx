@@ -1,4 +1,5 @@
 import React from 'react';
+import ErrorDetails from './ErrorDetails';
 import { shallowEqual } from '../utils/UtilityFunctions';
 
 /**
@@ -16,7 +17,8 @@ export default class Page extends React.Component {
     hideModal: React.PropTypes.func.isRequired,
     tooltip: React.PropTypes.func.isRequired,
     termtip: React.PropTypes.func.isRequired,
-    onWindowResize: React.PropTypes.func.isRequired
+    onWindowResize: React.PropTypes.func.isRequired,
+    onCommand: React.PropTypes.func.isRequired
   };
 
   static propTypes = {
@@ -65,6 +67,18 @@ export default class Page extends React.Component {
    */
   componentWillUpdate(newProps, newState) {
     document.title = newState.title || 'Coriolis';
+  }
+
+  /**
+   * Checks error state before rendering the page contents.
+   * Pages should catch all errors where possible capture details to state.error.
+   * @return {React.Component} Page contents
+   */
+  render() {
+    if (this.state.error) {
+      return <ErrorDetails error={this.state.error} />;
+    }
+    return this.renderPage();
   }
 
 }

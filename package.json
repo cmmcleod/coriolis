@@ -1,11 +1,11 @@
 {
   "name": "coriolis_shipyard",
-  "version": "2.0.0-alpha",
+  "version": "2.0.1-Beta",
   "repository": {
     "type": "git",
     "url": "https://github.com/cmmcleod/coriolis"
   },
-  "homepage": "http://coriolis.io",
+  "homepage": "https://coriolis.io",
   "bugs": "https://github.com/cmmcleod/coriolis/issues",
   "private": true,
   "engine": "node >= 4.0.0",
@@ -17,9 +17,8 @@
     "test": "jest",
     "prod-serve": "nginx -p $(pwd) -c nginx.conf",
     "prod-stop": "kill -QUIT $(cat nginx.pid)",
-    "build:prod": "npm run clean && NODE_ENV=production CDN='//cdn.coriolis.io' webpack -d -p --config webpack.config.prod.js",
     "build": "npm run clean && NODE_ENV=production webpack -d -p --config webpack.config.prod.js",
-    "rsync": "rsync -e 'ssh -i $CORIOLIS_PEM' -a --delete build/ $CORIOLIS_USER@$CORIOLIS_HOST:~/www",
+    "rsync": "rsync -ae \"ssh -i $CORIOLIS_PEM\" --delete build/ $CORIOLIS_USER@$CORIOLIS_HOST:~/wwws",
     "deploy": "npm run lint && npm test && npm run build:prod && npm run rsync"
   },
   "jest": {
@@ -73,7 +72,7 @@
     "json-loader": "^0.5.3",
     "less": "^2.5.3",
     "less-loader": "^2.2.1",
-    "react-addons-test-utils": "^0.14.6",
+    "react-addons-test-utils": "^0.14.7",
     "react-testutils-additions": "^0.16.0",
     "rimraf": "^2.4.3",
     "style-loader": "^0.13.0",
@@ -84,11 +83,12 @@
   "dependencies": {
     "babel-polyfill": "^6.3.14",
     "classnames": "^2.2.0",
+    "coriolis-data": "cmmcleod/coriolis-data",
     "d3": "^3.5.9",
     "fbemitter": "^2.0.0",
     "lz-string": "^1.4.4",
-    "react": "^0.14.6",
-    "react-dom": "^0.14.6",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
     "superagent": "^1.4.0"
   }
 }

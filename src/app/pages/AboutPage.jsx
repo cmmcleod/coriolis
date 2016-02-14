@@ -22,11 +22,10 @@ export default class AboutPage extends Page {
    * Render the Page
    * @return {React.Component} The page contents
    */
-  render() {
+  renderPage() {
     return <div className={'page'} style={{ textAlign: 'left', maxWidth: 800, margin: '0 auto' }}>
       <h1><CoriolisLogo style={{ marginRight: '0.4em' }} className='xl'/><span className='warning'>Coriolis</span></h1>
-      <p>The Coriolis project was inspired by <a href='http://www.edshipyard.com/' target='_blank'>E:D Shipyard</a> and, of course,
-      <a href='http://www.elitedangerous.com' target='_blank'>Elite Dangerous</a>. The ultimate goal of Coriolis is to provide rich features to support in-game play and planning while engaging the E:D community to support its development.</p>
+      <p>The Coriolis project was inspired by <a href='http://www.edshipyard.com/' target='_blank'>E:D Shipyard</a> and, of course, <a href='http://www.elitedangerous.com' target='_blank'>Elite Dangerous</a>. The ultimate goal of Coriolis is to provide rich features to support in-game play and planning while engaging the E:D community to support its development.</p>
 
       <p>Coriolis was created using assets and imagery from Elite: Dangerous, with the permission of Frontier Developments plc, for non-commercial purposes. It is not endorsed by nor reflects the views or opinions of Frontier Developments.</p>
 
@@ -36,8 +35,7 @@ export default class AboutPage extends Page {
         github.com/cmmcleod/coriolis
       </a>
 
-      <p>Coriolis is an open source project. Checkout the list of upcoming features and to-do list on github.
-        Any and all contributions and feedback are welcome. If you encounter any bugs please report them and provide as much detail as possible.</p>
+      <p>Coriolis is an open source project. Checkout the list of upcoming features and to-do list on github. Any and all contributions and feedback are welcome. If you encounter any bugs please report them and provide as much detail as possible.</p>
 
       <form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_blank'>
         <input type='hidden' name='cmd' value='_s-xclick' />
@@ -47,6 +45,9 @@ export default class AboutPage extends Page {
       </form>
 
       <p>Help keep the lights on! Donations will be used to cover costs of running and maintaining Coriolis. Thanks for helping!</p>
+
+      <h3>Chat</h3>
+      <p>You can chat to us on <a href='https://www.hipchat.com/gfYQiZcmy' target='_blank'>HipChat</a> and sign up to chat on all E:D HipChat groups <a href='https://elite-dangerous.hipchat.com/invite/74670/a3af7ea57008362d83d05fada09bdf84' target='_blank'>here</a>.</p>
     </div>;
   }
 }

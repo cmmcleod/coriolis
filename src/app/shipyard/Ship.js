@@ -7,9 +7,9 @@ const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs'];
 
 /**
  * Returns the power usage type of a slot and it's particular modul
- * @param  {object} slot      The Slot
- * @param  {object} modul The modul in the slot
- * @return {string}           The key for the power usage type
+ * @param  {Object} slot      The Slot
+ * @param  {Object} modul The modul in the slot
+ * @return {String}           The key for the power usage type
  */
 function powerUsageType(slot, modul) {
   if (modul) {
@@ -23,10 +23,10 @@ function powerUsageType(slot, modul) {
 /**
  * Populates the category array with module IDs from
  * the provided code
- * @param  {string} code    Serialized ship code
+ * @param  {String} code    Serialized ship code
  * @param  {Array}  arr     Category array
- * @param  {number} codePos Current position/Index of code string
- * @return {number}         Next position/Index of code string
+ * @param  {Number} codePos Current position/Index of code string
+ * @return {Number}         Next position/Index of code string
  */
 function decodeToArray(code, arr, codePos) {
   for (let i = 0; i < arr.length; i++) {
@@ -44,7 +44,7 @@ function decodeToArray(code, arr, codePos) {
 /**
  * Reduce function used to get the IDs for a slot group (or array of slots)
  * @param  {array} idArray    The current Array of IDs
- * @param  {object} slot      Slot object
+ * @param  {Object} slot      Slot object
  * @param  {integer} slotIndex The index for the slot in its group
  * @return {array}           The mutated idArray
  */
@@ -59,9 +59,9 @@ function reduceToIDs(idArray, slot, slotIndex) {
 export default class Ship {
 
   /**
-   * @param {string} id         Unique ship Id / Key
-   * @param {object} properties Basic ship properties such as name, manufacturer, mass, etc
-   * @param {object} slots      Collection of slot groups (standard/standard, internal, hardpoints) with their max class size.
+   * @param {String} id         Unique ship Id / Key
+   * @param {Object} properties Basic ship properties such as name, manufacturer, mass, etc
+   * @param {Object} slots      Collection of slot groups (standard/standard, internal, hardpoints) with their max class size.
    */
   constructor(id, properties, slots) {
     this.id = id;
@@ -131,9 +131,9 @@ export default class Ship {
     /**
    * Calculate hypothetical jump range using the installed FSD and the
    * specified mass which can be more or less than ships actual mass
-   * @param  {number} fuel  Fuel available in tons
-   * @param  {number} cargo Cargo in tons
-   * @return {number}       Jump range in Light Years
+   * @param  {Number} fuel  Fuel available in tons
+   * @param  {Number} cargo Cargo in tons
+   * @return {Number}       Jump range in Light Years
    */
   calcJumpRangeWith(fuel, cargo) {
     return Calc.jumpRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
@@ -141,10 +141,10 @@ export default class Ship {
 
   /**
    * Calculate the hypothetical laden jump range based on a potential change in mass, fuel, or FSD
-   * @param  {number} massDelta Optional - Change in laden mass (mass + cargo + fuel)
-   * @param  {number} fuel      Optional - Available fuel (defaults to max fuel based on FSD)
+   * @param  {Number} massDelta Optional - Change in laden mass (mass + cargo + fuel)
+   * @param  {Number} fuel      Optional - Available fuel (defaults to max fuel based on FSD)
    * @param  {Object} fsd       Optional - Frame Shift Drive (or use mounted FSD)
-   * @return {number}           Jump range in Light Years
+   * @return {Number}           Jump range in Light Years
    */
   calcLadenRange(massDelta, fuel, fsd) {
     return Calc.jumpRange(this.ladenMass + (massDelta || 0), fsd || this.standard[2].m, fuel);
@@ -152,10 +152,10 @@ export default class Ship {
 
   /**
    * Calculate the hypothetical unladen jump range based on a potential change in mass, fuel, or FSD
-   * @param  {number} massDelta Optional - Change in ship mass
-   * @param  {number} fuel      Optional - Available fuel (defaults to lesser of fuel capacity or max fuel based on FSD)
+   * @param  {Number} massDelta Optional - Change in ship mass
+   * @param  {Number} fuel      Optional - Available fuel (defaults to lesser of fuel capacity or max fuel based on FSD)
    * @param  {Object} fsd       Optional - Frame Shift Drive (or use mounted FSD)
-   * @return {number}           Jump range in Light Years
+   * @return {Number}           Jump range in Light Years
    */
   calcUnladenRange(massDelta, fuel, fsd) {
     fsd = fsd || this.standard[2].m;
@@ -165,18 +165,18 @@ export default class Ship {
   /**
    * Calculate cumulative (total) jump range when making longest jumps using the installed FSD and the
    * specified mass which can be more or less than ships actual mass
-   * @param  {number} fuel  Fuel available in tons
-   * @param  {number} cargo Cargo in tons
-   * @return {number}       Total/Cumulative Jump range in Light Years
+   * @param  {Number} fuel  Fuel available in tons
+   * @param  {Number} cargo Cargo in tons
+   * @return {Number}       Total/Cumulative Jump range in Light Years
    */
   calcFastestRangeWith(fuel, cargo) {
-    return Calc.totalRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
+    return Calc.fastestRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
   }
 
   /**
    * Calculate the hypothetical top speeds at cargo and fuel tonnage
-   * @param  {number} fuel  Fuel available in tons
-   * @param  {number} cargo Cargo in tons
+   * @param  {Number} fuel  Fuel available in tons
+   * @param  {Number} cargo Cargo in tons
    * @return {Object}       Speed at pip settings and boost
    */
   calcSpeedsWith(fuel, cargo) {
@@ -184,25 +184,52 @@ export default class Ship {
   }
 
   /**
+   * Calculate the recovery time after losing or turning on shields
+   * Thanks to CMDRs Al Gray, GIF, and Nomad Enigma for providing Shield recharge data and formulas
+   *
+   * @return {Number} Recovery time in seconds
+   */
+  calcShieldRecovery() {
+    if (this.shieldStrength && this.sgSlot) {
+      // 50% of shield strength / recovery recharge rate + 15 second delay before recharge starts
+      return ((this.shieldStrength / 2) / this.sgSlot.m.recover) + 15;
+    }
+    return 0;
+  }
+
+  /**
+   * Calculate the recharge time for a shield going from 50% to 100%
+   * Thanks to CMDRs Al Gray, GIF, and Nomad Enigma for providing Shield recharge data and formulas
+   *
+   * @return {Number} 50 - 100% Recharge time in seconds
+   */
+  calcShieldRecharge() {
+    if (this.shieldStrength && this.sgSlot) {
+      // 50% -> 100% recharge time, Bi-Weave shields charge at 1.8 MJ/s
+      return (this.shieldStrength / 2) / (this.sgSlot.m.grp == 'bsg' ? 1.8 : 1);
+    }
+    return 0;
+  }
+
+  /**
    * Calculate the hypothetical shield strength for the ship using the specified parameters
    * @param  {Object} sg              [optional] Shield Generator to use
-   * @param  {number} multiplierDelta [optional] Change to shield multiplier (+0.2, - 0.12, etc)
-   * @return {number}                 Shield strength in MH
+   * @param  {Number} multiplierDelta [optional] Change to shield multiplier (+0.2, - 0.12, etc)
+   * @return {Number}                 Shield strength in MH
    */
   calcShieldStrengthWith(sg, multiplierDelta) {
     if (!sg) {
-      let sgSlot = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
-      if (!sgSlot) {
+      if (!this.sgSlot) {
         return 0;
       }
-      sg = sgSlot.m;
+      sg = this.sgSlot.m;
     }
     return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, this.shieldMultiplier + (multiplierDelta || 0));
   }
 
   /**
-   * [getAvailableModules description]
-   * @return {[type]} [description]
+   * Get the set of available modules for this ship
+   * @return {ModuleSet} Available module set
    */
   getAvailableModules() {
     return this.availCS;
@@ -216,7 +243,7 @@ export default class Ship {
    *  3 - Online
    * @param  {Object} slot        Slot model
    * @param  {boolean} deployed   True - power used when hardpoints are deployed
-   * @return {number}             status index
+   * @return {Number}             status index
    */
   getSlotStatus(slot, deployed) {
     if (!slot.m) { // Empty Slot
@@ -235,11 +262,10 @@ export default class Ship {
   /**
    * Find an internal slot that has an installed modul of the specific group.
    *
-   * @param  {string} group Module group/type
-   * @return {number}       The index of the slot in ship.internal
+   * @param  {String} group Module group/type
+   * @return {Number}       The index of the slot in ship.internal
    */
   findInternalByGroup(group) {
-    let index;
     if (ModuleUtils.isShieldGenerator(group)) {
       return this.internal.find(slot => slot.m && ModuleUtils.isShieldGenerator(slot.m.grp));
     } else {
@@ -249,7 +275,7 @@ export default class Ship {
 
   /**
    * Serializes the ship to a string
-   * @return {string} Serialized ship 'code'
+   * @return {String} Serialized ship 'code'
    */
   toString() {
     return [
@@ -265,7 +291,7 @@ export default class Ship {
 
   /**
    * Serializes the standard modules to a string
-   * @return {string} Serialized standard modules 'code'
+   * @return {String} Serialized standard modules 'code'
    */
   getStandardString() {
     if(!this.serialized.standard) {
@@ -279,7 +305,7 @@ export default class Ship {
 
   /**
    * Serializes the internal modules to a string
-   * @return {string} Serialized internal modules 'code'
+   * @return {String} Serialized internal modules 'code'
    */
   getInternalString() {
     if(!this.serialized.internal) {
@@ -290,7 +316,7 @@ export default class Ship {
 
   /**
    * Serializes the hardpoints and utility modules to a string
-   * @return {string} Serialized hardpoints and utility modules 'code'
+   * @return {String} Serialized hardpoints and utility modules 'code'
    */
   getHardpointsString() {
     if(!this.serialized.hardpoints) {
@@ -301,7 +327,7 @@ export default class Ship {
 
   /**
    * Get the serialized module active/inactive settings
-   * @return {string} Serialized active/inactive settings
+   * @return {String} Serialized active/inactive settings
    */
   getPowerEnabledString() {
     return this.serialized.enabled;
@@ -309,7 +335,7 @@ export default class Ship {
 
   /**
    * Get the serialized module priority settings
-   * @return {string} Serialized priority settings
+   * @return {String} Serialized priority settings
    */
   getPowerPrioritesString() {
     return this.serialized.priorities;
@@ -319,8 +345,8 @@ export default class Ship {
 
   /**
    * Recalculate all item costs and total based on discounts.
-   * @param  {number} shipCostMultiplier      Ship cost multiplier discount (e.g. 0.9 === 10% discount)
-   * @param  {number} moduleCostMultiplier Module cost multiplier discount (e.g. 0.75 === 25% discount)
+   * @param  {Number} shipCostMultiplier      Ship cost multiplier discount (e.g. 0.9 === 10% discount)
+   * @param  {Number} moduleCostMultiplier Module cost multiplier discount (e.g. 0.75 === 25% discount)
    * @return {this} The current ship instance for chaining
    */
   applyDiscounts(shipCostMultiplier, moduleCostMultiplier) {
@@ -442,7 +468,7 @@ export default class Ship {
    * Updates an existing ship instance's slots with modules determined by the
    * code.
    *
-   * @param {string}  serializedString  The string to deserialize
+   * @param {String}  serializedString  The string to deserialize
    * @return {this} The current ship instance for chaining
    */
   buildFrom(serializedString) {
@@ -527,7 +553,7 @@ export default class Ship {
   /**
    * Optimize for the lower mass build that can still boost and power the ship
    * without power management.
-   * @param  {object} m Standard Module overrides
+   * @param  {Object} m Standard Module overrides
    * @return {this} The current ship instance for chaining
    */
   optimizeMass(m) {
@@ -537,7 +563,7 @@ export default class Ship {
   /**
    * Include/Exclude a item/slot in cost calculations
    * @param {Object} item       Slot or item
-   * @param {Boolean} included  Cost included
+   * @param {boolean} included  Cost included
    * @return {this} The current ship instance for chaining
    */
   setCostIncluded(item, included) {
@@ -551,7 +577,7 @@ export default class Ship {
   /**
    * Set slot active/inactive
    * @param {Object} slot    Slot model
-   * @param {Boolean} enabled  True - active
+   * @param {boolean} enabled  True - active
    * @return {this} The current ship instance for chaining
    */
   setSlotEnabled(slot, enabled) {
@@ -578,8 +604,8 @@ export default class Ship {
 
   /**
    * Will change the priority of the specified slot if the new priority is valid
-   * @param  {object} slot        The slot to be updated
-   * @param  {number} newPriority The new priority to be set
+   * @param  {Object} slot        The slot to be updated
+   * @param  {Number} newPriority The new priority to be set
    * @return {boolean}            Returns true if the priority was changed (within range)
    */
   setSlotPriority(slot, newPriority) {
@@ -601,9 +627,9 @@ export default class Ship {
 
   /**
    * Updates the ship's cumulative and aggregated stats based on the module change.
-   * @param  {object} slot            The slot being updated
-   * @param  {object} n               The new module (may be null)
-   * @param  {object} old             The old module (may be null)
+   * @param  {Object} slot            The slot being updated
+   * @param  {Object} n               The new module (may be null)
+   * @param  {Object} old             The old module (may be null)
    * @param  {boolean} preventUpdate  If true the global ship state will not be updated
    * @return {this}                   The ship instance (for chaining operations)
    */
@@ -722,8 +748,8 @@ export default class Ship {
    * @return {this} The ship instance (for chaining operations)
    */
   updateShieldStrength() {
-    let sgSlot = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
-    this.shieldStrength = sgSlot && sgSlot.enabled ? Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sgSlot.m, this.shieldMultiplier) : 0;
+    this.sgSlot = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
+    this.shieldStrength = this.sgSlot && this.sgSlot.enabled ? Calc.shieldStrength(this.hullMass, this.baseShieldStrength, this.sgSlot.m, this.shieldMultiplier) : 0;
     return this;
   }
 
@@ -737,8 +763,8 @@ export default class Ship {
     this.unladenRange = this.calcUnladenRange(); // Includes fuel weight for jump
     this.fullTankRange = Calc.jumpRange(unladenMass + fuelCapacity, fsd); // Full Tank
     this.ladenRange = this.calcLadenRange(); // Includes full tank and caro
-    this.unladenTotalRange = Calc.totalRange(unladenMass, fsd, fuelCapacity);
-    this.ladenTotalRange = Calc.totalRange(unladenMass + this.cargoCapacity, fsd, fuelCapacity);
+    this.unladenFastestRange = Calc.fastestRange(unladenMass, fsd, fuelCapacity);
+    this.ladenFastestRange = Calc.fastestRange(unladenMass + this.cargoCapacity, fsd, fuelCapacity);
     this.maxJumpCount = Math.ceil(fuelCapacity / fsd.maxfuel);
     return this;
   }
@@ -791,7 +817,7 @@ export default class Ship {
    *
    * @param {Object}  slot            The modul slot
    * @param {Object}  m               Properties for the selected module
-   * @param {Boolean} preventUpdate   If true, do not update aggregated stats
+   * @param {boolean} preventUpdate   If true, do not update aggregated stats
    * @return {this} The ship instance (for chaining operations)
    */
   use(slot, m, preventUpdate) {
@@ -823,8 +849,8 @@ export default class Ship {
 
   /**
    * Mount the specified bulkhead type (index)
-   * @param  {number} index           Bulkhead index [0-4]
-   * @param  {Boolean} preventUpdate  Prevent summary update
+   * @param  {Number} index           Bulkhead index [0-4]
+   * @param  {boolean} preventUpdate  Prevent summary update
    * @return {this} The ship instance (for chaining operations)
    */
   useBulkhead(index, preventUpdate) {
@@ -841,7 +867,7 @@ export default class Ship {
   /**
    * Set all standard slots to use the speficied rating and class based on
    * the slot's max class
-   * @param  {string} rating Module Rating (A-E)
+   * @param  {String} rating Module Rating (A-E)
    * @return {this} The ship instance (for chaining operations)
    */
   useStandard(rating) {
@@ -854,7 +880,7 @@ export default class Ship {
 
   /**
    * Use the lightest standard ModuleUtils unless otherwise specified
-   * @param  {object} m Module overrides
+   * @param  {Object} m Module overrides
    * @return {this} The ship instance (for chaining operations)
    */
   useLightestStandard(m) {
@@ -898,9 +924,9 @@ export default class Ship {
 
   /**
    * Fill all utility slots with the specified module
-   * @param  {string} group   Group name
-   * @param  {string} rating  Rating [A-I]
-   * @param  {string} name    Module name
+   * @param  {String} group   Group name
+   * @param  {String} rating  Rating [A-I]
+   * @param  {String} name    Module name
    * @param  {boolean} clobber Overwrite non-empty slots
    * @return {this} The ship instance (for chaining operations)
    */

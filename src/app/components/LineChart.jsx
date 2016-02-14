@@ -3,7 +3,7 @@ import d3 from 'd3';
 import TranslatedComponent from './TranslatedComponent';
 
 const RENDER_POINTS = 20;   // Only render 20 points on the graph
-const MARGIN = { top: 15, right: 15, bottom: 35, left: 60 };
+const MARGIN = { top: 15, right: 20, bottom: 35, left: 60 };
 
 /**
  * Line Chart
@@ -47,7 +47,7 @@ export default class LineChart extends TranslatedComponent {
     this._moveTip = this._moveTip.bind(this);
 
     let markerElems = [];
-    let detailElems = [<text key={'lbl'} className='label x' y='1.25em'/>];
+    let detailElems = [<text key='lbl' className='text-tip x' y='1.25em'/>];
     let xScale = d3.scale.linear();
     let xAxisScale = d3.scale.linear();
     let yScale = d3.scale.linear();
@@ -60,7 +60,7 @@ export default class LineChart extends TranslatedComponent {
     for(let i = 0, l = series ? series.length : 1; i < l; i++) {
       let yAccessor = series ? function(d) { return yScale(d[1][this]); }.bind(series[i]) : (d) => yScale(d[1]);
       seriesLines.push(d3.svg.line().x((d) => xScale(d[0])).y(yAccessor));
-      detailElems.push(<text key={i} className='label y' y={1.25 * (i + 2) + 'em'}/>);
+      detailElems.push(<text key={i} className='text-tip y' y={1.25 * (i + 2) + 'em'}/>);
       markerElems.push(<circle key={i} className='marker' r='4' />);
     }
 
@@ -71,7 +71,7 @@ export default class LineChart extends TranslatedComponent {
       seriesLines,
       detailElems,
       markerElems,
-      tipHeight: 2 + (1.25 * (series ? series.length : 0.75))
+      tipHeight: 2 + (1.2 * (series ? series.length : 0.8))
     };
   }
 
@@ -94,7 +94,7 @@ export default class LineChart extends TranslatedComponent {
 
     xPos = xScale(x0); // Clamp xPos
 
-    tips.selectAll('text.label.y').text(function(d, i) {
+    tips.selectAll('text.text-tip.y').text(function(d, i) {
       let yVal = series ? y0[series[i]] : y0;
       yTotal += yVal;
       return (series ? translate(series[i]) : '') + ' ' + formats.f2(yVal);
@@ -110,8 +110,8 @@ export default class LineChart extends TranslatedComponent {
 
     tipWidth += 8;
     tips.attr('transform', 'translate(' + xPos + ',' + tipY + ')');
-    tips.selectAll('text.label').attr('x', flip ? -12 : 12).style('text-anchor', flip ? 'end' : 'start');
-    tips.selectAll('text.label.x').text(formats.f2(x0)).append('tspan').attr('class', 'metric').text(' ' + xUnit);
+    tips.selectAll('text.text-tip').attr('x', flip ? -12 : 12).style('text-anchor', flip ? 'end' : 'start');
+    tips.selectAll('text.text-tip.x').text(formats.f2(x0)).append('tspan').attr('class', 'metric').text(' ' + xUnit);
     tips.selectAll('rect').attr('width', tipWidth + 4).attr('x', flip ? -tipWidth - 12 : 8).attr('y', 0).style('text-anchor', flip ? 'end' : 'start');
     this.markersContainer.selectAll('circle').attr('cx', xPos).attr('cy', (d, i) => yScale(series ? y0[series[i]] : y0));
   }

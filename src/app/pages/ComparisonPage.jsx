@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom';
 import Page from './Page';
 import Router from '../Router';
 import cn from 'classnames';
-import { Ships } from 'coriolis-data';
+import { Ships } from 'coriolis-data/dist';
 import Ship from '../shipyard/Ship';
 import { fromComparison, toComparison } from '../shipyard/Serializer';
 import Persist from '../stores/Persist';
@@ -418,7 +418,7 @@ export default class ComparisonPage extends Page {
    * Render the Page
    * @return {React.Component} The page contents
    */
-  render() {
+  renderPage() {
     let translate = this.context.language.translate;
     let compareHeader;
     let { newName, name, saved, builds, facets, predicate, desc, chartWidth } = this.state;
@@ -428,17 +428,17 @@ export default class ComparisonPage extends Page {
         <td className='head'>{translate('comparison')}</td>
         <td>
           <input value={newName} onChange={this._onNameChange} placeholder={translate('Enter Name')} maxLength='50' />
-          <button onTouchTap={this._save} disabled={!newName || newName == 'all' || saved}>
+          <button onClick={this._save} disabled={!newName || newName == 'all' || saved}>
             <FloppyDisk  className='lg'/><span className='button-lbl'>{translate('save')}</span>
           </button>
-          <button onTouchTap={this._delete} disabled={name == 'all' || !saved}><Bin className='lg warning'/></button>
-          <button onTouchTap={this._selectBuilds}>
+          <button onClick={this._delete} disabled={name == 'all' || !saved}><Bin className='lg warning'/></button>
+          <button onClick={this._selectBuilds}>
             <Rocket className='lg'/><span className='button-lbl'>{translate('builds')}</span>
           </button>
-          <button className='r' onTouchTap={this._genPermalink} disabled={builds.length == 0}>
+          <button className='r' onClick={this._genPermalink} disabled={builds.length == 0}>
             <LinkIcon className='lg'/><span className='button-lbl'>{translate('permalink')}</span>
           </button>
-          <button className='r' onTouchTap={this._genBBcode} disabled={builds.length == 0}>
+          <button className='r' onClick={this._genBBcode} disabled={builds.length == 0}>
             <Embed className='lg'/><span className='button-lbl'>{translate('forum')}</span>
           </button>
         </td>
@@ -448,7 +448,7 @@ export default class ComparisonPage extends Page {
         <td className='head'>{translate('comparison')}</td>
         <td>
           <h3>{name}</h3>
-          <button className='r' onTouchTap={this._import}><Download className='lg'/>{translate('import')}</button>
+          <button className='r' onClick={this._import}><Download className='lg'/>{translate('import')}</button>
         </td>
       </tr>;
     }
@@ -463,7 +463,7 @@ export default class ComparisonPage extends Page {
               <td>
                 <ul id='facet-container' onDragOver={this._facetDragOver}>
                   {facets.map((f, i) =>
-                    <li key={f.title} data-i={i} draggable='true' onDragStart={this._facetDrag} onDragEnd={this._facetDrop} className={cn('facet', { active: f.active })} onTouchTap={this._toggleFacet.bind(this, f)}>
+                    <li key={f.title} data-i={i} draggable='true' onDragStart={this._facetDrag} onDragEnd={this._facetDrop} className={cn('facet', { active: f.active })} onClick={this._toggleFacet.bind(this, f)}>
                       {'↔  ' + translate(f.title)}
                     </li>
                   )}
@@ -479,14 +479,15 @@ export default class ComparisonPage extends Page {
           <div className='chart' ref={'chartRef'}>{translate('PHRASE_NO_BUILDS')}</div> :
           facets.filter((f) => f.active).map((f, i) =>
             <div key={f.title} className='chart' ref={ i == 0 ? 'chartRef' : null}>
-              <h3 className='ptr' onTouchTap={this._sortShips.bind(this, f.props[0])}>{translate(f.title)}</h3>
+              <h3 className='ptr' onClick={this._sortShips.bind(this, f.props[0])}>{translate(f.title)}</h3>
               <BarChart
                 width={chartWidth}
                 data={builds}
                 properties={f.props}
+                labels={f.lbls}
                 unit={translate(f.unit)}
                 format={f.fmt}
-                label={translate(f.title)}
+                title={translate(f.title)}
                 predicate={predicate}
                 desc={desc}
               />

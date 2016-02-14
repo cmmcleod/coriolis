@@ -12,25 +12,25 @@ export function jumpRange(mass, fsd, fuel) {
 }
 
 /**
- * Calculate the total range based on mass and a specific FSD, and all fuel available
+ * Calculate the fastest (total) range based on mass and a specific FSD, and all fuel available
  *
  * @param  {number} mass Mass of a ship: laden, unlanden, partially laden, etc
  * @param  {object} fsd  The FDS object/component with maxfuel, fuelmul, fuelpower, optmass
  * @param  {number} fuel The total fuel available
  * @return {number}      Distance in Light Years
  */
-export function totalRange(mass, fsd, fuel) {
+export function fastestRange(mass, fsd, fuel) {
   let fuelRemaining = fuel % fsd.maxfuel;  // Fuel left after making N max jumps
   let jumps = Math.floor(fuel / fsd.maxfuel);
   mass += fuelRemaining;
   // Going backwards, start with the last jump using the remaining fuel
-  let totalRange = fuelRemaining > 0 ? Math.pow(fuelRemaining / fsd.fuelmul, 1 / fsd.fuelpower) * fsd.optmass / mass : 0;
+  let fastestRange = fuelRemaining > 0 ? Math.pow(fuelRemaining / fsd.fuelmul, 1 / fsd.fuelpower) * fsd.optmass / mass : 0;
   // For each max fuel jump, calculate the max jump range based on fuel mass left in the tank
   for (let j = 0; j < jumps; j++) {
     mass += fsd.maxfuel;
-    totalRange += Math.pow(fsd.maxfuel / fsd.fuelmul, 1 / fsd.fuelpower) * fsd.optmass / mass;
+    fastestRange += Math.pow(fsd.maxfuel / fsd.fuelmul, 1 / fsd.fuelpower) * fsd.optmass / mass;
   }
-  return totalRange;
+  return fastestRange;
 };
 
 /**

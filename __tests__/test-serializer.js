@@ -1,5 +1,5 @@
 import Ship from '../src/app/shipyard/Ship';
-import { Ships } from 'coriolis-data';
+import { Ships } from 'coriolis-data/dist';
 import * as Serializer from '../src/app/shipyard/Serializer';
 import jsen from 'jsen';
 
@@ -11,7 +11,7 @@ describe("Serializer", function() {
 
   describe("To Detailed Build", function() {
     let testBuild = new Ship('anaconda', anaconda.properties, anaconda.slots).buildFrom(code);
-    let exportData = Serializer.toDetailedBuild('Test', testBuild);
+    let exportData = Serializer.toDetailedBuild('Test My Ship', testBuild);
 
     it("conforms to the v3 ship-loadout schema", function() {
       expect(validate(exportData)).toBe(true);
