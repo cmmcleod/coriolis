@@ -12,27 +12,6 @@ function filter(arr, maxClass, minClass, mass) {
 }
 
 /**
- * Filter eligble modules based on parameters
- * @param  {Object} data      Available modules object
- * @param  {number} maxClass  Max class
- * @param  {number} minClass  Minimum class
- * @param  {number} mass      Mass
- * @return {Array}            Fitlered module subset
- */
-function filterToArray(data, maxClass, minClass, mass) {
-  let arr = [];
-
-  for (let id in data) {
-    let m = data[id];
-    if (m.class <= maxClass && m.class >= minClass && (m.maxmass === undefined || mass <= m.maxmass)) {
-      arr.push(m);
-    }
-  }
-
-  return arr;
-}
-
-/**
  * The available module set for a specific ship
  */
 export default class ModuleSet {
@@ -46,6 +25,7 @@ export default class ModuleSet {
    * @param  {Array}  maxHardPoint   Array of hardpoint slots classes/sizes
    */
   constructor(modules, mass, maxStandardArr, maxInternal, maxHardPoint) {
+    let stnd = modules.standard;
     this.mass = mass;
     this.standard = {};
     this.internal = {};
@@ -53,22 +33,16 @@ export default class ModuleSet {
     this.hpClass = {};
     this.intClass = {};
 
-    this.standard[0] = filterToArray(modules.standard[0], maxStandardArr[0], 0, mass);  // Power Plant
-    this.standard[2] = filterToArray(modules.standard[2], maxStandardArr[2], 0, mass);  // FSD
-    this.standard[4] = filterToArray(modules.standard[4], maxStandardArr[4], 0, mass);  // Power Distributor
-    this.standard[6] = filterToArray(modules.standard[6], maxStandardArr[6], 0, mass);  // Fuel Tank
-
+    this.standard[0] = filter(stnd.pp, maxStandardArr[0], 0, mass);  // Power Plant
+    this.standard[2] = filter(stnd.fsd, maxStandardArr[2], 0, mass);  // FSD
+    this.standard[4] = filter(stnd.pd, maxStandardArr[4], 0, mass);  // Power Distributor
+    this.standard[6] = filter(stnd.ft, maxStandardArr[6], 0, mass);  // Fuel Tank
     // Thrusters, filter modules by class only (to show full list of ratings for that class)
-    let ths = modules.standard[1];
-    let minThrusterClass = Object.keys(modules.standard[1]).reduce(
-      (clazz, thId) => (ths[thId].maxmass >= mass && ths[thId].class < clazz) ? ths[thId].class : clazz,
-      maxStandardArr[1]
-    );
-    this.standard[1] = filterToArray(modules.standard[1], maxStandardArr[1], minThrusterClass, 0);  // Thrusters
-
+    let minThrusterClass = stnd.t.reduce((clazz, th) => (th.maxmass >= mass && th.class < clazz) ? th.class : clazz, maxStandardArr[1]);
+    this.standard[1] = filter(stnd.t, maxStandardArr[1], minThrusterClass, 0);  // Thrusters
     // Slots where module class must be equal to slot class
-    this.standard[3] = filterToArray(modules.standard[3], maxStandardArr[3], maxStandardArr[3], 0);     // Life Supprt
-    this.standard[5] = filterToArray(modules.standard[5], maxStandardArr[5], maxStandardArr[5], mass);  // Sensors
+    this.standard[3] = filter(stnd.ls, maxStandardArr[3], maxStandardArr[3], 0);     // Life Supprt
+    this.standard[5] = filter(stnd.s, maxStandardArr[5], maxStandardArr[5], mass);  // Sensors
 
     for (let h in modules.hardpoints) {
       this.hardpoints[h] = filter(modules.hardpoints[h], maxHardPoint, 0, mass);

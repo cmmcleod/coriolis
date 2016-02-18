@@ -82,7 +82,7 @@ export const terms = {
   'fixed': 'fijo',
   'forum': 'Foro',
   'fc': 'Ca\u00f1\u00f3n de fragmentaci\u00f3n',
-  'fd': 'Motor de salto',
+  'fsd': 'Motor de salto',
   'ws': 'Esc\u00e1ner de Salto',
   'fi': 'Interdictor FSD',
   'fuel': 'Combustible',

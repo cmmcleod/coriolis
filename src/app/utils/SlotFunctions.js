@@ -241,8 +241,8 @@ export function diffDetails(language, m, mm) {
     </div>);
   }
 
-  if (m.grp == 'fd' || massDiff || capDiff) {
-    let fsd = m.grp == 'fd' ? m : null;
+  if (m.grp == 'fsd' || massDiff || capDiff) {
+    let fsd = m.grp == 'fsd' ? m : null;
     let maxRange = this.calcUnladenRange(massDiff, m.fuel, fsd);
     let ladenRange = this.calcLadenRange(massDiff + capDiff, m.fuel, fsd);
 

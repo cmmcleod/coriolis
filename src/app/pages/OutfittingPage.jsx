@@ -71,6 +71,7 @@ export default class OutfittingPage extends Page {
       title: 'Outfitting - ' + data.properties.name,
       costTab: Persist.getCostTab() || 'costs',
       buildName,
+      newBuildName: buildName,
       shipId,
       ship,
       code,
@@ -89,11 +90,11 @@ export default class OutfittingPage extends Page {
    */
   _buildNameChange(event) {
     let stateChanges = {
-      buildName: event.target.value
+      newBuildName: event.target.value
     };
 
-    if (Persist.hasBuild(this.state.shipId, stateChanges.buildName)) {
-      stateChanges.savedCode = Persist.getBuild(this.state.shipId, stateChanges.buildName);
+    if (Persist.hasBuild(this.state.shipId, stateChanges.newBuildName)) {
+      stateChanges.savedCode = Persist.getBuild(this.state.shipId, stateChanges.newBuildName);
     } else {
       stateChanges.savedCode = null;
     }
@@ -106,9 +107,31 @@ export default class OutfittingPage extends Page {
    */
   _saveBuild() {
     let code = this.state.ship.toString();
-    Persist.saveBuild(this.state.shipId, this.state.buildName, code);
-    this._updateRoute(this.state.shipId, code, this.state.buildName);
-    this.setState({ code, savedCode: code });
+    let { buildName, newBuildName, shipId } = this.state;
+
+    if (buildName === newBuildName) {
+      Persist.saveBuild(shipId, buildName, code);
+      this._updateRoute(shipId, buildName, code);
+    } else {
+      Persist.saveBuild(shipId, newBuildName, code);
+      this._updateRoute(shipId, newBuildName, code);
+    }
+
+    this.setState({ buildName: newBuildName, code, savedCode: code });
+  }
+
+  /**
+   * Rename the current build
+   */
+  _renameBuild() {
+    let { buildName, newBuildName, shipId, ship } = this.state;
+    if (buildName != newBuildName && newBuildName.length) {
+      let code = ship.toString();
+      Persist.deleteBuild(shipId, buildName);
+      Persist.saveBuild(shipId, newBuildName, code);
+      this._updateRoute(shipId, newBuildName, code);
+      this.setState({ buildName: newBuildName, code, savedCode: code });
+    }
   }
 
   /**
@@ -159,17 +182,17 @@ export default class OutfittingPage extends Page {
       this._fuelChange(this.state.fuelLevel);
     }
 
-    this._updateRoute(shipId, code, buildName);
+    this._updateRoute(shipId, buildName, code);
     this.setState({ code });
   }
 
   /**
    * Update the current route based on build
    * @param  {string} shipId    Ship Id
-   * @param  {string} code      Serialized ship 'code'
    * @param  {string} buildName Current build name
+   * @param  {string} code      Serialized ship 'code'
    */
-  _updateRoute(shipId, code, buildName) {
+  _updateRoute(shipId, buildName, code) {
     Router.replace(outfitURL(shipId, code, buildName));
   }
 
@@ -243,11 +266,12 @@ export default class OutfittingPage extends Page {
     let state = this.state,
         { language, termtip, tooltip, sizeRatio, onWindowResize } = this.context,
         { translate, units, formats } = language,
-        { ship, code, savedCode, buildName, chartWidth, fuelCapacity, fuelLevel } = state,
+        { ship, code, savedCode, buildName, newBuildName, chartWidth, fuelCapacity, fuelLevel } = state,
         hide = tooltip.bind(null, null),
         menu = this.props.currentMenu,
         shipUpdated = this._shipUpdated,
-        canSave = buildName && code !== savedCode,
+        canSave = (newBuildName || buildName) && code !== savedCode,
+        canRename = buildName && newBuildName && buildName != newBuildName,
         canReload = savedCode && canSave,
         hStr = ship.getHardpointsString(),
         sStr = ship.getStandardString(),
@@ -258,9 +282,12 @@ export default class OutfittingPage extends Page {
         <div id='overview'>
           <h1>{ship.name}</h1>
           <div id='build'>
-            <input value={buildName} onChange={this._buildNameChange} placeholder={translate('Enter Name')} maxsize={50} />
+            <input value={newBuildName} onChange={this._buildNameChange} placeholder={translate('Enter Name')} maxsize={50} />
             <button onClick={canSave && this._saveBuild} disabled={!canSave} onMouseOver={termtip.bind(null, 'save')} onMouseOut={hide}>
               <FloppyDisk className='lg' />
+            </button>
+            <button onClick={canRename && this._renameBuild} disabled={!canRename} onMouseOver={termtip.bind(null, 'rename')} onMouseOut={hide}>
+            <span style={{ textTransform: 'none', fontSize: '1.8em' }}>a|</span>
             </button>
             <button onClick={canReload && this._reloadBuild} disabled={!canReload} onMouseOver={termtip.bind(null, 'reload')} onMouseOut={hide}>
               <Reload className='lg'/>

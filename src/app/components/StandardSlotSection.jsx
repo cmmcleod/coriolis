@@ -303,7 +303,7 @@ export default class StandardSlotSection extends SlotSection {
         <li className='c' onClick={_fill.bind(this, 'B')}>B</li>
         <li className='c' onClick={_fill.bind(this, 'A')}>A</li>
       </ul>
-      <div className='select-group cap'>{translate('builds / roles')}</div>
+      <div className='select-group cap'>{translate('roles')}</div>
       <ul>
         <li className='lc' onClick={this._optimizeCargo}>{translate('Trader')}</li>
         <li className='lc' onClick={this._optimizeExplorer}>{translate('Explorer')}</li>

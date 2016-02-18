@@ -127,7 +127,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       }
 
       if (i > 0 && modules.length > 3 && m.class != prevClass && (m.rating != prevRating || m.mount) && m.grp != 'pa') {
-        elems.push(<br key={m.grp + i} />);
+        elems.push(<br key={'b' + m.grp + i} />);
       }
 
       elems.push(

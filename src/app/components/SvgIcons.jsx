@@ -16,7 +16,7 @@ class SvgIcon extends React.Component {
 
   /**
    * Standard SVG view box, can/should be overriden by sub-classes as necessary
-   * @return {string} view box string
+   * @return {String} view box string
    */
   viewBox() { return '0 0 32 32'; }
 
@@ -118,7 +118,7 @@ export class Embed extends SvgIcon {
 export class Equalizer extends SvgIcon {
   /**
    * Overriden view box
-   * @return {string} view box
+   * @return {String} view box
    */
   viewBox() { return '0 0 1024 1024'; }
   /**
@@ -164,7 +164,7 @@ export class Fuel extends SvgIcon {
 export class GitHub extends SvgIcon {
   /**
    * Overriden view box
-   * @return {string} view box
+   * @return {String} view box
    */
   viewBox() { return '0 0 1024 1024'; }
   /**
@@ -228,7 +228,7 @@ export class LinkIcon extends SvgIcon {
 export class NoPower extends SvgIcon {
   /**
    * Overriden view box
-   * @return {string} view box
+   * @return {String} view box
    */
   viewBox() { return '0 0 512 512'; }
   /**
@@ -259,7 +259,7 @@ export class Notification extends SvgIcon {
 export class Power extends SvgIcon {
   /**
    * Overriden view box
-   * @return {string} view box
+   * @return {String} view box
    */
   viewBox() { return '0 0 512 512'; }
   /**
@@ -320,7 +320,7 @@ export class Warning extends SvgIcon {
 export class MountFixed extends SvgIcon {
   /**
    * Overriden view box
-   * @return {string} view box
+   * @return {String} view box
    */
   viewBox() { return '0 0 200 200'; }
   /**
@@ -344,7 +344,7 @@ export class MountFixed extends SvgIcon {
 export class MountGimballed extends SvgIcon {
   /**
    * Overriden view box
-   * @return {string} view box
+   * @return {String} view box
    */
   viewBox() { return '0 0 200 200'; }
   /**
@@ -365,7 +365,7 @@ export class MountGimballed extends SvgIcon {
 export class MountTurret extends SvgIcon {
   /**
    * Overriden view box
-   * @return {string} view box
+   * @return {String} view box
    */
   viewBox() { return '0 0 200 200'; }
   /**
@@ -452,7 +452,7 @@ export class Switch extends SvgIcon {
 export class StationCoriolis extends SvgIcon {
   /**
    * Overriden view box
-   * @return {string} view box
+   * @return {String} view box
    */
   viewBox() { return '0 0 200 200'; }
   /**
@@ -473,7 +473,7 @@ export class StationCoriolis extends SvgIcon {
 export class StationOcellus extends SvgIcon {
   /**
    * Overriden view box
-   * @return {string} view box
+   * @return {String} view box
    */
   viewBox() { return '0 0 200 200'; }
   /**
@@ -495,7 +495,7 @@ export class StationOcellus extends SvgIcon {
 export class StationOrbis extends SvgIcon {
   /**
    * Overriden view box
-   * @return {string} view box
+   * @return {String} view box
    */
   viewBox() { return '0 0 200 200'; }
   /**
@@ -516,7 +516,7 @@ export class StationOrbis extends SvgIcon {
 export class StationOutpost extends SvgIcon {
   /**
    * Overriden view box
-   * @return {string} view box
+   * @return {String} view box
    */
   viewBox() { return '0 0 200 200'; }
   /**
@@ -551,7 +551,7 @@ export class Upload extends SvgIcon {
 export class Loader extends SvgIcon {
   /**
    * Overriden view box
-   * @return {string} view box
+   * @return {String} view box
    */
   viewBox() { return '0 0 40 40'; }
   /**

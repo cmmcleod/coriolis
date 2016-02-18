@@ -11,6 +11,7 @@
   "engine": "node >= 4.0.0",
   "license": "MIT",
   "scripts": {
+    "extract-translations": "grep -hroE \"translate\\('[^']+'\\)\" src/* | grep -oE \"'[^']+'\" | grep -oE \"[^']+\" | sort -u -f",
     "clean": "rimraf build",
     "start": "node devServer.js",
     "lint": "eslint --ext .js,.jsx src",

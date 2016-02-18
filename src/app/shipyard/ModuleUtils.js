@@ -1,6 +1,8 @@
-import { ModuleNameToGroup, BulkheadNames } from './Constants';
+import { ModuleNameToGroup, BulkheadNames, StandardArray } from './Constants';
 import ModuleSet from './ModuleSet';
 import { Ships, Modules } from 'coriolis-data/dist';
+
+
 
 /**
  * Created a cargo hatch model
@@ -12,22 +14,17 @@ export function cargoHatch() {
 
 /**
  * Finds the standard module type with the specified ID
- * @param  {number} typeIndex Standard Module Type (0 - Power Plant, 1 - Thrusters, etc)
- * @param  {string} id        The module ID or '[Class][Rating]'
- * @return {Object}           The standard module or null
+ * @param  {String|Number} type   Standard Module Type (0/pp - Power Plant, 1/t - Thrusters, etc)
+ * @param  {String} id            The module ID or '[Class][Rating]'
+ * @return {Object}               The standard module or null
  */
-export function standard(typeIndex, id) {
-  let standard = Modules.standard[typeIndex];
-  if (standard[id]) {
-    return standard[id];
-  } else {
-    for (let k in standard) {
-      if (standard[k].id == id) {
-        return standard[k];
-      }
-    }
+export function standard(type, id) {
+  if (!isNaN(type)) {
+    type = StandardArray[type];
   }
-  return null;
+
+  let s = Modules.standard[type].find(e => e.id == id || (e.class == id.charAt(0) && e.rating == id.charAt(1)));
+  return s || null;
 };
 
 /**
@@ -212,11 +209,13 @@ export function isShieldGenerator(g) {
  * Creates a new ModuleSet that contains all available modules
  * that the specified ship is eligible to use.
  *
+ * 6.5 T is the lightest possible mass of standard components that any ship can use
+ *
  * @param  {string} shipId    Unique ship Id/Key
  * @return {ModuleSet}     The set of modules the ship can install
  */
 export function forShip(shipId) {
   let ship = Ships[shipId];
   let maxInternal = isNaN(ship.slots.internal[0]) ? ship.slots.internal[0].class : ship.slots.internal[0];
-  return new ModuleSet(Modules, ship.minMassFilter || ship.properties.hullMass + 5, ship.slots.standard, maxInternal, ship.slots.hardpoints[0]);
+  return new ModuleSet(Modules, ship.properties.hullMass + 6.5, ship.slots.standard, maxInternal, ship.slots.hardpoints[0]);
 }

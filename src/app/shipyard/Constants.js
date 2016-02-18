@@ -9,6 +9,16 @@ export const ArmourMultiplier = [
 
 export const SizeMap = ['', 'small', 'medium', 'large', 'capital'];
 
+export const StandardArray = [
+  'pp', // Power Plant
+  't',  // Thrusters
+  'fsd', // Frame Shift Drive
+  'ls', // Life Support
+  'pd', // Power Distributor
+  's',  // Sensors
+  'ft', // Fuel Tank
+];
+
 // Map to lookup group labels/names for component grp, used for JSON Serialization
 export const ModuleGroupToName = {
   // Standard
@@ -19,6 +29,7 @@ export const ModuleGroupToName = {
   pd: 'Power Distributor',
   s: 'Sensors',
   ft: 'Fuel Tank',
+  pas: 'Planetary Approach Suite',
 
   // Internal
   fs: 'Fuel Scoop',
