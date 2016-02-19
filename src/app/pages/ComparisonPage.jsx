@@ -219,9 +219,10 @@ export default class ComparisonPage extends Page {
    * @param  {Event} e Drag Event
    */
   _facetDrag(e) {
+    this.nodeAfter = false;
     this.dragged = e.currentTarget;
     let placeholder = this.placeholder = document.createElement('li');
-    placeholder.style.width = this.dragged.offsetWidth + 'px';
+    placeholder.style.width = Math.round(this.dragged.offsetWidth) + 'px';
     placeholder.className = 'facet-placeholder';
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/html', e.currentTarget);
@@ -258,21 +259,21 @@ export default class ComparisonPage extends Page {
 
     if(e.target.className == 'facet-placeholder') {
       return;
-    }
+    } else if (e.target != e.currentTarget) {
+      this.over = e.target;
+      this.dragged.style.display = 'none';
+      let relX = e.clientX - this.over.getBoundingClientRect().left;
+      let width = this.over.offsetWidth / 2;
+      let parent = e.target.parentNode;
 
-    this.over = e.target;
-    this.dragged.style.display = 'none';
-    let relX = e.clientX - this.over.getBoundingClientRect().left;
-    let width = this.over.offsetWidth / 2;
-    let parent = e.target.parentNode;
-
-    if (parent == e.currentTarget) {
-      if(relX > width) {
-        this.nodeAfter = true;
-        parent.insertBefore(this.placeholder, e.target.nextElementSibling);
-      } else {
-        this.nodeAfter = false;
-        parent.insertBefore(this.placeholder, e.target);
+      if (parent == e.currentTarget) {
+        if(relX > width && this.dragged != e.target) {
+          this.nodeAfter = true;
+          parent.insertBefore(this.placeholder, e.target.nextElementSibling);
+        } else {
+          this.nodeAfter = false;
+          parent.insertBefore(this.placeholder, e.target);
+        }
       }
     }
   }
