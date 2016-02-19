@@ -27,12 +27,12 @@ function countInt(slot) {
   this.maxCargo += crEligible ? ModuleUtils.findInternal('cr', slot.maxClass, 'E').cargo : 0;
 }
 
-let cachedShipSummaries = null;
-
 /**
  * The Shipyard summary page
  */
 export default class ShipyardPage extends Page {
+
+  static cachedShipSummaries = null;
 
   /**
    * Constructor
@@ -46,16 +46,15 @@ export default class ShipyardPage extends Page {
       shipPredicate: 'name',
       shipDesc: true
     };
-    this.context = context;
 
-    if (!cachedShipSummaries) {
-      cachedShipSummaries = [];
+    if (!ShipyardPage.cachedShipSummaries) {
+      ShipyardPage.cachedShipSummaries = [];
       for (let s in Ships) {
-        cachedShipSummaries.push(this._shipSummary(s, Ships[s]));
+        ShipyardPage.cachedShipSummaries.push(this._shipSummary(s, Ships[s]));
       }
     }
 
-    this.shipSummaries = cachedShipSummaries;
+    this.shipSummaries = ShipyardPage.cachedShipSummaries;
   }
 
   /**
@@ -218,23 +217,22 @@ export default class ShipyardPage extends Page {
                 <th rowSpan={2} className='sortable' onClick={sortShips('retailCost')}>{translate('cost')}</th>
               </tr>
               <tr>
-                {/*  Base */}
                 <th className='sortable lft' onClick={sortShips('speed')}>{translate('speed')}</th>
                 <th className='sortable' onClick={sortShips('boost')}>{translate('boost')}</th>
                 <th className='sortable' onClick={sortShips('baseArmour')}>{translate('armour')}</th>
                 <th className='sortable' onClick={sortShips('baseShieldStrength')}>{translate('shields')}</th>
-                {/*  Max */}
+
                 <th className='sortable lft' onClick={sortShips('topSpeed')}>{translate('speed')}</th>
                 <th className='sortable' onClick={sortShips('topBoost')}>{translate('boost')}</th>
                 <th className='sortable' onClick={sortShips('maxJumpRange')}>{translate('jump')}</th>
                 <th className='sortable' onClick={sortShips('maxCargo')}>{translate('cargo')}</th>
-                {/*  Hardpoints */}
+
                 <th className='sortable lft' onClick={sortShips('hp',1)}>{translate('S')}</th>
                 <th className='sortable' onClick={sortShips('hp', 2)}>{translate('M')}</th>
                 <th className='sortable' onClick={sortShips('hp', 3)}>{translate('L')}</th>
                 <th className='sortable' onClick={sortShips('hp', 4)}>{translate('H')}</th>
                 <th className='sortable' onClick={sortShips('hp', 0)}>{translate('U')}</th>
-                {/*  Internal */}
+
                 <th className='sortable lft' onClick={sortShips('int', 0)} >1</th>
                 <th className='sortable' onClick={sortShips('int', 1)} >2</th>
                 <th className='sortable' onClick={sortShips('int', 2)} >3</th>

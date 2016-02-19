@@ -7,6 +7,12 @@ import { shallowEqual } from '../utils/UtilityFunctions';
  */
 export default class Link extends React.Component {
 
+  static propTypes = {
+    children: React.PropTypes.any,
+    href: React.PropTypes.string.isRequired,
+    onClick: React.PropTypes.func
+  };
+
   /**
    * Constructor
    * @param  {Object} props   React Component properties

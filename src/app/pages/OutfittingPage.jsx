@@ -365,16 +365,18 @@ export default class OutfittingPage extends Page {
                 </td>
                 <td>
                   <Slider
-                      axis={true}
-                      onChange={this._fuelChange}
-                      axisUnit={translate('T')}
-                      percent={fuelLevel}
-                      max={fuelCapacity}
-                      scale={sizeRatio}
-                      onResize={onWindowResize}
+                    axis={true}
+                    onChange={this._fuelChange}
+                    axisUnit={translate('T')}
+                    percent={fuelLevel}
+                    max={fuelCapacity}
+                    scale={sizeRatio}
+                    onResize={onWindowResize}
                   />
                 </td>
-                <td className='primary' style={{ width: '10em', verticalAlign: 'top', fontSize: '0.9em', textAlign: 'left' }}>{formats.f2(fuelLevel * fuelCapacity)}{units.T} {formats.pct1(fuelLevel)}</td>
+                <td className='primary' style={{ width: '10em', verticalAlign: 'top', fontSize: '0.9em', textAlign: 'left' }}>
+                  {formats.f2(fuelLevel * fuelCapacity)}{units.T} {formats.pct1(fuelLevel)}
+                </td>
               </tr>
             </tbody>
           </table>

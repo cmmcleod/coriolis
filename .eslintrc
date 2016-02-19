@@ -1,9 +1,11 @@
 {
   "parser": "babel-eslint",
-  "ecmaFeatures": {
-    "jsx": true,
-    "classes": true,
-    "modules": true
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "classes": true,
+      "modules": true
+    },
   },
   "env": {
     "browser": true,
@@ -12,6 +14,12 @@
   "plugins": [
     "react"
   ],
+  "extends": "plugin:react/recommended",
+  "settings": {
+    "react": {
+      "pragma": "React"
+    }
+  },
   "rules": {
     "strict": 0,
     "no-underscore-dangle": 0,

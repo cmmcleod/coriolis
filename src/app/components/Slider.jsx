@@ -15,13 +15,15 @@ export default class Slider extends React.Component {
     scale: 1  // SVG render scale
   };
 
-  static PropTypes = {
+  static propTypes = {
     axis: React.PropTypes.bool,
     axisUnit: React.PropTypes.string,
-    min: React.PropTypes.number,
     max: React.PropTypes.number,
-    scale: React.PropTypes.number,
+    min: React.PropTypes.number,
     onChange: React.PropTypes.func.isRequired,
+    onResize: React.PropTypes.func,
+    percent: React.PropTypes.number.isRequired,
+    scale: React.PropTypes.number
   };
 
   /**

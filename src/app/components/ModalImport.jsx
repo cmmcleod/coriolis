@@ -522,7 +522,7 @@ export default class ModalImport extends TranslatedComponent {
       );
     }
 
-    return <div className='modal' onClick={ (e) => e.stopPropagation() } onClick={ (e) => e.stopPropagation() }>
+    return <div className='modal' onClick={ (e) => e.stopPropagation() }>
       <h2 >{translate('import')}</h2>
       {importStage}
       <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>

@@ -7,6 +7,11 @@ import { shallowEqual } from '../utils/UtilityFunctions';
  */
 class SvgIcon extends React.Component {
 
+  static propTypes = {
+    className: React.PropTypes.any,
+    style: React.PropTypes.object
+  };
+
   /**
    * Only rerender an SVG Icon if properties have changed
    * @param  {Object} nextProps   Next/Incoming properties
