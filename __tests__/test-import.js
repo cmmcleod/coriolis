@@ -79,7 +79,8 @@ describe('Import Modal', function() {
       expect(modal.state.errorMsg).toEqual(null);
       expect(modal.state.builds).toEqual(importData.builds);
       expect(modal.state.comparisons).toEqual(importData.comparisons);
-      expect(modal.state.discounts).toEqual(importData.discounts);
+      expect(modal.state.shipDiscount).toEqual(importData.discounts[0]);
+      expect(modal.state.moduleDiscount).toEqual(importData.discounts[1]);
       expect(modal.state.insurance).toBe(importData.insurance.toLowerCase());
       clickProceed();
       expect(modal.state.processed).toBe(true);

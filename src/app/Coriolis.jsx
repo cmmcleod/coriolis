@@ -280,6 +280,7 @@ export default class Coriolis extends React.Component {
    */
   render() {
     let currentMenu = this.state.currentMenu;
+
     return <div onClick={this._closeMenu}>
       <Header appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu} />
       { this.state.error ? this.state.error : this.state.page ? React.createElement(this.state.page, { currentMenu }) : <NotFoundPage/> }

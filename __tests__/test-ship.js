@@ -82,7 +82,7 @@ describe("Ship Factory", function() {
 
     var originalHullCost = testShip.hullCost;
     var originalTotalCost = testShip.totalCost;
-    var discount = 0.9;
+    var discount = 0.1;
 
     expect(testShip.m.discountedCost).toEqual(originalHullCost, 'Hull cost does not match');
 
@@ -90,17 +90,17 @@ describe("Ship Factory", function() {
 
     // Floating point errors cause miniscule decimal places which are handled in the app by rounding/formatting
 
-    expect(Math.floor(testShip.m.discountedCost)).toEqual(Math.floor(originalHullCost * discount), 'Discounted Hull cost does not match');
-    expect(Math.floor(testShip.totalCost)).toEqual(Math.floor(originalTotalCost * discount), 'Discounted Total cost does not match');
+    expect(Math.floor(testShip.m.discountedCost)).toEqual(Math.floor(originalHullCost * (1 - discount)), 'Discounted Hull cost does not match');
+    expect(Math.floor(testShip.totalCost)).toEqual(Math.floor(originalTotalCost * (1 - discount)), 'Discounted Total cost does not match');
 
-    testShip.applyDiscounts(1, 1); // No discount, 100% of cost
+    testShip.applyDiscounts(0, 0); // No discount, 100% of cost
 
     expect(testShip.m.discountedCost).toEqual(originalHullCost, 'Hull cost does not match');
     expect(testShip.totalCost).toEqual(originalTotalCost, 'Total cost does not match');
 
-    testShip.applyDiscounts(discount, 1); // Only discount hull
+    testShip.applyDiscounts(discount, 0); // Only discount hull
 
-    expect(Math.floor(testShip.m.discountedCost)).toEqual(Math.round(originalHullCost * discount), 'Discounted Hull cost does not match');
+    expect(Math.floor(testShip.m.discountedCost)).toEqual(Math.round(originalHullCost * (1 - discount)), 'Discounted Hull cost does not match');
     expect(testShip.totalCost).toEqual(originalTotalCost - originalHullCost + testShip.m.discountedCost, 'Total cost does not match');
 
   });
