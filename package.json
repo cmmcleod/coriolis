@@ -20,7 +20,7 @@
     "prod-stop": "kill -QUIT $(cat nginx.pid)",
     "build": "npm run clean && NODE_ENV=production webpack -d -p --config webpack.config.prod.js",
     "rsync": "rsync -ae \"ssh -i $CORIOLIS_PEM\" --delete build/ $CORIOLIS_USER@$CORIOLIS_HOST:~/wwws",
-    "deploy": "npm run lint && npm test && npm run build:prod && npm run rsync"
+    "deploy": "npm run lint && npm test && npm run build && npm run rsync"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
