@@ -99,7 +99,8 @@ export default class ModalImport extends TranslatedComponent {
       builds: props.builds,
       canEdit: !props.builds,
       comparisons: null,
-      discounts: null,
+      shipDiscount: null,
+      moduleDiscount: null,
       errorMsg: null,
       importString: null,
       importValid: false,
@@ -142,9 +143,19 @@ export default class ModalImport extends TranslatedComponent {
       }
       this.setState({ comparisons: importData.comparisons });
     }
+    // Check for old/deprecated discounts
     if (importData.discounts instanceof Array && importData.discounts.length == 2) {
-      this.setState({ discounts: importData.discounts });
+      this.setState({ shipDiscount: importData.discounts[0], moduleDiscount: importData.discounts[1] });
     }
+    // Check for ship discount
+    if (!isNaN(importData.shipDiscount)) {
+      this.setState({ shipDiscount: importData.shipDiscount * 1 });
+    }
+    // Check for module discount
+    if (!isNaN(importData.moduleDiscount)) {
+      this.setState({ shipDiscount: importData.moduleDiscount * 1 });
+    }
+
     if (typeof importData.insurance == 'string') {
       let insurance = importData.insurance.toLowerCase();
 
@@ -281,7 +292,8 @@ export default class ModalImport extends TranslatedComponent {
     this.setState({
       builds: null,
       comparisons: null,
-      discounts: null,
+      shipDiscount: null,
+      moduleDiscount: null,
       errorMsg: null,
       importValid: false,
       insurance: null,
@@ -364,8 +376,9 @@ export default class ModalImport extends TranslatedComponent {
    * Import parsed, processed data and save
    */
   _import() {
-    if (this.state.builds) {
-      let builds = this.state.builds;
+    let state = this.state;
+    if (state.builds) {
+      let builds = state.builds;
       for (let shipId in builds) {
         for (let buildName in builds[shipId]) {
           let build = builds[shipId][buildName];
@@ -377,8 +390,8 @@ export default class ModalImport extends TranslatedComponent {
       }
     }
 
-    if (this.state.comparisons) {
-      let comparisons = this.state.comparisons;
+    if (state.comparisons) {
+      let comparisons = state.comparisons;
       for (let comp in comparisons) {
         let comparison = comparisons[comp];
         let useName = comparison.useName.trim();
@@ -388,13 +401,15 @@ export default class ModalImport extends TranslatedComponent {
       }
     }
 
-    if (this.state.discounts && this.state.discounts.length == 2) {
-      Persist.setShipDiscount(this.state.discounts[0]);
-      Persist.setModuleDiscount(this.state.discounts[1]);
+    if (state.shipDiscount !== undefined) {
+      Persist.setShipDiscount(state.shipDiscount);
+    }
+    if (state.moduleDiscount !== undefined) {
+      Persist.setModuleDiscount(state.moduleDiscount);
     }
 
-    if (this.state.insurance) {
-      Persist.setInsurance(this.state.insurance);
+    if (state.insurance) {
+      Persist.setInsurance(state.insurance);
     }
 
     this.context.hideModal();
