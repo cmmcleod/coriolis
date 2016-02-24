@@ -1,7 +1,7 @@
 import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
 import { Languages } from '../i18n/Language';
-import { Insurance, Discounts } from '../shipyard/Constants';
+import { Insurance } from '../shipyard/Constants';
 import Link from './Link';
 import ActiveLink from './ActiveLink';
 import cn from 'classnames';
@@ -19,6 +19,36 @@ const SIZE_MIN = 0.65;
 const SIZE_RANGE = 0.55;
 
 /**
+ * Normalize percentages to 'clean' values
+ * @param  {Number} val Percentage value
+ * @return {Number}     Normalized value
+ */
+function normalizePercent(val) {
+  if (val === '' || isNaN(val)) {
+    return 0;
+  }
+  val = Math.round(val * 100) / 100;
+  return val >= 100 ? 100 : val;
+}
+
+/**
+ * Rounds the value to the nearest quarter (0, 0.25, 0.5, 0.75)
+ * @param  {Number} val Value
+ * @return {Number}     Rounded value
+ */
+function nearestQtrPct(val) {
+  return  Math.round(val * 4) / 4;
+}
+
+/**
+ * Select all text in a field
+ * @param {SyntheticEvent} e Event
+ */
+function selectAll(e) {
+  e.target.select();
+}
+
+/**
  * Coriolis App Header section / menus
  */
 export default class Header extends TranslatedComponent {
@@ -34,15 +64,22 @@ export default class Header extends TranslatedComponent {
 
     this._setLanguage = this._setLanguage.bind(this);
     this._setInsurance = this._setInsurance.bind(this);
-
+    this._setShipDiscount = this._setShipDiscount.bind(this);
+    this._changeShipDiscount = this._changeShipDiscount.bind(this);
+    this._kpShipDiscount = this._kpShipDiscount.bind(this);
+    this._setModuleDiscount = this._setModuleDiscount.bind(this);
+    this._changeModuleDiscount = this._changeModuleDiscount.bind(this);
+    this._kpModuleDiscount = this._kpModuleDiscount.bind(this);
     this._openShips = this._openMenu.bind(this, 's');
     this._openBuilds = this._openMenu.bind(this, 'b');
     this._openComp = this._openMenu.bind(this, 'comp');
     this._openSettings = this._openMenu.bind(this, 'settings');
-
     this.languageOptions = [];
     this.insuranceOptions = [];
-    this.discountOptions = [];
+    this.state = {
+      shipDiscount:  normalizePercent(Persist.getShipDiscount() * 100),
+      moduleDiscount: normalizePercent(Persist.getModuleDiscount() * 100),
+    };
 
     let translate = context.language.translate;
 
@@ -52,10 +89,6 @@ export default class Header extends TranslatedComponent {
 
     for (let name in Insurance) {
       this.insuranceOptions.push(<option key={name} value={name}>{translate(name)}</option>);
-    }
-
-    for (let name in Discounts) {
-      this.discountOptions.push(<option key={name} value={Discounts[name]}>{name}</option>);
     }
   }
 
@@ -69,18 +102,90 @@ export default class Header extends TranslatedComponent {
 
   /**
    * Update the Module discount
-   * @param  {SyntheticEvent} e Event
    */
-  _setModuleDiscount(e) {
-    Persist.setModuleDiscount(e.target.value * 1);
+  _setModuleDiscount() {
+    let moduleDiscount = normalizePercent(this.state.moduleDiscount);
+    this.setState({ moduleDiscount });
+    Persist.setModuleDiscount(moduleDiscount / 100);  // Decimal value is stored
   }
 
   /**
    * Update the Ship discount
+   */
+  _setShipDiscount() {
+    let shipDiscount = normalizePercent(this.state.shipDiscount);
+    this.setState({ shipDiscount });
+    Persist.setShipDiscount(shipDiscount / 100);  // Decimal value is stored
+  }
+
+  /**
+   * Input handler for the module discount field
+   * @param {SyntheticEvent} e Event
+   */
+  _changeModuleDiscount(e) {
+    let moduleDiscount = e.target.value;
+
+    if (e.target.value === '' || e.target.value === '-' || e.target.value === '.') {
+      this.setState({ moduleDiscount });
+    } else if (!isNaN(moduleDiscount) && Math.round(moduleDiscount) < 100) {
+      this.setState({ moduleDiscount });
+    }
+  }
+
+  /**
+   * Input handler for the ship discount field
    * @param  {SyntheticEvent} e Event
    */
-  _setShipDiscount(e) {
-    Persist.setShipDiscount(e.target.value * 1);
+  _changeShipDiscount(e) {
+    let shipDiscount = e.target.value;
+
+    if (e.target.value === '' || e.target.value === '-' || e.target.value === '.') {
+      this.setState({ shipDiscount });
+    } else if (!isNaN(shipDiscount) && Math.round(shipDiscount) < 100) {
+      this.setState({ shipDiscount });
+    }
+  }
+
+  /**
+   * Key down/press handler for ship discount field
+   * @param  {SyntheticEvent} e Event
+   */
+  _kpShipDiscount(e) {
+    let sd = this.state.shipDiscount * 1;
+    switch (e.keyCode) {
+      case 38:
+        e.preventDefault();
+        this.setState({ shipDiscount: e.shiftKey ? nearestQtrPct(sd + 0.25) : normalizePercent(sd + 1) });
+        break;
+      case 40:
+        e.preventDefault();
+        this.setState({ shipDiscount: e.shiftKey ? nearestQtrPct(sd - 0.25) : normalizePercent(sd - 1) });
+        break;
+      case 13:
+        e.preventDefault();
+        e.target.blur();
+    }
+  }
+
+  /**
+   * Key down/press handler for module discount field
+   * @param  {SyntheticEvent} e Event
+   */
+  _kpModuleDiscount(e) {
+    let md = this.state.moduleDiscount * 1;
+    switch (e.keyCode) {
+      case 38:
+        e.preventDefault();
+        this.setState({ moduleDiscount: e.shiftKey ? nearestQtrPct(md + 0.25) : normalizePercent(md + 1) });
+        break;
+      case 40:
+        e.preventDefault();
+        this.setState({ moduleDiscount: e.shiftKey ? nearestQtrPct(md - 0.25) : normalizePercent(md - 1) });
+        break;
+      case 13:
+        e.preventDefault();
+        e.target.blur();
+    }
   }
 
   /**
@@ -274,14 +379,12 @@ export default class Header extends TranslatedComponent {
         </select>
         <br/>
         {translate('ship')} {translate('discount')}
-        <select className='cap' value={Persist.getShipDiscount()} onChange={this._setShipDiscount}>
-          {this.discountOptions}
-        </select>
+        <input type='text' size='10' value={this.state.shipDiscount} onChange={this._changeShipDiscount} onFocus={selectAll} onBlur={this._setShipDiscount} onKeyDown={this._kpShipDiscount}/>
+        <u className='primary-disabled'>%</u>
         <br/>
         {translate('module')} {translate('discount')}
-        <select className='cap' value={Persist.getModuleDiscount()} onChange={this._setModuleDiscount} >
-          {this.discountOptions}
-        </select>
+        <input type='text' size='10' value={this.state.moduleDiscount} onChange={this._changeModuleDiscount} onFocus={selectAll} onBlur={this._setModuleDiscount} onKeyDown={this._kpModuleDiscount}/>
+        <u className='primary-disabled'>%</u>
         </div>
         <hr />
         <ul>
@@ -317,7 +420,7 @@ export default class Header extends TranslatedComponent {
     let update = () => this.forceUpdate();
     Persist.addListener('language', update);
     Persist.addListener('insurance', update);
-    Persist.addListener('discounts', update);
+    // Persist.addListener('discounts', update);
     Persist.addListener('deletedAll', update);
     Persist.addListener('builds', update);
     Persist.addListener('tooltips', update);
@@ -334,6 +437,19 @@ export default class Header extends TranslatedComponent {
       this.insuranceOptions = [];
       for (let name in Insurance) {
         this.insuranceOptions.push(<option key={name} value={name}>{translate(name)}</option>);
+      }
+    }
+    if (nextProps.currentMenu == 'settings') {  // Settings menu is about to be opened
+      this.setState({
+        shipDiscount:  normalizePercent(Persist.getShipDiscount() * 100),
+        moduleDiscount: normalizePercent(Persist.getModuleDiscount() * 100),
+      });
+    } else if (this.props.currentMenu == 'settings') { // Settings menu is about to be closed
+      if (this.state.shipDiscount != (Persist.getShipDiscount() * 100)) {
+        this._setShipDiscount();
+      }
+      if (this.state.moduleDiscount != (Persist.getModuleDiscount() * 100)) {
+        this._setModuleDiscount();
       }
     }
   }

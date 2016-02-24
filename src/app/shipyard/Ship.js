@@ -96,7 +96,6 @@ export default class Ship {
       this.standard[3],  // Add Life Support
       this.hardpoints
     );
-    this.shipCostMultiplier = 1;
     this.moduleCostMultiplier = 1;
     this.priorityBands = [
       { deployed: 0, retracted: 0, },
@@ -345,11 +344,13 @@ export default class Ship {
 
   /**
    * Recalculate all item costs and total based on discounts.
-   * @param  {Number} shipCostMultiplier      Ship cost multiplier discount (e.g. 0.9 === 10% discount)
-   * @param  {Number} moduleCostMultiplier Module cost multiplier discount (e.g. 0.75 === 25% discount)
+   * @param  {Number} shipDiscount      Ship cost discount (e.g. 0.1 === 10% discount)
+   * @param  {Number} moduleDiscount    Module cost discount (e.g. 0.75 === 25% discount)
    * @return {this} The current ship instance for chaining
    */
-  applyDiscounts(shipCostMultiplier, moduleCostMultiplier) {
+  applyDiscounts(shipDiscount, moduleDiscount) {
+    let shipCostMultiplier = 1 - shipDiscount;
+    let moduleCostMultiplier = 1 - moduleDiscount;
     let total = 0;
     let costList = this.costList;
 
@@ -362,7 +363,6 @@ export default class Ship {
         }
       }
     }
-    this.shipCostMultiplier = shipCostMultiplier;
     this.moduleCostMultiplier = moduleCostMultiplier;
     this.totalCost = total;
     return this;

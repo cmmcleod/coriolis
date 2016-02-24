@@ -1,25 +1,18 @@
 import { EventEmitter } from 'fbemitter';
+import { Insurance } from '../shipyard/Constants';
 
 const LS_KEY_BUILDS = 'builds';
 const LS_KEY_COMPARISONS = 'comparisons';
 const LS_KEY_LANG = 'NG_TRANSLATE_LANG_KEY';
 const LS_KEY_COST_TAB = 'costTab';
 const LS_KEY_INSURANCE = 'insurance';
-const LS_KEY_DISCOUNTS = 'discounts';
+const LS_KEY_SHIP_DISCOUNT = 'shipDiscount';
+const LS_KEY_MOD_DISCOUNT = 'moduleDiscount';
 const LS_KEY_STATE = 'state';
 const LS_KEY_SIZE_RATIO = 'sizeRatio';
 const LS_KEY_TOOLTIPS = 'tooltips';
 
 let LS;
-
-// Safe check to determine if localStorage is enabled
-try {
-  localStorage.setItem('test', 'test');
-  localStorage.removeItem('test');
-  LS = localStorage;
-} catch(e) {
-  LS = null;
-}
 
 /**
  * Safe localstorage put
@@ -48,7 +41,11 @@ function _getString(key) {
  */
 function _get(key) {
   let str = _getString(key);
-  return str ? JSON.parse(str) : null;
+  try {
+    return str ? JSON.parse(str) : null;
+  } catch (e) {
+    return null;
+  }
 }
 
 /**
@@ -74,18 +71,30 @@ export class Persist extends EventEmitter {
    */
   constructor() {
     super();
+    // Eventually check use session over localstorage - 'remember me' logic
+    // Safe check to determine if localStorage is enabled
+    try {
+      localStorage.setItem('test', 'test');
+      localStorage.removeItem('test');
+      LS = localStorage;
+    } catch(e) {
+      LS = null;
+    }
+
+    let tips = _get(LS_KEY_TOOLTIPS);
+    let insurance = _getString(LS_KEY_INSURANCE);
+    let shipDiscount = _get(LS_KEY_SHIP_DISCOUNT);
+    let moduleDiscount = _get(LS_KEY_MOD_DISCOUNT);
     let buildJson = _get(LS_KEY_BUILDS);
     let comparisonJson = _get(LS_KEY_COMPARISONS);
-    let tips = _get(LS_KEY_TOOLTIPS);
-    let discounts = _get(LS_KEY_DISCOUNTS);
 
     this.onStorageChange = this.onStorageChange.bind(this);
     this.langCode = _getString(LS_KEY_LANG) || 'en';
-    this.insurance = _getString(LS_KEY_INSURANCE) || 'standard';
-    this.discounts = discounts && !isNaN(discounts[0]) && !isNaN(discounts[1]) ? discounts : [1, 1];
-    this.builds = buildJson ? buildJson : {};
-    this.comparisons = comparisonJson ? comparisonJson : {};
-    this.buildCount = Object.keys(this.builds).length;
+    this.insurance = insurance && Insurance[insurance.toLowerCase()] !== undefined ? insurance : 'standard';
+    this.shipDiscount = !isNaN(shipDiscount) && shipDiscount < 1 ? shipDiscount * 1 : 0;
+    this.moduleDiscount = !isNaN(moduleDiscount) && moduleDiscount < 1 ? moduleDiscount * 1 : 0;
+    this.builds = buildJson && typeof buildJson == 'object' ? buildJson : {};
+    this.comparisons = comparisonJson && typeof comparisonJson == 'object' ? comparisonJson : {};
     this.costTab = _getString(LS_KEY_COST_TAB);
     this.state =  _get(LS_KEY_STATE);
     this.sizeRatio = _get(LS_KEY_SIZE_RATIO) || 1;
@@ -122,9 +131,13 @@ export class Persist extends EventEmitter {
           this.insurance = newValue;
           this.emit('insurance', newValue);
           break;
-        case LS_KEY_DISCOUNTS:
-          this.discounts = JSON.parse(newValue);
-          this.emit('discounts', this.discounts);
+        case LS_KEY_SHIP_DISCOUNT:
+          this.shipDiscount = JSON.parse(newValue);
+          this.emit('discounts');
+          break;
+        case LS_KEY_MOD_DISCOUNT:
+          this.moduleDiscount = JSON.parse(newValue);
+          this.emit('discounts');
           break;
         case LS_KEY_TOOLTIPS:
           this.tooltipsEnabled = !!newValue && newValue.toLowerCase() == 'true';
@@ -361,7 +374,8 @@ export class Persist extends EventEmitter {
     data[LS_KEY_BUILDS] = this.getBuilds();
     data[LS_KEY_COMPARISONS] = this.getComparisons();
     data[LS_KEY_INSURANCE] = this.getInsurance();
-    data[LS_KEY_DISCOUNTS] = this.discounts;
+    data[LS_KEY_SHIP_DISCOUNT] = this.shipDiscount;
+    data[LS_KEY_MOD_DISCOUNT] = this.moduleDiscount;
     return data;
   }
 
@@ -370,7 +384,7 @@ export class Persist extends EventEmitter {
    * @return {String} The name of the saved insurance type of null
    */
   getInsurance() {
-    return this.insurance;
+    return this.insurance.toLowerCase();
   }
 
   /**
@@ -388,8 +402,8 @@ export class Persist extends EventEmitter {
    * @param {number} shipDiscount Discount value/amount
    */
   setShipDiscount(shipDiscount) {
-    this.discounts[0] = shipDiscount;
-    _put(LS_KEY_DISCOUNTS, this.discounts);
+    this.shipDiscount = shipDiscount;
+    _put(LS_KEY_SHIP_DISCOUNT, this.shipDiscount);
     this.emit('discounts');
   }
 
@@ -398,7 +412,7 @@ export class Persist extends EventEmitter {
    * @return {number} val Discount value/amount
    */
   getShipDiscount() {
-    return this.discounts[0];
+    return this.shipDiscount;
   };
 
   /**
@@ -406,8 +420,8 @@ export class Persist extends EventEmitter {
    * @param {number} moduleDiscount Discount value/amount
    */
   setModuleDiscount(moduleDiscount) {
-    this.discounts[1] = moduleDiscount;
-    _put(LS_KEY_DISCOUNTS, this.discounts);
+    this.moduleDiscount = moduleDiscount;
+    _put(LS_KEY_MOD_DISCOUNT, this.moduleDiscount);
     this.emit('discounts');
   }
 
@@ -416,7 +430,7 @@ export class Persist extends EventEmitter {
    * @return {number} val Discount value/amount
    */
   getModuleDiscount() {
-    return this.discounts[1];
+    return this.moduleDiscount;
   }
 
   /**

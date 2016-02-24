@@ -303,9 +303,9 @@ export default class CostSection extends TranslatedComponent {
         <thead>
           <tr className='main'>
             <th colSpan='2' className='sortable le' onClick={this._sortCostBy.bind(this,'m')}>
-              {translate('component')}
-              {shipDiscount < 1 && <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('ship')} -${formats.pct1(1 - shipDiscount)}]`}</u>}
-              {moduleDiscount < 1 && <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('modules')} -${formats.pct1(1 - moduleDiscount)}]`}</u>}
+              {translate('module')}
+              {shipDiscount && <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('ship')} -${formats.pct(shipDiscount)}]`}</u>}
+              {moduleDiscount && <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('modules')} -${formats.pct(moduleDiscount)}]`}</u>}
             </th>
             <th className='sortable le' onClick={this._sortCostBy.bind(this, 'cr')} >{translate('credits')}</th>
           </tr>
@@ -363,7 +363,7 @@ export default class CostSection extends TranslatedComponent {
               <th colSpan='2' className='sortable le' onClick={this._sortRetrofitBy.bind(this, 'buyName')}>{translate('buy')}</th>
               <th colSpan='2' className='sortable le' onClick={this._sortRetrofitBy.bind(this, 'cr')}>
                 {translate('net cost')}
-                {moduleDiscount < 1 && <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('modules')} -${formats.pct1(1 - moduleDiscount)}]`}</u>}
+                {moduleDiscount < 1 && <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('modules')} -${formats.pct(moduleDiscount)}]`}</u>}
               </th>
             </tr>
           </thead>
@@ -472,7 +472,7 @@ export default class CostSection extends TranslatedComponent {
               <th colSpan='2' className='sortable le' onClick={this._sortAmmoBy.bind(this, 'm')} >{translate('module')}</th>
               <th colSpan='1' className='sortable le' onClick={this._sortAmmoBy.bind(this, 'max')} >{translate('qty')}</th>
               <th colSpan='1' className='sortable le' onClick={this._sortAmmoBy.bind(this, 'cost')} >{translate('unit cost')}</th>
-              <th className='sortable le' onClick={this._sortAmmoBy.bind(this, 'total')}>{translate('total cost')}</th>
+              <th className='sortable le' onClick={this._sortAmmoBy.bind(this, 'total')}>{translate('subtotal')}</th>
             </tr>
           </thead>
           <tbody>
