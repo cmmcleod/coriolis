@@ -74,8 +74,9 @@ export function slotComparator(translate, propComparator, desc) {
 
 const PROP_BLACKLIST = {
   eddbID: 1,
-  'class': 1,
+  edID: 1,
   id: 1,
+  'class': 1,
   maxfuel: 1,
   fuelmul: 1,
   fuelpower: 1,
@@ -194,7 +195,7 @@ export function diffDetails(language, m, mm) {
 
   for (let p in m) {
     if (!PROP_BLACKLIST[p] && !isNaN(m[p])) {
-      let mVal = m[p] || Infinity;
+      let mVal = m[p] === null ? Infinity : m[p];
       let mmVal = mm[p] === null ? Infinity : mm[p];
       let format = formats[FORMAT_LOOKUP[p]] || formats.round;
       propDiffs.push(<div key={p}>
