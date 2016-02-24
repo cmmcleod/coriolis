@@ -199,7 +199,7 @@ export default class ShipyardPage extends Page {
     }
 
     return (
-      <div className='page'>
+      <div className='page' style={{ fontSize: this.context.sizeRatio + 'em' }}>
         <div className='scroll-x'>
           <table style={{ fontSize:'0.85em', whiteSpace:'nowrap', margin: '0 auto' }} align='center'>
             <thead>
