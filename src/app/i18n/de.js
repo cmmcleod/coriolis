@@ -14,205 +14,207 @@ export const formats = {
 };
 
 export const terms = {
-  PHRASE_EXPORT_DESC: 'Ein detaillierter JSON-Export Ihrer Konfiguration für die Verwendung in anderen Websites und Tools',
-  'A-Rated': 'A-Klasse',
-  about: 'Über',
+  // Phrases
+  PHRASE_BACKUP_DESC: 'Export aller Coriolis-Daten, um sie zu sichern oder oder um sie zu einem anderen Browser/Gerät zu übertragen.',  // Backup of all Coriolis data to save or transfer to another browser/device
+  PHRASE_CONFIRMATION: 'Sind Sie sicher?',  // Are You Sure?
+  PHRASE_EXPORT_DESC: 'Ein detaillierter JSON-Export Ihrer Konfiguration für die Verwendung in anderen Websites und Tools', // A detailed JSON export of your build for use in other sites and tools
+  PHRASE_FASTEST_RANGE: null, // Consecutive max range jumps
+  PHRASE_IMPORT: 'JSON hier einfügen oder importieren', // Paste JSON or import here
+  PHRASE_LADEN: null, // Ship Mass + Fuel + Cargo
+  PHRASE_NO_BUILDS: 'Keine Konfigurationen zum Vergleich ausgewählt!',  // No builds added to comparison!
+  PHRASE_NO_RETROCH: 'Keine Umrüständerungen',  // No Retrofitting changes
+  PHRASE_SELECT_BUILDS: 'Ausstattung zum Vergleich auswählen',  // Select Builds to Compare
+  PHRASE_SG_RECHARGE: null, // Time from 50% to 100% Charge
+  PHRASE_SG_RECOVER: null,  // Recovery (to 50%) after collapse
+  PHRASE_UNLADEN: null, // Ship Mass excluding Fuel and Cargo
+  PHRASE_UPDATE_RDY: 'Update verfügbar! Klicken zum Aktualisieren', // Update Available! Click to Refresh
+
+  // Modules / Module Types - These should match the in-game translation (if any)
+  'Basic Discovery Scanner': 'einfacher Aufklärungsscanner',  // Basic Discovery Scanner
+  'Cargo Hatch': 'Frachtluke',  // Cargo Hatch
+  'Chaff Launcher': 'Düppel-Werfer',  // Chaff Launcher
+  'Detailed Surface Scanner': 'Detailoberflächenscanner', // Detailed Surface Scanner
+  'Electronic Countermeasure': 'elektronische Gegenmaßnahme', // Electronic Countermeasure
+  'Heat Sink Launcher': 'Kühlkörperwerfer', // Heat Sink Launcher
+  'Intermediate Discovery Scanner': 'mittlerer Aufklärungsscanner', // Intermediate Discovery Scanner
+  'Point Defence': 'Punktverteidigung',
+  'Standard Docking Computer': 'Standard-Landecomputer',  // Standard Docking Computer
+  am: 'automatische Feldwartungs-Einheit',  // Auto Field-Maintenance Unit
+  bh: 'Rumpfhüllenverstärkung', // Bulkheads
+  bl: 'Strahlenlaser',  // Beam Laser
+  c: 'Kanone',  // Cannon
+  cc: 'Krallensteuerung: Sammler',  // Collector Limpet Controller
+  cm: 'Gegenmaßnahme',  // Countermeasure
+  cr: 'Frachtgestell',  // Cargo Rack
+  cs: 'Frachtscanner',  // Cargo Scanner
+  dc: 'Standard-Landecomputer', // Docking Computer
+  fc: 'Splitterkanone', // Fragment Cannon
+  fi: 'FSA-Unterbrecher', // FSD Interdictor
+  fs: 'Treibstoffsammler',  // Fuel Scoop
+  fsd: 'Frameshiftantrieb', // Frame Shift Drive
+  ft: 'Treibstofftank', // Fuel Tank
+  fx: 'Krallensteuerung Treibstoffstransfer', // Fuel Transfer Limpet Controller
+  hb: 'Krallen-Steuereinheit (Ladelukenöffner)',  // Hatch Breaker Limpet Controller
+  hr: 'Rumpfhüllenverstärkung (Paket)', // Hull Reinforcement Package
+  kw: 'Tötungsbefehl-Scanner',  // Kill Warrant Scanner
+  ls: 'Lebenserhaltung',  // life support
+  mc: 'Mehrfachgeschütz', // Multi-cannon
+  ml: 'Abbaulaser', // Mining Laser
+  mr: 'Raketenbatterie',  // Missile Rack
+  nl: 'Minenwerfer',  // Mine Launcher
+  pa: 'Plasmabeschleuniger',  // Plasma Accelerator
+  pc: 'Krallensteuerung: Erzsucher',  // Prospector Limpet Controller
+  pd: 'Energieverteiler', // power distributor
+  pl: 'Impulslaser',  // Pulse Laser
+  pp: 'Kraftwerk',  // Power Plant
+  psg: 'Prismaschildgenerator', // Prismatic Shield Generator
+  rf: 'Raffinerie', // Refinery
+  rg: 'Schienenkanone', // Rail Gun
+  s: 'Sensoren',  // Sensors
+  sb: 'Schild-Booster', // Shield Booster
+  sc: 'Scanner',  // Scanner
+  scb: 'Schildzellenbank',  // Shield Cell Bank
+  sg: 'Schildgenerator',  // Shield Generator
+  t: 'Schubdüsen',  // Thrusters
+  tp: 'Torpedoaufhängung',  // Torpedo Pylon
+  ul: 'Salvenlaser',  // Burst Laser
+  ws: 'Frameshift-Sogwolkenscanner',  // Frame Shift Wake Scanner
+  // Bulkheads - These should match the in-game translation (if any)
+  'Lightweight Alloy': 'leichte Legierung',
+  'Reinforced Alloy': 'verstärkte Legierung',
+  'Military Grade Composite': 'Militär-Komposit',
+  'Mirrored Surface Composite': 'Gespiegelte-Oberfläche-Komposit',
+  'Reactive Surface Composite': 'Reaktive-Oberfläche-Komposit',
+  // Units / Metrics
+  LY: 'Lj', // Light Years
+  T: 't', // Tons (Metric Ton - 1000kg)
+
+  // Sizes
+  S: 'K', // Small Hardpoint (single Character)
+  L: 'G', // Large Hardpoint size (single character)
+  H: 'R', // Huge Hardpoint size (single character)
+  U: 'W', // Utility Hardpoint size (single character) - Kill warrant scanner, etc
+
+  // Terms
+  'build name': 'Ausstattungsname', // Ship build/configuration/design name
+  'compare all': 'Alles vergleichen',
+  'create new': 'Neu erstellen',
+  'damage per second': null,
+  'delete all': 'Alles Löschen',
+  'detailed export': 'detailierter Export',
+  'edit data': 'bearbeiten',
+  'empty all': 'leer alles',
+  'Enter Name': 'Namen eingeben',
+  'fastest range': null,  // Fastet totaljump range - sum of succesive jumps
+  'fuel level': null, // Percent of fuel (T) in the tank
+  'full tank': 'Tank voll',
+  'internal compartments': 'Innenbereich',
+  'jump range': 'Sprungreichweite',
+  'mass lock factor': 'Massensperrefaktor',
+  'max mass': 'maximale Masse',
+  'net cost': 'Nettokosten',
+  'none created': 'Leer',
+  'optimal mass': null, // Lowest weight / best weight for jump distance, etc
+  'refuel time': 'Auftankzeit', // Time to refuel the tank when scooping
+  'reload costs': null,
+  'retrofit costs': 'Änderungskosten',  // The cost difference when upgrading / downgrading a component
+  'retrofit from': 'Nachrüsten von',  // Retrofit from Build A against build B
+  'T-Load': 'T-Lad',  // Thermal load abbreviation
+  'total range': null,
+  'unit cost': null,
+  'utility mounts': 'Werkzeug-Steckplätze',
+  about: 'Über',  // Link to about page / about Coriolis.io
   action: 'Aktion',
-  added: 'Hinzugefügt',
-  Advanced: 'Verbessert',
-  'Advanced Discovery Scanner': 'Fortgeschrittener Aufklärungsscanner',
-  maneuverability: 'Manövrierbarkeit',
-  ammo: 'Munition',
-  PHRASE_CONFIRMATION: 'Sind Sie sicher?',
+  added: 'hinzugefügt',
+  ammo: 'Munition', // Ammunition
   armour: 'Panzerung',
-  am: 'Automatische Feldwartungs-Einheit',
-  available: 'Verfügbar',
+  available: 'verfügbar',
   backup: 'Sicherungsdatei',
-  'Basic Discovery Scanner': 'Einfacher Aufklärungsscanner',
-  bl: 'Strahlenlaser',
-  beta: 'Beta',
-  bins: 'Behälter',
-  boost: 'Boost',
-  build: 'Ausstattung',
-  'build name': 'Ausstattungsname',
-  builds: 'Ausstattungen',
-  bh: 'Rumpfhüllenverstärkung',
-  ul: 'Salvenlaser',
-  buy: 'Kaufen',
+  base: null,
+  bays: null,
+  bins: 'Behälter', // Number of Mining Refinery bins
+  build: 'Ausstattung', // Shorthand for the build/configuration/design name
+  builds: 'Ausstattungen',  // Ship build/configuration/design names
+  buy: 'kaufen',
   cancel: 'Abbrechen',
-  c: 'Kanone',
-  capital: 'Kapital',
   cargo: 'Fracht',
-  'Cargo Hatch': 'Frachtluke',
-  cr: 'Frachtgestell',
-  cs: 'Frachtscanner',
-  cells: 'Zellen',
-  'Chaff Launcher': 'Düppel-Werfer',
+  cells: 'Zellen',  // Number of cells in a shield cell bank
   close: 'Schließen',
-  cc: 'Krallensteuerung: Sammler',
-  compare: 'Vergleichen',
-  'compare all': 'Alles Vergleichen',
+  compare: 'vergleichen',
   comparison: 'Vergleich',
   comparisons: 'Vergleiche',
-  component: 'Komponente',
-  cost: 'Preis',
-  costs: 'Kosten',
-  cm: 'Gegenmaßnahme',
-  create: 'Erstellen',
-  'create new': 'Neu Erstellen',
-  Cytoscrambler: 'Zytostreuer',
+  cost: 'Preis',  // Cost / price of a module or price of a ship
+  costs: 'Kosten',  // Costs / prices of a modules or prices of ships
+  create: 'erstellen',
+  credits: 'Credits',
   damage: 'Schaden',
   delete: 'Löschen',
-  'delete all': 'Alles Löschen',
-  dep: 'Ausg',
-  deployed: 'Ausgefahren',
-  'detailed export': 'Detailierter Export',
-  'Detailed Surface Scanner': 'Detailoberflächenscanner',
+  dep: 'Ausg',  // Weapons/Hardpoints Deployed abbreviation
+  deployed: 'Ausgefahren',  // Weapons/Hardpoints Deployed
   disabled: 'Deaktiviert',
   discount: 'Rabatt',
-  Distruptor: 'Disruptor',
-  dc: 'Standard-Landecomputer',
-  done: 'Fertig',
-  'edit data': 'Bearbeiten',
-  efficiency: 'Effizienz',
-  'Electronic Countermeasure': 'Elektronische Gegenmaßnahme',
+  efficiency: 'Effizienz',  // Power Plant efficiency
   empty: 'leer',
-  Enforcer: 'Vollstrecker',
-  ENG: 'ANT',
-  'enter name': 'Namen eingeben',
-  export: 'Export',
-  fixed: 'Fixiert',
+  ENG: 'ANT', // Abbreviation - Engine recharge rate for power distributor
+  Explorer: 'Forscher',
   forum: 'Forum',
-  fc: 'Splitterkanone',
-  fd: 'Frameshiftantrieb',
-  ws: 'Frameshift-Sogwolkenscanner',
-  FSD: 'FSA',
-  fi: 'FSA-Unterbrecher',
   fuel: 'Treibstoff',
-  fs: 'Treibstoffsammler',
-  ft: 'Treibstofftank',
-  fx: 'Krallensteuerung Treibstoffstransfer',
-  'full tank': 'Tank voll',
-  Gimballed: 'Kardanisch',
-  H: 'R',
   hardpoints: 'Waffenaufhängungen',
-  hb: 'Krallen-Steuereinheit (Ladelukenöffner)',
-  'Heat Sink Launcher': 'Kühlkörperwerfer',
-  huge: 'Riesig',
-  hull: 'Hülle',
-  hr: 'Rumpfhüllenverstärkung (Paket)',
-  'Imperial Hammer': 'Imperialer Hammer',
-  import: 'Importieren',
-  'import all': 'Alles Importieren',
+  hull: 'Hülle',  // Ships hull
+  import: 'importieren',
   insurance: 'Versicherung',
-  'Intermediate Discovery Scanner': 'Mittlerer Aufklärungsscanner',
-  'internal compartments': 'Innenbereichskabine',
-  'jump range': 'Sprungreichweite',
+  jump: null, // Single jump range
   jumps: 'Sprünge',
-  kw: 'Tötungsbefehl-Scanner',
-  L: 'G',
-  laden: 'Beladen',
+  laden: 'beladen',
   language: 'Sprache',
-  large: 'Groß',
-  limpets: 'Krallen',
-  ls: 'Lebenserhaltung',
-  'Lightweight Alloy': 'Leichte Legierung',
-  'lock factor': 'Massensperrefaktor',
-  LS: 'Ls',
-  LY: 'Lj',
+  maneuverability: 'Manövrierbarkeit',
+  manufacturer: null,
   mass: 'Masse',
-  'max mass': 'maximale Masse',
-  medium: 'Mittel',
-  'Military Grade Composite': 'Militär-Komposit',
-  nl: 'Minenwerfer',
-  'Mining Lance': 'Lanzenabbaulaser',
-  ml: 'Abbaulaser',
-  'Mirrored Surface Composite': 'Gespiegelte-Oberfläche-Komposit',
-  mr: 'Raketenbatterie',
-  mc: 'Mehrfachgeschütz',
-  'net cost': 'Nettokosten',
+  MLF: null,  // Mass Lock Factor Abbreviation
+  MNV: null,  // Maneuverability abbreviation
+  module: 'modul',
+  modules: 'module',
   no: 'Nein',
-  PHRASE_NO_BUILDS: 'Keine Konfigurationen zum Vergleich ausgewählt!',
-  PHRASE_NO_RETROCH: 'Keine Umrüständerungen',
-  none: 'Nichts',
-  'none created': 'Leer',
-  off: 'Aus',
-  on: 'An',
-  'optimal mass': 'optimale Masse',
-  'optimize mass': 'Masse optimieren',
-  overwrite: 'Überschreiben',
-  Pacifier: 'Friedensstifter',
-  'Pack-Hound': 'Schwarmwerfer',
-  PHRASE_IMPORT: 'JSON hier einfügen oder importieren',
-  pen: 'Durchdr.',
-  penetration: 'Durchdringung',
-  permalink: 'Permalink',
-  pa: 'Plasmabeschleuniger',
-  'Point Defence': 'Punktverteidigung',
-  power: 'Energie',
-  pd: 'Energieverteiler',
-  pp: 'Kraftwerk',
-  pri: 'Prio',
-  priority: 'Priorität',
-  psg: 'Prismaschildgenerator',
+  ok: 'OK',
+  optimize: null,
+  pen: 'Durchdr.',  // Armour peneration abbreviation
+  power: 'Energie', // Power = Energy / second. Power generated by the power plant, or power consumed (MW / Mega Watts). Used in the power plant section
+  pri: 'Prio',  // Priority abbreviation for power management
   proceed: 'Fortfahren',
-  pc: 'Krallensteuerung: Erzsucher',
-  pl: 'Impulslaser',
-  PWR: 'En',
-  rg: 'Schienenkanone',
+  PWR: 'En',  // Power Abbreviation. See Power
+  qty: null,  // Quantity abbreviation
   range: 'Reichweite',
   rate: 'Rate',
-  'Reactive Surface Composite': 'Reaktive-Oberfläche-Komposit',
-  recharge: 'Aufladen',
-  rf: 'Raffinerie',
-  'refuel time': 'Auftankzeit',
-  'Reinforced Alloy': 'Verstärkte Legierung',
-  reload: 'Aktualisieren',
-  rename: 'Umbenennen',
-  repair: 'Reparieren',
-  reset: 'Zurücksetzen',
-  ret: 'Eing',
-  retracted: 'Eingefahren',
-  'retrofit costs': 'Änderungskosten',
-  'retrofit from': 'Nachrüsten von',
-  ROF: 'Kad',
-  S: 'K',
+  recharge: null, // Shield Recharge time from 50% -> 100%
+  recovery: null, // Shield recovery time (after losing shields/turning on -> 50%)
+  reload: 'aktualisieren',  // Reload weapon/hardpoint
+  rename: 'umbenennen',
+  repair: 'reparieren',
+  reset: 'zurücksetzen',
+  ret: 'Eing',  // Retracted abbreviation
+  retracted: 'Eingefahren', // Weapons/Hardpoints retracted
+  ROF: 'Kad', // Rate of Fire abbreviation
+  roles: null,  // Commander/Ship build roles - e.g. Trader, Bounty-Hunter, Explorer, etc
   save: 'Speichern',
-  sc: 'Scanner',
-  PHRASE_SELECT_BUILDS: 'Ausstattung zum Vergleich auswählen',
   sell: 'Verkaufen',
-  s: 'Sensoren',
-  settings: 'Einstellungen',
-  sb: 'Schild-Booster',
-  scb: 'Schildzellenbank',
-  sg: 'Schildgenerator',
+  settings: 'Einstellungen',  // Coriolis application settings
   shields: 'Schilde',
   ship: 'Schiff',
   ships: 'Schiffe',
-  shortened: 'Gekürzt',
+  shortened: 'gekürzt', // Standard/Stock build of a ship when purchased new
   size: 'Größe',
-  skip: 'Überspringen',
-  small: 'Klein',
+  skip: 'überspringen', // Skip past something / ignore it
   speed: 'Geschwindigkeit',
-  standard: 'Standard',
-  'Standard Docking Computer': 'Standard-Landecomputer',
-  Stock: 'Standard',
-  T: 't',
-  T_LOAD: 'T-Lad',
-  'The Retributor': 'Retributor',
-  t: 'Schubdüsen',
-  time: 'Dauer',
-  tp: 'Torpedoaufhängung',
+  standard: 'Standard', // Standard / Common modules (FSD, power plant, life support, etc)
+  Stock: 'Standard',  // Thermal-load abbreviation
+  strength: null, // Strength in reference to Shield Strength
+  subtotal: null,
+  time: 'Dauer',  // time it takes to complete something
+  tooltips: null, // Tooltips setting - show/hide
   total: 'Gesamt',
-  'total range': 'Maximale Reichweite',
-  turret: 'Geschützturm',
+  Trader: null, // Trader role
   type: 'Typ',
-  U: 'W',
-  unladen: 'Unbeladen',
-  PHRASE_UPDATE_RDY: 'Update verfügbar! Klicken zum Aktualisieren',
-  utility: 'Werkzeug',
-  'utility mounts': 'Werkzeug-Steckplätze',
-  WEP: 'WAF',
-  yes: 'Ja',
-  PHRASE_BACKUP_DESC: 'Export aller Coriolis-Daten, um sie zu sichern oder oder um sie zu einem anderen Browser/Gerät zu übertragen.'
+  unladen: 'Unbeladen', // No cargo or fuel
+  WEP: 'WAF', // Abbreviation - Weapon recharge rate for power distributor
+  yes: 'Ja'
 };

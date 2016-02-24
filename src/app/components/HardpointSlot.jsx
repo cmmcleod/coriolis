@@ -44,7 +44,7 @@ export default class HardpointSlot extends Slot {
         <div className={'cb'}>
           { m.damage ? <div className={'l'}>{translate('damage')}: {m.damage} { m.ssdam ? <span>({formats.int(m.ssdam)} {u.MJ})</span> : null }</div> : null }
           { m.dps ? <div className={'l'}>{translate('DPS')}: {m.dps} { m.mjdps ? <span>({formats.int(m.mjdps)} {u.MJ})</span> : null }</div> : null }
-          { m.thermload ? <div className={'l'}>{translate('T_LOAD')}: {m.thermload}</div> : null }
+          { m.thermload ? <div className={'l'}>{translate('T-Load')}: {m.thermload}</div> : null }
           { m.type ? <div className={'l'}>{translate('type')}: {m.type}</div> : null }
           { m.rof ? <div className={'l'}>{translate('ROF')}: {m.rof}{u.ps}</div> : null }
           { m.armourpen ? <div className={'l'}>{translate('pen')}: {m.armourpen}</div> : null }

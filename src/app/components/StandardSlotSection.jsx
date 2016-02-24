@@ -296,7 +296,7 @@ export default class StandardSlotSection extends SlotSection {
 
     return <div className='select' onClick={(e) => e.stopPropagation()} onContextMenu={stopCtxPropagation}>
       <ul>
-        <li className='lc' onClick={this._optimizeStandard}>{translate('Optimize')}</li>
+        <li className='lc' onClick={this._optimizeStandard}>{translate('optimize')}</li>
         <li className='c' onClick={_fill.bind(this, 'E')}>E</li>
         <li className='c' onClick={_fill.bind(this, 'D')}>D</li>
         <li className='c' onClick={_fill.bind(this, 'C')}>C</li>

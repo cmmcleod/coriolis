@@ -14,216 +14,235 @@ export const formats = {
 };
 
 export const terms = {
-  PHRASE_EXPORT_DESC: 'Подробный экспорта JSON вашего телосложения для использования в других местах и инструментов',
-  'A-Rated': 'А-Класса',
-  about: 'О сайте',
-  action: 'Действие',
-  added: 'Добавлено',
-  Advanced: 'Продвинутый',
-  'Advanced Discovery Scanner': 'Продвинутый астросканер',
-  maneuverability: 'Маневренность',
-  alpha: 'Альфа',
-  ammo: 'Боекомплект',
-  PHRASE_CONFIRMATION: 'Вы уверены?',
-  armour: 'Броня',
-  am: 'Ремонтный модуль',
-  available: 'доступно',
-  backup: 'Резервная копия',
-  'Basic Discovery Scanner': 'Стандартный исследовательский сканер',
-  bl: 'Лучевой лазер',
-  beta: 'Бета',
-  bins: 'контейнеры',
-  boost: 'форсаж',
-  build: 'cборка',
-  'build name': 'название сборки',
-  builds: 'cборки',
-  bh: 'Корпус',
-  ul: 'Мультиимпульсный лазер',
-  buy: 'купить',
-  cancel: 'отменить',
-  c: 'Пушка',
-  capital: 'Крупный',
-  cargo: 'Груз',
-  'Cargo Hatch': 'Грузовой люк',
-  cr: 'Грузовой отсек',
-  cs: 'Сканер груза',
-  cells: 'Ячейки',
-  'Chaff Launcher': 'Постановщик помех',
-  close: 'закрыть',
-  cc: 'Контроллер "дрон-сборщик"',
-  compare: 'сравнить ',
+  // Phrases
+  PHRASE_BACKUP_DESC: 'Сохраните все данные перед переносом в другой браузер или устройство', // Backup of all Coriolis data to save or transfer to another browser/device
+  PHRASE_CONFIRMATION: 'Вы уверены?', // Are You Sure?
+  PHRASE_EXPORT_DESC: 'Детальный JSON-экспорт вашей сборки для использования в других местах и инструментах', // A detailed JSON export of your build for use in other sites and tools
+  PHRASE_FASTEST_RANGE: null, // Consecutive max range jumps
+  PHRASE_IMPORT: 'Для импорта вставьте код в эту форму',  // Paste JSON or import here
+  PHRASE_LADEN: null, // Ship Mass + Fuel + Cargo
+  PHRASE_NO_BUILDS: 'Нечего сравнивать',  // No builds added to comparison!
+  PHRASE_NO_RETROCH: 'нет ранних версий сборкиконфигурации',  // No Retrofitting changes
+  PHRASE_SELECT_BUILDS: 'Выберите конфигурацию для сравнения',  // Select Builds to Compare
+  PHRASE_SG_RECHARGE: null, // Time from 50% to 100% Charge
+  PHRASE_SG_RECOVER: null,  // Recovery (to 50%) after collapse
+  PHRASE_UNLADEN: null, // Ship Mass excluding Fuel and Cargo
+  PHRASE_UPDATE_RDY: 'Доступно обновление. Нажмите для обновления.',  // Update Available! Click to Refresh
+
+  // Modules / Module Types - These should match the in-game translation (if any)
+  'Advanced Discovery Scanner': null, // Advanced Discovery Scanner
+  'Basic Discovery Scanner': 'Стандартный исследовательский сканер',  // Basic Discovery Scanner
+  'Cargo Hatch': 'Грузовой люк',  // Cargo Hatch
+  'Chaff Launcher': 'Постановщик помех',  // Chaff Launcher
+  'Detailed Surface Scanner': 'Подробный сканер поверхности', // Detailed Surface Scanner
+  'Electronic Countermeasure': 'Электронная противомера', // Electronic Countermeasure
+  'Heat Sink Launcher': 'Теплоотводная ПУ', // Heat Sink Launcher
+  'Intermediate Discovery Scanner': 'Средний исследовательский сканер', // Intermediate Discovery Scanner
+  'Point Defence': 'Противоракетная защита',
+  'Standard Docking Computer': 'Стандартный стыковочный компьютер', // Standard Docking Computer
+  am: 'Ремонтный модуль', // Auto Field-Maintenance Unit
+  bh: 'Корпус', // Bulkheads
+  bl: 'Лучевой лазер',  // Beam Laser
+  bsg: null,  // Bi-Weave Shield Generator
+  c: 'Пушка', // Cannon
+  cc: 'Контроллер "дрон-сборщик"',  // Collector Limpet Controller
+  cm: 'Контрмеры',  // Countermeasure
+  cr: 'Грузовой отсек', // Cargo Rack
+  cs: 'Сканер груза', // Cargo Scanner
+  dc: 'Стыковочный компьютер',  // Docking Computer
+  fc: 'Осколочное Орудие',  // Fragment Cannon
+  fi: 'Перехватчик FSD',  // FSD Interdictor
+  fs: 'Топливосборщик', // Fuel Scoop
+  fsd: 'Двигатель FSD', // Frame Shift Drive
+  ft: 'Топливный бак',  // Fuel Tank
+  fx: 'Контроллер "Дрон-заправщик"',  // Fuel Transfer Limpet Controller
+  hb: 'Контроллер "дрон-взломщик"', // Hatch Breaker Limpet Controller
+  hr: 'Набор усиления корпуса', // Hull Reinforcement Package
+  kw: 'Полицейский сканер', // Kill Warrant Scanner
+  ls: 'Система жизнеобеспечения', // life support
+  mc: 'Многоствольное орудие',  // Multi-cannon
+  ml: 'Бурильный лазер',  // Mining Laser
+  mr: 'Ракетная установка', // Missile Rack
+  nl: 'Минноукладчик',  // Mine Launcher
+  pa: 'Ускоритель плазмы',  // Plasma Accelerator
+  pas: null,  // Planetary Approach Suite
+  pc: 'Контроллер "Дрон-исследователь"',  // Prospector Limpet Controller
+  pd: 'Распределитель энергии', // power distributor
+  pl: 'Импульсный лазер', // Pulse Laser
+  pp: 'Реактор',  // Power Plant
+  psg: 'Генератор призматического щита',  // Prismatic Shield Generator
+  pv: null, // Planetary Vehicle Hanger
+  rf: 'Переработка',  // Refinery
+  rg: 'Рельсотрон', // Rail Gun
+  s: 'Сенсоры', // Sensors
+  sb: 'Усилитель щита', // Shield Booster
+  sc: 'Сканер', // Scanner
+  scb: 'Батареи перезарядки щита',  // Shield Cell Bank
+  sg: 'Генератор щита', // Shield Generator
+  t: 'Двигатели', // Thrusters
+  tp: 'Торпедный аппарат',  // Torpedo Pylon
+  ul: 'Мультиимпульсный лазер', // Burst Laser
+  ws: 'FSD Сканнер',  // Frame Shift Wake Scanner
+
+  // Bulkheads - These should match the in-game translation (if any)
+  'Lightweight Alloy': 'Легкий сплав',
+  'Reinforced Alloy': 'Усиленный сплав',
+  'Military Grade Composite': 'Военный композит',
+  'Mirrored Surface Composite': 'Зеркальный композит',
+  'Reactive Surface Composite': 'Динамическая защита',
+
+  // Units / Metrics
+  '/min': null, // Per minute
+  '/s': null, // Per second
+  kg: null, // Kilogram
+  'kg/s': null, // Kilograms per second
+  km: null, // Kilometer
+  'm/s': 'м/с', // Meters / Second
+  Ls: 'Св.сек', // Light seconds
+  LY: 'Св.лет', // Light Years
+  MJ: null, // Mega Joules
+  MW: null, // Mega Watts
+  CR: 'кр.',  // Credits abbreviation
+
+  // Sizes
+  S: 'M', // Small Hardpoint (single Character)
+  M: 'С', // Medium Hardpoint size (single character)
+  L: 'б', // Large Hardpoint size (single character)
+  H: 'O', // Huge Hardpoint size (single character)
+  U: 'B', // Utility Hardpoint size (single character) - Kill warrant scanner, etc
+
+  // Insurance
+  alpha: 'Альфа', // Alpha backer insurance level
+  beta: 'Бета', // Beta back insurance level
+  standard: 'Стандартный',  // Standard insurance level
+
+  // Terms
+  'build name': 'название сборки',  // Ship build/configuration/design name
   'compare all': 'сравнить все',
-  comparison: 'сравнение',
-  comparisons: 'сравнения',
-  component: 'Компонент',
-  cost: 'Стоимость',
-  costs: 'Расходы',
-  cm: 'Контрмеры',
-  CR: 'кр.',
-  create: 'создать',
   'create new': 'Создать новый',
-  credits: 'Кредиты',
-  Cytoscrambler: 'сайтоскрамблер',
-  damage: 'Урон',
-  delete: 'Удалить',
+  'damage per second': null,
   'delete all': 'Удалить все',
-  dep: 'Вып',
-  deployed: 'Открыты',
   'detailed export': 'Подробный экспорт',
-  'Detailed Surface Scanner': 'Подробный сканер поверхности',
-  disabled: 'Отключено',
-  discount: 'Скидка',
-  Distruptor: 'Дисраптор',
-  dc: 'Стыковочный компьютер',
-  done: 'готово',
-  DPS: 'УВС',
   'edit data': 'Редактирование',
-  efficiency: 'Эффективность',
-  'Electronic Countermeasure': 'Электронная противомера',
-  empty: 'пусто',
-  Enforcer: 'Энфорсер',
-  ENG: 'ДВГ',
-  'enter name': 'Введите имя',
-  EPS: 'ЭВС',
-  export: 'Экспорт',
-  fixed: 'Фиксированое',
-  forum: 'Форум',
-  fc: 'Осколочное Орудие',
-  fd: 'Двигатель FSD',
-  ws: 'FSD Сканнер',
-  fi: 'Перехватчик FSD',
-  fuel: 'Топливо',
-  fs: 'Топливосборщик',
-  ft: 'Топливный бак',
-  fx: 'Контроллер Дрона-заправщика',
+  'empty all': null,
+  'Enter Name': 'Введите имя',
+  'fastest range': null,  // Fastet totaljump range - sum of succesive jumps
+  'fuel level': null, // Percent of fuel (T) in the tank
   'full tank': 'Полный бак',
-  Gimballed: 'Шарнирное',
-  H: 'O',
-  hardpoints: 'Орудийные порты',
-  hb: 'Контроллер "дрон-взломщик"',
-  'Heat Sink Launcher': 'Теплоотводная ПУ',
-  huge: 'огромный',
-  hull: 'Корпус',
-  hr: 'Набор усиления корпуса',
-  'Imperial Hammer': 'Имперский Молот',
-  import: 'импортировать ',
-  'import all': 'импортировать все',
-  insurance: 'Страховка',
-  'Intermediate Discovery Scanner': 'Средний исследовательский сканер',
   'internal compartments': 'внутренние отсеки',
   'jump range': 'Дальность прыжка',
+  'mass lock factor': 'Масс. блок',
+  'max mass': 'Максимальная масса',
+  'net cost': 'разница в цене',
+  'none created': 'не создано',
+  'optimal mass': null, // Lowest weight / best weight for jump distance, etc
+  'refuel time': 'Время дозаправки',  // Time to refuel the tank when scooping
+  'reload costs': null,
+  'retrofit costs': 'цена модификации', // The cost difference when upgrading / downgrading a component
+  'retrofit from': 'модификация от',  // Retrofit from Build A against build B
+  'T-Load': 'Тепл.',  // Thermal load abbreviation
+  'total range': null,
+  'unit cost': null,
+  'utility mounts': 'Вспомогательное оборудование',
+  about: 'О ...', // Link to about page / about Coriolis.io
+  action: 'Действие',
+  added: 'Добавлено',
+  ammo: 'Боекомплект',  // Ammunition
+  armour: 'Броня',
+  available: 'доступно',
+  backup: 'Резервная копия',
+  base: null,
+  bays: null,
+  bins: 'контейнеры', // Number of Mining Refinery bins
+  boost: 'форсаж',
+  build: 'cборка',  // Shorthand for the build/configuration/design name
+  builds: 'cборки', // Ship build/configuration/design names
+  buy: 'купить',
+  cancel: 'отменить',
+  cargo: 'Груз',
+  cells: 'Ячейки',  // Number of cells in a shield cell bank
+  close: 'закрыть',
+  compare: 'сравнить ',
+  comparison: 'сравнение',
+  comparisons: 'сравнения',
+  cost: 'Стоимость',  // Cost / price of a module or price of a ship
+  costs: 'Расходы', // Costs / prices of a modules or prices of ships
+  create: 'создать',
+  credits: 'Кредиты',
+  damage: 'Урон',
+  delete: 'Удалить',
+  dep: 'Вып', // Weapons/Hardpoints Deployed abbreviation
+  deployed: 'Открыты',  // Weapons/Hardpoints Deployed
+  disabled: 'Отключено',
+  discount: 'Скидка',
+  DPS: 'УВС', // Damage per second abbreviation
+  efficiency: 'Эффективность',  // Power Plant efficiency
+  empty: 'пусто',
+  ENG: 'ДВГ', // Abbreviation - Engine recharge rate for power distributor
+  Explorer: null,
+  export: 'Экспорт',
+  forum: 'Форум',
+  fuel: 'Топливо',
+  hardpoints: 'Орудийные порты',
+  hull: 'Корпус', // Ships hull
+  import: 'импортировать ',
+  insurance: 'Страховка',
+  jump: null, // Single jump range
   jumps: 'Прыжков',
-  kw: 'Полицейский сканер',
-  L: 'б',
   laden: 'Груженый',
   language: 'Язык',
-  large: 'большой',
-  ls: 'Система жизнеобеспечения',
-  'Lightweight Alloy': 'Легкий сплав',
-  'limpets': 'Дроны',
-  'lock factor': 'Масс. блок',
-  LS: 'Св.сек',
-  LY: 'Св.лет',
-  M: 'С',
-  'm/s': 'м/с',
+  maneuverability: 'Моневренность',
+  manufacturer: null,
   mass: 'Масса',
   max: 'Макс',
-  'max mass': 'Максимальная масса',
-  medium: 'Средний',
-  'Military Grade Composite': 'Военный композит',
-  nl: 'Минноукладчик',
-  'Mining Lance': 'Бурильная сулица',
-  ml: 'Бурильный лазер',
-  'Mirrored Surface Composite': 'Зеркальный композит',
-  mr: 'Ракетная установка',
-  mc: 'Многоствольное орудие',
-  'net cost': 'разница в цене',
+  MLF: null,  // Mass Lock Factor Abbreviation
+  MNV: null,  // Maneuverability abbreviation
+  module: null,
+  modules: null,
   no: 'Нет',
-  PHRASE_NO_BUILDS: 'Нечего сравнивать',
-  PHRASE_NO_RETROCH: 'нет ранних версий сборки\конфигурации',
-  none: 'ни один',
-  'none created': 'не создано',
-  off: 'выкл',
-  on: 'вкл',
-  optimal: 'Оптимальный',
-  'optimal mass': 'Оптимальная масса',
-  'optimize mass': 'Оптимизировать массу',
-  overwrite: 'перезаписать',
-  Pacifier: 'Миротворец',
-  'Pack-Hound': 'Ракета "Гончая"',
-  PHRASE_IMPORT: 'Для импорта вставьте код в эту форму',
-  pen: 'ПБ',
-  penetration: 'Пробитие',
+  ok: null,
+  optimize: null,
+  pen: 'ПБ',  // Armour peneration abbreviation
   permalink: 'Постоянная ссылка',
-  pa: 'Ускоритель плазмы',
-  'Point Defence': 'Противоракетная защита',
-  power: 'Мощность',
-  pd: 'Распределитель энергии',
-  pp: 'Реактор',
-  pri: 'Осн',
-  priority: 'Приоритет',
-  psg: 'Генератор призматического щита',
+  power: 'Мощность',  // Power = Energy / second. Power generated by the power plant, or power consumed (MW / Mega Watts). Used in the power plant section
+  pri: 'Осн', // Priority abbreviation for power management
   proceed: 'продолжить',
-  pc: 'Контроллер "Дрон-исследователь"',
-  pl: 'Импульсный лазер',
-  PWR: 'Эн',
-  rg: 'Рельсотрон',
+  PWR: 'Эн',  // Power Abbreviation. See Power
+  qty: null,  // Quantity abbreviation
   range: 'Дальность',
   rate: 'скорость',
-  'Reactive Surface Composite': 'Динамическая защита',
-  recharge: 'Перезарядка',
-  rf: 'Переработка',
-  'refuel time': 'Время дозаправки',
-  'Reinforced Alloy': 'Усиленный сплав',
-  reload: 'Перезарядить',
+  recharge: null, // Shield Recharge time from 50% -> 100%
+  recovery: null, // Shield recovery time (after losing shields/turning on -> 50%)
+  reload: 'Перезагрузить',  // Reload weapon/hardpoint
   rename: 'Переименовать',
   repair: 'Починка',
   reset: 'Сброс',
-  ret: 'Убр.',
-  retracted: 'Убрано',
-  'retrofit costs': 'цена модификации',
-  'retrofit from': 'модификация от',
-  ROF: 'В/сек',
-  S: 'М',
+  ret: 'Убр.',  // Retracted abbreviation
+  retracted: 'Убрано',  // Weapons/Hardpoints retracted
+  ROF: 'В/сек', // Rate of Fire abbreviation
+  roles: null,  // Commander/Ship build roles - e.g. Trader, Bounty-Hunter, Explorer, etc
   save: 'Сохранить',
-  sc: 'Сканер',
-  PHRASE_SELECT_BUILDS: 'Выберите конфигурацию для сравнения',
   sell: 'Продать',
-  s: 'Сенсоры',
-  settings: 'Настройки',
-  sb: 'Усилитель щита',
-  scb: 'Батареи перезарядки щита',
-  sg: 'Генератор щита',
+  settings: 'Настройки',  // Coriolis application settings
   shields: 'Щиты',
   ship: 'Корабль',
   ships: 'Корабли',
-  shortened: 'Укороченный',
+  shortened: 'Укороченный', // Standard/Stock build of a ship when purchased new
   size: 'размер',
-  skip: 'пропустить',
-  small: 'Малый',
+  skip: 'пропустить', // Skip past something / ignore it
   speed: 'скорость',
-  standard: 'Стандартный',
-  'Standard Docking Computer': 'Стандартный стыковочный компьютер',
-  Stock: 'Стандартная комплектация',
-  SYS: 'СИС',
-  T: 'Т',
-  T_LOAD: 'Тепл.',
-  'The Retributor': '"Возмездие"',
-  t: 'Двигатели',
-  time: 'Время',
-  tp: 'Торпедный аппарат',
+  standard: 'Стандартный',  // Standard / Common modules (FSD, power plant, life support, etc)
+  Stock: 'Стандартная комплектация',  // Thermal-load abbreviation
+  strength: null, // Strength in reference to Shield Strength
+  subtotal: null,
+  SYS: 'СИСТЕМЫ', // Abbreviation - System recharge rate for power distributor
+  time: 'Время',  // time it takes to complete something
+  tooltips: null, // Tooltips setting - show/hide
   total: 'Всего',
-  'total range': 'Общий радиус',
-  turret: 'Туррель',
+  Trader: null, // Trader role
   type: 'Тип',
-  U: 'В',
-  unladen: 'Пустой',
-  PHRASE_UPDATE_RDY: 'Доступно обновление. Нажмите для обновления.',
-  URL: 'Ссылка',
-  utility: 'Вспомогательное',
-  'utility mounts': 'Вспомогательное оборудование',
-  version: 'Версия',
-  WEP: 'ОРУ',
-  yes: 'Да',
-  PHRASE_BACKUP_DESC: 'Сохраните все данные перед переносом в другой браузер или устройство'
+  unladen: 'Пустой',  // No cargo or fuel
+  URL: 'Ссылка',  // Link, Uniform Resource Locator
+  WEP: 'ОРУДИЯ',  // Abbreviation - Weapon recharge rate for power distributor
+  yes: 'Да'
 };

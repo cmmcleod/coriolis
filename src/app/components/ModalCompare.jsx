@@ -135,8 +135,8 @@ export default class ModalCompare extends TranslatedComponent {
         </div>
       </div>
       <br/>
-      <button className='cap' onClick={this._selectBuilds.bind(this)}>{translate('Ok')}</button>
-      <button className='r cap' onClick={() => this.context.hideModal()}>{translate('Cancel')}</button>
+      <button className='cap' onClick={this._selectBuilds.bind(this)}>{translate('ok')}</button>
+      <button className='r cap' onClick={() => this.context.hideModal()}>{translate('cancel')}</button>
     </div>;
   }
 }
