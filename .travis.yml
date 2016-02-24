@@ -3,17 +3,13 @@ notifications:
   email: false
 sudo: false
 node_js:
-  - "0.12"
+  - "4.2.6"
 cache:
   directories:
     - node_modules
-    - bower_components
 
 before_script:
-  - npm install -g gulp
-  - npm install -g bower
-  - bower install
+
 script:
-  - gulp lint
-  - gulp build-prod
-  - gulp test
+  - npm run lint
+  - npm test

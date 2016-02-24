@@ -1,7 +1,0 @@
-<svg width="201" height="201" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <circle fill-opacity="0"  r="70" cy="100" cx="100" stroke-width="5" />
-  <line y2="60" x2="101" y1="0" x1="101" stroke-width="5" />
-  <line y2="101" x2="200" y1="101" x1="140" stroke-width="5" />
-  <line y2="101" x2="60" y1="101" x1="0" stroke-width="5" />
-  <line y2="200" x2="101" y1="140" x1="101" stroke-width="5" />
-</svg>

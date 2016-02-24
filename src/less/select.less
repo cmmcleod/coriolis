@@ -1,0 +1,153 @@
+select {
+  .border-radius(0);
+  cursor: pointer;
+  background: none;
+  color: @primary-disabled;
+  font-family: @fStandard;
+  font-size: 1em;
+  background-color: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 0 0.5em;
+  outline:none;
+  border: 0;
+
+  &:focus {
+    outline:none;
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+}
+
+.select {
+  color: @primary-disabled;
+  position: absolute;
+  left: -1px;
+  padding: 0.5em 0;
+  width: 100%;
+  margin: 0;
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 0;
+  -webkit-overflow-scrolling: touch;
+  background-color: @bg;
+  border: 1px solid @primary;
+  text-align: center;
+
+  .tablet({
+    max-height: 300px;
+  });
+
+  &::-webkit-scrollbar {
+    width: 0.5em;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-left: 1px solid @primary;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: @primary-disabled;
+  }
+
+  .select-group {
+    white-space: nowrap;
+    line-height: 1.5em;
+    text-align: left;
+    margin: 0.5em 0;
+    padding-left: 5px;
+    border-top: 1px solid @primary-disabled;
+    border-bottom: 1px solid @primary-disabled;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @optionSpacing: 2em;
+
+  .empty-c, .c, .lc {
+    white-space: nowrap;
+    text-align: center;
+    cursor: pointer;
+    line-height:@optionSpacing;
+    color: @primary-disabled;
+    stroke-width: 0.5em;
+    stroke: @primary-disabled;
+
+    &:hover {
+      border-color: @primary;
+      color: @primary;
+      stroke: @primary;
+    }
+  }
+
+  .lc, .c {
+    border:1px solid @primary-disabled;
+    padding: 0.1em 0.25em;
+    margin: 0.3em;
+
+    &.warning {
+      border-color: @warning-disabled;
+      color: @warning-disabled;
+      stroke: @warning-disabled;
+
+      &:hover {
+        border-color: @warning;
+        color: @warning;
+        stroke: @warning;
+      }
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      border-color: @disabled;
+      color: @disabled;
+      stroke: @disabled;
+    }
+    &.active {
+      border-color: @secondary;
+      color: @secondary;
+      stroke: @secondary;
+    }
+  }
+
+  .lc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: capitalize;
+  }
+
+  .c {
+    display: inline-block;
+    width: 2em;
+  }
+
+  span {
+    vertical-align: middle;
+  }
+
+  ul {
+    display: inline-block;
+    text-align: left;
+    min-width: 16em;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+
+  &.hardpoint {
+    .c {
+      width: 4.5em;
+      padding: 0.1em 0.2em;
+    }
+    ul {
+      width: 17em;
+    }
+  }
+
+}

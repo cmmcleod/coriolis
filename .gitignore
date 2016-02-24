@@ -1,10 +1,5 @@
 node_modules
-bower_components
-bower_components/*
 build
 .DS_Store
 *.log
-app/js/db.js
-app/db.json
 nginx.pid
-template_cache.js

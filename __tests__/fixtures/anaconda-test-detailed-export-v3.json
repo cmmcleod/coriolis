@@ -1,0 +1,288 @@
+{
+  "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/3.json#",
+  "name": "Test My Ship",
+  "ship": "Anaconda",
+  "references": [
+    {
+      "name": "Coriolis.io",
+      "url": "http://localhost:3300/outfit/anaconda/48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA?bn=Test%20My%20Ship",
+      "code": "48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA",
+      "shipId": "anaconda"
+    }
+  ],
+  "components": {
+    "standard": {
+      "bulkheads": "Reactive Surface Composite",
+      "cargoHatch": {
+        "enabled": false,
+        "priority": 5
+      },
+      "powerPlant": {
+        "class": 8,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1
+      },
+      "thrusters": {
+        "class": 6,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1
+      },
+      "frameShiftDrive": {
+        "class": 6,
+        "rating": "A",
+        "enabled": true,
+        "priority": 3
+      },
+      "lifeSupport": {
+        "class": 5,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1
+      },
+      "powerDistributor": {
+        "class": 8,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1
+      },
+      "sensors": {
+        "class": 8,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1
+      },
+      "fuelTank": {
+        "class": 5,
+        "rating": "C",
+        "enabled": true,
+        "priority": 1
+      }
+    },
+    "hardpoints": [
+      {
+        "class": 4,
+        "rating": "A",
+        "enabled": true,
+        "priority": 2,
+        "group": "Plasma Accelerator",
+        "mount": "Fixed"
+      },
+      {
+        "class": 3,
+        "rating": "D",
+        "enabled": true,
+        "priority": 2,
+        "group": "Beam Laser",
+        "mount": "Turret"
+      },
+      {
+        "class": 3,
+        "rating": "D",
+        "enabled": true,
+        "priority": 2,
+        "group": "Beam Laser",
+        "mount": "Turret"
+      },
+      {
+        "class": 3,
+        "rating": "D",
+        "enabled": true,
+        "priority": 2,
+        "group": "Beam Laser",
+        "mount": "Turret"
+      },
+      {
+        "class": 2,
+        "rating": "E",
+        "enabled": true,
+        "priority": 2,
+        "group": "Cannon",
+        "mount": "Turret"
+      },
+      {
+        "class": 2,
+        "rating": "E",
+        "enabled": true,
+        "priority": 2,
+        "group": "Cannon",
+        "mount": "Turret"
+      },
+      {
+        "class": 1,
+        "rating": "F",
+        "enabled": true,
+        "priority": 2,
+        "group": "Beam Laser",
+        "mount": "Turret"
+      },
+      {
+        "class": 1,
+        "rating": "F",
+        "enabled": true,
+        "priority": 2,
+        "group": "Beam Laser",
+        "mount": "Turret"
+      }
+    ],
+    "utility": [
+      {
+        "class": 0,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1,
+        "group": "Shield Booster"
+      },
+      {
+        "class": 0,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1,
+        "group": "Shield Booster"
+      },
+      null,
+      {
+        "class": 0,
+        "rating": "C",
+        "enabled": true,
+        "priority": 2,
+        "group": "Kill Warrant Scanner"
+      },
+      {
+        "class": 0,
+        "rating": "C",
+        "enabled": true,
+        "priority": 2,
+        "group": "Cargo Scanner"
+      },
+      {
+        "class": 0,
+        "rating": "F",
+        "enabled": false,
+        "priority": 1,
+        "group": "Countermeasure",
+        "name": "Electronic Countermeasure"
+      },
+      {
+        "class": 0,
+        "rating": "I",
+        "enabled": true,
+        "priority": 1,
+        "group": "Countermeasure",
+        "name": "Chaff Launcher"
+      },
+      {
+        "class": 0,
+        "rating": "I",
+        "enabled": true,
+        "priority": 2,
+        "group": "Countermeasure",
+        "name": "Point Defence"
+      }
+    ],
+    "internal": [
+      {
+        "class": 7,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1,
+        "group": "Shield Generator"
+      },
+      {
+        "class": 6,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1,
+        "group": "Shield Cell Bank"
+      },
+      {
+        "class": 6,
+        "rating": "E",
+        "enabled": true,
+        "priority": 1,
+        "group": "Cargo Rack"
+      },
+      {
+        "class": 5,
+        "rating": "D",
+        "enabled": true,
+        "priority": 1,
+        "group": "Hull Reinforcement Package"
+      },
+      {
+        "class": 5,
+        "rating": "E",
+        "enabled": true,
+        "priority": 1,
+        "group": "Cargo Rack"
+      },
+      null,
+      null,
+      {
+        "class": 4,
+        "rating": "E",
+        "enabled": true,
+        "priority": 1,
+        "group": "Cargo Rack"
+      },
+      {
+        "class": 4,
+        "rating": "E",
+        "enabled": true,
+        "priority": 1,
+        "group": "Cargo Rack"
+      },
+      {
+        "class": 4,
+        "rating": "A",
+        "enabled": true,
+        "priority": 3,
+        "group": "Fuel Scoop"
+      },
+      {
+        "class": 2,
+        "rating": "A",
+        "enabled": true,
+        "priority": 3,
+        "group": "Frame Shift Drive Interdictor"
+      }
+    ]
+  },
+  "stats": {
+    "class": 3,
+    "hullCost": 141889930,
+    "speed": 180,
+    "topSpeed": 186.5,
+    "boost": 240,
+    "boostEnergy": 29,
+    "topBoost": 248.66,
+    "agility": 2,
+    "baseShieldStrength": 350,
+    "baseArmour": 945,
+    "hullMass": 400,
+    "masslock": 23,
+    "pipSpeed": 0.14,
+    "moduleCostMultiplier": 1,
+    "fuelCapacity": 32,
+    "cargoCapacity": 128,
+    "ladenMass": 1339.2,
+    "armour": 2228,
+    "armourAdded": 390,
+    "armourMultiplier": 1.95,
+    "shieldMultiplier": 1.4,
+    "totalCost": 882362060,
+    "unladenMass": 1179.2,
+    "totalDps": 29,
+    "powerAvailable": 36,
+    "powerRetracted": 23.33,
+    "powerDeployed": 34.76,
+    "unladenRange": 18.49,
+    "fullTankRange": 18.12,
+    "ladenRange": 16.39,
+    "unladenFastestRange": 73.21,
+    "ladenFastestRange": 66.15,
+    "maxJumpCount": 4,
+    "shieldStrength": 833
+  }
+}

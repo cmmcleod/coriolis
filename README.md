@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/cmmcleod/coriolis.svg?branch=master)](https://travis-ci.org/cmmcleod/coriolis) [![Tasks in Ready](https://badge.waffle.io/cmmcleod/coriolis.png?label=ready&title=Ready)](https://waffle.io/cmmcleod/coriolis) [![Tasks in Progress](https://badge.waffle.io/cmmcleod/coriolis.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/cmmcleod/coriolis)
-
+![Latest Release](https://img.shields.io/github/release/cmmcleod/coriolis.svg) [![Build Status](https://travis-ci.org/cmmcleod/coriolis.svg?branch=master)](https://travis-ci.org/cmmcleod/coriolis) [![Tasks in Ready](https://badge.waffle.io/cmmcleod/coriolis.png?label=ready&title=Ready)](https://waffle.io/cmmcleod/coriolis) [![Tasks in Progress](https://badge.waffle.io/cmmcleod/coriolis.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/cmmcleod/coriolis) [![Chat to us on HipChat](https://img.shields.io/badge/HipChat-Coriolis-white.svg?style=social)](https://www.hipchat.com/gfYQiZcmy)
 
 
 ## About
@@ -14,6 +13,8 @@ Please [submit issues](https://github.com/cmmcleod/coriolis/issues), or better y
 
 ### Feature Requests, Suggestions & Bugs
 
+Chat to us on [HipChat](https://www.hipchat.com/gfYQiZcmy)!
+
 All such requests are managed and tracked through [issues](https://github.com/cmmcleod/coriolis/issues). An overview of these can be found [here](https://waffle.io/cmmcleod/coriolis).
 
 ## Development
@@ -21,7 +22,7 @@ All such requests are managed and tracked through [issues](https://github.com/cm
 See the [Developer's Guide](https://github.com/cmmcleod/coriolis/wiki/Developer's-Guide) in the wiki.
 
 
-### Ship and Component Database
+### Ship and Module Database
 
 See the [Data wiki](https://github.com/cmmcleod/coriolis-data/wiki) for details on structure, etc.
 

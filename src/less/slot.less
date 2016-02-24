@@ -1,0 +1,137 @@
+
+.slot {
+  float: left;
+  text-align: left;
+  width: 100%;
+  margin-top: 0.25em;
+  position: relative;
+  z-index: 0;
+  padding-right: 0.4em;
+  padding-left: 1.65em;
+  box-sizing: border-box;
+  background-color: @primary-bg;
+  border: 1px solid @primary-disabled;
+  color: @fg;
+  fill: @fg;
+
+  .details-container {
+    min-height: 2.7em;
+    padding: 0.25em 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    height: 100%;
+    cursor: pointer;
+    text-transform: none;
+  }
+
+  .details {
+    min-height: 2.2em;
+    background-color: @primary-bg;
+  }
+
+  .name {
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 80%;
+    text-overflow: ellipsis;
+  }
+
+  .cb {
+    overflow: hidden;
+  }
+
+  .l {
+    text-transform: capitalize;
+    margin-right: 0.8em;
+  }
+
+  .sz {
+    text-align: center;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    left: 0;
+    font-size: 1.2em;
+    width: 1.2em;
+    color: @primary-disabled;
+    border-right: 1px solid @primary-disabled;
+    box-sizing: border-box;
+    padding-top: 0.2em;
+    padding-left: 0.05em;
+  }
+
+  .empty {
+    text-transform: uppercase;
+    font-size: 1.3em;
+    color: lighten(@primary-bg, 12%);
+    text-align: center;
+    letter-spacing: 0.1em;
+    line-height: 1.7em;
+  }
+
+  &.selected {
+    color: @primary-bg;
+    fill: @primary-bg;
+    background-color: @primary;
+    border: 1px solid @primary;
+    z-index: 1;
+    .sz {
+        color: @primary;
+        background-color: @primary-bg;
+        border-right: 1px solid @primary;
+    }
+    .details {
+      background-color: transparent;
+    }
+  }
+
+  &.eligible {
+    border: 1px solid @secondary-disabled;
+    .sz {
+        color: @secondary-disabled;
+        border-right: 1px solid @secondary-disabled;
+    }
+    .details {
+      background-color: transparent;
+    }
+  }
+
+  &.ineligible {
+    cursor: no-drop;
+    color: @disabled;
+    fill: @disabled;
+    border: 1px solid @disabled;
+    .sz {
+        color: @disabled;
+        border-right: 1px solid @disabled;
+    }
+  }
+
+  &.dropEmpty {
+    color: @warning-disabled;
+    fill: @warning-disabled;
+    border: 1px solid @warning-disabled;
+    .sz {
+        color: @warning-disabled;
+        border-right: 1px solid @warning-disabled;
+    }
+    .details {
+      background-color: transparent;
+    }
+  }
+
+  &.drop {
+    color: @secondary-bg;
+    fill: @secondary-bg;
+    border: 1px solid @secondary;
+    background-color: @secondary-disabled;
+    .sz {
+        color: @secondary;
+        background-color: @primary-bg;
+        border-right: 1px solid @secondary;
+    }
+    .details {
+      background-color: transparent;
+    }
+  }
+}
