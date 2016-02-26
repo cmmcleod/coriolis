@@ -60,7 +60,7 @@ export const terms = {
   pl: 'Pulse Laser',
   pp: 'Power Plant',
   psg: 'Prismatic Shield Generator',
-  pv: 'Planetary Vehicle Hanger',
+  pv: 'Planetary Vehicle Hangar',
   rf: 'Refinery',
   rg: 'Rail Gun',
   s: 'Sensors',

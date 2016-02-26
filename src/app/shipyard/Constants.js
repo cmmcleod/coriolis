@@ -43,7 +43,7 @@ export const ModuleGroupToName = {
   rf: 'Refinery',
   scb: 'Shield Cell Bank',
   sg: 'Shield Generator',
-  pv: 'Planetary Vehicle Hanger',
+  pv: 'Planetary Vehicle Hangar',
   psg: 'Prismatic Shield Generator',
   dc: 'Docking Computer',
   fx: 'Fuel Transfer Limpet Controller',
