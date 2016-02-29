@@ -462,13 +462,9 @@ export default class Header extends TranslatedComponent {
     let translate = this.context.language.translate;
     let openedMenu = this.props.currentMenu;
     let hasBuilds = Persist.hasBuilds();
-
-    if (this.props.appCacheUpdate) {
-      return <div id="app-update" onClick={() => window.location.reload() }>{translate('PHRASE_UPDATE_RDY')}</div>;
-    }
-
     return (
       <header>
+        {this.props.appCacheUpdate && <div id="app-update" onClick={() => window.location.reload() }>{translate('PHRASE_UPDATE_RDY')}</div>}
         <Link className='l' href='/' style={{ marginRight: '1em' }} title='Home'><CoriolisLogo className='icon xl' /></Link>
 
         <div className='l menu'>
