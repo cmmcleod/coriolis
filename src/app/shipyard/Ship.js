@@ -880,7 +880,7 @@ export default class Ship {
 
   /**
    * Use the lightest standard ModuleUtils unless otherwise specified
-   * @param  {Object} m Module overrides
+   * @param  {Object} m Module override set (standard type => module ID)
    * @return {this} The ship instance (for chaining operations)
    */
   useLightestStandard(m) {
@@ -889,16 +889,18 @@ export default class Ship {
     let standard = this.standard,
         // Find lightest Power Distributor that can still boost;
         pd = m.pd ? ModuleUtils.standard(4, m.pd) : this.availCS.lightestPowerDist(this.boostEnergy),
-        fsd = m.fsd || standard[2].maxClass + 'A',
-        ls = m.ls || standard[3].maxClass + 'D',
-        s = m.s || standard[5].maxClass + 'D',
+        fsd = ModuleUtils.standard(2, m.fsd || standard[2].maxClass + 'A'),
+        ls = ModuleUtils.standard(3, m.ls || standard[3].maxClass + 'D'),
+        s = ModuleUtils.standard(5, m.s || standard[5].maxClass + 'D'),
+        ft = m.ft ? ModuleUtils.standard(6, m.ft) : standard[6].m, // Use existing fuel tank unless specified
         updated;
 
     this.useBulkhead(0)
-        .use(standard[2], ModuleUtils.standard(2, fsd))   // FSD
-        .use(standard[3], ModuleUtils.standard(3, ls))     // Life Support
-        .use(standard[5], ModuleUtils.standard(5, s))       // Sensors
-        .use(standard[4], pd);    // Power Distributor
+        .use(standard[2], fsd)   // FSD
+        .use(standard[3], ls)    // Life Support
+        .use(standard[5], s)     // Sensors
+        .use(standard[4], pd)    // Power Distributor
+        .use(standard[6], ft);   // Fuel Tank
 
     // Thrusters and Powerplant must be determined after all other ModuleUtils are mounted
     // Loop at least once to determine absolute lightest PD and TH
