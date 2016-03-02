@@ -76,7 +76,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if (clobber || !slot.c) {
+      if (clobber || !slot.m) {
         ship.use(slot, ModuleUtils.findInternal('hr', Math.min(slot.maxClass, 5), 'D')); // Hull reinforcements top out at 5D
       }
     });
