@@ -15,19 +15,20 @@ export const formats = {
 
 export const terms = {
   PHRASE_BACKUP_DESC: 'Backup of all Coriolis data to save or transfer to another browser/device',
-  PHRASE_CONFIRMATION: 'Are You Sure?',
+  PHRASE_CONFIRMATION: 'Are you sure?',
   PHRASE_EXPORT_DESC: 'A detailed JSON export of your build for use in other sites and tools',
   PHRASE_FASTEST_RANGE: 'Consecutive max range jumps',
   PHRASE_IMPORT: 'Paste JSON or import here',
-  PHRASE_LADEN: 'Ship Mass + Fuel + Cargo',
+  PHRASE_LADEN: 'Ship mass + fuel + cargo',
   PHRASE_NO_BUILDS: 'No builds added to comparison!',
   PHRASE_NO_RETROCH: 'No Retrofitting changes',
-  PHRASE_SELECT_BUILDS: 'Select Builds to Compare',
-  PHRASE_SG_RECHARGE: 'Time from 50% to 100% Charge',
+  PHRASE_SELECT_BUILDS: 'Select builds to compare',
+  PHRASE_SG_RECHARGE: 'Time from 50% to 100% charge',
   PHRASE_SG_RECOVER: 'Recovery (to 50%) after collapse',
-  PHRASE_UNLADEN: 'Ship Mass excluding Fuel and Cargo',
-  PHRASE_UPDATE_RDY: 'Update Available! Click to Refresh',
+  PHRASE_UNLADEN: 'Ship mass excluding fuel and cargo',
+  PHRASE_UPDATE_RDY: 'Update Available! Click to refresh',
 
+  // Other languages fallback to these  values
   // Only Translate to other languages if the name is different in-game
   am: 'Auto Field-Maintenance Unit',
   bh: 'Bulkheads',
