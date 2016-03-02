@@ -100,8 +100,8 @@ export default class ShipyardPage extends Page {
     ship.internal.forEach(countInt.bind(summary));  // Count Internal Compartments by class
     summary.retailCost = ship.totalCost;            // Record Stock/Default/retail cost
     ship.optimizeMass({ pd: '1D' });                // Optimize Mass with 1D PD for maximum possible jump range
-    summary.maxJumpRange = ship.unladenRange;          // Record Jump Range
-    ship.optimizeMass({ th: ship.standard[1].maxClass + 'A' }); // Optmize mass with Max Thrusters
+    summary.maxJumpRange = ship.unladenRange;       // Record Jump Range
+    ship.optimizeMass({ th: ship.standard[1].maxClass + 'A', fsd: '2D', ft: '1C' }); // Optmize mass with Max Thrusters
     summary.topSpeed = ship.topSpeed;
     summary.topBoost = ship.topBoost;
 
