@@ -227,7 +227,7 @@ Route.prototype.match = function(path, params) {
  */
 function gaTrack(path) {
   if (window.ga) {
-    window.ga('send', 'pageview', { page: path });
+    window.ga('send', 'pageview', path);
   }
 }
 
