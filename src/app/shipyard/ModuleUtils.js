@@ -29,7 +29,7 @@ export function standard(type, id) {
 
 /**
  * Finds the hardpoint with the specified ID
- * @param  {string} id Hardpoint ID
+ * @param  {String} id Hardpoint ID
  * @return {Object}    Hardpoint module or null
  */
 export function hardpoints(id) {
@@ -46,7 +46,7 @@ export function hardpoints(id) {
 
 /**
  * Finds the internal module with the specified ID
- * @param  {string} id Internal module ID
+ * @param  {String} id Internal module ID
  * @return {Object}    Internal module or null
  */
 export function internal(id) {
@@ -65,11 +65,11 @@ export function internal(id) {
  * Finds an internal module based on Class, Rating, Group and/or name.
  * At least one ofGroup name or unique module name must be provided
  *
- * @param  {string} groupName [Optional] Full name or abbreviated name for module group
+ * @param  {String} groupName [Optional] Full name or abbreviated name for module group
  * @param  {integer} clss     module Class
- * @param  {string} rating    module Rating
- * @param  {string} name      [Optional] Long/unique name for module -e.g. 'Advanced Discover Scanner'
- * @return {String}           The id of the module if found, null if not found
+ * @param  {String} rating    module Rating
+ * @param  {String} name      [Optional] Long/unique name for module -e.g. 'Advanced Discover Scanner'
+ * @return {Object}           The module if found, null if not found
  */
 export function findInternal(groupName, clss, rating, name) {
   let groups = {};
@@ -103,10 +103,10 @@ export function findInternal(groupName, clss, rating, name) {
  * Finds an internal Module ID based on Class, Rating, Group and/or name.
  * At least one ofGroup name or unique module name must be provided
  *
- * @param  {string} groupName [Optional] Full name or abbreviated name for module group
+ * @param  {String} groupName [Optional] Full name or abbreviated name for module group
  * @param  {integer} clss     module Class
- * @param  {string} rating    Module Rating
- * @param  {string} name      [Optional] Long/unique name for module -e.g. 'Advanced Discover Scanner'
+ * @param  {String} rating    Module Rating
+ * @param  {String} name      [Optional] Long/unique name for module -e.g. 'Advanced Discover Scanner'
  * @return {String}           The id of the module if found, null if not found
  */
 export function findInternalId(groupName, clss, rating, name) {
@@ -118,12 +118,12 @@ export function findInternalId(groupName, clss, rating, name) {
  * Finds a hardpoint Module based on Class, Rating, Group and/or name.
  * At least one ofGroup name or unique module name must be provided
  *
- * @param  {string} groupName [Optional] Full name or abbreviated name for module group
+ * @param  {String} groupName [Optional] Full name or abbreviated name for module group
  * @param  {integer} clss     Module Class
- * @param  {string} rating    [Optional] module Rating
- * @param  {string} name      [Optional] Long/unique name for module -e.g. 'Heat Sink Launcher'
- * @param  {string} mount     Mount type - [F]ixed, [G]imballed, [T]urret
- * @param  {string} missile   [Optional] Missile type - [D]umbfire, [S]eeker
+ * @param  {String} rating    [Optional] module Rating
+ * @param  {String} name      [Optional] Long/unique name for module -e.g. 'Heat Sink Launcher'
+ * @param  {String} mount     Mount type - [F]ixed, [G]imballed, [T]urret
+ * @param  {String} missile   [Optional] Missile type - [D]umbfire, [S]eeker
  * @return {String}           The id of the module if found, null if not found
  */
 export function findHardpoint(groupName, clss, rating, name, mount, missile) {
@@ -158,12 +158,12 @@ export function findHardpoint(groupName, clss, rating, name, mount, missile) {
  * Finds a hardpoint module ID based on Class, Rating, Group and/or name.
  * At least one of Group name or unique module name must be provided
  *
- * @param  {string} groupName [Optional] Full name or abbreviated name for module group
+ * @param  {String} groupName [Optional] Full name or abbreviated name for module group
  * @param  {integer} clss     module Class
- * @param  {string} rating    module Rating
- * @param  {string} name      [Optional] Long/unique name for module -e.g. 'Heat Sink Launcher'
- * @param  {string} mount     Mount type - [F]ixed, [G]imballed, [T]urret
- * @param  {string} missile   [Optional] Missile type - [D]umbfire, [S]eeker
+ * @param  {String} rating    module Rating
+ * @param  {String} name      [Optional] Long/unique name for module -e.g. 'Heat Sink Launcher'
+ * @param  {String} mount     Mount type - [F]ixed, [G]imballed, [T]urret
+ * @param  {String} missile   [Optional] Missile type - [D]umbfire, [S]eeker
  * @return {String}           The id of the module if found, null if not found
  */
 export function findHardpointId(groupName, clss, rating, name, mount, missile) {
@@ -173,7 +173,7 @@ export function findHardpointId(groupName, clss, rating, name, mount, missile) {
 
 /**
  * Looks up the bulkhead module for a specific ship and bulkhead
- * @param  {string} shipId        Unique ship Id/Key
+ * @param  {String} shipId        Unique ship Id/Key
  * @param  {string|number} index  Index for the specified bulkhead
  * @return {Object}               The bulkhead module object
  */
@@ -188,7 +188,7 @@ export function bulkheads(shipId, index) {
 
 /**
  * Get the bulkhead index for the given bulkhead name
- * @param  {string} bulkheadName Bulkhead name in english
+ * @param  {String} bulkheadName Bulkhead name in english
  * @return {number}              Bulkhead index
  */
 export function bulkheadIndex(bulkheadName) {
@@ -198,7 +198,7 @@ export function bulkheadIndex(bulkheadName) {
 
 /**
  * Determine if a module group is a shield generator
- * @param  {string}  g Module Group name
+ * @param  {String}  g Module Group name
  * @return {Boolean}   True if the group is a shield generator
  */
 export function isShieldGenerator(g) {
@@ -211,7 +211,7 @@ export function isShieldGenerator(g) {
  *
  * 6.5 T is the lightest possible mass of standard components that any ship can use
  *
- * @param  {string} shipId    Unique ship Id/Key
+ * @param  {String} shipId    Unique ship Id/Key
  * @return {ModuleSet}     The set of modules the ship can install
  */
 export function forShip(shipId) {
