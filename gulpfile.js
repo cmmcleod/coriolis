@@ -273,7 +273,6 @@ gulp.task('build-prod', function (done) { runSequence('build', 'cache-bust', 'ap
 gulp.task('dev', function (done) { runSequence('build-cache', 'serve','watch', done); });
 
 gulp.task('deploy', function (done) {
-  cdnHostStr = '//cdn.' + process.env.CORIOLIS_HOST;
   runSequence('build-prod', 'upload', done);
 });
 
