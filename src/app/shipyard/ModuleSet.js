@@ -135,7 +135,7 @@ export default class ModuleSet {
     let sg = this.internal.sg[0];
 
     for (let s of this.internal.sg) {
-      if (s.mass < sg.mass && s.minmass <= hullMass && s.maxmass > hullMass) {
+      if (s.mass < sg.mass && s.maxmass > hullMass) {
         sg = s;
       }
     }
