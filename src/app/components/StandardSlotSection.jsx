@@ -4,6 +4,7 @@ import SlotSection from './SlotSection';
 import StandardSlot from './StandardSlot';
 import { diffDetails } from '../utils/SlotFunctions';
 import * as ModuleUtils from '../shipyard/ModuleUtils';
+import * as ShipRoles from '../shipyard/ShipRoles';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
 /**
@@ -18,21 +19,8 @@ export default class StandardSlotSection extends SlotSection {
    */
   constructor(props, context) {
     super(props, context, 'standard', 'standard');
-
     this._optimizeStandard = this._optimizeStandard.bind(this);
-    this._optimizeCargo = this._optimizeCargo.bind(this);
-    this._optimizeExplorer = this._optimizeExplorer.bind(this);
     this._hideDiff = this._hideDiff.bind(this);
-  }
-
-  /**
-   * Fill all standard slots with the specificed rating (using max class)
-   * @param  {String} rating [A-E]
-   */
-  _fill(rating) {
-    this.props.ship.useStandard(rating);
-    this.props.onChange();
-    this._close();
   }
 
   /**
@@ -45,75 +33,32 @@ export default class StandardSlotSection extends SlotSection {
   }
 
   /**
-   * Trader build
+   * Fill all standard slots with the specificed rating (using max class)
+   * @param  {Boolean} shielded True if shield generator should be included
+   * @param {integer} bulkheadIndex Bulkhead to use see Constants.BulkheadNames
    */
-  _optimizeCargo() {
-    let ship = this.props.ship;
-    ship.internal.forEach((slot) => ship.use(slot, ModuleUtils.findInternal('cr', slot.maxClass, 'E')));
-    ship.useLightestStandard();
+  _multiPurpose(shielded, bulkheadIndex) {
+    ShipRoles.multiPurpose(this.props.ship, shielded, bulkheadIndex);
     this.props.onChange();
     this._close();
   }
 
   /**
-   * Explorer build
+   * Trader Build
+   * @param  {Boolean} shielded True if shield generator should be included
    */
-  _optimizeExplorer() {
-    let ship = this.props.ship,
-        intLength = ship.internal.length,
-        heatSinkCount = 2,  // Fit 2 heat sinks if possible
-        afmUnitCount = 2,   // Fit 2 AFM Units if possible
-        sgSlot,
-        fuelScoopSlot,
-        sg = ship.getAvailableModules().lightestShieldGenerator(ship.hullMass);
+  _optimizeCargo(shielded) {
+    ShipRoles.trader(this.props.ship, shielded);
+    this.props.onChange();
+    this._close();
+  }
 
-    ship.setSlotEnabled(ship.cargoHatch, false)
-        .use(ship.internal[--intLength], ModuleUtils.internal('2f'))      // Advanced Discovery Scanner
-        .use(ship.internal[--intLength], ModuleUtils.internal('2i'));      // Detailed Surface Scanner
-
-    for (let i = 0; i < intLength; i++) {
-      let slot = ship.internal[i];
-      let nextSlot = (i + 1) < intLength ? ship.internal[i + 1] : null;
-      if (!fuelScoopSlot && (!slot.eligible || slot.eligible.fs)) {             // Fit best possible Fuel Scoop
-        fuelScoopSlot = slot;
-        ship.use(fuelScoopSlot, ModuleUtils.findInternal('fs', slot.maxClass, 'A'));
-        ship.setSlotEnabled(fuelScoopSlot, true);
-
-      // Mount a Shield generator if possible AND an AFM Unit has been mounted already (Guarantees at least 1 AFM Unit)
-      } else if (!sgSlot && afmUnitCount < 2 && sg.class <= slot.maxClass && (!slot.eligible || slot.eligible.sg) && (!nextSlot || nextSlot.maxClass < sg.class)) {
-        sgSlot = slot;
-        ship.use(sgSlot, sg);
-        ship.setSlotEnabled(sgSlot, true);
-      } else if (afmUnitCount > 0 && (!slot.eligible || slot.eligible.am)) {
-        afmUnitCount--;
-        let am = ModuleUtils.findInternal('am', slot.maxClass, afmUnitCount ? 'B' : 'A');
-        ship.use(slot, am);
-        ship.setSlotEnabled(slot, false);   // Disabled power for AFM Unit
-      } else {
-        ship.use(slot, null);
-      }
-    }
-
-    ship.hardpoints.forEach((s) => {
-      if (s.maxClass == 0 && heatSinkCount) {       // Mount up to 2 heatsinks
-        ship.use(s, ModuleUtils.hardpoints('02'));
-        ship.setSlotEnabled(s, heatSinkCount == 2); // Only enable a single Heatsink
-        heatSinkCount--;
-      } else {
-        ship.use(s, null);
-      }
-    });
-
-    if (sgSlot) {
-      // The SG and Fuel scoop to not need to be powered at the same time
-      if (sgSlot.m.power > fuelScoopSlot.m.power) { // The Shield generator uses the most power
-        ship.setSlotEnabled(fuelScoopSlot, false);
-      } else {                                    // The Fuel scoop uses the most power
-        ship.setSlotEnabled(sgSlot, false);
-      }
-    }
-
-    ship.useLightestStandard({ pd: '1D', ppRating: 'A' });
+  /**
+   * Explorer role
+   * @param  {Boolean} planetary True if Planetary Vehicle Hangar (PVH) should be included
+   */
+  _optimizeExplorer(planetary) {
+    ShipRoles.explorer(this.props.ship, planetary);
     this.props.onChange();
     this._close();
   }
@@ -161,7 +106,7 @@ export default class StandardSlotSection extends SlotSection {
    * @return {Array} Array of Slots
    */
   _getSlots() {
-    let { translate, units } = this.context.language;
+    let { translate, units, formats } = this.context.language;
     let { ship, currentMenu } = this.props;
     let slots = new Array(8);
     let open = this._openMenu;
@@ -292,21 +237,19 @@ export default class StandardSlotSection extends SlotSection {
    * @return {React.Component}    Section menu
    */
   _getSectionMenu(translate) {
-    let _fill = this._fill;
-
+    let planetaryDisabled = this.props.ship.internal.length < 4;
     return <div className='select' onClick={(e) => e.stopPropagation()} onContextMenu={stopCtxPropagation}>
       <ul>
-        <li className='lc' onClick={this._optimizeStandard}>{translate('optimize')}</li>
-        <li className='c' onClick={_fill.bind(this, 'E')}>E</li>
-        <li className='c' onClick={_fill.bind(this, 'D')}>D</li>
-        <li className='c' onClick={_fill.bind(this, 'C')}>C</li>
-        <li className='c' onClick={_fill.bind(this, 'B')}>B</li>
-        <li className='c' onClick={_fill.bind(this, 'A')}>A</li>
+        <li className='lc' onClick={this._optimizeStandard}>{translate('Maximize Jump Range')}</li>
       </ul>
       <div className='select-group cap'>{translate('roles')}</div>
       <ul>
-        <li className='lc' onClick={this._optimizeCargo}>{translate('Trader')}</li>
-        <li className='lc' onClick={this._optimizeExplorer}>{translate('Explorer')}</li>
+        <li className='lc' onClick={this._multiPurpose.bind(this, false, 0)}>{translate('Multi-purpose')}</li>
+        <li className='lc' onClick={this._multiPurpose.bind(this, true, 2)}>{translate('Combat')}</li>
+        <li className='lc' onClick={this._optimizeCargo.bind(this, false)}>{translate('Trader')}</li>
+        <li className='lc' onClick={this._optimizeCargo.bind(this, true)}>{translate('Shielded Trader')}</li>
+        <li className='lc' onClick={this._optimizeExplorer.bind(this, false)}>{translate('Explorer')}</li>
+        <li className={cn('lc', { disabled:  planetaryDisabled })} onClick={!planetaryDisabled && this._optimizeExplorer.bind(this, true)}>{translate('Planetary Explorer')}</li>
       </ul>
     </div>;
   }

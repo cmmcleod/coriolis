@@ -94,6 +94,7 @@ export default class UtilitySlotSection extends SlotSection {
     return <div className='select' onClick={(e) => e.stopPropagation()} onContextMenu={stopCtxPropagation}>
       <ul>
         <li className='lc' onClick={this._empty}>{translate('empty all')}</li>
+        <li style={{ textAlign: 'center', marginTop: '1em' }}>{translate('PHRASE_ALT_ALL')}</li>
       </ul>
       <div className='select-group cap'>{translate('sb')}</div>
       <ul>

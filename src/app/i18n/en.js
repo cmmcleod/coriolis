@@ -14,6 +14,7 @@ export const formats = {
 };
 
 export const terms = {
+  PHRASE_ALT_ALL: 'Hold ALT to fill all slots',
   PHRASE_BACKUP_DESC: 'Backup of all Coriolis data to save or transfer to another browser/device',
   PHRASE_CONFIRMATION: 'Are you sure?',
   PHRASE_EXPORT_DESC: 'A detailed JSON export of your build for use in other sites and tools',
