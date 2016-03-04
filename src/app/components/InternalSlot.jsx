@@ -38,10 +38,10 @@ export default class InternalSlot extends Slot {
           { m.range ? <div className={'l'}>{translate('range')} {m.range}{u.km}</div> : null }
           { m.time ? <div className={'l'}>{translate('time')}: {formats.time(m.time)}</div> : null }
           { m.maximum ? <div className={'l'}>{translate('max')}: {(m.maximum)}</div> : null }
-          { m.rangeLS ? <div className={'l'}>{m.rangeLS}{u.Ls}</div> : null }
+          { m.rangeLS ? <div className={'l'}>{translate('range')}: {m.rangeLS}{u.Ls}</div> : null }
           { m.rangeLS === null ? <div className={'l'}><Infinite/>{u.Ls}</div> : null }
           { m.rangeRating ? <div className={'l'}>{translate('range')}: {m.rangeRating}</div> : null }
-          { m.armouradd ? <div className={'l'}>+{m.armouradd} <u>{translate('armour')}</u></div> : null }
+          { m.armouradd ? <div className={'l'}>+{m.armouradd} <u className='cap'>{translate('armour')}</u></div> : null }
         </div>
       </div>;
     } else {
