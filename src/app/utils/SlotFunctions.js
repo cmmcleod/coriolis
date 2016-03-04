@@ -4,6 +4,20 @@ import { isShieldGenerator } from '../shipyard/ModuleUtils';
 import { Infinite } from '../components/SvgIcons';
 
 /**
+ * Determine if a slot can mount a module of a particular class and group
+ * @param  {Object} slot    Slot object
+ * @param  {String} group   Module group/type abbrivation/code
+ * @param  {Integer} clazz  [Optional] Module Class/Size
+ * @return {Boolean}        True if the slot can mount the module
+ */
+export function canMount(slot, group, clazz) {
+  if (slot && (!slot.eligible || slot.eligible[group]) && (clazz === undefined || slot.maxClass >= clazz)) {
+    return true;
+  }
+  return false;
+}
+
+/**
  * Returns the translate name for the module mounted in the specified
  * slot.
  * @param  {function} translate Translation function
