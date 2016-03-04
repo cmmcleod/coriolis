@@ -4,6 +4,7 @@ import { Ships } from 'coriolis-data/dist';
 import cn from 'classnames';
 import Ship from '../shipyard/Ship';
 import * as ModuleUtils from '../shipyard/ModuleUtils';
+import * as ShipRoles from '../shipyard/ShipRoles';
 import { SizeMap } from '../shipyard/Constants';
 import Link from '../components/Link';
 
@@ -35,6 +36,45 @@ export default class ShipyardPage extends Page {
   static cachedShipSummaries = null;
 
   /**
+   * Generate Ship summary and aggregated properties
+   * @param  {String} shipId   Ship Id
+   * @param  {Object} shipData Ship Default Data
+   * @return {Object}          Ship summary and aggregated properties
+   */
+  static shipSummary(shipId, shipData) {
+    let summary = {
+      id: shipId,
+      hpCount: 0,
+      intCount: 0,
+      maxCargo: 0,
+      hp: [0, 0, 0, 0, 0], // Utility, Small, Medium, Large, Huge
+      int: [0, 0, 0, 0, 0, 0, 0, 0] // Sizes 1 - 8
+    };
+    Object.assign(summary, shipData.properties);
+    let ship = new Ship(shipId, shipData.properties, shipData.slots);
+
+    // Build Ship
+    ship.buildWith(shipData.defaults);              // Populate with stock/default components
+    ship.hardpoints.forEach(countHp.bind(summary)); // Count Hardpoints by class
+    ship.internal.forEach(countInt.bind(summary));  // Count Internal Compartments by class
+    summary.retailCost = ship.totalCost;            // Record Stock/Default/retail cost
+    ShipRoles.trader(ship, false, { pd: '1D' });    // Optimize Mass with 1D PD for maximum possible jump range
+    summary.maxJumpRange = ship.unladenRange;       // Record Jump Range
+    summary.maxCargo = ship.cargoCapacity;
+    ShipRoles.trader(ship, true, { pd: '1D' });    // Optimize Mass with 1D PD for maximum possible jump range
+    summary.maxShieldedCargo = ship.cargoCapacity;
+    ship.optimizeMass({ th: ship.standard[1].maxClass + 'A', fsd: '2D', ft: '1C' }); // Optmize mass with Max Thrusters
+    summary.topSpeed = ship.topSpeed;
+    summary.topBoost = ship.topBoost;
+
+    // Make A-Rated with best Prismatic Shield
+    // Fill with utility Slots
+    // Max Shield strength
+
+    return summary;
+  }
+
+  /**
    * Constructor
    * @param  {Object} props   React Component properties
    * @param  {Object} context React Component context
@@ -50,7 +90,7 @@ export default class ShipyardPage extends Page {
     if (!ShipyardPage.cachedShipSummaries) {
       ShipyardPage.cachedShipSummaries = [];
       for (let s in Ships) {
-        ShipyardPage.cachedShipSummaries.push(this._shipSummary(s, Ships[s]));
+        ShipyardPage.cachedShipSummaries.push(ShipyardPage.shipSummary(s, Ships[s]));
       }
     }
 
@@ -77,38 +117,6 @@ export default class ShipyardPage extends Page {
   };
 
   /**
-   * Generate Ship summary and aggregated properties
-   * @param  {String} shipId   Ship Id
-   * @param  {Object} shipData Ship Default Data
-   * @return {Object}          Ship summary and aggregated properties
-   */
-  _shipSummary(shipId, shipData) {
-    let summary = {
-      id: shipId,
-      hpCount: 0,
-      intCount: 0,
-      maxCargo: 0,
-      hp: [0, 0, 0, 0, 0], // Utility, Small, Medium, Large, Huge
-      int: [0, 0, 0, 0, 0, 0, 0, 0] // Sizes 1 - 8
-    };
-    Object.assign(summary, shipData.properties);
-    let ship = new Ship(shipId, shipData.properties, shipData.slots);
-
-    // Build Ship
-    ship.buildWith(shipData.defaults);              // Populate with stock/default components
-    ship.hardpoints.forEach(countHp.bind(summary)); // Count Hardpoints by class
-    ship.internal.forEach(countInt.bind(summary));  // Count Internal Compartments by class
-    summary.retailCost = ship.totalCost;            // Record Stock/Default/retail cost
-    ship.optimizeMass({ pd: '1D' });                // Optimize Mass with 1D PD for maximum possible jump range
-    summary.maxJumpRange = ship.unladenRange;       // Record Jump Range
-    ship.optimizeMass({ th: ship.standard[1].maxClass + 'A', fsd: '2D', ft: '1C' }); // Optmize mass with Max Thrusters
-    summary.topSpeed = ship.topSpeed;
-    summary.topBoost = ship.topBoost;
-
-    return summary;
-  }
-
-  /**
    * Generate the table row summary for the ship
    * @param  {Object} s           Ship summary
    * @param  {Function} translate Translate function
@@ -131,6 +139,7 @@ export default class ShipyardPage extends Page {
       <td className='ri'>{fInt(s.topBoost)}{u['m/s']}</td>
       <td className='ri'>{fRound(s.maxJumpRange)}{u.LY}</td>
       <td className='ri'>{fInt(s.maxCargo)}{u.T}</td>
+      <td className='ri'>{fInt(s.maxShieldedCargo)}{u.T}</td>
       <td className={cn({ disabled: !s.hp[1] })}>{s.hp[1]}</td>
       <td className={cn({ disabled: !s.hp[2] })}>{s.hp[2]}</td>
       <td className={cn({ disabled: !s.hp[3] })}>{s.hp[3]}</td>
@@ -209,7 +218,8 @@ export default class ShipyardPage extends Page {
                 <th rowSpan={2} className='sortable' onClick={sortShips('class')}>{translate('size')}</th>
                 <th rowSpan={2} className='sortable' onMouseEnter={tip.bind(null, 'maneuverability')} onMouseLeave={hide} onClick={sortShips('agility')}>{translate('mnv')}</th>
                 <th colSpan={4}>{translate('base')}</th>
-                <th colSpan={4}>{translate('max')}</th>
+                <th colSpan={3}>{translate('max')}</th>
+                <th colSpan={2}>{translate('cargo')}</th>
                 <th colSpan={5} className='sortable' onClick={sortShips('hpCount')}>{translate('hardpoints')}</th>
                 <th colSpan={8} className='sortable' onClick={sortShips('intCount')}>{translate('internal compartments')}</th>
                 <th rowSpan={2} className='sortable' onClick={sortShips('hullMass')}>{translate('hull')}</th>
@@ -225,7 +235,9 @@ export default class ShipyardPage extends Page {
                 <th className='sortable lft' onClick={sortShips('topSpeed')}>{translate('speed')}</th>
                 <th className='sortable' onClick={sortShips('topBoost')}>{translate('boost')}</th>
                 <th className='sortable' onClick={sortShips('maxJumpRange')}>{translate('jump')}</th>
-                <th className='sortable' onClick={sortShips('maxCargo')}>{translate('cargo')}</th>
+
+                <th className='sortable lft' onClick={sortShips('maxCargo')}>{translate('max')}</th>
+                <th className='sortable' onClick={sortShips('maxShieldedCargo')}>{translate('shielded')}</th>
 
                 <th className='sortable lft' onClick={sortShips('hp',1)}>{translate('S')}</th>
                 <th className='sortable' onClick={sortShips('hp', 2)}>{translate('M')}</th>
