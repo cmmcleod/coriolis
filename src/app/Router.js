@@ -1,15 +1,20 @@
 import Persist from './stores/Persist';
 
+let standalone = undefined;
+
 /**
  * Determine if the app is running in mobile/tablet 'standalone' mode
  * @return {Boolean} True if the app is in standalone mode
  */
 function isStandAlone() {
-  try {
-    return window.navigator.standalone || (window.external && window.external.msIsSiteMode && window.external.msIsSiteMode());
-  } catch (ex) {
-    return false;
+  if (standalone === undefined) {
+    try {
+      standalone = window.navigator.standalone || (window.external && window.external.msIsSiteMode && window.external.msIsSiteMode());
+    } catch (ex) {
+      standalone = false;
+    }
   }
+  return standalone;
 }
 
 /**
@@ -44,14 +49,14 @@ Router.start = function() {
   if (isStandAlone()) {
     let state = Persist.getState();
     // If a previous state has been stored, load that state
-    if (state && state.name && state.params) {
-      Router(this.props.initialPath || '/');
+    if (state && state.path) {
+      Router.replace(state.path, null, true);
     } else {
-      Router('/');
+      Router.replace('/', null, true);
     }
   } else {
     let url = location.pathname + location.search;
-    Router.replace(url, null, true, true);
+    Router.replace(url, null, true);
   }
 };
 
@@ -68,6 +73,9 @@ Router.go = function(path, state) {
   let ctx = new Context(path, state);
   Router.dispatch(ctx);
   if (!ctx.unhandled) {
+    if (isStandAlone()) {
+      Persist.setState(ctx);
+    }
     history.pushState(ctx.state, ctx.title, ctx.canonicalPath);
   }
   return ctx;
@@ -85,7 +93,12 @@ Router.go = function(path, state) {
 Router.replace = function(path, state, dispatch) {
   gaTrack(path);
   let ctx = new Context(path, state);
-  if (dispatch) Router.dispatch(ctx);
+  if (dispatch) {
+    Router.dispatch(ctx);
+  }
+  if (isStandAlone()) {
+    Persist.setState(ctx);
+  }
   history.replaceState(ctx.state, ctx.title, ctx.canonicalPath);
   return ctx;
 };

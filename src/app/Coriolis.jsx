@@ -56,7 +56,7 @@ export default class Coriolis extends React.Component {
     this.state = {
       page: null,
       language: getLanguage(Persist.getLangCode()),
-      route: null,
+      route: {},
       sizeRatio: Persist.getSizeRatio()
     };
 
