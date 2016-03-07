@@ -2,7 +2,7 @@ import Ship from '../src/app/shipyard/Ship';
 import { Ships } from 'coriolis-data/dist';
 import * as ModuleUtils from '../src/app/shipyard/ModuleUtils';
 
-describe("Ship Factory", function() {
+describe("Ship", function() {
 
   it("can build all ships", function() {
     for (let s in Ships) {
@@ -115,8 +115,7 @@ describe("Ship Factory", function() {
 
     anaconda.use(anaconda.internal[1], ModuleUtils.internal('4j'));  // 6E Shield Generator
 
-    expect(anaconda.internal[2].c).toEqual(null, 'Anaconda default shield generator slot is empty');
-    expect(anaconda.internal[2].m).toEqual(null, 'Anaconda default shield generator slot id is null');
+    expect(anaconda.internal[2].m).toEqual(null, 'Anaconda default shield generator slot is empty');
     expect(anaconda.internal[1].m.id).toEqual('4j', 'Slot 1 should have SG 4j in it');
     expect(anaconda.internal[1].m.grp).toEqual('sg','Slot 1 should have SG 4j in it');
 
@@ -133,8 +132,7 @@ describe("Ship Factory", function() {
 
     anaconda.use(anaconda.internal[3], ModuleUtils.internal('32'));
 
-    expect(anaconda.internal[4].c).toEqual(null, 'Anaconda original fuel scoop slot is empty');
-    expect(anaconda.internal[4].m).toEqual(null, 'Anaconda original fuel scoop slot id is null');
+    expect(anaconda.internal[4].m).toEqual(null, 'Anaconda original fuel scoop slot is empty');
     expect(anaconda.internal[3].m.id).toEqual('32', 'Slot 1 should have FS 32 in it');
     expect(anaconda.internal[3].m.grp).toEqual('fs','Slot 1 should have FS 32 in it');
   });
@@ -150,8 +148,7 @@ describe("Ship Factory", function() {
 
     anaconda.use(anaconda.internal[3], ModuleUtils.internal('23'));
 
-    expect(anaconda.internal[4].c).toEqual(null, 'Anaconda original refinery slot is empty');
-    expect(anaconda.internal[4].m).toEqual(null, 'Anaconda original refinery slot id is null');
+    expect(anaconda.internal[4].m).toEqual(null, 'Anaconda original refinery slot is empty');
     expect(anaconda.internal[3].m.id).toEqual('23', 'Slot 1 should have RF 23 in it');
     expect(anaconda.internal[3].m.grp).toEqual('rf','Slot 1 should have RF 23 in it');
   });

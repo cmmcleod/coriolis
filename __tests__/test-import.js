@@ -10,7 +10,7 @@ import { getLanguage } from '../src/app/i18n/Language';
 
 describe('Import Modal', function() {
 
-  let MockRouter = require('../src/app/Router');
+  let MockRouter = require('../src/app/Router').default;
   const Persist = require('../src/app/stores/Persist').default;
   const ModalImport = require('../src/app/components/ModalImport').default;
   const mockContext = {
@@ -24,8 +24,6 @@ describe('Import Modal', function() {
     termtip: jest.genMockFunction(),
     onWindowResize: jest.genMockFunction()
   };
-
-  MockRouter.go = jest.genMockFunction();
 
   let modal, render, ContextProvider = Utils.createContextProvider(mockContext);
 
@@ -140,6 +138,7 @@ describe('Import Modal', function() {
 
       expect(modal.state.importValid).toBeTruthy();
       expect(modal.state.errorMsg).toEqual(null);
+      expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
       expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda/48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA?bn=Test%20My%20Ship');
