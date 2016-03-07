@@ -5,7 +5,7 @@ import { stopCtxPropagation } from '../utils/UtilityFunctions';
 import cn from 'classnames';
 import { MountFixed, MountGimballed, MountTurret } from './SvgIcons';
 
-const PRESS_THRESHOLD = 5000; // mouse/touch down threshold
+const PRESS_THRESHOLD = 500; // mouse/touch down threshold
 
 /**
  * Available modules menu
@@ -183,10 +183,10 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    * @param  {SyntheticEvent} event Event
    */
   _touchEnd(select, event) {
+    event.preventDefault();
     if (this.touchTimeout !== null) {  // If timeout has not fired (been nulled out) yet
       select();
     }
-    event.preventDefault();
     this._hideDiff();
   }
 
