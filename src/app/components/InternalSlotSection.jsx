@@ -138,7 +138,7 @@ export default class InternalSlotSection extends SlotSection {
         <li className='lc' onClick={this._fillWithCargo}>{translate('cargo')}</li>
         <li className='lc' onClick={this._fillWithCells}>{translate('scb')}</li>
         <li className='lc' onClick={this._fillWithArmor}>{translate('hr')}</li>
-        <li style={{ textAlign: 'center', marginTop: '1em' }}>{translate('PHRASE_ALT_ALL')}</li>
+        <li className='optional-hide' style={{ textAlign: 'center', marginTop: '1em' }}>{translate('PHRASE_ALT_ALL')}</li>
       </ul>
     </div>;
   }
