@@ -171,7 +171,7 @@ export default class StandardSlotSection extends SlotSection {
       onSelect={select.bind(this, st[1])}
       selected={currentMenu == st[1]}
       ship={ship}
-      warning={m => m.maxmass < ship.ladenMass}
+      warning={m => m.maxmass < (ship.ladenMass - st[1].mass + m.mass)}
     />;
 
 
