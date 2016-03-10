@@ -173,6 +173,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    * @param  {SyntheticEvent} event Event
    */
   _touchStart(showDiff, event) {
+    event.preventDefault();
     let rect = event.currentTarget.getBoundingClientRect();
     this.touchTimeout = setTimeout(showDiff.bind(this, rect), PRESS_THRESHOLD);
   }

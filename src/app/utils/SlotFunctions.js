@@ -90,7 +90,9 @@ const PROP_BLACKLIST = {
   eddbID: 1,
   edID: 1,
   id: 1,
+  index: 1,
   'class': 1,
+  rating: 1,
   maxfuel: 1,
   fuelmul: 1,
   fuelpower: 1,
@@ -175,7 +177,7 @@ function diff(format, mVal, mmVal) {
     return <Infinite/>;
   } else {
     let diff = mVal - mmVal;
-    if (!diff || !mVal || diff == mVal || Math.abs(diff) == Infinity) {
+    if (!diff || mVal === undefined || diff == mVal || Math.abs(diff) == Infinity) {
       return format(mVal);
     }
     return `${format(mVal)} (${diff > 0 ? '+' : ''}${format(diff)})`;

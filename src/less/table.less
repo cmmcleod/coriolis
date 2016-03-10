@@ -33,6 +33,10 @@ thead {
     &.lft {
       border-left: 1px solid @primary-bg;
     }
+
+    &.rgt {
+      border-right: 1px solid @primary-bg;
+    }
   }
 }
 
@@ -42,24 +46,23 @@ tbody tr {
     color: @fg;
     text-align: right;
   }
-
-  td {
-    line-height: 1.4em;
-    padding: 0 0.3em;
-
-    &.val {
-      border: 1px solid @primary-disabled;
-    }
-    &.lbl {
-      border: 1px solid @primary-disabled;
-      text-transform: uppercase;
-      color: @primary-bg;
-      background-color: @primary-disabled;
-    }
-  }
 }
 
 td {
+  line-height: 1.4em;
+  padding: 0 0.3em;
+
+  &.val {
+    border: 1px solid @primary-disabled;
+  }
+
+  &.lbl {
+    border: 1px solid @primary-disabled;
+    text-transform: uppercase;
+    color: @primary-bg;
+    background-color: @primary-disabled;
+  }
+
   &.tl {
     text-align: left;
     padding-left: 0.7em;

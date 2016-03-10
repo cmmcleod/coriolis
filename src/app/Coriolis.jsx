@@ -54,6 +54,7 @@ export default class Coriolis extends React.Component {
 
     this.emitter = new EventEmitter();
     this.state = {
+      noTouch: !window.ontouchstart && !navigator.MaxTouchPoints && !navigator.msMaxTouchPoints,
       page: null,
       language: getLanguage(Persist.getLangCode()),
       route: {},
@@ -281,7 +282,7 @@ export default class Coriolis extends React.Component {
   render() {
     let currentMenu = this.state.currentMenu;
 
-    return <div onClick={this._closeMenu}>
+    return <div onClick={this._closeMenu} className={ this.state.noTouch ? 'no-touch' : null }>
       <Header appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu} />
       { this.state.error ? this.state.error : this.state.page ? React.createElement(this.state.page, { currentMenu }) : <NotFoundPage/> }
       { this.state.modal }
