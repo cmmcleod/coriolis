@@ -48,8 +48,9 @@ export default class StandardSlot extends TranslatedComponent {
           <div className={'sz'}>{slot.maxClass}</div>
           <div>
             <div className='l'>{classRating + ' ' + translate(m.grp)}</div>
-            <div className={'r'}>{m.mass || m.fuel}{units.T}</div>
+            <div className={'r'}>{m.mass || m.fuel || 0}{units.T}</div>
             <div className={'cb'}>
+                { m.name ? <div className='l'>{translate(m.name)}</div> : null }
                 { m.optmass ? <div className='l'>{translate('optimal mass') + ': '}{m.optmass}{units.T}</div> : null }
                 { m.maxmass ? <div className='l'>{translate('max mass') + ': '}{m.maxmass}{units.T}</div> : null }
                 { m.range ? <div className='l'>{translate('range')}: {m.range}{units.km}</div> : null }

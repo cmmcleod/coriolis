@@ -1,4 +1,6 @@
 
+import { BulkheadNames } from './Constants';
+
 /**
  * Filter eligble modules based on parameters
  * @param  {Array}  arr       Available modules array
@@ -19,12 +21,13 @@ export default class ModuleSet {
   /**
    * Instantiate the module set
    * @param  {Object} modules        All Modules
-   * @param  {number} mass           Ship mass
-   * @param  {Array}  maxStandardArr Array of standard slots classes/sizes
-   * @param  {Array}  maxInternal    Array of internal slots classes/sizes
-   * @param  {Array}  maxHardPoint   Array of hardpoint slots classes/sizes
+   * @param  {Object} shipData       Ship Specifications Data (see coriolis-data/Ships)
    */
-  constructor(modules, mass, maxStandardArr, maxInternal, maxHardPoint) {
+  constructor(modules, shipData) {
+    let maxInternal = isNaN(shipData.slots.internal[0]) ? shipData.slots.internal[0].class : shipData.slots.internal[0];
+    let mass = shipData.properties.hullMass + 6.5;
+    let maxStandardArr = shipData.slots.standard;
+    let maxHardPoint = shipData.slots.hardpoints[0];
     let stnd = modules.standard;
     this.mass = mass;
     this.standard = {};
@@ -32,6 +35,10 @@ export default class ModuleSet {
     this.hardpoints = {};
     this.hpClass = {};
     this.intClass = {};
+
+    this.bulkheads = shipData.bulkheads.map((b, i) => {
+      return Object.assign({ grp: 'bh', name: BulkheadNames[i], index: i, class: '', rating: '' }, b);
+    });
 
     this.standard[0] = filter(stnd.pp, maxStandardArr[0], 0, mass);  // Power Plant
     this.standard[2] = filter(stnd.fsd, maxStandardArr[2], 0, mass);  // FSD
@@ -51,6 +58,15 @@ export default class ModuleSet {
     for (let g in modules.internal) {
       this.internal[g] = filter(modules.internal[g], maxInternal, 0, mass);
     }
+  }
+
+  /**
+   * Get the specified bulkhead
+   * @param  {integer} index Bulkhead index
+   * @return {Object}      Bulkhead module details
+   */
+  getBulkhead(index) {
+    return this.bulkheads[index] || null;
   }
 
   /**

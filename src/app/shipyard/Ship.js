@@ -294,7 +294,7 @@ export default class Ship {
    */
   getStandardString() {
     if(!this.serialized.standard) {
-      this.serialized.standard = this.bulkheads.index + this.standard.reduce((arr, slot, i) => {
+      this.serialized.standard = this.bulkheads.m.index + this.standard.reduce((arr, slot, i) => {
         arr[i] = slot.m ? slot.m.class + slot.m.rating : '-';
         return arr;
       }, new Array(this.standard.length)).join('');
@@ -855,8 +855,7 @@ export default class Ship {
    */
   useBulkhead(index, preventUpdate) {
     let oldBulkhead = this.bulkheads.m;
-    this.bulkheads.index = index;
-    this.bulkheads.m = ModuleUtils.bulkheads(this.id, index);
+    this.bulkheads.m = this.availCS.getBulkhead(index);
     this.bulkheads.discountedCost = this.bulkheads.m.cost * this.moduleCostMultiplier;
     this.armourMultiplier = ArmourMultiplier[index];
     this.updateStats(this.bulkheads, this.bulkheads.m, oldBulkhead, preventUpdate);

@@ -172,21 +172,6 @@ export function findHardpointId(groupName, clss, rating, name, mount, missile) {
 }
 
 /**
- * Looks up the bulkhead module for a specific ship and bulkhead
- * @param  {String} shipId        Unique ship Id/Key
- * @param  {string|number} index  Index for the specified bulkhead
- * @return {Object}               The bulkhead module object
- */
-export function bulkheads(shipId, index) {
-  let bulkhead = Ships[shipId].bulkheads[index];
-  bulkhead.class = 1;
-  bulkhead.rating = 'I';
-  bulkhead.name = BulkheadNames[index];
-
-  return bulkhead;
-}
-
-/**
  * Get the bulkhead index for the given bulkhead name
  * @param  {String} bulkheadName Bulkhead name in english
  * @return {number}              Bulkhead index
@@ -215,7 +200,5 @@ export function isShieldGenerator(g) {
  * @return {ModuleSet}     The set of modules the ship can install
  */
 export function forShip(shipId) {
-  let ship = Ships[shipId];
-  let maxInternal = isNaN(ship.slots.internal[0]) ? ship.slots.internal[0].class : ship.slots.internal[0];
-  return new ModuleSet(Modules, ship.properties.hullMass + 6.5, ship.slots.standard, maxInternal, ship.slots.hardpoints[0]);
+  return new ModuleSet(Modules, Ships[shipId]);
 }

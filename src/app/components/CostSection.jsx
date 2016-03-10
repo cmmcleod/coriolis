@@ -400,7 +400,7 @@ export default class CostSection extends TranslatedComponent {
     let retrofitCosts = [];
     let retrofitTotal = 0, i, l, item;
 
-    if (ship.bulkheads.index != retrofitShip.bulkheads.index) {
+    if (ship.bulkheads.m.index != retrofitShip.bulkheads.m.index) {
       item = {
         buyClassRating: ship.bulkheads.m.class + ship.bulkheads.m.rating,
         buyName: ship.bulkheads.m.name,

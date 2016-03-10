@@ -59,7 +59,7 @@ export function toDetailedBuild(buildName, ship) {
     }],
     components: {
       standard: {
-        bulkheads: BulkheadNames[ship.bulkheads.index],
+        bulkheads: BulkheadNames[ship.bulkheads.m.index],
         cargoHatch: { enabled: Boolean(ship.cargoHatch.enabled), priority: ship.cargoHatch.priority + 1 },
         powerPlant: { class: standard[0].m.class, rating: standard[0].m.rating, enabled: Boolean(standard[0].enabled), priority: standard[0].priority + 1 },
         thrusters: { class: standard[1].m.class, rating: standard[1].m.rating, enabled: Boolean(standard[1].enabled), priority: standard[1].priority + 1 },

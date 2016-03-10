@@ -20,7 +20,7 @@ export default class StandardSlotSection extends SlotSection {
   constructor(props, context) {
     super(props, context, 'standard', 'standard');
     this._optimizeStandard = this._optimizeStandard.bind(this);
-    this._hideDiff = this._hideDiff.bind(this);
+    this._selectBulkhead = this._selectBulkhead.bind(this);
   }
 
   /**
@@ -65,10 +65,10 @@ export default class StandardSlotSection extends SlotSection {
 
   /**
    * Use the specified bulkhead
-   * @param  {number} bulkheadIndex 0 - 4
+   * @param  {Object} bulkhead Bulkhead module details
    */
-  _selectBulkhead(bulkheadIndex) {
-    this.props.ship.useBulkhead(bulkheadIndex);
+  _selectBulkhead(bulkhead) {
+    this.props.ship.useBulkhead(bulkhead.index);
     this.context.tooltip();
     this.props.onChange();
     this._close();
@@ -79,26 +79,6 @@ export default class StandardSlotSection extends SlotSection {
    */
   _contextMenu() {
     this._optimizeStandard();
-  }
-
-  /**
-   * Show the bulkhead diff tooltip
-   * @param  {number} bhIndex Potential Bulkhead alternative
-   * @param  {SyntheticEvent} event   Event
-   */
-  _bhDiff(bhIndex, event) {
-    let ship = this.props.ship;
-    this.context.tooltip(
-      diffDetails.call(ship, this.context.language, ModuleUtils.bulkheads(ship.id, bhIndex), ship.bulkheads.m),
-      event.currentTarget.getBoundingClientRect()
-    );
-  }
-
-  /**
-   * Hide the diff tooltip
-   */
-  _hideDiff() {
-    this.context.tooltip();
   }
 
   /**
@@ -116,41 +96,15 @@ export default class StandardSlotSection extends SlotSection {
     let avail = ship.getAvailableModules().standard;
     let bh = ship.bulkheads;
 
-    slots[0] = (
-      <div key='bh' className={cn('slot', { selected: currentMenu === bh })} onClick={open.bind(this, bh)}>
-        <div className={'details-container'}>
-          <div className={'details'}>
-            <div className={'sz'}>8</div>
-            <div>
-              <div className={'l'}>{translate('bh')}</div>
-              <div className={'r'}>{bh.m.mass}{units.T}</div>
-              <div className={'cl l'}>{translate(bh.m.name)}</div>
-            </div>
-          </div>
-        </div>
-        {currentMenu === bh &&
-          <div className='select' onClick={ e => e.stopPropagation() }>
-            <ul>
-              <li onClick={selBulkhead.bind(this, 0)} onMouseOver={this._bhDiff.bind(this, 0)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 0 })}>
-                  {translate('Lightweight Alloy')}
-              </li>
-              <li onClick={selBulkhead.bind(this, 1)} onMouseOver={this._bhDiff.bind(this, 1)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 1 })}>
-                {translate('Reinforced Alloy')}
-              </li>
-              <li onClick={selBulkhead.bind(this, 2)} onMouseOver={this._bhDiff.bind(this, 2)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 2 })}>
-                {translate('Military Grade Composite')}
-              </li>
-              <li onClick={selBulkhead.bind(this, 3)} onMouseOver={this._bhDiff.bind(this, 3)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 3 })}>
-                {translate('Mirrored Surface Composite')}
-              </li>
-              <li onClick={selBulkhead.bind(this, 4)} onMouseOver={this._bhDiff.bind(this, 4)} onMouseLeave={this._hideDiff} className={cn('lc', { active: bh.index == 4 })}>
-                {translate('Reactive Surface Composite')}
-              </li>
-            </ul>
-          </div>
-        }
-      </div>
-    );
+    slots[0] = <StandardSlot
+      key='bh'
+      slot={bh}
+      modules={ship.getAvailableModules().bulkheads}
+      onOpen={open.bind(this, bh)}
+      onSelect={this._selectBulkhead}
+      selected={currentMenu == bh}
+      ship={ship}
+    />;
 
     slots[1] = <StandardSlot
       key='pp'
