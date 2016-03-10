@@ -28,6 +28,38 @@ function countInt(slot) {
 }
 
 /**
+ * Generate Ship summary and aggregated properties
+ * @param  {String} shipId   Ship Id
+ * @param  {Object} shipData Ship Default Data
+ * @return {Object}          Ship summary and aggregated properties
+ */
+function shipSummary(shipId, shipData) {
+  let summary = {
+    id: shipId,
+    hpCount: 0,
+    intCount: 0,
+    maxCargo: 0,
+    hp: [0, 0, 0, 0, 0], // Utility, Small, Medium, Large, Huge
+    int: [0, 0, 0, 0, 0, 0, 0, 0] // Sizes 1 - 8
+  };
+  Object.assign(summary, shipData.properties);
+  let ship = new Ship(shipId, shipData.properties, shipData.slots);
+
+  // Build Ship
+  ship.buildWith(shipData.defaults);              // Populate with stock/default components
+  ship.hardpoints.forEach(countHp.bind(summary)); // Count Hardpoints by class
+  ship.internal.forEach(countInt.bind(summary));  // Count Internal Compartments by class
+  summary.retailCost = ship.totalCost;            // Record Stock/Default/retail cost
+  ship.optimizeMass({ pd: '1D' });                // Optimize Mass with 1D PD for maximum possible jump range
+  summary.maxJumpRange = ship.unladenRange;       // Record Jump Range
+  ship.optimizeMass({ th: ship.standard[1].maxClass + 'A', fsd: '2D', ft: '1C' }); // Optmize mass with Max Thrusters
+  summary.topSpeed = ship.topSpeed;
+  summary.topBoost = ship.topBoost;
+
+  return summary;
+}
+
+/**
  * The Shipyard summary page
  */
 export default class ShipyardPage extends Page {
@@ -41,20 +73,20 @@ export default class ShipyardPage extends Page {
    */
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      title: 'Coriolis - Shipyard',
-      shipPredicate: 'name',
-      shipDesc: true
-    };
 
     if (!ShipyardPage.cachedShipSummaries) {
       ShipyardPage.cachedShipSummaries = [];
       for (let s in Ships) {
-        ShipyardPage.cachedShipSummaries.push(this._shipSummary(s, Ships[s]));
+        ShipyardPage.cachedShipSummaries.push(shipSummary(s, Ships[s]));
       }
     }
 
-    this.shipSummaries = ShipyardPage.cachedShipSummaries;
+    this.state = {
+      title: 'Coriolis - Shipyard',
+      shipPredicate: 'name',
+      shipDesc: true,
+      shipSummaries: ShipyardPage.cachedShipSummaries
+    };
   }
 
   /**
@@ -77,38 +109,6 @@ export default class ShipyardPage extends Page {
   };
 
   /**
-   * Generate Ship summary and aggregated properties
-   * @param  {String} shipId   Ship Id
-   * @param  {Object} shipData Ship Default Data
-   * @return {Object}          Ship summary and aggregated properties
-   */
-  _shipSummary(shipId, shipData) {
-    let summary = {
-      id: shipId,
-      hpCount: 0,
-      intCount: 0,
-      maxCargo: 0,
-      hp: [0, 0, 0, 0, 0], // Utility, Small, Medium, Large, Huge
-      int: [0, 0, 0, 0, 0, 0, 0, 0] // Sizes 1 - 8
-    };
-    Object.assign(summary, shipData.properties);
-    let ship = new Ship(shipId, shipData.properties, shipData.slots);
-
-    // Build Ship
-    ship.buildWith(shipData.defaults);              // Populate with stock/default components
-    ship.hardpoints.forEach(countHp.bind(summary)); // Count Hardpoints by class
-    ship.internal.forEach(countInt.bind(summary));  // Count Internal Compartments by class
-    summary.retailCost = ship.totalCost;            // Record Stock/Default/retail cost
-    ship.optimizeMass({ pd: '1D' });                // Optimize Mass with 1D PD for maximum possible jump range
-    summary.maxJumpRange = ship.unladenRange;       // Record Jump Range
-    ship.optimizeMass({ th: ship.standard[1].maxClass + 'A', fsd: '2D', ft: '1C' }); // Optmize mass with Max Thrusters
-    summary.topSpeed = ship.topSpeed;
-    summary.topBoost = ship.topBoost;
-
-    return summary;
-  }
-
-  /**
    * Generate the table row summary for the ship
    * @param  {Object} s           Ship summary
    * @param  {Function} translate Translate function
@@ -118,8 +118,7 @@ export default class ShipyardPage extends Page {
    * @return {React.Component}    Table Row
    */
   _shipRowElement(s, translate, u, fInt, fRound) {
-    return <tr key={s.id} className='highlight'>
-      <td className='le'><Link href={'/outfit/' + s.id}>{s.name}</Link></td>
+    return <tr key={s.id} style={{ height: '1.5em' }}>
       <td className='le'>{s.manufacturer}</td>
       <td className='cap'>{translate(SizeMap[s.class])}</td>
       <td>{s.agility}</td>
@@ -155,16 +154,26 @@ export default class ShipyardPage extends Page {
    * @return {React.Component} The page contents
    */
   renderPage() {
-    let { translate, formats, units } = this.context.language;
+    let { sizeRatio, language, termtip } = this.context;
+    let { translate, formats, units } = language;
+    let hide = this.context.tooltip.bind(null, null);
     let fInt = formats.int;
     let fRound = formats.round;
-    let shipSummaries = this.shipSummaries;
-    let shipPredicate = this.state.shipPredicate;
-    let shipPredicateIndex = this.state.shipPredicateIndex;
-    let shipRows = [];
-    let hide = this.context.tooltip.bind(null, null);
-    let tip = this.context.termtip;
+    let { shipSummaries, shipPredicate, shipPredicateIndex } = this.state;
     let sortShips = (predicate, index) => this._sortShips.bind(this, predicate, index);
+
+    let filters = {
+      // 'class': { 1: 1, 2: 1}
+    };
+
+    shipSummaries = shipSummaries.filter(s => {
+      for (let prop in filters) {
+        if (!(s[prop] in filters[prop])) {
+          return false;
+        }
+      }
+      return true;
+    });
 
     // Sort shipsOverview
     shipSummaries.sort((a, b) => {
@@ -194,26 +203,46 @@ export default class ShipyardPage extends Page {
       }
     });
 
+    let i = 0;
+    let shipRows = new Array(shipSummaries.length);
+    let detailRows = new Array(shipSummaries.length);
+
     for (let s of shipSummaries) {
-      shipRows.push(this._shipRowElement(s, translate, units, fInt, fRound));
+      detailRows[i] = this._shipRowElement(s, translate, units, fInt, fRound);
+      shipRows[i] = <tr key={i} style={{ height: '1.5em' }}><td className='le'><Link href={'/outfit/' + s.id}>{s.name}</Link></td></tr>;
+      i++;
     }
 
     return (
-      <div className='page' style={{ fontSize: this.context.sizeRatio + 'em' }}>
-        <div className='scroll-x'>
-          <table style={{ fontSize:'0.85em', whiteSpace:'nowrap', margin: '0 auto' }} align='center'>
+      <div className='page' style={{ fontSize: sizeRatio + 'em' }}>
+        <div>
+          Show: manufacturer, size, maneuverability, base stats, max stats, hardpoints, internal slots, hull mass, mass lock factor, cost
+        </div>
+
+        <div style={{ whiteSpace: 'nowrap', margin: '0 auto', fontSize: '0.9em', position: 'relative', display: 'inline-block', maxWidth: '100%' }}>
+          <table style={{ width: '12em', position: 'absolute' }}>
             <thead>
               <tr className='main'>
-                <th rowSpan={2} className='sortable le' onClick={sortShips('name')}>{translate('ship')}</th>
+                <th style={{ height: '2.6em', padding: '2px 0.4em 1px' }} className='sortable le rgt' onClick={sortShips('name')}>{translate('ship')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {shipRows}
+            </tbody>
+          </table>
+          <div style={{ overflowX: 'scroll', maxWidth: '100%' }}>
+          <table style={{ marginLeft: 'calc(12em - 1px)' }}>
+            <thead>
+              <tr className='main'>
                 <th rowSpan={2} className='sortable' onClick={sortShips('manufacturer')}>{translate('manufacturer')}</th>
                 <th rowSpan={2} className='sortable' onClick={sortShips('class')}>{translate('size')}</th>
-                <th rowSpan={2} className='sortable' onMouseEnter={tip.bind(null, 'maneuverability')} onMouseLeave={hide} onClick={sortShips('agility')}>{translate('mnv')}</th>
+                <th rowSpan={2} className='sortable' onMouseEnter={termtip.bind(null, 'maneuverability')} onMouseLeave={hide} onClick={sortShips('agility')}>{translate('mnv')}</th>
                 <th colSpan={4}>{translate('base')}</th>
                 <th colSpan={4}>{translate('max')}</th>
                 <th colSpan={5} className='sortable' onClick={sortShips('hpCount')}>{translate('hardpoints')}</th>
                 <th colSpan={8} className='sortable' onClick={sortShips('intCount')}>{translate('internal compartments')}</th>
                 <th rowSpan={2} className='sortable' onClick={sortShips('hullMass')}>{translate('hull')}</th>
-                <th rowSpan={2} className='sortable' onMouseEnter={tip.bind(null, 'mass lock factor')} onMouseLeave={hide} onClick={sortShips('masslock')} >{translate('MLF')}</th>
+                <th rowSpan={2} className='sortable' onMouseEnter={termtip.bind(null, 'mass lock factor')} onMouseLeave={hide} onClick={sortShips('masslock')} >{translate('MLF')}</th>
                 <th rowSpan={2} className='sortable' onClick={sortShips('retailCost')}>{translate('cost')}</th>
               </tr>
               <tr>
@@ -244,9 +273,10 @@ export default class ShipyardPage extends Page {
               </tr>
             </thead>
             <tbody>
-              {shipRows}
+              {detailRows}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     );
