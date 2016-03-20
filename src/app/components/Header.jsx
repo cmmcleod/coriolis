@@ -365,7 +365,7 @@ export default class Header extends TranslatedComponent {
         <div style={{ lineHeight: '2em' }}>
           <div>
             {translate('language')}
-            <div style={{ float: 'right'}}>
+            <div style={{ float: 'right' }}>
               <select className='cap' dir='rtl' value={Persist.getLangCode()} onChange={this._setLanguage}>
                 {this.languageOptions}
               </select>
@@ -377,7 +377,7 @@ export default class Header extends TranslatedComponent {
           </div>
           <div>
             {translate('insurance')}
-            <div style={{ float: 'right'}}>
+            <div style={{ float: 'right' }}>
               <select className='cap' dir='rtl' value={Persist.getInsurance()} onChange={this._setInsurance}>
                 {this.insuranceOptions}
               </select>
@@ -385,14 +385,14 @@ export default class Header extends TranslatedComponent {
           </div>
           <div>
             {translate('ship')} {translate('discount')}
-            <div style={{ float: 'right'}}>
+            <div style={{ float: 'right' }}>
               <input type='text' size='10' value={this.state.shipDiscount} onChange={this._changeShipDiscount} onFocus={selectAll} onBlur={this._setShipDiscount} onKeyDown={this._kpShipDiscount}/>
               <u className='primary-disabled'>%</u>
             </div>
           </div>
-          <div style={{ clear: 'both'}}>
+          <div style={{ clear: 'both' }}>
             {translate('module')} {translate('discount')}
-            <div style={{ float: 'right'}}>
+            <div style={{ float: 'right' }}>
               <input type='text' size='10' value={this.state.moduleDiscount} onChange={this._changeModuleDiscount} onFocus={selectAll} onBlur={this._setModuleDiscount} onKeyDown={this._kpModuleDiscount}/>
               <u className='primary-disabled'>%</u>
             </div>
