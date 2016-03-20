@@ -25,12 +25,11 @@
   </head>
   <body style="background-color:#000;">
     <section id="coriolis"></section>
-    <footer>
-      <div class="right cap">
-        <a href="https://github.com/cmmcleod/coriolis/releases/" target="_blank" title="Coriolis Github Project">{%= o.htmlWebpackPlugin.options.version %} - {%= new Date().toISOString().slice(0, 10)  %}</a>
-      </div>
-    </footer>
-
+    <script>
+      window.CORIOLIS_GAPI_KEY = '{%= o.htmlWebpackPlugin.options.gapiKey %}';
+      window.CORIOLIS_VERSION = '{%= o.htmlWebpackPlugin.options.version %}';
+      window.CORIOLIS_DATE = '{%= new Date().toISOString().slice(0, 10)  %}';
+    </script>
     <script src="{%= o.htmlWebpackPlugin.files.chunks.lib.entry %}" charset="utf-8" crossorigin="anonymous"></script>
     <script src="{%= o.htmlWebpackPlugin.files.chunks.app.entry %}" charset="utf-8" crossorigin="anonymous"></script>
     <script>
@@ -41,7 +40,6 @@
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
         ga('create', '{%= o.htmlWebpackPlugin.options.uaTracking %}', 'auto');
       {% } %}
-      window.CORIOLIS_GAPI_KEY = '{%= o.htmlWebpackPlugin.options.gapiKey %}';
     </script>
   </body>
 </html>

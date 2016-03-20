@@ -21,17 +21,18 @@ import ErrorDetails from './pages/ErrorDetails';
 export default class Coriolis extends React.Component {
 
   static childContextTypes = {
-    language: React.PropTypes.object.isRequired,
-    sizeRatio: React.PropTypes.number.isRequired,
-    route: React.PropTypes.object.isRequired,
-    openMenu: React.PropTypes.func.isRequired,
     closeMenu: React.PropTypes.func.isRequired,
-    showModal: React.PropTypes.func.isRequired,
     hideModal: React.PropTypes.func.isRequired,
-    tooltip: React.PropTypes.func.isRequired,
-    termtip: React.PropTypes.func.isRequired,
+    language: React.PropTypes.object.isRequired,
+    noTouch: React.PropTypes.bool.isRequired,
+    onCommand: React.PropTypes.func.isRequired,
     onWindowResize: React.PropTypes.func.isRequired,
-    onCommand: React.PropTypes.func.isRequired
+    openMenu: React.PropTypes.func.isRequired,
+    route: React.PropTypes.object.isRequired,
+    showModal: React.PropTypes.func.isRequired,
+    sizeRatio: React.PropTypes.number.isRequired,
+    termtip: React.PropTypes.func.isRequired,
+    tooltip: React.PropTypes.func.isRequired
   };
 
   /**
@@ -238,17 +239,18 @@ export default class Coriolis extends React.Component {
    */
   getChildContext() {
     return {
-      language: this.state.language,
-      route: this.state.route,
-      sizeRatio: this.state.sizeRatio,
-      openMenu: this._openMenu,
       closeMenu: this._closeMenu,
-      showModal: this._showModal,
       hideModal: this._hideModal,
-      tooltip: this._tooltip,
-      termtip: this._termtip,
+      language: this.state.language,
+      noTouch: this.state.noTouch,
+      onCommand: this._onCommand,
       onWindowResize: this._onWindowResize,
-      onCommand: this._onCommand
+      openMenu: this._openMenu,
+      route: this.state.route,
+      showModal: this._showModal,
+      sizeRatio: this.state.sizeRatio,
+      termtip: this._termtip,
+      tooltip: this._tooltip
     };
   }
 
@@ -282,11 +284,16 @@ export default class Coriolis extends React.Component {
   render() {
     let currentMenu = this.state.currentMenu;
 
-    return <div onClick={this._closeMenu} className={ this.state.noTouch ? 'no-touch' : null }>
+    return <div style={{ minHeight: '100%' }} onClick={this._closeMenu} className={ this.state.noTouch ? 'no-touch' : null }>
       <Header appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu} />
       { this.state.error ? this.state.error : this.state.page ? React.createElement(this.state.page, { currentMenu }) : <NotFoundPage/> }
       { this.state.modal }
       { this.state.tooltip }
+      <footer>
+        <div className="right cap">
+          <a href="https://github.com/cmmcleod/coriolis/releases/" target="_blank" title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
+        </div>
+      </footer>
     </div>;
   }
 }

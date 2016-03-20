@@ -363,36 +363,48 @@ export default class Header extends TranslatedComponent {
     return (
       <div className='menu-list no-wrap cap' onClick={ (e) => e.stopPropagation() }>
         <div style={{ lineHeight: '2em' }}>
-        {translate('language')}
-        <select className='cap' value={Persist.getLangCode()} onChange={this._setLanguage}>
-          {this.languageOptions}
-        </select>
-        <br/>
-        <span className='cap ptr' onClick={this._toggleTooltips} >
-          {translate('tooltips')}
-          <div className={cn({ disabled: !tips, 'primary-disabled': tips })} style={{ marginLeft: '0.5em', display: 'inline-block' }}>{(tips ? '✓' : '✗')}</div>
-        </span>
-        <br/>
-        {translate('insurance')}
-        <select className='cap' value={Persist.getInsurance()} onChange={this._setInsurance}>
-          {this.insuranceOptions}
-        </select>
-        <br/>
-        {translate('ship')} {translate('discount')}
-        <input type='text' size='10' value={this.state.shipDiscount} onChange={this._changeShipDiscount} onFocus={selectAll} onBlur={this._setShipDiscount} onKeyDown={this._kpShipDiscount}/>
-        <u className='primary-disabled'>%</u>
-        <br/>
-        {translate('module')} {translate('discount')}
-        <input type='text' size='10' value={this.state.moduleDiscount} onChange={this._changeModuleDiscount} onFocus={selectAll} onBlur={this._setModuleDiscount} onKeyDown={this._kpModuleDiscount}/>
-        <u className='primary-disabled'>%</u>
+          <div>
+            {translate('language')}
+            <div style={{ float: 'right'}}>
+              <select className='cap' dir='rtl' value={Persist.getLangCode()} onChange={this._setLanguage}>
+                {this.languageOptions}
+              </select>
+            </div>
+          </div>
+          <div className='cap ptr' onClick={this._toggleTooltips} >
+            {translate('tooltips')}
+            <div className={cn({ disabled: !tips, 'primary-disabled': tips })} style={{ marginLeft: '0.5em', float: 'right' }}>{(tips ? '✓' : '✗')}</div>
+          </div>
+          <div>
+            {translate('insurance')}
+            <div style={{ float: 'right'}}>
+              <select className='cap' dir='rtl' value={Persist.getInsurance()} onChange={this._setInsurance}>
+                {this.insuranceOptions}
+              </select>
+            </div>
+          </div>
+          <div>
+            {translate('ship')} {translate('discount')}
+            <div style={{ float: 'right'}}>
+              <input type='text' size='10' value={this.state.shipDiscount} onChange={this._changeShipDiscount} onFocus={selectAll} onBlur={this._setShipDiscount} onKeyDown={this._kpShipDiscount}/>
+              <u className='primary-disabled'>%</u>
+            </div>
+          </div>
+          <div style={{ clear: 'both'}}>
+            {translate('module')} {translate('discount')}
+            <div style={{ float: 'right'}}>
+              <input type='text' size='10' value={this.state.moduleDiscount} onChange={this._changeModuleDiscount} onFocus={selectAll} onBlur={this._setModuleDiscount} onKeyDown={this._kpModuleDiscount}/>
+              <u className='primary-disabled'>%</u>
+            </div>
+          </div>
         </div>
         <hr />
-        <ul>
+        <ul style={{ width: '100%' }}>
           {translate('builds')} & {translate('comparisons')}
           <li><Link href="#" className='block' onClick={this._showBackup.bind(this)}>{translate('backup')}</Link></li>
           <li><Link href="#" className='block' onClick={this._showDetailedExport.bind(this)}>{translate('detailed export')}</Link></li>
           <li><Link href="#" className='block' onClick={this._showImport.bind(this)}>{translate('import')}</Link></li>
-          <li><Link href="#" onClick={this._showDeleteAll.bind(this)}>{translate('delete all')}</Link></li>
+          <li><Link href="#" className='block' onClick={this._showDeleteAll.bind(this)}>{translate('delete all')}</Link></li>
         </ul>
         <hr />
         <table style={{ width: 300, backgroundColor: 'transparent' }}>
