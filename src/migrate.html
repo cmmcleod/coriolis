@@ -22,10 +22,9 @@
         var source = event.source;
         var data = event.message;
 
-        // Uncomment for production
-        // if (origin !== "http://coriolis.io") {
-        //   return;
-        // }
+        if (window.location.href.indexOf('coriolis') != -1 && origin !== "http://coriolis.io") {
+          return;
+        }
 
         try {
           var builds = fromJsonToObject(localStorage.getItem('builds'));
