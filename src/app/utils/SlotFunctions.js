@@ -2,6 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import { isShieldGenerator } from '../shipyard/ModuleUtils';
 import { Infinite } from '../components/SvgIcons';
+import Persist from '../stores/Persist';
 
 /**
  * Determine if a slot can mount a module of a particular class and group
@@ -206,7 +207,7 @@ export function diffDetails(language, m, mm) {
   let mAffectsShield = isShieldGenerator(m.grp)  || m.grp == 'sb';
   let mmAffectsShield = isShieldGenerator(mm.grp) || mm.grp == 'sb';
 
-  propDiffs.push(<div key='cost'>{translate('cost')}: <span className={diffClass(m.cost, mm.cost, true) }>{formats.int(m.cost || 0)}{units.CR}</span></div>);
+  propDiffs.push(<div key='cost'>{translate('cost')}: <span className={diffClass(m.cost, mm.cost, true) }>{m.cost ? Math.round(m.cost * (1 - Persist.getModuleDiscount())) : 0}{units.CR}</span></div>);
   propDiffs.push(<div key='mass'>{translate('mass')}: <span className={diffClass(mMass, mm.mass, true)}>{diff(formats.round, mMass, mmMass)}{units.T}</span></div>);
 
   for (let p in m) {
