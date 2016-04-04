@@ -269,7 +269,7 @@ export default class Coriolis extends React.Component {
 
     window.onerror = this._onError.bind(this);
     window.addEventListener('resize', () => this.emitter.emit('windowResize'));
-    document.body.addEventListener('scroll', () => this._tooltip());
+    document.getElementById('coriolis').addEventListener('scroll', () => this._tooltip());
     document.addEventListener('keydown', this._keyDown);
     Persist.addListener('language', this._onLanguageChange);
     Persist.addListener('sizeRatio', this._onSizeRatioChange);
