@@ -89,6 +89,11 @@ export default class ShipyardPage extends Page {
     };
   }
 
+  _highlightShip(shipId, event) {
+    event.stopPropagation();
+    this.setState({ shipId });
+  }
+
   /**
    * Update state with the specified sort predicates
    * @param  {String} shipPredicate      Sort predicate - property name
@@ -118,7 +123,14 @@ export default class ShipyardPage extends Page {
    * @return {React.Component}    Table Row
    */
   _shipRowElement(s, translate, u, fInt, fRound) {
-    return <tr key={s.id} style={{ height: '1.5em' }}>
+    let noTouch = this.context.noTouch;
+
+    return <tr
+        key={s.id}
+        style={{ height: '1.5em' }}
+        className={cn({highlighted: noTouch && this.state.shipId === s.id})}
+        onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
+      >
       <td className='le'>{s.manufacturer}</td>
       <td className='cap'>{translate(SizeMap[s.class])}</td>
       <td>{s.agility}</td>
@@ -154,7 +166,7 @@ export default class ShipyardPage extends Page {
    * @return {React.Component} The page contents
    */
   renderPage() {
-    let { sizeRatio, language, termtip } = this.context;
+    let { sizeRatio, language, termtip, noTouch } = this.context;
     let { translate, formats, units } = language;
     let hide = this.context.tooltip.bind(null, null);
     let fInt = formats.int;
@@ -209,29 +221,34 @@ export default class ShipyardPage extends Page {
 
     for (let s of shipSummaries) {
       detailRows[i] = this._shipRowElement(s, translate, units, fInt, fRound);
-      shipRows[i] = <tr key={i} style={{ height: '1.5em' }}><td className='le'><Link href={'/outfit/' + s.id}>{s.name}</Link></td></tr>;
+      shipRows[i] = (
+        <tr
+          key={i}
+          style={{ height: '1.5em' }}
+          className={cn({highlighted: noTouch && this.state.shipId === s.id})}
+          onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
+        >
+          <td className='le'><Link href={'/outfit/' + s.id}>{s.name}</Link></td>
+        </tr>
+      );
       i++;
     }
 
     return (
       <div className='page' style={{ fontSize: sizeRatio + 'em' }}>
-        <div>
-          Show: manufacturer, size, maneuverability, base stats, max stats, hardpoints, internal slots, hull mass, mass lock factor, cost
-        </div>
-
-        <div style={{ whiteSpace: 'nowrap', margin: '0 auto', fontSize: '0.9em', position: 'relative', display: 'inline-block', maxWidth: '100%' }}>
-          <table style={{ width: '12em', position: 'absolute' }}>
+        <div style={{ whiteSpace: 'nowrap', margin: '0 auto', fontSize: '0.8em', position: 'relative', display: 'inline-block', maxWidth: '100%' }}>
+          <table style={{ width: '12em', position: 'absolute', zIndex: 1 }}>
             <thead>
               <tr className='main'>
                 <th style={{ height: '2.6em', padding: '2px 0.4em 1px' }} className='sortable le rgt' onClick={sortShips('name')}>{translate('ship')}</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody onMouseLeave={this._highlightShip.bind(this, null)}>
               {shipRows}
             </tbody>
           </table>
           <div style={{ overflowX: 'scroll', maxWidth: '100%' }}>
-          <table style={{ marginLeft: 'calc(12em - 1px)' }}>
+          <table style={{ marginLeft: 'calc(12em - 1px)', zIndex: 0 }}>
             <thead>
               <tr className='main'>
                 <th rowSpan={2} className='sortable' onClick={sortShips('manufacturer')}>{translate('manufacturer')}</th>
@@ -272,7 +289,7 @@ export default class ShipyardPage extends Page {
                 <th className='sortable' onClick={sortShips('int', 7)} >8</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody onMouseLeave={this._highlightShip.bind(this, null)}>
               {detailRows}
             </tbody>
           </table>
