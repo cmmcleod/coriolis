@@ -89,6 +89,11 @@ export default class ShipyardPage extends Page {
     };
   }
 
+  /**
+   * Higlight the current ship in the table
+   * @param  {String} shipId Ship Id
+   * @param  {SyntheticEvent} event  Event
+   */
   _highlightShip(shipId, event) {
     event.stopPropagation();
     this.setState({ shipId });
@@ -128,7 +133,7 @@ export default class ShipyardPage extends Page {
     return <tr
         key={s.id}
         style={{ height: '1.5em' }}
-        className={cn({highlighted: noTouch && this.state.shipId === s.id})}
+        className={cn({ highlighted: noTouch && this.state.shipId === s.id })}
         onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
       >
       <td className='le'>{s.manufacturer}</td>
@@ -225,7 +230,7 @@ export default class ShipyardPage extends Page {
         <tr
           key={i}
           style={{ height: '1.5em' }}
-          className={cn({highlighted: noTouch && this.state.shipId === s.id})}
+          className={cn({ highlighted: noTouch && this.state.shipId === s.id })}
           onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
         >
           <td className='le'><Link href={'/outfit/' + s.id}>{s.name}</Link></td>
