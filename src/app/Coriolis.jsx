@@ -55,7 +55,7 @@ export default class Coriolis extends React.Component {
 
     this.emitter = new EventEmitter();
     this.state = {
-      noTouch: !window.ontouchstart && !navigator.MaxTouchPoints && !navigator.msMaxTouchPoints,
+      noTouch: !('ontouchstart' in window || navigator.msMaxTouchPoints || navigator.maxTouchPoints),
       page: null,
       language: getLanguage(Persist.getLangCode()),
       route: {},
