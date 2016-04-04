@@ -10,7 +10,7 @@ import { canMount } from '../utils/SlotFunctions';
 export function multiPurpose(ship, shielded, bulkheadIndex) {
   ship.useStandard('A')
       .use(ship.standard[3], ModuleUtils.standard(3, ship.standard[3].maxClass + 'D'))  // D Life Support
-      .use(ship.standard[5], ModuleUtils.standard(3, ship.standard[5].maxClass + 'D'))  // D Sensors
+      .use(ship.standard[5], ModuleUtils.standard(5, ship.standard[5].maxClass + 'D'))  // D Sensors
       .useBulkhead(bulkheadIndex);
 
   if (shielded) {
