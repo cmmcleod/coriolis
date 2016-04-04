@@ -53,6 +53,7 @@ export default class ComparisonPage extends Page {
     super(props, context);
     this._sortShips = this._sortShips.bind(this);
     this._buildsSelected = this._buildsSelected.bind(this);
+    this._updateDiscounts = this._updateDiscounts.bind(this);
     this.state = this._initState(context);
   }
 
@@ -161,6 +162,7 @@ export default class ComparisonPage extends Page {
     let b = new Ship(id, data.properties, data.slots); // Create a new Ship instance
     b.buildFrom(code);  // Populate components from code
     b.buildName = name;
+    b.applyDiscounts(Persist.getShipDiscount(), Persist.getModuleDiscount());
     return b;
   };
 
@@ -384,6 +386,21 @@ export default class ComparisonPage extends Page {
   }
 
   /**
+   * Update all ship costs on disount change
+   */
+  _updateDiscounts() {
+    let shipDiscount = Persist.getShipDiscount();
+    let moduleDiscount = Persist.getModuleDiscount();
+    let builds = [];
+
+    for (let b of this.state.builds) {
+      builds.push(b.applyDiscounts(shipDiscount, moduleDiscount));
+    }
+
+    this.setState({ builds });
+  }
+
+  /**
    * Update state based on context changes
    * @param  {Object} nextProps   Incoming/Next properties
    * @param  {Object} nextContext Incoming/Next conext
@@ -399,6 +416,7 @@ export default class ComparisonPage extends Page {
    */
   componentWillMount() {
     this.resizeListener = this.context.onWindowResize(this._updateDimensions);
+    this.persistListener = Persist.addListener('discounts', this._updateDiscounts);
   }
 
   /**
@@ -413,6 +431,7 @@ export default class ComparisonPage extends Page {
    */
   componentWillUnmount() {
     this.resizeListener.remove();
+    this.persistListener.remove();
   }
 
   /**
