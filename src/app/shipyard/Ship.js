@@ -739,7 +739,7 @@ export default class Ship {
   updateTopSpeed() {
     let speeds = Calc.speed(this.unladenMass + this.fuelCapacity, this.speed, this.boost, this.standard[1].m, this.pipSpeed);
     this.topSpeed = speeds['4 Pips'];
-    this.topBoost = speeds.boost;
+    this.topBoost = this.canBoost() ? speeds.boost : 0;
     return this;
   }
 
