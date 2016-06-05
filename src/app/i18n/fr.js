@@ -15,18 +15,18 @@ export const formats = {
 
 export const terms = {
   // Phrases
-  PHRASE_BACKUP_DESC: 'Exportation détaillée des données Coriolis pour l\'utilisation dans d\'autres sites et outils',  // Backup of all Coriolis data to save or transfer to another browser/device
+  PHRASE_BACKUP_DESC: 'Copie des données Coriolis pour l\'utilisation dans d\'autres sites et outils',  // Backup of all Coriolis data to save or transfer to another browser/device
   PHRASE_CONFIRMATION: 'Êtes-vous sûr?',  // Are You Sure?
   PHRASE_EXPORT_DESC: 'Un export détaillé en JSON de votre configuration pour l\'utilisation dans d\'autres sites et outils', // A detailed JSON export of your build for use in other sites and tools
-  PHRASE_FASTEST_RANGE: 'Consécutifs sauts de portée maximale', // Consecutive max range jumps
+  PHRASE_FASTEST_RANGE: 'Portée maximale en cas de sauts successifs', // Consecutive max range jumps
   PHRASE_IMPORT: 'Coller JSON ou importer ici', // Paste JSON or import here
-  PHRASE_LADEN: 'Navire de masse + carburant + Cargo',  // Ship Mass + Fuel + Cargo
-  PHRASE_NO_BUILDS: 'Défaut de configuration pour comparaison', // No builds added to comparison!
-  PHRASE_NO_RETROCH: 'configuration non modifiée',  // No Retrofitting changes
-  PHRASE_SELECT_BUILDS: 'Sélectionner configurations à comparer', // Select Builds to Compare
-  PHRASE_SG_RECHARGE: 'Temps de 50% à 100 % de charge', // Time from 50% to 100% Charge
-  PHRASE_SG_RECOVER: 'récupération (à 50 %) après l\'effondrement', // Recovery (to 50%) after collapse
-  PHRASE_UNLADEN: 'Navire de masse hors carburant et Cargo',  // Ship Mass excluding Fuel and Cargo
+  PHRASE_LADEN: 'Masse du Vaisseau + Carburant + Cargo',  // Ship Mass + Fuel + Cargo
+  PHRASE_NO_BUILDS: 'Aucune configuration ajoutée pour la comparaison', // No builds added to comparison!
+  PHRASE_NO_RETROCH: 'Aucun changement de configuration', // No Retrofitting changes
+  PHRASE_SELECT_BUILDS: 'Sélectionner les configurations à comparer', // Select Builds to Compare
+  PHRASE_SG_RECHARGE: 'Temps de charge de 50% à 100 %', // Time from 50% to 100% Charge
+  PHRASE_SG_RECOVER: 'Temps de redémarrage après perte du bouclier',  // Recovery (to 50%) after collapse
+  PHRASE_UNLADEN: 'Masse du Vaisseau hors Carburant et Cargo',  // Ship Mass excluding Fuel and Cargo
   PHRASE_UPDATE_RDY: 'Mise à jour disponible ! Cliquez pour rafraichir',  // Update Available! Click to Refresh
 
   // Units / Metrics
@@ -41,33 +41,6 @@ export const terms = {
   small: 'petit', // Small ship size
 
   // Terms
-  'build name': 'Nom de la configuration',  // Ship build/configuration/design name
-  'compare all': 'tout comparer',
-  'create new': 'Créer nouveau',
-  'damage per second': 'dégât par seconde',
-  'delete all': 'tout supprimer',
-  'detailed export': 'export détaillé',
-  'edit data': 'Editer donnée',
-  'empty all': 'vide tout',
-  'Enter Name': 'Entrer nom',
-  'fastest range': 'gamme la plus rapide',  // Fastet totaljump range - sum of succesive jumps
-  'fuel level': 'niveau de carburant',  // Percent of fuel (T) in the tank
-  'full tank': 'Réservoir plein',
-  'internal compartments': 'compartiments internes',
-  'jump range': 'Distance de saut',
-  'mass lock factor': 'facteur inhibition de masse',
-  'max mass': 'masse max',
-  'net cost': 'coûts nets',
-  'none created': 'Rien de créé',
-  'optimal mass': 'masse optimale', // Lowest weight / best weight for jump distance, etc
-  'refuel time': 'Temps de remplissage',  // Time to refuel the tank when scooping
-  'reload costs': 'recharger coûts',
-  'retrofit costs': 'Valeur de rachat', // The cost difference when upgrading / downgrading a component
-  'retrofit from': 'Racheter de', // Retrofit from Build A against build B
-  'T-Load': 'degrés', // Thermal load abbreviation
-  'total range': 'plage totale',
-  'unit cost': 'coût unitaire',
-  'utility mounts': 'Support utilitaire',
   about: 'à propos',  // Link to about page / about Coriolis.io
   added: 'ajouté',
   ammo: 'munition', // Ammunition
@@ -77,6 +50,7 @@ export const terms = {
   bays: 'baies',
   bins: 'bacs', // Number of Mining Refinery bins
   build: 'Configuration', // Shorthand for the build/configuration/design name
+  'build name': 'Nom de la configuration',  // Ship build/configuration/design name
   builds: 'Configurations', // Ship build/configuration/design names
   buy: 'Acheter',
   cancel: 'Annuler',
@@ -84,36 +58,54 @@ export const terms = {
   cells: 'Cellule', // Number of cells in a shield cell bank
   close: 'fermer',
   compare: 'comparer',
+  'compare all': 'tout comparer',
   comparison: 'comparaison',
   comparisons: 'comparaisons',
   cost: 'coût', // Cost / price of a module or price of a ship
   costs: 'coûts', // Costs / prices of a modules or prices of ships
   create: 'Créer',
+  'create new': 'Créer nouveau',
   credits: 'crédits',
   damage: 'dégât',
+  'damage per second': 'dégât par seconde',
   delete: 'supprimer',
+  'delete all': 'tout supprimer',
   dep: 'depl',  // Weapons/Hardpoints Deployed abbreviation
   deployed: 'déployé',  // Weapons/Hardpoints Deployed
+  'detailed export': 'export détaillé',
   disabled: 'désactivé',
   discount: 'ristourne',
+  'edit data': 'Editer donnée',
   efficiency: 'rendement',  // Power Plant efficiency
   empty: 'Vide',
+  'empty all': 'vide tout',
+  'Enter Name': 'Entrer nom',
   Explorer: 'explorateur',
+  'fastest range': 'gamme la plus rapide',  // Fastet totaljump range - sum of succesive jumps
   fuel: 'carburant',
+  'fuel level': 'niveau de carburant',  // Percent of fuel (T) in the tank
+  'full tank': 'Réservoir plein',
   hardpoints: 'Points d\'emport',
   hull: 'Coque',  // Ships hull
   import: 'Importer',
   insurance: 'Assurance',
+  'internal compartments': 'compartiments internes',
   jump: 'saut', // Single jump range
+  'jump range': 'Distance de saut',
   jumps: 'Sauts',
   laden: 'chargé',
   language: 'Langage',
   maneuverability: 'maniabilité',
   manufacturer: 'fabricant',
   mass: 'Masse',
+  'mass lock factor': 'facteur inhibition de masse',
+  'max mass': 'masse max',
   MLF: 'FIM', // Mass Lock Factor Abbreviation
+  'net cost': 'coûts nets',
   no: 'non',
+  'none created': 'Rien de créé',
   ok: 'D\'accord',
+  'optimal mass': 'masse optimale', // Lowest weight / best weight for jump distance, etc
   optimize: 'optimiser',
   pen: 'pén.',  // Armour peneration abbreviation
   permalink: 'lien durable',
@@ -125,12 +117,16 @@ export const terms = {
   rate: 'cadence',
   recharge: 'recharger',  // Shield Recharge time from 50% -> 100%
   recovery: 'récupération', // Shield recovery time (after losing shields/turning on -> 50%)
+  'refuel time': 'Temps de remplissage',  // Time to refuel the tank when scooping
   reload: 'recharger',  // Reload weapon/hardpoint
+  'reload costs': 'recharger coûts',
   rename: 'renommer',
   repair: 'réparer',
   reset: 'Réinitialisation',
   ret: 'esc', // Retracted abbreviation
   retracted: 'escamoté',  // Weapons/Hardpoints retracted
+  'retrofit costs': 'Valeur de rachat', // The cost difference when upgrading / downgrading a component
+  'retrofit from': 'Racheter de', // Retrofit from Build A against build B
   ROF: 'cadence', // Rate of Fire abbreviation
   roles: 'rôles', // Commander/Ship build roles - e.g. Trader, Bounty-Hunter, Explorer, etc
   save: 'sauvegarder',
@@ -146,10 +142,14 @@ export const terms = {
   Stock: 'de base', // Thermal-load abbreviation
   strength: 'force',  // Strength in reference to Shield Strength
   subtotal: 'Sous-Total',
+  'T-Load': 'degrés', // Thermal load abbreviation
   time: 'temps',  // time it takes to complete something
   tooltips: 'infobulles', // Tooltips setting - show/hide
+  'total range': 'plage totale',
   Trader: 'commerçant', // Trader role
+  'unit cost': 'coût unitaire',
   unladen: 'Non chargé',  // No cargo or fuel
+  'utility mounts': 'Support utilitaire',
   WEP: 'ARM', // Abbreviation - Weapon recharge rate for power distributor
   yes: 'oui'
 };
