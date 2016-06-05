@@ -235,13 +235,13 @@ export default class LineChart extends TranslatedComponent {
         <g className='x axis' ref={(elem) => d3.select(elem).call(this.xAxis)} transform={`translate(0,${innerHeight})`}>
           <text className='cap' y='30' dy='.1em' x={innerWidth / 2} style={{ textAnchor: 'middle' }}>
             <tspan>{xLabel}</tspan>
-            <tspan className='metric'>{` (${xUnit})`}</tspan>
+            <tspan className='metric'> ({xUnit})</tspan>
           </text>
         </g>
         <g className='y axis' ref={(elem) => d3.select(elem).call(this.yAxis)}>
           <text className='cap' transform='rotate(-90)' y='-50' dy='.1em' x={innerHeight / -2} style={{ textAnchor: 'middle' }}>
             <tspan>{yLabel}</tspan>
-            <tspan className='metric'>{` (${yUnit})`}</tspan>
+            <tspan className='metric'> ({yUnit})</tspan>
           </text>
         </g>
         <g ref={(g) => this.tipContainer = d3.select(g)} style={{ display: 'none' }}>

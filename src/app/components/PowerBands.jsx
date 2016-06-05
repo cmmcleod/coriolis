@@ -271,8 +271,8 @@ export default class PowerBands extends TranslatedComponent {
           <line x1={pctScale(0.5)} x2={pctScale(0.5)} y1='0' y2={state.innerHeight} className={pwrWarningClass} />
           <text dy='0.5em' x='-3' y={state.retY} className='primary upp' textAnchor='end' onMouseOver={this.context.termtip.bind(null, 'retracted')} onMouseLeave={this._hidetip}>{translate('ret')}</text>
           <text dy='0.5em' x='-3' y={state.depY} className='primary upp' textAnchor='end' onMouseOver={this.context.termtip.bind(null, 'deployed', { orientation: 's', cap: 1 })} onMouseLeave={this._hidetip}>{translate('dep')}</text>
-          <text dy='0.5em' x={innerWidth + 5} y={state.retY} className={getClass(retSelected, retSum, available)}>{f2(Math.max(0, retSum)) + ' (' + pct1(Math.max(0, retSum / available)) + ')'}</text>
-          <text dy='0.5em' x={innerWidth + 5} y={state.depY} className={getClass(depSelected, depSum, available)}>{f2(Math.max(0, depSum)) + ' (' + pct1(Math.max(0, depSum / available)) + ')'}</text>
+          <text dy='0.5em' x={innerWidth + 5} y={state.retY} className={getClass(retSelected, retSum, available)}>{f2(Math.max(0, retSum))} ({pct1(Math.max(0, retSum / available))})</text>
+          <text dy='0.5em' x={innerWidth + 5} y={state.depY} className={getClass(depSelected, depSum, available)}>{f2(Math.max(0, depSum))} ({pct1(Math.max(0, depSum / available))})</text>
         </g>
       </svg>
     );

@@ -208,7 +208,7 @@ export default class BarChart extends TranslatedComponent {
         <g className='x axis' ref={(elem) => d3.select(elem).call(this.xAxis)} transform={`translate(0,${innerHeight})`}>
           <text className='cap' y='30' dy='.1em' x={innerWidth / 2} style={{ textAnchor: 'middle' }}>
             <tspan>{title}</tspan>
-            { unit ? <tspan className='metric'>{` (${unit})`}</tspan> : null }
+            { unit ? <tspan className='metric'> ({unit})</tspan> : null }
           </text>
         </g>
         <g className='y axis' ref={(elem) => { let e = d3.select(elem); e.call(this.yAxis); e.selectAll('text').each(insertLinebreaks); }} />

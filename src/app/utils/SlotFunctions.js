@@ -235,7 +235,7 @@ export function diffDetails(language, m, mm) {
     }
     let sgDiffClass = Math.round((newShield - shield) * 100) / 100 == 0 ? 'muted' : (newShield > shield ? 'secondary' : 'warning');
 
-    propDiffs.push(<div key='shields'>{`${translate('shields')}: `}<span className={sgDiffClass}>{diff(formats.int, newShield, shield)}{units.MJ}</span></div>);
+    propDiffs.push(<div key='shields'>{translate('shields')}: <span className={sgDiffClass}>{diff(formats.int, newShield, shield)}{units.MJ}</span></div>);
   }
 
   if (m.grp == 'pd') {
@@ -265,10 +265,10 @@ export function diffDetails(language, m, mm) {
     let ladenRange = this.calcLadenRange(massDiff + capDiff, m.fuel, fsd);
 
     if (maxRange != this.unladenRange) {
-      propDiffs.push(<div key='maxRange'>{`${translate('max')} ${translate('jump range')}: `}<span className={maxRange > this.unladenRange ? 'secondary' : 'warning'}>{formats.round(maxRange)}{units.LY}</span></div>);
+      propDiffs.push(<div key='maxRange'>{translate('max')} {translate('jump range')}: <span className={maxRange > this.unladenRange ? 'secondary' : 'warning'}>{formats.round(maxRange)}{units.LY}</span></div>);
     }
     if (ladenRange != this.ladenRange) {
-      propDiffs.push(<div key='unladenRange'>{`${translate('laden')} ${translate('jump range')}: `}<span className={ladenRange > this.ladenRange ? 'secondary' : 'warning'}>{formats.round(ladenRange)}{units.LY}</span></div>);
+      propDiffs.push(<div key='unladenRange'>{translate('laden')} {translate('jump range')}: <span className={ladenRange > this.ladenRange ? 'secondary' : 'warning'}>{formats.round(ladenRange)}{units.LY}</span></div>);
     }
   }
 

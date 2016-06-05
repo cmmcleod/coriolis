@@ -38,7 +38,7 @@ export default class HardpointSlot extends Slot {
 
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
-          <div className={'l'}>{classRating + ' ' + translate(m.name || m.grp)}</div>
+          <div className={'l'}>{classRating} {translate(m.name || m.grp)}</div>
           <div className={'r'}>{m.mass}{u.T}</div>
         </div>
         <div className={'cb'}>
