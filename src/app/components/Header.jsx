@@ -362,42 +362,44 @@ export default class Header extends TranslatedComponent {
 
     return (
       <div className='menu-list no-wrap cap' onClick={ (e) => e.stopPropagation() }>
-        <div style={{ lineHeight: '2em' }}>
-          <div>
-            {translate('language')}
-            <div style={{ float: 'right' }}>
-              <select className='cap' dir='rtl' value={Persist.getLangCode()} onChange={this._setLanguage}>
-                {this.languageOptions}
-              </select>
-            </div>
-          </div>
-          <div className='cap ptr' onClick={this._toggleTooltips} >
-            {translate('tooltips')}
-            <div className={cn({ disabled: !tips, 'primary-disabled': tips })} style={{ marginLeft: '0.5em', float: 'right' }}>{(tips ? '✓' : '✗')}</div>
-          </div>
-          <div>
-            {translate('insurance')}
-            <div style={{ float: 'right' }}>
-              <select className='cap' dir='rtl' value={Persist.getInsurance()} onChange={this._setInsurance}>
-                {this.insuranceOptions}
-              </select>
-            </div>
-          </div>
-          <div>
-            {translate('ship')} {translate('discount')}
-            <div style={{ float: 'right' }}>
-              <input type='text' size='10' value={this.state.shipDiscount} onChange={this._changeShipDiscount} onFocus={selectAll} onBlur={this._setShipDiscount} onKeyDown={this._kpShipDiscount}/>
-              <u className='primary-disabled'>%</u>
-            </div>
-          </div>
-          <div style={{ clear: 'both' }}>
-            {translate('module')} {translate('discount')}
-            <div style={{ float: 'right' }}>
-              <input type='text' size='10' value={this.state.moduleDiscount} onChange={this._changeModuleDiscount} onFocus={selectAll} onBlur={this._setModuleDiscount} onKeyDown={this._kpModuleDiscount}/>
-              <u className='primary-disabled'>%</u>
-            </div>
-          </div>
-        </div>
+        <table style={{ width: '100%', background: 'none', borderSpacing: '0 0.5em' }}>
+          <tbody>
+            <tr>
+              <td>{translate('language')}</td>
+              <td className='ri'>
+                <select className='cap' dir='rtl' value={Persist.getLangCode()} onChange={this._setLanguage}>
+                  {this.languageOptions}
+                </select>
+              </td>
+            </tr>
+            <tr className='cap ptr' onClick={this._toggleTooltips} >
+              <td>{translate('tooltips')}</td>
+              <td className={cn('ri', { disabled: !tips, 'primary-disabled': tips })}>{(tips ? '✓' : '✗')}</td>
+            </tr>
+            <tr>
+              <td>{translate('insurance')}</td>
+              <td className='ri'>
+                <select className='cap' dir='rtl' value={Persist.getInsurance()} onChange={this._setInsurance}>
+                  {this.insuranceOptions}
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>{translate('ship')} {translate('discount')}</td>
+              <td className='ri'>
+                <input type='text' size='10' value={this.state.shipDiscount} onChange={this._changeShipDiscount} onFocus={selectAll} onBlur={this._setShipDiscount} onKeyDown={this._kpShipDiscount}/>
+                <u className='primary-disabled'>%</u>
+              </td>
+            </tr>
+            <tr>
+              <td>{translate('module')} {translate('discount')}</td>
+              <td className='ri'>
+                <input type='text' size='10' value={this.state.moduleDiscount} onChange={this._changeModuleDiscount} onFocus={selectAll} onBlur={this._setModuleDiscount} onKeyDown={this._kpModuleDiscount}/>
+                <u className='primary-disabled'>%</u>
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <hr />
         <ul style={{ width: '100%' }}>
           {translate('builds')} & {translate('comparisons')}
@@ -481,21 +483,21 @@ export default class Header extends TranslatedComponent {
 
         <div className='l menu'>
           <div className={cn('menu-header', { selected: openedMenu == 's' })} onClick={this._openShips}>
-            <Rocket className='warning' /><span className='menu-item-label'>{' ' + translate('ships')}</span>
+            <Rocket className='warning' /><span className='menu-item-label'>{translate('ships')}</span>
           </div>
           {openedMenu == 's' ? this._getShipsMenu() : null}
         </div>
 
         <div className='l menu'>
           <div className={cn('menu-header', { selected: openedMenu == 'b', disabled: !hasBuilds })} onClick={hasBuilds && this._openBuilds}>
-            <Hammer className={cn('warning', { 'warning-disabled': !hasBuilds })} /><span className='menu-item-label'>{' ' + translate('builds')}</span>
+            <Hammer className={cn('warning', { 'warning-disabled': !hasBuilds })} /><span className='menu-item-label'>{translate('builds')}</span>
           </div>
           {openedMenu == 'b' ? this._getBuildsMenu() : null}
         </div>
 
         <div className='l menu'>
           <div className={cn('menu-header', { selected: openedMenu == 'comp', disabled: !hasBuilds })} onClick={hasBuilds && this._openComp}>
-            <StatsBars className={cn('warning', { 'warning-disabled': !hasBuilds })} /><span className='menu-item-label'>{' ' + translate('compare')}</span>
+            <StatsBars className={cn('warning', { 'warning-disabled': !hasBuilds })} /><span className='menu-item-label'>{translate('compare')}</span>
           </div>
           {openedMenu == 'comp' ? this._getComparisonsMenu() : null}
         </div>
