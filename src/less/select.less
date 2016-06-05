@@ -102,7 +102,7 @@ select {
       }
     }
 
-    &.disabled {
+    &.disabled, &.disabled:hover {
       cursor: not-allowed;
       border-color: @disabled;
       color: @disabled;
@@ -147,6 +147,12 @@ select {
     }
     ul {
       width: 17em;
+    }
+  }
+
+  &.standard {
+    ul {
+      width: 16.25em;
     }
   }
 

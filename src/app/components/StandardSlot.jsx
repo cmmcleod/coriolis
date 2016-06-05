@@ -33,6 +33,7 @@ export default class StandardSlot extends TranslatedComponent {
 
     if (this.props.selected) {
       menu = <AvailableModulesMenu
+        className='standard'
         modules={modules}
         shipMass={ship.ladenMass}
         m={m}
@@ -47,17 +48,17 @@ export default class StandardSlot extends TranslatedComponent {
         <div className={cn('details-container', { warning: warning && warning(slot.m) })}>
           <div className={'sz'}>{slot.maxClass}</div>
           <div>
-            <div className='l'>{classRating + ' ' + translate(m.grp)}</div>
+            <div className='l'>{classRating} {translate(m.grp == 'bh' ? m.grp : m.name || m.grp)}</div>
             <div className={'r'}>{m.mass || m.fuel || 0}{units.T}</div>
             <div className={'cb'}>
-                { m.name ? <div className='l'>{translate(m.name)}</div> : null }
-                { m.optmass ? <div className='l'>{translate('optimal mass') + ': '}{m.optmass}{units.T}</div> : null }
-                { m.maxmass ? <div className='l'>{translate('max mass') + ': '}{m.maxmass}{units.T}</div> : null }
+                { m.grp == 'bh' && m.name ? <div className='l'>{translate(m.name)}</div> : null }
+                { m.optmass ? <div className='l'>{translate('optimal mass')}: {m.optmass}{units.T}</div> : null }
+                { m.maxmass ? <div className='l'>{translate('max mass')}: {m.maxmass}{units.T}</div> : null }
                 { m.range ? <div className='l'>{translate('range')}: {m.range}{units.km}</div> : null }
                 { m.time ? <div className='l'>{translate('time')}: {formats.time(m.time)}</div> : null }
                 { m.eff ? <div className='l'>{translate('efficiency')}: {m.eff}</div> : null }
                 { m.pGen ? <div className='l'>{translate('power')}: {m.pGen}{units.MW}</div> : null }
-                { m.maxfuel ? <div className='l'>{translate('max') + ' ' + translate('fuel') + ': '}{m.maxfuel}{units.T}</div> : null }
+                { m.maxfuel ? <div className='l'>{translate('max')} {translate('fuel')}: {m.maxfuel}{units.T}</div> : null }
                 { m.weaponcapacity ? <div className='l'>{translate('WEP')}: {m.weaponcapacity}{units.MJ} / {m.weaponrecharge}{units.MW}</div> : null }
                 { m.systemcapacity ? <div className='l'>{translate('SYS')}: {m.systemcapacity}{units.MJ} / {m.systemrecharge}{units.MW}</div> : null }
                 { m.enginecapacity ? <div className='l'>{translate('ENG')}: {m.enginecapacity}{units.MJ} / {m.enginerecharge}{units.MW}</div> : null }
