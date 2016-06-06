@@ -141,7 +141,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda/48A6A6A5A8A8A5C2c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA?bn=Test%20My%20Ship');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda/4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA?bn=Test%20My%20Ship');
     });
 
     it('catches an invalid build', function() {

@@ -295,7 +295,7 @@ export default class Ship {
   getStandardString() {
     if(!this.serialized.standard) {
       this.serialized.standard = this.bulkheads.m.index + this.standard.reduce((arr, slot, i) => {
-        arr[i] = slot.m ? slot.m.class + slot.m.rating : '-';
+        arr[i] = slot.m ? slot.m.id : '-';
         return arr;
       }, new Array(this.standard.length)).join('');
     }
