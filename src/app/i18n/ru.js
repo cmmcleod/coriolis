@@ -18,15 +18,15 @@ export const terms = {
   PHRASE_BACKUP_DESC: 'Сохраните все данные перед переносом в другой браузер или устройство', // Backup of all Coriolis data to save or transfer to another browser/device
   PHRASE_CONFIRMATION: 'Вы уверены?', // Are You Sure?
   PHRASE_EXPORT_DESC: 'Детальный JSON-экспорт вашей сборки для использования в других местах и инструментах', // A detailed JSON export of your build for use in other sites and tools
-  PHRASE_FASTEST_RANGE: 'Последовательные максимальные дальности прыжков',  // Consecutive max range jumps
+  PHRASE_FASTEST_RANGE: 'Последовательные прыжки максимальной дальности',  // Consecutive max range jumps
   PHRASE_IMPORT: 'Для импорта вставьте код в эту форму',  // Paste JSON or import here
-  PHRASE_LADEN: 'Корабль Масса + топлива + Грузы',  // Ship Mass + Fuel + Cargo
+  PHRASE_LADEN: 'Масса корабля с учётом топлива и грузов',  // Ship Mass + Fuel + Cargo
   PHRASE_NO_BUILDS: 'Нечего сравнивать',  // No builds added to comparison!
-  PHRASE_NO_RETROCH: 'нет ранних версий сборкиконфигурации',  // No Retrofitting changes
+  PHRASE_NO_RETROCH: 'нет ранних версий сборки\\конфигурации',  // No Retrofitting changes
   PHRASE_SELECT_BUILDS: 'Выберите конфигурацию для сравнения',  // Select Builds to Compare
   PHRASE_SG_RECHARGE: 'восстановление с 60% до 100% объема щита', // Time from 50% to 100% Charge
-  PHRASE_SG_RECOVER: 'восстановление [до 60%] после падения\сбития',  // Recovery (to 50%) after collapse
-  PHRASE_UNLADEN: 'Судно Масса без учета топлива и грузов', // Ship Mass excluding Fuel and Cargo
+  PHRASE_SG_RECOVER: 'восстановление [до 60%] после снятия щита',  // Recovery (to 50%) after collapse
+  PHRASE_UNLADEN: 'Масса корабля без учета топлива и грузов', // Ship Mass excluding Fuel and Cargo
   PHRASE_UPDATE_RDY: 'Доступно обновление. Нажмите для обновления.',  // Update Available! Click to Refresh
 
   // Units / Metrics
@@ -117,7 +117,7 @@ export const terms = {
   jumps: 'Прыжков',
   laden: 'Груженый',
   language: 'Язык',
-  maneuverability: 'Моневренность',
+  maneuverability: 'Маневренность',
 
   mass: 'Масса',
   max: 'Макс',
