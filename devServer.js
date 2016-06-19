@@ -11,6 +11,15 @@ new WebpackDevServer(webpack(config), {
       // For some reason connect-history-api-fallback does not allow '.' in the URL for history fallback...
       { from: /\/outfit\//, to: '/index.html' }
     ]
+  },
+  stats: {
+    assets: true,
+    colors: true,
+    version: false,
+    hash: false,
+    timings: true,
+    chunks: false,
+    chunkModules: false
   }
 }).listen(3300, "0.0.0.0", function (err, result) {
   if (err) {
