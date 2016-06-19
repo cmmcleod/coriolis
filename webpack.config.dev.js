@@ -10,7 +10,7 @@ module.exports = {
     headers: { "Access-Control-Allow-Origin": "*" }
   },
   entry: {
-    app: [ 'webpack-dev-server/client?http://localhost:3300', 'webpack/hot/only-dev-server', path.join(__dirname, "src/app/index.js") ],
+    app: [ 'webpack-dev-server/client?http://0.0.0.0:3300', 'webpack/hot/only-dev-server', path.join(__dirname, "src/app/index.js") ],
     lib: ['d3', 'react', 'react-dom', 'classnames', 'fbemitter', 'lz-string']
   },
   resolve: {
