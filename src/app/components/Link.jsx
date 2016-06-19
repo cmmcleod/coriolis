@@ -36,7 +36,8 @@ export default class Link extends React.Component {
    * @param  {SyntheticEvent} event Event
    */
   handler(event) {
-    if (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey || event.button > 1) {
+    console.log("Link Click", Object.assign({}, event));
+    if (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey || event.button > 0) {
       return;
     }
     event.preventDefault();
