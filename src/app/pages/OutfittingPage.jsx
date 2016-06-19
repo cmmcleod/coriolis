@@ -25,6 +25,16 @@ const SPEED_SERIES = ['boost', '4 Pips', '2 Pips', '0 Pips'];
 const SPEED_COLORS = ['#0088d2', '#ff8c0d', '#D26D00', '#c06400'];
 
 /**
+ * Document Title Generator
+ * @param  {String} shipName  Ship Name
+ * @param  {String} buildName Build Name
+ * @return {String}           Document title
+ */
+function getTitle(shipName, buildName) {
+  return `${shipName}${buildName ? ` - ${buildName}` : ''}`;
+}
+
+/**
  * The Outfitting Page
  */
 export default class OutfittingPage extends Page {
@@ -65,10 +75,11 @@ export default class OutfittingPage extends Page {
     }
 
     let fuelCapacity = ship.fuelCapacity;
+    this._getTitle = getTitle.bind(this, data.properties.name);
 
     return {
       error: null,
-      title: 'Outfitting - ' + data.properties.name,
+      title: this._getTitle(buildName),
       costTab: Persist.getCostTab() || 'costs',
       buildName,
       newBuildName: buildName,
@@ -117,7 +128,7 @@ export default class OutfittingPage extends Page {
       this._updateRoute(shipId, newBuildName, code);
     }
 
-    this.setState({ buildName: newBuildName, code, savedCode: code });
+    this.setState({ buildName: newBuildName, code, savedCode: code, title: this._getTitle(newBuildName) });
   }
 
   /**
