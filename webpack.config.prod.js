@@ -75,6 +75,7 @@ module.exports = {
     new CopyDirPlugin(path.join(__dirname, 'src/schemas'), 'schemas'),
     new CopyDirPlugin(path.join(__dirname, 'src/images/logo/*'), ''),
     new CopyDirPlugin(path.join(__dirname, 'src/migrate.html'), ''),
+    new CopyDirPlugin(path.join(__dirname, 'src/.htaccess'), ''),
     new AppCachePlugin({
       network: ['*'],
       settings: ['prefer-online'],

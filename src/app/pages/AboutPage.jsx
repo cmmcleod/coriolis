@@ -25,14 +25,15 @@ export default class AboutPage extends Page {
   renderPage() {
     return <div className={'page'} style={{ textAlign: 'left', maxWidth: 800, margin: '0 auto' }}>
       <h1><CoriolisLogo style={{ marginRight: '0.4em' }} className='xl'/><span className='warning'>Coriolis</span></h1>
+      <p>This is a clone of the Coriolis project, whose original author is currently unable to maintain it. This clone is maintained by the <a href="http://edcd.github.io/">EDCD community</a>.</p>
       <p>The Coriolis project was inspired by <a href='http://www.edshipyard.com/' target='_blank'>E:D Shipyard</a> and, of course, <a href='http://www.elitedangerous.com' target='_blank'>Elite Dangerous</a>. The ultimate goal of Coriolis is to provide rich features to support in-game play and planning while engaging the E:D community to support its development.</p>
 
       <p>Coriolis was created using assets and imagery from Elite: Dangerous, with the permission of Frontier Developments plc, for non-commercial purposes. It is not endorsed by nor reflects the views or opinions of Frontier Developments.</p>
 
-      <a style={{ display: 'block', textDecoration: 'none' }} href='https://github.com/cmmcleod/coriolis' target='_blank' title='Coriolis Github Project'>
+      <a style={{ display: 'block', textDecoration: 'none' }} href='https://github.com/EDCD/coriolis' target='_blank' title='Coriolis Github Project'>
         <GitHub style={{ margin: '0.4em' }} className='l fg xl'/>
         <h2 style={{ margin: 0, textDecoration: 'none' }}>Github</h2>
-        github.com/cmmcleod/coriolis
+        github.com/EDCD/coriolis
       </a>
 
       <p>Coriolis is an open source project. Checkout the list of upcoming features and to-do list on github. Any and all contributions and feedback are welcome. If you encounter any bugs please report them and provide as much detail as possible.</p>
@@ -47,7 +48,7 @@ export default class AboutPage extends Page {
       <p>Help keep the lights on! Donations will be used to cover costs of running and maintaining Coriolis. Thanks for helping!</p>
 
       <h3>Chat</h3>
-      <p>You can chat to us on <a href='https://www.hipchat.com/gfYQiZcmy' target='_blank'>HipChat</a> and sign up to chat on all E:D HipChat groups <a href='https://elite-dangerous.hipchat.com/invite/74670/a3af7ea57008362d83d05fada09bdf84' target='_blank'>here</a>.</p>
+      <p>You can chat to us on our <a href='https://discord.gg/0uwCh6R62aQ0eeAX' target='_blank'>EDCD Discord server</a>.</p>
     </div>;
   }
 }

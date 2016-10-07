@@ -4,3 +4,4 @@ build
 *.log
 nginx.pid
 .idea
+/bin
