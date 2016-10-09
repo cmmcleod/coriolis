@@ -131,7 +131,7 @@ export default class ComparisonPage extends Page {
     builds.sort(sortBy(predicate));
 
     return {
-      title: 'Coriolis - Compare',
+      title: 'Coriolis EDCD Edition - Compare',
       predicate,
       desc,
       facets,

@@ -291,7 +291,7 @@ export default class Coriolis extends React.Component {
       { this.state.tooltip }
       <footer>
         <div className="right cap">
-          <a href="https://github.com/cmmcleod/coriolis/releases/" target="_blank" title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
+          <a href="https://github.com/EDCD/coriolis" target="_blank" title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
         </div>
       </footer>
     </div>;

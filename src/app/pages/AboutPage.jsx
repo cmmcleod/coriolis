@@ -24,10 +24,11 @@ export default class AboutPage extends Page {
    */
   renderPage() {
     return <div className={'page'} style={{ textAlign: 'left', maxWidth: 800, margin: '0 auto' }}>
-      <h1><CoriolisLogo style={{ marginRight: '0.4em' }} className='xl'/><span className='warning'>Coriolis</span></h1>
-      <p>This is a clone of the Coriolis project, whose original author is currently unable to maintain it. This clone is maintained by the <a href="http://edcd.github.io/">EDCD community</a>.</p>
-      <p>The Coriolis project was inspired by <a href='http://www.edshipyard.com/' target='_blank'>E:D Shipyard</a> and, of course, <a href='http://www.elitedangerous.com' target='_blank'>Elite Dangerous</a>. The ultimate goal of Coriolis is to provide rich features to support in-game play and planning while engaging the E:D community to support its development.</p>
+      <h1><CoriolisLogo style={{ marginRight: '0.4em' }} className='xl'/><span className='warning'>Coriolis EDCD Edition</span></h1>
 
+      <p>This is a clone of the Coriolis project, whose original author is currently unable to maintain it. This clone is maintained by the <a href="http://edcd.github.io/">EDCD community</a>.</p>
+      <p>To recover your builds, go to <a href='https://coriolis.io/' target='_blank'>https://coriolis.io/</a>, backup your builds (Settings / Backup), copy the text, return here and import (Settings / Import).</p>
+      <p>The Coriolis project was inspired by <a href='http://www.edshipyard.com/' target='_blank'>E:D Shipyard</a> and, of course, <a href='http://www.elitedangerous.com' target='_blank'>Elite Dangerous</a>. The ultimate goal of Coriolis is to provide rich features to support in-game play and planning while engaging the E:D community to support its development.</p>
       <p>Coriolis was created using assets and imagery from Elite: Dangerous, with the permission of Frontier Developments plc, for non-commercial purposes. It is not endorsed by nor reflects the views or opinions of Frontier Developments.</p>
 
       <a style={{ display: 'block', textDecoration: 'none' }} href='https://github.com/EDCD/coriolis' target='_blank' title='Coriolis Github Project'>
@@ -48,7 +49,7 @@ export default class AboutPage extends Page {
       <p>Help keep the lights on! Donations will be used to cover costs of running and maintaining Coriolis. Thanks for helping!</p>
 
       <h3>Chat</h3>
-      <p>You can chat to us on our <a href='https://discord.gg/0uwCh6R62aQ0eeAX' target='_blank'>EDCD Discord server</a>.</p>
+      <p>You can chat to us on our <a href='https://discord.gg/0uwCh6R62aPRjk9w' target='_blank'>EDCD Discord server</a>.</p>
     </div>;
   }
 }

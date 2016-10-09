@@ -82,7 +82,7 @@ export default class ShipyardPage extends Page {
     }
 
     this.state = {
-      title: 'Coriolis - Shipyard',
+      title: 'Coriolis EDCD Edition - Shipyard',
       shipPredicate: 'name',
       shipDesc: true,
       shipSummaries: ShipyardPage.cachedShipSummaries
@@ -241,7 +241,7 @@ export default class ShipyardPage extends Page {
 
     return (
       <div className='page' style={{ fontSize: sizeRatio + 'em' }}>
-        <p style={{ textAlign: 'center' }}>This is a temporary clone of <a href='http://coriolis.io/' target='_blank'>http://coriolis.io/</a> with added support for E:D 2.1. For more info see Settings / <Link href="/about" className='block'>About</Link></p>
+        <p style={{ textAlign: 'center' }}>This is <strong>Coriolis EDCD Edition</strong> - a temporary clone of <a href='https://coriolis.io/' target='_blank'>https://coriolis.io/</a> with added support for E:D 2.1. For more info see Settings / <Link href="/about" className='block'>About</Link></p>
         <div style={{ whiteSpace: 'nowrap', margin: '0 auto', fontSize: '0.8em', position: 'relative', display: 'inline-block', maxWidth: '100%' }}>
           <table style={{ width: '12em', position: 'absolute', zIndex: 1 }}>
             <thead>
