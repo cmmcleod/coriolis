@@ -37,6 +37,7 @@ export const ModuleGroupToName = {
   am: 'Auto Field-Maintenance Unit',
   bsg: 'Bi-Weave Shield Generator',
   cr: 'Cargo Rack',
+  fh: 'Fighter Hangar',
   fi: 'Frame Shift Drive Interdictor',
   hb: 'Hatch Breaker Limpet Controller',
   hr: 'Hull Reinforcement Package',
@@ -48,6 +49,10 @@ export const ModuleGroupToName = {
   dc: 'Docking Computer',
   fx: 'Fuel Transfer Limpet Controller',
   pc: 'Prospector Limpet Controller',
+  pce: 'Economy Class Passenger Cabin',
+  pci: 'Business Class Passenger Cabin',
+  pcm: 'First Class Passenger Cabin',
+  pcq: 'Luxury Passenger Cabin',
   cc: 'Collector Limpet Controller',
 
   // Hard Points

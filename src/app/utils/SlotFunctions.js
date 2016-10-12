@@ -5,14 +5,19 @@ import { Infinite } from '../components/SvgIcons';
 import Persist from '../stores/Persist';
 
 /**
- * Determine if a slot can mount a module of a particular class and group
+ * Determine if a slot on a ship can mount a module of a particular class and group
+ * @param  {Object} ship    Ship object
  * @param  {Object} slot    Slot object
  * @param  {String} group   Module group/type abbrivation/code
  * @param  {Integer} clazz  [Optional] Module Class/Size
  * @return {Boolean}        True if the slot can mount the module
  */
-export function canMount(slot, group, clazz) {
-  if (slot && (!slot.eligible || slot.eligible[group]) && (clazz === undefined || slot.maxClass >= clazz)) {
+export function canMount(ship, slot, group, clazz) {
+  if (slot
+   && (!slot.eligible || slot.eligible[group])
+   && (group != 'pcq' || (ship.luxuryCabins && ship.luxuryCabins  === true))
+   && (group != 'fh' || (ship.fighterHangars && ship.fighterHangars  === true))
+   && (clazz === undefined || slot.maxClass >= clazz)) {
     return true;
   }
   return false;
