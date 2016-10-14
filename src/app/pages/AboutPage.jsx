@@ -29,7 +29,7 @@ export default class AboutPage extends Page {
       <p>This is a clone of the Coriolis project, whose original author is currently unable to maintain it. This clone is maintained by the <a href="http://edcd.github.io/">EDCD community</a>.</p>
       <p>To recover your builds, go to <a href='https://coriolis.io/' target='_blank'>https://coriolis.io/</a>, backup your builds (Settings / Backup), copy the text, return here and import (Settings / Import).</p>
       <p>The Coriolis project was inspired by <a href='http://www.edshipyard.com/' target='_blank'>E:D Shipyard</a> and, of course, <a href='http://www.elitedangerous.com' target='_blank'>Elite Dangerous</a>. The ultimate goal of Coriolis is to provide rich features to support in-game play and planning while engaging the E:D community to support its development.</p>
-      <p>Coriolis was created using assets and imagery from Elite: Dangerous, with the permission of Frontier Developments plc, for non-commercial purposes. It is not endorsed by nor reflects the views or opinions of Frontier Developments.</p>
+      <p>Coriolis was created using assets and imagery from Elite: Dangerous, with the permission of Frontier Developments plc, for non-commercial purposes. It is not endorsed by nor reflects the views or opinions of Frontier Developments.  A number of assets were sourced from <a href='http://edassets.org' target='_blank'>ED Assets</a></p>
 
       <a style={{ display: 'block', textDecoration: 'none' }} href='https://github.com/EDCD/coriolis' target='_blank' title='Coriolis Github Project'>
         <GitHub style={{ margin: '0.4em' }} className='l fg xl'/>

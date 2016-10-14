@@ -293,7 +293,7 @@ export default class OutfittingPage extends Page {
         <div id='overview'>
           <h1>{ship.name}</h1>
           <div id='build'>
-            <input value={newBuildName} onChange={this._buildNameChange} placeholder={translate('Enter Name')} maxsize={50} />
+            <input value={newBuildName} onChange={this._buildNameChange} placeholder={translate('Enter Name')} maxLength={50} />
             <button onClick={canSave && this._saveBuild} disabled={!canSave} onMouseOver={termtip.bind(null, 'save')} onMouseOut={hide}>
               <FloppyDisk className='lg' />
             </button>
