@@ -58,7 +58,7 @@ export default class InternalSlotSection extends SlotSection {
     let ship = this.props.ship;
     let chargeCap = 0; // Capacity of single activation
     ship.internal.forEach(function(slot) {
-      if ((!slot.m || (clobber && !ModuleUtils.isShieldGenerator(slot.m.grp))) && (!slot.eligible || slot.eligible.scb)) { // Check eligibility due to Orca special case
+      if ((!slot.m || (clobber && !ModuleUtils.isShieldGenerator(slot.m.grp))) && (!slot.eligible || slot.eligible.scb)) { // Check eligibility due to passenger ships special case
         ship.use(slot, ModuleUtils.findInternal('scb', slot.maxClass, 'A'));
         ship.setSlotEnabled(slot, chargeCap <= ship.shieldStrength); // Don't waste cell capacity on overcharge
         chargeCap += slot.m.recharge;
@@ -108,7 +108,7 @@ export default class InternalSlotSection extends SlotSection {
       slots.push(<InternalSlot
         key={i}
         maxClass={s.maxClass}
-        availableModules={() => availableModules.getInts(s.maxClass, s.eligible)}
+        availableModules={() => availableModules.getInts(ship, s.maxClass, s.eligible)}
         onOpen={this._openMenu.bind(this,s)}
         onSelect={this._selectModule.bind(this, s)}
         selected={currentMenu == s}
