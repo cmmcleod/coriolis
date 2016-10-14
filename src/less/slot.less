@@ -12,6 +12,8 @@
   background-color: @primary-bg;
   border: 1px solid @primary-disabled;
   color: @fg;
+  stroke: @fg;
+  stroke-width: 20;
   fill: @fg;
 
   .details-container {
@@ -54,6 +56,8 @@
     font-size: 1.2em;
     width: 1.2em;
     color: @primary-disabled;
+    stroke: @primary-disabled;
+    stroke-width: 20;
     border-right: 1px solid @primary-disabled;
     box-sizing: border-box;
     padding-top: 0.2em;
@@ -64,6 +68,8 @@
     text-transform: uppercase;
     font-size: 1.3em;
     color: lighten(@primary-bg, 12%);
+    stroke: lighten(@primary-bg, 12%);
+    stroke-width: 20;
     text-align: center;
     letter-spacing: 0.1em;
     line-height: 1.7em;
@@ -71,12 +77,16 @@
 
   &.selected {
     color: @primary-bg;
+    stroke: @primary-bg;
+    stroke-width: 20;
     fill: @primary-bg;
     background-color: @primary;
     border: 1px solid @primary;
     z-index: 1;
     .sz {
         color: @primary;
+        stroke: @primary;
+        stroke-width: 20;
         background-color: @primary-bg;
         border-right: 1px solid @primary;
     }

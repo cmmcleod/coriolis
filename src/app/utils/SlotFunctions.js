@@ -127,7 +127,11 @@ const PROP_BLACKLIST = {
   enginecapacity: 1,
   enginerecharge: 1,
   systemcapacity: 1,
-  systemrecharge: 1
+  systemrecharge: 1,
+  breachdps: 1,
+  breachmin: 1,
+  breachmax: 1,
+  integrity: 1
 };
 
 const TERM_LOOKUP = {

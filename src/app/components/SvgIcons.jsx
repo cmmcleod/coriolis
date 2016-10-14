@@ -320,6 +320,90 @@ export class Warning extends SvgIcon {
 }
 
 /**
+ * Thermal damage
+ */
+export class DamageThermal extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <g>
+      <ellipse cx='100' cy='100' rx='90' ry='90' fillOpacity='0' />
+      <ellipse cx='100' cy='100' rx='30' ry='30' fillOpacity='1' />
+      <path d='M100 20v80' />
+    </g>;
+  }
+}
+
+/**
+ * Kinetic damage
+ */
+export class DamageKinetic extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <g>
+      <ellipse cx='100' cy='100' rx='90' ry='90' fillOpacity='0' />
+      <ellipse cx='62' cy='67' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='62' cy='101' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='62' cy='135' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='100' cy='50' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='100' cy='84' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='100' cy='118' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='100' cy='152' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='138' cy='67' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='138' cy='101' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='138' cy='135' rx='5' ry='5' fillOpacity='1' />
+    </g>;
+  }
+}
+
+/**
+ * Explosive damage
+ */
+export class DamageExplosive extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <g>
+      <ellipse cx='100' cy='100' rx='50' ry='50' fillOpacity='0' />
+      <ellipse cx='100' cy='20' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='156.57' cy='36.57' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='180' cy='100' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='156.57' cy='163.43' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='100' cy='180' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='43.43' cy='163.43' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='20' cy='100' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='43.43' cy='36.57' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='100' cy='75' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='125' cy='100' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='100' cy='125' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='75' cy='100' rx='5' ry='5' fillOpacity='1' />
+    </g>;
+  }
+}
+
+/**
  * Fixed mount hardpoint
  */
 export class MountFixed extends SvgIcon {
@@ -334,11 +418,11 @@ export class MountFixed extends SvgIcon {
    */
   svg() {
     return <g>
-      <circle fillOpacity='0'  r='70' cy='100' cx='100' strokeWidth='5' />
-      <line y2='60' x2='101' y1='0' x1='101' strokeWidth='5' />
-      <line y2='101' x2='200' y1='101' x1='140' strokeWidth='5' />
-      <line y2='101' x2='60' y1='101' x1='0' strokeWidth='5' />
-      <line y2='200' x2='101' y1='140' x1='101' strokeWidth='5' />
+      <circle cx='100' cy='100' r='76' fillOpacity='0' />
+      <path d='M0 100h48' />
+      <path d='M152 100h48' />
+      <path d='M100 0v48' />
+      <path d='M100 152v48' />
     </g>;
   }
 }
@@ -358,8 +442,8 @@ export class MountGimballed extends SvgIcon {
    */
   svg() {
     return <g>
-      <ellipse ry='25' rx='95' cy='100' cx='100' fillOpacity='0' strokeWidth='5' />
-      <ellipse ry='95' rx='25' cy='100' cx='100' fillOpacity='0' strokeWidth='5' />
+      <ellipse cx='100' cy='100' rx='90' ry='25' fillOpacity='0' />
+      <ellipse cx='100' cy='100' rx='20' ry='95' fillOpacity='0' />
     </g>;
   }
 }
@@ -379,9 +463,14 @@ export class MountTurret extends SvgIcon {
    */
   svg() {
     return <g>
-      <line y2='170' x2='162' y1='170' x1='8' strokeWidth='6' />
-      <path d='m13,138l144,0l0,-50l-27,-40l-90,0l-27,40l0,50z' id='svg_12' fillOpacity='0' strokeWidth='6' />
-      <line y2='91' x2='200' y1='91' x1='159' strokeWidth='6' />
+      <path d='M40 50 A 40 40 0 0 0 0 90' />
+      <path d='M40 50h40' />
+      <path d='M120 90 A 40 40 0 0 0 80 50' />
+      <path d='M0 90v40' />
+      <path d='M120 90v40' />
+      <path d='M0 120h120' />
+      <path d='M120 90h80' />
+      <path d='M0 160h120' />
     </g>;
   }
 }
