@@ -184,7 +184,7 @@ function diffClass(a, b, negative) {
  */
 function diff(format, mVal, mmVal) {
   if (mVal == Infinity) {
-    return <Infinite/>;
+    return '∞';
   } else {
     let diff = mVal - mmVal;
     if (!diff || mVal === undefined || diff == mVal || Math.abs(diff) == Infinity) {
