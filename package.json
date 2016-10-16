@@ -1,12 +1,12 @@
 {
   "name": "coriolis_shipyard",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cmmcleod/coriolis"
+    "url": "https://github.com/EDCD/coriolis"
   },
-  "homepage": "https://coriolis.io",
-  "bugs": "https://github.com/cmmcleod/coriolis/issues",
+  "homepage": "https://coriolis.edcd.io",
+  "bugs": "https://github.com/EDCD/coriolis/issues",
   "private": true,
   "engine": "node >= 4.0.0",
   "license": "MIT",
