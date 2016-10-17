@@ -7,6 +7,29 @@ import LZString from 'lz-string';
 const STANDARD = ['powerPlant', 'thrusters', 'frameShiftDrive', 'lifeSupport', 'powerDistributor', 'sensors', 'fuelTank'];
 
 /**
+ * Generates ship-loadout JSON Schema standard object
+ * @param  {Object} standard model
+ * @return {Object} JSON Schema
+ */
+function standardToSchema(standard) {
+  if (standard.m) {
+    let o = {
+      class: standard.m.class,
+      rating: standard.m.rating,
+      enabled: Boolean(standard.enabled),
+      priority: standard.priority + 1
+    };
+
+    if (standard.m.name) {
+      o.name = standard.m.name;
+    }
+
+    return o;
+  }
+  return null;
+}
+
+/**
  * Generates ship-loadout JSON Schema slot object
  * @param  {Object} slot Slot model
  * @return {Object}      JSON Schema Slot
@@ -61,13 +84,13 @@ export function toDetailedBuild(buildName, ship) {
       standard: {
         bulkheads: BulkheadNames[ship.bulkheads.m.index],
         cargoHatch: { enabled: Boolean(ship.cargoHatch.enabled), priority: ship.cargoHatch.priority + 1 },
-        powerPlant: { class: standard[0].m.class, rating: standard[0].m.rating, enabled: Boolean(standard[0].enabled), priority: standard[0].priority + 1 },
-        thrusters: { class: standard[1].m.class, rating: standard[1].m.rating, enabled: Boolean(standard[1].enabled), priority: standard[1].priority + 1 },
-        frameShiftDrive: { class: standard[2].m.class, rating: standard[2].m.rating, enabled: Boolean(standard[2].enabled), priority: standard[2].priority + 1 },
-        lifeSupport: { class: standard[3].m.class, rating: standard[3].m.rating, enabled: Boolean(standard[3].enabled), priority: standard[3].priority + 1 },
-        powerDistributor: { class: standard[4].m.class, rating: standard[4].m.rating, enabled: Boolean(standard[4].enabled), priority: standard[4].priority + 1 },
-        sensors: { class: standard[5].m.class, rating: standard[5].m.rating, enabled: Boolean(standard[5].enabled), priority: standard[5].priority + 1 },
-        fuelTank: { class: standard[6].m.class, rating: standard[6].m.rating, enabled: Boolean(standard[6].enabled), priority: standard[6].priority + 1 }
+        powerPlant: standardToSchema(standard[0]),
+        thrusters: standardToSchema(standard[1]),
+        frameShiftDrive: standardToSchema(standard[2]),
+        lifeSupport: standardToSchema(standard[3]),
+        powerDistributor: standardToSchema(standard[4]),
+        sensors: standardToSchema(standard[5]),
+        fuelTank: standardToSchema(standard[6])
       },
       hardpoints: hardpoints.filter(slot => slot.maxClass > 0).map(slotToSchema),
       utility: hardpoints.filter(slot => slot.maxClass === 0).map(slotToSchema),
