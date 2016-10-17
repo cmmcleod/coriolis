@@ -16,7 +16,7 @@ describe("Ship", function() {
       ship.buildWith(shipData.defaults);
 
       expect(ship.totalCost).toEqual(shipData.retailCost, s + ' retail cost does not match default build cost');
-      expect(ship.cargoCapacity).toBeDefined(s + ' cargo');
+      expect(ship.cargoCapacity).toBeDefined();
       expect(ship.priorityBands[0].retracted).toBeGreaterThan(0, s + ' priorityBands');
       expect(ship.powerAvailable).toBeGreaterThan(0, s + ' powerAvailable');
       expect(ship.unladenRange).toBeGreaterThan(0, s + ' unladenRange');
