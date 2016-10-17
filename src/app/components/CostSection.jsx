@@ -606,6 +606,7 @@ export default class CostSection extends TranslatedComponent {
     }
 
     if (nextProps.ship != this.props.ship || nextProps.code != this.props.code) {
+      nextProps.ship.applyDiscounts(Persist.getShipDiscount(), Persist.getModuleDiscount());
       this._updateAmmoCosts(nextProps.ship);
       this._updateRetrofit(nextProps.ship, retrofitShip);
       this._sortCost(nextProps.ship);
