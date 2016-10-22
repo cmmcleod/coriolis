@@ -115,7 +115,7 @@ export function explorer(ship, planetary) {
 
   if (sgSlot) {
     // The SG and Fuel scoop to not need to be powered at the same time
-    if (sgSlot.m.power > fuelScoopSlot.m.power) { // The Shield generator uses the most power
+    if (sgSlot.m.getPowerUsage() > fuelScoopSlot.m.getPowerUsage()) { // The Shield generator uses the most power
       ship.setSlotEnabled(fuelScoopSlot, false);
     } else {                                    // The Fuel scoop uses the most power
       ship.setSlotEnabled(sgSlot, false);

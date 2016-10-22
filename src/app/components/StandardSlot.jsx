@@ -4,6 +4,7 @@ import TranslatedComponent from './TranslatedComponent';
 import { jumpRange } from '../shipyard/Calculations';
 import { diffDetails } from '../utils/SlotFunctions';
 import AvailableModulesMenu from './AvailableModulesMenu';
+import { Modifications } from './SvgIcons';
 
 /**
  * Standard Slot
@@ -49,7 +50,8 @@ export default class StandardSlot extends TranslatedComponent {
           <div className={'sz'}>{slot.maxClass}</div>
           <div>
             <div className='l'>{classRating} {translate(m.grp == 'bh' ? m.grp : m.name || m.grp)}</div>
-            <div className={'r'}>{m.mass || m.fuel || 0}{units.T}</div>
+            <div className={'r'}>{m.getMass() || m.fuel || 0}{units.T}</div>
+	    <div/>
             <div className={'cb'}>
                 { m.grp == 'bh' && m.name ? <div className='l'>{translate(m.name)}</div> : null }
                 { m.optmass ? <div className='l'>{translate('optimal mass')}: {m.optmass}{units.T}</div> : null }
@@ -57,11 +59,12 @@ export default class StandardSlot extends TranslatedComponent {
                 { m.range ? <div className='l'>{translate('range')}: {m.range}{units.km}</div> : null }
                 { m.time ? <div className='l'>{translate('time')}: {formats.time(m.time)}</div> : null }
                 { m.eff ? <div className='l'>{translate('efficiency')}: {m.eff}</div> : null }
-                { m.pGen ? <div className='l'>{translate('power')}: {m.pGen}{units.MW}</div> : null }
+                { m.getPowerGeneration() > 0 ? <div className='l'>{translate('power')}: {formats.round(m.getPowerGeneration())}{units.MW}</div> : null }
                 { m.maxfuel ? <div className='l'>{translate('max')} {translate('fuel')}: {m.maxfuel}{units.T}</div> : null }
                 { m.weaponcapacity ? <div className='l'>{translate('WEP')}: {m.weaponcapacity}{units.MJ} / {m.weaponrecharge}{units.MW}</div> : null }
                 { m.systemcapacity ? <div className='l'>{translate('SYS')}: {m.systemcapacity}{units.MJ} / {m.systemrecharge}{units.MW}</div> : null }
                 { m.enginecapacity ? <div className='l'>{translate('ENG')}: {m.enginecapacity}{units.MJ} / {m.enginerecharge}{units.MW}</div> : null }
+              <div className={'r'}><Modifications /></div>
             </div>
           </div>
         </div>

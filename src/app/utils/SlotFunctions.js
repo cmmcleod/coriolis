@@ -210,14 +210,14 @@ export function diffDetails(language, m, mm) {
   let { formats, translate, units } = language;
   let propDiffs = [];
   let mMass = m.mass || 0;
-  let mmMass = mm.mass || 0;
+  let mmMass = mm ? mm.getMass() : 0;
   let massDiff = mMass - mmMass;
   let capDiff = (m.fuel || m.cargo || 0) - (mm.fuel || mm.cargo || 0);
   let mAffectsShield = isShieldGenerator(m.grp)  || m.grp == 'sb';
   let mmAffectsShield = isShieldGenerator(mm.grp) || mm.grp == 'sb';
 
   propDiffs.push(<div key='cost'>{translate('cost')}: <span className={diffClass(m.cost, mm.cost, true) }>{m.cost ? Math.round(m.cost * (1 - Persist.getModuleDiscount())) : 0}{units.CR}</span></div>);
-  propDiffs.push(<div key='mass'>{translate('mass')}: <span className={diffClass(mMass, mm.mass, true)}>{diff(formats.round, mMass, mmMass)}{units.T}</span></div>);
+  propDiffs.push(<div key='mass'>{translate('mass')}: <span className={diffClass(mMass, mm.getMass(), true)}>{diff(formats.round, mMass, mmMass)}{units.T}</span></div>);
 
   for (let p in m) {
     if (!PROP_BLACKLIST[p] && !isNaN(m[p])) {

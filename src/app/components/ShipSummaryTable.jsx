@@ -52,6 +52,8 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !ship.canThrust() }) }>{translate('speed')}</th>
             <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !ship.canBoost() }) }>{translate('boost')}</th>
             <th onMouseEnter={termtip.bind(null, 'damage per second')} onMouseLeave={hide} rowSpan={2}>{translate('DPS')}</th>
+            <th onMouseEnter={termtip.bind(null, 'energy per second')} onMouseLeave={hide} rowSpan={2}>{translate('EPS')}</th>
+            <th onMouseEnter={termtip.bind(null, 'heat per second')} onMouseLeave={hide} rowSpan={2}>{translate('HPS')}</th>
             <th rowSpan={2}>{translate('armour')}</th>
             <th colSpan={3}>{translate('shields')}</th>
             <th colSpan={3}>{translate('mass')}</th>
@@ -83,6 +85,8 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{ ship.canThrust() ? <span>{int(ship.topSpeed)} {u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
             <td>{ ship.canBoost() ? <span>{int(ship.topBoost)} {u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
             <td>{round(ship.totalDps)}</td>
+            <td>{round(ship.totalEps)}</td>
+            <td>{round(ship.totalHps)}</td>
             <td>{int(ship.armour)} {armourDetails}</td>
             <td className={sgClassNames}>{int(ship.shieldStrength)} {u.MJ} { ship.shieldMultiplier > 1 && ship.shieldStrength > 0 ? <u>({formats.rPct(ship.shieldMultiplier)})</u> : null }</td>
             <td className={sgClassNames}>{sgRecover}</td>

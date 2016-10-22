@@ -1,6 +1,6 @@
 import React from 'react';
 import Slot from './Slot';
-import { Infinite } from './SvgIcons';
+import { Modifications } from './SvgIcons';
 
 /**
  * Internal Slot
@@ -23,7 +23,7 @@ export default class InternalSlot extends Slot {
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
           <div className={'l'}>{classRating} {translate(m.name || m.grp)}</div>
-          <div className={'r'}>{m.mass || m.cargo || m.fuel || 0}{u.T}</div>
+          <div className={'r'}>{m.getMass() || m.cargo || m.fuel || 0}{u.T}</div>
         </div>
         <div className={'cb'}>
           { m.optmass ? <div className={'l'}>{translate('optimal mass')}: {m.optmass}{u.T}</div> : null }
@@ -42,6 +42,7 @@ export default class InternalSlot extends Slot {
           { m.rangeLS === null ? <div className={'l'}>∞{u.Ls}</div> : null }
           { m.rangeRating ? <div className={'l'}>{translate('range')}: {m.rangeRating}</div> : null }
           { m.armouradd ? <div className={'l'}>+{m.armouradd} <u className='cap'>{translate('armour')}</u></div> : null }
+          <div className={'r'}><Modifications /></div>
         </div>
       </div>;
     } else {

@@ -193,6 +193,20 @@ export const ShipFacets = [
       lbls: ['DPS'],
       fmt: 'round',
       i: 11
+    },
+    {                   // 12
+      title: 'EPS',
+      props: ['totalEps'],
+      lbls: ['EPS'],
+      fmt: 'round',
+      i: 12
+    },
+    {                   // 13
+      title: 'HPS',
+      props: ['totalHps'],
+      lbls: ['HPS'],
+      fmt: 'round',
+      i: 13
     }
 ];
 

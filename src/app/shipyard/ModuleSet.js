@@ -1,4 +1,4 @@
-
+import Module from './Module';
 import { BulkheadNames } from './Constants';
 
 /**
@@ -37,7 +37,7 @@ export default class ModuleSet {
     this.intClass = {};
 
     this.bulkheads = shipData.bulkheads.map((b, i) => {
-      return Object.assign({ grp: 'bh', name: BulkheadNames[i], index: i, class: '', rating: '' }, b);
+      return Object.assign(new Module(), { grp: 'bh', id: i, name: BulkheadNames[i], index: i, class: '', rating: '' }, b);
     });
 
     this.standard[0] = filter(stnd.pp, maxStandardArr[0], 0, mass);  // Power Plant
@@ -130,7 +130,7 @@ export default class ModuleSet {
         pd = p;
       }
     }
-    return pd;
+    return new Module({ template: pd });
   };
 
   /**
@@ -146,7 +146,7 @@ export default class ModuleSet {
         th = t;
       }
     }
-    return th;
+    return new Module({ template: th });
   };
 
   /**
@@ -162,7 +162,7 @@ export default class ModuleSet {
         sg = s;
       }
     }
-    return sg;
+    return new Module({ template: sg });
   };
 
   /**
@@ -179,6 +179,6 @@ export default class ModuleSet {
         pp = p;
       }
     }
-    return pp;
+    return new Module({ template: pp });
   }
 }
