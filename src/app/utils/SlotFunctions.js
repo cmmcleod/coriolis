@@ -13,11 +13,11 @@ import Persist from '../stores/Persist';
  * @return {Boolean}        True if the slot can mount the module
  */
 export function canMount(ship, slot, group, clazz) {
-  if (slot
-   && (!slot.eligible || slot.eligible[group])
-   && (group != 'pcq' || (ship.luxuryCabins && ship.luxuryCabins  === true))
-   && (group != 'fh' || (ship.fighterHangars && ship.fighterHangars  === true))
-   && (clazz === undefined || slot.maxClass >= clazz)) {
+  if (slot &&
+      (!slot.eligible || slot.eligible[group]) &&
+      (group != 'pcq' || (ship.luxuryCabins && ship.luxuryCabins  === true)) &&
+      (group != 'fh' || (ship.fighterHangars && ship.fighterHangars  === true)) &&
+      (clazz === undefined || slot.maxClass >= clazz)) {
     return true;
   }
   return false;

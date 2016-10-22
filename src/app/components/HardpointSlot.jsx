@@ -45,8 +45,8 @@ export default class HardpointSlot extends Slot {
 	  {m.mount && m.mount == 'T' ? <MountTurret /> : ''}
 	  {m.type && m.type == 'K' ? <DamageKinetic /> : ''}
 	  {m.type && m.type == 'T' ? <DamageThermal /> : ''}
-	  {m.type && m.type == 'KT' ? <span><DamageKinetic /><DamageThermal /></span>: ''}
-	  {m.type && m.type == 'E' ? <DamageExplosive />: ''}
+	  {m.type && m.type == 'KT' ? <span><DamageKinetic /><DamageThermal /></span> : ''}
+	  {m.type && m.type == 'E' ? <DamageExplosive /> : ''}
           {classRating} {translate(m.name || m.grp)}</div>
           <div className={'r'}>{m.mass}{u.T}</div>
         </div>
@@ -56,7 +56,7 @@ export default class HardpointSlot extends Slot {
           { m.hps ? <div className={'l'}>{translate('HPS')}: {formats.round1(m.hps)} { m.clip ? <span>({formats.round1((m.clip * m.hps / m.rof) / ((m.clip / m.rof) + m.reload)) })</span> : null }</div> : null }
           { m.dps && m.eps ? <div className={'l'}>{translate('DPE')}: {formats.round1(m.dps / m.eps)}</div> : null }
           { m.rof ? <div className={'l'}>{translate('ROF')}: {m.rof}{u.ps}</div> : null }
-          { m.range && !m.dps ? <div className={'l'}>{translate('Range')}: {formats.round(m.range/1000)}{u.km}</div> : null }
+          { m.range && !m.dps ? <div className={'l'}>{translate('Range')} : {formats.round(m.range / 1000)}{u.km}</div> : null }
           { m.shieldmul ? <div className={'l'}>+{formats.rPct(m.shieldmul)}</div> : null }
           { m.ammo >= 0 ? <div className={'l'}>{translate('ammo')}: {formats.int(m.clip)}/{formats.int(m.ammo)}</div> : null }
         </div>
