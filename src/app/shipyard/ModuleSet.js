@@ -71,14 +71,21 @@ export default class ModuleSet {
 
   /**
    * Determine the modules that areeligible for an internal slot
+   * @param  {Object} ship      The ship
    * @param  {integer} c        The max class module that can be mounted in the slot
    * @param  {Object} eligible) The map of eligible internal groups
    * @return {object}           A map of all eligible modules by group
    */
-  getInts(c, eligible) {
+  getInts(ship, c, eligible) {
     let o = {};
     for (let key in this.internal) {
       if (eligible && !eligible[key]) {
+        continue;
+      }
+      if (key == 'pcq' && !(ship.luxuryCabins && ship.luxuryCabins  === true)) {
+        continue;
+      }
+      if (key == 'fh' && !(ship.fighterHangars && ship.fighterHangars  === true)) {
         continue;
       }
       let data = filter(this.internal[key], c, 0, this.mass);

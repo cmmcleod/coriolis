@@ -1,5 +1,6 @@
 import React from 'react';
 import Slot from './Slot';
+import { DamageKinetic, DamageThermal, DamageExplosive, MountFixed, MountGimballed, MountTurret } from './SvgIcons';
 
 /**
  * Hardpoint / Utility Slot
@@ -33,24 +34,31 @@ export default class HardpointSlot extends Slot {
    */
   _getSlotDetails(m, translate, formats, u) {
     if (m) {
-      let classRating = `${m.class}${m.rating}${m.mount ? '/' + m.mount : ''}${m.missile ? m.missile : ''}`;
+      let classRating = `${m.class}${m.rating}${m.missile ? '/' + m.missile : ''}`;
       let { drag, drop } = this.props;
 
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
-          <div className={'l'}>{classRating} {translate(m.name || m.grp)}</div>
+          <div className={'l'}>
+	  {m.mount && m.mount == 'F' ? <MountFixed /> : ''}
+	  {m.mount && m.mount == 'G' ? <MountGimballed /> : ''}
+	  {m.mount && m.mount == 'T' ? <MountTurret /> : ''}
+	  {m.type && m.type == 'K' ? <DamageKinetic /> : ''}
+	  {m.type && m.type == 'T' ? <DamageThermal /> : ''}
+	  {m.type && m.type == 'KT' ? <span><DamageKinetic /><DamageThermal /></span> : ''}
+	  {m.type && m.type == 'E' ? <DamageExplosive /> : ''}
+          {classRating} {translate(m.name || m.grp)}</div>
           <div className={'r'}>{m.mass}{u.T}</div>
         </div>
         <div className={'cb'}>
-          { m.damage ? <div className={'l'}>{translate('damage')}: {m.damage} { m.ssdam ? <span>({formats.int(m.ssdam)} {u.MJ})</span> : null }</div> : null }
-          { m.dps ? <div className={'l'}>{translate('DPS')}: {m.dps} { m.mjdps ? <span>({formats.int(m.mjdps)} {u.MJ})</span> : null }</div> : null }
-          { m.thermload ? <div className={'l'}>{translate('T-Load')}: {m.thermload}</div> : null }
-          { m.type ? <div className={'l'}>{translate('type')}: {m.type}</div> : null }
+          { m.dps ? <div className={'l'}>{translate('DPS')}: {formats.round1(m.dps)} { m.clip ? <span>({formats.round1((m.clip * m.dps / m.rof) / ((m.clip / m.rof) + m.reload)) })</span> : null }</div> : null }
+          { m.eps ? <div className={'l'}>{translate('EPS')}: {formats.round1(m.eps)} { m.clip ? <span>({formats.round1((m.clip * m.eps / m.rof) / ((m.clip / m.rof) + m.reload)) })</span> : null }</div> : null }
+          { m.hps ? <div className={'l'}>{translate('HPS')}: {formats.round1(m.hps)} { m.clip ? <span>({formats.round1((m.clip * m.hps / m.rof) / ((m.clip / m.rof) + m.reload)) })</span> : null }</div> : null }
+          { m.dps && m.eps ? <div className={'l'}>{translate('DPE')}: {formats.round1(m.dps / m.eps)}</div> : null }
           { m.rof ? <div className={'l'}>{translate('ROF')}: {m.rof}{u.ps}</div> : null }
-          { m.armourpen ? <div className={'l'}>{translate('pen')}: {m.armourpen}</div> : null }
+          { m.range && !m.dps ? <div className={'l'}>{translate('Range')} : {formats.round(m.range / 1000)}{u.km}</div> : null }
           { m.shieldmul ? <div className={'l'}>+{formats.rPct(m.shieldmul)}</div> : null }
-          { m.range ? <div className={'l'}>{m.range} <u>km</u></div> : null }
-          { m.ammo >= 0 ? <div className={'l'}>{translate('ammo')}: {formats.int(m.clip)}+{formats.int(m.ammo)}</div> : null }
+          { m.ammo >= 0 ? <div className={'l'}>{translate('ammo')}: {formats.int(m.clip)}/{formats.int(m.ammo)}</div> : null }
         </div>
       </div>;
     } else {

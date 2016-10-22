@@ -108,7 +108,8 @@ describe('Import Modal', function() {
     it('catches an invalid backup', function() {
       const importData = require('./fixtures/valid-backup');
       let invalidImportData = Object.assign({}, importData);
-      invalidImportData.builds.asp = null;   // Remove Asp Miner build used in comparison
+      //invalidImportData.builds.asp = null;   // Remove Asp Miner build used in comparison
+      delete(invalidImportData.builds.asp);
 
       pasteText('"this is not valid"');
       expect(modal.state.importValid).toBeFalsy();

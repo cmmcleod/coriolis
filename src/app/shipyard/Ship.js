@@ -3,7 +3,7 @@ import * as Calc from './Calculations';
 import * as ModuleUtils from './ModuleUtils';
 import LZString from 'lz-string';
 
-const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs'];
+const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs', 'fh'];
 
 /**
  * Returns the power usage type of a slot and it's particular modul
