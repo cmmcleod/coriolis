@@ -30,12 +30,12 @@ function powerUsageType(slot, modul) {
 function decodeModsToArray(code, arr) {
   let moduleMods = code.split(',');
   for (let i = 0; i < arr.length; i++) {
-    arr[i] = new Array();
+    arr[i] = {};
     if (moduleMods.length > i && moduleMods[i] != '') {
       let mods = moduleMods[i].split(';');
       for (let j = 0; j < mods.length; j++) {
         let modElements = mods[j].split(':');
-        arr[i].push({ id: Number(modElements[0]), value: Number(modElements[1]) });
+        arr[i][Number(modElements[0])] = Number(modElements[1]);
       }
     }
   }
@@ -353,9 +353,9 @@ export default class Ship {
    * @return {String} Serialized modifications 'code'
    */
   getModificationsString() {
-    if(!this.serialized.modifications) {
-      this.updateModificationsString();
-    }
+    // Modifications can be updated outside of the ship's direct knowledge, for example when sliders change the value,
+    // so always recreate it from scratch
+    this.updateModificationsString();
     return this.serialized.modifications;
   }
 
@@ -434,10 +434,10 @@ export default class Ship {
 
     this.bulkheads.m = null;
     this.useBulkhead(comps && comps.bulkheads ? comps.bulkheads : 0, true);
-    this.bulkheads.m.mods = mods && mods[0] ? mods[0] : [];
+    this.bulkheads.m.mods = mods && mods[0] ? mods[0] : {}
     this.cargoHatch.priority = priorities ? priorities[0] * 1 : 0;
     this.cargoHatch.enabled = enabled ? enabled[0] * 1 : true;
-    this.cargoHatch.mods = mods ? mods[0] : [];
+    this.cargoHatch.mods = mods ? mods[0] : {};
 
     for (i = 0, l = this.priorityBands.length; i < l; i++) {
       this.priorityBands[i].deployed = 0;
@@ -458,7 +458,7 @@ export default class Ship {
       standard[i].discountedCost = 0;
       if (comps) {
         let module = ModuleUtils.standard(i, comps.standard[i]);
-        if (module != null) { module.mods = mods && mods[i + 1] ? mods[i + 1] : []; }
+        if (module != null) { module.mods = mods && mods[i + 1] ? mods[i + 1] : {}; }
         this.use(standard[i], module, true);
       }
     }
@@ -477,7 +477,7 @@ export default class Ship {
 
       if (comps && comps.hardpoints[i] !== 0) {
         let module = ModuleUtils.hardpoints(comps.hardpoints[i]);
-        if (module != null) { module.mods = mods && mods[cl + i] ? mods[cl + i] : []; }
+        if (module != null) { module.mods = mods && mods[cl + i] ? mods[cl + i] : {}; }
         this.use(hps[i], module, true);
       }
     }
@@ -494,7 +494,7 @@ export default class Ship {
 
       if (comps && comps.internal[i] !== 0) {
         let module = ModuleUtils.internal(comps.internal[i]);
-        if (module != null) { module.mods = mods && mods[cl + i] ? mods[cl + i] : []; }
+        if (module != null) { module.mods = mods && mods[cl + i] ? mods[cl + i] : {}; }
         this.use(internal[i], module, true);
       }
     }
@@ -896,8 +896,8 @@ export default class Ship {
 
     let bulkheadMods = new Array();
     if (this.bulkheads.m && this.bulkheads.m.mods) {
-      for (let mod of this.bulkheads.m.mods) {
-        bulkheadMods.push(mod.id + ':' + mod.value);
+      for (var modKey in this.bulkheads.m.mods) {
+        bulkheadMods.push(modKey + ':' + Math.round(this.bulkheads.m.getModValue(modKey) * 100000));
       }
     }
     allMods.push(bulkheadMods.join(';'));
@@ -905,8 +905,8 @@ export default class Ship {
     for (let slot of this.standard) {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
-        for (let mod of slot.m.mods) {
-          slotMods.push(mod.id + ':' + mod.value);
+        for (var modKey in slot.m.mods) {
+          slotMods.push(modKey + ':' + Math.round(slot.m.getModValue(modKey) * 100000));
         }
       }
       allMods.push(slotMods.join(';'));
@@ -914,8 +914,8 @@ export default class Ship {
     for (let slot of this.hardpoints) {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
-        for (let mod of slot.m.mods) {
-          slotMods.push(mod.id + ':' + mod.value);
+        for (var modKey in slot.m.mods) {
+          slotMods.push(modKey + ':' + Math.round(slot.m.getModValue(modKey) * 100000));
         }
       }
       allMods.push(slotMods.join(';'));
@@ -923,8 +923,8 @@ export default class Ship {
     for (let slot of this.internal) {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
-        for (let mod of slot.m.mods) {
-          slotMods.push(mod.id + ':' + mod.value);
+        for (var modKey in slot.m.mods) {
+          slotMods.push(modKey + ':' + Math.round(slot.m.getModValue(modKey) * 100000));
         }
       }
       allMods.push(slotMods.join(';'));

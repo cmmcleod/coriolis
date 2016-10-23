@@ -1,6 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import { isShieldGenerator } from '../shipyard/ModuleUtils';
+import Module from '../shipyard/Module';
 import { Infinite } from '../components/SvgIcons';
 import Persist from '../stores/Persist';
 
@@ -206,7 +207,7 @@ function diff(format, mVal, mmVal) {
  * @return {React.Component} Component to be rendered
  */
 export function diffDetails(language, m, mm) {
-  mm = mm || {};
+  mm = mm || new Module();
   let { formats, translate, units } = language;
   let propDiffs = [];
   let mMass = m.mass || 0;

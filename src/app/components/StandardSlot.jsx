@@ -5,6 +5,7 @@ import { jumpRange } from '../shipyard/Calculations';
 import { diffDetails } from '../utils/SlotFunctions';
 import AvailableModulesMenu from './AvailableModulesMenu';
 import { Modifications } from './SvgIcons';
+import Slider from './Slider';
 
 /**
  * Standard Slot
@@ -16,6 +17,7 @@ export default class StandardSlot extends TranslatedComponent {
     modules: React.PropTypes.array.isRequired,
     onSelect: React.PropTypes.func.isRequired,
     onOpen: React.PropTypes.func.isRequired,
+    onChange: React.PropTypes.func.isRequired,
     ship: React.PropTypes.object.isRequired,
     selected: React.PropTypes.bool,
     warning: React.PropTypes.func,
@@ -66,10 +68,38 @@ export default class StandardSlot extends TranslatedComponent {
                 { m.enginecapacity ? <div className='l'>{translate('ENG')}: {m.enginecapacity}{units.MJ} / {m.enginerecharge}{units.MW}</div> : null }
               <div className={'r'}><Modifications /></div>
             </div>
+            <div className={'cb'} >
+              <Slider onChange={this._updateSliderValue.bind(this)} min={-1} max={1} percent={this._getSliderValue()} />
+            </div>
           </div>
         </div>
         {menu}
       </div>
     );
   }
+
+  /**
+   * Update power usage modification given a slider value.
+   * Note that this is a temporary function until we have a slider section
+   */
+  _updateSliderValue(value) {
+    let m = this.props.slot.m;
+    if (m) {
+      m.setModValue(2, value * 2 - 1);
+    }
+    this.props.onChange();
+  }
+
+  /**
+   * Obtain slider value from a power usage modification.
+   * Note that this is a temporary function until we have a slider section
+   */
+  _getSliderValue() {
+    let m = this.props.slot.m;
+    if (m && m.getModValue(2)) {
+      return (m.getModValue(2) + 1) / 2;
+    }
+    return 0;
+  }
+
 }

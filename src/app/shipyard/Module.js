@@ -23,22 +23,30 @@ export default class Module {
         for (let p in template) { this[p] = template[p]; }
       }
     }
+    this.mods = {};
   }
 
   /**
    * Get a value for a given modification ID
    * @param {Number} modId   The ID of the modification
-   * @return {Number}        The value of the modification
+   * @return {Number}        The value of the modification, as a decimal value from -1 to 1
    */
-  _getModValue(modId) {
-    let result = null;
-    if (this.mods) {
-      let mod = _.find(this.mods, function(o) { return o.id == modId; });
-      if (mod) {
-        result = mod.value;
-      }
+  getModValue(modId) {
+    return this.mods ? this.mods[modId] / 100000 : null;
+  }
+
+  /**
+   * Set a value for a given modification ID
+   * @param {Number} modId   The ID of the modification
+   * @param {Number} val     The value of the modification, as a decimal value from -1 to 1
+   */
+  setModValue(modId, value) {
+    if (value == null || value == 0) {
+      delete this.mods[modId];
+    } else {
+      // Store value with 3dp
+      this.mods[modId] = Math.round(value * 100000);
     }
-    return result;
   }
 
   /**
@@ -50,8 +58,8 @@ export default class Module {
     if (this.pGen) {
       result = this.pGen;
       if (result) {
-        let mult = this._getModValue(1);
-        if (mult) { result = result * (1 + (mult / 1000)); }
+        let mult = this.getModValue(1);
+        if (mult) { result = result * (1 + mult); }
       }
     }
     return result;
@@ -66,8 +74,8 @@ export default class Module {
     if (this.power) {
       result = this.power;
       if (result) {
-        let mult = this._getModValue(2);
-        if (mult) { result = result * (1 + (mult / 1000)); }
+        let mult = this.getModValue(2);
+        if (mult) { result = result * (1 + mult); }
       }
     }
     return result;
@@ -82,8 +90,8 @@ export default class Module {
     if (this.mass) {
       result = this.mass;
       if (result) {
-        let mult = this._getModValue(3);
-        if (mult) { result = result * (1 + (mult / 1000)); }
+        let mult = this.getModValue(3);
+        if (mult) { result = result * (1 + mult); }
       }
     }
     return result;
@@ -98,8 +106,8 @@ export default class Module {
     if (this.health) {
       result = this.health;
       if (result) {
-        let mult = this._getModValue(4);
-        if (mult) { result = result * (1 + (mult / 1000)); }
+        let mult = this.getModValue(4);
+        if (mult) { result = result * (1 + mult); }
       }
     }
     return result;

@@ -103,6 +103,7 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, bh)}
       onSelect={this._selectBulkhead}
       selected={currentMenu == bh}
+      onChange={this.props.onChange}
       ship={ship}
     />;
 
@@ -113,6 +114,7 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[0])}
       onSelect={select.bind(this, st[0])}
       selected={currentMenu == st[0]}
+      onChange={this.props.onChange}
       ship={ship}
       warning={m => m.pGen < ship.powerRetracted}
     />;
@@ -124,6 +126,7 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[1])}
       onSelect={select.bind(this, st[1])}
       selected={currentMenu == st[1]}
+      onChange={this.props.onChange}
       ship={ship}
       warning={m => m.maxmass < (ship.ladenMass - st[1].mass + m.mass)}
     />;
@@ -135,6 +138,7 @@ export default class StandardSlotSection extends SlotSection {
       modules={avail[2]}
       onOpen={open.bind(this, st[2])}
       onSelect={select.bind(this, st[2])}
+      onChange={this.props.onChange}
       ship={ship}
       selected={currentMenu == st[2]}
     />;
@@ -145,6 +149,7 @@ export default class StandardSlotSection extends SlotSection {
       modules={avail[3]}
       onOpen={open.bind(this, st[3])}
       onSelect={select.bind(this, st[3])}
+      onChange={this.props.onChange}
       ship={ship}
       selected={currentMenu == st[3]}
     />;
@@ -156,6 +161,7 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[4])}
       onSelect={select.bind(this, st[4])}
       selected={currentMenu == st[4]}
+      onChange={this.props.onChange}
       ship={ship}
       warning= {m => m.enginecapacity < ship.boostEnergy}
     />;
@@ -167,6 +173,7 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[5])}
       onSelect={select.bind(this, st[5])}
       selected={currentMenu == st[5]}
+      onChange={this.props.onChange}
       ship={ship}
       warning= {m => m.enginecapacity < ship.boostEnergy}
     />;
@@ -178,6 +185,7 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[6])}
       onSelect={select.bind(this, st[6])}
       selected={currentMenu == st[6]}
+      onChange={this.props.onChange}
       ship={ship}
       warning= {m => m.fuel < st[2].m.maxfuel}  // Show warning when fuel tank is smaller than FSD Max Fuel
     />;
