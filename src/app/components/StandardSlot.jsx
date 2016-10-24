@@ -4,8 +4,9 @@ import TranslatedComponent from './TranslatedComponent';
 import { jumpRange } from '../shipyard/Calculations';
 import { diffDetails } from '../utils/SlotFunctions';
 import AvailableModulesMenu from './AvailableModulesMenu';
-import { Modifications } from './SvgIcons';
+import { ListModifications } from './SvgIcons';
 import Slider from './Slider';
+import { Modifications } from 'coriolis-data/dist';
 
 /**
  * Standard Slot
@@ -33,6 +34,7 @@ export default class StandardSlot extends TranslatedComponent {
     let m = slot.m;
     let classRating = m.class + m.rating;
     let menu;
+    let validMods = m == null ? [] : (Modifications.validity[m.grp] || []);
 
     if (this.props.selected) {
       menu = <AvailableModulesMenu
@@ -66,10 +68,7 @@ export default class StandardSlot extends TranslatedComponent {
                 { m.weaponcapacity ? <div className='l'>{translate('WEP')}: {m.weaponcapacity}{units.MJ} / {m.weaponrecharge}{units.MW}</div> : null }
                 { m.systemcapacity ? <div className='l'>{translate('SYS')}: {m.systemcapacity}{units.MJ} / {m.systemrecharge}{units.MW}</div> : null }
                 { m.enginecapacity ? <div className='l'>{translate('ENG')}: {m.enginecapacity}{units.MJ} / {m.enginerecharge}{units.MW}</div> : null }
-              <div className={'r'}><Modifications /></div>
-            </div>
-            <div className={'cb'} >
-              <Slider onChange={this._updateSliderValue.bind(this)} min={-1} max={1} percent={this._getSliderValue()} />
+	        { validMods.length > 0 ? <div className='r' ><ListModifications /></div> : null }
             </div>
           </div>
         </div>
@@ -77,10 +76,12 @@ export default class StandardSlot extends TranslatedComponent {
       </div>
     );
   }
+  // {validMods.length > 0 ? <div className='cb' ><Slider onChange={this._updateSliderValue.bind(this)} min={-1} max={1} percent={this._getSliderValue()}/></div> : null }
 
   /**
    * Update power usage modification given a slider value.
    * Note that this is a temporary function until we have a slider section
+   * @param {Number} value The value of the slider
    */
   _updateSliderValue(value) {
     let m = this.props.slot.m;
@@ -93,6 +94,7 @@ export default class StandardSlot extends TranslatedComponent {
   /**
    * Obtain slider value from a power usage modification.
    * Note that this is a temporary function until we have a slider section
+   * @return {Number} value The value of the slider
    */
   _getSliderValue() {
     let m = this.props.slot.m;

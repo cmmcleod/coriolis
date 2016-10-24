@@ -1,6 +1,7 @@
 import React from 'react';
 import Slot from './Slot';
-import { Modifications } from './SvgIcons';
+import { ListModifications } from './SvgIcons';
+import { Modifications } from 'coriolis-data/dist';
 
 /**
  * Internal Slot
@@ -19,6 +20,7 @@ export default class InternalSlot extends Slot {
     if (m) {
       let classRating = m.class + m.rating;
       let { drag, drop } = this.props;
+      let validMods = Modifications.validity[m.grp] || [];
 
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
@@ -42,7 +44,7 @@ export default class InternalSlot extends Slot {
           { m.rangeLS === null ? <div className={'l'}>∞{u.Ls}</div> : null }
           { m.rangeRating ? <div className={'l'}>{translate('range')}: {m.rangeRating}</div> : null }
           { m.armouradd ? <div className={'l'}>+{m.armouradd} <u className='cap'>{translate('armour')}</u></div> : null }
-          <div className={'r'}><Modifications /></div>
+	  { validMods.length > 0 ? <div className='r' ><ListModifications /></div> : null }
         </div>
       </div>;
     } else {

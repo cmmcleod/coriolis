@@ -32,20 +32,20 @@ export default class Module {
    * @return {Number}        The value of the modification, as a decimal value from -1 to 1
    */
   getModValue(modId) {
-    return this.mods ? this.mods[modId] / 100000 : null;
+    return this.mods ? this.mods[modId] / 10000 : null;
   }
 
   /**
    * Set a value for a given modification ID
    * @param {Number} modId   The ID of the modification
-   * @param {Number} val     The value of the modification, as a decimal value from -1 to 1
+   * @param {Number} value   The value of the modification, as a decimal value from -1 to 1
    */
   setModValue(modId, value) {
     if (value == null || value == 0) {
       delete this.mods[modId];
     } else {
-      // Store value with 3dp
-      this.mods[modId] = Math.round(value * 100000);
+      // Store value with 2dp
+      this.mods[modId] = Math.round(value * 10000);
     }
   }
 

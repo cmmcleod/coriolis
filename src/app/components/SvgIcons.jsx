@@ -489,9 +489,9 @@ export class Rocket extends SvgIcon {
 }
 
 /**
- * Modifications (engineers)
+ * ListModifications (engineers)
  */
-export class Modifications extends SvgIcon {
+export class ListModifications extends SvgIcon {
   /**
    * Overriden view box
    * @return {String} view box

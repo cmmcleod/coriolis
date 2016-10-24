@@ -434,7 +434,7 @@ export default class Ship {
 
     this.bulkheads.m = null;
     this.useBulkhead(comps && comps.bulkheads ? comps.bulkheads : 0, true);
-    this.bulkheads.m.mods = mods && mods[0] ? mods[0] : {}
+    this.bulkheads.m.mods = mods && mods[0] ? mods[0] : {};
     this.cargoHatch.priority = priorities ? priorities[0] * 1 : 0;
     this.cargoHatch.enabled = enabled ? enabled[0] * 1 : true;
     this.cargoHatch.mods = mods ? mods[0] : {};
@@ -896,8 +896,8 @@ export default class Ship {
 
     let bulkheadMods = new Array();
     if (this.bulkheads.m && this.bulkheads.m.mods) {
-      for (var modKey in this.bulkheads.m.mods) {
-        bulkheadMods.push(modKey + ':' + Math.round(this.bulkheads.m.getModValue(modKey) * 100000));
+      for (let modKey in this.bulkheads.m.mods) {
+        bulkheadMods.push(modKey + ':' + Math.round(this.bulkheads.m.getModValue(modKey) * 10000));
       }
     }
     allMods.push(bulkheadMods.join(';'));
@@ -905,8 +905,8 @@ export default class Ship {
     for (let slot of this.standard) {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
-        for (var modKey in slot.m.mods) {
-          slotMods.push(modKey + ':' + Math.round(slot.m.getModValue(modKey) * 100000));
+        for (let modKey in slot.m.mods) {
+          slotMods.push(modKey + ':' + Math.round(slot.m.getModValue(modKey) * 10000));
         }
       }
       allMods.push(slotMods.join(';'));
@@ -914,8 +914,8 @@ export default class Ship {
     for (let slot of this.hardpoints) {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
-        for (var modKey in slot.m.mods) {
-          slotMods.push(modKey + ':' + Math.round(slot.m.getModValue(modKey) * 100000));
+        for (let modKey in slot.m.mods) {
+          slotMods.push(modKey + ':' + Math.round(slot.m.getModValue(modKey) * 10000));
         }
       }
       allMods.push(slotMods.join(';'));
@@ -923,8 +923,8 @@ export default class Ship {
     for (let slot of this.internal) {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
-        for (var modKey in slot.m.mods) {
-          slotMods.push(modKey + ':' + Math.round(slot.m.getModValue(modKey) * 100000));
+        for (let modKey in slot.m.mods) {
+          slotMods.push(modKey + ':' + Math.round(slot.m.getModValue(modKey) * 10000));
         }
       }
       allMods.push(slotMods.join(';'));

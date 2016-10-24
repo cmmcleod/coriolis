@@ -1,6 +1,8 @@
 import React from 'react';
 import Slot from './Slot';
-import { DamageKinetic, DamageThermal, DamageExplosive, MountFixed, MountGimballed, MountTurret, Modifications } from './SvgIcons';
+import { DamageKinetic, DamageThermal, DamageExplosive, MountFixed, MountGimballed, MountTurret, ListModifications } from './SvgIcons';
+import { Modifications } from 'coriolis-data/dist';
+
 
 /**
  * Hardpoint / Utility Slot
@@ -36,6 +38,7 @@ export default class HardpointSlot extends Slot {
     if (m) {
       let classRating = `${m.class}${m.rating}${m.missile ? '/' + m.missile : ''}`;
       let { drag, drop } = this.props;
+      let validMods = Modifications.validity[m.grp] || [];
 
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
@@ -59,7 +62,7 @@ export default class HardpointSlot extends Slot {
           { m.range && !m.dps ? <div className={'l'}>{translate('Range')} : {formats.round(m.range / 1000)}{u.km}</div> : null }
           { m.shieldmul ? <div className={'l'}>+{formats.rPct(m.shieldmul)}</div> : null }
           { m.ammo >= 0 ? <div className={'l'}>{translate('ammo')}: {formats.int(m.clip)}/{formats.int(m.ammo)}</div> : null }
-	  <div className={'r'}><Modifications /></div>
+	  { validMods.length > 0 ? <div className='r' ><ListModifications /></div> : null }
         </div>
       </div>;
     } else {
