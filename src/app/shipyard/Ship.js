@@ -930,7 +930,6 @@ export default class Ship {
       allMods.push(slotMods.join(';'));
     }
     this.serialized.modifications = allMods.join(',').replace(/,+$/, '');
-    console.log('Final serialized string is ' + this.serialized.modifications);
     return this;
   }
 

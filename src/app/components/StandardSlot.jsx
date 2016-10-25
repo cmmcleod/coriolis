@@ -7,6 +7,7 @@ import AvailableModulesMenu from './AvailableModulesMenu';
 import { ListModifications } from './SvgIcons';
 import Slider from './Slider';
 import { Modifications } from 'coriolis-data/dist';
+import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
 /**
  * Standard Slot
@@ -29,6 +30,7 @@ export default class StandardSlot extends TranslatedComponent {
    * @return {React.Component} Slot component
    */
   render() {
+    let { termtip, tooltip } = this.context;
     let { translate, formats, units } = this.context.language;
     let { modules, slot, warning, onSelect, ladenMass, ship } = this.props;
     let m = slot.m;
@@ -49,7 +51,7 @@ export default class StandardSlot extends TranslatedComponent {
     }
 
     return (
-      <div className={cn('slot', { selected: this.props.selected })} onClick={this.props.onOpen}>
+      <div className={cn('slot', { selected: this.props.selected })} onClick={this.props.onOpen} onContextMenu={stopCtxPropagation}>
         <div className={cn('details-container', { warning: warning && warning(slot.m) })}>
           <div className={'sz'}>{slot.maxClass}</div>
           <div>
@@ -68,7 +70,7 @@ export default class StandardSlot extends TranslatedComponent {
                 { m.weaponcapacity ? <div className='l'>{translate('WEP')}: {m.weaponcapacity}{units.MJ} / {m.weaponrecharge}{units.MW}</div> : null }
                 { m.systemcapacity ? <div className='l'>{translate('SYS')}: {m.systemcapacity}{units.MJ} / {m.systemrecharge}{units.MW}</div> : null }
                 { m.enginecapacity ? <div className='l'>{translate('ENG')}: {m.enginecapacity}{units.MJ} / {m.enginerecharge}{units.MW}</div> : null }
-	        { validMods.length > 0 ? <div className='r' ><ListModifications /></div> : null }
+	        { validMods.length > 0 ? <div className='r' ><button onClick={this._showModificationsMenu.bind(this, m)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
             </div>
           </div>
         </div>
@@ -77,6 +79,12 @@ export default class StandardSlot extends TranslatedComponent {
     );
   }
   // {validMods.length > 0 ? <div className='cb' ><Slider onChange={this._updateSliderValue.bind(this)} min={-1} max={1} percent={this._getSliderValue()}/></div> : null }
+
+  _showModificationsMenu(m, e) {
+    let validMods = m == null ? [] : (Modifications.validity[m.grp] || []);
+    // TODO set up the modifications
+    e.stopPropagation();
+  }
 
   /**
    * Update power usage modification given a slider value.
