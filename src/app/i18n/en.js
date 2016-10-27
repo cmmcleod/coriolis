@@ -39,7 +39,7 @@ export const terms = {
   cc: 'Collector Limpet Controller',
   cm: 'Countermeasure',
   cr: 'Cargo Rack',
-  cs: 'Cargo Scanner',
+  cs: 'Manifest Scanner',
   dc: 'Docking Computer',
   fc: 'Fragment Cannon',
   fh: 'Fighter Hangar',

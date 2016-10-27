@@ -18,7 +18,7 @@ export default class StandardSlotSection extends SlotSection {
    * @param  {Object} context React Component context
    */
   constructor(props, context) {
-    super(props, context, 'standard', 'standard');
+    super(props, context, 'standard', 'core internal');
     this._optimizeStandard = this._optimizeStandard.bind(this);
     this._selectBulkhead = this._selectBulkhead.bind(this);
   }

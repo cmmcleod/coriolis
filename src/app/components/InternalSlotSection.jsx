@@ -16,7 +16,7 @@ export default class InternalSlotSection extends SlotSection {
    * @param  {Object} context React Component context
    */
   constructor(props, context) {
-    super(props, context, 'internal', 'internal compartments');
+    super(props, context, 'internal', 'optional internal');
 
     this._empty = this._empty.bind(this);
     this._fillWithCargo = this._fillWithCargo.bind(this);
