@@ -2,6 +2,7 @@ import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
 import cn from 'classnames';
 import AvailableModulesMenu from './AvailableModulesMenu';
+import ModificationsMenu from './ModificationsMenu';
 import { diffDetails } from '../utils/SlotFunctions';
 import { wrapCtxMenu } from '../utils/UtilityFunctions';
 
@@ -94,6 +95,12 @@ export default class Slot extends TranslatedComponent {
       />;
     }
 
+    if (this.props.selected) {
+      menu = <ModificationsMenu
+        className={this._getClassNames()}
+        m={m}
+      />;
+    }
     // TODO: implement touch dragging
 
     return (

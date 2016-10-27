@@ -82,13 +82,13 @@ export default class Module {
   }
 
   /**
-   * Get the mass of this module, taking in to account modifications
-   * @return {Number} the mass of this module
+   * Get the integrity of this module, taking in to account modifications
+   * @return {Number} the integrity of this module
    */
-  getMass() {
+  getIntegrity() {
     let result = 0;
-    if (this.mass) {
-      result = this.mass;
+    if (this.health) {
+      result = this.health;
       if (result) {
         let mult = this.getModValue(3);
         if (mult) { result = result * (1 + mult); }
@@ -98,13 +98,13 @@ export default class Module {
   }
 
   /**
-   * Get the integrity of this module, taking in to account modifications
-   * @return {Number} the integrity of this module
+   * Get the mass of this module, taking in to account modifications
+   * @return {Number} the mass of this module
    */
-  getIntegrity() {
+  getMass() {
     let result = 0;
-    if (this.health) {
-      result = this.health;
+    if (this.mass) {
+      result = this.mass;
       if (result) {
         let mult = this.getModValue(4);
         if (mult) { result = result * (1 + mult); }

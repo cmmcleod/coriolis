@@ -4,8 +4,8 @@ import TranslatedComponent from './TranslatedComponent';
 import { jumpRange } from '../shipyard/Calculations';
 import { diffDetails } from '../utils/SlotFunctions';
 import AvailableModulesMenu from './AvailableModulesMenu';
+import ModificationsMenu from './ModificationsMenu';
 import { ListModifications } from './SvgIcons';
-import Slider from './Slider';
 import { Modifications } from 'coriolis-data/dist';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
@@ -32,7 +32,7 @@ export default class StandardSlot extends TranslatedComponent {
   render() {
     let { termtip, tooltip } = this.context;
     let { translate, formats, units } = this.context.language;
-    let { modules, slot, warning, onSelect, ladenMass, ship } = this.props;
+    let { modules, slot, warning, onSelect, onChange, ladenMass, ship } = this.props;
     let m = slot.m;
     let classRating = m.class + m.rating;
     let menu;
@@ -50,13 +50,22 @@ export default class StandardSlot extends TranslatedComponent {
       />;
     }
 
+    if (this.props.selected) {
+      menu = <ModificationsMenu
+        className='standard'
+	onChange={onChange}
+        ship={ship}
+        m={m}
+      />;
+    }
+
     return (
       <div className={cn('slot', { selected: this.props.selected })} onClick={this.props.onOpen} onContextMenu={stopCtxPropagation}>
         <div className={cn('details-container', { warning: warning && warning(slot.m) })}>
           <div className={'sz'}>{slot.maxClass}</div>
           <div>
             <div className='l'>{classRating} {translate(m.grp == 'bh' ? m.grp : m.name || m.grp)}</div>
-            <div className={'r'}>{m.getMass() || m.fuel || 0}{units.T}</div>
+            <div className={'r'}>{formats.round1(m.getMass()) || m.fuel || 0}{units.T}</div>
 	    <div/>
             <div className={'cb'}>
                 { m.grp == 'bh' && m.name ? <div className='l'>{translate(m.name)}</div> : null }
@@ -70,46 +79,12 @@ export default class StandardSlot extends TranslatedComponent {
                 { m.weaponcapacity ? <div className='l'>{translate('WEP')}: {m.weaponcapacity}{units.MJ} / {m.weaponrecharge}{units.MW}</div> : null }
                 { m.systemcapacity ? <div className='l'>{translate('SYS')}: {m.systemcapacity}{units.MJ} / {m.systemrecharge}{units.MW}</div> : null }
                 { m.enginecapacity ? <div className='l'>{translate('ENG')}: {m.enginecapacity}{units.MJ} / {m.enginerecharge}{units.MW}</div> : null }
-	        { validMods.length > 0 ? <div className='r' ><button onClick={this._showModificationsMenu.bind(this, m)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
             </div>
           </div>
         </div>
         {menu}
       </div>
     );
+	        //{ validMods.length > 0 ? <div className='r' ><button onClick={this._showModificationsMenu.bind(this, m)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
   }
-  // {validMods.length > 0 ? <div className='cb' ><Slider onChange={this._updateSliderValue.bind(this)} min={-1} max={1} percent={this._getSliderValue()}/></div> : null }
-
-  _showModificationsMenu(m, e) {
-    let validMods = m == null ? [] : (Modifications.validity[m.grp] || []);
-    // TODO set up the modifications
-    e.stopPropagation();
-  }
-
-  /**
-   * Update power usage modification given a slider value.
-   * Note that this is a temporary function until we have a slider section
-   * @param {Number} value The value of the slider
-   */
-  _updateSliderValue(value) {
-    let m = this.props.slot.m;
-    if (m) {
-      m.setModValue(2, value * 2 - 1);
-    }
-    this.props.onChange();
-  }
-
-  /**
-   * Obtain slider value from a power usage modification.
-   * Note that this is a temporary function until we have a slider section
-   * @return {Number} value The value of the slider
-   */
-  _getSliderValue() {
-    let m = this.props.slot.m;
-    if (m && m.getModValue(2)) {
-      return (m.getModValue(2) + 1) / 2;
-    }
-    return 0;
-  }
-
 }

@@ -92,8 +92,8 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td className={sgClassNames}>{sgRecover}</td>
             <td className={sgClassNames}>{sgRecharge}</td>
             <td>{ship.hullMass} {u.T}</td>
-            <td>{round(ship.unladenMass)} {u.T}</td>
-            <td>{round(ship.ladenMass)} {u.T}</td>
+            <td>{int(ship.unladenMass)} {u.T}</td>
+            <td>{int(ship.ladenMass)} {u.T}</td>
             <td>{round(ship.cargoCapacity)} {u.T}</td>
             <td>{round(ship.fuelCapacity)} {u.T}</td>
             <td>{round(ship.unladenRange)} {u.LY}</td>

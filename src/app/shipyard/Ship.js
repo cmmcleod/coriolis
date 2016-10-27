@@ -347,7 +347,6 @@ export default class Ship {
     return this.serialized.hardpoints;
   }
 
-
   /**
    * Serializes the modifications to a string
    * @return {String} Serialized modifications 'code'
@@ -401,6 +400,37 @@ export default class Ship {
     this.moduleCostMultiplier = moduleCostMultiplier;
     this.totalCost = total;
     return this;
+  }
+
+  /**
+   * Set a modification value
+   * @param {Object} m The module to change
+   * @param {Object} mId The ID of the modification to change
+   * @param {Number} value The new value of the modification
+   */
+  setModification(m, mId, value) {
+    // Handle special cases
+    if (mId == 1) {
+      // Power generation
+      m.setModValue(mId, value);
+      this.updatePower();
+    } else if (mId == 2) {
+      // Power usage
+      m.setModValue(mId, value);
+      this.updatePower();
+    } else if (mId == 4) {
+      // Mass
+      let oldMass = m.getMass();
+      m.setModValue(mId, value);
+      let newMass = m.getMass();
+      this.unladenMass = this.unladenMass - oldMass + newMass;
+      this.ladenMass = this.ladenMass - oldMass + newMass;
+      this.updateTopSpeed();
+      this.updateJumpStats();
+    } else {
+      // Generic
+      m.setModValue(mId, value);
+    }
   }
 
   /**
