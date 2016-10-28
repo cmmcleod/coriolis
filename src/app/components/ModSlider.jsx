@@ -39,8 +39,9 @@ export default class ModSlider extends Slider {
     let width = outerWidth - (margin * 2);
     let pctPos = width * this.props.percent + margin;
 
-    // TODO add this back in from middle to point
+    // TODO add this back in from zero point to value
     // <rect className='primary-disabled' x={margin} y='0.45em' rx='0.15em' ry='0.15em' width={pctPos} height='0.3em' />
+    // TODO fix locations for labels (min, 0, max)
     return <svg onMouseUp={this._up} onMouseEnter={this._enter.bind(this)} onMouseMove={this._move} onTouchEnd={this._up} style={style}>
       <rect className='primary' style={{ opacity: 0.3, fillOpacity: 0 }} x={margin} y='0.25em' rx='0.3em' ry='0.3em' width={width} height='0.7em' />
       <circle className='primary' r={margin} cy='0.6em' style={{ strokeWidth: 0, fillOpacity: 1 }} cx={pctPos} />
