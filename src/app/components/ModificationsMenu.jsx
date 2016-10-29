@@ -1,12 +1,11 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
-import NumericInput from 'react-numeric-input';
 import TranslatedComponent from './TranslatedComponent';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
 import cn from 'classnames';
 import { MountFixed, MountGimballed, MountTurret } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
-import ModSlider from './ModSlider';
+import NumberEditor from 'react-number-editor';
 
 const PRESS_THRESHOLD = 500; // mouse/touch down threshold
 
@@ -46,12 +45,10 @@ export default class ModificationsMenu extends TranslatedComponent {
     for (let modId of Modifications.validity[m.grp]) {
       let modifiers = Modifications.modifiers[modId]
       list.push(<div className={'cb'} key={modId}>
-		  <div className={'l'}>{translate(modifiers.name)}</div>
-		  <span className={'r'}>{formats.pct(m.getModValue(modId) || 0)}</span>
-		  <ModSlider axis={true} axisUnit ={'%'} className={'cb'} min={modifiers.min || -1} max={modifiers.max || 1} percent={this._getSliderPercent(modId)} onChange={this._updateValue.bind(this, modId)} />
+		  <div className={'cb'}>{translate(modifiers.name)}{' (%)'}</div>
+		  <NumberEditor className={'cb'} style={'width: 100%, text-align: center'} step={0.01} stepModifier={1} decimals={2} initialValue={m.getModValue(modId) ? m.getModValue(modId) * 100 : 0} value={m.getModValue(modId) ? m.getModValue(modId) * 100 : 0} onValueChange={this._updateValue.bind(this, modId)} />
                 </div>);
     }
-		  //<NumericInput className={'r'} min={-100} max={100} step={0.1} precision={2} value={m.getModValue(modId) * 100} onChange={this._updateValue.bind(this, modId)} />
 
     return { list };
   }
@@ -71,32 +68,13 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @param {Number} value The value to set, in the range [0,1]
    */
   _updateValue(modId, value) {
+    let scaledValue = Math.floor(value * 100) / 10000;
+
     let m = this.props.m;
     let ship = this.props.ship;
 
-    let modifiers = Modifications.modifiers[modId];
-    let max = modifiers.max || 1;
-    let min = modifiers.min || -1;
-    let scaledValue = min + ((max - min) * value);
-
     ship.setModification(m, modId, scaledValue);
     this.props.onChange();
-  }
-
-  /**
-   * Obtain slider value from a modification.
-   * @param {Number} modId The ID of the modification
-   * @return {Number} value The value of the slider, in the range [0,1]
-   */
-  _getSliderPercent(modId) {
-    let modifiers = Modifications.modifiers[modId];
-    let max = modifiers.max || 1;
-    let min = modifiers.min || -1;
-    let m = this.props.m;
-    if (m.getModValue(modId)) {
-      return (m.getModValue(modId) - min) / (max - min);
-    }
-    return -min / (max - min);
   }
 
   /**
@@ -114,5 +92,4 @@ export default class ModificationsMenu extends TranslatedComponent {
       </div>
     );
   }
-
 }

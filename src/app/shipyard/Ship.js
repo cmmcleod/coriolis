@@ -566,6 +566,7 @@ export default class Ship {
     }
 
     if (parts[3]) {
+      //decodeModsToArray(LZString.decompressFromBase64(parts[3].replace(/-/g, '/')), mods);
       decodeModsToArray(parts[3], mods);
     }
 
@@ -959,6 +960,7 @@ export default class Ship {
       }
       allMods.push(slotMods.join(';'));
     }
+    //this.serialized.modifications = LZString.compressToBase64(allMods.join(',').replace(/,+$/, '')).replace(/\//g, '-');
     this.serialized.modifications = allMods.join(',').replace(/,+$/, '');
     return this;
   }
