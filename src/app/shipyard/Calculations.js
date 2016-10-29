@@ -8,7 +8,7 @@
  * @return {number}      Distance in Light Years
  */
 export function jumpRange(mass, fsd, fuel) {
-  return Math.pow(Math.min(fuel === undefined ? fsd.maxfuel : fuel, fsd.maxfuel) / fsd.fuelmul, 1 / fsd.fuelpower) * fsd.optmass / mass;
+  return Math.pow(Math.min(fuel === undefined ? fsd.getMaxFuelPerJump() : fuel, fsd.getMaxFuelPerJump()) / fsd.fuelmul, 1 / fsd.fuelpower) * fsd.getOptimalMass() / mass;
 }
 
 /**
@@ -20,15 +20,15 @@ export function jumpRange(mass, fsd, fuel) {
  * @return {number}      Distance in Light Years
  */
 export function fastestRange(mass, fsd, fuel) {
-  let fuelRemaining = fuel % fsd.maxfuel;  // Fuel left after making N max jumps
-  let jumps = Math.floor(fuel / fsd.maxfuel);
+  let fuelRemaining = fuel % fsd.getMaxFuelPerJump();  // Fuel left after making N max jumps
+  let jumps = Math.floor(fuel / fsd.getMaxFuelPerJump());
   mass += fuelRemaining;
   // Going backwards, start with the last jump using the remaining fuel
-  let fastestRange = fuelRemaining > 0 ? Math.pow(fuelRemaining / fsd.fuelmul, 1 / fsd.fuelpower) * fsd.optmass / mass : 0;
+  let fastestRange = fuelRemaining > 0 ? Math.pow(fuelRemaining / fsd.fuelmul, 1 / fsd.fuelpower) * fsd.getOptimalMass() / mass : 0;
   // For each max fuel jump, calculate the max jump range based on fuel mass left in the tank
   for (let j = 0; j < jumps; j++) {
     mass += fsd.maxfuel;
-    fastestRange += Math.pow(fsd.maxfuel / fsd.fuelmul, 1 / fsd.fuelpower) * fsd.optmass / mass;
+    fastestRange += Math.pow(fsd.getMaxFuelPerJump() / fsd.fuelmul, 1 / fsd.fuelpower) * fsd.getOptimalMass() / mass;
   }
   return fastestRange;
 };

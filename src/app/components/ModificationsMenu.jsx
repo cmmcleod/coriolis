@@ -42,11 +42,10 @@ export default class ModificationsMenu extends TranslatedComponent {
     let { m  } = props;
     let list = [];
 
-    for (let modId of Modifications.validity[m.grp]) {
-      let modifiers = Modifications.modifiers[modId]
-      list.push(<div className={'cb'} key={modId}>
-		  <div className={'cb'}>{translate(modifiers.name)}{' (%)'}</div>
-		  <NumberEditor className={'cb'} style={'width: 100%, text-align: center'} step={0.01} stepModifier={1} decimals={2} initialValue={m.getModValue(modId) ? m.getModValue(modId) * 100 : 0} value={m.getModValue(modId) ? m.getModValue(modId) * 100 : 0} onValueChange={this._updateValue.bind(this, modId)} />
+    for (let modName of Modifications.validity[m.grp]) {
+      list.push(<div className={'cb'} key={modName}>
+		  <div className={'cb'}>{translate(modName)}{' (%)'}</div>
+		  <NumberEditor className={'cb'} style={{ width: '100%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} initialValue={m.getModValue(modName) ? m.getModValue(modName) * 100 : 0} value={m.getModValue(modName) ? m.getModValue(modName) * 100 : 0} onValueChange={this._updateValue.bind(this, modName)} />
                 </div>);
     }
 
@@ -64,16 +63,16 @@ export default class ModificationsMenu extends TranslatedComponent {
 
   /**
    * Update modification given a value.
-   * @param {Number} modId The ID of the modification
+   * @param {Number} name The name of the modification
    * @param {Number} value The value to set, in the range [0,1]
    */
-  _updateValue(modId, value) {
+  _updateValue(name, value) {
     let scaledValue = Math.floor(value * 100) / 10000;
 
     let m = this.props.m;
     let ship = this.props.ship;
 
-    ship.setModification(m, modId, scaledValue);
+    ship.setModification(m, name, scaledValue);
     this.props.onChange();
   }
 

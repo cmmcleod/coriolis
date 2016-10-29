@@ -76,7 +76,7 @@ export function toDetailedBuild(buildName, ship) {
     ship: ship.name,
     references: [{
       name: 'Coriolis.io',
-      url: `https://coriolis.io/outfit/${ship.id}/${code}?bn=${encodeURIComponent(buildName)}`,
+      url: `https://coriolis.edcd.io/outfit/${ship.id}/${code}?bn=${encodeURIComponent(buildName)}`,
       code,
       shipId: ship.id
     }],

@@ -69,22 +69,22 @@ export default class StandardSlot extends TranslatedComponent {
 	    <div/>
             <div className={'cb'}>
                 { m.grp == 'bh' && m.name ? <div className='l'>{translate(m.name)}</div> : null }
-                { m.optmass ? <div className='l'>{translate('optimal mass')}: {m.optmass}{units.T}</div> : null }
-                { m.maxmass ? <div className='l'>{translate('max mass')}: {m.maxmass}{units.T}</div> : null }
-                { m.range ? <div className='l'>{translate('range')}: {m.range}{units.km}</div> : null }
+                { m.getOptimalMass() ? <div className='l'>{translate('optimal mass')}: {m.getOptimalMass()}{units.T}</div> : null }
+                { m.getMaxMass() ? <div className='l'>{translate('max mass')}: {m.getMaxMass()}{units.T}</div> : null }
+                { m.getRange() ? <div className='l'>{translate('range')}: {m.getRange()}{units.km}</div> : null }
                 { m.time ? <div className='l'>{translate('time')}: {formats.time(m.time)}</div> : null }
-                { m.eff ? <div className='l'>{translate('efficiency')}: {m.eff}</div> : null }
+                { m.getThermalEfficiency() ? <div className='l'>{translate('efficiency')}: {m.getThermalEfficiency()}</div> : null }
                 { m.getPowerGeneration() > 0 ? <div className='l'>{translate('power')}: {formats.round(m.getPowerGeneration())}{units.MW}</div> : null }
-                { m.maxfuel ? <div className='l'>{translate('max')} {translate('fuel')}: {m.maxfuel}{units.T}</div> : null }
-                { m.weaponcapacity ? <div className='l'>{translate('WEP')}: {m.weaponcapacity}{units.MJ} / {m.weaponrecharge}{units.MW}</div> : null }
-                { m.systemcapacity ? <div className='l'>{translate('SYS')}: {m.systemcapacity}{units.MJ} / {m.systemrecharge}{units.MW}</div> : null }
-                { m.enginecapacity ? <div className='l'>{translate('ENG')}: {m.enginecapacity}{units.MJ} / {m.enginerecharge}{units.MW}</div> : null }
+                { m.getMaxFuelPerJump() ? <div className='l'>{translate('max')} {translate('fuel')}: {m.getMaxFuelPerJump()}{units.T}</div> : null }
+                { m.getWeaponsCapacity() ? <div className='l'>{translate('WEP')}: {m.getWeaponsCapacity()}{units.MJ} / {m.getWeaponsRechargeRate()}{units.MW}</div> : null }
+                { m.getSystemsCapacity() ? <div className='l'>{translate('SYS')}: {m.getSystemsCapacity()}{units.MJ} / {m.getSystemsRechargeRate()}{units.MW}</div> : null }
+                { m.getEnginesCapacity() ? <div className='l'>{translate('ENG')}: {m.getEnginesCapacity()}{units.MJ} / {m.getEnginesRechargeRate()}{units.MW}</div> : null }
             </div>
           </div>
         </div>
         {menu}
       </div>
     );
-	        //{ validMods.length > 0 ? <div className='r' ><button onClick={this._showModificationsMenu.bind(this, m)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
+	        // { validMods.length > 0 ? <div className='r' ><button onClick={this._showModificationsMenu.bind(this, m)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
   }
 }

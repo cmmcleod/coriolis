@@ -123,12 +123,12 @@ const PROP_BLACKLIST = {
   mass: 1,
   cost: 1,
   recover: 1,
-  weaponcapacity: 1,
-  weaponrecharge: 1,
-  enginecapacity: 1,
-  enginerecharge: 1,
-  systemcapacity: 1,
-  systemrecharge: 1,
+  wepcap: 1,
+  weprate: 1,
+  engcap: 1,
+  engrate: 1,
+  syscap: 1,
+  sysrate: 1,
   breachdps: 1,
   breachmin: 1,
   breachmax: 1,
@@ -251,21 +251,21 @@ export function diffDetails(language, m, mm) {
   if (m.grp == 'pd') {
     propDiffs.push(<div key='wep'>
       {`${translate('WEP')}: `}
-      <span className={diffClass(m.weaponcapacity, mm.weaponcapacity)}>{m.weaponcapacity}{units.MJ}</span>
+      <span className={diffClass(m.getWeaponsCapacity(), mm.getWeaponsCapacity())}>{m.getWeaponsCapacity()}{units.MJ}</span>
       {' / '}
-      <span className={diffClass(m.weaponrecharge, mm.weaponrecharge)}>{m.weaponrecharge}{units.MW}</span>
+      <span className={diffClass(m.getWeaponsRechargeRate(), mm.getWeaponsRechargeRate())}>{m.getWeaponsRechargeRate()}{units.MW}</span>
     </div>);
     propDiffs.push(<div key='sys'>
       {`${translate('SYS')}: `}
-      <span className={diffClass(m.systemcapacity, mm.systemcapacity)}>{m.systemcapacity}{units.MJ}</span>
+      <span className={diffClass(m.getSystemsCapacity(), mm.getSystemsCapacity())}>{m.getSystemsCapacity()}{units.MJ}</span>
       {' / '}
-      <span className={diffClass(m.systemrecharge, mm.systemrecharge)}>{m.systemrecharge}{units.MW}</span>
+      <span className={diffClass(m.getSystemsRechargeRate(), mm.getSystemsRechargeRate())}>{m.getSystemsRechargeRate()}{units.MW}</span>
     </div>);
     propDiffs.push(<div key='eng'>
       {`${translate('ENG')}: `}
-      <span className={diffClass(m.enginecapacity, mm.enginecapacity)}>{m.enginecapacity}{units.MJ}</span>
+      <span className={diffClass(m.getEnginesCapacity(), mm.getEnginesCapacity())}>{m.getEnginesCapacity()}{units.MJ}</span>
       {' / '}
-      <span className={diffClass(m.enginerecharge, mm.enginerecharge)}>{m.enginerecharge}{units.MW}</span>
+      <span className={diffClass(m.getEnginesRechargeRate(), mm.getEnginesRechargeRate())}>{m.getEnginesRechargeRate()}{units.MW}</span>
     </div>);
   }
 

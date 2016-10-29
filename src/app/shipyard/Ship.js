@@ -35,7 +35,7 @@ function decodeModsToArray(code, arr) {
       let mods = moduleMods[i].split(';');
       for (let j = 0; j < mods.length; j++) {
         let modElements = mods[j].split(':');
-        arr[i][Number(modElements[0])] = Number(modElements[1]);
+        arr[i][modElements[0]] = Number(modElements[1]);
       }
     }
   }
@@ -135,7 +135,7 @@ export default class Ship {
    */
   canThrust() {
     return this.getSlotStatus(this.standard[1]) == 3 &&   // Thrusters are powered
-        this.ladenMass < this.standard[1].m.maxmass;      // Max mass not exceeded
+        this.ladenMass < this.standard[1].m.getMaxMass(); // Max mass not exceeded
   }
 
   /**
@@ -143,9 +143,9 @@ export default class Ship {
    * @return {[type]} True if boost capable
    */
   canBoost() {
-    return this.canThrust() &&                                  // Thrusters operational
-        this.getSlotStatus(this.standard[4]) == 3 &&            // Power distributor operational
-        this.boostEnergy <= this.standard[4].m.enginecapacity;  // PD capacitor is sufficient for boost
+    return this.canThrust() &&                                       // Thrusters operational
+        this.getSlotStatus(this.standard[4]) == 3 &&                 // Power distributor operational
+        this.boostEnergy <= this.standard[4].m.getEnginesCapacity(); // PD capacitor is sufficient for boost
   }
 
     /**
@@ -179,7 +179,7 @@ export default class Ship {
    */
   calcUnladenRange(massDelta, fuel, fsd) {
     fsd = fsd || this.standard[2].m;
-    return Calc.jumpRange(this.unladenMass + (massDelta || 0) +  Math.min(fsd.maxfuel, fuel || this.fuelCapacity), fsd || this.standard[2].m, fuel);
+    return Calc.jumpRange(this.unladenMass + (massDelta || 0) +  Math.min(fsd.getMaxFuelPerJump(), fuel || this.fuelCapacity), fsd || this.standard[2].m, fuel);
   }
 
   /**
@@ -405,31 +405,37 @@ export default class Ship {
   /**
    * Set a modification value
    * @param {Object} m The module to change
-   * @param {Object} mId The ID of the modification to change
+   * @param {Object} name The name of the modification to change
    * @param {Number} value The new value of the modification
    */
-  setModification(m, mId, value) {
+  setModification(m, name, value) {
     // Handle special cases
-    if (mId == 1) {
+    if (name == 'pGen') {
       // Power generation
-      m.setModValue(mId, value);
+      m.setModValue(name, value);
       this.updatePower();
-    } else if (mId == 2) {
+    } else if (name == 'power') {
       // Power usage
-      m.setModValue(mId, value);
+      m.setModValue(name, value);
       this.updatePower();
-    } else if (mId == 4) {
+    } else if (name == 'mass') {
       // Mass
       let oldMass = m.getMass();
-      m.setModValue(mId, value);
+      m.setModValue(name, value);
       let newMass = m.getMass();
       this.unladenMass = this.unladenMass - oldMass + newMass;
       this.ladenMass = this.ladenMass - oldMass + newMass;
       this.updateTopSpeed();
       this.updateJumpStats();
+    } else if (name == 'maxfuel') {
+      m.setModValue(name, value);
+      this.updateJumpStats();
+    } else if (name == 'optmass') {
+      m.setModValue(name, value);
+      this.updateJumpStats();
     } else {
       // Generic
-      m.setModValue(mId, value);
+      m.setModValue(name, value);
     }
   }
 
@@ -566,7 +572,7 @@ export default class Ship {
     }
 
     if (parts[3]) {
-      //decodeModsToArray(LZString.decompressFromBase64(parts[3].replace(/-/g, '/')), mods);
+      // decodeModsToArray(LZString.decompressFromBase64(parts[3].replace(/-/g, '/')), mods);
       decodeModsToArray(parts[3], mods);
     }
 
@@ -960,7 +966,7 @@ export default class Ship {
       }
       allMods.push(slotMods.join(';'));
     }
-    //this.serialized.modifications = LZString.compressToBase64(allMods.join(',').replace(/,+$/, '')).replace(/\//g, '-');
+    // this.serialized.modifications = LZString.compressToBase64(allMods.join(',').replace(/,+$/, '')).replace(/\//g, '-');
     this.serialized.modifications = allMods.join(',').replace(/,+$/, '');
     return this;
   }
@@ -1132,5 +1138,4 @@ export default class Ship {
     }
     return this;
   }
-
 }
