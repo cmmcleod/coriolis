@@ -179,7 +179,8 @@ export default class Ship {
    */
   calcUnladenRange(massDelta, fuel, fsd) {
     fsd = fsd || this.standard[2].m;
-    return Calc.jumpRange(this.unladenMass + (massDelta || 0) +  Math.min(fsd.getMaxFuelPerJump(), fuel || this.fuelCapacity), fsd || this.standard[2].m, fuel);
+    let fsdMaxFuelPerJump = fsd instanceof Module ? fsd.getMaxFuelPerJump() : fsd.maxfuel;
+    return Calc.jumpRange(this.unladenMass + (massDelta || 0) +  Math.min(fsdMaxFuelPerJump, fuel || this.fuelCapacity), fsd || this.standard[2].m, fuel);
   }
 
   /**
@@ -432,6 +433,13 @@ export default class Ship {
       this.updateJumpStats();
     } else if (name == 'optmass') {
       m.setModValue(name, value);
+      // Could be for either thrusters or FSD
+      this.updateTopSpeed();
+      this.updateJumpStats();
+    } else if (name == 'optmul') {
+      m.setModValue(name, value);
+      // Could be for either thrusters or FSD
+      this.updateTopSpeed();
       this.updateJumpStats();
     } else {
       // Generic

@@ -110,6 +110,7 @@ export default class InternalSlotSection extends SlotSection {
         maxClass={s.maxClass}
         availableModules={() => availableModules.getInts(ship, s.maxClass, s.eligible)}
         onOpen={this._openMenu.bind(this,s)}
+	onChange={this.props.onChange}
         onSelect={this._selectModule.bind(this, s)}
         selected={currentMenu == s}
         enabled={s.enabled}

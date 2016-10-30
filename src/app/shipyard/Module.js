@@ -150,7 +150,17 @@ export default class Module {
    * @return {Number} the heat per second of this module
    */
   getHeatPerSecond() {
+    // Modifier for hps is thermload
     return this._getModifiedValue('hps');
+    let result = 0;
+    if (this['hps']) {
+      result = this['hps'];
+      if (result) {
+        let mult = this.getModValue('thermload');
+        if (mult) { result = result * (1 + mult); }
+      }
+    }
+    return result;
   }
 
   /**
@@ -295,5 +305,89 @@ export default class Module {
    */
   getShieldReinforcement() {
     return this._getModifiedValue('shieldreinforcement');
+  }
+
+  /**
+   * Get the minimum mass for this module, taking in to account modifications
+   * @return {Number} the minimum mass of this module
+   */
+  getMinMass() {
+    // Modifier is optmass
+    let result = 0;
+    if (this['minmass']) {
+      result = this['minmass'];
+      if (result) {
+        let mult = this.getModValue('optmass');
+        if (mult) { result = result * (1 + mult); }
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Get the optimum mass for this module, taking in to account modifications
+   * @return {Number} the optimum mass of this module
+   */
+  getOptMass() {
+    return this._getModifiedValue('optmass');
+  }
+
+  /**
+   * Get the maximum mass for this module, taking in to account modifications
+   * @return {Number} the maximum mass of this module
+   */
+  getMaxMass() {
+    // Modifier is optmass
+    let result = 0;
+    if (this['maxmass']) {
+      result = this['maxmass'];
+      if (result) {
+        let mult = this.getModValue('optmass');
+        if (mult) { result = result * (1 + mult); }
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Get the minimum multiplier for this module, taking in to account modifications
+   * @return {Number} the minimum multiplier of this module
+   */
+  getMinMul() {
+    // Modifier is optmul
+    let result = 0;
+    if (this['minmul']) {
+      result = this['minmul'];
+      if (result) {
+        let mult = this.getModValue('optmul');
+        if (mult) { result = result * (1 + mult); }
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Get the optimum multiplier for this module, taking in to account modifications
+   * @return {Number} the optimum multiplier of this module
+   */
+  getOptMul() {
+    return this._getModifiedValue('optmul');
+  }
+
+  /**
+   * Get the maximum multiplier for this module, taking in to account modifications
+   * @return {Number} the maximum multiplier of this module
+   */
+  getMaxMul() {
+    // Modifier is optmul
+    let result = 0;
+    if (this['maxmul']) {
+      result = this['maxmul'];
+      if (result) {
+        let mult = this.getModValue('optmul');
+        if (mult) { result = result * (1 + mult); }
+      }
+    }
+    return result;
   }
 }

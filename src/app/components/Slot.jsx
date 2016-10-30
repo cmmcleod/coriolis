@@ -3,8 +3,11 @@ import TranslatedComponent from './TranslatedComponent';
 import cn from 'classnames';
 import AvailableModulesMenu from './AvailableModulesMenu';
 import ModificationsMenu from './ModificationsMenu';
+import { Modifications } from 'coriolis-data/dist';
+import { ListModifications } from './SvgIcons';
 import { diffDetails } from '../utils/SlotFunctions';
 import { wrapCtxMenu } from '../utils/UtilityFunctions';
+import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
 /**
  * Abstract Slot
@@ -31,6 +34,8 @@ export default class Slot extends TranslatedComponent {
    */
   constructor(props) {
     super(props);
+
+    this._modificationsSelected = false;
 
     this._contextMenu = wrapCtxMenu(this._contextMenu.bind(this));
     this._getMaxClassLabel = this._getMaxClassLabel.bind(this);
@@ -73,9 +78,16 @@ export default class Slot extends TranslatedComponent {
    */
   render() {
     let language = this.context.language;
+    let { termtip, tooltip } = this.context;
     let translate = language.translate;
-    let { ship, m, dropClass, dragOver, onOpen, selected, onSelect, warning, shipMass, availableModules } = this.props;
+    let { ship, m, dropClass, dragOver, onOpen, onChange, selected, onSelect, warning, shipMass, availableModules } = this.props;
     let slotDetails, menu;
+    let validMods = m == null ? [] : (Modifications.validity[m.grp] || []);
+
+    if (!selected) {
+      // If not selected then sure that modifications flag is unset
+      this._modificationsSelected = false;
+    }
 
     if (m) {
       slotDetails = this._getSlotDetails(m, translate, language.formats, language.units);  // Must be implemented by sub classes
@@ -83,34 +95,41 @@ export default class Slot extends TranslatedComponent {
       slotDetails = <div className={'empty'}>{translate('empty')}</div>;
     }
 
-    if (this.props.selected) {
-      menu = <AvailableModulesMenu
-        className={this._getClassNames()}
-        modules={availableModules()}
-        shipMass={ship.hullMass}
-        m={m}
-        onSelect={onSelect}
-        warning={warning}
-        diffDetails={diffDetails.bind(ship, this.context.language)}
-      />;
+    if (selected) {
+      if (this._modificationsSelected) {
+        menu = <ModificationsMenu
+          className={this._getClassNames()}
+          onChange={onChange}
+          ship={ship}
+          m={m}
+        />;
+      } else {
+        menu = <AvailableModulesMenu
+          className={this._getClassNames()}
+          modules={availableModules()}
+          shipMass={ship.hullMass}
+          m={m}
+          onSelect={onSelect}
+          warning={warning}
+          diffDetails={diffDetails.bind(ship, this.context.language)}
+        />;
+      }
     }
 
-    if (this.props.selected) {
-      menu = <ModificationsMenu
-        className={this._getClassNames()}
-        m={m}
-      />;
-    }
     // TODO: implement touch dragging
 
     return (
       <div className={cn('slot', dropClass, { selected })} onClick={onOpen} onContextMenu={this._contextMenu} onDragOver={dragOver}>
         <div className='details-container'>
           <div className='sz'>{this._getMaxClassLabel(translate)}</div>
-          {slotDetails}
-        </div>
+            {slotDetails}
+  	  </div>
         {menu}
       </div>
     );
+  }
+
+  _toggleModifications(event) {
+    this._modificationsSelected = !this._modificationsSelected;
   }
 }

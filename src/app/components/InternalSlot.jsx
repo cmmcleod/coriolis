@@ -2,6 +2,7 @@ import React from 'react';
 import Slot from './Slot';
 import { ListModifications } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
+import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
 /**
  * Internal Slot
@@ -20,6 +21,7 @@ export default class InternalSlot extends Slot {
     if (m) {
       let classRating = m.class + m.rating;
       let { drag, drop } = this.props;
+      let { termtip, tooltip } = this.context;
       let validMods = Modifications.validity[m.grp] || [];
 
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
@@ -44,7 +46,8 @@ export default class InternalSlot extends Slot {
           { m.rangeLS === null ? <div className={'l'}>∞{u.Ls}</div> : null }
           { m.rangeRating ? <div className={'l'}>{translate('range')}: {m.rangeRating}</div> : null }
           { m.armouradd ? <div className={'l'}>+{m.armouradd} <u className='cap'>{translate('armour')}</u></div> : null }
-	  { validMods.length > 0 ? <div className='r' ><ListModifications /></div> : null }
+          { m.passengers ? <div className={'l'}>{translate('passengers')}: {m.passengers}</div> : null }
+	  { m && validMods.length > 0 ? <div className='r' ><button onClick={this._toggleModifications.bind(this)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
         </div>
       </div>;
     } else {

@@ -25,6 +25,11 @@ export default class StandardSlot extends TranslatedComponent {
     warning: React.PropTypes.func,
   };
 
+  constructor(props) {
+    super(props);
+    this._modificationsSelected = false;
+  }
+
   /**
    * Render the slot
    * @return {React.Component} Slot component
@@ -32,31 +37,36 @@ export default class StandardSlot extends TranslatedComponent {
   render() {
     let { termtip, tooltip } = this.context;
     let { translate, formats, units } = this.context.language;
-    let { modules, slot, warning, onSelect, onChange, ladenMass, ship } = this.props;
+    let { modules, slot, selected, warning, onSelect, onChange, ladenMass, ship } = this.props;
     let m = slot.m;
     let classRating = m.class + m.rating;
     let menu;
     let validMods = m == null ? [] : (Modifications.validity[m.grp] || []);
 
-    if (this.props.selected) {
-      menu = <AvailableModulesMenu
-        className='standard'
-        modules={modules}
-        shipMass={ship.ladenMass}
-        m={m}
-        onSelect={onSelect}
-        warning={warning}
-        diffDetails={diffDetails.bind(ship, this.context.language)}
-      />;
+    if (!selected) {
+      // If not selected then sure that modifications flag is unset
+      this._modificationsSelected = false;
     }
 
-    if (this.props.selected) {
-      menu = <ModificationsMenu
-        className='standard'
-	onChange={onChange}
-        ship={ship}
-        m={m}
-      />;
+    if (selected) {
+      if (this._modificationsSelected) {
+        menu = <ModificationsMenu
+          className='standard'
+          onChange={onChange}
+          ship={ship}
+          m={m}
+        />;
+      } else {
+        menu = <AvailableModulesMenu
+          className='standard'
+          modules={modules}
+          shipMass={ship.ladenMass}
+          m={m}
+          onSelect={onSelect}
+          warning={warning}
+          diffDetails={diffDetails.bind(ship, this.context.language)}
+        />;
+      }
     }
 
     return (
@@ -74,17 +84,22 @@ export default class StandardSlot extends TranslatedComponent {
                 { m.getRange() ? <div className='l'>{translate('range')}: {m.getRange()}{units.km}</div> : null }
                 { m.time ? <div className='l'>{translate('time')}: {formats.time(m.time)}</div> : null }
                 { m.getThermalEfficiency() ? <div className='l'>{translate('efficiency')}: {m.getThermalEfficiency()}</div> : null }
-                { m.getPowerGeneration() > 0 ? <div className='l'>{translate('power')}: {formats.round(m.getPowerGeneration())}{units.MW}</div> : null }
+                { m.getPowerGeneration() > 0 ? <div className='l'>{translate('pGen')}: {formats.round(m.getPowerGeneration())}{units.MW}</div> : null }
                 { m.getMaxFuelPerJump() ? <div className='l'>{translate('max')} {translate('fuel')}: {m.getMaxFuelPerJump()}{units.T}</div> : null }
                 { m.getWeaponsCapacity() ? <div className='l'>{translate('WEP')}: {m.getWeaponsCapacity()}{units.MJ} / {m.getWeaponsRechargeRate()}{units.MW}</div> : null }
                 { m.getSystemsCapacity() ? <div className='l'>{translate('SYS')}: {m.getSystemsCapacity()}{units.MJ} / {m.getSystemsRechargeRate()}{units.MW}</div> : null }
                 { m.getEnginesCapacity() ? <div className='l'>{translate('ENG')}: {m.getEnginesCapacity()}{units.MJ} / {m.getEnginesRechargeRate()}{units.MW}</div> : null }
+
+	        { validMods.length > 0 ? <div className='r' ><button onClick={this._toggleModifications.bind(this)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
             </div>
           </div>
         </div>
         {menu}
       </div>
     );
-	        // { validMods.length > 0 ? <div className='r' ><button onClick={this._showModificationsMenu.bind(this, m)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
+  }
+
+  _toggleModifications() {
+    this._modificationsSelected = !this._modificationsSelected;
   }
 }

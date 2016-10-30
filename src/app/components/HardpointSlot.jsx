@@ -2,6 +2,7 @@ import React from 'react';
 import Slot from './Slot';
 import { DamageKinetic, DamageThermal, DamageExplosive, MountFixed, MountGimballed, MountTurret, ListModifications } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
+import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
 
 /**
@@ -38,6 +39,7 @@ export default class HardpointSlot extends Slot {
     if (m) {
       let classRating = `${m.class}${m.rating}${m.missile ? '/' + m.missile : ''}`;
       let { drag, drop } = this.props;
+      let { termtip, tooltip } = this.context;
       let validMods = Modifications.validity[m.grp] || [];
 
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
@@ -62,7 +64,7 @@ export default class HardpointSlot extends Slot {
           { m.range && !m.dps ? <div className={'l'}>{translate('Range')} : {formats.round(m.range / 1000)}{u.km}</div> : null }
           { m.shieldmul ? <div className={'l'}>+{formats.rPct(m.shieldmul)}</div> : null }
           { m.ammo >= 0 ? <div className={'l'}>{translate('ammo')}: {formats.int(m.clip)}/{formats.int(m.ammo)}</div> : null }
-	  { validMods.length > 0 ? <div className='r' ><ListModifications /></div> : null }
+          { m && validMods.length > 0 ? <div className='r' ><button onClick={this._toggleModifications.bind(this)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
         </div>
       </div>;
     } else {
