@@ -126,7 +126,7 @@ export default class ModuleSet {
     let pd = this.standard[4][0];
 
     for (let p of this.standard[4]) {
-      if (p.mass < pd.mass && p.getEnginesCapacity() >= boostEnergy) {
+      if (p.mass < pd.mass && p.engcap >= boostEnergy) {
         pd = p;
       }
     }

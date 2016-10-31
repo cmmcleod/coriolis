@@ -68,6 +68,7 @@ export default class UtilitySlotSection extends SlotSection {
           availableModules={() => availableModules.getHps(h.maxClass)}
           onOpen={this._openMenu.bind(this,h)}
           onSelect={this._selectModule.bind(this, h)}
+          onChange={this.props.onChange}
           selected={currentMenu == h}
           drag={this._drag.bind(this, h)}
           dragOver={this._dragOverSlot.bind(this, h)}

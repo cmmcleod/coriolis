@@ -32,7 +32,7 @@ export default class Module {
    * @return {Number}      The value of the modification, as a decimal value from -1 to 1
    */
   getModValue(name) {
-    return this.mods ? this.mods[name] / 10000 : null;
+    return this.mods  && this.mods[name] ? this.mods[name] / 10000 : null;
   }
 
   /**
@@ -389,5 +389,73 @@ export default class Module {
       }
     }
     return result;
+  }
+
+  /**
+   * Get the shield multiplier for this module, taking in to account modifications
+   * @return {Number} the shield multiplier of this module
+   */
+  getShieldMul() {
+    return this._getModifiedValue('shieldmul');
+  }
+
+
+  /**
+   * Get the DPS for this module, taking in to account modifications
+   * @return {Number} the DPS of this module
+   */
+  getDps() {
+    // TODO this is not correct; need to include other factors such as rate of fire, damage, etc.
+    return this._getModifiedValue('dps');
+  }
+
+  /**
+   * Get the heat generated per second for this module, taking in to account modifications
+   * @return {Number} the heat generated per second of this module
+   */
+  getHps() {
+    // TODO this is not correct; need to include other factors such as rate of fire, damage, etc.
+    return this._getModifiedValue('hps');
+  }
+
+  /**
+   * Get the energy used per second for this module, taking in to account modifications
+   * @return {Number} the energy used per second of this module
+   */
+  getEps() {
+    // TODO this is not correct; need to include other factors such as rate of fire, damage, etc.
+    return this._getModifiedValue('eps');
+  }
+
+  /**
+   * Get the clip size for this module, taking in to account modifications
+   * @return {Number} the clip size of this module
+   */
+  getClip() {
+    return this._getModifiedValue('clip');
+  }
+
+  /**
+   * Get the ammo size for this module, taking in to account modifications
+   * @return {Number} the ammo size of this module
+   */
+  getAmmo() {
+    return this._getModifiedValue('ammo');
+  }
+
+  /**
+   * Get the reload time for this module, taking in to account modifications
+   * @return {Number} the reload time of this module
+   */
+  getReload() {
+    return this._getModifiedValue('reload');
+  }
+
+  /**
+   * Get the rate of fire for this module, taking in to account modifications
+   * @return {Number} the rate of fire for this module
+   */
+  getRoF() {
+    return this._getModifiedValue('rof');
   }
 }

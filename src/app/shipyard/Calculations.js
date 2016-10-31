@@ -60,11 +60,8 @@ export function shieldStrength(mass, baseShield, sg, multiplier) {
   let exponent = Math.log((optMul - minMul) / (maxMul - minMul)) / Math.log(Math.min(1, (maxMass - optMass) / (maxMass - minMass)))
   let ynorm = Math.pow(xnorm, exponent);
   let mul = minMul + ynorm * (maxMul - minMul);
-  let strength = baseShield * mul;
 
-  // TODO handle multiplier
-
-  return strength;
+  return baseShield * mul * multiplier;
 }
 
 /**

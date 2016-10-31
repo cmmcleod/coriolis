@@ -22,6 +22,7 @@ export default class Slot extends TranslatedComponent {
     selected: React.PropTypes.bool,
     m: React.PropTypes.object,
     ship: React.PropTypes.object.isRequired,
+    eligible: React.PropTypes.object,
     warning: React.PropTypes.func,
     drag: React.PropTypes.func,
     drop: React.PropTypes.func,
@@ -80,7 +81,7 @@ export default class Slot extends TranslatedComponent {
     let language = this.context.language;
     let { termtip, tooltip } = this.context;
     let translate = language.translate;
-    let { ship, m, dropClass, dragOver, onOpen, onChange, selected, onSelect, warning, shipMass, availableModules } = this.props;
+    let { ship, m, dropClass, dragOver, onOpen, onChange, selected, eligible, onSelect, warning, shipMass, availableModules } = this.props;
     let slotDetails, menu;
     let validMods = m == null ? [] : (Modifications.validity[m.grp] || []);
 
@@ -92,7 +93,7 @@ export default class Slot extends TranslatedComponent {
     if (m) {
       slotDetails = this._getSlotDetails(m, translate, language.formats, language.units);  // Must be implemented by sub classes
     } else {
-      slotDetails = <div className={'empty'}>{translate('empty')}</div>;
+      slotDetails = <div className={'empty'}>{translate(eligible ? 'emptyrestricted' : 'empty')}</div>;
     }
 
     if (selected) {

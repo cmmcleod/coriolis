@@ -441,6 +441,9 @@ export default class Ship {
       // Could be for either thrusters or FSD
       this.updateTopSpeed();
       this.updateJumpStats();
+    } else if (name == 'shieldmul') {
+      m.setModValue(name, value);
+      this.updateShieldStrength();
     } else {
       // Generic
       m.setModValue(name, value);
@@ -686,7 +689,7 @@ export default class Ship {
         if (ModuleUtils.isShieldGenerator(slot.m.grp)) {
           this.updateShieldStrength();
         } else if (slot.m.grp == 'sb') {
-          this.shieldMultiplier += slot.m.shieldmul * (enabled ? 1 : -1);
+          this.shieldMultiplier += slot.m.getShieldMul() * (enabled ? 1 : -1);
           this.updateShieldStrength();
         }
         if (slot.m.dps) {
@@ -752,7 +755,7 @@ export default class Ship {
           this.armourAdded -= old.armouradd;
           break;
         case 'sb':
-          this.shieldMultiplier -= slot.enabled ? old.shieldmul : 0;
+          this.shieldMultiplier -= slot.enabled ? old.getShieldMul() : 0;
           break;
       }
 
@@ -794,7 +797,7 @@ export default class Ship {
           this.armourAdded += n.armouradd;
           break;
         case 'sb':
-          this.shieldMultiplier += slot.enabled ? n.shieldmul : 0;
+          this.shieldMultiplier += slot.enabled ? n.getShieldMul() : 0;
           break;
       }
 

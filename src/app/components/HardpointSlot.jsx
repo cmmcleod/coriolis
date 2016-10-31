@@ -56,14 +56,14 @@ export default class HardpointSlot extends Slot {
           <div className={'r'}>{m.getMass()}{u.T}</div>
         </div>
         <div className={'cb'}>
-          { m.dps ? <div className={'l'}>{translate('DPS')}: {formats.round1(m.dps)} { m.clip ? <span>({formats.round1((m.clip * m.dps / m.rof) / ((m.clip / m.rof) + m.reload)) })</span> : null }</div> : null }
-          { m.eps ? <div className={'l'}>{translate('EPS')}: {formats.round1(m.eps)}{u.MW} { m.clip ? <span>({formats.round1((m.clip * m.eps / m.rof) / ((m.clip / m.rof) + m.reload)) }{u.MW})</span> : null }</div> : null }
-          { m.hps ? <div className={'l'}>{translate('HPS')}: {formats.round1(m.hps)} { m.clip ? <span>({formats.round1((m.clip * m.hps / m.rof) / ((m.clip / m.rof) + m.reload)) })</span> : null }</div> : null }
-          { m.dps && m.eps ? <div className={'l'}>{translate('DPE')}: {formats.round1(m.dps / m.eps)}</div> : null }
-          { m.rof ? <div className={'l'}>{translate('ROF')}: {m.rof}{u.ps}</div> : null }
-          { m.range && !m.dps ? <div className={'l'}>{translate('Range')} : {formats.round(m.range / 1000)}{u.km}</div> : null }
-          { m.shieldmul ? <div className={'l'}>+{formats.rPct(m.shieldmul)}</div> : null }
-          { m.ammo >= 0 ? <div className={'l'}>{translate('ammo')}: {formats.int(m.clip)}/{formats.int(m.ammo)}</div> : null }
+          { m.getDps() ? <div className={'l'}>{translate('DPS')}: {formats.round1(m.getDps())} { m.getClip() ? <span>({formats.round1((m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload())) })</span> : null }</div> : null }
+          { m.getEps() ? <div className={'l'}>{translate('EPS')}: {formats.round1(m.getEps())}{u.MW} { m.getClip() ? <span>({formats.round1((m.getClip() * m.getEps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload())) }{u.MW})</span> : null }</div> : null }
+          { m.getHps() ? <div className={'l'}>{translate('HPS')}: {formats.round1(m.getHps())} { m.getClip() ? <span>({formats.round1((m.getClip() * m.getHps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload())) })</span> : null }</div> : null }
+          { m.getDps() && m.getEps() ? <div className={'l'}>{translate('DPE')}: {formats.round1(m.getDps() / m.getEps())}</div> : null }
+          { m.getRoF() ? <div className={'l'}>{translate('ROF')}: {m.getRoF()}{u.ps}</div> : null }
+          { m.getRange() && !m.getDps() ? <div className={'l'}>{translate('Range')} : {formats.round(m.getRange() / 1000)}{u.km}</div> : null }
+          { m.getShieldMul() ? <div className={'l'}>+{formats.rPct(m.getShieldMul())}</div> : null }
+          { m.getAmmo() ? <div className={'l'}>{translate('ammunition')}: {formats.int(m.getClip())}/{formats.int(m.getAmmo())}</div> : null }
           { m && validMods.length > 0 ? <div className='r' ><button onClick={this._toggleModifications.bind(this)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
         </div>
       </div>;
