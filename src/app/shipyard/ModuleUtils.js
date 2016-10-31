@@ -98,7 +98,7 @@ export function internal(id) {
     let group = Modules.internal[n];
     for (let i = 0; i < group.length; i++) {
       if (group[i].id == id) {
-        return group[i];
+        return new Module({ template: group[i] });
       }
     }
   }

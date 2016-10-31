@@ -495,7 +495,6 @@ export default class Ship {
       bands[this.cargoHatch.priority].retracted += this.cargoHatch.m.getPowerUsage();
     }
 
-
     for (i = 0; i < cl; i++) {
       standard[i].cat = 0;
       standard[i].enabled = enabled ? enabled[i + 1] * 1 : true;

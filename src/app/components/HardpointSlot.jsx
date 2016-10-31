@@ -53,7 +53,7 @@ export default class HardpointSlot extends Slot {
 	  {m.type && m.type == 'KT' ? <span><DamageKinetic /><DamageThermal /></span> : ''}
 	  {m.type && m.type == 'E' ? <DamageExplosive /> : ''}
           {classRating} {translate(m.name || m.grp)}</div>
-          <div className={'r'}>{m.getMass()}{u.T}</div>
+          <div className={'r'}>{formats.round1(m.getMass())}{u.T}</div>
         </div>
         <div className={'cb'}>
           { m.getDps() ? <div className={'l'}>{translate('DPS')}: {formats.round1(m.getDps())} { m.getClip() ? <span>({formats.round1((m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload())) })</span> : null }</div> : null }

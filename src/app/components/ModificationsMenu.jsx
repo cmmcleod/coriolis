@@ -50,7 +50,6 @@ export default class ModificationsMenu extends TranslatedComponent {
 		  <NumberEditor className={'cb'} style={{ width: '100%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={this._getValue(modName, values[modName])} onValueChange={this._updateValue.bind(this, modName)} />
                 </div>);
     }
-		  //<NumberEditor className={'cb'} style={{ width: '100%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} initialValue={m.getModValue(modName) ? m.getModValue(modName) * 100 : 0} value={m.getModValue(modName) ? m.getModValue(modName) * 100 : 0} onValueChange={this._updateValue.bind(this, modName)} />
 
     return { list, values };
   }
@@ -64,6 +63,12 @@ export default class ModificationsMenu extends TranslatedComponent {
     this.setState(this._initState(nextProps, nextContext));
   }
 
+  /**
+   * Get the locally stored value of the modifier
+   * @param {string} name the name of the value to obtain
+   * @param {Number} defaultValue the value to use if none is held locally
+   * @return {Number} the value
+   */
   _getValue(name, defaultValue) {
     let values = this.state ? this.state.values : null;
     return values ? values[name] : defaultValue;
@@ -75,7 +80,6 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @param {Number} value The value to set, in the range [0,1]
    */
   _updateValue(name, value) {
-
     let values = this.state.values;
     values[name] = value;
 
@@ -87,7 +91,7 @@ export default class ModificationsMenu extends TranslatedComponent {
       ship.setModification(m, name, scaledValue);
     }
     this.props.onChange();
-    this.setState({values});
+    this.setState({ values });
   }
 
   /**

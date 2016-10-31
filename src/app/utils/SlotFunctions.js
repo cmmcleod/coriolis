@@ -252,7 +252,7 @@ export function diffDetails(language, m, mm) {
       }
     } else {
       // Old module must be a shield booster
-        newShield = this.calcShieldStrengthWith(null, -mm.getShieldMul());
+      newShield = this.calcShieldStrengthWith(null, -mm.getShieldMul());
     }
 
     let sgDiffClass = Math.round((newShield - shield) * 100) / 100 == 0 ? 'muted' : (newShield > shield ? 'secondary' : 'warning');
@@ -283,7 +283,7 @@ export function diffDetails(language, m, mm) {
 
   let massDiff = mMass - mmMass;
   let mCap = m.fuel || m.cargo || 0;
-  let mmCap = mm? mm.fuel || mm.cargo || 0 : 0;
+  let mmCap = mm ? mm.fuel || mm.cargo || 0 : 0;
   let capDiff = mCap - mmCap;
   if (m.grp == 'fsd' || massDiff || capDiff) {
     let fsd = m.grp == 'fsd' ? m : null;

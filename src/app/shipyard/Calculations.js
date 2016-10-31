@@ -57,7 +57,7 @@ export function shieldStrength(mass, baseShield, sg, multiplier) {
   let maxMul = sg instanceof Module ? sg.getMaxMul() : sg.maxmul;
 
   let xnorm = Math.min(1, (maxMass - mass) / (maxMass - minMass));
-  let exponent = Math.log((optMul - minMul) / (maxMul - minMul)) / Math.log(Math.min(1, (maxMass - optMass) / (maxMass - minMass)))
+  let exponent = Math.log((optMul - minMul) / (maxMul - minMul)) / Math.log(Math.min(1, (maxMass - optMass) / (maxMass - minMass)));
   let ynorm = Math.pow(xnorm, exponent);
   let mul = minMul + ynorm * (maxMul - minMul);
 
@@ -84,7 +84,7 @@ export function speed(mass, baseSpeed, baseBoost, thrusters, pipSpeed) {
   let maxMul = thrusters instanceof Module ? thrusters.getMaxMul() : thrusters.maxmul;
 
   let xnorm = Math.min(1, (maxMass - mass) / (maxMass - minMass));
-  let exponent = Math.log((optMul - minMul) / (maxMul - minMul)) / Math.log(Math.min(1, (maxMass - optMass) / (maxMass - minMass)))
+  let exponent = Math.log((optMul - minMul) / (maxMul - minMul)) / Math.log(Math.min(1, (maxMass - optMass) / (maxMass - minMass)));
   let ynorm = Math.pow(xnorm, exponent);
   let mul = minMul + ynorm * (maxMul - minMul);
   let speed = baseSpeed * mul;

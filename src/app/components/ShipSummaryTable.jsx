@@ -23,8 +23,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
     let translate = language.translate;
     let u = language.units;
     let formats = language.formats;
-    let round = formats.round;
-    let { time, int } = formats;
+    let { time, int, round, f1, f2 } = formats;
     let armourDetails = null;
     let sgClassNames = cn({ warning: ship.sgSlot && !ship.shieldStrength, muted: !ship.sgSlot });
     let sgRecover = '-';
@@ -84,9 +83,9 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{ship.agility}/10</td>
             <td>{ ship.canThrust() ? <span>{int(ship.topSpeed)} {u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
             <td>{ ship.canBoost() ? <span>{int(ship.topBoost)} {u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
-            <td>{round(ship.totalDps)}</td>
-            <td>{round(ship.totalEps)}</td>
-            <td>{round(ship.totalHps)}</td>
+            <td>{f1(ship.totalDps)}</td>
+            <td>{f1(ship.totalEps)}</td>
+            <td>{f1(ship.totalHps)}</td>
             <td>{int(ship.armour)} {armourDetails}</td>
             <td className={sgClassNames}>{int(ship.shieldStrength)} {u.MJ} { ship.shieldMultiplier > 1 && ship.shieldStrength > 0 ? <u>({formats.rPct(ship.shieldMultiplier)})</u> : null }</td>
             <td className={sgClassNames}>{sgRecover}</td>
@@ -96,12 +95,12 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{int(ship.ladenMass)} {u.T}</td>
             <td>{round(ship.cargoCapacity)} {u.T}</td>
             <td>{round(ship.fuelCapacity)} {u.T}</td>
-            <td>{round(ship.unladenRange)} {u.LY}</td>
-            <td>{round(ship.fullTankRange)} {u.LY}</td>
-            <td>{round(ship.ladenRange)} {u.LY}</td>
-            <td>{round(ship.maxJumpCount)}</td>
-            <td>{round(ship.unladenFastestRange)} {u.LY}</td>
-            <td>{round(ship.ladenFastestRange)} {u.LY}</td>
+            <td>{f2(ship.unladenRange)} {u.LY}</td>
+            <td>{f2(ship.fullTankRange)} {u.LY}</td>
+            <td>{f2(ship.ladenRange)} {u.LY}</td>
+            <td>{int(ship.maxJumpCount)}</td>
+            <td>{f2(ship.unladenFastestRange)} {u.LY}</td>
+            <td>{f2(ship.ladenFastestRange)} {u.LY}</td>
             <td>{ship.masslock}</td>
           </tr>
         </tbody>

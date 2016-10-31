@@ -130,7 +130,10 @@ export default class Slot extends TranslatedComponent {
     );
   }
 
-  _toggleModifications(event) {
+  /**
+   * Toggle the modifications flag when selecting the modifications icon
+   */
+  _toggleModifications() {
     this._modificationsSelected = !this._modificationsSelected;
   }
 }

@@ -27,7 +27,7 @@ export default class InternalSlot extends Slot {
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
           <div className={'l'}>{classRating} {translate(m.name || m.grp)}</div>
-          <div className={'r'}>{m.getMass() || m.cargo || m.fuel || 0}{u.T}</div>
+          <div className={'r'}>{formats.round1(m.getMass()) || m.cargo || m.fuel || 0}{u.T}</div>
         </div>
         <div className={'cb'}>
           { m.getOptMass() ? <div className={'l'}>{translate('optimal mass')}: {m.getOptMass()}{u.T}</div> : null }
@@ -48,6 +48,7 @@ export default class InternalSlot extends Slot {
           { m.armouradd ? <div className={'l'}>+{m.armouradd} <u className='cap'>{translate('armour')}</u></div> : null }
           { m.passengers ? <div className={'l'}>{translate('passengers')}: {m.passengers}</div> : null }
 	  { m && validMods.length > 0 ? <div className='r' ><button onClick={this._toggleModifications.bind(this)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
+
         </div>
       </div>;
     } else {
