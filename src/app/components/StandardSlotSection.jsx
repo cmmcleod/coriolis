@@ -163,7 +163,7 @@ export default class StandardSlotSection extends SlotSection {
       selected={currentMenu == st[4]}
       onChange={this.props.onChange}
       ship={ship}
-      warning= {m => m.getEnginesCapacity() < ship.boostEnergy}
+      warning= {m => m.engcap < ship.boostEnergy}
     />;
 
     slots[6] = <StandardSlot

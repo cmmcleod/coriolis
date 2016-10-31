@@ -207,42 +207,54 @@ function diff(format, mVal, mmVal) {
  * @return {React.Component} Component to be rendered
  */
 export function diffDetails(language, m, mm) {
-  mm = mm || new Module();
   let { formats, translate, units } = language;
   let propDiffs = [];
+
+  let mCost = m.cost || 0;
+  let mmCost = mm ? mm.cost : 0;
+  if (mCost != mmCost) propDiffs.push(<div key='cost'>{translate('cost')}: <span className={diffClass(mCost, mmCost, true) }>{mCost ? Math.round(mCost * (1 - Persist.getModuleDiscount())) : 0}{units.CR}</span></div>);
+
   let mMass = m.mass || 0;
   let mmMass = mm ? mm.getMass() : 0;
-  let massDiff = mMass - mmMass;
-  let capDiff = (m.fuel || m.cargo || 0) - (mm.fuel || mm.cargo || 0);
+  if (mMass != mmMass) propDiffs.push(<div key='mass'>{translate('mass')}: <span className={diffClass(mMass, mmMass, true)}>{diff(formats.round, mMass, mmMass)}{units.T}</span></div>);
+
+  let mPowerUsage = m.power || 0;
+  let mmPowerUsage = mm ? mm.getPowerUsage() : 0;
+  if (mPowerUsage != mmPowerUsage) propDiffs.push(<div key='power'>{translate('power')}: <span className={diffClass(mPowerUsage, mmPowerUsage, true)}>{diff(formats.round, mPowerUsage, mmPowerUsage)}{units.MJ}</span></div>);
+
+//  for (let p in m) {
+//    if (!PROP_BLACKLIST[p] && !isNaN(m[p])) {
+//      let mVal = m[p] === null ? Infinity : m[p];
+//      let mmVal = mm[p] === null ? Infinity : mm[p];
+//      let format = formats[FORMAT_LOOKUP[p]] || formats.round;
+//      propDiffs.push(<div key={p}>
+//        {`${translate(TERM_LOOKUP[p] || p)}: `}
+//        <span className={diffClass(mVal, mmVal, p == 'power')}>{diff(format, mVal, mmVal)}{units[UNIT_LOOKUP[p]]}</span>
+//      </div>);
+//    }
+//  }
+
+  let mDps = m.dps || 0;
+  let mmDps = mm ? mm.getDps() || 0 : 0;
+  if (mDps != mmDps) propDiffs.push(<div key='dps'>{translate('dps')}: <span className={diffClass(mmDps, mDps, true)}>{diff(formats.round, mDps, mmDps)}</span></div>);
+
   let mAffectsShield = isShieldGenerator(m.grp)  || m.grp == 'sb';
-  let mmAffectsShield = isShieldGenerator(mm.grp) || mm.grp == 'sb';
-
-  propDiffs.push(<div key='cost'>{translate('cost')}: <span className={diffClass(m.cost, mm.cost, true) }>{m.cost ? Math.round(m.cost * (1 - Persist.getModuleDiscount())) : 0}{units.CR}</span></div>);
-  propDiffs.push(<div key='mass'>{translate('mass')}: <span className={diffClass(mMass, mm.getMass(), true)}>{diff(formats.round, mMass, mmMass)}{units.T}</span></div>);
-
-  for (let p in m) {
-    if (!PROP_BLACKLIST[p] && !isNaN(m[p])) {
-      let mVal = m[p] === null ? Infinity : m[p];
-      let mmVal = mm[p] === null ? Infinity : mm[p];
-      let format = formats[FORMAT_LOOKUP[p]] || formats.round;
-      propDiffs.push(<div key={p}>
-        {`${translate(TERM_LOOKUP[p] || p)}: `}
-        <span className={diffClass(mVal, mmVal, p == 'power')}>{diff(format, mVal, mmVal)}{units[UNIT_LOOKUP[p]]}</span>
-      </div>);
-    }
-  }
-
+  let mmAffectsShield = isShieldGenerator(mm ? mm.grp : null) || mm && mm.grp == 'sb';
   if (mAffectsShield || mmAffectsShield) {
     let shield = this.calcShieldStrengthWith(); // Get shield strength regardless of slot active / inactive
     let newShield = 0;
 
     if (mAffectsShield) {
       if (m.grp == 'sb') {  // Both m and mm must be utility modules if this is true
-        newShield = this.calcShieldStrengthWith(null, m.shieldmul - (mm.shieldmul || 0));
+        newShield = this.calcShieldStrengthWith(null, m.shieldmul - (mm ? mm.getShieldMul() || 0 : 0));
       } else {
         newShield = this.calcShieldStrengthWith(m);
       }
+    } else {
+      // Old module must be a shield booster
+        newShield = this.calcShieldStrengthWith(null, -mm.getShieldMul());
     }
+
     let sgDiffClass = Math.round((newShield - shield) * 100) / 100 == 0 ? 'muted' : (newShield > shield ? 'secondary' : 'warning');
 
     propDiffs.push(<div key='shields'>{translate('shields')}: <span className={sgDiffClass}>{diff(formats.int, newShield, shield)}{units.MJ}</span></div>);
@@ -251,24 +263,28 @@ export function diffDetails(language, m, mm) {
   if (m.grp == 'pd') {
     propDiffs.push(<div key='wep'>
       {`${translate('WEP')}: `}
-      <span className={diffClass(m.getWeaponsCapacity(), mm.getWeaponsCapacity())}>{m.getWeaponsCapacity()}{units.MJ}</span>
+      <span className={diffClass(m.wepcap, mm.getWeaponsCapacity())}>{m.wepcap}{units.MJ}</span>
       {' / '}
-      <span className={diffClass(m.getWeaponsRechargeRate(), mm.getWeaponsRechargeRate())}>{m.getWeaponsRechargeRate()}{units.MW}</span>
+      <span className={diffClass(m.weprate, mm.getWeaponsRechargeRate())}>{m.weprate}{units.MW}</span>
     </div>);
     propDiffs.push(<div key='sys'>
       {`${translate('SYS')}: `}
-      <span className={diffClass(m.getSystemsCapacity(), mm.getSystemsCapacity())}>{m.getSystemsCapacity()}{units.MJ}</span>
+      <span className={diffClass(m.syscap, mm.getSystemsCapacity())}>{m.syscap}{units.MJ}</span>
       {' / '}
-      <span className={diffClass(m.getSystemsRechargeRate(), mm.getSystemsRechargeRate())}>{m.getSystemsRechargeRate()}{units.MW}</span>
+      <span className={diffClass(m.sysrate, mm.getSystemsRechargeRate())}>{m.sysrate}{units.MW}</span>
     </div>);
     propDiffs.push(<div key='eng'>
       {`${translate('ENG')}: `}
-      <span className={diffClass(m.getEnginesCapacity(), mm.getEnginesCapacity())}>{m.getEnginesCapacity()}{units.MJ}</span>
+      <span className={diffClass(m.engcap, mm.getEnginesCapacity())}>{m.engcap}{units.MJ}</span>
       {' / '}
-      <span className={diffClass(m.getEnginesRechargeRate(), mm.getEnginesRechargeRate())}>{m.getEnginesRechargeRate()}{units.MW}</span>
+      <span className={diffClass(m.engrate, mm.getEnginesRechargeRate())}>{m.engrate}{units.MW}</span>
     </div>);
   }
 
+  let massDiff = mMass - mmMass;
+  let mCap = m.fuel || m.cargo || 0;
+  let mmCap = mm? mm.fuel || mm.cargo || 0 : 0;
+  let capDiff = mCap - mmCap;
   if (m.grp == 'fsd' || massDiff || capDiff) {
     let fsd = m.grp == 'fsd' ? m : null;
     let maxRange = this.calcUnladenRange(massDiff, m.fuel, fsd);
