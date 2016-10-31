@@ -405,8 +405,22 @@ export default class Module {
    * @return {Number} the DPS of this module
    */
   getDps() {
-    // TODO this is not correct; need to include other factors such as rate of fire, damage, etc.
-    return this._getModifiedValue('dps');
+    // Modifications are not made to DPS directly, but to damage and rate of fire
+    
+    // Obtain unmodified rate of fire
+    let rof = this['rof'];
+
+    // Obtain unmodified damage
+    let damage = this['dps'] / rof;
+
+    // Obtain modified rate of fire
+    let modRof = this._getModifiedValue('rof');
+
+    // Obtain modified damage
+    let damageMult = this.getModValue('damage');
+    let modDamage = damageMult ? damage * (1 + damageMult) : damage;
+
+    return modDamage * modRof;
   }
 
   /**

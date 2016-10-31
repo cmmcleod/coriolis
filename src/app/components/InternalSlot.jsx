@@ -30,8 +30,8 @@ export default class InternalSlot extends Slot {
           <div className={'r'}>{formats.round1(m.getMass()) || m.cargo || m.fuel || 0}{u.T}</div>
         </div>
         <div className={'cb'}>
-          { m.getOptMass() ? <div className={'l'}>{translate('optimal mass')}: {m.getOptMass()}{u.T}</div> : null }
-          { m.getMaxMass() ? <div className={'l'}>{translate('max mass')}: {m.getMaxMass()}{u.T}</div> : null }
+          { m.getOptMass() ? <div className={'l'}>{translate('optimal mass')}: {formats.int(m.getOptMass())}{u.T}</div> : null }
+          { m.getMaxMass() ? <div className={'l'}>{translate('max mass')}: {formats.int(m.getMaxMass())}{u.T}</div> : null }
           { m.bins ? <div className={'l'}>{m.bins} <u>{translate('bins')}</u></div> : null }
           { m.bays ? <div className={'l'}>{translate('bays')}: {m.bays}</div> : null }
           { m.rate ? <div className={'l'}>{translate('rate')}: {m.rate}{u.kgs}&nbsp;&nbsp;&nbsp;{translate('refuel time')}: {formats.time(this.props.fuel * 1000 / m.rate)}</div> : null }
@@ -39,7 +39,7 @@ export default class InternalSlot extends Slot {
           { m.cells ? <div className={'l'}>{translate('cells')}: {m.cells}</div> : null }
           { m.recharge ? <div className={'l'}>{translate('recharge')}: {m.recharge} <u>MJ</u>&nbsp;&nbsp;&nbsp;{translate('total')}: {m.cells * m.recharge}{u.MJ}</div> : null }
           { m.repair ? <div className={'l'}>{translate('repair')}: {m.repair}</div> : null }
-          { m.getRange() ? <div className={'l'}>{translate('range')} {m.getRange()}{u.km}</div> : null }
+          { m.getRange() ? <div className={'l'}>{translate('range')} {formats.f2(m.getRange())}{u.km}</div> : null }
           { m.time ? <div className={'l'}>{translate('time')}: {formats.time(m.time)}</div> : null }
           { m.maximum ? <div className={'l'}>{translate('max')}: {(m.maximum)}</div> : null }
           { m.rangeLS ? <div className={'l'}>{translate('range')}: {m.rangeLS}{u.Ls}</div> : null }

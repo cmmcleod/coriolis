@@ -60,7 +60,7 @@ export default class HardpointSlot extends Slot {
           { m.getEps() ? <div className={'l'}>{translate('EPS')}: {formats.round1(m.getEps())}{u.MW} { m.getClip() ? <span>({formats.round1((m.getClip() * m.getEps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload())) }{u.MW})</span> : null }</div> : null }
           { m.getHps() ? <div className={'l'}>{translate('HPS')}: {formats.round1(m.getHps())} { m.getClip() ? <span>({formats.round1((m.getClip() * m.getHps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload())) })</span> : null }</div> : null }
           { m.getDps() && m.getEps() ? <div className={'l'}>{translate('DPE')}: {formats.round1(m.getDps() / m.getEps())}</div> : null }
-          { m.getRoF() ? <div className={'l'}>{translate('ROF')}: {m.getRoF()}{u.ps}</div> : null }
+          { m.getRoF() ? <div className={'l'}>{translate('ROF')}: {formats.f1(m.getRoF())}{u.ps}</div> : null }
           { m.getRange() && !m.getDps() ? <div className={'l'}>{translate('Range')} : {formats.round(m.getRange() / 1000)}{u.km}</div> : null }
           { m.getShieldMul() ? <div className={'l'}>+{formats.rPct(m.getShieldMul())}</div> : null }
           { m.getAmmo() ? <div className={'l'}>{translate('ammunition')}: {formats.int(m.getClip())}/{formats.int(m.getAmmo())}</div> : null }
