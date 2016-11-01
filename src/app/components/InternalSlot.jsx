@@ -24,10 +24,11 @@ export default class InternalSlot extends Slot {
       let { termtip, tooltip } = this.context;
       let validMods = Modifications.validity[m.grp] || [];
 
+      let mass = m.getMass() || m.cargo || m.fuel || 0;
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
           <div className={'l'}>{classRating} {translate(m.name || m.grp)}</div>
-          <div className={'r'}>{formats.round1(m.getMass()) || m.cargo || m.fuel || 0}{u.T}</div>
+          <div className={'r'}>{formats.round1(mass)}{u.T}</div>
         </div>
         <div className={'cb'}>
           { m.getOptMass() ? <div className={'l'}>{translate('optimal mass')}: {formats.int(m.getOptMass())}{u.T}</div> : null }

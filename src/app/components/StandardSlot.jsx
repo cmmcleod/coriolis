@@ -46,6 +46,7 @@ export default class StandardSlot extends TranslatedComponent {
     let classRating = m.class + m.rating;
     let menu;
     let validMods = m == null ? [] : (Modifications.validity[m.grp] || []);
+    let mass = m.getMass() || m.cargo || m.fuel || 0;
 
     if (!selected) {
       // If not selected then sure that modifications flag is unset
@@ -79,7 +80,7 @@ export default class StandardSlot extends TranslatedComponent {
           <div className={'sz'}>{slot.maxClass}</div>
           <div>
             <div className='l'>{classRating} {translate(m.grp == 'bh' ? m.grp : m.name || m.grp)}</div>
-            <div className={'r'}>{formats.round1(m.getMass()) || m.fuel || 0}{units.T}</div>
+            <div className={'r'}>{formats.round1(mass)}{units.T}</div>
 	    <div/>
             <div className={'cb'}>
                 { m.grp == 'bh' && m.name ? <div className='l'>{translate(m.name)}</div> : null }
