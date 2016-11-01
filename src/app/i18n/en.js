@@ -103,6 +103,7 @@ export const terms = {
   engrate: 'Engines recharge rate',
   eps: 'Energy per second',
   explres: 'Explosive resistance',
+  facinglimit: 'Facing limit',
   integrity: 'Integrity',
   jitter: 'Jitter',
   kinres: 'Kinetic resistance',
