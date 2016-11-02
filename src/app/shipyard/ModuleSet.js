@@ -66,7 +66,7 @@ export default class ModuleSet {
    * @return {Object}      Bulkhead module details
    */
   getBulkhead(index) {
-    return this.bulkheads[index] || null;
+    return this.bulkheads[index] ? new Module({ template: this.bulkheads[index] }) : null;
   }
 
   /**

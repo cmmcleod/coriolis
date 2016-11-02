@@ -88,6 +88,7 @@ export const terms = {
 
   // Modifications
   ammo: 'Ammunition maximum',
+  armour: 'Armour',
   armourpen: 'Armour penetration',
   boot: 'Boot time',
   brokenregen: 'Broken regeneration rate',
@@ -104,6 +105,7 @@ export const terms = {
   eps: 'Energy per second',
   explres: 'Explosive resistance',
   facinglimit: 'Facing limit',
+  hullboost: 'Hull boost',
   integrity: 'Integrity',
   jitter: 'Jitter',
   kinres: 'Kinetic resistance',
