@@ -23,7 +23,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
     let translate = language.translate;
     let u = language.units;
     let formats = language.formats;
-    let { time, int, round, f1, f2 } = formats;
+    let { time, int, round, f1, f2, pct } = formats;
     let armourDetails = null;
     let sgClassNames = cn({ warning: ship.sgSlot && !ship.shieldStrength, muted: !ship.sgSlot });
     let sgRecover = '-';
@@ -42,12 +42,24 @@ export default class ShipSummaryTable extends TranslatedComponent {
       sgRecharge = time(ship.calcShieldRecharge());
     }
 
+            //<th colSpan={3}>{translate('shield resistance')}</th>
+            //<th colSpan={3}>{translate('hull resistance')}</th>
+            //<th className='lft'>{translate('explosive')}</th>
+            //<th className='lft'>{translate('kinetic')}</th>
+            //<th className='lft'>{translate('thermal')}</th>
+            //<th className='lft'>{translate('explosive')}</th>
+            //<th className='lft'>{translate('kinetic')}</th>
+            //<th className='lft'>{translate('thermal')}</th>
+            //<td>{pct(ship.shieldExplRes)}</td>
+            //<td>{pct(ship.shieldKinRes)}</td>
+            //<td>{pct(ship.shieldThermRes)}</td>
+            //<td>{pct(ship.hullExplRes)}</td>
+            //<td>{pct(ship.hullKinRes)}</td>
+            //<td>{pct(ship.hullThermRes)}</td>
     return <div id='summary'>
       <table id='summaryTable'>
         <thead>
           <tr className='main'>
-            <th rowSpan={2}>{translate('size')}</th>
-            <th onMouseEnter={termtip.bind(null, 'maneuverability')} onMouseLeave={hide} rowSpan={2}>{translate('MNV')}</th>
             <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !ship.canThrust() }) }>{translate('speed')}</th>
             <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !ship.canBoost() }) }>{translate('boost')}</th>
             <th onMouseEnter={termtip.bind(null, 'damage per second')} onMouseLeave={hide} rowSpan={2}>{translate('DPS')}</th>
@@ -79,8 +91,6 @@ export default class ShipSummaryTable extends TranslatedComponent {
         </thead>
         <tbody>
           <tr>
-            <td className='cap'>{translate(SizeMap[ship.class])}</td>
-            <td>{ship.agility}/10</td>
             <td>{ ship.canThrust() ? <span>{int(ship.topSpeed)} {u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
             <td>{ ship.canBoost() ? <span>{int(ship.topBoost)} {u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
             <td>{f1(ship.totalDps)}</td>

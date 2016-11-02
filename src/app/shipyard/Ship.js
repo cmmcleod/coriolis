@@ -478,6 +478,12 @@ export default class Ship {
     this.totalDps = 0;
     this.totalEps = 0;
     this.totalHps = 0;
+    this.shieldExplRes = 0;
+    this.shieldKinRes = 0;
+    this.shieldThermRes = 0;
+    this.hullExplRes = 0;
+    this.hullKinRes = 0;
+    this.hullThermRes = 0;
 
     this.bulkheads.m = null;
     this.useBulkhead(comps && comps.bulkheads ? comps.bulkheads : 0, true);
