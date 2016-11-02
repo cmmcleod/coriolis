@@ -210,10 +210,11 @@ export default class Ship {
    * @return {Number} Recovery time in seconds
    */
   calcShieldRecovery() {
-    if (this.shieldStrength && this.sgSlot) {
-      let brokenRegenRate = 1 + this.sgSlot.m.getModValue('brokenregen');
+    if (this.shield > 0) {
+      let sgSlot = this.findInternalByGroup('sg');
+      let brokenRegenRate = 1 + sgSlot.m.getModValue('brokenregen');
       // 50% of shield strength / recovery recharge rate + 15 second delay before recharge starts
-      return ((this.shieldStrength / 2) / (this.sgSlot.m.recover * brokenRegenRate)) + 15;
+      return ((this.shield / 2) / (sgSlot.m.recover * brokenRegenRate)) + 15;
     }
     return 0;
   }
@@ -225,10 +226,11 @@ export default class Ship {
    * @return {Number} 50 - 100% Recharge time in seconds
    */
   calcShieldRecharge() {
-    if (this.shieldStrength && this.sgSlot) {
-      let regenRate = 1 + this.sgSlot.m.getModValue('regen');
+    if (this.shield > 0) {
+      let sgSlot = this.findInternalByGroup('sg');
+      let regenRate = 1 + sgSlot.m.getModValue('regen');
       // 50% -> 100% recharge time, Bi-Weave shields charge at 1.8 MJ/s
-      return (this.shieldStrength / 2) / ((this.sgSlot.m.grp == 'bsg' ? 1.8 : 1) * regenRate);
+      return (this.shield / 2) / ((sgSlot.m.grp == 'bsg' ? 1.8 : 1) * regenRate);
     }
     return 0;
   }
@@ -241,12 +243,16 @@ export default class Ship {
    */
   calcShieldStrengthWith(sg, multiplierDelta) {
     if (!sg) {
-      if (!this.sgSlot) {
+      let sgSlot = this.findInternalByGroup('sg');
+      if (!sgSlot) {
         return 0;
       }
-      sg = this.sgSlot.m;
+      sg = sgSlot.m;
     }
-    return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, this.shieldMultiplier + (multiplierDelta || 0));
+
+    // TODO obtain shieldMultiplier
+    //return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, this.shieldMultiplier + (multiplierDelta || 0));
+    return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, 0 + (multiplierDelta || 0));
   }
 
   /**
@@ -444,7 +450,7 @@ export default class Ship {
       this.updateJumpStats();
     } else if (name == 'shieldmul') {
       m.setModValue(name, value);
-      this.updateShieldStrength();
+      this.updateShield();
     } else if (name == 'hullboost') {
       m.setModValue(name, value);
       this.updateArmour();
@@ -475,7 +481,7 @@ export default class Ship {
     this.cargoCapacity = 0;
     this.ladenMass = 0;
     this.armour = this.baseArmour;
-    this.shieldMultiplier = 1;
+    this.shield = this.baseShieldStrength;
     this.totalCost = this.m.incCost ? this.m.discountedCost : 0;
     this.unladenMass = this.hullMass;
     this.totalDps = 0;
@@ -558,7 +564,7 @@ export default class Ship {
     if (comps) {
       this.updatePower()
           .updateJumpStats()
-          .updateShieldStrength()
+          .updateShield()
           .updateArmour()
           .updateTopSpeed();
     }
@@ -695,11 +701,8 @@ export default class Ship {
       if (slot.m) {
         this.priorityBands[slot.priority][powerUsageType(slot, slot.m)] += enabled ? slot.m.getPowerUsage() : - slot.m.getPowerUsage();
 
-        if (ModuleUtils.isShieldGenerator(slot.m.grp)) {
-          this.updateShieldStrength();
-        } else if (slot.m.grp == 'sb') {
-          this.shieldMultiplier += slot.m.getShieldMul() * (enabled ? 1 : -1);
-          this.updateShieldStrength();
+        if (ModuleUtils.isShieldGenerator(slot.m.grp) || slot.m.grp == 'sb') {
+          this.updateShield();
         }
         if (slot.m.dps) {
           this.totalDps += slot.m.dps * (enabled ? 1 : -1);
@@ -754,6 +757,8 @@ export default class Ship {
 
     let armourChange = (slot == this.bulkheads) || (n && n.grp == 'hr') || (old && old.grp == 'hr');
 
+    let shieldChange = (n && n.grp == 'bsg') || (old && old.grp == 'bsg') || (n && n.grp == 'psg') || (old && old.grp == 'psg') || (n && n.grp == 'sg') || (old && old.grp == 'sg') || (n && n.grp == 'sb') || (old && old.grp == 'sb');
+
     if (old) {  // Old modul now being removed
       switch (old.grp) {
         case 'ft':
@@ -761,9 +766,6 @@ export default class Ship {
           break;
         case 'cr':
           this.cargoCapacity -= old.cargo;
-          break;
-        case 'sb':
-          this.shieldMultiplier -= slot.enabled ? old.getShieldMul() : 0;
           break;
       }
 
@@ -801,9 +803,6 @@ export default class Ship {
         case 'cr':
           this.cargoCapacity += n.cargo;
           break;
-        case 'sb':
-          this.shieldMultiplier += slot.enabled ? n.getShieldMul() : 0;
-          break;
       }
 
       if (slot.incCost && n.cost) {
@@ -834,11 +833,13 @@ export default class Ship {
         this.updatePower();
       }
       if (armourChange) {
+        this.updateArmour();
       }
-      this.updateArmour();
+      if (shieldChange) {
+        this.updateShield();
+      }
       this.updateTopSpeed();
       this.updateJumpStats();
-      this.updateShieldStrength();
     }
     return this;
   }
@@ -875,12 +876,26 @@ export default class Ship {
   }
 
   /**
-   * Update Shield strength
+   * Update shield
    * @return {this} The ship instance (for chaining operations)
    */
-  updateShieldStrength() {
-    this.sgSlot = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
-    this.shieldStrength = this.sgSlot && this.sgSlot.enabled ? Calc.shieldStrength(this.hullMass, this.baseShieldStrength, this.sgSlot.m, this.shieldMultiplier) : 0;
+  updateShield() {
+    // Base shield from generator
+    let baseShield = 0;
+    let sgSlot = this.findInternalByGroup('sg');
+    if (sgSlot && sgSlot.enabled) {
+      baseShield = Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sgSlot.m, 1);
+    }
+
+    let shield = baseShield;
+
+    // Shield from boosters
+    for (let slot of this.hardpoints) {
+      if (slot.m && slot.m.grp == 'sb') {
+        shield += baseShield * slot.m.getShieldMultiplier();
+      }
+    }
+    this.shield = shield;
     return this;
   }
 

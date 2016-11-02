@@ -24,30 +24,30 @@ export default class ShipSummaryTable extends TranslatedComponent {
     let u = language.units;
     let formats = language.formats;
     let { time, int, round, f1, f2, pct } = formats;
-    let sgClassNames = cn({ warning: ship.sgSlot && !ship.shieldStrength, muted: !ship.sgSlot });
+    let sgClassNames = cn({ warning: ship.sgSlot && !ship.shield, muted: !ship.sgSlot });
     let sgRecover = '-';
     let sgRecharge = '-';
     let hide = tooltip.bind(null, null);
 
-    if (ship.shieldStrength) {
+    if (ship.shield) {
       sgRecover = time(ship.calcShieldRecovery());
       sgRecharge = time(ship.calcShieldRecharge());
     }
 
-            //<th colSpan={3}>{translate('shield resistance')}</th>
-            //<th colSpan={3}>{translate('hull resistance')}</th>
-            //<th className='lft'>{translate('explosive')}</th>
-            //<th className='lft'>{translate('kinetic')}</th>
-            //<th className='lft'>{translate('thermal')}</th>
-            //<th className='lft'>{translate('explosive')}</th>
-            //<th className='lft'>{translate('kinetic')}</th>
-            //<th className='lft'>{translate('thermal')}</th>
-            //<td>{pct(ship.shieldExplRes)}</td>
-            //<td>{pct(ship.shieldKinRes)}</td>
-            //<td>{pct(ship.shieldThermRes)}</td>
-            //<td>{pct(ship.hullExplRes)}</td>
-            //<td>{pct(ship.hullKinRes)}</td>
-            //<td>{pct(ship.hullThermRes)}</td>
+            // <th colSpan={3}>{translate('shield resistance')}</th>
+            // <th colSpan={3}>{translate('hull resistance')}</th>
+            // <th className='lft'>{translate('explosive')}</th>
+            // <th className='lft'>{translate('kinetic')}</th>
+            // <th className='lft'>{translate('thermal')}</th>
+            // <th className='lft'>{translate('explosive')}</th>
+            // <th className='lft'>{translate('kinetic')}</th>
+            // <th className='lft'>{translate('thermal')}</th>
+            // <td>{pct(ship.shieldExplRes)}</td>
+            // <td>{pct(ship.shieldKinRes)}</td>
+            // <td>{pct(ship.shieldThermRes)}</td>
+            // <td>{pct(ship.hullExplRes)}</td>
+            // <td>{pct(ship.hullKinRes)}</td>
+            // <td>{pct(ship.hullThermRes)}</td>
     return <div id='summary'>
       <table id='summaryTable'>
         <thead>
@@ -89,7 +89,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{f1(ship.totalEps)}</td>
             <td>{f1(ship.totalHps)}</td>
             <td>{int(ship.armour)}</td>
-            <td className={sgClassNames}>{int(ship.shieldStrength)} {u.MJ} { ship.shieldMultiplier > 1 && ship.shieldStrength > 0 ? <u>({formats.rPct(ship.shieldMultiplier)})</u> : null }</td>
+            <td className={sgClassNames}>{int(ship.shield)} {u.MJ}</td>
             <td className={sgClassNames}>{sgRecover}</td>
             <td className={sgClassNames}>{sgRecharge}</td>
             <td>{ship.hullMass} {u.T}</td>

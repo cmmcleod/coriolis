@@ -307,11 +307,11 @@ export default class Module {
   }
 
   /**
-   * Get the shield reinforcement for this module, taking in to account modifications
-   * @return {Number} the shield reinforcement of this module
+   * Get the shield multiplier for this module, taking in to account modifications
+   * @return {Number} the shield multiplier of this module
    */
-  getShieldReinforcement() {
-    return this._getModifiedValue('shieldreinforcement');
+  getShieldMultiplier() {
+    return this._getModifiedValue('shieldmul');
   }
 
   /**
