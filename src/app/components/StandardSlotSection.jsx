@@ -86,12 +86,10 @@ export default class StandardSlotSection extends SlotSection {
    * @return {Array} Array of Slots
    */
   _getSlots() {
-    let { translate, units, formats } = this.context.language;
     let { ship, currentMenu } = this.props;
     let slots = new Array(8);
     let open = this._openMenu;
     let select = this._selectModule;
-    let selBulkhead = this._selectBulkhead;
     let st = ship.standard;
     let avail = ship.getAvailableModules().standard;
     let bh = ship.bulkheads;

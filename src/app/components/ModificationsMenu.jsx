@@ -7,8 +7,6 @@ import { MountFixed, MountGimballed, MountTurret } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
 import Modification from './Modification';
 
-const PRESS_THRESHOLD = 500; // mouse/touch down threshold
-
 /**
  * Modifications menu
  */
@@ -37,8 +35,6 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @return {Object}         list: Array of React Components
    */
   _initState(props, context) {
-    let translate = context.language.translate;
-    let formats = context.language.formats;
     let { m, onChange, ship } = props;
     let list = [];
 

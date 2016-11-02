@@ -151,7 +151,6 @@ export default class Module {
    */
   getHeatPerSecond() {
     // Modifier for hps is thermload
-    return this._getModifiedValue('hps');
     let result = 0;
     if (this['hps']) {
       result = this['hps'];

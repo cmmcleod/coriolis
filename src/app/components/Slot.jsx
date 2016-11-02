@@ -79,11 +79,9 @@ export default class Slot extends TranslatedComponent {
    */
   render() {
     let language = this.context.language;
-    let { termtip, tooltip } = this.context;
     let translate = language.translate;
-    let { ship, m, dropClass, dragOver, onOpen, onChange, selected, eligible, onSelect, warning, shipMass, availableModules } = this.props;
+    let { ship, m, dropClass, dragOver, onOpen, onChange, selected, eligible, onSelect, warning, availableModules } = this.props;
     let slotDetails, menu;
-    let validMods = m == null ? [] : (Modifications.validity[m.grp] || []);
 
     if (!selected) {
       // If not selected then sure that modifications flag is unset

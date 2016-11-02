@@ -41,7 +41,7 @@ export default class StandardSlot extends TranslatedComponent {
   render() {
     let { termtip, tooltip } = this.context;
     let { translate, formats, units } = this.context.language;
-    let { modules, slot, selected, warning, onSelect, onChange, ladenMass, ship } = this.props;
+    let { modules, slot, selected, warning, onSelect, onChange, ship } = this.props;
     let m = slot.m;
     let classRating = m.class + m.rating;
     let menu;

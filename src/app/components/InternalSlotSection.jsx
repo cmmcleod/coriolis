@@ -99,7 +99,7 @@ export default class InternalSlotSection extends SlotSection {
     let slots = [];
     let { currentMenu, ship } = this.props;
     let { originSlot, targetSlot } = this.state;
-    let { internal, fuelCapacity, ladenMass } = ship;
+    let { internal, fuelCapacity } = ship;
     let availableModules = ship.getAvailableModules();
 
     for (let i = 0, l = internal.length; i < l; i++) {
