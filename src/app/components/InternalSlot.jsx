@@ -40,7 +40,9 @@ export default class InternalSlot extends Slot {
           { m.cells ? <div className={'l'}>{translate('cells')}: {m.cells}</div> : null }
           { m.recharge ? <div className={'l'}>{translate('recharge')}: {m.recharge} <u>MJ</u>&nbsp;&nbsp;&nbsp;{translate('total')}: {m.cells * m.recharge}{u.MJ}</div> : null }
           { m.repair ? <div className={'l'}>{translate('repair')}: {m.repair}</div> : null }
+          { m.getFacingLimit() ? <div className={'l'}>{translate('facinglimit')} {formats.f1(m.getFacingLimit())}°</div> : null }
           { m.getRange() ? <div className={'l'}>{translate('range')} {formats.f2(m.getRange())}{u.km}</div> : null }
+          { m.getRangeT() ? <div className={'l'}>{translate('ranget')} {formats.f1(m.getRangeT())}{u.s}</div> : null }
           { m.time ? <div className={'l'}>{translate('time')}: {formats.time(m.time)}</div> : null }
           { m.maximum ? <div className={'l'}>{translate('max')}: {(m.maximum)}</div> : null }
           { m.rangeLS ? <div className={'l'}>{translate('range')}: {m.rangeLS}{u.Ls}</div> : null }

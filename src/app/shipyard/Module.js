@@ -259,11 +259,19 @@ export default class Module {
   }
 
   /**
-   * Get the range rate for this module, taking in to account modifications
+   * Get the range for this module, taking in to account modifications
    * @return {Number} the range rate of this module
    */
   getRange() {
     return this._getModifiedValue('range');
+  }
+
+  /**
+   * Get the range (in terms of seconds, for FSDI) for this module, taking in to account modifications
+   * @return {Number} the range of this module
+   */
+  getRangeT() {
+    return this._getModifiedValue('ranget');
   }
 
   /**
@@ -470,5 +478,13 @@ export default class Module {
    */
   getRoF() {
     return this._getModifiedValue('rof');
+  }
+
+  /**
+   * Get the facing limit for this module, taking in to account modifications
+   * @return {Number} the facing limit for this module
+   */
+  getFacingLimit() {
+    return this._getModifiedValue('facinglimit');
   }
 }

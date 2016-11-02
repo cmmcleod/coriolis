@@ -66,6 +66,7 @@ export function getLanguage(langCode) {
       MW: <u> {translate('MW')}</u>,     // Mega Watts (same as Mega Joules per second)
       ps: <u>{translate('/s')}</u>,           // per second
       pm: <u>{translate('/min')}</u>,         // per minute
+      s: <u>{translate('secs')}</u>,         // Seconds
       T: <u> {translate('T')}</u>,       // Metric Tons
     }
   };

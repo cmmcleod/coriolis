@@ -115,6 +115,7 @@ export const terms = {
   pGen: 'Power generation',
   power: 'Power draw',
   range: 'Range',
+  ranget: 'Range', // Range in time (for FSD interdictor)
   regen: 'Regeneration rate',
   reload: 'Reload time',
   rof: 'Rate of fire',
