@@ -24,18 +24,10 @@ export default class ShipSummaryTable extends TranslatedComponent {
     let u = language.units;
     let formats = language.formats;
     let { time, int, round, f1, f2, pct } = formats;
-    let armourDetails = null;
     let sgClassNames = cn({ warning: ship.sgSlot && !ship.shieldStrength, muted: !ship.sgSlot });
     let sgRecover = '-';
     let sgRecharge = '-';
     let hide = tooltip.bind(null, null);
-
-    if (ship.armourMultiplier > 1 || ship.armourAdded) {
-      armourDetails = <u>({
-        (ship.armourMultiplier > 1 ? formats.rPct(ship.armourMultiplier) : '') +
-        (ship.armourAdded ? ' + ' + ship.armourAdded : '')
-      })</u>;
-    }
 
     if (ship.shieldStrength) {
       sgRecover = time(ship.calcShieldRecovery());
@@ -96,7 +88,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{f1(ship.totalDps)}</td>
             <td>{f1(ship.totalEps)}</td>
             <td>{f1(ship.totalHps)}</td>
-            <td>{int(ship.armour)} {armourDetails}</td>
+            <td>{int(ship.armour)}</td>
             <td className={sgClassNames}>{int(ship.shieldStrength)} {u.MJ} { ship.shieldMultiplier > 1 && ship.shieldStrength > 0 ? <u>({formats.rPct(ship.shieldMultiplier)})</u> : null }</td>
             <td className={sgClassNames}>{sgRecover}</td>
             <td className={sgClassNames}>{sgRecharge}</td>

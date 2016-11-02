@@ -283,11 +283,11 @@ export default class Module {
   }
 
   /**
-   * Get the armour for this module, taking in to account modifications
-   * @return {Number} the armour of this module
+   * Get the hull reinforcement for this module, taking in to account modifications
+   * @return {Number} the hull reinforcement of this module
    */
-  getArmour() {
-    return this._getModifiedValue('armour');
+  getHullReinforcement() {
+    return this._getModifiedValue('hullreinforcement');
   }
 
   /**
@@ -487,4 +487,13 @@ export default class Module {
   getFacingLimit() {
     return this._getModifiedValue('facinglimit');
   }
+
+  /**
+   * Get the hull boost for this module, taking in to account modifications
+   * @return {Number} the hull boost for this module
+   */
+  getHullBoost() {
+    return this._getModifiedValue('hullboost');
+  }
+
 }

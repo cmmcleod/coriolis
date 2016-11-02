@@ -1,4 +1,3 @@
-import { ArmourMultiplier } from './Constants';
 import * as Calc from './Calculations';
 import * as ModuleUtils from './ModuleUtils';
 import Module from './Module';
@@ -213,7 +212,6 @@ export default class Ship {
   calcShieldRecovery() {
     if (this.shieldStrength && this.sgSlot) {
       let brokenRegenRate = 1 + this.sgSlot.m.getModValue('brokenregen');
-      console.log('Broken regen rate is ' + brokenRegenRate);
       // 50% of shield strength / recovery recharge rate + 15 second delay before recharge starts
       return ((this.shieldStrength / 2) / (this.sgSlot.m.recover * brokenRegenRate)) + 15;
     }
@@ -447,6 +445,9 @@ export default class Ship {
     } else if (name == 'shieldmul') {
       m.setModValue(name, value);
       this.updateShieldStrength();
+    } else if (name == 'hullboost') {
+      m.setModValue(name, value);
+      this.updateArmour();
     } else {
       // Generic
       m.setModValue(name, value);
@@ -473,8 +474,7 @@ export default class Ship {
     this.fuelCapacity = 0;
     this.cargoCapacity = 0;
     this.ladenMass = 0;
-    this.armourAdded = 0;
-    this.armourMultiplier = 1;
+    this.armour = this.baseArmour;
     this.shieldMultiplier = 1;
     this.totalCost = this.m.incCost ? this.m.discountedCost : 0;
     this.unladenMass = this.hullMass;
@@ -559,6 +559,7 @@ export default class Ship {
       this.updatePower()
           .updateJumpStats()
           .updateShieldStrength()
+          .updateArmour()
           .updateTopSpeed();
     }
 
@@ -751,6 +752,8 @@ export default class Ship {
   updateStats(slot, n, old, preventUpdate) {
     let powerChange = slot == this.standard[0];
 
+    let armourChange = (slot == this.bulkheads) || (n && n.grp == 'hr') || (old && old.grp == 'hr');
+
     if (old) {  // Old modul now being removed
       switch (old.grp) {
         case 'ft':
@@ -758,9 +761,6 @@ export default class Ship {
           break;
         case 'cr':
           this.cargoCapacity -= old.cargo;
-          break;
-        case 'hr':
-          this.armourAdded -= old.armouradd;
           break;
         case 'sb':
           this.shieldMultiplier -= slot.enabled ? old.getShieldMul() : 0;
@@ -801,9 +801,6 @@ export default class Ship {
         case 'cr':
           this.cargoCapacity += n.cargo;
           break;
-        case 'hr':
-          this.armourAdded += n.armouradd;
-          break;
         case 'sb':
           this.shieldMultiplier += slot.enabled ? n.getShieldMul() : 0;
           break;
@@ -831,12 +828,14 @@ export default class Ship {
     }
 
     this.ladenMass = this.unladenMass + this.cargoCapacity + this.fuelCapacity;
-    this.armour = this.armourAdded + Math.round(this.baseArmour * this.armourMultiplier);
 
     if (!preventUpdate) {
       if (powerChange) {
         this.updatePower();
       }
+      if (armourChange) {
+      }
+      this.updateArmour();
       this.updateTopSpeed();
       this.updateJumpStats();
       this.updateShieldStrength();
@@ -882,6 +881,27 @@ export default class Ship {
   updateShieldStrength() {
     this.sgSlot = this.findInternalByGroup('sg');      // Find Shield Generator slot Index if any
     this.shieldStrength = this.sgSlot && this.sgSlot.enabled ? Calc.shieldStrength(this.hullMass, this.baseShieldStrength, this.sgSlot.m, this.shieldMultiplier) : 0;
+    return this;
+  }
+
+  /**
+   * Update armour
+   * @return {this} The ship instance (for chaining operations)
+   */
+  updateArmour() {
+    // Armour from bulkheads
+    let bulkhead = this.bulkheads.m;
+    let armour = this.baseArmour + (this.baseArmour * bulkhead.getHullBoost());
+
+    // Armour from HRPs
+    for (let slot of this.internal) {
+      if (slot.m && slot.m.grp == 'hr') {
+        armour += slot.m.getHullReinforcement();
+        // Hull boost for HRPs is applied against the ship's base armour
+        armour += this.baseArmour * slot.m.getModValue('hullboost');
+      }
+    }
+    this.armour = armour;
     return this;
   }
 
@@ -1049,7 +1069,6 @@ export default class Ship {
     let oldBulkhead = this.bulkheads.m;
     this.bulkheads.m = this.availCS.getBulkhead(index);
     this.bulkheads.discountedCost = this.bulkheads.m.cost * this.moduleCostMultiplier;
-    this.armourMultiplier = ArmourMultiplier[index];
     this.updateStats(this.bulkheads, this.bulkheads.m, oldBulkhead, preventUpdate);
     this.serialized.standard = null;
     return this;

@@ -1,12 +1,4 @@
 
-export const ArmourMultiplier = [
-  1,      // Lightweight
-  1.4,    // Reinforced
-  1.945,  // Military
-  1.945,  // Mirrored
-  1.945   // Reactive
-];
-
 export const SizeMap = ['', 'small', 'medium', 'large', 'capital'];
 
 export const StandardArray = [
