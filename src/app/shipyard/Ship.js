@@ -212,8 +212,10 @@ export default class Ship {
    */
   calcShieldRecovery() {
     if (this.shieldStrength && this.sgSlot) {
+      let brokenRegenRate = 1 + this.sgSlot.m.getModValue('brokenregen');
+      console.log('Broken regen rate is ' + brokenRegenRate);
       // 50% of shield strength / recovery recharge rate + 15 second delay before recharge starts
-      return ((this.shieldStrength / 2) / this.sgSlot.m.recover) + 15;
+      return ((this.shieldStrength / 2) / (this.sgSlot.m.recover * brokenRegenRate)) + 15;
     }
     return 0;
   }
@@ -226,8 +228,9 @@ export default class Ship {
    */
   calcShieldRecharge() {
     if (this.shieldStrength && this.sgSlot) {
+      let regenRate = 1 + this.sgSlot.m.getModValue('regen');
       // 50% -> 100% recharge time, Bi-Weave shields charge at 1.8 MJ/s
-      return (this.shieldStrength / 2) / (this.sgSlot.m.grp == 'bsg' ? 1.8 : 1);
+      return (this.shieldStrength / 2) / ((this.sgSlot.m.grp == 'bsg' ? 1.8 : 1) * regenRate);
     }
     return 0;
   }

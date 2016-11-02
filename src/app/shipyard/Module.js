@@ -29,7 +29,7 @@ export default class Module {
   /**
    * Get a value for a given modification
    * @param {Number} name  The name of the modification
-   * @return {Number}      The value of the modification, as a decimal value from -1 to 1
+   * @return {Number}      The value of the modification, as a decimal value where 1 is 100%
    */
   getModValue(name) {
     return this.mods  && this.mods[name] ? this.mods[name] / 10000 : null;
@@ -38,7 +38,7 @@ export default class Module {
   /**
    * Set a value for a given modification ID
    * @param {Number} name   The name of the modification
-   * @param {Number} value  The value of the modification, as a decimal value from -1 to 1
+   * @param {Number} value  The value of the modification, as a decimal value where 1 is 100%
    */
   setModValue(name, value) {
     if (value == null || value == 0) {
