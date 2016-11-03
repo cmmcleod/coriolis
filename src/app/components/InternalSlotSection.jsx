@@ -22,6 +22,11 @@ export default class InternalSlotSection extends SlotSection {
     this._fillWithCargo = this._fillWithCargo.bind(this);
     this._fillWithCells = this._fillWithCells.bind(this);
     this._fillWithArmor = this._fillWithArmor.bind(this);
+    this._fillWithFuelTanks = this._fillWithFuelTanks.bind(this);
+    this._fillWithLuxuryCabins = this._fillWithLuxuryCabins.bind(this);
+    this._fillWithFirstClassCabins = this._fillWithFirstClassCabins.bind(this);
+    this._fillWithBusinessClassCabins = this._fillWithBusinessClassCabins.bind(this);
+    this._fillWithEconomyClassCabins = this._fillWithEconomyClassCabins.bind(this);
   }
 
   /**
@@ -43,6 +48,86 @@ export default class InternalSlotSection extends SlotSection {
     ship.internal.forEach((slot) => {
       if (clobber || !slot.m) {
         ship.use(slot, ModuleUtils.findInternal('cr', slot.maxClass, 'E'));
+      }
+    });
+    this.props.onChange();
+    this._close();
+  }
+
+  /**
+   * Fill all slots with fuel tanks
+   * @param  {SyntheticEvent} event Event
+   */
+  _fillWithFuelTanks(event) {
+    let clobber = event.getModifierState('Alt');
+    let ship = this.props.ship;
+    ship.internal.forEach((slot) => {
+      if (clobber || !slot.m) {
+        ship.use(slot, ModuleUtils.findInternal('ft', slot.maxClass, 'C'));
+      }
+    });
+    this.props.onChange();
+    this._close();
+  }
+
+  /**
+   * Fill all slots with luxury passenger cabins
+   * @param  {SyntheticEvent} event Event
+   */
+  _fillWithLuxuryCabins(event) {
+    let clobber = event.getModifierState('Alt');
+    let ship = this.props.ship;
+    ship.internal.forEach((slot) => {
+      if (clobber || !slot.m) {
+        ship.use(slot, ModuleUtils.findInternal('pcq', Math.min(slot.maxClass, 6), 'B')); // Passenger cabins top out at 6
+      }
+    });
+    this.props.onChange();
+    this._close();
+  }
+
+  /**
+   * Fill all slots with first class passenger cabins
+   * @param  {SyntheticEvent} event Event
+   */
+  _fillWithFirstClassCabins(event) {
+    let clobber = event.getModifierState('Alt');
+    let ship = this.props.ship;
+    ship.internal.forEach((slot) => {
+      if (clobber || !slot.m) {
+        ship.use(slot, ModuleUtils.findInternal('pcm', Math.min(slot.maxClass, 6), 'C')); // Passenger cabins top out at 6
+      }
+    });
+    this.props.onChange();
+    this._close();
+  }
+
+  /**
+   * Fill all slots with business class passenger cabins
+   * @param  {SyntheticEvent} event Event
+   */
+  _fillWithBusinessClassCabins(event) {
+    let clobber = event.getModifierState('Alt');
+    let ship = this.props.ship;
+    ship.internal.forEach((slot) => {
+      if (clobber || !slot.m) {
+        ship.use(slot, ModuleUtils.findInternal('pci', Math.min(slot.maxClass, 6), 'D')); // Passenger cabins top out at 6
+      }
+    });
+    this.props.onChange();
+    this._close();
+  }
+
+  /**
+   * Fill all slots with economy class passenger cabins
+   * @param  {SyntheticEvent} event Event
+   */
+  _fillWithEconomyClassCabins(event) {
+    let clobber = event.getModifierState('Alt');
+    let ship = this.props.ship;
+    ship.internal.forEach((slot) => {
+      if (clobber || !slot.m) {
+        ship.use(slot, ModuleUtils.findInternal('pce', Math.min(slot.maxClass, 6), 'E')); // Passenger cabins top out at 6
       }
     });
     this.props.onChange();
@@ -133,13 +218,18 @@ export default class InternalSlotSection extends SlotSection {
    * @param  {Function} translate Translate function
    * @return {React.Component}    Section menu
    */
-  _getSectionMenu(translate) {
+  _getSectionMenu(translate, ship) {
     return <div className='select' onClick={e => e.stopPropagation()} onContextMenu={stopCtxPropagation}>
       <ul>
         <li className='lc' onClick={this._empty}>{translate('empty all')}</li>
         <li className='lc' onClick={this._fillWithCargo}>{translate('cargo')}</li>
         <li className='lc' onClick={this._fillWithCells}>{translate('scb')}</li>
         <li className='lc' onClick={this._fillWithArmor}>{translate('hr')}</li>
+        <li className='lc' onClick={this._fillWithFuelTanks}>{translate('ft')}</li>
+        <li className='lc' onClick={this._fillWithEconomyClassCabins}>{translate('pce')}</li>
+        <li className='lc' onClick={this._fillWithBusinessClassCabins}>{translate('pci')}</li>
+        <li className='lc' onClick={this._fillWithFirstClassCabins}>{translate('pcm')}</li>
+	{ ship.luxuryCabins ? <li className='lc' onClick={this._fillWithLuxuryCabins}>{translate('pcq')}</li> : ''}
         <li className='optional-hide' style={{ textAlign: 'center', marginTop: '1em' }}>{translate('PHRASE_ALT_ALL')}</li>
       </ul>
     </div>;

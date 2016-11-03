@@ -89,6 +89,9 @@ export const terms = {
   // 'ammo' was overloaded for outfitting page and modul info, so changed to ammunition for outfitting page
   ammunition: 'Ammo',
 
+  // Unit for seconds
+  secs: 's',
+
   // Modifications
   ammo: 'Ammunition maximum',
   armourpen: 'Armour penetration',

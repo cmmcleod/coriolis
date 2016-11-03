@@ -127,6 +127,16 @@ export default class HardpointsSlotSection extends SlotSection {
         <li className='c' onClick={_fill.bind(this, 'c', 'G')}><MountGimballed className='lg'/></li>
         <li className='c' onClick={_fill.bind(this, 'c', 'T')}><MountTurret className='lg'/></li>
       </ul>
+      <div className='select-group cap'>{translate('fc')}</div>
+      <ul>
+        <li className='c' onClick={_fill.bind(this, 'fc', 'F')}><MountFixed className='lg'/></li>
+        <li className='c' onClick={_fill.bind(this, 'fc', 'G')}><MountGimballed className='lg'/></li>
+        <li className='c' onClick={_fill.bind(this, 'fc', 'T')}><MountTurret className='lg'/></li>
+      </ul>
+      <div className='select-group cap'>{translate('nc')}</div>
+      <ul>
+        <li className='lc' onClick={_fill.bind(this, 'nl', 'F')}>{translate('nl')}</li>
+      </ul>
     </div>;
   }
 

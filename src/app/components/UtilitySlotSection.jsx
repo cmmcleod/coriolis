@@ -105,9 +105,17 @@ export default class UtilitySlotSection extends SlotSection {
         <li className='c' onClick={_use.bind(this, 'sb', 'B', null)}>B</li>
         <li className='c' onClick={_use.bind(this, 'sb', 'A', null)}>A</li>
       </ul>
-      <div className='select-group cap'>{translate('cm')}</div>
+      <div className='select-group cap'>{translate('hs')}</div>
       <ul>
-        <li className='lc' onClick={_use.bind(this, 'cm', null, 'Heat Sink Launcher')}>{translate('Heat Sink Launcher')}</li>
+        <li className='lc' onClick={_use.bind(this, 'hs', null, 'Heat Sink Launcher')}>{translate('Heat Sink Launcher')}</li>
+      </ul>
+      <div className='select-group cap'>{translate('ch')}</div>
+      <ul>
+        <li className='lc' onClick={_use.bind(this, 'ch', null, 'Chaff Launcher')}>{translate('Chaff Launcher')}</li>
+      </ul>
+      <div className='select-group cap'>{translate('po')}</div>
+      <ul>
+        <li className='lc' onClick={_use.bind(this, 'po', null, 'Point Defence')}>{translate('Point Defence')}</li>
       </ul>
     </div>;
   }
