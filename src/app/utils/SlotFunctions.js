@@ -136,7 +136,7 @@ const PROP_BLACKLIST = {
 };
 
 const TERM_LOOKUP = {
-  pGen: 'power',
+  pgen: 'power',
   armouradd: 'armour',
   shieldmul: 'multiplier',
   rof: 'ROF',
@@ -156,7 +156,7 @@ const UNIT_LOOKUP = {
   recharge: 'MJ',
   rangeLS: 'Ls',
   power: 'MJ',
-  pGen: 'MJ',
+  pgen: 'MJ',
   rof: 'ps'
 };
 

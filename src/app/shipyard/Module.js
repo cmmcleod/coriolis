@@ -70,7 +70,7 @@ export default class Module {
    * @return {Number} the power generation of this module
    */
   getPowerGeneration() {
-    return this._getModifiedValue('pGen');
+    return this._getModifiedValue('pgen');
   }
 
   /**
@@ -413,7 +413,7 @@ export default class Module {
     // DPS is a synthetic value
     let damage = this.getDamage();
     let rpshot = this.getRoundsPerShot() || 1;
-    let rof = this.getRoF();
+    let rof = this.getRoF() || 1;
 
     return damage * rpshot * rof;
   }
@@ -425,11 +425,8 @@ export default class Module {
   getEps() {
     // EPS is a synthetic value
     let distdraw = this.getDistDraw();
-    console.log('distdraw is ' + distdraw);
     let rpshot = this.getRoundsPerShot() || 1;
-    console.log('rpshot is ' + rpshot);
-    let rof = this.getRoF();
-    console.log('rof is ' + rof);
+    let rof = this.getRoF() || 1;
 
     return distdraw * rpshot * rof;
   }
@@ -442,7 +439,7 @@ export default class Module {
     // HPS is a synthetic value
     let heat = this.getThermalLoad();
     let rpshot = this.getRoundsPerShot() || 1;
-    let rof = this.getRoF();
+    let rof = this.getRoF() || 1;
 
     return heat * rpshot * rof;
   }

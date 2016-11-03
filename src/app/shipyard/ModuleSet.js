@@ -175,7 +175,7 @@ export default class ModuleSet {
 
     for (let p of this.standard[0]) {
       // Provides enough power, is lighter or the same mass as current power plant but better output/efficiency
-      if (p.pGen >= powerNeeded && (p.mass < pp.mass || (p.mass == pp.mass && p.pGen > pp.pGen))) {
+      if (p.pgen >= powerNeeded && (p.mass < pp.mass || (p.mass == pp.mass && p.pgen > pp.pgen))) {
         pp = p;
       }
     }

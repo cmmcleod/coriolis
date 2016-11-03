@@ -92,21 +92,27 @@ export const terms = {
   // Unit for seconds
   secs: 's',
 
+  // Hardpoint abbreviations
+  dpe: 'Damage per MJ of energy',
+  dps: 'Damage per second',
+  dpssdps: 'Damage per second (sustained damage per second)',
+  eps: 'Energy per second',
+  epsseps: 'Energy per second (sustained energy per second)',
+  hps: 'Heat per second',
+  hpsshps: 'Heat per second (sustained heat per second)',
+
   // Modifications
   ammo: 'Ammunition maximum',
-  armourpen: 'Armour penetration',
   boot: 'Boot time',
   brokenregen: 'Broken regeneration rate',
   burst: 'Burst',
   clip: 'Ammunition clip',
   damage: 'Damage',
-  dps: 'Damage per second',
   distdraw: 'Distributor draw',
   duration: 'Duration',
   eff: 'Efficiency',
   engcap: 'Engines capacity',
   engrate: 'Engines recharge rate',
-  eps: 'Energy per second',
   explres: 'Explosive resistance',
   facinglimit: 'Facing limit',
   hullboost: 'Hull boost',
@@ -118,7 +124,8 @@ export const terms = {
   mass: 'Mass',
   optmass: 'Optimal mass',
   optmul: 'Optimal multiplier',
-  pGen: 'Power generation',
+  pgen: 'Power generation',
+  piercing: 'Piercing',
   power: 'Power draw',
   range: 'Range',
   ranget: 'Range', // Range in time (for FSD interdictor)

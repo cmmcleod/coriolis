@@ -89,7 +89,7 @@ export default class StandardSlot extends TranslatedComponent {
                 { m.getRange() ? <div className='l'>{translate('range')}: {formats.f2(m.getRange())}{units.km}</div> : null }
                 { m.time ? <div className='l'>{translate('time')}: {formats.time(m.time)}</div> : null }
                 { m.getThermalEfficiency() ? <div className='l'>{translate('efficiency')}: {formats.f2(m.getThermalEfficiency())}</div> : null }
-                { m.getPowerGeneration() > 0 ? <div className='l'>{translate('pGen')}: {formats.f1(m.getPowerGeneration())}{units.MW}</div> : null }
+                { m.getPowerGeneration() > 0 ? <div className='l'>{translate('pgen')}: {formats.f1(m.getPowerGeneration())}{units.MW}</div> : null }
                 { m.getMaxFuelPerJump() ? <div className='l'>{translate('max')} {translate('fuel')}: {formats.f1(m.getMaxFuelPerJump())}{units.T}</div> : null }
                 { m.getWeaponsCapacity() ? <div className='l'>{translate('WEP')}: {formats.f1(m.getWeaponsCapacity())}{units.MJ} / {formats.f1(m.getWeaponsRechargeRate())}{units.MW}</div> : null }
                 { m.getSystemsCapacity() ? <div className='l'>{translate('SYS')}: {formats.f1(m.getSystemsCapacity())}{units.MJ} / {formats.f1(m.getSystemsRechargeRate())}{units.MW}</div> : null }

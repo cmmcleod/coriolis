@@ -3,6 +3,7 @@ import * as ModuleUtils from './ModuleUtils';
 import Module from './Module';
 import LZString from 'lz-string';
 import isEqual from 'lodash/lang';
+import { Modifications } from 'coriolis-data/dist';
 
 const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs', 'fh'];
 
@@ -19,25 +20,6 @@ function powerUsageType(slot, modul) {
     }
   }
   return slot.cat != 1 ? 'retracted' : 'deployed';
-}
-
-/**
- * Populate the modifications array with modification values from the code
- * @param {String} code    Serialized modification code
- * @param {Array}  arr     Modification array
- */
-function decodeModsToArray(code, arr) {
-  let moduleMods = code.split(',');
-  for (let i = 0; i < arr.length; i++) {
-    arr[i] = {};
-    if (moduleMods.length > i && moduleMods[i] != '') {
-      let mods = moduleMods[i].split(';');
-      for (let j = 0; j < mods.length; j++) {
-        let modElements = mods[j].split(':');
-        arr[i][modElements[0]] = Number(modElements[1]);
-      }
-    }
-  }
 }
 
 /**
@@ -418,7 +400,7 @@ export default class Ship {
    */
   setModification(m, name, value) {
     // Handle special cases
-    if (name == 'pGen') {
+    if (name == 'pgen') {
       // Power generation
       m.setModValue(name, value);
       this.updatePower();
@@ -598,8 +580,9 @@ export default class Ship {
     }
 
     if (parts[3]) {
-      // decodeModsToArray(LZString.decompressFromBase64(parts[3].replace(/-/g, '/')), mods);
-      decodeModsToArray(parts[3], mods);
+      const buf = Buffer.from(parts[3].replace(/-/g, '/'), 'base64');
+      this.decodeModificationsString(Buffer.from(parts[3].replace(/-/g, '/'), 'base64'), mods);
+      //decodeModificationsString(LZString.decompressFromBase64(parts[3].replace(/-/g, '/')), mods);
     }
 
     decodeToArray(code, internal, decodeToArray(code, hardpoints, decodeToArray(code, standard, 1)));
@@ -982,13 +965,13 @@ export default class Ship {
    * Update the modifications string
    * @return {this} The ship instance (for chaining operations)
    */
-  updateModificationsString() {
+  oldupdateModificationsString() {
     let allMods = new Array();
 
     let bulkheadMods = new Array();
     if (this.bulkheads.m && this.bulkheads.m.mods) {
       for (let modKey in this.bulkheads.m.mods) {
-        bulkheadMods.push(modKey + ':' + Math.round(this.bulkheads.m.getModValue(modKey) * 10000));
+        bulkheadMods.push(Modifications.modifiers.indexOf(modKey) + ':' + Math.round(this.bulkheads.m.getModValue(modKey) * 10000));
       }
     }
     allMods.push(bulkheadMods.join(';'));
@@ -997,7 +980,7 @@ export default class Ship {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
-          slotMods.push(modKey + ':' + Math.round(slot.m.getModValue(modKey) * 10000));
+          slotMods.push(Modifications.modifiers.indexOf(modKey) + ':' + Math.round(slot.m.getModValue(modKey) * 10000));
         }
       }
       allMods.push(slotMods.join(';'));
@@ -1006,7 +989,7 @@ export default class Ship {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
-          slotMods.push(modKey + ':' + Math.round(slot.m.getModValue(modKey) * 10000));
+          slotMods.push(Modifications.modifiers.indexOf(modKey) + ':' + Math.round(slot.m.getModValue(modKey) * 10000));
         }
       }
       allMods.push(slotMods.join(';'));
@@ -1015,14 +998,143 @@ export default class Ship {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
-          slotMods.push(modKey + ':' + Math.round(slot.m.getModValue(modKey) * 10000));
+          slotMods.push(Modifications.modifiers.indexOf(modKey) + ':' + Math.round(slot.m.getModValue(modKey) * 10000));
         }
       }
       allMods.push(slotMods.join(';'));
     }
-    // this.serialized.modifications = LZString.compressToBase64(allMods.join(',').replace(/,+$/, '')).replace(/\//g, '-');
-    this.serialized.modifications = allMods.join(',').replace(/,+$/, '');
+    this.serialized.modifications = LZString.compressToBase64(allMods.join(',').replace(/,+$/, '')).replace(/\//g, '-');
     return this;
+  }
+
+  /**
+   * Populate the modifications array with modification values from the code
+   * @param {String} code    Serialized modification code
+   * @param {Array}  arr     Modification array
+   */
+  olddecodeModificationsString(code, arr) {
+    let moduleMods = code.split(',');
+    for (let i = 0; i < arr.length; i++) {
+      arr[i] = {};
+      if (moduleMods.length > i && moduleMods[i] != '') {
+        let mods = moduleMods[i].split(';');
+        for (let j = 0; j < mods.length; j++) {
+          let modElements = mods[j].split(':');
+          if (modElements[0].match('[0-9]+')) {
+            arr[i][Modifications.modifiers[modElements[0]]] = Number(modElements[1]);
+          } else {
+            arr[i][modElements[0]] = Number(modElements[1]);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Update the modifications string
+   * @return {this} The ship instance (for chaining operations)
+   */
+  updateModificationsString() {
+    // Start off by gathering the information that we need
+    let modules = new Array();
+
+    let bulkheadMods = new Array();
+    if (this.bulkheads.m && this.bulkheads.m.mods) {
+      for (let modKey in this.bulkheads.m.mods) {
+        bulkheadMods.push({ id: Modifications.modifiers.indexOf(modKey), value: Math.round(this.bulkheads.m.getModValue(modKey) * 10000) });
+      }
+    }
+    modules.push(bulkheadMods);
+
+    for (let slot of this.standard) {
+      let slotMods = new Array();
+      if (slot.m && slot.m.mods) {
+        for (let modKey in slot.m.mods) {
+          slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: Math.round(slot.m.getModValue(modKey) * 10000) });
+        }
+      }
+      modules.push(slotMods);
+    }
+
+    for (let slot of this.hardpoints) {
+      let slotMods = new Array();
+      if (slot.m && slot.m.mods) {
+        for (let modKey in slot.m.mods) {
+          slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: Math.round(slot.m.getModValue(modKey) * 10000) });
+        }
+      }
+      modules.push(slotMods);
+    }
+
+    for (let slot of this.internal) {
+      let slotMods = new Array();
+      if (slot.m && slot.m.mods) {
+        for (let modKey in slot.m.mods) {
+          slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: Math.round(slot.m.getModValue(modKey) * 10000) });
+        }
+      }
+      modules.push(slotMods);
+    }
+
+    // Now work out the size of the binary buffer from our modifications array
+    let bufsize = 0;
+    for (let module of modules) {
+      if (module.length > 0) {
+        bufsize = bufsize + 1 + (3 * module.length) + 1; // 
+      }
+    }
+
+    if (bufsize > 0) {
+      bufsize = bufsize + 1; // For end marker
+      // Now create and populate the buffer
+      let buffer = Buffer.alloc(bufsize);
+      let curpos = 0;
+      let i = 1;
+      for (let module of modules) {
+        if (module.length > 0) {
+          buffer.writeInt8(i, curpos++);
+          for (let modification of module) {
+            buffer.writeInt8(modification.id, curpos++);
+	    console.log('modification value is ' + modification.value);
+            buffer.writeInt16BE(modification.value, curpos);
+            curpos += 2;
+          }
+          buffer.writeInt8(0, curpos++);
+        }
+        i++;
+      }
+      if (curpos > 0) {
+        buffer.writeInt8(0, curpos++);
+      }
+
+      this.serialized.modifications = buffer.toString('base64').replace(/\//g, '-');
+    } else {
+      this.serialized.modifications = null;
+    }
+    return this;
+  }
+
+  /**
+   * Populate the modifications array with modification values from the code
+   * @param {String} buffer  Buffer holding modification info
+   * @param {Array}  arr     Modification array
+   */
+  decodeModificationsString(buffer, arr) {
+    let curpos = 0;
+    let module = buffer.readInt8(curpos++);
+    while (module != 0) {
+      module = module - 1; // Fix offset to make the rest of the code easy
+      let modifications = [];
+      let modificationId = buffer.readInt8(curpos++);
+      while (modificationId != 0) {
+        let modificationValue = buffer.readInt16BE(curpos);
+	curpos += 2;
+	modifications[Modifications.modifiers[modificationId]] = modificationValue;
+	modificationId = buffer.readInt8(curpos++);
+      }
+      arr[module] = modifications;
+      module = buffer.readInt8(curpos++);
+    }
   }
 
   /**
