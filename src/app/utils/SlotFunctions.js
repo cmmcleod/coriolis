@@ -234,7 +234,7 @@ export function diffDetails(language, m, mm) {
 //    }
 //  }
 
-  let mDps = m.dps || 0;
+  let mDps = m.damage * (m.rpshot || 1) * m.rof || 0;
   let mmDps = mm ? mm.getDps() || 0 : 0;
   if (mDps != mmDps) propDiffs.push(<div key='dps'>{translate('dps')}: <span className={diffClass(mmDps, mDps, true)}>{diff(formats.round, mDps, mmDps)}</span></div>);
 
@@ -298,5 +298,5 @@ export function diffDetails(language, m, mm) {
     }
   }
 
-  return <div className='cap' style={{ whiteSpace: 'nowrap' }}>{propDiffs}</div>;
+  return propDiffs ? <div className='cap' style={{ whiteSpace: 'nowrap' }}>{propDiffs}</div> : null;
 }
