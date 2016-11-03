@@ -130,39 +130,6 @@ export default class Module {
   }
 
   /**
-   * Get the damage per second for this module, taking in to account modifications
-   * @return {Number} the damage per second of this module
-   */
-  getDamagePerSecond() {
-    return this._getModifiedValue('dps');
-  }
-
-  /**
-   * Get the energy per second for this module, taking in to account modifications
-   * @return {Number} the energy per second of this module
-   */
-  getEnergyPerSecond() {
-    return this._getModifiedValue('eps');
-  }
-
-  /**
-   * Get the heat per second for this module, taking in to account modifications
-   * @return {Number} the heat per second of this module
-   */
-  getHeatPerSecond() {
-    // Modifier for hps is thermload
-    let result = 0;
-    if (this['hps']) {
-      result = this['hps'];
-      if (result) {
-        let mult = this.getModValue('thermload');
-        if (mult) { result = result * (1 + mult); }
-      }
-    }
-    return result;
-  }
-
-  /**
    * Get the maximum fuel per jump for this module, taking in to account modifications
    * @return {Number} the maximum fuel per jump of this module
    */
@@ -406,46 +373,78 @@ export default class Module {
     return this._getModifiedValue('shieldmul');
   }
 
+  /**
+   * Get the damage for this module, taking in to account modifications
+   * @return {Number} the damage of this module
+   */
+  getDamage() {
+    return this._getModifiedValue('damage');
+  }
+
+  /**
+   * Get the distributor draw for this module, taking in to account modifications
+   * @return {Number} the distributor draw of this module
+   */
+  getDistDraw() {
+    return this._getModifiedValue('distdraw');
+  }
+
+  /**
+   * Get the thermal load for this module, taking in to account modifications
+   * @return {Number} the thermal load of this module
+   */
+  getThermalLoad() {
+    return this._getModifiedValue('thermload');
+  }
+
+  /**
+   * Get the rounds per shot for this module, taking in to account modifications
+   * @return {Number} the rounds per shot of this module
+   */
+  getRoundsPerShot() {
+    return this._getModifiedValue('roundspershot');
+  }
 
   /**
    * Get the DPS for this module, taking in to account modifications
    * @return {Number} the DPS of this module
    */
   getDps() {
-    // Modifications are not made to DPS directly, but to damage and rate of fire
-    
-    // Obtain unmodified rate of fire
-    let rof = this['rof'];
+    // DPS is a synthetic value
+    let damage = this.getDamage();
+    let rpshot = this.getRoundsPerShot() || 1;
+    let rof = this.getRoF();
 
-    // Obtain unmodified damage
-    let damage = this['dps'] / rof;
-
-    // Obtain modified rate of fire
-    let modRof = this._getModifiedValue('rof');
-
-    // Obtain modified damage
-    let damageMult = this.getModValue('damage');
-    let modDamage = damageMult ? damage * (1 + damageMult) : damage;
-
-    return modDamage * modRof;
+    return damage * rpshot * rof;
   }
 
   /**
-   * Get the heat generated per second for this module, taking in to account modifications
-   * @return {Number} the heat generated per second of this module
-   */
-  getHps() {
-    // TODO this is not correct; need to include other factors such as rate of fire, damage, etc.
-    return this._getModifiedValue('hps');
-  }
-
-  /**
-   * Get the energy used per second for this module, taking in to account modifications
-   * @return {Number} the energy used per second of this module
+   * Get the EPS for this module, taking in to account modifications
+   * @return {Number} the EPS of this module
    */
   getEps() {
-    // TODO this is not correct; need to include other factors such as rate of fire, damage, etc.
-    return this._getModifiedValue('eps');
+    // EPS is a synthetic value
+    let distdraw = this.getDistDraw();
+    console.log('distdraw is ' + distdraw);
+    let rpshot = this.getRoundsPerShot() || 1;
+    console.log('rpshot is ' + rpshot);
+    let rof = this.getRoF();
+    console.log('rof is ' + rof);
+
+    return distdraw * rpshot * rof;
+  }
+
+  /**
+   * Get the HPS for this module, taking in to account modifications
+   * @return {Number} the HPS of this module
+   */
+  getHps() {
+    // HPS is a synthetic value
+    let heat = this.getThermalLoad();
+    let rpshot = this.getRoundsPerShot() || 1;
+    let rof = this.getRoF();
+
+    return heat * rpshot * rof;
   }
 
   /**

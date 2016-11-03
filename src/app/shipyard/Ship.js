@@ -704,14 +704,14 @@ export default class Ship {
         if (ModuleUtils.isShieldGenerator(slot.m.grp) || slot.m.grp == 'sb') {
           this.updateShield();
         }
-        if (slot.m.dps) {
-          this.totalDps += slot.m.dps * (enabled ? 1 : -1);
+        if (slot.m.getDps()) {
+          this.totalDps += slot.m.getDps() * (enabled ? 1 : -1);
         }
-        if (slot.m.eps) {
-          this.totalEps += slot.m.eps * (enabled ? 1 : -1);
+        if (slot.m.getEps()) {
+          this.totalEps += slot.m.getEps() * (enabled ? 1 : -1);
         }
-        if (slot.m.hps) {
-          this.totalHps += slot.m.hps * (enabled ? 1 : -1);
+        if (slot.m.getHps()) {
+          this.totalHps += slot.m.getHps() * (enabled ? 1 : -1);
         }
 
         this.updatePower();
@@ -782,14 +782,14 @@ export default class Ship {
         this.priorityBands[slot.priority][powerUsageType(slot, old)] -= old.getPowerUsage();
         powerChange = true;
 
-        if (old.dps) {
-          this.totalDps -= old.dps;
+        if (old.getDps()) {
+          this.totalDps -= old.getDps();
         }
-        if (old.eps) {
-          this.totalEps -= old.eps;
+        if (old.getEps()) {
+          this.totalEps -= old.getEps();
         }
-        if (old.hps) {
-          this.totalHps -= old.hps;
+        if (old.getHps()) {
+          this.totalHps -= old.getHps();
         }
       }
       this.unladenMass -= old.getMass() || 0;
@@ -813,14 +813,14 @@ export default class Ship {
         this.priorityBands[slot.priority][powerUsageType(slot, n)] += n.getPowerUsage();
         powerChange = true;
 
-        if (n.dps) {
-          this.totalDps += n.dps;
+        if (n.getDps()) {
+          this.totalDps += n.getDps();
         }
-        if (n.eps) {
-          this.totalEps += n.eps;
+        if (n.getEps()) {
+          this.totalEps += n.getEps();
         }
-        if (n.hps) {
-          this.totalHps += n.hps;
+        if (n.getHps()) {
+          this.totalHps += n.getHps();
         }
       }
       this.unladenMass += n.getMass() || 0;
