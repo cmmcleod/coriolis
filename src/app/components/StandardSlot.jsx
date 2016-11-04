@@ -80,7 +80,7 @@ export default class StandardSlot extends TranslatedComponent {
           <div className={'sz'}>{slot.maxClass}</div>
           <div>
             <div className='l'>{classRating} {translate(m.grp == 'bh' ? m.grp : m.name || m.grp)}</div>
-            <div className={'r'}>{formats.round1(mass)}{units.T}</div>
+            <div className={'r'}>{formats.round(mass)}{units.T}</div>
 	    <div/>
             <div className={'cb'}>
                 { m.grp == 'bh' && m.name ? <div className='l'>{translate(m.name)}</div> : null }

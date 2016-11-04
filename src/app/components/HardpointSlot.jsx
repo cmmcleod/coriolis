@@ -52,7 +52,7 @@ export default class HardpointSlot extends Slot {
 	  {m.type && m.type.match('T') ? <span onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /></span> : ''}
 	  {m.type && m.type.match('E') ? <span onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /></span> : ''}
           {classRating} {translate(m.name || m.grp)}</div>
-          <div className={'r'}>{formats.round1(m.getMass())}{u.T}</div>
+          <div className={'r'}>{formats.round(m.getMass())}{u.T}</div>
         </div>
         <div className={'cb'}>
           { m.getDps() ? <div className={'l'} onMouseOver={termtip.bind(null, m.getClip() ? 'dpssdps' : 'dps')} onMouseOut={tooltip.bind(null, null)}>{translate('DPS')}: {formats.round1(m.getDps())} { m.getClip() ? <span>({formats.round1((m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload())) })</span> : null }</div> : null }
