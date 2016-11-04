@@ -133,7 +133,7 @@ export const terms = {
   reload: 'Reload time',
   rof: 'Rate of fire',
   shield: 'Shield',
-  shieldmul: 'Shield boost',
+  shieldboost: 'Shield boost',
   spinup: 'Spin up time',
   syscap: 'Systems capacity',
   sysrate: 'Systems recharge rate',

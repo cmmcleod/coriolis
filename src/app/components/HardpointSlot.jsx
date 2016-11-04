@@ -61,7 +61,7 @@ export default class HardpointSlot extends Slot {
           { m.getDps() && m.getEps() ? <div className={'l'} onMouseOver={termtip.bind(null, 'dpe')} onMouseOut={tooltip.bind(null, null)}>{translate('DPE')}: {formats.f1(m.getDps() / m.getEps())}</div> : null }
           { m.getRoF() ? <div className={'l'} onMouseOver={termtip.bind(null, 'rof')} onMouseOut={tooltip.bind(null, null)}>{translate('ROF')}: {formats.f1(m.getRoF())}{u.ps}</div> : null }
           { m.getRange() && !m.getDps() ? <div className={'l'}>{translate('Range')} : {formats.round(m.getRange() / 1000)}{u.km}</div> : null }
-          { m.getShieldMul() ? <div className={'l'}>+{formats.rPct(m.getShieldMul())}</div> : null }
+          { m.getShieldBoost() ? <div className={'l'}>+{formats.rPct(m.getShieldBoost())}</div> : null }
           { m.getAmmo() ? <div className={'l'}>{translate('ammunition')}: {formats.int(m.getClip())}/{formats.int(m.getAmmo())}</div> : null }
           { m && validMods.length > 0 ? <div className='r' ><button onClick={this._toggleModifications.bind(this)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
         </div>

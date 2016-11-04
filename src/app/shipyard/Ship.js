@@ -232,7 +232,7 @@ export default class Ship {
       sg = sgSlot.m;
     }
 
-    // TODO obtain shieldMultiplier
+    // TODO obtain shield boost
     //return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, this.shieldMultiplier + (multiplierDelta || 0));
     return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, 0 + (multiplierDelta || 0));
   }
@@ -430,7 +430,7 @@ export default class Ship {
       // Could be for either thrusters or FSD
       this.updateTopSpeed();
       this.updateJumpStats();
-    } else if (name == 'shieldmul') {
+    } else if (name == 'shieldboost') {
       m.setModValue(name, value);
       this.updateShield();
     } else if (name == 'hullboost') {
@@ -906,7 +906,7 @@ export default class Ship {
     // Shield from boosters
     for (let slot of this.hardpoints) {
       if (slot.m && slot.m.grp == 'sb') {
-        shield += baseShield * slot.m.getShieldMultiplier();
+        shield += baseShield * slot.m.getShieldBoost();
       }
     }
     this.shield = shield;

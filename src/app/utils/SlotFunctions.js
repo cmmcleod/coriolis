@@ -118,8 +118,6 @@ const PROP_BLACKLIST = {
   ssdam: 1,
   mjdps: 1,
   mjeps: 1,
-  M: 1,
-  P: 1,
   mass: 1,
   cost: 1,
   recover: 1,
@@ -138,14 +136,12 @@ const PROP_BLACKLIST = {
 const TERM_LOOKUP = {
   pgen: 'power',
   armouradd: 'armour',
-  shieldmul: 'multiplier',
   rof: 'ROF',
   dps: 'DPS'
 };
 
 const FORMAT_LOOKUP = {
-  time: 'time',
-  shieldmul: 'rPct'
+  time: 'time'
 };
 
 const UNIT_LOOKUP = {
@@ -246,13 +242,13 @@ export function diffDetails(language, m, mm) {
 
     if (mAffectsShield) {
       if (m.grp == 'sb') {  // Both m and mm must be utility modules if this is true
-        newShield = this.calcShieldStrengthWith(null, m.shieldmul - (mm ? mm.getShieldMul() || 0 : 0));
+        newShield = this.calcShieldStrengthWith(null, m.shieldboost - (mm ? mm.getShieldBoost() || 0 : 0));
       } else {
         newShield = this.calcShieldStrengthWith(m);
       }
     } else {
       // Old module must be a shield booster
-      newShield = this.calcShieldStrengthWith(null, -mm.getShieldMul());
+      newShield = this.calcShieldStrengthWith(null, -mm.getShieldBoost());
     }
 
     let sgDiffClass = Math.round((newShield - shield) * 100) / 100 == 0 ? 'muted' : (newShield > shield ? 'secondary' : 'warning');

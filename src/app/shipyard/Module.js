@@ -274,11 +274,11 @@ export default class Module {
   }
 
   /**
-   * Get the shield multiplier for this module, taking in to account modifications
-   * @return {Number} the shield multiplier of this module
+   * Get the shield boost for this module, taking in to account modifications
+   * @return {Number} the shield boost of this module
    */
-  getShieldMultiplier() {
-    return this._getModifiedValue('shieldmul');
+  getShieldBoost() {
+    return this._getModifiedValue('shieldboost');
   }
 
   /**
@@ -363,14 +363,6 @@ export default class Module {
       }
     }
     return result;
-  }
-
-  /**
-   * Get the shield multiplier for this module, taking in to account modifications
-   * @return {Number} the shield multiplier of this module
-   */
-  getShieldMul() {
-    return this._getModifiedValue('shieldmul');
   }
 
   /**
