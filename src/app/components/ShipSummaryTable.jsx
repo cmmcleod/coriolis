@@ -24,7 +24,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
     let u = language.units;
     let formats = language.formats;
     let { time, int, round, f1, f2, pct } = formats;
-    let sgClassNames = cn({ warning: ship.sgSlot && !ship.shield, muted: !ship.sgSlot });
+    let sgClassNames = cn({ warning: ship.findInternalByGroup('sg') && !ship.shield, muted: !ship.findInternalByGroup('sg') });
     let sgRecover = '-';
     let sgRecharge = '-';
     let hide = tooltip.bind(null, null);

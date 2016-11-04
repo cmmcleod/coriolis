@@ -24,6 +24,10 @@ function standardToSchema(standard) {
       o.name = standard.m.name;
     }
 
+    if (standard.m.mods && standard.m.mods != {}) {
+      o.modifications = standard.m.mods;
+    }
+
     return o;
   }
   return null;
@@ -53,6 +57,9 @@ function slotToSchema(slot) {
     if (slot.m.missile) {
       o.missile = slot.m.missile;
     }
+    if (slot.m.mods && slot.m.mods != {}) {
+      o.modifications = slot.m.mods;
+    }
     return o;
   }
   return null;
@@ -71,7 +78,7 @@ export function toDetailedBuild(buildName, ship) {
       code = ship.toString();
 
   let data = {
-    $schema: 'http://cdn.coriolis.io/schemas/ship-loadout/3.json#',
+    $schema: 'http://cdn.coriolis.io/schemas/ship-loadout/4.json#',
     name: buildName,
     ship: ship.name,
     references: [{

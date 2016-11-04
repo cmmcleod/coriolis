@@ -403,11 +403,11 @@ export default class Ship {
     if (name == 'pgen') {
       // Power generation
       m.setModValue(name, value);
-      this.updatePower();
+      this.updatePowerGenerated();
     } else if (name == 'power') {
       // Power usage
       m.setModValue(name, value);
-      this.updatePower();
+      this.updatePowerUsed();
     } else if (name == 'mass') {
       // Mass
       let oldMass = m.getMass();
@@ -454,7 +454,6 @@ export default class Ship {
     let internal = this.internal,
         standard = this.standard,
         hps = this.hardpoints,
-        bands = this.priorityBands,
         cl = standard.length,
         i, l;
 
@@ -482,15 +481,6 @@ export default class Ship {
     this.cargoHatch.priority = priorities ? priorities[0] * 1 : 0;
     this.cargoHatch.enabled = enabled ? enabled[0] * 1 : true;
     this.cargoHatch.mods = mods ? mods[0] : {};
-
-    for (i = 0, l = this.priorityBands.length; i < l; i++) {
-      this.priorityBands[i].deployed = 0;
-      this.priorityBands[i].retracted = 0;
-    }
-
-    if (this.cargoHatch.enabled) {
-      bands[this.cargoHatch.priority].retracted += this.cargoHatch.m.getPowerUsage();
-    }
 
     for (i = 0; i < cl; i++) {
       standard[i].cat = 0;
@@ -544,7 +534,8 @@ export default class Ship {
 
     // Update aggragated stats
     if (comps) {
-      this.updatePower()
+      this.updatePowerGenerated()
+          .updatePowerUsed()
           .updateJumpStats()
           .updateShield()
           .updateArmour()
@@ -580,9 +571,12 @@ export default class Ship {
     }
 
     if (parts[3]) {
-      const buf = Buffer.from(parts[3].replace(/-/g, '/'), 'base64');
-      this.decodeModificationsString(Buffer.from(parts[3].replace(/-/g, '/'), 'base64'), mods);
-      //decodeModificationsString(LZString.decompressFromBase64(parts[3].replace(/-/g, '/')), mods);
+      const modstr = parts[3].replace(/-/g, '/');
+      if (modstr.match(':')) {
+        this.decodeModificationsString(LZString.decompressFromBase64(modstr), mods);
+      } else {
+        this.decodeModificationsStruct(Buffer.from(modstr, 'base64'), mods);
+      }
     }
 
     decodeToArray(code, internal, decodeToArray(code, hardpoints, decodeToArray(code, standard, 1)));
@@ -682,8 +676,6 @@ export default class Ship {
     if (slot.enabled != enabled) { // Enabled state is changing
       slot.enabled = enabled;
       if (slot.m) {
-        this.priorityBands[slot.priority][powerUsageType(slot, slot.m)] += enabled ? slot.m.getPowerUsage() : - slot.m.getPowerUsage();
-
         if (ModuleUtils.isShieldGenerator(slot.m.grp) || slot.m.grp == 'sb') {
           this.updateShield();
         }
@@ -697,7 +689,7 @@ export default class Ship {
           this.totalHps += slot.m.getHps() * (enabled ? 1 : -1);
         }
 
-        this.updatePower();
+        this.updatePowerUsed();
         this.updatePowerEnabledString();
       }
     }
@@ -717,10 +709,7 @@ export default class Ship {
       this.updatePowerPrioritesString();
 
       if (slot.enabled) { // Only update power if the slot is enabled
-        let usage = powerUsageType(slot, slot.m);
-        this.priorityBands[oldPriority][usage] -= slot.m.getPowerUsage();
-        this.priorityBands[newPriority][usage] += slot.m.getPowerUsage();
-        this.updatePower();
+        this.updatePowerUsed();
       }
       return true;
     }
@@ -736,7 +725,8 @@ export default class Ship {
    * @return {this}                   The ship instance (for chaining operations)
    */
   updateStats(slot, n, old, preventUpdate) {
-    let powerChange = slot == this.standard[0];
+    let powerGeneratedChange = slot == this.standard[0];
+    let powerUsedChange = false;
 
     let armourChange = (slot == this.bulkheads) || (n && n.grp == 'hr') || (old && old.grp == 'hr');
 
@@ -756,25 +746,20 @@ export default class Ship {
         this.totalCost -= old.cost * this.moduleCostMultiplier;
       }
 
-      if (!(old instanceof Module)) {
-        console.log(JSON.stringify(old) + ' is not a module');
-        console.log(new Error().stack);
-      }
-
       if (old.getPowerUsage() > 0 && slot.enabled) {
-        this.priorityBands[slot.priority][powerUsageType(slot, old)] -= old.getPowerUsage();
-        powerChange = true;
-
-        if (old.getDps()) {
-          this.totalDps -= old.getDps();
-        }
-        if (old.getEps()) {
-          this.totalEps -= old.getEps();
-        }
-        if (old.getHps()) {
-          this.totalHps -= old.getHps();
-        }
+        powerUsedChange = true;
       }
+
+      if (old.getDps()) {
+        this.totalDps -= old.getDps();
+      }
+      if (old.getEps()) {
+        this.totalEps -= old.getEps();
+      }
+      if (old.getHps()) {
+        this.totalHps -= old.getHps();
+      }
+
       this.unladenMass -= old.getMass() || 0;
     }
 
@@ -793,27 +778,30 @@ export default class Ship {
       }
 
       if (n.power && slot.enabled) {
-        this.priorityBands[slot.priority][powerUsageType(slot, n)] += n.getPowerUsage();
-        powerChange = true;
-
-        if (n.getDps()) {
-          this.totalDps += n.getDps();
-        }
-        if (n.getEps()) {
-          this.totalEps += n.getEps();
-        }
-        if (n.getHps()) {
-          this.totalHps += n.getHps();
-        }
+        powerUsedChange = true;
       }
+
+      if (n.getDps()) {
+        this.totalDps += n.getDps();
+      }
+      if (n.getEps()) {
+        this.totalEps += n.getEps();
+      }
+      if (n.getHps()) {
+        this.totalHps += n.getHps();
+      }
+
       this.unladenMass += n.getMass() || 0;
     }
 
     this.ladenMass = this.unladenMass + this.cargoCapacity + this.fuelCapacity;
 
     if (!preventUpdate) {
-      if (powerChange) {
-        this.updatePower();
+      if (powerGeneratedChange) {
+        this.updatePowerGenerated();
+      }
+      if (powerUsedChange) {
+        this.updatePowerUsed();
       }
       if (armourChange) {
         this.updateArmour();
@@ -828,24 +816,68 @@ export default class Ship {
   }
 
   /**
-   * Update all power calculations
+   * Update power calculations when amount generated changes
    * @return {this} The ship instance (for chaining operations)
    */
-  updatePower() {
-    let bands = this.priorityBands;
-    let prevRetracted = 0, prevDeployed = 0;
+  updatePowerGenerated() {
+    this.powerAvailable = this.standard[0].m.getPowerGeneration();
+    return this;
+  };
 
+  /**
+   * Update power calculations when amount consumed changes
+   * @return {this} The ship instance (for chaining operations)
+   */
+  updatePowerUsed() {
+    let bands = [
+      { deployed: 0, retracted: 0, },
+      { deployed: 0, retracted: 0, },
+      { deployed: 0, retracted: 0, },
+      { deployed: 0, retracted: 0, },
+      { deployed: 0, retracted: 0, }
+    ];
+
+    if (this.cargoHatch.enabled) {
+      bands[this.cargoHatch.priority].retracted += this.cargoHatch.m.getPowerUsage();
+    }
+
+    for (let slotNum in this.standard) {
+      const slot = this.standard[slotNum];
+      if (slot.m && slot.enabled) {
+        bands[slot.priority][powerUsageType(slot, slot.m)] += slot.m.getPowerUsage();
+
+      }
+    }
+
+    for (let slotNum in this.internal) {
+      const slot = this.internal[slotNum];
+      if (slot.m && slot.enabled) {
+        bands[slot.priority][powerUsageType(slot, slot.m)] += slot.m.getPowerUsage();
+      }
+    }
+
+    for (let slotNum in this.hardpoints) {
+      const slot = this.hardpoints[slotNum];
+      if (slot.m && slot.enabled) {
+        bands[slot.priority][powerUsageType(slot, slot.m)] += slot.m.getPowerUsage();
+      }
+    }
+
+    // Work out the running totals
+    let prevRetracted = 0, prevDeployed = 0;
     for (let i = 0, l = bands.length; i < l; i++) {
       let band = bands[i];
       prevRetracted = band.retractedSum = prevRetracted + band.retracted;
       prevDeployed = band.deployedSum = prevDeployed + band.deployed + band.retracted;
     }
 
-    this.powerAvailable = this.standard[0].m.getPowerGeneration();
+    // Update global stats
     this.powerRetracted = prevRetracted;
     this.powerDeployed = prevDeployed;
+    this.priorityBands = bands;
+
     return this;
-  };
+  }
 
   /**
    * Update top speed and boost
@@ -1012,7 +1044,7 @@ export default class Ship {
    * @param {String} code    Serialized modification code
    * @param {Array}  arr     Modification array
    */
-  olddecodeModificationsString(code, arr) {
+  decodeModificationsString(code, arr) {
     let moduleMods = code.split(',');
     for (let i = 0; i < arr.length; i++) {
       arr[i] = {};
@@ -1031,12 +1063,17 @@ export default class Ship {
   }
 
   /**
-   * Update the modifications string
+   * Update the modifications string.
+   * This is a binary structure.  It starts with a byte that identifies a slot, with bulkheads being ID 0 and moving through
+   * standard modules, hardpoints, and finally internal modules.  It then contains one or more modifications, with each
+   * modification being a one-byte modification ID and at two-byte modification value.  Modification IDs are based on the array
+   * in Modifications.modifiers.  The list of modifications is terminated by a modification ID of -1.  The structure then repeats
+   * for the next module, and the next, and is terminated by a slot ID of -1.
    * @return {this} The ship instance (for chaining operations)
    */
   updateModificationsString() {
     // Start off by gathering the information that we need
-    let modules = new Array();
+    let slots = new Array();
 
     let bulkheadMods = new Array();
     if (this.bulkheads.m && this.bulkheads.m.mods) {
@@ -1044,7 +1081,7 @@ export default class Ship {
         bulkheadMods.push({ id: Modifications.modifiers.indexOf(modKey), value: Math.round(this.bulkheads.m.getModValue(modKey) * 10000) });
       }
     }
-    modules.push(bulkheadMods);
+    slots.push(bulkheadMods);
 
     for (let slot of this.standard) {
       let slotMods = new Array();
@@ -1053,7 +1090,7 @@ export default class Ship {
           slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: Math.round(slot.m.getModValue(modKey) * 10000) });
         }
       }
-      modules.push(slotMods);
+      slots.push(slotMods);
     }
 
     for (let slot of this.hardpoints) {
@@ -1063,7 +1100,7 @@ export default class Ship {
           slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: Math.round(slot.m.getModValue(modKey) * 10000) });
         }
       }
-      modules.push(slotMods);
+      slots.push(slotMods);
     }
 
     for (let slot of this.internal) {
@@ -1073,14 +1110,14 @@ export default class Ship {
           slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: Math.round(slot.m.getModValue(modKey) * 10000) });
         }
       }
-      modules.push(slotMods);
+      slots.push(slotMods);
     }
 
     // Now work out the size of the binary buffer from our modifications array
     let bufsize = 0;
-    for (let module of modules) {
-      if (module.length > 0) {
-        bufsize = bufsize + 1 + (3 * module.length) + 1; // 
+    for (let slot of slots) {
+      if (slot.length > 0) {
+        bufsize = bufsize + 1 + (3 * slot.length) + 1; // 
       }
     }
 
@@ -1089,22 +1126,21 @@ export default class Ship {
       // Now create and populate the buffer
       let buffer = Buffer.alloc(bufsize);
       let curpos = 0;
-      let i = 1;
-      for (let module of modules) {
-        if (module.length > 0) {
+      let i = 0;
+      for (let slot of slots) {
+        if (slot.length > 0) {
           buffer.writeInt8(i, curpos++);
-          for (let modification of module) {
-            buffer.writeInt8(modification.id, curpos++);
-	    console.log('modification value is ' + modification.value);
-            buffer.writeInt16BE(modification.value, curpos);
+          for (let slotMod of slot) {
+            buffer.writeInt8(slotMod.id, curpos++);
+            buffer.writeInt16BE(slotMod.value, curpos);
             curpos += 2;
           }
-          buffer.writeInt8(0, curpos++);
+          buffer.writeInt8(-1, curpos++);
         }
         i++;
       }
       if (curpos > 0) {
-        buffer.writeInt8(0, curpos++);
+        buffer.writeInt8(-1, curpos++);
       }
 
       this.serialized.modifications = buffer.toString('base64').replace(/\//g, '-');
@@ -1115,18 +1151,18 @@ export default class Ship {
   }
 
   /**
-   * Populate the modifications array with modification values from the code
+   * Populate the modifications array with modification values from the code.
+   * See updateModificationsString() for details of the structure.
    * @param {String} buffer  Buffer holding modification info
    * @param {Array}  arr     Modification array
    */
-  decodeModificationsString(buffer, arr) {
+  decodeModificationsStruct(buffer, arr) {
     let curpos = 0;
     let module = buffer.readInt8(curpos++);
-    while (module != 0) {
-      module = module - 1; // Fix offset to make the rest of the code easy
-      let modifications = [];
+    while (module != -1) {
+      let modifications = {};
       let modificationId = buffer.readInt8(curpos++);
-      while (modificationId != 0) {
+      while (modificationId != -1) {
         let modificationValue = buffer.readInt16BE(curpos);
 	curpos += 2;
 	modifications[Modifications.modifiers[modificationId]] = modificationValue;
@@ -1154,8 +1190,6 @@ export default class Ship {
     } else if (mdef instanceof Module) {
       m = mdef;
     } else {
-      // jgmjgm TODO see if we can use the module template instead of its group and id
-      // m = new Module({template: mdef});
       m = new Module({ grp: mdef.grp, id: mdef.id });
     }
 
