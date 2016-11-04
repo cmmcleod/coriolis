@@ -45,13 +45,12 @@ export default class HardpointSlot extends Slot {
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
           <div className={'l'}>
-	  {m.mount && m.mount == 'F' ? <MountFixed /> : ''}
-	  {m.mount && m.mount == 'G' ? <MountGimballed /> : ''}
-	  {m.mount && m.mount == 'T' ? <MountTurret /> : ''}
-	  {m.type && m.type == 'K' ? <DamageKinetic /> : ''}
-	  {m.type && m.type == 'T' ? <DamageThermal /> : ''}
-	  {m.type && m.type == 'KT' ? <span><DamageKinetic /><DamageThermal /></span> : ''}
-	  {m.type && m.type == 'E' ? <DamageExplosive /> : ''}
+	  {m.mount && m.mount == 'F' ? <span onMouseOver={termtip.bind(null, 'fixed')} onMouseOut={tooltip.bind(null, null)}><MountFixed /></span> : ''}
+	  {m.mount && m.mount == 'G' ? <span onMouseOver={termtip.bind(null, 'gimballed')} onMouseOut={tooltip.bind(null, null)}><MountGimballed /></span> : ''}
+	  {m.mount && m.mount == 'T' ? <span onMouseOver={termtip.bind(null, 'turreted')} onMouseOut={tooltip.bind(null, null)}><MountTurret /></span> : ''}
+	  {m.type && m.type.match('K') ? <span onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /></span> : ''}
+	  {m.type && m.type.match('T') ? <span onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /></span> : ''}
+	  {m.type && m.type.match('E') ? <span onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /></span> : ''}
           {classRating} {translate(m.name || m.grp)}</div>
           <div className={'r'}>{formats.round1(m.getMass())}{u.T}</div>
         </div>

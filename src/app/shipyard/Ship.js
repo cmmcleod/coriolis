@@ -573,7 +573,7 @@ export default class Ship {
     if (parts[3]) {
       const modstr = parts[3].replace(/-/g, '/');
       if (modstr.match(':')) {
-        this.decodeModificationsString(LZString.decompressFromBase64(modstr), mods);
+        this.decodeModificationsString(modstr, mods);
       } else {
         this.decodeModificationsStruct(Buffer.from(modstr, 'base64'), mods);
       }
