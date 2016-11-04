@@ -24,7 +24,7 @@ function standardToSchema(standard) {
       o.name = standard.m.name;
     }
 
-    if (standard.m.mods && standard.m.mods != {}) {
+    if (standard.m.mods && Object.keys(standard.m.mods).length > 0) {
       o.modifications = standard.m.mods;
     }
 
@@ -57,7 +57,7 @@ function slotToSchema(slot) {
     if (slot.m.missile) {
       o.missile = slot.m.missile;
     }
-    if (slot.m.mods && slot.m.mods != {}) {
+    if (slot.m.mods && Object.keys(slot.m.mods).length > 0) {
       o.modifications = slot.m.mods;
     }
     return o;
@@ -115,12 +115,27 @@ export function toDetailedBuild(buildName, ship) {
   return data;
 };
 
+export function fromDetailedBuild(detailedBuild) {
+  let shipId = Object.keys(Ships).find((shipId) => Ships[shipId].properties.name.toLowerCase() == detailedBuild.ship.toLowerCase());
+
+  if (!shipId) {
+    throw 'No such ship: ' + detailedBuild.ship;
+  }
+
+  let comps = detailedBuild.components;
+  let stn = comps.standard;
+  let shipData = Ships[shipId];
+  let ship = new Ship(shipId, shipData.properties, shipData.slots);
+
+  return ship.buildFrom(detailedBuild.references[0].code);
+};
+
 /**
  * Instantiates a ship from a ship-loadout  object
  * @param  {Object} detailedBuild ship-loadout object
  * @return {Ship} Ship instance
  */
-export function fromDetailedBuild(detailedBuild) {
+export function oldfromDetailedBuild(detailedBuild) {
   let shipId = Object.keys(Ships).find((shipId) => Ships[shipId].properties.name.toLowerCase() == detailedBuild.ship.toLowerCase());
 
   if (!shipId) {

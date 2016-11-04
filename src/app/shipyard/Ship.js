@@ -1116,7 +1116,7 @@ export default class Ship {
     let bufsize = 0;
     for (let slot of slots) {
       if (slot.length > 0) {
-        bufsize = bufsize + 1 + (3 * slot.length) + 1; // 
+        bufsize = bufsize + 1 + (5 * slot.length) + 1;
       }
     }
 
@@ -1131,8 +1131,8 @@ export default class Ship {
           buffer.writeInt8(i, curpos++);
           for (let slotMod of slot) {
             buffer.writeInt8(slotMod.id, curpos++);
-            buffer.writeInt16BE(slotMod.value, curpos);
-            curpos += 2;
+            buffer.writeInt32LE(slotMod.value, curpos);
+            curpos += 4;
           }
           buffer.writeInt8(-1, curpos++);
         }
@@ -1157,18 +1157,18 @@ export default class Ship {
    */
   decodeModificationsStruct(buffer, arr) {
     let curpos = 0;
-    let module = buffer.readInt8(curpos++);
-    while (module != -1) {
+    let slot = buffer.readInt8(curpos++);
+    while (slot != -1) {
       let modifications = {};
       let modificationId = buffer.readInt8(curpos++);
       while (modificationId != -1) {
-        let modificationValue = buffer.readInt16BE(curpos);
-        curpos += 2;
+        let modificationValue = buffer.readInt32LE(curpos);
+        curpos += 4;
         modifications[Modifications.modifiers[modificationId]] = modificationValue;
         modificationId = buffer.readInt8(curpos++);
       }
-      arr[module] = modifications;
-      module = buffer.readInt8(curpos++);
+      arr[slot] = modifications;
+      slot = buffer.readInt8(curpos++);
     }
   }
 

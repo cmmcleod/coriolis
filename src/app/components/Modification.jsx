@@ -33,6 +33,15 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _updateValue(value) {
     let scaledValue = Math.floor(Number(value) * 100) / 10000;
+    // Limit to +1000% / -100%
+    if (scaledValue > 10) {
+      scaledValue = 10;
+      value = 1000;
+    }
+    if (scaledValue < -1) {
+      scaledValue = -1;
+      value = -100;
+    }
     let m = this.props.m;
     let name = this.props.name;
     let ship = this.props.ship;
