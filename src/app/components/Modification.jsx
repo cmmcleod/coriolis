@@ -61,7 +61,7 @@ export default class ModificationsMenu extends TranslatedComponent {
 
     return (
       <div className={'cb'} key={name}>
-        <div className={'cb'}>{translate(name)}{' (%)'}</div>
+        <div className={'cb'}>{translate(name)}{name === 'jitter' ? ' (°)' : ' (%)'}</div>
         <NumberEditor className={'cb'} style={{ width: '100%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={this.state.value} onValueChange={this._updateValue.bind(this)} />
       </div>
     );
