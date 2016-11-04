@@ -216,6 +216,7 @@ export default class InternalSlotSection extends SlotSection {
   /**
    * Generate the section drop-down menu
    * @param  {Function} translate Translate function
+   * @param  {Function} ship      The ship
    * @return {React.Component}    Section menu
    */
   _getSectionMenu(translate, ship) {

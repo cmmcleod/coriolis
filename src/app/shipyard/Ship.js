@@ -221,7 +221,7 @@ export default class Ship {
    * Calculate the hypothetical shield strength for the ship using the specified parameters
    * @param  {Object} sg              [optional] Shield Generator to use
    * @param  {Number} multiplierDelta [optional] Change to shield multiplier (+0.2, - 0.12, etc)
-   * @return {Number}                 Shield strength in MH
+   * @return {Number}                 Shield strength in MJ
    */
   calcShieldStrengthWith(sg, multiplierDelta) {
     if (!sg) {
@@ -845,7 +845,6 @@ export default class Ship {
       const slot = this.standard[slotNum];
       if (slot.m && slot.enabled) {
         bands[slot.priority][powerUsageType(slot, slot.m)] += slot.m.getPowerUsage();
-
       }
     }
 
@@ -1164,9 +1163,9 @@ export default class Ship {
       let modificationId = buffer.readInt8(curpos++);
       while (modificationId != -1) {
         let modificationValue = buffer.readInt16BE(curpos);
-	curpos += 2;
-	modifications[Modifications.modifiers[modificationId]] = modificationValue;
-	modificationId = buffer.readInt8(curpos++);
+        curpos += 2;
+        modifications[Modifications.modifiers[modificationId]] = modificationValue;
+        modificationId = buffer.readInt8(curpos++);
       }
       arr[module] = modifications;
       module = buffer.readInt8(curpos++);
