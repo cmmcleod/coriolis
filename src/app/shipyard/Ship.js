@@ -4,7 +4,7 @@ import Module from './Module';
 import LZString from 'lz-string';
 import isEqual from 'lodash/lang';
 import { Modifications } from 'coriolis-data/dist';
-var zlib = require('zlib');
+const zlib = require('zlib');
 
 const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs', 'fh'];
 
@@ -234,7 +234,7 @@ export default class Ship {
     }
 
     // TODO obtain shield boost
-    //return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, this.shieldMultiplier + (multiplierDelta || 0));
+    // return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, this.shieldMultiplier + (multiplierDelta || 0));
     return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, 0 + (multiplierDelta || 0));
   }
 
