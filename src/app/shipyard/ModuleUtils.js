@@ -1,7 +1,12 @@
 import { ModuleNameToGroup, BulkheadNames, StandardArray } from './Constants';
 import ModuleSet from './ModuleSet';
+import Module from './Module';
 import { Ships, Modules } from 'coriolis-data/dist';
 
+/*
+ * All functions below must return a fresh Module rather than a definition or existing module, as
+ * the resultant object can be altered with modifications.
+ */
 
 
 /**
@@ -9,8 +14,44 @@ import { Ships, Modules } from 'coriolis-data/dist';
  * @return {Object} Cargo hatch model
  */
 export function cargoHatch() {
-  return { name: 'Cargo Hatch', class: 1, rating: 'H', power: 0.6 };
+  let hatch = new Module();
+  Object.assign(hatch, { name: 'Cargo Hatch', class: 1, rating: 'H', power: 0.6 });
+  return hatch;
 };
+
+/**
+ * Finds the module with the specific group and ID
+ * @param  {String} grp           Module group (pp - power plant, pl - pulse laser etc)
+ * @param  {String} id            The module ID
+ * @return {Object}               The module or null
+ */
+export function findModule(grp, id) {
+  // See if it's a standard module
+  if (Modules.standard[grp]) {
+    let standardmod = Modules.standard[grp].find(e => e.id == id);
+    if (standardmod != null) {
+      return new Module({ template: standardmod });
+    }
+  }
+
+  // See if it's an internal module
+  if (Modules.internal[grp]) {
+    let internalmod = Modules.internal[grp].find(e => e.id == id);
+    if (internalmod != null) {
+      return new Module({ template: internalmod });
+    }
+  }
+
+  // See if it's a hardpoint module
+  if (Modules.hardpoints[grp]) {
+    let hardpointmod = Modules.hardpoints[grp].find(e => e.id == id);
+    if (hardpointmod != null) {
+      return new Module({ template: hardpointmod });
+    }
+  }
+
+  return null;
+}
 
 /**
  * Finds the standard module type with the specified ID
@@ -24,6 +65,9 @@ export function standard(type, id) {
   }
 
   let s = Modules.standard[type].find(e => e.id == id || (e.class == id.charAt(0) && e.rating == id.charAt(1)));
+  if (s) {
+    s = new Module({ template: s });
+  }
   return s || null;
 };
 
@@ -37,7 +81,7 @@ export function hardpoints(id) {
     let group = Modules.hardpoints[n];
     for (let i = 0; i < group.length; i++) {
       if (group[i].id == id) {
-        return group[i];
+        return new Module({ template: group[i] });
       }
     }
   }
@@ -54,7 +98,7 @@ export function internal(id) {
     let group = Modules.internal[n];
     for (let i = 0; i < group.length; i++) {
       if (group[i].id == id) {
-        return group[i];
+        return new Module({ template: group[i] });
       }
     }
   }

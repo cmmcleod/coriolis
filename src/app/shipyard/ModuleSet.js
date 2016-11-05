@@ -1,4 +1,4 @@
-
+import Module from './Module';
 import { BulkheadNames } from './Constants';
 
 /**
@@ -37,7 +37,7 @@ export default class ModuleSet {
     this.intClass = {};
 
     this.bulkheads = shipData.bulkheads.map((b, i) => {
-      return Object.assign({ grp: 'bh', name: BulkheadNames[i], index: i, class: '', rating: '' }, b);
+      return Object.assign(new Module(), { grp: 'bh', id: i, name: BulkheadNames[i], index: i, class: '', rating: '' }, b);
     });
 
     this.standard[0] = filter(stnd.pp, maxStandardArr[0], 0, mass);  // Power Plant
@@ -66,7 +66,7 @@ export default class ModuleSet {
    * @return {Object}      Bulkhead module details
    */
   getBulkhead(index) {
-    return this.bulkheads[index] || null;
+    return this.bulkheads[index] ? new Module({ template: this.bulkheads[index] }) : null;
   }
 
   /**
@@ -126,11 +126,11 @@ export default class ModuleSet {
     let pd = this.standard[4][0];
 
     for (let p of this.standard[4]) {
-      if (p.mass < pd.mass && p.enginecapacity >= boostEnergy) {
+      if (p.mass < pd.mass && p.engcap >= boostEnergy) {
         pd = p;
       }
     }
-    return pd;
+    return new Module({ template: pd });
   };
 
   /**
@@ -146,7 +146,7 @@ export default class ModuleSet {
         th = t;
       }
     }
-    return th;
+    return new Module({ template: th });
   };
 
   /**
@@ -162,7 +162,7 @@ export default class ModuleSet {
         sg = s;
       }
     }
-    return sg;
+    return new Module({ template: sg });
   };
 
   /**
@@ -175,10 +175,10 @@ export default class ModuleSet {
 
     for (let p of this.standard[0]) {
       // Provides enough power, is lighter or the same mass as current power plant but better output/efficiency
-      if (p.pGen >= powerNeeded && (p.mass < pp.mass || (p.mass == pp.mass && p.pGen > pp.pGen))) {
+      if (p.pgen >= powerNeeded && (p.mass < pp.mass || (p.mass == pp.mass && p.pgen > pp.pgen))) {
         pp = p;
       }
     }
-    return pp;
+    return new Module({ template: pp });
   }
 }

@@ -27,7 +27,7 @@ function normalizePercent(val) {
   if (val === '' || isNaN(val)) {
     return 0;
   }
-  val = Math.round(val * 100) / 100;
+  val = Math.round(val * 1000) / 1000;
   return val >= 100 ? 100 : val;
 }
 

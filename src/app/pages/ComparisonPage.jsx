@@ -63,7 +63,7 @@ export default class ComparisonPage extends Page {
    * @return {Object}          New state object
    */
   _initState(context) {
-    let defaultFacets = [9, 6, 4, 1, 3, 2]; // Reverse order of Armour, Shields, Speed, Jump Range, Cargo Capacity, Cost
+    let defaultFacets = [13, 12, 11, 9, 6, 4, 1, 3, 2]; // Reverse order of Armour, Shields, Speed, Jump Range, Cargo Capacity, Cost, DPS, EPS, HPS
     let params = context.route.params;
     let code = params.code;
     let name = params.name ? decodeURIComponent(params.name) : null;

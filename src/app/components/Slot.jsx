@@ -2,8 +2,12 @@ import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
 import cn from 'classnames';
 import AvailableModulesMenu from './AvailableModulesMenu';
+import ModificationsMenu from './ModificationsMenu';
+import { Modifications } from 'coriolis-data/dist';
+import { ListModifications } from './SvgIcons';
 import { diffDetails } from '../utils/SlotFunctions';
 import { wrapCtxMenu } from '../utils/UtilityFunctions';
+import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
 /**
  * Abstract Slot
@@ -18,6 +22,7 @@ export default class Slot extends TranslatedComponent {
     selected: React.PropTypes.bool,
     m: React.PropTypes.object,
     ship: React.PropTypes.object.isRequired,
+    eligible: React.PropTypes.object,
     warning: React.PropTypes.func,
     drag: React.PropTypes.func,
     drop: React.PropTypes.func,
@@ -30,6 +35,8 @@ export default class Slot extends TranslatedComponent {
    */
   constructor(props) {
     super(props);
+
+    this._modificationsSelected = false;
 
     this._contextMenu = wrapCtxMenu(this._contextMenu.bind(this));
     this._getMaxClassLabel = this._getMaxClassLabel.bind(this);
@@ -73,25 +80,39 @@ export default class Slot extends TranslatedComponent {
   render() {
     let language = this.context.language;
     let translate = language.translate;
-    let { ship, m, dropClass, dragOver, onOpen, selected, onSelect, warning, shipMass, availableModules } = this.props;
+    let { ship, m, dropClass, dragOver, onOpen, onChange, selected, eligible, onSelect, warning, availableModules } = this.props;
     let slotDetails, menu;
+
+    if (!selected) {
+      // If not selected then sure that modifications flag is unset
+      this._modificationsSelected = false;
+    }
 
     if (m) {
       slotDetails = this._getSlotDetails(m, translate, language.formats, language.units);  // Must be implemented by sub classes
     } else {
-      slotDetails = <div className={'empty'}>{translate('empty')}</div>;
+      slotDetails = <div className={'empty'}>{translate(eligible ? 'emptyrestricted' : 'empty')}</div>;
     }
 
-    if (this.props.selected) {
-      menu = <AvailableModulesMenu
-        className={this._getClassNames()}
-        modules={availableModules()}
-        shipMass={ship.hullMass}
-        m={m}
-        onSelect={onSelect}
-        warning={warning}
-        diffDetails={diffDetails.bind(ship, this.context.language)}
-      />;
+    if (selected) {
+      if (this._modificationsSelected) {
+        menu = <ModificationsMenu
+          className={this._getClassNames()}
+          onChange={onChange}
+          ship={ship}
+          m={m}
+        />;
+      } else {
+        menu = <AvailableModulesMenu
+          className={this._getClassNames()}
+          modules={availableModules()}
+          shipMass={ship.hullMass}
+          m={m}
+          onSelect={onSelect}
+          warning={warning}
+          diffDetails={diffDetails.bind(ship, this.context.language)}
+        />;
+      }
     }
 
     // TODO: implement touch dragging
@@ -100,10 +121,17 @@ export default class Slot extends TranslatedComponent {
       <div className={cn('slot', dropClass, { selected })} onClick={onOpen} onContextMenu={this._contextMenu} onDragOver={dragOver}>
         <div className='details-container'>
           <div className='sz'>{this._getMaxClassLabel(translate)}</div>
-          {slotDetails}
-        </div>
+            {slotDetails}
+  	  </div>
         {menu}
       </div>
     );
+  }
+
+  /**
+   * Toggle the modifications flag when selecting the modifications icon
+   */
+  _toggleModifications() {
+    this._modificationsSelected = !this._modificationsSelected;
   }
 }

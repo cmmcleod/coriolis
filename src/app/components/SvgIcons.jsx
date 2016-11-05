@@ -489,6 +489,25 @@ export class Rocket extends SvgIcon {
 }
 
 /**
+ * ListModifications (engineers)
+ */
+export class ListModifications extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <path d='M20 180l90-100-90 100zM176 40a40 40 0 1 1-27-28'/>;
+  }
+}
+
+/**
  * Hammer
  */
 export class Hammer extends SvgIcon {

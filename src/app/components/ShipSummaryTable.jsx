@@ -23,35 +23,40 @@ export default class ShipSummaryTable extends TranslatedComponent {
     let translate = language.translate;
     let u = language.units;
     let formats = language.formats;
-    let round = formats.round;
-    let { time, int } = formats;
-    let armourDetails = null;
-    let sgClassNames = cn({ warning: ship.sgSlot && !ship.shieldStrength, muted: !ship.sgSlot });
+    let { time, int, round, f1, f2, pct } = formats;
+    let sgClassNames = cn({ warning: ship.findInternalByGroup('sg') && !ship.shield, muted: !ship.findInternalByGroup('sg') });
     let sgRecover = '-';
     let sgRecharge = '-';
     let hide = tooltip.bind(null, null);
 
-    if (ship.armourMultiplier > 1 || ship.armourAdded) {
-      armourDetails = <u>({
-        (ship.armourMultiplier > 1 ? formats.rPct(ship.armourMultiplier) : '') +
-        (ship.armourAdded ? ' + ' + ship.armourAdded : '')
-      })</u>;
-    }
-
-    if (ship.shieldStrength) {
+    if (ship.shield) {
       sgRecover = time(ship.calcShieldRecovery());
       sgRecharge = time(ship.calcShieldRecharge());
     }
 
+            // <th colSpan={3}>{translate('shield resistance')}</th>
+            // <th colSpan={3}>{translate('hull resistance')}</th>
+            // <th className='lft'>{translate('explosive')}</th>
+            // <th className='lft'>{translate('kinetic')}</th>
+            // <th className='lft'>{translate('thermal')}</th>
+            // <th className='lft'>{translate('explosive')}</th>
+            // <th className='lft'>{translate('kinetic')}</th>
+            // <th className='lft'>{translate('thermal')}</th>
+            // <td>{pct(ship.shieldExplRes)}</td>
+            // <td>{pct(ship.shieldKinRes)}</td>
+            // <td>{pct(ship.shieldThermRes)}</td>
+            // <td>{pct(ship.hullExplRes)}</td>
+            // <td>{pct(ship.hullKinRes)}</td>
+            // <td>{pct(ship.hullThermRes)}</td>
     return <div id='summary'>
       <table id='summaryTable'>
         <thead>
           <tr className='main'>
-            <th rowSpan={2}>{translate('size')}</th>
-            <th onMouseEnter={termtip.bind(null, 'maneuverability')} onMouseLeave={hide} rowSpan={2}>{translate('MNV')}</th>
             <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !ship.canThrust() }) }>{translate('speed')}</th>
             <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !ship.canBoost() }) }>{translate('boost')}</th>
             <th onMouseEnter={termtip.bind(null, 'damage per second')} onMouseLeave={hide} rowSpan={2}>{translate('DPS')}</th>
+            <th onMouseEnter={termtip.bind(null, 'energy per second')} onMouseLeave={hide} rowSpan={2}>{translate('EPS')}</th>
+            <th onMouseEnter={termtip.bind(null, 'heat per second')} onMouseLeave={hide} rowSpan={2}>{translate('HPS')}</th>
             <th rowSpan={2}>{translate('armour')}</th>
             <th colSpan={3}>{translate('shields')}</th>
             <th colSpan={3}>{translate('mass')}</th>
@@ -78,26 +83,26 @@ export default class ShipSummaryTable extends TranslatedComponent {
         </thead>
         <tbody>
           <tr>
-            <td className='cap'>{translate(SizeMap[ship.class])}</td>
-            <td>{ship.agility}/10</td>
             <td>{ ship.canThrust() ? <span>{int(ship.topSpeed)} {u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
             <td>{ ship.canBoost() ? <span>{int(ship.topBoost)} {u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
-            <td>{round(ship.totalDps)}</td>
-            <td>{int(ship.armour)} {armourDetails}</td>
-            <td className={sgClassNames}>{int(ship.shieldStrength)} {u.MJ} { ship.shieldMultiplier > 1 && ship.shieldStrength > 0 ? <u>({formats.rPct(ship.shieldMultiplier)})</u> : null }</td>
+            <td>{f1(ship.totalDps)}</td>
+            <td>{f1(ship.totalEps)}</td>
+            <td>{f1(ship.totalHps)}</td>
+            <td>{int(ship.armour)}</td>
+            <td className={sgClassNames}>{int(ship.shield)} {u.MJ}</td>
             <td className={sgClassNames}>{sgRecover}</td>
             <td className={sgClassNames}>{sgRecharge}</td>
             <td>{ship.hullMass} {u.T}</td>
-            <td>{round(ship.unladenMass)} {u.T}</td>
-            <td>{round(ship.ladenMass)} {u.T}</td>
+            <td>{int(ship.unladenMass)} {u.T}</td>
+            <td>{int(ship.ladenMass)} {u.T}</td>
             <td>{round(ship.cargoCapacity)} {u.T}</td>
             <td>{round(ship.fuelCapacity)} {u.T}</td>
-            <td>{round(ship.unladenRange)} {u.LY}</td>
-            <td>{round(ship.fullTankRange)} {u.LY}</td>
-            <td>{round(ship.ladenRange)} {u.LY}</td>
-            <td>{round(ship.maxJumpCount)}</td>
-            <td>{round(ship.unladenFastestRange)} {u.LY}</td>
-            <td>{round(ship.ladenFastestRange)} {u.LY}</td>
+            <td>{f2(ship.unladenRange)} {u.LY}</td>
+            <td>{f2(ship.fullTankRange)} {u.LY}</td>
+            <td>{f2(ship.ladenRange)} {u.LY}</td>
+            <td>{int(ship.maxJumpCount)}</td>
+            <td>{f2(ship.unladenFastestRange)} {u.LY}</td>
+            <td>{f2(ship.ladenFastestRange)} {u.LY}</td>
             <td>{ship.masslock}</td>
           </tr>
         </tbody>

@@ -46,6 +46,7 @@ export function getLanguage(langCode) {
       s2: d3Locale.numberFormat('.2s'),       // SI Format to 2 decimal places (.e.g 1.1k)
       pct: d3Locale.numberFormat('.2%'),      // % to 2 decimal places (.e.g 5.40%)
       pct1: d3Locale.numberFormat('.1%'),     // % to 1 decimal places (.e.g 5.4%)
+      r1: d3Locale.numberFormat('.1r'),       // Rounded to 1 significant number (.e.g 512 => 500, 4.122 => 4)
       r2: d3Locale.numberFormat('.2r'),       // Rounded to 2 significant numbers (.e.g 512 => 510, 4.122 => 4.1)
       rPct: d3.format('%'),                   // % to 0 decimal places (.e.g 5%)
       round1: (d) => gen(d3.round(d, 1)),      // Rounded to 0-1 decimal places (.e.g 5.1, 4)
@@ -65,6 +66,7 @@ export function getLanguage(langCode) {
       MW: <u> {translate('MW')}</u>,     // Mega Watts (same as Mega Joules per second)
       ps: <u>{translate('/s')}</u>,           // per second
       pm: <u>{translate('/min')}</u>,         // per minute
+      s: <u>{translate('secs')}</u>,         // Seconds
       T: <u> {translate('T')}</u>,       // Metric Tons
     }
   };

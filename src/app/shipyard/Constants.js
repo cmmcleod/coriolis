@@ -1,12 +1,4 @@
 
-export const ArmourMultiplier = [
-  1,      // Lightweight
-  1.4,    // Reinforced
-  1.945,  // Military
-  1.945,  // Mirrored
-  1.945   // Reactive
-];
-
 export const SizeMap = ['', 'small', 'medium', 'large', 'capital'];
 
 export const StandardArray = [
@@ -193,6 +185,20 @@ export const ShipFacets = [
       lbls: ['DPS'],
       fmt: 'round',
       i: 11
+    },
+    {                   // 12
+      title: 'EPS',
+      props: ['totalEps'],
+      lbls: ['EPS'],
+      fmt: 'round',
+      i: 12
+    },
+    {                   // 13
+      title: 'HPS',
+      props: ['totalHps'],
+      lbls: ['HPS'],
+      fmt: 'round',
+      i: 13
     }
 ];
 

@@ -97,7 +97,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       let m = modules[i];
       let mount = null;
       let disabled = m.maxmass && (mass + (m.mass ? m.mass : 0)) > m.maxmass;
-      let active = mountedModule && mountedModule === m;
+      let active = mountedModule && mountedModule.id === m.id;
       let classes = cn(m.name ? 'lc' : 'c', {
         warning: !disabled && warningFunc && warningFunc(m),
         active,

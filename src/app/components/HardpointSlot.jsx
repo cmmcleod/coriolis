@@ -1,6 +1,9 @@
 import React from 'react';
 import Slot from './Slot';
-import { DamageKinetic, DamageThermal, DamageExplosive, MountFixed, MountGimballed, MountTurret } from './SvgIcons';
+import { DamageKinetic, DamageThermal, DamageExplosive, MountFixed, MountGimballed, MountTurret, ListModifications } from './SvgIcons';
+import { Modifications } from 'coriolis-data/dist';
+import { stopCtxPropagation } from '../utils/UtilityFunctions';
+
 
 /**
  * Hardpoint / Utility Slot
@@ -36,29 +39,31 @@ export default class HardpointSlot extends Slot {
     if (m) {
       let classRating = `${m.class}${m.rating}${m.missile ? '/' + m.missile : ''}`;
       let { drag, drop } = this.props;
+      let { termtip, tooltip } = this.context;
+      let validMods = Modifications.validity[m.grp] || [];
 
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
           <div className={'l'}>
-	  {m.mount && m.mount == 'F' ? <MountFixed /> : ''}
-	  {m.mount && m.mount == 'G' ? <MountGimballed /> : ''}
-	  {m.mount && m.mount == 'T' ? <MountTurret /> : ''}
-	  {m.type && m.type == 'K' ? <DamageKinetic /> : ''}
-	  {m.type && m.type == 'T' ? <DamageThermal /> : ''}
-	  {m.type && m.type == 'KT' ? <span><DamageKinetic /><DamageThermal /></span> : ''}
-	  {m.type && m.type == 'E' ? <DamageExplosive /> : ''}
+	  {m.mount && m.mount == 'F' ? <span onMouseOver={termtip.bind(null, 'fixed')} onMouseOut={tooltip.bind(null, null)}><MountFixed /></span> : ''}
+	  {m.mount && m.mount == 'G' ? <span onMouseOver={termtip.bind(null, 'gimballed')} onMouseOut={tooltip.bind(null, null)}><MountGimballed /></span> : ''}
+	  {m.mount && m.mount == 'T' ? <span onMouseOver={termtip.bind(null, 'turreted')} onMouseOut={tooltip.bind(null, null)}><MountTurret /></span> : ''}
+	  {m.type && m.type.match('K') ? <span onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /></span> : ''}
+	  {m.type && m.type.match('T') ? <span onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /></span> : ''}
+	  {m.type && m.type.match('E') ? <span onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /></span> : ''}
           {classRating} {translate(m.name || m.grp)}</div>
-          <div className={'r'}>{m.mass}{u.T}</div>
+          <div className={'r'}>{formats.round(m.getMass())}{u.T}</div>
         </div>
         <div className={'cb'}>
-          { m.dps ? <div className={'l'}>{translate('DPS')}: {formats.round1(m.dps)} { m.clip ? <span>({formats.round1((m.clip * m.dps / m.rof) / ((m.clip / m.rof) + m.reload)) })</span> : null }</div> : null }
-          { m.eps ? <div className={'l'}>{translate('EPS')}: {formats.round1(m.eps)} { m.clip ? <span>({formats.round1((m.clip * m.eps / m.rof) / ((m.clip / m.rof) + m.reload)) })</span> : null }</div> : null }
-          { m.hps ? <div className={'l'}>{translate('HPS')}: {formats.round1(m.hps)} { m.clip ? <span>({formats.round1((m.clip * m.hps / m.rof) / ((m.clip / m.rof) + m.reload)) })</span> : null }</div> : null }
-          { m.dps && m.eps ? <div className={'l'}>{translate('DPE')}: {formats.round1(m.dps / m.eps)}</div> : null }
-          { m.rof ? <div className={'l'}>{translate('ROF')}: {m.rof}{u.ps}</div> : null }
-          { m.range && !m.dps ? <div className={'l'}>{translate('Range')} : {formats.round(m.range / 1000)}{u.km}</div> : null }
-          { m.shieldmul ? <div className={'l'}>+{formats.rPct(m.shieldmul)}</div> : null }
-          { m.ammo >= 0 ? <div className={'l'}>{translate('ammo')}: {formats.int(m.clip)}/{formats.int(m.ammo)}</div> : null }
+          { m.getDps() ? <div className={'l'} onMouseOver={termtip.bind(null, m.getClip() ? 'dpssdps' : 'dps')} onMouseOut={tooltip.bind(null, null)}>{translate('DPS')}: {formats.round1(m.getDps())} { m.getClip() ? <span>({formats.round1((m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload())) })</span> : null }</div> : null }
+          { m.getEps() ? <div className={'l'} onMouseOver={termtip.bind(null, m.getClip() ? 'epsseps' : 'eps')} onMouseOut={tooltip.bind(null, null)}>{translate('EPS')}: {formats.round1(m.getEps())}{u.MW} { m.getClip() ? <span>({formats.round1((m.getClip() * m.getEps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload())) }{u.MW})</span> : null }</div> : null }
+          { m.getHps() ? <div className={'l'} onMouseOver={termtip.bind(null, m.getClip() ? 'hpsshps' : 'hps')} onMouseOut={tooltip.bind(null, null)}>{translate('HPS')}: {formats.round1(m.getHps())} { m.getClip() ? <span>({formats.round1((m.getClip() * m.getHps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload())) })</span> : null }</div> : null }
+          { m.getDps() && m.getEps() ? <div className={'l'} onMouseOver={termtip.bind(null, 'dpe')} onMouseOut={tooltip.bind(null, null)}>{translate('DPE')}: {formats.f1(m.getDps() / m.getEps())}</div> : null }
+          { m.getRoF() ? <div className={'l'} onMouseOver={termtip.bind(null, 'rof')} onMouseOut={tooltip.bind(null, null)}>{translate('ROF')}: {formats.f1(m.getRoF())}{u.ps}</div> : null }
+          { m.getRange() && !m.getDps() ? <div className={'l'}>{translate('Range')} : {formats.round(m.getRange() / 1000)}{u.km}</div> : null }
+          { m.getShieldBoost() ? <div className={'l'}>+{formats.pct1(m.getShieldBoost())}</div> : null }
+          { m.getAmmo() ? <div className={'l'}>{translate('ammunition')}: {formats.int(m.getClip())}/{formats.int(m.getAmmo())}</div> : null }
+          { m && validMods.length > 0 ? <div className='r' ><button onClick={this._toggleModifications.bind(this)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
         </div>
       </div>;
     } else {

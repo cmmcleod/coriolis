@@ -284,9 +284,9 @@ export default class OutfittingPage extends Page {
         canSave = (newBuildName || buildName) && code !== savedCode,
         canRename = buildName && newBuildName && buildName != newBuildName,
         canReload = savedCode && canSave,
-        hStr = ship.getHardpointsString(),
-        sStr = ship.getStandardString(),
-        iStr = ship.getInternalString();
+        hStr = ship.getHardpointsString() + '.' + ship.getModificationsString(),
+        sStr = ship.getStandardString() + '.' + ship.getModificationsString(),
+        iStr = ship.getInternalString() + '.' + ship.getModificationsString();
 
     return (
       <div id='outfit' className={'page'} style={{ fontSize: (sizeRatio * 0.9) + 'em' }}>
