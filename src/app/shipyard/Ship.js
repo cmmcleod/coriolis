@@ -4,6 +4,7 @@ import Module from './Module';
 import LZString from 'lz-string';
 import isEqual from 'lodash/lang';
 import { Modifications } from 'coriolis-data/dist';
+var zlib = require('zlib');
 
 const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs', 'fh'];
 
@@ -575,7 +576,11 @@ export default class Ship {
       if (modstr.match(':')) {
         this.decodeModificationsString(modstr, mods);
       } else {
-        this.decodeModificationsStruct(Buffer.from(modstr, 'base64'), mods);
+        try {
+          this.decodeModificationsStruct(zlib.gunzipSync(new Buffer(modstr, 'base64')), mods);
+        } catch (err) {
+          // Could be out-of-date URL; ignore
+        }
       }
     }
 
@@ -1142,7 +1147,7 @@ export default class Ship {
         buffer.writeInt8(-1, curpos++);
       }
 
-      this.serialized.modifications = buffer.toString('base64').replace(/\//g, '-');
+      this.serialized.modifications = zlib.gzipSync(buffer).toString('base64').replace(/\//g, '-');
     } else {
       this.serialized.modifications = null;
     }
