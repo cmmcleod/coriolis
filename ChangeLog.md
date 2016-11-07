@@ -3,3 +3,4 @@
   * Use coriolis-data 2.2.2:
     * Add distributor draw modifier to shield generators
     * Remove modifiers for sensors
+  * Show modification icon for modified modules

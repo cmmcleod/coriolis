@@ -1,6 +1,6 @@
 import React from 'react';
 import Slot from './Slot';
-import { DamageKinetic, DamageThermal, DamageExplosive, MountFixed, MountGimballed, MountTurret, ListModifications } from './SvgIcons';
+import { DamageKinetic, DamageThermal, DamageExplosive, MountFixed, MountGimballed, MountTurret, ListModifications, Modified } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
@@ -51,7 +51,9 @@ export default class HardpointSlot extends Slot {
 	  {m.type && m.type.match('K') ? <span onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /></span> : ''}
 	  {m.type && m.type.match('T') ? <span onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /></span> : ''}
 	  {m.type && m.type.match('E') ? <span onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /></span> : ''}
-          {classRating} {translate(m.name || m.grp)}</div>
+          {classRating} {translate(m.name || m.grp)}{ Object.keys(m.mods).length > 0 ? <span className='r' onMouseOver={termtip.bind(null, 'modified')} onMouseOut={tooltip.bind(null, null)}><Modified /></span> : null }
+	  </div>
+
           <div className={'r'}>{formats.round(m.getMass())}{u.T}</div>
         </div>
         <div className={'cb'}>
