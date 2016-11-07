@@ -437,6 +437,11 @@ export default class Ship {
     } else if (name == 'hullboost') {
       m.setModValue(name, value);
       this.updateArmour();
+    } else if (name == 'burst' || name == 'clip' || name == 'damage' || name == 'distdraw' || name == 'jitter' || name == 'piercing' || name == 'range' || name == 'reload' || name == 'rof' || name == 'thermload') {
+      m.setModValue(name, value);
+      this.recalculateDps();
+      this.recalculateHps();
+      this.recalculateEps();
     } else {
       // Generic
       m.setModValue(name, value);
@@ -818,6 +823,54 @@ export default class Ship {
       this.updateJumpStats();
     }
     return this;
+  }
+
+  /**
+   * Calculate damage per second for weapons
+   * @return {this} The ship instance (for chaining operations)
+   */
+  recalculateDps() {
+    let totalDps = 0;
+
+    for (let slotNum in this.hardpoints) {
+      const slot = this.hardpoints[slotNum];
+      if (slot.m && slot.enabled && slot.m.getDps()) {
+        totalDps += slot.m.getDps();
+      }
+    }
+    this.totalDps = totalDps;
+  }
+
+  /**
+   * Calculate heat per second for weapons
+   * @return {this} The ship instance (for chaining operations)
+   */
+  recalculateHps() {
+    let totalHps = 0;
+
+    for (let slotNum in this.hardpoints) {
+      const slot = this.hardpoints[slotNum];
+      if (slot.m && slot.enabled && slot.m.getHps()) {
+        totalHps += slot.m.getHps();
+      }
+    }
+    this.totalHps = totalHps;
+  }
+
+  /**
+   * Calculate energy per second for weapons
+   * @return {this} The ship instance (for chaining operations)
+   */
+  recalculateEps() {
+    let totalEps = 0;
+
+    for (let slotNum in this.hardpoints) {
+      const slot = this.hardpoints[slotNum];
+      if (slot.m && slot.enabled && slot.m.getEps()) {
+        totalEps += slot.m.getEps();
+      }
+    }
+    this.totalEps = totalEps;
   }
 
   /**
