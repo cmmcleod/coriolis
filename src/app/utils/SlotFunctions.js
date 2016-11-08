@@ -93,69 +93,6 @@ export function slotComparator(translate, propComparator, desc) {
   };
 }
 
-const PROP_BLACKLIST = {
-  eddbID: 1,
-  edID: 1,
-  id: 1,
-  index: 1,
-  'class': 1,
-  rating: 1,
-  maxfuel: 1,
-  fuelmul: 1,
-  fuelpower: 1,
-  optmass: 1,
-  maxmass: 1,
-  minmass: 1,
-  passive: 1,
-  thermload: 1,
-  ammocost: 1,
-  activepower: 1,
-  cooldown: 1,
-  chargeup: 1,
-  optmul: 1,
-  minmul: 1,
-  maxmul: 1,
-  ssdam: 1,
-  mjdps: 1,
-  mjeps: 1,
-  mass: 1,
-  cost: 1,
-  recover: 1,
-  wepcap: 1,
-  weprate: 1,
-  engcap: 1,
-  engrate: 1,
-  syscap: 1,
-  sysrate: 1,
-  breachdps: 1,
-  breachmin: 1,
-  breachmax: 1,
-  integrity: 1
-};
-
-const TERM_LOOKUP = {
-  pgen: 'power',
-  armouradd: 'armour',
-  rof: 'ROF',
-  dps: 'DPS'
-};
-
-const FORMAT_LOOKUP = {
-  time: 'time'
-};
-
-const UNIT_LOOKUP = {
-  fuel: 'T',
-  cargo: 'T',
-  rate: 'kgs',
-  range: 'km',
-  recharge: 'MJ',
-  rangeLS: 'Ls',
-  power: 'MJ',
-  pgen: 'MJ',
-  rof: 'ps'
-};
-
 /**
  * Determine the appropriate class based on diff value
  * @param  {Number} a         Potential Module (cannot be null)
@@ -214,23 +151,15 @@ export function diffDetails(language, m, mm) {
   let mmMass = mm ? mm.getMass() : 0;
   if (mMass != mmMass) propDiffs.push(<div key='mass'>{translate('mass')}: <span className={diffClass(mMass, mmMass, true)}>{diff(formats.round, mMass, mmMass)}{units.T}</span></div>);
 
+  let mPowerGeneration = m.pgen || 0;
+  let mmPowerGeneration = mm ? mm.getPowerGeneration() : 0;
+  if (mPowerGeneration != mmPowerGeneration) propDiffs.push(<div key='pgen'>{translate('pgen')}: <span className={diffClass(mPowerGeneration, mmPowerGeneration, true)}>{diff(formats.round, mPowerGeneration, mmPowerGeneration)}{units.MJ}</span></div>);
+
   let mPowerUsage = m.power || 0;
   let mmPowerUsage = mm ? mm.getPowerUsage() : 0;
   if (mPowerUsage != mmPowerUsage) propDiffs.push(<div key='power'>{translate('power')}: <span className={diffClass(mPowerUsage, mmPowerUsage, true)}>{diff(formats.round, mPowerUsage, mmPowerUsage)}{units.MJ}</span></div>);
 
-//  for (let p in m) {
-//    if (!PROP_BLACKLIST[p] && !isNaN(m[p])) {
-//      let mVal = m[p] === null ? Infinity : m[p];
-//      let mmVal = mm[p] === null ? Infinity : mm[p];
-//      let format = formats[FORMAT_LOOKUP[p]] || formats.round;
-//      propDiffs.push(<div key={p}>
-//        {`${translate(TERM_LOOKUP[p] || p)}: `}
-//        <span className={diffClass(mVal, mmVal, p == 'power')}>{diff(format, mVal, mmVal)}{units[UNIT_LOOKUP[p]]}</span>
-//      </div>);
-//    }
-//  }
-
-  let mDps = m.damage * (m.rpshot || 1) * m.rof || 0;
+  let mDps = m.damage * (m.rpshot || 1) * (m.rof || 1) || 0;
   let mmDps = mm ? mm.getDps() || 0 : 0;
   if (mDps != mmDps) propDiffs.push(<div key='dps'>{translate('dps')}: <span className={diffClass(mmDps, mDps, true)}>{diff(formats.round, mDps, mmDps)}</span></div>);
 
