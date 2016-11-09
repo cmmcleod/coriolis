@@ -212,6 +212,16 @@ export function findHardpoint(groupName, clss, rating, name, mount, missile) {
  */
 export function findHardpointId(groupName, clss, rating, name, mount, missile) {
   let h = this.findHardpoint(groupName, clss, rating, name, mount, missile);
+  if (h) {
+    return h.id;
+  }
+
+  // Countermeasures used to be lumped in a single group but have been broken, out.  If we have been given a groupName of 'Countermeasure' then
+  // rely on the unique name to find it
+  if (groupName === 'cm' || groupName === 'Countermeasure') {
+    h = this.findHardpoint(null, clss, rating, name, mount, missile);
+  }
+
   return h ? h.id : 0;
 }
 

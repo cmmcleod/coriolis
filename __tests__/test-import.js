@@ -129,7 +129,7 @@ describe('Import Modal', function() {
     });
   });
 
-  describe('Import Detailed Build', function() {
+  describe('Import Detailed V3 Build', function() {
 
     beforeEach(reset);
 
@@ -142,7 +142,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda/4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA?bn=Test%20My%20Ship');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda/4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA.?bn=Test%20My%20Ship');
     });
 
     it('catches an invalid build', function() {
@@ -151,6 +151,23 @@ describe('Import Modal', function() {
 
       expect(modal.state.importValid).toBeFalsy();
       expect(modal.state.errorMsg).toEqual('Anaconda Build "Test My Ship": Invalid data');
+    });
+  });
+
+  describe('Import Detailed V4 Build', function() {
+
+    beforeEach(reset);
+
+    it('imports a valid v4 build', function() {
+      const importData = require('./fixtures/anaconda-test-detailed-export-v4');
+      pasteText(JSON.stringify(importData));
+
+      expect(modal.state.importValid).toBeTruthy();
+      expect(modal.state.errorMsg).toEqual(null);
+      expect(modal.state.singleBuild).toBe(true);
+      clickProceed();
+      expect(MockRouter.go.mock.calls.length).toBe(1);
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda/4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA.H4sIAAAAAAAAA2MUe8HMwPD-PwDDhxeuCAAAAA==?bn=Test%20My%20Ship');
     });
   });
 

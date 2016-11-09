@@ -486,7 +486,6 @@ export default class Ship {
     this.bulkheads.m.mods = mods && mods[0] ? mods[0] : {};
     this.cargoHatch.priority = priorities ? priorities[0] * 1 : 0;
     this.cargoHatch.enabled = enabled ? enabled[0] * 1 : true;
-    this.cargoHatch.mods = mods ? mods[0] : {};
 
     for (i = 0; i < cl; i++) {
       standard[i].cat = 0;
@@ -562,7 +561,7 @@ export default class Ship {
     let standard = new Array(this.standard.length),
         hardpoints = new Array(this.hardpoints.length),
         internal = new Array(this.internal.length),
-        mods = new Array(1 + this.standard.length + this.hardpoints.length + this.internal.length),
+        modifications = new Array(1 + this.standard.length + this.hardpoints.length + this.internal.length),
         parts = serializedString.split('.'),
         priorities = null,
         enabled = null,
@@ -579,10 +578,10 @@ export default class Ship {
     if (parts[3]) {
       const modstr = parts[3].replace(/-/g, '/');
       if (modstr.match(':')) {
-        this.decodeModificationsString(modstr, mods);
+        this.decodeModificationsString(modstr, modifications);
       } else {
         try {
-          this.decodeModificationsStruct(zlib.gunzipSync(new Buffer(modstr, 'base64')), mods);
+          this.decodeModificationsStruct(zlib.gunzipSync(new Buffer(modstr, 'base64')), modifications);
         } catch (err) {
           // Could be out-of-date URL; ignore
         }
@@ -600,7 +599,7 @@ export default class Ship {
       },
       priorities,
       enabled,
-      mods
+      modifications
     );
   };
 
@@ -1051,10 +1050,10 @@ export default class Ship {
   }
 
   /**
-   * Update the modifications string
+   * Update the modifications string in a human-readable format
    * @return {this} The ship instance (for chaining operations)
    */
-  oldupdateModificationsString() {
+  debugupdateModificationsString() {
     let allMods = new Array();
 
     let bulkheadMods = new Array();
@@ -1272,7 +1271,6 @@ export default class Ship {
         case 1: this.serialized.hardpoints = null; break;
         case 2: this.serialized.internal = null;
       }
-      this.serialized.modifications = null;
     }
     return this;
   }

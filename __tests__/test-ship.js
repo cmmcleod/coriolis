@@ -24,7 +24,7 @@ describe("Ship", function() {
       expect(ship.fuelCapacity).toBeGreaterThan(0, s + ' fuelCapacity');
       expect(ship.unladenFastestRange).toBeGreaterThan(0, s + ' unladenFastestRange');
       expect(ship.ladenFastestRange).toBeGreaterThan(0, s + ' ladenFastestRange');
-      expect(ship.shieldStrength).toBeGreaterThan(0, s + ' shieldStrength');
+      expect(ship.shield).toBeGreaterThan(0, s + ' shield');
       expect(ship.armour).toBeGreaterThan(0, s + ' armour');
       expect(ship.topSpeed).toBeGreaterThan(0, s + ' topSpeed');
     }

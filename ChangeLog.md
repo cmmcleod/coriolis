@@ -4,3 +4,7 @@
     * Add distributor draw modifier to shield generators
     * Remove modifiers for sensors
   * Show modification icon for modified modules
+  * Take modifications in to account when deciding whether to issue a warning on a standard module
+  * Fix hardpoint comparison DPS number when selecting an alternate module
+  * Ensure that retrofit tab only shows changed modules
+  * Fix import and export of ships with modifications, bump schema version to 4

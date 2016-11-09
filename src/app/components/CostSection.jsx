@@ -379,7 +379,7 @@ export default class CostSection extends TranslatedComponent {
               <td colSpan='4' className='lbl cap' >{translate('retrofit from')}</td>
               <td className='val cen' style={{ borderRight: 'none', width: '1em' }}><u className='primary-disabled'>&#9662;</u></td>
               <td className='val' style={{ borderLeft:'none', padding: 0 }}>
-                <select style={{ width: '100%', padding: 0 }} value={retrofitName} onChange={this._onBaseRetrofitChange}>
+                <select style={{ width: '100%', padding: 0 }} value={retrofitName || translate('Stock')} onChange={this._onBaseRetrofitChange}>
                   {options}
                 </select>
               </td>
@@ -419,7 +419,9 @@ export default class CostSection extends TranslatedComponent {
       let retroSlotGroup = retrofitShip[g];
       let slotGroup = ship[g];
       for (i = 0, l = slotGroup.length; i < l; i++) {
-        if (slotGroup[i].m != retroSlotGroup[i].m) {
+	const modId = slotGroup[i].m ? slotGroup[i].m.eddbID : null;
+	const retroModId = retroSlotGroup[i].m ? retroSlotGroup[i].m.eddbID : null;
+        if (modId != retroModId) {
           item = { netCost: 0, retroItem: retroSlotGroup[i] };
           if (slotGroup[i].m) {
             item.buyName = slotGroup[i].m.name || slotGroup[i].m.grp;
