@@ -423,14 +423,16 @@ export default class Ship {
       this.updateJumpStats();
     } else if (name == 'optmass') {
       m.setModValue(name, value);
-      // Could be for either thrusters or FSD
+      // Could be for any of thrusters, FSD or shield
       this.updateTopSpeed();
       this.updateJumpStats();
+      this.updateShield();
     } else if (name == 'optmul') {
       m.setModValue(name, value);
-      // Could be for either thrusters or FSD
+      // Could be for any of thrusters, FSD or shield
       this.updateTopSpeed();
       this.updateJumpStats();
+      this.updateShield();
     } else if (name == 'shieldboost') {
       m.setModValue(name, value);
       this.updateShield();
@@ -838,6 +840,8 @@ export default class Ship {
       }
     }
     this.totalDps = totalDps;
+
+    return this;
   }
 
   /**
@@ -854,6 +858,8 @@ export default class Ship {
       }
     }
     this.totalHps = totalHps;
+
+    return this;
   }
 
   /**
@@ -870,6 +876,8 @@ export default class Ship {
       }
     }
     this.totalEps = totalEps;
+
+    return this;
   }
 
   /**

@@ -115,7 +115,7 @@ export default class StandardSlotSection extends SlotSection {
       selected={currentMenu == st[0]}
       onChange={this.props.onChange}
       ship={ship}
-      warning={m => m instanceof Module ? m.getPowerGeneration() < ship.powerRetracted : m.pgen< ship.powerRetracted}
+      warning={m => m instanceof Module ? m.getPowerGeneration() < ship.powerRetracted : m.pgen < ship.powerRetracted}
     />;
 
     slots[2] = <StandardSlot

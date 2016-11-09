@@ -419,8 +419,8 @@ export default class CostSection extends TranslatedComponent {
       let retroSlotGroup = retrofitShip[g];
       let slotGroup = ship[g];
       for (i = 0, l = slotGroup.length; i < l; i++) {
-	const modId = slotGroup[i].m ? slotGroup[i].m.eddbID : null;
-	const retroModId = retroSlotGroup[i].m ? retroSlotGroup[i].m.eddbID : null;
+        const modId = slotGroup[i].m ? slotGroup[i].m.eddbID : null;
+        const retroModId = retroSlotGroup[i].m ? retroSlotGroup[i].m.eddbID : null;
         if (modId != retroModId) {
           item = { netCost: 0, retroItem: retroSlotGroup[i] };
           if (slotGroup[i].m) {
