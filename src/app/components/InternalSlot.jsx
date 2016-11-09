@@ -27,7 +27,7 @@ export default class InternalSlot extends Slot {
       let mass = m.getMass() || m.cargo || m.fuel || 0;
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
-          <div className={'l'}>{classRating} {translate(m.name || m.grp)}{Object.keys(m.mods).length > 0 ? <span onMouseOver={termtip.bind(null, 'modified')} onMouseOut={tooltip.bind(null, null)}><Modified /></span> : ''}</div>
+          <div className={'l'}>{classRating} {translate(m.name || m.grp)}{m.mods && Object.keys(m.mods).length > 0 ? <span onMouseOver={termtip.bind(null, 'modified')} onMouseOut={tooltip.bind(null, null)}><Modified /></span> : ''}</div>
           <div className={'r'}>{formats.round(mass)}{u.T}</div>
         </div>
         <div className={'cb'}>
