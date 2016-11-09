@@ -11,7 +11,7 @@ export default class Module {
    * @param {Object} params   Module parameters.  Either grp/id or template
    */
   constructor(params) {
-    let properties = Object.assign({ grp: null, id: null, template: null }, params);
+    let properties = Object.assign({ grp: null, id: null, template: null, }, params);
 
     let template;
     if (properties.template == undefined) {
@@ -23,7 +23,6 @@ export default class Module {
         for (let p in template) { this[p] = template[p]; }
       }
     }
-    this.mods = {};
   }
 
   /**
@@ -41,6 +40,10 @@ export default class Module {
    * @param {Number} value  The value of the modification, as a decimal value where 1 is 100%
    */
   setModValue(name, value) {
+    if (!this.mods) {
+      this.mods = {};
+    }
+
     if (value == null || value == 0) {
       delete this.mods[name];
     } else {

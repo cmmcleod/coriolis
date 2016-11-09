@@ -2,6 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import SlotSection from './SlotSection';
 import StandardSlot from './StandardSlot';
+import Module from '../shipyard/Module';
 import { diffDetails } from '../utils/SlotFunctions';
 import * as ModuleUtils from '../shipyard/ModuleUtils';
 import * as ShipRoles from '../shipyard/ShipRoles';
@@ -114,7 +115,7 @@ export default class StandardSlotSection extends SlotSection {
       selected={currentMenu == st[0]}
       onChange={this.props.onChange}
       ship={ship}
-      warning={m => m.pgen < ship.powerRetracted}
+      warning={m => m instanceof Module ? m.getPowerGeneration() < ship.powerRetracted : m.pgen < ship.powerRetracted}
     />;
 
     slots[2] = <StandardSlot
@@ -126,7 +127,7 @@ export default class StandardSlotSection extends SlotSection {
       selected={currentMenu == st[1]}
       onChange={this.props.onChange}
       ship={ship}
-      warning={m => m.maxmass < (ship.ladenMass - st[1].mass + m.mass)}
+      warning={m => m instanceof Module ? m.getMaxMass() < (ship.ladenMass - st[1].mass + m.mass) : m.maxmass < (ship.ladenMass - st[1].mass + m.mass)}
     />;
 
 
@@ -161,7 +162,7 @@ export default class StandardSlotSection extends SlotSection {
       selected={currentMenu == st[4]}
       onChange={this.props.onChange}
       ship={ship}
-      warning= {m => m.engcap < ship.boostEnergy}
+      warning={m => m instanceof Module ? m.getEnginesCapacity() < ship.boostEnergy : m.engcap < ship.boostEnergy}
     />;
 
     slots[6] = <StandardSlot

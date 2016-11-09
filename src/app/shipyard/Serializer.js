@@ -116,31 +116,11 @@ export function toDetailedBuild(buildName, ship) {
 };
 
 /**
- * Instantiates a ship from a ship-loadout object, using the code
- * @param  {Object} detailedBuild ship-loadout object
- * @return {Ship} Ship instance
- */
-export function fromDetailedBuild(detailedBuild) {
-  let shipId = Object.keys(Ships).find((shipId) => Ships[shipId].properties.name.toLowerCase() == detailedBuild.ship.toLowerCase());
-
-  if (!shipId) {
-    throw 'No such ship: ' + detailedBuild.ship;
-  }
-
-  let comps = detailedBuild.components;
-  let stn = comps.standard;
-  let shipData = Ships[shipId];
-  let ship = new Ship(shipId, shipData.properties, shipData.slots);
-
-  return ship.buildFrom(detailedBuild.references[0].code);
-};
-
-/**
  * Instantiates a ship from a ship-loadout  object
  * @param  {Object} detailedBuild ship-loadout object
  * @return {Ship} Ship instance
  */
-export function oldfromDetailedBuild(detailedBuild) {
+export function fromDetailedBuild(detailedBuild) {
   let shipId = Object.keys(Ships).find((shipId) => Ships[shipId].properties.name.toLowerCase() == detailedBuild.ship.toLowerCase());
 
   if (!shipId) {
@@ -154,6 +134,7 @@ export function oldfromDetailedBuild(detailedBuild) {
   let shipData = Ships[shipId];
   let ship = new Ship(shipId, shipData.properties, shipData.slots);
   let bulkheads = ModuleUtils.bulkheadIndex(stn.bulkheads);
+  let modifications = new Array(stn.bulkheads.modifications);
 
   if (bulkheads < 0) {
     throw 'Invalid bulkheads: ' + stn.bulkheads;
@@ -165,6 +146,7 @@ export function oldfromDetailedBuild(detailedBuild) {
     }
     priorities.push(stn[c].priority === undefined ? 0 : stn[c].priority - 1);
     enabled.push(stn[c].enabled === undefined ? true : stn[c].enabled);
+    modifications.push(stn[c].modifications);
     return stn[c].class + stn[c].rating;
   });
 
@@ -185,8 +167,13 @@ export function oldfromDetailedBuild(detailedBuild) {
     comps.utility.map(c => (!c || c.enabled === undefined) ? true : c.enabled * 1),
     comps.internal.map(c => (!c || c.enabled === undefined) ? true : c.enabled * 1)
   );
+  modifications = modifications.concat(
+    comps.hardpoints.map(c => (c && c.m ? c.m.modifications : null)),
+    comps.utility.map(c => (c && c.m ? c.m.modifications : null)),
+    comps.internal.map(c => (c && c.m ? c.m.modifications : null))
+  );
 
-  ship.buildWith({ bulkheads, standard, hardpoints, internal }, priorities, enabled);
+  ship.buildWith({ bulkheads, standard, hardpoints, internal }, priorities, enabled, modifications);
 
   return ship;
 };

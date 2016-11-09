@@ -5,7 +5,7 @@ import { jumpRange } from '../shipyard/Calculations';
 import { diffDetails } from '../utils/SlotFunctions';
 import AvailableModulesMenu from './AvailableModulesMenu';
 import ModificationsMenu from './ModificationsMenu';
-import { ListModifications } from './SvgIcons';
+import { ListModifications, Modified } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
@@ -79,7 +79,7 @@ export default class StandardSlot extends TranslatedComponent {
         <div className={cn('details-container', { warning: warning && warning(slot.m) })}>
           <div className={'sz'}>{slot.maxClass}</div>
           <div>
-            <div className='l'>{classRating} {translate(m.grp == 'bh' ? m.grp : m.name || m.grp)}</div>
+            <div className={'l'}>{classRating} {translate(m.grp == 'bh' ? m.grp : m.name || m.grp)}{ m.mods && Object.keys(m.mods).length > 0 ? <span className='r' onMouseOver={termtip.bind(null, 'modified')} onMouseOut={tooltip.bind(null, null)}><Modified /></span> : null }</div>
             <div className={'r'}>{formats.round(mass)}{units.T}</div>
 	    <div/>
             <div className={'cb'}>
