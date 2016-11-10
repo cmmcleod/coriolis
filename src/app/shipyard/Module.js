@@ -54,16 +54,23 @@ export default class Module {
 
   /**
    * Helper to obtain a modified value using standard multipliers
-   * @param {String}  name the name of the modifier to obtain
-   * @return {Number} the mass of this module
+   * @param {String}  name     the name of the modifier to obtain
+   * @param {Boolean} additive Optional true if the value is additive rather than multiplicative
+   * @return {Number}          the mass of this module
    */
-  _getModifiedValue(name) {
+  _getModifiedValue(name, additive) {
     let result = 0;
     if (this[name]) {
       result = this[name];
       if (result) {
-        let mult = this.getModValue(name);
-        if (mult) { result = result * (1 + mult); }
+        const modValue = this.getModValue(name);
+        if (modValue) {
+          if (additive) {
+            result = result + modValue;
+          } else {
+            result = result * (1 + modValue);
+          }
+        }
       }
     }
     return result;
@@ -193,7 +200,7 @@ export default class Module {
    * @return {Number} the kinetic resistance of this module
    */
   getKineticResistance() {
-    return this._getModifiedValue('kinres');
+    return this._getModifiedValue('kinres', true);
   }
 
   /**
@@ -201,7 +208,7 @@ export default class Module {
    * @return {Number} the thermal resistance of this module
    */
   getThermalResistance() {
-    return this._getModifiedValue('thermres');
+    return this._getModifiedValue('thermres', true);
   }
 
   /**
@@ -209,7 +216,7 @@ export default class Module {
    * @return {Number} the explosive resistance of this module
    */
   getExplosiveResistance() {
-    return this._getModifiedValue('explres');
+    return this._getModifiedValue('explres', true);
   }
 
   /**

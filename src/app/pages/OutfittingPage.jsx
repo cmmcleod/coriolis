@@ -8,13 +8,14 @@ import Persist from '../stores/Persist';
 import Ship from '../shipyard/Ship';
 import { toDetailedBuild } from '../shipyard/Serializer';
 import { outfitURL } from '../utils/UrlGenerators';
-
 import { FloppyDisk, Bin, Switch, Download, Reload, Fuel } from '../components/SvgIcons';
 import ShipSummaryTable from '../components/ShipSummaryTable';
 import StandardSlotSection from '../components/StandardSlotSection';
 import HardpointsSlotSection from '../components/HardpointsSlotSection';
 import InternalSlotSection from '../components/InternalSlotSection';
 import UtilitySlotSection from '../components/UtilitySlotSection';
+import OffenceSummary from '../components/OffenceSummary';
+import DefenceSummary from '../components/DefenceSummary';
 import LineChart from '../components/LineChart';
 import PowerManagement from '../components/PowerManagement';
 import CostSection from '../components/CostSection';
@@ -324,31 +325,11 @@ export default class OutfittingPage extends Page {
         <CostSection ship={ship} buildName={buildName} code={sStr + hStr + iStr} />
 
         <div ref='chartThird' className='group third'>
-          <h1>{translate('jump range')}</h1>
-          <LineChart
-            width={chartWidth}
-            xMax={ship.cargoCapacity}
-            yMax={ship.unladenRange}
-            xUnit={translate('T')}
-            yUnit={translate('LY')}
-            yLabel={translate('jump range')}
-            xLabel={translate('cargo')}
-            func={state.jumpRangeChartFunc}
-          />
+          <OffenceSummary ship={ship} code={code}/>
         </div>
 
         <div className='group third'>
-          <h1>{translate('total range')}</h1>
-          <LineChart
-            width={chartWidth}
-            xMax={ship.cargoCapacity}
-            yMax={ship.unladenFastestRange}
-            xUnit={translate('T')}
-            yUnit={translate('LY')}
-            yLabel={translate('fastest range')}
-            xLabel={translate('cargo')}
-            func={state.fastestRangeChartFunc}
-          />
+          <DefenceSummary ship={ship} code={code}/>
         </div>
 
         <div className='group third'>
@@ -397,3 +378,16 @@ export default class OutfittingPage extends Page {
     );
   }
 }
+//        <div ref='chartThird' className='group third'>
+//          <h1>{translate('jump range')}</h1>
+//          <LineChart
+//            width={chartWidth}
+//            xMax={ship.cargoCapacity}
+//            yMax={ship.unladenRange}
+//            xUnit={translate('T')}
+//            yUnit={translate('LY')}
+//            yLabel={translate('jump range')}
+//            xLabel={translate('cargo')}
+//            func={state.jumpRangeChartFunc}
+//          />
+//        </div>
