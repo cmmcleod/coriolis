@@ -126,7 +126,6 @@ export default class Ship {
    */
   canBoost() {
     return this.canThrust() &&                                       // Thrusters operational
-        this.getSlotStatus(this.standard[4]) == 3 &&                 // Power distributor operational
         this.boostEnergy <= this.standard[4].m.getEnginesCapacity(); // PD capacitor is sufficient for boost
   }
 
