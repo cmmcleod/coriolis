@@ -59,22 +59,20 @@ export default class Module {
    * @return {Number}          the mass of this module
    */
   _getModifiedValue(name, additive) {
-    let result = 0;
-    if (this[name]) {
-      result = this[name];
-      if (result) {
-        const modValue = this.getModValue(name);
-        if (modValue) {
-          if (additive) {
-            result = result + modValue;
-          } else {
-            result = result * (1 + modValue);
-          }
+    let result = this[name] || (additive ? 0 : null); // Additive NULL === 0
+    if (result != null) {
+      const modValue = this.getModValue(name);
+      if (modValue) {
+        if (additive) {
+          result = result + modValue;
+        } else {
+          result = result * (1 + modValue);
         }
       }
     }
     return result;
   }
+
   /**
    * Get the power generation of this module, taking in to account modifications
    * @return {Number} the power generation of this module
