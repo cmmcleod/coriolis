@@ -492,4 +492,20 @@ export default class Module {
     return this._getModifiedValue('hullboost');
   }
 
+  /**
+   * Get the shield reinforcement for this module, taking in to account modifications
+   * @return {Number} the shield reinforcement for this module
+   */
+  getShieldReinforcement() {
+    return this._getModifiedValue('shieldreinforcement');
+  }
+
+  /**
+   * Get the cells for this module, taking in to account modifications
+   * @return {Number} the cells for this module
+   */
+  getCells() {
+    return this._getModifiedValue('cells');
+  }
+
 }

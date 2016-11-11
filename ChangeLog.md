@@ -12,3 +12,5 @@
   * Ensure that retrofit tab only shows changed modules
   * Fix import and export of ships with modifications, bump schema version to 4
   * Enable boost display even if power distributor is disabled
+  * Calculate breakdown of ship offensive and defensive stats
+  * Add 'Offence summary' and 'Defence summary' components

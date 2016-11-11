@@ -236,9 +236,8 @@ export default class Ship {
       sg = sgSlot.m;
     }
 
-    // TODO obtain shield boost
-    // return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, this.shieldMultiplier + (multiplierDelta || 0));
-    return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, 0 + (multiplierDelta || 0));
+    // TODO Not accurate if the ship has modified shield boosters
+    return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, 1 + (multiplierDelta || 0));
   }
 
   /**
@@ -442,6 +441,9 @@ export default class Ship {
     } else if (name === 'hullboost' || name === 'hullreinforcement') {
       m.setModValue(name, value);
       this.recalculateArmour();
+    } else if (name === 'shieldreinforcement') {
+      m.setModValue(name, value);
+      this.recalculateShieldCells();
     } else if (name === 'burst' || name === 'clip' || name === 'damage' || name === 'distdraw' || name === 'jitter' || name === 'piercing' || name === 'range' || name === 'reload' || name === 'rof' || name === 'thermload') {
       m.setModValue(name, value);
       this.recalculateDps();
@@ -479,6 +481,7 @@ export default class Ship {
     this.ladenMass = 0;
     this.armour = this.baseArmour;
     this.shield = this.baseShieldStrength;
+    this.shieldCells = 0;
     this.totalCost = this.m.incCost ? this.m.discountedCost : 0;
     this.unladenMass = this.hullMass;
     this.totalDpe = 0;
@@ -564,6 +567,7 @@ export default class Ship {
           .updatePowerUsed()
           .updateJumpStats()
           .recalculateShield()
+          .recalculateShieldCells()
           .recalculateArmour()
           .recalculateDps()
           .recalculateEps()
@@ -1093,6 +1097,24 @@ export default class Ship {
     this.shieldExplRes = shieldExplRes ? 1 - this.diminishingReturns(1 - shieldExplRes, 0.5, 0.75) : null;
     this.shieldKinRes = shieldKinRes ? 1 - this.diminishingReturns(1 - shieldKinRes, 0.5, 0.75) : null;
     this.shieldThermRes = shieldThermRes ? 1 - this.diminishingReturns(1 - shieldThermRes, 0.5, 0.75) : null;
+
+    return this;
+  }
+
+  /**
+   * Update shield cells
+   * @return {this} The ship instance (for chaining operations)
+   */
+  recalculateShieldCells() {
+    let shieldCells = 0;
+
+    for (let slot of this.internal) {
+      if (slot.m && slot.m.grp == 'scb') {
+        shieldCells += slot.m.getShieldReinforcement() * slot.m.getCells();
+      }
+    }
+
+    this.shieldCells = shieldCells;
 
     return this;
   }
