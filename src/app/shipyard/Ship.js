@@ -402,6 +402,11 @@ export default class Ship {
    * @param {Number} value The new value of the modification.  The value of the modification is scaled to provide two decimal places of precision in an integer.  For example 1.23% is stored as 123
    */
   setModification(m, name, value) {
+    if (isNaN(value)) {
+      // Value passed is invalid; reset it to 0
+      value = 0;
+    }
+
     // Handle special cases
     if (name === 'pgen') {
       // Power generation

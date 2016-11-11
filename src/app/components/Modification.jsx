@@ -34,14 +34,15 @@ export default class ModificationsMenu extends TranslatedComponent {
   _updateValue(value) {
     let scaledValue = Math.floor(Number(value) * 100);
     // Limit to +1000% / -100%
-    if (scaledValue > 10000) {
-      scaledValue = 10000;
+    if (scaledValue > 100000) {
+      scaledValue = 100000;
       value = 1000;
     }
-    if (scaledValue < -1000) {
-      scaledValue = -1000;
+    if (scaledValue < -10000) {
+      scaledValue = -10000;
       value = -100;
     }
+
     let m = this.props.m;
     let name = this.props.name;
     let ship = this.props.ship;
@@ -62,7 +63,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     return (
       <div className={'cb'} key={name}>
         <div className={'cb'}>{translate(name)}{name === 'jitter' ? ' (°)' : ' (%)'}</div>
-        <NumberEditor className={'cb'} style={{ width: '100%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={this.state.value} onValueChange={this._updateValue.bind(this)} />
+        <NumberEditor className={'cb'} style={{ width: '90%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={this.state.value} onValueChange={this._updateValue.bind(this)} />
       </div>
     );
   }
