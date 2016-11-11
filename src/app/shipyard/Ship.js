@@ -718,8 +718,11 @@ export default class Ship {
     if (slot.enabled != enabled) { // Enabled state is changing
       slot.enabled = enabled;
       if (slot.m) {
-        if (ModuleUtils.isShieldGenerator(slot.m.grp) || slot.m.grp == 'sb') {
+        if (ModuleUtils.isShieldGenerator(slot.m.grp) || slot.m.grp === 'sb') {
           this.recalculateShield();
+        }
+        if (slot.m.grp === 'scb') {
+          this.recalculateShieldCells();
         }
 
         this.updatePowerUsed();
@@ -776,9 +779,11 @@ export default class Ship {
     let epsChanged = n && n.getEps() || old && old.getEps();
     let hpsChanged = n && n.getHps() || old && old.getHps();
 
-    let armourChange = (slot == this.bulkheads) || (n && n.grp == 'hr') || (old && old.grp == 'hr');
+    let armourChange = (slot === this.bulkheads) || (n && n.grp === 'hr') || (old && old.grp === 'hr');
 
-    let shieldChange = (n && n.grp == 'bsg') || (old && old.grp == 'bsg') || (n && n.grp == 'psg') || (old && old.grp == 'psg') || (n && n.grp == 'sg') || (old && old.grp == 'sg') || (n && n.grp == 'sb') || (old && old.grp == 'sb');
+    let shieldChange = (n && n.grp === 'bsg') || (old && old.grp === 'bsg') || (n && n.grp === 'psg') || (old && old.grp === 'psg') || (n && n.grp === 'sg') || (old && old.grp === 'sg') || (n && n.grp === 'sb') || (old && old.grp === 'sb');
+
+    let shieldCellsChange = (n && n.grp === 'scb') || (old && old.grp === 'scb');
 
     if (old) {  // Old modul now being removed
       switch (old.grp) {
@@ -845,6 +850,9 @@ export default class Ship {
       }
       if (shieldChange) {
         this.recalculateShield();
+      }
+      if (shieldCellsChange) {
+        this.recalculateShieldCells();
       }
       this.updateTopSpeed();
       this.updateJumpStats();
