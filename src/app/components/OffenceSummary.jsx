@@ -32,7 +32,7 @@ export default class OffenceSummary extends TranslatedComponent {
     return (
       <span>
         <h1>{translate('offence summary')}</h1>
-        <table className='summary' style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
+        <table className='summary' style={{ marginLeft: 'auto', marginRight: 'auto', lineHeight: '1em', backgroundColor: 'transparent' }}>
           <tbody>
             <tr>
               <td colSpan='4' className='summary'><h2>{translate('dps')}: {formats.f1(ship.totalDps)}</h2></td>

@@ -32,11 +32,18 @@ export default class DefenceSummary extends TranslatedComponent {
     return (
       <span>
         <h1>{translate('defence summary')}</h1>
-        <table className='summary' style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
+        <table className='summary' style={{ marginLeft: 'auto', marginRight: 'auto', lineHeight: '1em', backgroundColor: 'transparent' }}>
           <tbody>
             {ship.shield ?
             <tr>
               <td colSpan='4' className='summary'><h2>{translate('shields')}: {formats.int(ship.shield)} {units.MJ}</h2></td>
+            </tr> : null }
+            {ship.shield ?
+            <tr>
+              <td className='ri' onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECOVER', { cap: 0 })} onMouseLeave={hide}>{translate('recovery')}</td>
+              <td className='le'>{formats.time(ship.calcShieldRecovery())}</td>
+              <td className='ri' onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECHARGE', { cap: 0 })} onMouseLeave={hide}>{translate('recharge')}</td>
+              <td className='le'>{formats.time(ship.calcShieldRecharge())}</td>
             </tr> : null }
             {ship.shield ?
             <tr>
@@ -54,7 +61,6 @@ export default class DefenceSummary extends TranslatedComponent {
             <tr>
               <td colSpan='4'><h2>{translate('armour')}: {formats.int(ship.armour)}</h2></td>
             </tr>
-
             <tr>
               <td className='le'>{translate('damage from')}</td>
               <td className='ri' onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /> {formats.pct1(ship.hullExplRes || 1)}</td>
