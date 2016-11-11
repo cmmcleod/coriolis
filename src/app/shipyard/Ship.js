@@ -195,7 +195,7 @@ export default class Ship {
     if (this.shield > 0) {
       const sgSlot = this.findInternalByGroup('sg');
       if (sgSlot != null) {
-        let brokenRegenRate = 1 + sgSlot.m.getModValue('brokenregen');
+        let brokenRegenRate = 1 + sgSlot.m.getModValue('brokenregen') / 10000;
         // 50% of shield strength / recovery recharge rate + 15 second delay before recharge starts
         return ((this.shield / 2) / (sgSlot.m.recover * brokenRegenRate)) + 15;
       }
@@ -213,7 +213,7 @@ export default class Ship {
     if (this.shield > 0) {
       const sgSlot = this.findInternalByGroup('sg');
       if (sgSlot != null) {
-        let regenRate = 1 + sgSlot.m.getModValue('regen');
+        let regenRate = 1 + sgSlot.m.getModValue('regen') / 10000;
         // 50% -> 100% recharge time, Bi-Weave shields charge at 1.8 MJ/s
         return (this.shield / 2) / ((sgSlot.m.grp == 'bsg' ? 1.8 : 1) * regenRate);
       }
@@ -399,7 +399,7 @@ export default class Ship {
    * Set a modification value
    * @param {Object} m The module to change
    * @param {Object} name The name of the modification to change
-   * @param {Number} value The new value of the modification
+   * @param {Number} value The new value of the modification.  The value of the modification is scaled to provide two decimal places of precision in an integer.  For example 1.23% is stored as 123
    */
   setModification(m, name, value) {
     // Handle special cases
@@ -1136,7 +1136,7 @@ export default class Ship {
       if (slot.m && slot.m.grp == 'hr') {
         armour += slot.m.getHullReinforcement();
         // Hull boost for HRPs is applied against the ship's base armour
-        armour += this.baseArmour * slot.m.getModValue('hullboost');
+        armour += this.baseArmour * slot.m.getModValue('hullboost') / 10000;
 
         hullExplRes *= (1 - slot.m.getExplosiveResistance());
         hullKinRes *= (1 - slot.m.getKineticResistance());
@@ -1220,7 +1220,7 @@ export default class Ship {
     let bulkheadMods = new Array();
     if (this.bulkheads.m && this.bulkheads.m.mods) {
       for (let modKey in this.bulkheads.m.mods) {
-        bulkheadMods.push(Modifications.modifiers.indexOf(modKey) + ':' + Math.round(this.bulkheads.m.getModValue(modKey) * 10000));
+        bulkheadMods.push(Modifications.modifiers.indexOf(modKey) + ':' + this.bulkheads.m.getModValue(modKey));
       }
     }
     allMods.push(bulkheadMods.join(';'));
@@ -1229,7 +1229,7 @@ export default class Ship {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
-          slotMods.push(Modifications.modifiers.indexOf(modKey) + ':' + Math.round(slot.m.getModValue(modKey) * 10000));
+          slotMods.push(Modifications.modifiers.indexOf(modKey) + ':' + slot.m.getModValue(modKey));
         }
       }
       allMods.push(slotMods.join(';'));
@@ -1238,7 +1238,7 @@ export default class Ship {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
-          slotMods.push(Modifications.modifiers.indexOf(modKey) + ':' + Math.round(slot.m.getModValue(modKey) * 10000));
+          slotMods.push(Modifications.modifiers.indexOf(modKey) + ':' + slot.m.getModValue(modKey));
         }
       }
       allMods.push(slotMods.join(';'));
@@ -1247,7 +1247,7 @@ export default class Ship {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
-          slotMods.push(Modifications.modifiers.indexOf(modKey) + ':' + Math.round(slot.m.getModValue(modKey) * 10000));
+          slotMods.push(Modifications.modifiers.indexOf(modKey) + ':' + slot.m.getModValue(modKey));
         }
       }
       allMods.push(slotMods.join(';'));
@@ -1295,7 +1295,10 @@ export default class Ship {
     let bulkheadMods = new Array();
     if (this.bulkheads.m && this.bulkheads.m.mods) {
       for (let modKey in this.bulkheads.m.mods) {
-        bulkheadMods.push({ id: Modifications.modifiers.indexOf(modKey), value: Math.round(this.bulkheads.m.getModValue(modKey) * 10000) });
+        // Filter out invalid modifications
+        if (Modifications.validity['bh'] && Modifications.validity['bh'].indexOf(modKey) != -1) {
+          bulkheadMods.push({ id: Modifications.modifiers.indexOf(modKey), value: this.bulkheads.m.getModValue(modKey) });
+        }
       }
     }
     slots.push(bulkheadMods);
@@ -1304,7 +1307,10 @@ export default class Ship {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
-          slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: Math.round(slot.m.getModValue(modKey) * 10000) });
+          // Filter out invalid modifications
+          if (Modifications.validity[slot.m.grp] && Modifications.validity[slot.m.grp].indexOf(modKey) != -1) {
+            slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: slot.m.getModValue(modKey) });
+          }
         }
       }
       slots.push(slotMods);
@@ -1314,7 +1320,10 @@ export default class Ship {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
-          slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: Math.round(slot.m.getModValue(modKey) * 10000) });
+          // Filter out invalid modifications
+          if (Modifications.validity[slot.m.grp] && Modifications.validity[slot.m.grp].indexOf(modKey) != -1) {
+            slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: slot.m.getModValue(modKey) });
+          }
         }
       }
       slots.push(slotMods);
@@ -1324,7 +1333,10 @@ export default class Ship {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
-          slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: Math.round(slot.m.getModValue(modKey) * 10000) });
+          // Filter out invalid modifications
+          if (Modifications.validity[slot.m.grp] && Modifications.validity[slot.m.grp].indexOf(modKey) != -1) {
+            slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: slot.m.getModValue(modKey) });
+          }
         }
       }
       slots.push(slotMods);
@@ -1350,6 +1362,7 @@ export default class Ship {
           for (let slotMod of slot) {
             buffer.writeInt8(slotMod.id, curpos++);
             buffer.writeInt32LE(slotMod.value, curpos);
+            // console.log('ENCODE Slot ' + i + ': ' + Modifications.modifiers[slotMod.id] + ' = ' + slotMod.value);
             curpos += 4;
           }
           buffer.writeInt8(-1, curpos++);
@@ -1382,6 +1395,7 @@ export default class Ship {
       while (modificationId != -1) {
         let modificationValue = buffer.readInt32LE(curpos);
         curpos += 4;
+        // console.log('DECODE Slot ' + slot + ': ' + Modifications.modifiers[modificationId] + ' = ' + modificationValue);
         modifications[Modifications.modifiers[modificationId]] = modificationValue;
         modificationId = buffer.readInt8(curpos++);
       }

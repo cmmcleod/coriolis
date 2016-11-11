@@ -24,7 +24,7 @@ export default class ModificationsMenu extends TranslatedComponent {
   constructor(props, context) {
     super(props);
     this.state = {};
-    this.state.value = this.props.m.getModValue(this.props.name) * 100 || 0;
+    this.state.value = this.props.m.getModValue(this.props.name) / 100 || 0;
   }
 
   /**
@@ -32,14 +32,14 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @param {Number} value The value to set
    */
   _updateValue(value) {
-    let scaledValue = Math.floor(Number(value) * 100) / 10000;
+    let scaledValue = Math.floor(Number(value) * 100);
     // Limit to +1000% / -100%
-    if (scaledValue > 10) {
-      scaledValue = 10;
+    if (scaledValue > 10000) {
+      scaledValue = 10000;
       value = 1000;
     }
-    if (scaledValue < -1) {
-      scaledValue = -1;
+    if (scaledValue < -1000) {
+      scaledValue = -1000;
       value = -100;
     }
     let m = this.props.m;

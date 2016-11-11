@@ -28,16 +28,16 @@ export default class Module {
   /**
    * Get a value for a given modification
    * @param {Number} name  The name of the modification
-   * @return {Number}      The value of the modification, as a decimal value where 1 is 100%
+   * @return {Number}      The value of the modification, as an integer value scaled so that 1.23% == 123
    */
   getModValue(name) {
-    return this.mods  && this.mods[name] ? this.mods[name] / 10000 : null;
+    return this.mods  && this.mods[name] ? this.mods[name] : null;
   }
 
   /**
    * Set a value for a given modification ID
    * @param {Number} name   The name of the modification
-   * @param {Number} value  The value of the modification, as a decimal value where 1 is 100%
+   * @param {Number} value  The value of the modification, as an integer scaled so that -2.34% == -234
    */
   setModValue(name, value) {
     if (!this.mods) {
@@ -47,8 +47,8 @@ export default class Module {
     if (value == null || value == 0) {
       delete this.mods[name];
     } else {
-      // Store value with 2dp
-      this.mods[name] = Math.round(value * 10000);
+      // Round just to be sure
+      this.mods[name] = Math.round(value);
     }
   }
 
@@ -61,7 +61,7 @@ export default class Module {
   _getModifiedValue(name, additive) {
     let result = this[name] || (additive ? 0 : null); // Additive NULL === 0
     if (result != null) {
-      const modValue = this.getModValue(name);
+      const modValue = this.getModValue(name) / 10000;
       if (modValue) {
         if (additive) {
           result = result + modValue;
@@ -299,7 +299,7 @@ export default class Module {
     if (this['minmass']) {
       result = this['minmass'];
       if (result) {
-        let mult = this.getModValue('optmass');
+        let mult = this.getModValue('optmass') / 10000;
         if (mult) { result = result * (1 + mult); }
       }
     }
@@ -324,7 +324,7 @@ export default class Module {
     if (this['maxmass']) {
       result = this['maxmass'];
       if (result) {
-        let mult = this.getModValue('optmass');
+        let mult = this.getModValue('optmass') / 10000;
         if (mult) { result = result * (1 + mult); }
       }
     }
@@ -341,7 +341,7 @@ export default class Module {
     if (this['minmul']) {
       result = this['minmul'];
       if (result) {
-        let mult = this.getModValue('optmul');
+        let mult = this.getModValue('optmul') / 10000;
         if (mult) { result = result * (1 + mult); }
       }
     }
@@ -366,7 +366,7 @@ export default class Module {
     if (this['maxmul']) {
       result = this['maxmul'];
       if (result) {
-        let mult = this.getModValue('optmul');
+        let mult = this.getModValue('optmul') / 10000;
         if (mult) { result = result * (1 + mult); }
       }
     }
