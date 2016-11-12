@@ -196,6 +196,23 @@ describe('Import Modal', function() {
     });
   });
 
+  describe('Import Companion API Build', function() {
+
+    beforeEach(reset);
+
+    it('imports a valid v4 build', function() {
+      const importData = require('./fixtures/companion-api-import-1');
+      pasteText(JSON.stringify(importData));
+
+      expect(modal.state.importValid).toBeTruthy();
+      expect(modal.state.errorMsg).toEqual(null);
+      expect(modal.state.singleBuild).toBe(true);
+      clickProceed();
+      expect(MockRouter.go.mock.calls.length).toBe(1);
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/federal_corvette/2putsFklndzsxf50x0x7l28281919040404040402020l060606f6f65i5iv6v62f.AwRj4zNaZI==.CwJgjBkAw7eyKkI0kA==.H4sIAAAAAAAAA22Qvy5EURDG5+51-+w94uweF0dY--aiICQrwSPYYt9AS3XjARQKiWb1nkCioZEoRKfZmlLES6xCLMb3KSQSzZeZ85v5ZuYE43EkYi9VNd0TEa2M9WKRpstF-HUFaGagmq9-qbrTEDx0Zw6vB++qPq+K5CUqNVpMjMjSHSrme0AL+2ioXnyoZk9I7SacNJ08TESi-qtq3EalOw8wpIMizaISXnHuRRpItbaNXZrlrsjEM3MT3WfgR1N-+BtM7C0m6XDU-en-5VvkV0PgLUS8Rnwb49T6HcRmBV11SkGxXZrU-AAVpkNEKSj2kaju+0QbRJSCYkdAZo9TuDr-ggvNKrmQM7InbB31a1jTFJ9AlIJiDbecnrvB8ckDypZD+Act-nDj31f9Bizb3eiqAQAA?bn=Imported%20Federal%20Corvette');
+    });
+  });
+
   describe('Import E:D Shipyard Builds', function() {
 
     it('imports a valid builds', function() {

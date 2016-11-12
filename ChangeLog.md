@@ -6,6 +6,8 @@
     * Add initial loadout passenger cabins for Beluga
     * Add initial loadout passenger cabins for Orca
     * Update costs and initial loadouts for Keelback and Type-7
+    * Add resistances for hull reinforcement packages
+    * Added modifier actions to create modifications from raw data
   * Show modification icon for modified modules
   * Take modifications in to account when deciding whether to issue a warning on a standard module
   * Fix hardpoint comparison DPS number when selecting an alternate module
@@ -14,3 +16,4 @@
   * Enable boost display even if power distributor is disabled
   * Calculate breakdown of ship offensive and defensive stats
   * Add 'Offence summary' and 'Defence summary' components
+  * Add ability to import directly from companion API output

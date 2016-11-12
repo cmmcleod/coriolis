@@ -1233,7 +1233,7 @@ export default class Ship {
     let bulkheadMods = new Array();
     if (this.bulkheads.m && this.bulkheads.m.mods) {
       for (let modKey in this.bulkheads.m.mods) {
-        bulkheadMods.push(Modifications.modifiers.indexOf(modKey) + ':' + this.bulkheads.m.getModValue(modKey));
+        bulkheadMods.push(Modifications.modifications.indexOf(modKey) + ':' + this.bulkheads.m.getModValue(modKey));
       }
     }
     allMods.push(bulkheadMods.join(';'));
@@ -1242,7 +1242,7 @@ export default class Ship {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
-          slotMods.push(Modifications.modifiers.indexOf(modKey) + ':' + slot.m.getModValue(modKey));
+          slotMods.push(Modifications.modifications.indexOf(modKey) + ':' + slot.m.getModValue(modKey));
         }
       }
       allMods.push(slotMods.join(';'));
@@ -1251,7 +1251,7 @@ export default class Ship {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
-          slotMods.push(Modifications.modifiers.indexOf(modKey) + ':' + slot.m.getModValue(modKey));
+          slotMods.push(Modifications.modifications.indexOf(modKey) + ':' + slot.m.getModValue(modKey));
         }
       }
       allMods.push(slotMods.join(';'));
@@ -1260,7 +1260,7 @@ export default class Ship {
       let slotMods = new Array();
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
-          slotMods.push(Modifications.modifiers.indexOf(modKey) + ':' + slot.m.getModValue(modKey));
+          slotMods.push(Modifications.modifications.indexOf(modKey) + ':' + slot.m.getModValue(modKey));
         }
       }
       allMods.push(slotMods.join(';'));
@@ -1283,7 +1283,7 @@ export default class Ship {
         for (let j = 0; j < mods.length; j++) {
           let modElements = mods[j].split(':');
           if (modElements[0].match('[0-9]+')) {
-            arr[i][Modifications.modifiers[modElements[0]]] = Number(modElements[1]);
+            arr[i][Modifications.modifications[modElements[0]]] = Number(modElements[1]);
           } else {
             arr[i][modElements[0]] = Number(modElements[1]);
           }
@@ -1297,7 +1297,7 @@ export default class Ship {
    * This is a binary structure.  It starts with a byte that identifies a slot, with bulkheads being ID 0 and moving through
    * standard modules, hardpoints, and finally internal modules.  It then contains one or more modifications, with each
    * modification being a one-byte modification ID and at two-byte modification value.  Modification IDs are based on the array
-   * in Modifications.modifiers.  The list of modifications is terminated by a modification ID of -1.  The structure then repeats
+   * in Modifications.modifications.  The list of modifications is terminated by a modification ID of -1.  The structure then repeats
    * for the next module, and the next, and is terminated by a slot ID of -1.
    * @return {this} The ship instance (for chaining operations)
    */
@@ -1310,7 +1310,7 @@ export default class Ship {
       for (let modKey in this.bulkheads.m.mods) {
         // Filter out invalid modifications
         if (Modifications.validity['bh'] && Modifications.validity['bh'].indexOf(modKey) != -1) {
-          bulkheadMods.push({ id: Modifications.modifiers.indexOf(modKey), value: this.bulkheads.m.getModValue(modKey) });
+          bulkheadMods.push({ id: Modifications.modifications.indexOf(modKey), value: this.bulkheads.m.getModValue(modKey) });
         }
       }
     }
@@ -1322,7 +1322,7 @@ export default class Ship {
         for (let modKey in slot.m.mods) {
           // Filter out invalid modifications
           if (Modifications.validity[slot.m.grp] && Modifications.validity[slot.m.grp].indexOf(modKey) != -1) {
-            slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: slot.m.getModValue(modKey) });
+            slotMods.push({ id: Modifications.modifications.indexOf(modKey), value: slot.m.getModValue(modKey) });
           }
         }
       }
@@ -1335,7 +1335,7 @@ export default class Ship {
         for (let modKey in slot.m.mods) {
           // Filter out invalid modifications
           if (Modifications.validity[slot.m.grp] && Modifications.validity[slot.m.grp].indexOf(modKey) != -1) {
-            slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: slot.m.getModValue(modKey) });
+            slotMods.push({ id: Modifications.modifications.indexOf(modKey), value: slot.m.getModValue(modKey) });
           }
         }
       }
@@ -1348,7 +1348,7 @@ export default class Ship {
         for (let modKey in slot.m.mods) {
           // Filter out invalid modifications
           if (Modifications.validity[slot.m.grp] && Modifications.validity[slot.m.grp].indexOf(modKey) != -1) {
-            slotMods.push({ id: Modifications.modifiers.indexOf(modKey), value: slot.m.getModValue(modKey) });
+            slotMods.push({ id: Modifications.modifications.indexOf(modKey), value: slot.m.getModValue(modKey) });
           }
         }
       }
@@ -1375,7 +1375,7 @@ export default class Ship {
           for (let slotMod of slot) {
             buffer.writeInt8(slotMod.id, curpos++);
             buffer.writeInt32LE(slotMod.value, curpos);
-            // console.log('ENCODE Slot ' + i + ': ' + Modifications.modifiers[slotMod.id] + ' = ' + slotMod.value);
+            // console.log('ENCODE Slot ' + i + ': ' + Modifications.modifications[slotMod.id] + ' = ' + slotMod.value);
             curpos += 4;
           }
           buffer.writeInt8(-1, curpos++);
@@ -1408,8 +1408,8 @@ export default class Ship {
       while (modificationId != -1) {
         let modificationValue = buffer.readInt32LE(curpos);
         curpos += 4;
-        // console.log('DECODE Slot ' + slot + ': ' + Modifications.modifiers[modificationId] + ' = ' + modificationValue);
-        modifications[Modifications.modifiers[modificationId]] = modificationValue;
+        // console.log('DECODE Slot ' + slot + ': ' + Modifications.modifications[modificationId] + ' = ' + modificationValue);
+        modifications[Modifications.modifications[modificationId]] = modificationValue;
         modificationId = buffer.readInt8(curpos++);
       }
       arr[slot] = modifications;
