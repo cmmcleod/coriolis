@@ -65,7 +65,7 @@ export function shallowEqual(objA, objB) {
  * @return {string} the converted string
  */
 export function toUrlSafe(data) {
-  return data.replace(/\\/g, '-').replace(/\+/g, '_');
+  return data.replace(/\//g, '-').replace(/\+/g, '_');
 }
 
 /**

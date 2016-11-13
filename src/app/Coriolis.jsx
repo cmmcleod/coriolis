@@ -78,11 +78,11 @@ export default class Coriolis extends React.Component {
 
   /**
    * Import a build directly
-   * @param r {Object} the route object
+   * @param {Object} r The current route
    */
   _importBuild(r) {
     try {
-      // Need to decode and gunzip the data
+      // Need to decode and gunzip the data, then build the ship
       const data = zlib.gunzipSync(new Buffer(Utils.fromUrlSafe(r.params.data), 'base64'));
       const json = JSON.parse(data);
       const ship = CompanionApiUtils.shipFromJson(json);
@@ -90,7 +90,7 @@ export default class Coriolis extends React.Component {
       r.params.code = ship.toString();
       this._setPage(OutfittingPage, r);
     } catch (err) {
-      this.setState({ error: err });
+      this._onError("Failed to import ship", r.path, 0, 0, err);
     }
   }
 
