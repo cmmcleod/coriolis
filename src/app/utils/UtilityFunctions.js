@@ -58,3 +58,21 @@ export function shallowEqual(objA, objB) {
 
   return true;
 }
+
+/**
+ * Turn a base-64 encoded string in to a URL-safe version
+ * @param {string} data the string
+ * @return {string} the converted string
+ */
+export function toUrlSafe(data) {
+  return data.replace(/\\/g, '-').replace(/\+/g, '_');
+}
+
+/**
+ * Turn a URL-safe base-64 encoded string in to a normal version
+ * @param {string} data the string
+ * @return {string} the converted string
+ */
+export function fromUrlSafe(data) {
+  return data.replace(/-/g, '/').replace(/_/g, '+');
+}

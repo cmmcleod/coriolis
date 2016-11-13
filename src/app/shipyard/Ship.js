@@ -1,5 +1,6 @@
 import * as Calc from './Calculations';
 import * as ModuleUtils from './ModuleUtils';
+import * as Utils from '../utils/UtilityFunctions';
 import Module from './Module';
 import LZString from 'lz-string';
 import isEqual from 'lodash/lang';
@@ -601,15 +602,15 @@ export default class Ship {
         code = parts[0];
 
     if (parts[1]) {
-      enabled = LZString.decompressFromBase64(parts[1].replace(/-/g, '/')).split('');
+      enabled = Utils.fromUrlSafe(LZString.decompressFromBase64(parts[1])).split('');
     }
 
     if (parts[2]) {
-      priorities = LZString.decompressFromBase64(parts[2].replace(/-/g, '/')).split('');
+      priorities = Utils.fromUrlSafe(LZString.decompressFromBase64(parts[2])).split('');
     }
 
     if (parts[3]) {
-      const modstr = parts[3].replace(/-/g, '/');
+      const modstr = Utils.fromUrlSafe(parts[3]);
       if (modstr.match(':')) {
         this.decodeModificationsString(modstr, modifications);
       } else {
@@ -1198,7 +1199,7 @@ export default class Ship {
       priorities.push(slot.priority);
     }
 
-    this.serialized.priorities = LZString.compressToBase64(priorities.join('')).replace(/\//g, '-');
+    this.serialized.priorities = Utils.toUrlSafe(LZString.compressToBase64(priorities.join('')));
     return this;
   }
 
@@ -1219,7 +1220,7 @@ export default class Ship {
       enabled.push(slot.enabled ? 1 : 0);
     }
 
-    this.serialized.enabled = LZString.compressToBase64(enabled.join('')).replace(/\//g, '-');
+    this.serialized.enabled = Utils.toUrlSafe(LZString.compressToBase64(enabled.join('')));
     return this;
   }
 
@@ -1265,7 +1266,7 @@ export default class Ship {
       }
       allMods.push(slotMods.join(';'));
     }
-    this.serialized.modifications = LZString.compressToBase64(allMods.join(',').replace(/,+$/, '')).replace(/\//g, '-');
+    this.serialized.modifications = Utils.toUrlSafe(LZString.compressToBase64(allMods.join(',').replace(/,+$/, '')));
     return this;
   }
 
@@ -1386,7 +1387,7 @@ export default class Ship {
         buffer.writeInt8(-1, curpos++);
       }
 
-      this.serialized.modifications = zlib.gzipSync(buffer).toString('base64').replace(/\//g, '-');
+      this.serialized.modifications = Utils.toUrlSafe(zlib.gzipSync(buffer).toString('base64'));
     } else {
       this.serialized.modifications = null;
     }

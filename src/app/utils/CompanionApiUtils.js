@@ -151,6 +151,7 @@ export function shipFromJson(json) {
     throw 'Unknown bulkheads "' + armourJson.name + '"';
   }
   ship.bulkheads.enabled = true;
+  if (armourJson.modifiers) _addModifications(ship.bulkheads.m, armourJson.modifiers);
 
   // Add the standard modules
   // Power plant
@@ -159,7 +160,7 @@ export function shipFromJson(json) {
   if (powerplantJson.modifiers) _addModifications(powerplant, powerplantJson.modifiers);
   ship.use(ship.standard[0], powerplant, true);
   ship.standard[0].enabled = powerplantJson.on === true;
-  ship.standard[0].priority = powerplantJson.priority + 1;
+  ship.standard[0].priority = powerplantJson.priority;
 
   // Thrusters
   const thrustersJson = json.modules.MainEngines.module;
@@ -167,7 +168,7 @@ export function shipFromJson(json) {
   if (thrustersJson.modifiers) _addModifications(thrusters, thrustersJson.modifiers);
   ship.use(ship.standard[1], thrusters, true);
   ship.standard[1].enabled = thrustersJson.on === true;
-  ship.standard[1].priority = thrustersJson.priority + 1;
+  ship.standard[1].priority = thrustersJson.priority;
 
   // FSD
   const frameshiftdriveJson = json.modules.FrameShiftDrive.module;
@@ -175,7 +176,7 @@ export function shipFromJson(json) {
   if (frameshiftdriveJson.modifiers) _addModifications(frameshiftdrive, frameshiftdriveJson.modifiers);
   ship.use(ship.standard[2], frameshiftdrive, true);
   ship.standard[2].enabled = frameshiftdriveJson.on === true;
-  ship.standard[2].priority = frameshiftdriveJson.priority + 1;
+  ship.standard[2].priority = frameshiftdriveJson.priority;
 
   // Life support
   const lifesupportJson = json.modules.LifeSupport.module;
@@ -183,7 +184,7 @@ export function shipFromJson(json) {
   if (lifesupportJson.modifiers)_addModifications(lifesupport, lifesupportJson.modifiers);
   ship.use(ship.standard[3], lifesupport, true);
   ship.standard[3].enabled = lifesupportJson.on === true;
-  ship.standard[3].priority = lifesupportJson.priority + 1;
+  ship.standard[3].priority = lifesupportJson.priority;
 
   // Power distributor
   const powerdistributorJson = json.modules.PowerDistributor.module;
@@ -191,7 +192,7 @@ export function shipFromJson(json) {
   if (powerdistributorJson.modifiers) _addModifications(powerdistributor, powerdistributorJson.modifiers);
   ship.use(ship.standard[4], powerdistributor, true);
   ship.standard[4].enabled = powerdistributorJson.on === true;
-  ship.standard[4].priority = powerdistributorJson.priority + 1;
+  ship.standard[4].priority = powerdistributorJson.priority;
 
   // Sensors
   const sensorsJson = json.modules.Radar.module;
@@ -199,14 +200,14 @@ export function shipFromJson(json) {
   if (sensorsJson.modifiers) _addModifications(sensors, sensorsJson.modifiers);
   ship.use(ship.standard[5], sensors, true);
   ship.standard[5].enabled = sensorsJson.on === true;
-  ship.standard[5].priority = sensorsJson.priority + 1;
+  ship.standard[5].priority = sensorsJson.priority;
 
   // Fuel tank
   const fueltankJson = json.modules.FuelTank.module;
   const fueltank = _moduleFromEdId(fueltankJson.id);
   ship.use(ship.standard[6], fueltank, true);
   ship.standard[6].enabled = true;
-  ship.standard[6].priority = 1;
+  ship.standard[6].priority = 0;
 
   // Add hardpoints
   let hardpointClassNum = -1;
@@ -285,11 +286,11 @@ function _addModifications(module, modifiers) {
     // Carry out the required changes
     for (const action in modifierActions) {
       const actionValue = modifierActions[action] * value;
-      let mod = module.getModValue(action);
+      let mod = module.getModValue(action) / 10000;
       if (!mod) {
         mod = 0;
       }
-      module.setModValue(action, ((1 + mod / 10000) * (1 + actionValue) - 1) * 10000);
+      module.setModValue(action, ((1 + mod) * (1 + actionValue) - 1) * 10000);
     }
   }
 
@@ -299,20 +300,20 @@ function _addModifications(module, modifiers) {
   // being a 4% boost they are a 104% multiplier.  Unfortunately this means that our % modification
   // is incorrect so we fix it
   if (module.grp === 'sb' && module.getModValue('shieldboost')) {
-    const alteredBoost = (1 + module.shieldboost) * (module.getModValue('shieldboost'));
-    module.setModValue('shieldboost', alteredBoost / module.shieldboost);
+    const alteredBoost = (1 + module.shieldboost) * (module.getModValue('shieldboost') / 10000);
+    module.setModValue('shieldboost', alteredBoost * 10000 / module.shieldboost);
   }
 
   // Shield booster resistance is actually a damage modifier, so needs to be inverted.
   if (module.grp === 'sb') {
     if (module.getModValue('explres')) {
-      module.setModValue('explres', module.getModValue('explres') * -1);
+      module.setModValue('explres', ((module.getModValue('explres') / 10000) * -1) * 10000);
     }
     if (module.getModValue('kinres')) {
-      module.setModValue('kinres', module.getModValue('kinres') * -1);
+      module.setModValue('kinres', ((module.getModValue('kinres') / 10000) * -1) * 10000);
     }
     if (module.getModValue('thermres')) {
-      module.setModValue('thermres', module.getModValue('thermres') * -1);
+      module.setModValue('thermres', ((module.getModValue('thermres') / 10000) * -1) * 10000);
     }
   }
   
@@ -320,17 +321,43 @@ function _addModifications(module, modifiers) {
   // In addition, the modification is based off the inherent resistance of the module
   if (module.isShieldGenerator()) {
     if (module.getModValue('explres')) {
-      module.setModValue('explres', (1 - (1 - module.explres) * (1 + module.getModValue('explres'))) - module.explres);
+      module.setModValue('explres', ((1 - (1 - module.explres) * (1 + module.getModValue('explres') / 10000)) - module.explres) * 10000);
     }
     if (module.getModValue('kinres')) {
-      module.setModValue('kinres', (1 - (1 - module.kinres) * (1 + module.getModValue('kinres')))- module.kinres);
+      module.setModValue('kinres', ((1 - (1 - module.kinres) * (1 + module.getModValue('kinres') / 10000)) - module.kinres) * 10000);
     }
     if (module.getModValue('thermres')) {
-      module.setModValue('thermres', (1 - (1 - module.thermres) * (1 + module.getModValue('thermres'))) - module.thermres);
+      module.setModValue('thermres', ((1 - (1 - module.thermres) * (1 + module.getModValue('thermres') / 10000)) - module.thermres) * 10000);
     }
   }
 
-  //TODO do this for armour resistances as well ?
+  // Hull reinforcement package resistance is actually a damage modifier, so needs to be inverted.
+  if (module.grp === 'hr') {
+    if (module.getModValue('explres')) {
+      module.setModValue('explres', ((module.getModValue('explres') / 10000) * -1) * 10000);
+    }
+    if (module.getModValue('kinres')) {
+      module.setModValue('kinres', ((module.getModValue('kinres') / 10000) * -1) * 10000);
+    }
+    if (module.getModValue('thermres')) {
+      module.setModValue('thermres', ((module.getModValue('thermres') / 10000) * -1) * 10000);
+    }
+  }
+  
+  // Bulkhead resistance is actually a damage modifier, so needs to be inverted.
+  // In addition, the modification is based off the inherent resistance of the module
+  if (module.grp == 'bh') {
+    if (module.getModValue('explres')) {
+      module.setModValue('explres', ((1 - (1 - module.explres) * (1 + module.getModValue('explres') / 10000)) - module.explres) * 10000);
+    }
+    if (module.getModValue('kinres')) {
+      module.setModValue('kinres', ((1 - (1 - module.kinres) * (1 + module.getModValue('kinres') / 10000)) - module.kinres) * 10000);
+    }
+    if (module.getModValue('thermres')) {
+      module.setModValue('thermres', ((1 - (1 - module.thermres) * (1 + module.getModValue('thermres') / 10000)) - module.thermres) * 10000);
+    }
+  }
+
 
   // Jitter is in degrees not % so need to divide it by 100 to obtain the correct number
   if (module.getModValue('jitter')) {
@@ -339,7 +366,6 @@ function _addModifications(module, modifiers) {
 
   // FD uses interval between bursts internally, so we need to translate this to a real rate of fire
   if (module.getModValue('rof')) {
-    module.setModValue('rof', (1 / (1 + module.getModValue('jitter'))) - 1);
+    module.setModValue('rof', ((1 / (1 + module.getModValue('rof') / 10000)) - 1) * 10000);
   }
-
 }

@@ -2,6 +2,7 @@ import { ModuleGroupToName, MountMap, BulkheadNames } from './Constants';
 import { Ships } from 'coriolis-data/dist';
 import Ship from './Ship';
 import * as ModuleUtils from './ModuleUtils';
+import * as Utils from '../utils/UtilityFunctions';
 import LZString from 'lz-string';
 
 const STANDARD = ['powerPlant', 'thrusters', 'frameShiftDrive', 'lifeSupport', 'powerDistributor', 'sensors', 'fuelTank'];
@@ -209,13 +210,13 @@ export function toDetailedExport(builds) {
  * @return {string}             Zipped Base 64 encoded JSON
  */
 export function fromComparison(name, builds, facets, predicate, desc) {
-  return LZString.compressToBase64(JSON.stringify({
+  return Utils.toUrlSafe(LZString.compressToBase64(JSON.stringify({
     n: name,
     b: builds.map((b) => { return { s: b.id, n: b.buildName, c: b.toString() }; }),
     f: facets,
     p: predicate,
     d: desc ? 1 : 0
-  })).replace(/\//g, '-');
+  })));
 };
 
 /**
@@ -224,5 +225,5 @@ export function fromComparison(name, builds, facets, predicate, desc) {
  * @return {Object} Comparison data object
  */
 export function toComparison(code) {
-  return JSON.parse(LZString.decompressFromBase64(code.replace(/-/g, '/')));
+  return JSON.parse(LZString.decompressFromBase64(Utils.fromUrlSafe(code)));
 };

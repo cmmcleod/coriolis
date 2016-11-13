@@ -64,7 +64,7 @@ export default class HardpointSlot extends Slot {
           { m.getHps() ? <div className={'l'} onMouseOver={termtip.bind(null, m.getClip() ? 'hpsshps' : 'hps')} onMouseOut={tooltip.bind(null, null)}>{translate('HPS')}: {formats.round1(m.getHps())} { m.getClip() ? <span>({formats.round1((m.getClip() * m.getHps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload())) })</span> : null }</div> : null }
           { m.getDps() && m.getEps() ? <div className={'l'} onMouseOver={termtip.bind(null, 'dpe')} onMouseOut={tooltip.bind(null, null)}>{translate('DPE')}: {formats.f1(m.getDps() / m.getEps())}</div> : null }
           { m.getRoF() ? <div className={'l'} onMouseOver={termtip.bind(null, 'rof')} onMouseOut={tooltip.bind(null, null)}>{translate('ROF')}: {formats.f1(m.getRoF())}{u.ps}</div> : null }
-          { m.getRange() && !m.getDps() ? <div className={'l'}>{translate('Range')} : {formats.round(m.getRange() / 1000)}{u.km}</div> : null }
+          { m.getRange() ? <div className={'l'}>{translate('range')} {formats.f1(m.getRange() / 1000)}{u.km}</div> : null }
           { m.getShieldBoost() ? <div className={'l'}>+{formats.pct1(m.getShieldBoost())}</div> : null }
           { m.getAmmo() ? <div className={'l'}>{translate('ammunition')}: {formats.int(m.getClip())}/{formats.int(m.getAmmo())}</div> : null }
           { showModuleResistances && m.getExplosiveResistance() ? <div className='l'>{translate('explres')}: {formats.pct(m.getExplosiveResistance())}</div> : null }

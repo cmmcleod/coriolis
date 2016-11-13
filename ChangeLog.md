@@ -16,4 +16,5 @@
   * Enable boost display even if power distributor is disabled
   * Calculate breakdown of ship offensive and defensive stats
   * Add 'Offence summary' and 'Defence summary' components
-  * Add ability to import directly from companion API output
+  * Add ability to import from companion API output through import feature
+  * Add ability to import from companion API output through URL
