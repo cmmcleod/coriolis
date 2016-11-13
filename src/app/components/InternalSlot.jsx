@@ -1,5 +1,6 @@
 import React from 'react';
 import Slot from './Slot';
+import Persist from '../stores/Persist';
 import { ListModifications, Modified } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
@@ -23,6 +24,7 @@ export default class InternalSlot extends Slot {
       let { drag, drop, ship } = this.props;
       let { termtip, tooltip } = this.context;
       let validMods = Modifications.validity[m.grp] || [];
+      let showModuleResistances = Persist.showModuleResistances();
 
       let mass = m.getMass() || m.cargo || m.fuel || 0;
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
@@ -51,6 +53,10 @@ export default class InternalSlot extends Slot {
           { m.rangeRating ? <div className={'l'}>{translate('range')}: {m.rangeRating}</div> : null }
           { m.getHullReinforcement() ? <div className={'l'}>+{formats.int(m.getHullReinforcement() + ship.baseArmour * m.getModValue('hullboost') / 10000)} <u className='cap'>{translate('armour')}</u></div> : null }
           { m.passengers ? <div className={'l'}>{translate('passengers')}: {m.passengers}</div> : null }
+          { showModuleResistances && m.getExplosiveResistance() ? <div className='l'>{translate('explres')}: {formats.pct(m.getExplosiveResistance())}</div> : null }
+          { showModuleResistances && m.getKineticResistance() ? <div className='l'>{translate('kinres')}: {formats.pct(m.getKineticResistance())}</div> : null }
+          { showModuleResistances && m.getThermalResistance() ? <div className='l'>{translate('thermres')}: {formats.pct(m.getThermalResistance())}</div> : null }
+
 	  { m && validMods.length > 0 ? <div className='r' ><button onClick={this._toggleModifications.bind(this)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
 
         </div>

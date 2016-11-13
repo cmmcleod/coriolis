@@ -332,9 +332,9 @@ export default class ModalImport extends TranslatedComponent {
           throw 'Must be an object or array!';
         }
 
-        if (importData.cockpitBreached != null) { // Only the companion API has this information
+        if (importData.modules != null && importData.modules.Armour != null) { // Only the companion API has this information
           this._importCompanionApiBuild(importData); // Single sihp definition
-        } else if (importData.ship != null && importData.ship.cockpitBreached != null) { // Only the companion API has this information
+        } else if (importData.ship != null && importData.ship.modules != null && importData.ship.modules.Armour != null) { // Only the companion API has this information
           this._importCompanionApiBuild(importData.ship); // Complete API dump
         } else if (importData instanceof Array) {   // Must be detailed export json
           this._importDetailedArray(importData);

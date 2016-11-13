@@ -74,6 +74,14 @@ export default class Module {
   }
 
   /**
+   * Return true if this is a shield generator
+   * @return {Boolean} if this is a shield generator
+   */
+  isShieldGenerator() {
+    return (this.grp === 'sg' || this.grp === 'psg' || this.grp === 'bsg');
+  }
+
+  /**
    * Get the power generation of this module, taking in to account modifications
    * @return {Number} the power generation of this module
    */

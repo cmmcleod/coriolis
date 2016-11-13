@@ -247,12 +247,11 @@ export function shipFromJson(json) {
     let internalSlot = null;
     while (internalSlot === null && internalSlotNum < 99) {
       // Slot numbers are not contiguous so handle skips
-      const internalName = 'Slot' + (internalSlotNum < 9 ? '0' : '') + internalSlotNum + '_Size' + internalClassNum;
+      const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '') + internalSlotNum + '_Size' + internalClassNum;
       if (json.modules[internalName]) {
         internalSlot = json.modules[internalName];
-      } else {
-        internalSlotNum++;
       }
+      internalSlotNum++;
     }
     if (!internalSlot.module) {
       // No module
@@ -304,6 +303,35 @@ function _addModifications(module, modifiers) {
     module.setModValue('shieldboost', alteredBoost / module.shieldboost);
   }
 
+  // Shield booster resistance is actually a damage modifier, so needs to be inverted.
+  if (module.grp === 'sb') {
+    if (module.getModValue('explres')) {
+      module.setModValue('explres', module.getModValue('explres') * -1);
+    }
+    if (module.getModValue('kinres')) {
+      module.setModValue('kinres', module.getModValue('kinres') * -1);
+    }
+    if (module.getModValue('thermres')) {
+      module.setModValue('thermres', module.getModValue('thermres') * -1);
+    }
+  }
+  
+  // Shield generator resistance is actually a damage modifier, so needs to be inverted.
+  // In addition, the modification is based off the inherent resistance of the module
+  if (module.isShieldGenerator()) {
+    if (module.getModValue('explres')) {
+      module.setModValue('explres', (1 - (1 - module.explres) * (1 + module.getModValue('explres'))) - module.explres);
+    }
+    if (module.getModValue('kinres')) {
+      module.setModValue('kinres', (1 - (1 - module.kinres) * (1 + module.getModValue('kinres')))- module.kinres);
+    }
+    if (module.getModValue('thermres')) {
+      module.setModValue('thermres', (1 - (1 - module.thermres) * (1 + module.getModValue('thermres'))) - module.thermres);
+    }
+  }
+
+  //TODO do this for armour resistances as well ?
+
   // Jitter is in degrees not % so need to divide it by 100 to obtain the correct number
   if (module.getModValue('jitter')) {
     module.setModValue('jitter', module.getModValue('jitter') / 100);
@@ -313,5 +341,5 @@ function _addModifications(module, modifiers) {
   if (module.getModValue('rof')) {
     module.setModValue('rof', (1 / (1 + module.getModValue('jitter'))) - 1);
   }
-}
 
+}

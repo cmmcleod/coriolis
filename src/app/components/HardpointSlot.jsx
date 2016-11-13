@@ -1,5 +1,6 @@
 import React from 'react';
 import Slot from './Slot';
+import Persist from '../stores/Persist';
 import { DamageKinetic, DamageThermal, DamageExplosive, MountFixed, MountGimballed, MountTurret, ListModifications, Modified } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
@@ -41,6 +42,7 @@ export default class HardpointSlot extends Slot {
       let { drag, drop } = this.props;
       let { termtip, tooltip } = this.context;
       let validMods = Modifications.validity[m.grp] || [];
+      let showModuleResistances = Persist.showModuleResistances();
 
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
@@ -65,7 +67,11 @@ export default class HardpointSlot extends Slot {
           { m.getRange() && !m.getDps() ? <div className={'l'}>{translate('Range')} : {formats.round(m.getRange() / 1000)}{u.km}</div> : null }
           { m.getShieldBoost() ? <div className={'l'}>+{formats.pct1(m.getShieldBoost())}</div> : null }
           { m.getAmmo() ? <div className={'l'}>{translate('ammunition')}: {formats.int(m.getClip())}/{formats.int(m.getAmmo())}</div> : null }
+          { showModuleResistances && m.getExplosiveResistance() ? <div className='l'>{translate('explres')}: {formats.pct(m.getExplosiveResistance())}</div> : null }
+          { showModuleResistances && m.getKineticResistance() ? <div className='l'>{translate('kinres')}: {formats.pct(m.getKineticResistance())}</div> : null }
+          { showModuleResistances && m.getThermalResistance() ? <div className='l'>{translate('thermres')}: {formats.pct(m.getThermalResistance())}</div> : null }
           { m && validMods.length > 0 ? <div className='r' ><button onClick={this._toggleModifications.bind(this)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
+
         </div>
       </div>;
     } else {
