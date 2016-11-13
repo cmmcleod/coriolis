@@ -125,7 +125,7 @@ export const ShipFacets = [
     },
     {                   // 3
       title: 'shields',
-      props: ['shieldStrength'],
+      props: ['shield'],
       unit: 'MJ',
       fmt: 'int',
       i: 3
