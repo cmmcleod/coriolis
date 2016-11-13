@@ -81,11 +81,10 @@ export default class StandardSlot extends TranslatedComponent {
         <div className={cn('details-container', { warning: warning && warning(slot.m) })}>
           <div className={'sz'}>{slot.maxClass}</div>
           <div>
-            <div className={'l'}>{classRating} {translate(m.grp == 'bh' ? m.grp : m.name || m.grp)}{ m.mods && Object.keys(m.mods).length > 0 ? <span className='r' onMouseOver={termtip.bind(null, 'modified')} onMouseOut={tooltip.bind(null, null)}><Modified /></span> : null }</div>
+            <div className={'l'}>{classRating} {translate(m.name || m.grp)}{m.mods && Object.keys(m.mods).length > 0 ? <span className='r' onMouseOver={termtip.bind(null, 'modified')} onMouseOut={tooltip.bind(null, null)}><Modified /></span> : null }</div>
             <div className={'r'}>{formats.round(mass)}{units.T}</div>
 	    <div/>
             <div className={'cb'}>
-                { m.grp == 'bh' && m.name ? <div className='l'>{translate(m.name)}</div> : null }
                 { m.getOptimalMass() ? <div className='l'>{translate('optimal mass')}: {formats.int(m.getOptimalMass())}{units.T}</div> : null }
                 { m.getMaxMass() ? <div className='l'>{translate('max mass')}: {formats.int(m.getMaxMass())}{units.T}</div> : null }
                 { m.getRange() ? <div className='l'>{translate('range')}: {formats.f2(m.getRange())}{units.km}</div> : null }
