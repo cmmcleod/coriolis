@@ -44,7 +44,6 @@ export default class HardpointSlot extends Slot {
       let validMods = Modifications.validity[m.grp] || [];
       let showModuleResistances = Persist.showModuleResistances();
 
-console.log('Jitter is ' + m.getJitter());
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
           <div className={'l'}>
