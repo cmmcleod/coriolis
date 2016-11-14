@@ -596,21 +596,23 @@ export default class Ship {
         hardpoints = new Array(this.hardpoints.length),
         internal = new Array(this.internal.length),
         modifications = new Array(1 + this.standard.length + this.hardpoints.length + this.internal.length),
-        parts = serializedString.split('.'),
+        // Although we un-UrlSafe the serialized string when it comes in as a URL old code used to url-encode
+	// the build before it was written to local store so we do it again here to catch that situation
+        parts = Utils.fromUrlSafe(serializedString).split('.'),
         priorities = null,
         enabled = null,
         code = parts[0];
 
     if (parts[1]) {
-      enabled = Utils.fromUrlSafe(LZString.decompressFromBase64(parts[1])).split('');
+      enabled = LZString.decompressFromBase64(parts[1]).split('');
     }
 
     if (parts[2]) {
-      priorities = Utils.fromUrlSafe(LZString.decompressFromBase64(parts[2])).split('');
+      priorities = LZString.decompressFromBase64(parts[2]).split('');
     }
 
     if (parts[3]) {
-      const modstr = Utils.fromUrlSafe(parts[3]);
+      const modstr = parts[3];
       if (modstr.match(':')) {
         this.decodeModificationsString(modstr, modifications);
       } else {
@@ -1199,7 +1201,7 @@ export default class Ship {
       priorities.push(slot.priority);
     }
 
-    this.serialized.priorities = Utils.toUrlSafe(LZString.compressToBase64(priorities.join('')));
+    this.serialized.priorities = LZString.compressToBase64(priorities.join(''));
     return this;
   }
 
@@ -1220,7 +1222,7 @@ export default class Ship {
       enabled.push(slot.enabled ? 1 : 0);
     }
 
-    this.serialized.enabled = Utils.toUrlSafe(LZString.compressToBase64(enabled.join('')));
+    this.serialized.enabled = LZString.compressToBase64(enabled.join(''));
     return this;
   }
 
@@ -1266,7 +1268,7 @@ export default class Ship {
       }
       allMods.push(slotMods.join(';'));
     }
-    this.serialized.modifications = Utils.toUrlSafe(LZString.compressToBase64(allMods.join(',').replace(/,+$/, '')));
+    this.serialized.modifications = LZString.compressToBase64(allMods.join(',').replace(/,+$/, ''));
     return this;
   }
 
@@ -1387,7 +1389,7 @@ export default class Ship {
         buffer.writeInt8(-1, curpos++);
       }
 
-      this.serialized.modifications = Utils.toUrlSafe(zlib.gzipSync(buffer).toString('base64'));
+      this.serialized.modifications = zlib.gzipSync(buffer).toString('base64');
     } else {
       this.serialized.modifications = null;
     }

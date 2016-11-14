@@ -90,7 +90,7 @@ export default class Coriolis extends React.Component {
       r.params.code = ship.toString();
       this._setPage(OutfittingPage, r);
     } catch (err) {
-      this._onError("Failed to import ship", r.path, 0, 0, err);
+      this._onError('Failed to import ship', r.path, 0, 0, err);
     }
   }
 

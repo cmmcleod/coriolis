@@ -1,3 +1,4 @@
+import * as Utils from './/UtilityFunctions';
 
 /**
  * Generates a URL for the outiffing page
@@ -10,7 +11,7 @@ export function outfitURL(shipId, code, buildName) {
   let parts = ['/outfit/', shipId];
 
   if (code) {
-    parts.push('/', code);
+    parts.push('/', Utils.toUrlSafe(code));
   }
 
   if (buildName) {
