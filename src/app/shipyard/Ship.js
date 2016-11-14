@@ -596,19 +596,17 @@ export default class Ship {
         hardpoints = new Array(this.hardpoints.length),
         internal = new Array(this.internal.length),
         modifications = new Array(1 + this.standard.length + this.hardpoints.length + this.internal.length),
-        // Although we un-UrlSafe the serialized string when it comes in as a URL old code used to url-encode
-	// the build before it was written to local store so we do it again here to catch that situation
-        parts = Utils.fromUrlSafe(serializedString).split('.'),
+        parts = serializedString.split('.'),
         priorities = null,
         enabled = null,
         code = parts[0];
 
     if (parts[1]) {
-      enabled = LZString.decompressFromBase64(parts[1]).split('');
+      enabled = LZString.decompressFromBase64(Utils.fromUrlSafe(parts[1])).split('');
     }
 
     if (parts[2]) {
-      priorities = LZString.decompressFromBase64(parts[2]).split('');
+      priorities = LZString.decompressFromBase64(Utils.fromUrlSafe(parts[2])).split('');
     }
 
     if (parts[3]) {
@@ -617,7 +615,7 @@ export default class Ship {
         this.decodeModificationsString(modstr, modifications);
       } else {
         try {
-          this.decodeModificationsStruct(zlib.gunzipSync(new Buffer(modstr, 'base64')), modifications);
+          this.decodeModificationsStruct(zlib.gunzipSync(new Buffer(Utils.fromUrlSafe(modstr), 'base64')), modifications);
         } catch (err) {
           // Could be out-of-date URL; ignore
         }
@@ -1201,7 +1199,7 @@ export default class Ship {
       priorities.push(slot.priority);
     }
 
-    this.serialized.priorities = LZString.compressToBase64(priorities.join(''));
+    this.serialized.priorities = Utils.toUrlSafe(LZString.compressToBase64(priorities.join('')));
     return this;
   }
 
@@ -1222,7 +1220,7 @@ export default class Ship {
       enabled.push(slot.enabled ? 1 : 0);
     }
 
-    this.serialized.enabled = LZString.compressToBase64(enabled.join(''));
+    this.serialized.enabled = Utils.toUrlSafe(LZString.compressToBase64(enabled.join('')));
     return this;
   }
 
@@ -1389,7 +1387,7 @@ export default class Ship {
         buffer.writeInt8(-1, curpos++);
       }
 
-      this.serialized.modifications = zlib.gzipSync(buffer).toString('base64');
+      this.serialized.modifications = Utils.toUrlSafe(zlib.gzipSync(buffer).toString('base64'));
     } else {
       this.serialized.modifications = null;
     }

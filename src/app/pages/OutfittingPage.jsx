@@ -21,7 +21,6 @@ import PowerManagement from '../components/PowerManagement';
 import CostSection from '../components/CostSection';
 import ModalExport from '../components/ModalExport';
 import Slider from '../components/Slider';
-import * as Utils from '../utils/UtilityFunctions';
 
 const SPEED_SERIES = ['boost', '4 Pips', '2 Pips', '0 Pips'];
 const SPEED_COLORS = ['#0088d2', '#ff8c0d', '#D26D00', '#c06400'];
@@ -59,7 +58,7 @@ export default class OutfittingPage extends Page {
   _initState(context) {
     let params = context.route.params;
     let shipId = params.ship;
-    let code = Utils.fromUrlSafe(params.code);
+    let code = params.code;
     let buildName = params.bn;
     let data = Ships[shipId];   // Retrieve the basic ship properties, slots and defaults
     let savedCode = Persist.getBuild(shipId, buildName);

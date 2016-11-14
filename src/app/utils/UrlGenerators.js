@@ -11,7 +11,7 @@ export function outfitURL(shipId, code, buildName) {
   let parts = ['/outfit/', shipId];
 
   if (code) {
-    parts.push('/', Utils.toUrlSafe(code));
+    parts.push('/', code);
   }
 
   if (buildName) {
