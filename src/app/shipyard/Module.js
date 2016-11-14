@@ -516,4 +516,11 @@ export default class Module {
     return this._getModifiedValue('cells');
   }
 
+  /**
+   * Get the jitter for this module, taking in to account modifications
+   * @return {Number} the jitter for this module
+   */
+  getJitter() {
+    return this._getModifiedValue('jitter', true);
+  }
 }
