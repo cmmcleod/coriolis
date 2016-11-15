@@ -509,12 +509,29 @@ export default class Module {
   }
 
   /**
+   * Get the bays for this module, taking in to account modifications
+   * @return {Number} the bays for this module
+   */
+  getBays() {
+    return this._getModifiedValue('bays');
+  }
+
+  /**
+   * Get the rebuilds per bay for this module, taking in to account modifications
+   * @return {Number} the rebuilds per bay for this module
+   */
+  getRebuildsPerBay() {
+    return this._getModifiedValue('rebuildsperbay');
+  }
+
+  /**
    * Get the cells for this module, taking in to account modifications
    * @return {Number} the cells for this module
    */
   getCells() {
     return this._getModifiedValue('cells');
   }
+
 
   /**
    * Get the jitter for this module, taking in to account modifications

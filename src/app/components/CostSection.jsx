@@ -507,19 +507,19 @@ export default class CostSection extends TranslatedComponent {
               scoop = true;
               break;
             case 'scb':
-              q = slotGroup[i].m.cells;
+              q = slotGroup[i].m.getCells();
               break;
             case 'am':
-              q = slotGroup[i].m.ammo;
+              q = slotGroup[i].m.getAmmo();
               break;
             case 'pv':
-              srvs += slotGroup[i].m.vehicles;
+              srvs += slotGroup[i].m.getBays();
               break;
             case 'fx': case 'hb': case 'cc': case 'pc':
               limpets = ship.cargoCapacity;
               break;
             default:
-              q = slotGroup[i].m.clip + slotGroup[i].m.ammo;
+              q = slotGroup[i].m.getClip() + slotGroup[i].m.getAmmo();
           }
           // Calculate ammo costs only if a cost is specified
           if (slotGroup[i].m.ammocost > 0) {
@@ -532,6 +532,17 @@ export default class CostSection extends TranslatedComponent {
             ammoCosts.push(item);
             ammoTotal += item.total;
           }
+	  // Add fighters
+          if (slotGroup[i].m.grp === 'fh') {
+            item = {
+              m: slotGroup[i].m,
+              max: slotGroup[i].m.getRebuildsPerBay() * slotGroup[i].m.getBays(),
+              cost: slotGroup[i].m.fightercost,
+              total: slotGroup[i].m.getRebuildsPerBay() * slotGroup[i].m.getBays() * slotGroup[i].m.fightercost
+            };
+            ammoCosts.push(item);
+            ammoTotal += item.total;
+	  }
         }
       }
     }
@@ -552,12 +563,13 @@ export default class CostSection extends TranslatedComponent {
       item = {
         m: { name: 'SRVs', class: '', rating: '' },
         max: srvs,
-        cost: 6005,
-        total: srvs * 6005
+        cost: 1030,
+        total: srvs * 1030
       };
       ammoCosts.push(item);
       ammoTotal += item.total;
     }
+
     // Calculate refuel costs if no scoop present
     if (!scoop) {
       item = {
