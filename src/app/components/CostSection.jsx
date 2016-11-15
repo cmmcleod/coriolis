@@ -532,7 +532,7 @@ export default class CostSection extends TranslatedComponent {
             ammoCosts.push(item);
             ammoTotal += item.total;
           }
-	  // Add fighters
+          // Add fighters
           if (slotGroup[i].m.grp === 'fh') {
             item = {
               m: slotGroup[i].m,
@@ -542,7 +542,7 @@ export default class CostSection extends TranslatedComponent {
             };
             ammoCosts.push(item);
             ammoTotal += item.total;
-	  }
+          }
         }
       }
     }

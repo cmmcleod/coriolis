@@ -209,7 +209,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/federal_corvette/2putsFklndzsxf50x0x7l28281919040404040402020l06p05sf63c5ifhv66g2f.AwRj4zNaKA==.CwRgDBldUExuBiQqA===.H4sIAAAAAAAAAzWRsUoDQRCG5xLvLrkNbnJedGPURO9UbBRSqI9gQN9AsYpV8AEsLASb2AafQNAigigWYpfmKgvFNBL0ESwiEhJ1-Eew_fl3vpnZ2Vlr3LGJdIuZUzUi4kQ_dohCPyAy1wmgmSFzsPLD7J8kwZP_qY-o-oDZBGmioI5MtuddRbRwj4zZGGhuDwXp8y9m7wVHvYpOnCocuER274PZqSLTP7NwyRaS2LPr6OUEhmj6CrnZdcwS1reJJrrArOy2B35YBG_N-PM_mug73MQZu-FXL7wtfE34JZyuwMlryFRxHWuzAa868DmRSEQ3pEnWDOHVjSCRSEQ-CcqZnqAHQSKRiB4FKR2l0NU3r5haPQsnuEicPpbSMbOMMVUX0ZxIJKKVvMrkd1CsLqTqW7oOkJkI_8zFJkqdN0wa1PAILpQ-8Q3uEqKLHUStWBY6Vb7F8txHiSZRb1Xkh0qTu7JcgphNfG7mXTbMv5ZVZjDqAQAA?bn=Imported%20Federal%20Corvette');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/federal_corvette/2putsFklndzsxf50x0x7l28281919040404040402020l06p05sf63c5ifhv66g2f.AwRj4zNaKA==.CwRgDBldUExuBiQqA===.H4sIAAAAAAAAAx2Rzy4DURTGz7TuzHRu47ZjWreKlg5iQ9KFZ9CENyBWtWo8gIUFsamteAIJi0qEWIhdN11ZEN1IwyNYVKRpcXzH5su553f_XyfvKiLTYma-TkScyHVcokoYEdmbBNDsiDla-WUOT5LgyfAshHdvyGyjFFHUQCSrBU8TLT4gYq4DNL_LhNTFN3PwiqdZQyX2C-sekep-Mrs1RIbnDppsIogD1UAtN7JEM9eIzZg8hmhsEU32gFmrdgB_UARvjYEr4QMUMffoxGnV-M8X3hZ_lAO-gmWq2Eq2IVtDOzZ2Hbbuws6KxCKmKUUydgRb3woSiUXMs6Cs7Qt6FCQSi5hxkNKhj6qhfcPU_kU4wYrFMseSOmFXMKbuwZsViUWMlq1sbhvJ_lKyfqTqEJGJyoC5eIpU9x2TRnUswYXyF77BW4Z3qQuv05GDTpfvcDzvSbxJ5DtV_aHS1I4clyB2A5_b-pAL8x_enn626gEAAA==?bn=Imported%20Federal%20Corvette');
     });
   });
 
