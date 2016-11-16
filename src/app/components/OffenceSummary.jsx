@@ -26,8 +26,7 @@ export default class OffenceSummary extends TranslatedComponent {
   render() {
     let ship = this.props.ship;
     let { language, tooltip, termtip } = this.context;
-    let { formats, translate, units } = language;
-    let hide = tooltip.bind(null, null);
+    let { formats, translate } = language;
 
     return (
       <span>

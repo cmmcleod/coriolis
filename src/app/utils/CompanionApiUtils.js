@@ -2,8 +2,6 @@ import React from 'react';
 import { Modifications, Modules, Ships } from 'coriolis-data/dist';
 import Module from '../shipyard/Module';
 import Ship from '../shipyard/Ship';
-import * as ModuleUtils from '../shipyard/ModuleUtils';
-
 
 // mapping from fd's ship model names to coriolis'
 const SHIP_FD_NAME_TO_CORIOLIS_NAME = {
@@ -240,7 +238,6 @@ export function shipFromJson(json) {
   }
 
   // Add internal compartments
-  let internalClassNum = -1;
   let internalSlotNum = 1;
   for (let i in shipTemplate.slots.internal) {
     const internalClassNum = shipTemplate.slots.internal[i];

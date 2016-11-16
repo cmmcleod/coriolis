@@ -50,7 +50,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @return {React.Component} List
    */
   render() {
-    let { language, tooltip, termtip } = this.context;
+    let { tooltip, termtip } = this.context;
     return (
       <div
           className={cn('select', this.props.className)}

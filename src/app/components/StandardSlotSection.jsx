@@ -4,7 +4,6 @@ import SlotSection from './SlotSection';
 import StandardSlot from './StandardSlot';
 import Module from '../shipyard/Module';
 import { diffDetails } from '../utils/SlotFunctions';
-import * as ModuleUtils from '../shipyard/ModuleUtils';
 import * as ShipRoles from '../shipyard/ShipRoles';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
 

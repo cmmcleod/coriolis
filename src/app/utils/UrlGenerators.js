@@ -1,5 +1,3 @@
-import * as Utils from './/UtilityFunctions';
-
 /**
  * Generates a URL for the outiffing page
  * @param  {String} shipId    Ship Id
