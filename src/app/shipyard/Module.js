@@ -61,7 +61,8 @@ export default class Module {
   _getModifiedValue(name, additive) {
     let result = this[name] || (additive ? 0 : null); // Additive NULL === 0
     if (result != null) {
-      const modValue = this.getModValue(name) / 10000;
+      // Jitter is special, being the only non-percentage value (it is in fact degrees)
+      const modValue = name === 'jitter' ? this.getModValue(name) / 100 : this.getModValue(name) / 10000;
       if (modValue) {
         if (additive) {
           result = result + modValue;

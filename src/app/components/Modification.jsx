@@ -24,7 +24,7 @@ export default class Modification extends TranslatedComponent {
   constructor(props, context) {
     super(props);
     this.state = {};
-    this.state.value = this.props.name === 'jitter' ? this.props.m.getModValue(this.props.name) / 10000 : this.props.m.getModValue(this.props.name) / 100 || 0;
+    this.state.value = this.props.m.getModValue(this.props.name) / 100 || 0;
   }
 
   /**
@@ -34,7 +34,7 @@ export default class Modification extends TranslatedComponent {
   _updateValue(value) {
     const name = this.props.name;
 
-    let scaledValue = name === 'jitter' ? Math.floor(Number(value) * 10000) : Math.floor(Number(value) * 100);
+    let scaledValue = Math.floor(Number(value) * 100);
     // Limit to +1000% / -100%
     if (scaledValue > 100000) {
       scaledValue = 100000;
