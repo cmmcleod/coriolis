@@ -84,13 +84,13 @@
   "dependencies": {
     "babel-polyfill": "*",
     "classnames": "^2.2.0",
-    "browserify-zlib": "ipfs/coriolis-data",
+    "browserify-zlib": "ipfs/browserify-zlib",
     "coriolis-data": "EDCD/coriolis-data",
     "d3": "3.5.16",
     "fbemitter": "^2.0.0",
     "lodash": "^4.15.0",
     "lz-string": "^1.4.4",
-    "react-number-editor": "^4.0.2",
+    "react-number-editor": "Athanasius/react-number-editor.git#miggy",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
     "superagent": "^1.4.0"

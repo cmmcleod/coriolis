@@ -29,12 +29,14 @@ export default class Modification extends TranslatedComponent {
 
   /**
    * Update modification given a value.
-   * @param {Number} value The value to set
+   * @param {Number} value The value to set.  This comes in as a string and must be stored in state as a string,
+   *                       because it needs to allow illegal 'numbers' ('-', '1.', etc) when the user is typing
+   *                       in a value by hand
    */
   _updateValue(value) {
     const name = this.props.name;
 
-    let scaledValue = Math.floor(Number(value) * 100);
+    let scaledValue = Math.round(Number(value) * 100);
     // Limit to +1000% / -100%
     if (scaledValue > 100000) {
       scaledValue = 100000;

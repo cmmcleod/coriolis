@@ -2,6 +2,7 @@ import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
 import Link from './Link';
 import cn from 'classnames';
+import { outfitURL } from '../utils/UrlGenerators';
 import { SizeMap } from '../shipyard/Constants';
 
 
@@ -71,7 +72,7 @@ export default class ComparisonTable extends TranslatedComponent {
    * @return {React.Component}    Table row
    */
   _buildRow(build, facets, formats, units) {
-    let url = `/outfit/${build.id}/${build.toString()}?bn=${build.buildName}`;
+    let url = outfitURL(build.id, build.toString(), build.buildName)
     let cells = [
       <td key='s' className='tl'><Link href={url}>{build.name}</Link></td>,
       <td key='bn' className='tl'><Link href={url}>{build.buildName}</Link></td>
