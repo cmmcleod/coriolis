@@ -345,7 +345,7 @@ export default class ComparisonPage extends Page {
 
     let code = fromComparison(name, builds, selectedFacets, predicate, desc);
     let loc = window.location;
-    return `${loc.protocol}//${loc.host}/comparison/${code}`;
+    return loc.protocol + '//' + loc.host + '/comparison?code=' + encodeURIComponent(code);
   }
 
   /**

@@ -1,4 +1,5 @@
 
+// Standard icons
 .icon {
   display: inline-block;
   vertical-align: middle;
@@ -24,4 +25,40 @@
     width: 2.1em;
     height: 2em;
   }
+}
+
+// Modifiction icons - hard-code stroke/fill
+.modicon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1.1em;
+  height: 1em;
+  stoke: @fg;
+  fill: transparent;
+
+  &.sm {
+    width: 0.8em;
+    height: 0.75em;
+  }
+
+  &.tn {
+    width: 0.6em;
+    height: 0.5em;
+  }
+
+  &.lg {
+    width: 1.6em;
+    height: 1.5em;
+  }
+
+  &.xl {
+    width: 2.1em;
+    height: 2em;
+  }
+}
+
+.summary {
+  stroke: @fg;
+  stroke-width: 10;
+  fill: @fg;
 }

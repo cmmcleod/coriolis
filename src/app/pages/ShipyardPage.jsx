@@ -55,6 +55,7 @@ function shipSummary(shipId, shipData) {
   ship.optimizeMass({ th: ship.standard[1].maxClass + 'A', fsd: '2D', ft: '1C' }); // Optmize mass with Max Thrusters
   summary.topSpeed = ship.topSpeed;
   summary.topBoost = ship.topBoost;
+  summary.baseArmour = ship.armour;
 
   return summary;
 }
@@ -141,7 +142,7 @@ export default class ShipyardPage extends Page {
       <td>{s.agility}</td>
       <td className='ri'>{fInt(s.speed)}{u['m/s']}</td>
       <td className='ri'>{fInt(s.boost)}{u['m/s']}</td>
-      <td className='ri'>{s.baseArmour}</td>
+      <td className='ri'>{fInt(s.baseArmour)}</td>
       <td className='ri'>{fInt(s.baseShieldStrength)}{u.MJ}</td>
       <td className='ri'>{fInt(s.topSpeed)}{u['m/s']}</td>
       <td className='ri'>{fInt(s.topBoost)}{u['m/s']}</td>

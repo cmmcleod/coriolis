@@ -7,7 +7,7 @@ import NumberEditor from 'react-number-editor';
 /**
  * Modification
  */
-export default class ModificationsMenu extends TranslatedComponent {
+export default class Modification extends TranslatedComponent {
 
   static propTypes = {
     ship: React.PropTypes.object.isRequired,
@@ -24,26 +24,30 @@ export default class ModificationsMenu extends TranslatedComponent {
   constructor(props, context) {
     super(props);
     this.state = {};
-    this.state.value = this.props.m.getModValue(this.props.name) * 100 || 0;
+    this.state.value = this.props.m.getModValue(this.props.name) / 100 || 0;
   }
 
   /**
    * Update modification given a value.
-   * @param {Number} value The value to set
+   * @param {Number} value The value to set.  This comes in as a string and must be stored in state as a string,
+   *                       because it needs to allow illegal 'numbers' ('-', '1.', etc) when the user is typing
+   *                       in a value by hand
    */
   _updateValue(value) {
-    let scaledValue = Math.floor(Number(value) * 100) / 10000;
+    const name = this.props.name;
+
+    let scaledValue = Math.round(Number(value) * 100);
     // Limit to +1000% / -100%
-    if (scaledValue > 10) {
-      scaledValue = 10;
+    if (scaledValue > 100000) {
+      scaledValue = 100000;
       value = 1000;
     }
-    if (scaledValue < -1) {
-      scaledValue = -1;
+    if (scaledValue < -10000) {
+      scaledValue = -10000;
       value = -100;
     }
+
     let m = this.props.m;
-    let name = this.props.name;
     let ship = this.props.ship;
     ship.setModification(m, name, scaledValue);
 
@@ -62,7 +66,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     return (
       <div className={'cb'} key={name}>
         <div className={'cb'}>{translate(name)}{name === 'jitter' ? ' (°)' : ' (%)'}</div>
-        <NumberEditor className={'cb'} style={{ width: '100%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={this.state.value} onValueChange={this._updateValue.bind(this)} />
+        <NumberEditor className={'cb'} style={{ width: '90%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={this.state.value} onValueChange={this._updateValue.bind(this)} />
       </div>
     );
   }

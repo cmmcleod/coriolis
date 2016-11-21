@@ -1,50 +1,50 @@
 {
   "type_6_transporter": {
-    "Cargo": "0p0tdFal8d8s8f4-----04040303430101.Iw1-kA==.Aw1-kA==",
-    "Miner": "0p5tdFal8d8s8f42l2l---040403451q0101.Iw1-kA==.Aw1-kA==",
-    "Hopper": "0p0tdFal8d0s8f41717---030302024300-.Iw1-kA==.Aw1-kA=="
+    "Cargo": "0p0tdFal8d8s8f4-----04040303430101.Iw1-kA==.Aw1-kA==.",
+    "Miner": "0p5tdFal8d8s8f42l2l---040403451q0101.Iw1-kA==.Aw1-kA==.",
+    "Hopper": "0p0tdFal8d0s8f41717---030302024300-.Iw1-kA==.Aw1-kA==."
   },
   "type_7_transport": {
-    "Cargo": "0p0tiFfliddsdf5--------0505040403480101.Iw18aQ==.Aw18aQ==",
-    "Miner": "0pdtiFflid8sdf5--2l2l----0505041v03450000.Iw18aQ==.Aw18aQ=="
+    "Cargo": "0p0tiFfliddsdf5--------0505040403480101.Iw18aQ==.Aw18aQ==.",
+    "Miner": "0pdtiFflid8sdf5--2l2l----0505041v03450000.Iw18aQ==.Aw18aQ==."
   },
   "federal_dropship": {
-    "Cargo": "0pdtiFflnddsif4-1717------05040448020201.Iw18aQ==.Aw18aQ=="
+    "Cargo": "0pdtiFflnddsif4-1717------05040448020201.Iw18aQ==.Aw18aQ==."
   },
   "asp": {
-    "Miner": "2pftfFflidfskf50s0s24242l2l---04054a1q02022o27.Iw18WQ==.Aw18WQ=="
+    "Miner": "2pftfFflidfskf50s0s24242l2l---04054a1q02022o27.Iw18WQ==.Aw18WQ==."
   },
   "imperial_clipper": {
-    "Cargo": "0p5tiFflndisnf4--0s0s----0605450302020101.Iw18aQ==.Aw18aQ==",
-    "Dream": "2pktkFflndpskf40v0v0s0s0404040n4k5n5d2b29292o-.Iw18aQ==.Aw18aQ==",
-    "Current": "0patkFflndfskf4----------------.Iw18aQ==.Aw18aQ=="
+    "Cargo": "0p5tiFflndisnf4--0s0s----0605450302020101.Iw18aQ==.Aw18aQ==.",
+    "Dream": "2pktkFflndpskf40v0v0s0s0404040n4k5n5d2b29292o-.Iw18aQ==.Aw18aQ==.",
+    "Current": "0patkFflndfskf4----------------.Iw18aQ==.Aw18aQ==."
   },
   "type_9_heavy": {
-    "Current": "0patsFklndnsif6---------0706054a0303020224.Iw18eQ==.Aw18eQ=="
+    "Current": "0patsFklndnsif6---------0706054a0303020224.Iw18eQ==.Aw18eQ==."
   },
   "python": {
-    "Cargo": "0patnFflidsssf5---------050505040448020201.Iw18eQ==.Aw18eQ==",
-    "Miner": "0pktkFflidpspf50v0v0v2m2m0404--050505Ce4a1v02022o.Iw18eQ==.Aw18eQ==",
-    "Dream": "2pptkFfliduspf50v0v0v27270404040m5n5n4f2d2d032t0201.Iw18eQ==.Aw18eQ==",
-    "Missile": "0pttoFjljdystf52f2g2d2ePh----04044j03---002h.Iw18eQ==.Aw18eQ=="
+    "Cargo": "0patnFflidsssf5---------050505040448020201.Iw18eQ==.Aw18eQ==.",
+    "Miner": "0pktkFflidpspf50v0v0v2m2m0404--050505Ce4a1v02022o.Iw18eQ==.Aw18eQ==.",
+    "Dream": "2pptkFfliduspf50v0v0v27270404040m5n5n4f2d2d032t0201.Iw18eQ==.Aw18eQ==.",
+    "Missile": "0pttoFjljdystf52f2g2d2ePh----04044j03---002h.Iw18eQ==.Aw18eQ==."
   },
   "anaconda": {
-    "Dream": "4putpFklndzsuf52c0o0o0o1m1m0q0q0404040l0b0100004k5n5n112d2d040303326b.Iw18ZlA=.Aw18ZlA=",
-    "Cargo": "0patnFklndnsxf5----------------0605050504040445030301.Iw18ZlA=.Aw18ZlA=",
-    "Current": "0patnFklndksxf5----------------0605050504040403034524.Iw18ZlA=.Aw18ZlA=",
-    "Explorer": "0patnFklndksxf5--------0202------f7050505040s372f2i4524.Iw18ZlA=.Aw18ZlA=",
-    "Test": "4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.Iw18ZlA=.Aw18ZlA="
+    "Dream": "4putpFklndzsuf52c0o0o0o1m1m0q0q0404040l0b0100004k5n5n112d2d040303326b.Iw18ZlA=.Aw18ZlA=.",
+    "Cargo": "0patnFklndnsxf5----------------0605050504040445030301.Iw18ZlA=.Aw18ZlA=.",
+    "Current": "0patnFklndksxf5----------------0605050504040403034524.Iw18ZlA=.Aw18ZlA=.",
+    "Explorer": "0patnFklndksxf5--------0202------f7050505040s372f2i4524.Iw18ZlA=.Aw18ZlA=.",
+    "Test": "4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.Iw18ZlA=.Aw18ZlA=."
   },
   "diamondback_explorer": {
-    "Explorer": "0p0tdFfldddsdf5---0202--320p432i2f.Iw1-kA==.Aw1-kA=="
+    "Explorer": "0p0tdFfldddsdf5---0202--320p432i2f.Iw1-kA==.Aw1-kA==."
   },
   "vulture": {
-    "Bounty Hunter": "3patcFalddksff31e1e0404-0l4a5d27662j.Iw19kA==.Aw19kA=="
+    "Bounty Hunter": "3patcFalddksff31e1e0404-0l4a5d27662j.Iw19kA==.Aw19kA==."
   },
   "fer_de_lance": {
-    "Attack": "2pfthFalidpsff31r0s0s0s0s000404-04-4a-5d27-.Iw18aQ==.Aw18aQ=="
+    "Attack": "2pfthFalidpsff31r0s0s0s0s000404-04-4a-5d27-.Iw18aQ==.Aw18aQ==."
   },
   "eagle": {
-    "Figther": "4p0t5F5l3d5s5f20p0p24-40532j-.Iw1-EA==.Aw1-EA=="
+    "Figther": "4p0t5F5l3d5s5f20p0p24-40532j-.Iw1-EA==.Aw1-EA==."
   }
 }

@@ -379,7 +379,7 @@ export default class CostSection extends TranslatedComponent {
               <td colSpan='4' className='lbl cap' >{translate('retrofit from')}</td>
               <td className='val cen' style={{ borderRight: 'none', width: '1em' }}><u className='primary-disabled'>&#9662;</u></td>
               <td className='val' style={{ borderLeft:'none', padding: 0 }}>
-                <select style={{ width: '100%', padding: 0 }} value={retrofitName} onChange={this._onBaseRetrofitChange}>
+                <select style={{ width: '100%', padding: 0 }} value={retrofitName || translate('Stock')} onChange={this._onBaseRetrofitChange}>
                   {options}
                 </select>
               </td>
@@ -419,7 +419,9 @@ export default class CostSection extends TranslatedComponent {
       let retroSlotGroup = retrofitShip[g];
       let slotGroup = ship[g];
       for (i = 0, l = slotGroup.length; i < l; i++) {
-        if (slotGroup[i].m != retroSlotGroup[i].m) {
+        const modId = slotGroup[i].m ? slotGroup[i].m.eddbID : null;
+        const retroModId = retroSlotGroup[i].m ? retroSlotGroup[i].m.eddbID : null;
+        if (modId != retroModId) {
           item = { netCost: 0, retroItem: retroSlotGroup[i] };
           if (slotGroup[i].m) {
             item.buyName = slotGroup[i].m.name || slotGroup[i].m.grp;
@@ -505,19 +507,19 @@ export default class CostSection extends TranslatedComponent {
               scoop = true;
               break;
             case 'scb':
-              q = slotGroup[i].m.cells;
+              q = slotGroup[i].m.getCells();
               break;
             case 'am':
-              q = slotGroup[i].m.ammo;
+              q = slotGroup[i].m.getAmmo();
               break;
             case 'pv':
-              srvs += slotGroup[i].m.vehicles;
+              srvs += slotGroup[i].m.getBays();
               break;
             case 'fx': case 'hb': case 'cc': case 'pc':
               limpets = ship.cargoCapacity;
               break;
             default:
-              q = slotGroup[i].m.clip + slotGroup[i].m.ammo;
+              q = slotGroup[i].m.getClip() + slotGroup[i].m.getAmmo();
           }
           // Calculate ammo costs only if a cost is specified
           if (slotGroup[i].m.ammocost > 0) {
@@ -526,6 +528,17 @@ export default class CostSection extends TranslatedComponent {
               max: q,
               cost: slotGroup[i].m.ammocost,
               total: q * slotGroup[i].m.ammocost
+            };
+            ammoCosts.push(item);
+            ammoTotal += item.total;
+          }
+          // Add fighters
+          if (slotGroup[i].m.grp === 'fh') {
+            item = {
+              m: slotGroup[i].m,
+              max: slotGroup[i].m.getRebuildsPerBay() * slotGroup[i].m.getBays(),
+              cost: slotGroup[i].m.fightercost,
+              total: slotGroup[i].m.getRebuildsPerBay() * slotGroup[i].m.getBays() * slotGroup[i].m.fightercost
             };
             ammoCosts.push(item);
             ammoTotal += item.total;
@@ -550,12 +563,13 @@ export default class CostSection extends TranslatedComponent {
       item = {
         m: { name: 'SRVs', class: '', rating: '' },
         max: srvs,
-        cost: 6005,
-        total: srvs * 6005
+        cost: 1030,
+        total: srvs * 1030
       };
       ammoCosts.push(item);
       ammoTotal += item.total;
     }
+
     // Calculate refuel costs if no scoop present
     if (!scoop) {
       item = {

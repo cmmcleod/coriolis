@@ -50,11 +50,13 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @return {React.Component} List
    */
   render() {
+    let { tooltip, termtip } = this.context;
     return (
       <div
           className={cn('select', this.props.className)}
           onClick={(e) => e.stopPropagation() }
           onContextMenu={stopCtxPropagation}
+          onMouseOver={termtip.bind(null, 'HELP_MODIFICATIONS_MENU')} onMouseOut={tooltip.bind(null, null)} 
       >
         {this.state.list}
       </div>

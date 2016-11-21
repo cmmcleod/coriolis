@@ -497,13 +497,59 @@ export class ListModifications extends SvgIcon {
    * @return {String} view box
    */
   viewBox() { return '0 0 200 200'; }
+
   /**
+   * Render the Icon
+   * @return {React.Component} SVG Icon
+   */
+  render() {
+    return (
+      <svg className={cn('modicon', this.props.className)} style={this.props.style} viewBox={this.viewBox()}>
+        {this.svg()}
+      </svg>
+    );
+  }
+
   /**
    * Generate the SVG
    * @return {React.Component} SVG Contents
    */
   svg() {
     return <path d='M20 180l90-100-90 100zM176 40a40 40 0 1 1-27-28'/>;
+  }
+}
+
+/**
+ * Modified (engineers)
+ */
+export class Modified extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+
+  /**
+   * Render the Icon
+   * @return {React.Component} SVG Icon
+   */
+  render() {
+    return (
+      <svg className={cn('modicon', this.props.className)} style={this.props.style} viewBox={this.viewBox()}>
+        {this.svg()}
+      </svg>
+    );
+  }
+
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <g>
+           <path d="M100,5L18,52.5L18,147.5L100,195L182,147.5L182,52.5L100,5Z"/>
+           <path d="M100,70L74,85L74,115L100,130L126,115L126,85L100,70Z"/>
+           </g>;
   }
 }
 

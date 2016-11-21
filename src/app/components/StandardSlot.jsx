@@ -1,11 +1,12 @@
 import React from 'react';
 import cn from 'classnames';
+import Persist from '../stores/Persist';
 import TranslatedComponent from './TranslatedComponent';
 import { jumpRange } from '../shipyard/Calculations';
 import { diffDetails } from '../utils/SlotFunctions';
 import AvailableModulesMenu from './AvailableModulesMenu';
 import ModificationsMenu from './ModificationsMenu';
-import { ListModifications } from './SvgIcons';
+import { ListModifications, Modified } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
@@ -46,6 +47,7 @@ export default class StandardSlot extends TranslatedComponent {
     let classRating = m.class + m.rating;
     let menu;
     let validMods = m == null ? [] : (Modifications.validity[m.grp] || []);
+    let showModuleResistances = Persist.showModuleResistances();
     let mass = m.getMass() || m.cargo || m.fuel || 0;
 
     if (!selected) {
@@ -79,11 +81,10 @@ export default class StandardSlot extends TranslatedComponent {
         <div className={cn('details-container', { warning: warning && warning(slot.m) })}>
           <div className={'sz'}>{slot.maxClass}</div>
           <div>
-            <div className='l'>{classRating} {translate(m.grp == 'bh' ? m.grp : m.name || m.grp)}</div>
+            <div className={'l'}>{classRating} {translate(m.name || m.grp)}{m.mods && Object.keys(m.mods).length > 0 ? <span className='r' onMouseOver={termtip.bind(null, 'modified')} onMouseOut={tooltip.bind(null, null)}><Modified /></span> : null }</div>
             <div className={'r'}>{formats.round(mass)}{units.T}</div>
 	    <div/>
             <div className={'cb'}>
-                { m.grp == 'bh' && m.name ? <div className='l'>{translate(m.name)}</div> : null }
                 { m.getOptimalMass() ? <div className='l'>{translate('optimal mass')}: {formats.int(m.getOptimalMass())}{units.T}</div> : null }
                 { m.getMaxMass() ? <div className='l'>{translate('max mass')}: {formats.int(m.getMaxMass())}{units.T}</div> : null }
                 { m.getRange() ? <div className='l'>{translate('range')}: {formats.f2(m.getRange())}{units.km}</div> : null }
@@ -94,6 +95,9 @@ export default class StandardSlot extends TranslatedComponent {
                 { m.getWeaponsCapacity() ? <div className='l'>{translate('WEP')}: {formats.f1(m.getWeaponsCapacity())}{units.MJ} / {formats.f1(m.getWeaponsRechargeRate())}{units.MW}</div> : null }
                 { m.getSystemsCapacity() ? <div className='l'>{translate('SYS')}: {formats.f1(m.getSystemsCapacity())}{units.MJ} / {formats.f1(m.getSystemsRechargeRate())}{units.MW}</div> : null }
                 { m.getEnginesCapacity() ? <div className='l'>{translate('ENG')}: {formats.f1(m.getEnginesCapacity())}{units.MJ} / {formats.f1(m.getEnginesRechargeRate())}{units.MW}</div> : null }
+                { showModuleResistances && m.getExplosiveResistance() ? <div className='l'>{translate('explres')}: {formats.pct(m.getExplosiveResistance())}</div> : null }
+                { showModuleResistances && m.getKineticResistance() ? <div className='l'>{translate('kinres')}: {formats.pct(m.getKineticResistance())}</div> : null }
+                { showModuleResistances && m.getThermalResistance() ? <div className='l'>{translate('thermres')}: {formats.pct(m.getThermalResistance())}</div> : null }
 
 	        { validMods.length > 0 ? <div className='r' ><button onClick={this._toggleModifications.bind(this)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
             </div>
