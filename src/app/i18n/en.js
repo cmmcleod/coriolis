@@ -29,7 +29,7 @@ export const terms = {
   PHRASE_UNLADEN: 'Ship mass excluding fuel and cargo',
   PHRASE_UPDATE_RDY: 'Update Available! Click to refresh',
 
-  HELP_MODIFICATIONS_MENU: 'Double-click on a number to enter a new value, or drag along the bar for small changes',
+  HELP_MODIFICATIONS_MENU: 'Click on a number to enter a new value, or drag along the bar for small changes',
 
   // Other languages fallback to these  values
   // Only Translate to other languages if the name is different in-game
