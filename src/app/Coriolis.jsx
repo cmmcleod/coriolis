@@ -7,7 +7,6 @@ import Persist from './stores/Persist';
 import Header from './components/Header';
 import Tooltip from './components/Tooltip';
 import ModalImport from './components/ModalImport';
-import * as CompanionApiUtils from './utils/CompanionApiUtils';
 import * as Utils from './utils/UtilityFunctions';
 
 import AboutPage from './pages/AboutPage';
@@ -86,7 +85,7 @@ export default class Coriolis extends React.Component {
   _importBuild(r) {
     try {
       // Need to decode and gunzip the data, then build the ship
-      const data = zlib.gunzipSync(new Buffer(Utils.fromUrlSafe(r.params.data), 'base64'));
+      const data = zlib.gunzipSync(new Buffer(r.params.data, 'base64'));
       const json = JSON.parse(data);
       const ship = CompanionApiUtils.shipFromJson(json);
       r.params.ship = ship.id;
