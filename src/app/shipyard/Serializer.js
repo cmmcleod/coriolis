@@ -211,13 +211,13 @@ export function toDetailedExport(builds) {
  * @return {string}             Zipped Base 64 encoded JSON
  */
 export function fromComparison(name, builds, facets, predicate, desc) {
-  return Utils.toUrlSafe(LZString.compressToBase64(JSON.stringify({
+  return LZString.compressToBase64(JSON.stringify({
     n: name,
     b: builds.map((b) => { return { s: b.id, n: b.buildName, c: b.toString() }; }),
     f: facets,
     p: predicate,
     d: desc ? 1 : 0
-  })));
+  }));
 };
 
 /**

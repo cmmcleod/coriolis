@@ -1199,7 +1199,7 @@ export default class Ship {
       priorities.push(slot.priority);
     }
 
-    this.serialized.priorities = Utils.toUrlSafe(LZString.compressToBase64(priorities.join('')));
+    this.serialized.priorities = LZString.compressToBase64(priorities.join(''));
     return this;
   }
 
@@ -1220,7 +1220,7 @@ export default class Ship {
       enabled.push(slot.enabled ? 1 : 0);
     }
 
-    this.serialized.enabled = Utils.toUrlSafe(LZString.compressToBase64(enabled.join('')));
+    this.serialized.enabled = LZString.compressToBase64(enabled.join(''));
     return this;
   }
 
@@ -1387,7 +1387,7 @@ export default class Ship {
         buffer.writeInt8(-1, curpos++);
       }
 
-      this.serialized.modifications = Utils.toUrlSafe(zlib.gzipSync(buffer).toString('base64'));
+      this.serialized.modifications = zlib.gzipSync(buffer).toString('base64');
     } else {
       this.serialized.modifications = null;
     }

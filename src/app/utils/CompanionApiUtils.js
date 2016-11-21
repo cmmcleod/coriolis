@@ -355,6 +355,10 @@ function _addModifications(module, modifiers) {
     }
   }
 
+  // Jitter is an absolute number, so we need to divide it by 100
+  if (module.getModValue('jitter')) {
+    module.setModValue('jitter', module.getModValue('jitter') / 100);
+  }
 
   // FD uses interval between bursts internally, so we need to translate this to a real rate of fire
   if (module.getModValue('rof')) {

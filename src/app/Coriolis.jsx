@@ -7,7 +7,8 @@ import Persist from './stores/Persist';
 import Header from './components/Header';
 import Tooltip from './components/Tooltip';
 import ModalImport from './components/ModalImport';
-import * as Utils from './utils/UtilityFunctions';
+import * as CompanionApiUtils from './utils/CompanionApiUtils';
+import { outfitURL } from './utils/UrlGenerators'
 
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -73,6 +74,7 @@ export default class Coriolis extends React.Component {
     Router('/outfit/:ship/?', (r) => this._setPage(OutfittingPage, r));
     Router('/outfit/:ship/:code?', (r) => this._setPage(OutfittingPage, r));
     Router('/compare/:name?', (r) => this._setPage(ComparisonPage, r));
+    Router('/comparison?', (r) => this._setPage(ComparisonPage, r));
     Router('/comparison/:code', (r) => this._setPage(ComparisonPage, r));
     Router('/about', (r) => this._setPage(AboutPage, r));
     Router('*', (r) => this._setPage(null, r));
