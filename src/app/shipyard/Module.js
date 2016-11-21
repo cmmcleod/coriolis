@@ -28,16 +28,16 @@ export default class Module {
   /**
    * Get a value for a given modification
    * @param {Number} name  The name of the modification
-   * @return {Number}      The value of the modification, as a decimal value where 1 is 100%
+   * @return {Number}      The value of the modification, as an integer value scaled so that 1.23% == 123
    */
   getModValue(name) {
-    return this.mods  && this.mods[name] ? this.mods[name] / 10000 : null;
+    return this.mods  && this.mods[name] ? this.mods[name] : null;
   }
 
   /**
    * Set a value for a given modification ID
    * @param {Number} name   The name of the modification
-   * @param {Number} value  The value of the modification, as a decimal value where 1 is 100%
+   * @param {Number} value  The value of the modification, as an integer scaled so that -2.34% == -234
    */
   setModValue(name, value) {
     if (!this.mods) {
@@ -47,27 +47,41 @@ export default class Module {
     if (value == null || value == 0) {
       delete this.mods[name];
     } else {
-      // Store value with 2dp
-      this.mods[name] = Math.round(value * 10000);
+      // Round just to be sure
+      this.mods[name] = Math.round(value);
     }
   }
 
   /**
    * Helper to obtain a modified value using standard multipliers
-   * @param {String}  name the name of the modifier to obtain
-   * @return {Number} the mass of this module
+   * @param {String}  name     the name of the modifier to obtain
+   * @param {Boolean} additive Optional true if the value is additive rather than multiplicative
+   * @return {Number}          the mass of this module
    */
-  _getModifiedValue(name) {
-    let result = 0;
-    if (this[name]) {
-      result = this[name];
-      if (result) {
-        let mult = this.getModValue(name);
-        if (mult) { result = result * (1 + mult); }
+  _getModifiedValue(name, additive) {
+    let result = this[name] || (additive ? 0 : null); // Additive NULL === 0
+    if (result != null) {
+      // Jitter is special, being the only non-percentage value (it is in fact degrees)
+      const modValue = name === 'jitter' ? this.getModValue(name) / 100 : this.getModValue(name) / 10000;
+      if (modValue) {
+        if (additive) {
+          result = result + modValue;
+        } else {
+          result = result * (1 + modValue);
+        }
       }
     }
     return result;
   }
+
+  /**
+   * Return true if this is a shield generator
+   * @return {Boolean} if this is a shield generator
+   */
+  isShieldGenerator() {
+    return (this.grp === 'sg' || this.grp === 'psg' || this.grp === 'bsg');
+  }
+
   /**
    * Get the power generation of this module, taking in to account modifications
    * @return {Number} the power generation of this module
@@ -193,7 +207,7 @@ export default class Module {
    * @return {Number} the kinetic resistance of this module
    */
   getKineticResistance() {
-    return this._getModifiedValue('kinres');
+    return this._getModifiedValue('kinres', true);
   }
 
   /**
@@ -201,7 +215,7 @@ export default class Module {
    * @return {Number} the thermal resistance of this module
    */
   getThermalResistance() {
-    return this._getModifiedValue('thermres');
+    return this._getModifiedValue('thermres', true);
   }
 
   /**
@@ -209,7 +223,7 @@ export default class Module {
    * @return {Number} the explosive resistance of this module
    */
   getExplosiveResistance() {
-    return this._getModifiedValue('explres');
+    return this._getModifiedValue('explres', true);
   }
 
   /**
@@ -294,7 +308,7 @@ export default class Module {
     if (this['minmass']) {
       result = this['minmass'];
       if (result) {
-        let mult = this.getModValue('optmass');
+        let mult = this.getModValue('optmass') / 10000;
         if (mult) { result = result * (1 + mult); }
       }
     }
@@ -319,7 +333,7 @@ export default class Module {
     if (this['maxmass']) {
       result = this['maxmass'];
       if (result) {
-        let mult = this.getModValue('optmass');
+        let mult = this.getModValue('optmass') / 10000;
         if (mult) { result = result * (1 + mult); }
       }
     }
@@ -336,7 +350,7 @@ export default class Module {
     if (this['minmul']) {
       result = this['minmul'];
       if (result) {
-        let mult = this.getModValue('optmul');
+        let mult = this.getModValue('optmul') / 10000;
         if (mult) { result = result * (1 + mult); }
       }
     }
@@ -361,7 +375,7 @@ export default class Module {
     if (this['maxmul']) {
       result = this['maxmul'];
       if (result) {
-        let mult = this.getModValue('optmul');
+        let mult = this.getModValue('optmul') / 10000;
         if (mult) { result = result * (1 + mult); }
       }
     }
@@ -487,4 +501,44 @@ export default class Module {
     return this._getModifiedValue('hullboost');
   }
 
+  /**
+   * Get the shield reinforcement for this module, taking in to account modifications
+   * @return {Number} the shield reinforcement for this module
+   */
+  getShieldReinforcement() {
+    return this._getModifiedValue('shieldreinforcement');
+  }
+
+  /**
+   * Get the bays for this module, taking in to account modifications
+   * @return {Number} the bays for this module
+   */
+  getBays() {
+    return this._getModifiedValue('bays');
+  }
+
+  /**
+   * Get the rebuilds per bay for this module, taking in to account modifications
+   * @return {Number} the rebuilds per bay for this module
+   */
+  getRebuildsPerBay() {
+    return this._getModifiedValue('rebuildsperbay');
+  }
+
+  /**
+   * Get the cells for this module, taking in to account modifications
+   * @return {Number} the cells for this module
+   */
+  getCells() {
+    return this._getModifiedValue('cells');
+  }
+
+
+  /**
+   * Get the jitter for this module, taking in to account modifications
+   * @return {Number} the jitter for this module
+   */
+  getJitter() {
+    return this._getModifiedValue('jitter', true);
+  }
 }

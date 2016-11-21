@@ -275,15 +275,15 @@
           "minimum":      1
         },
         "hullExplRes": {
-          "description":  "Resistance of the hull to explosive attacks",
+          "description":  "Multiplier for explosive damage to hull",
           "type":         "number"
         },
         "hullKinRes": {
-          "description":  "Resistance of the hull to kinetic attacks",
+          "description":  "Multiplier for kinetic damage to hull",
           "type":         "number"
         },
         "hullThermRes": {
-          "description":  "Resistance of the hull to thermal attacks",
+          "description":  "Multiplier for thermal damage to hull",
           "type":         "number"
         },
         "fuelCapacity": {
@@ -311,20 +311,20 @@
           "minimum":      1
         },
         "shield": {
-          "description":  "Shield strengh in Mega Joules (Mj)",
+          "description":  "Shield strength in Mega Joules (Mj)",
           "type":         "number",
           "minimum":      0
         },
         "shieldExplRes": {
-          "description":  "Resistance of the shield to explosive attacks",
+          "description":  "Multiplier for explosive damage to shields",
           "type":         "number"
         },
         "shieldKinRes": {
-          "description":  "Resistance of the shield to kinetic attacks",
+          "description":  "Multiplier for kinetic damage to shields",
           "type":         "number"
         },
         "shieldThermRes": {
-          "description":  "Resistance of the shield to thermal attacks",
+          "description":  "Multiplier for thermal damage to shields",
           "type":         "number"
         },
         "speed": {
@@ -333,8 +333,8 @@
           "minimum":      1
         },
         "totalCost":  {
-          "type":         "integer",
-          "minimum":      1
+          "description":  "Total cost of the loadout, including discounts",
+          "type":         "number"
         },
         "unladenRange": {
           "description":  "Single Jump range when unladen, see unladenMass",

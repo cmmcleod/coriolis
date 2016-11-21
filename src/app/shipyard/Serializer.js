@@ -2,7 +2,9 @@ import { ModuleGroupToName, MountMap, BulkheadNames } from './Constants';
 import { Ships } from 'coriolis-data/dist';
 import Ship from './Ship';
 import * as ModuleUtils from './ModuleUtils';
+import * as Utils from '../utils/UtilityFunctions';
 import LZString from 'lz-string';
+import { outfitURL } from '../utils/UrlGenerators';
 
 const STANDARD = ['powerPlant', 'thrusters', 'frameShiftDrive', 'lifeSupport', 'powerDistributor', 'sensors', 'fuelTank'];
 
@@ -83,7 +85,7 @@ export function toDetailedBuild(buildName, ship) {
     ship: ship.name,
     references: [{
       name: 'Coriolis.io',
-      url: `https://coriolis.edcd.io/outfit/${ship.id}/${code}?bn=${encodeURIComponent(buildName)}`,
+      url: 'https://coriolis.edcd.io' + outfitURL(ship.id, code, buildName),
       code,
       shipId: ship.id
     }],
@@ -215,7 +217,7 @@ export function fromComparison(name, builds, facets, predicate, desc) {
     f: facets,
     p: predicate,
     d: desc ? 1 : 0
-  })).replace(/\//g, '-');
+  }));
 };
 
 /**
@@ -224,5 +226,5 @@ export function fromComparison(name, builds, facets, predicate, desc) {
  * @return {Object} Comparison data object
  */
 export function toComparison(code) {
-  return JSON.parse(LZString.decompressFromBase64(code.replace(/-/g, '/')));
+  return JSON.parse(LZString.decompressFromBase64(Utils.fromUrlSafe(code)));
 };

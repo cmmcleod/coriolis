@@ -34,20 +34,6 @@ export default class ShipSummaryTable extends TranslatedComponent {
       sgRecharge = time(ship.calcShieldRecharge());
     }
 
-            // <th colSpan={3}>{translate('shield resistance')}</th>
-            // <th colSpan={3}>{translate('hull resistance')}</th>
-            // <th className='lft'>{translate('explosive')}</th>
-            // <th className='lft'>{translate('kinetic')}</th>
-            // <th className='lft'>{translate('thermal')}</th>
-            // <th className='lft'>{translate('explosive')}</th>
-            // <th className='lft'>{translate('kinetic')}</th>
-            // <th className='lft'>{translate('thermal')}</th>
-            // <td>{pct(ship.shieldExplRes)}</td>
-            // <td>{pct(ship.shieldKinRes)}</td>
-            // <td>{pct(ship.shieldThermRes)}</td>
-            // <td>{pct(ship.hullExplRes)}</td>
-            // <td>{pct(ship.hullKinRes)}</td>
-            // <td>{pct(ship.hullThermRes)}</td>
     return <div id='summary'>
       <table id='summaryTable'>
         <thead>
@@ -58,7 +44,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <th onMouseEnter={termtip.bind(null, 'energy per second')} onMouseLeave={hide} rowSpan={2}>{translate('EPS')}</th>
             <th onMouseEnter={termtip.bind(null, 'heat per second')} onMouseLeave={hide} rowSpan={2}>{translate('HPS')}</th>
             <th rowSpan={2}>{translate('armour')}</th>
-            <th colSpan={3}>{translate('shields')}</th>
+            <th rowSpan={2}>{translate('shields')}</th>
             <th colSpan={3}>{translate('mass')}</th>
             <th rowSpan={2}>{translate('cargo')}</th>
             <th rowSpan={2}>{translate('fuel')}</th>
@@ -67,9 +53,6 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <th onMouseEnter={termtip.bind(null, 'mass lock factor')} onMouseLeave={hide} rowSpan={2}>{translate('MLF')}</th>
           </tr>
           <tr>
-            <th className='lft'>{translate('strength')}</th>
-            <th onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECOVER', { cap: 0 })} onMouseLeave={hide}>{translate('recovery')}</th>
-            <th onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECHARGE', { cap: 0 })} onMouseLeave={hide}>{translate('recharge')}</th>
             <th className='lft'>{translate('hull')}</th>
             <th onMouseEnter={termtip.bind(null, 'PHRASE_UNLADEN', { cap: 0 })} onMouseLeave={hide}>{translate('unladen')}</th>
             <th onMouseEnter={termtip.bind(null, 'PHRASE_LADEN', { cap: 0 })} onMouseLeave={hide}>{translate('laden')}</th>
@@ -90,8 +73,6 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{f1(ship.totalHps)}</td>
             <td>{int(ship.armour)}</td>
             <td className={sgClassNames}>{int(ship.shield)} {u.MJ}</td>
-            <td className={sgClassNames}>{sgRecover}</td>
-            <td className={sgClassNames}>{sgRecharge}</td>
             <td>{ship.hullMass} {u.T}</td>
             <td>{int(ship.unladenMass)} {u.T}</td>
             <td>{int(ship.ladenMass)} {u.T}</td>

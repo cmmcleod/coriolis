@@ -26,7 +26,7 @@ export default class ErrorDetails extends React.Component {
     if (ed) {
       content = <div style={{ textAlign:'left', fontSize:'0.8em', width: '43em', margin: '0 auto' }}>
         <div className='cen'>
-          <a href='https://github.com/cmmcleod/coriolis/issues' target='_blank' title='Coriolis Github Project'>Create an issue on Github</a>
+          <a href='https://github.com/edcd/coriolis/issues' target='_blank' title='Coriolis Github Project'>Create an issue on Github</a>
           {' if this keeps happening. Add these details:'}
         </div>
         <div style={{ marginTop: '2em' }}>

@@ -29,6 +29,8 @@ export const terms = {
   PHRASE_UNLADEN: 'Ship mass excluding fuel and cargo',
   PHRASE_UPDATE_RDY: 'Update Available! Click to refresh',
 
+  HELP_MODIFICATIONS_MENU: 'Click on a number to enter a new value, or drag along the bar for small changes',
+
   // Other languages fallback to these  values
   // Only Translate to other languages if the name is different in-game
   am: 'Auto Field-Maintenance Unit',
@@ -92,14 +94,18 @@ export const terms = {
   // Unit for seconds
   secs: 's',
 
-  // Hardpoint abbreviations
+  // Weapon, offence and defence
   dpe: 'Damage per MJ of energy',
   dps: 'Damage per second',
+  sdps: 'Sustained damage per second',
   dpssdps: 'Damage per second (sustained damage per second)',
   eps: 'Energy per second',
   epsseps: 'Energy per second (sustained energy per second)',
   hps: 'Heat per second',
   hpsshps: 'Heat per second (sustained heat per second)',
+  'damage by': 'Damage by',
+  'damage from': 'Damage from',
+  'shield cells': 'Shield cells',
 
   // Modifications
   ammo: 'Ammunition maximum',
@@ -134,6 +140,7 @@ export const terms = {
   rof: 'Rate of fire',
   shield: 'Shield',
   shieldboost: 'Shield boost',
+  shieldreinforcement: 'Shield reinforcement',
   spinup: 'Spin up time',
   syscap: 'Systems capacity',
   sysrate: 'Systems recharge rate',
