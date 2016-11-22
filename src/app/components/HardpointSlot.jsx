@@ -44,6 +44,12 @@ export default class HardpointSlot extends Slot {
       let validMods = Modifications.validity[m.grp] || [];
       let showModuleResistances = Persist.showModuleResistances();
 
+      // Modifications tooltip shows blueprint and grade, if available
+      let modTT = translate('modified');
+      if (m && m.blueprint) {
+        modTT = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
+      }
+
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
           <div className={'l'}>
@@ -53,7 +59,7 @@ export default class HardpointSlot extends Slot {
 	  {m.type && m.type.match('K') ? <span onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /></span> : ''}
 	  {m.type && m.type.match('T') ? <span onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /></span> : ''}
 	  {m.type && m.type.match('E') ? <span onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /></span> : ''}
-          {classRating} {translate(m.name || m.grp)}{ m.mods && Object.keys(m.mods).length > 0 ? <span className='r' onMouseOver={termtip.bind(null, 'modified')} onMouseOut={tooltip.bind(null, null)}><Modified /></span> : null }
+          {classRating} {translate(m.name || m.grp)}{ m.mods && Object.keys(m.mods).length > 0 ? <span className='r' onMouseOver={termtip.bind(null, modTT)} onMouseOut={tooltip.bind(null, null)}><Modified /></span> : null }
 	  </div>
 
           <div className={'r'}>{formats.round(m.getMass())}{u.T}</div>

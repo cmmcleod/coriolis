@@ -68,6 +68,7 @@
                 "rating": { "$ref": "#/definitions/standardRatings" },
                 "enabled": { "type": "boolean" },
                 "priority": { "type": "integer", "minimum": 1, "maximum": 5 },
+                "blueprint": { "type": "object" },
                 "modifications": { "type": "object" }
               }
             },
@@ -82,6 +83,7 @@
                   "description": "The name identifing the thrusters (if applicable), e.g. 'Enhanced Performance'",
                   "type": "string"
                 },
+                "blueprint": { "type": "object" },
                 "modifications": { "type": "object" }
               }
             },
@@ -92,6 +94,7 @@
                 "rating": { "$ref": "#/definitions/standardRatings" },
                 "enabled": { "type": "boolean" },
                 "priority": { "type": "integer", "minimum": 1, "maximum": 5 },
+                "blueprint": { "type": "object" },
                 "modifications": { "type": "object" }
               }
             },
@@ -102,6 +105,7 @@
                 "rating": { "$ref": "#/definitions/standardRatings" },
                 "enabled": { "type": "boolean" },
                 "priority": { "type": "integer", "minimum": 1, "maximum": 5 },
+                "blueprint": { "type": "object" },
                 "modifications": { "type": "object" }
               }
             },
@@ -112,6 +116,7 @@
                 "rating": { "$ref": "#/definitions/standardRatings" },
                 "enabled": { "type": "boolean" },
                 "priority": { "type": "integer", "minimum": 1, "maximum": 5 },
+                "blueprint": { "type": "object" },
                 "modifications": { "type": "object" }
               }
             },
@@ -122,6 +127,7 @@
                 "rating": { "$ref": "#/definitions/standardRatings" },
                 "enabled": { "type": "boolean" },
                 "priority": { "type": "integer", "minimum": 1, "maximum": 5 },
+                "blueprint": { "type": "object" },
                 "modifications": { "type": "object" }
               }
             },
@@ -132,6 +138,7 @@
                 "rating": { "$ref": "#/definitions/standardRatings" },
                 "enabled": { "type": "boolean" },
                 "priority": { "type": "integer", "minimum": 1, "maximum": 5 },
+                "blueprint": { "type": "object" },
                 "modifications": { "type": "object" }
               }
             }
@@ -155,6 +162,7 @@
                 "description": "The name identifying the component (if applicable), e.g. 'Advance Discovery Scanner', or 'Detailed Surface Scanner'",
                 "type": "string"
               },
+              "blueprint": { "type": "object" },
               "modifications": { "type": "object" }
             }
           },
@@ -179,6 +187,7 @@
                 "description": "The name identifing the component (if applicable), e.g. 'Retributor', or 'Mining Lance'",
                 "type": "string"
               },
+              "blueprint": { "type": "object" },
               "modifications": { "type": "object" }
             }
           },
@@ -202,6 +211,7 @@
                 "description": "The name identifing the component (if applicable), e.g. 'Point Defence', or 'Electronic Countermeasure'",
                 "type": "string"
               },
+              "blueprint": { "type": "object" },
               "modifications": { "type": "object" }
             }
           },
