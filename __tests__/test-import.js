@@ -142,7 +142,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda/4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA.?bn=Test%20My%20Ship');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda?code=4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA%3D%3D.CwBhCYzBGW9qCTSqs5xA.&bn=Test%20My%20Ship');
     });
 
     it('catches an invalid build', function() {
@@ -167,7 +167,24 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda/4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA==.CwBhCYzBGW9qCTSqs5xA.H4sIAAAAAAAAA2MUe8HMwPD-PwDDhxeuCAAAAA==?bn=Test%20My%20Ship');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda?code=4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04--0303326b.AwRj4zNKqA%3D%3D.CwBhCYzBGW9qCTSqs5xA.H4sIAAAAAAAAA2P8xwAEf0GE2AtmBob%2F%2FwFvM%2BjKEgAAAA%3D%3D&bn=Test%20My%20Ship');
+    });
+  });
+
+  describe('Import Detailed Engineered V4 Build', function() {
+
+    beforeEach(reset);
+
+    it('imports a valid v4 build', function() {
+      const importData = require('./fixtures/asp-test-detailed-export-v4');
+      pasteText(JSON.stringify(importData));
+
+      expect(modal.state.importValid).toBeTruthy();
+      expect(modal.state.errorMsg).toEqual(null);
+      expect(modal.state.singleBuild).toBe(true);
+      clickProceed();
+      expect(MockRouter.go.mock.calls.length).toBe(1);
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/asp?code=0pftiFflfddsnf5------020202033c044002v62f2i.AwRj4yvI.CwRgDBldHnJA.H4sIAAAAAAAAA2P858DAwPCXEUhwHPvx%2F78YG5AltB7I%2F8%2F0TwImJboDSPJ%2F%2B%2Ff%2Fv%2FKlX%2F%2F%2Fi3AwMTBIfARK%2FGf%2BJwVSxArStVAYqOjvz%2F%2F%2FJVo5GRhE2IBc4SKQSSz%2FDGEmCa398P8%2F%2F2%2BgTf%2F%2FAwDFxwtofAAAAA%3D%3D&bn=Multi-purpose%20Asp%20Explorer');
     });
   });
 
@@ -209,13 +226,13 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/federal_corvette/2putsFklndzsxf50x0x7l28281919040404040402020l06p05sf63c5ifhv66g2f.AwRj4zNaKA==.CwRgDBldUExuBiQqA===.H4sIAAAAAAAAAx2Rzy4DURTGz7TuzHRu47ZjWreKlg5iQ9KFZ9CENyBWtWo8gIUFsamteAIJi0qEWIhdN11ZEN1IwyNYVKRpcXzH5su553f_XyfvKiLTYma-TkScyHVcokoYEdmbBNDsiDla-WUOT5LgyfAshHdvyGyjFFHUQCSrBU8TLT4gYq4DNL_LhNTFN3PwiqdZQyX2C-sekep-Mrs1RIbnDppsIogD1UAtN7JEM9eIzZg8hmhsEU32gFmrdgB_UARvjYEr4QMUMffoxGnV-M8X3hZ_lAO-gmWq2Eq2IVtDOzZ2Hbbuws6KxCKmKUUydgRb3woSiUXMs6Cs7Qt6FCQSi5hxkNKhj6qhfcPU_kU4wYrFMseSOmFXMKbuwZsViUWMlq1sbhvJ_lKyfqTqEJGJyoC5eIpU9x2TRnUswYXyF77BW4Z3qQuv05GDTpfvcDzvSbxJ5DtV_aHS1I4clyB2A5_b-pAL8x_enn626gEAAA==?bn=Imported%20Federal%20Corvette');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/federal_corvette?code=2putsFklndzsxf50x0x7l28281919040404040402020l06p05sf63c5ifhv66g2f.AwRj4zNaKA%3D%3D.CwRgDBldUExuBiQqA%3D%3D%3D.H4sIAAAAAAAAA02Svy9DURTHT1t9%2FfEat32eem1V0YdYSDpgkBhpwsxATDU1%2FgCDQWKpVfwFEoZKhBjE1qWTgegiDX%2BCoSJNyz2%2BR%2FLkLd%2Bce7%2Bf8333vnMDeoWIfgKQtBEmUnVmjlaw5KBOixWCDDcNoqJlEzk3QUBjfWZ7XjNbJ7A5pLNCop2sMwv%2Bfo%2FZsWNEdhU9HNbLXtJUxCSafkA50QQ0uYeQ2MU3c%2FwVS7WAdI7qTe9MmYMIUbjzyWyU0WOdY9PZAM5xveVlhqv4kmE7RPlr9CeXsFesbhONtAGy6SMbcZCHOZD1AY%2FswlH3OAcnfGTtL1PIhpCLQl6hUiW5JW5FThmHYaVXvcM6axCzhTIl4oqomgQnfVAfat4KJOKKqGeBUj6oI9CjQCKuiBoEUziK4puWj3zDjc0XIQmVK5U6lrghHzSHK5lt%2BCkRV0SZ8m8cvfE%2F4x1Em5eSJE1uD5vBYpc5d4o44x2IXcEP4Iwue8HjX3gIkVn4My0sA00Z36jPv8OoIk%2Fih7AOlOS1FHTe87O7MlSCOOt4PYkPmSz%2FAiP2EO%2BUAgAA&bn=Imported%20Federal%20Corvette');
     });
   });
 
   describe('Import E:D Shipyard Builds', function() {
 
-    it('imports a valid builds', function() {
+    it('imports a valid build', function() {
       const imports = require('./fixtures/ed-shipyard-import-valid');
 
       for (let i = 0; i < imports.length; i++ ) {
@@ -226,7 +243,7 @@ describe('Import Modal', function() {
         expect(modal.state.errorMsg).toEqual(null);
         clickProceed();
         expect(MockRouter.go.mock.calls.length).toBe(1);
-        expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/' + fixture.shipId + '/' + fixture.buildCode + '?bn=' + encodeURIComponent(fixture.buildName));
+        expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/' + fixture.shipId + '?code=' + encodeURIComponent(fixture.buildCode) + '&bn=' + encodeURIComponent(fixture.buildName));
       }
     });
 

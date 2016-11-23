@@ -30,6 +30,10 @@ function standardToSchema(standard) {
       o.modifications = standard.m.mods;
     }
 
+    if (standard.m.blueprint && Object.keys(standard.m.blueprint).length > 0) {
+      o.blueprint = standard.m.blueprint;
+    }
+
     return o;
   }
   return null;
@@ -62,6 +66,10 @@ function slotToSchema(slot) {
     if (slot.m.mods && Object.keys(slot.m.mods).length > 0) {
       o.modifications = slot.m.mods;
     }
+    if (slot.m.blueprint && Object.keys(slot.m.blueprint).length > 0) {
+      o.blueprint = slot.m.blueprint;
+    }
+
     return o;
   }
   return null;
@@ -137,6 +145,7 @@ export function fromDetailedBuild(detailedBuild) {
   let ship = new Ship(shipId, shipData.properties, shipData.slots);
   let bulkheads = ModuleUtils.bulkheadIndex(stn.bulkheads);
   let modifications = new Array(stn.bulkheads.modifications);
+  let blueprints = new Array(stn.bulkheads.blueprint);
 
   if (bulkheads < 0) {
     throw 'Invalid bulkheads: ' + stn.bulkheads;
@@ -149,6 +158,7 @@ export function fromDetailedBuild(detailedBuild) {
     priorities.push(stn[c].priority === undefined ? 0 : stn[c].priority - 1);
     enabled.push(stn[c].enabled === undefined ? true : stn[c].enabled);
     modifications.push(stn[c].modifications);
+    blueprints.push(stn[c].blueprint);
     return stn[c].class + stn[c].rating;
   });
 
@@ -174,8 +184,13 @@ export function fromDetailedBuild(detailedBuild) {
     comps.utility.map(c => (c && c.m ? c.m.modifications : null)),
     comps.internal.map(c => (c && c.m ? c.m.modifications : null))
   );
+  blueprints = blueprints.concat(
+    comps.hardpoints.map(c => (c && c.m ? c.m.blueprint : null)),
+    comps.utility.map(c => (c && c.m ? c.m.blueprint : null)),
+    comps.internal.map(c => (c && c.m ? c.m.blueprint : null))
+  );
 
-  ship.buildWith({ bulkheads, standard, hardpoints, internal }, priorities, enabled, modifications);
+  ship.buildWith({ bulkheads, standard, hardpoints, internal }, priorities, enabled, modifications, blueprints);
 
   return ship;
 };
