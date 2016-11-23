@@ -1,4 +1,7 @@
-#2.2.x
+#2.2.3
+  * Fix hull boost calculation
+
+#2.2.2
   * Update DPS/HPS/EPS in real-time as modifiers change
   * Use coriolis-data 2.2.2:
     * Add distributor draw modifier to shield generators
