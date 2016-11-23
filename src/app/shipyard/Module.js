@@ -540,4 +540,12 @@ export default class Module {
   getJitter() {
     return this._getModifiedValue('jitter', true);
   }
+
+  /**
+   * Get the damage type for this module, taking in to account modifications
+   * @return {string} the damage types for this module; any combination of E T and K
+   */
+  getDamageType() {
+    return this.type;
+  }
 }
