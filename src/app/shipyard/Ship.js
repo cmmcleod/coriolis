@@ -930,22 +930,22 @@ export default class Ship {
         totalDpe += dpe;
         totalDps += dps;
         totalSDps += sdps;
-        if (slot.m.type === 'E') {
+        if (slot.m.getDamageType() === 'E') {
           totalExplDpe += dpe;
           totalExplDps += dps;
           totalExplSDps += sdps;
         }
-        if (slot.m.type === 'K') {
+        if (slot.m.getDamageType() === 'K') {
           totalKinDpe += dpe;
           totalKinDps += dps;
           totalKinSDps += sdps;
         }
-        if (slot.m.type === 'T') {
+        if (slot.m.getDamageType() === 'T') {
           totalThermDpe += dpe;
           totalThermDps += dps;
           totalThermSDps += sdps;
         }
-        if (slot.m.type === 'EK') {
+        if (slot.m.getDamageType() === 'EK') {
           totalExplDpe += dpe / 2;
           totalKinDpe += dpe / 2;
           totalExplDps += dps / 2;
@@ -953,7 +953,7 @@ export default class Ship {
           totalExplSDps += sdps / 2;
           totalKinSDps += sdps / 2;
         }
-        if (slot.m.type === 'ET') {
+        if (slot.m.getDamageType() === 'ET') {
           totalExplDpe += dpe / 2;
           totalThermDpe += dpe / 2;
           totalExplDps += dps / 2;
@@ -961,7 +961,7 @@ export default class Ship {
           totalExplSDps += sdps / 2;
           totalThermSDps += sdps / 2;
         }
-        if (slot.m.type === 'KT') {
+        if (slot.m.getDamageType() === 'KT') {
           totalKinDpe += dpe / 2;
           totalThermDpe += dpe / 2;
           totalKinDps += dps / 2;
