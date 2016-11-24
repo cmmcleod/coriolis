@@ -1414,8 +1414,8 @@ export default class Ship {
           for (let slotMod of slot) {
             buffer.writeInt8(slotMod.id, curpos++);
 	    if (isNaN(slotMod.value)) {
-                // We need to write the value out as a four-byte string
-                buffer.writeInt32LE(slotMod.value, curpos);
+                // Need to write the string with a maximum of four characters
+		buffer.write(("    " + slotMod.value).slice(-4), curpos, 4);
 	    } else {
                 buffer.writeInt32LE(slotMod.value, curpos);
 	    }
@@ -1452,7 +1452,13 @@ export default class Ship {
       let blueprint = {};
       let modificationId = buffer.readInt8(curpos++);
       while (modificationId != MODIFICATION_ID_DONE) {
-        let modificationValue = buffer.readInt32LE(curpos);
+        let modificationValue;
+        if (modificationId === 40) {
+          // Type is special, in that it's a character string
+          modificationValue = buffer.toString('utf8', curpos, curpos + 4).trim();
+	} else {
+          modificationValue = buffer.readInt32LE(curpos);
+	}
         curpos += 4;
 	// There are a number of 'special' modification IDs, check for them here
 	if (modificationId === MODIFICATION_ID_BLUEPRINT) {
