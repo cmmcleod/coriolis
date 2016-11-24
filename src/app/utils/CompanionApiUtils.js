@@ -284,12 +284,16 @@ function _addModifications(module, modifiers, blueprint, grade) {
 
     // Carry out the required changes
     for (const action in modifierActions) {
-      const actionValue = modifierActions[action] * value;
-      let mod = module.getModValue(action) / 10000;
-      if (!mod) {
-        mod = 0;
+      if (isNaN(modifierActions[action])) {
+        module.setModValue(action, modifierActions[action]);
+      } else {
+        const actionValue = modifierActions[action] * value;
+        let mod = module.getModValue(action) / 10000;
+        if (!mod) {
+          mod = 0;
+        }
+        module.setModValue(action, ((1 + mod) * (1 + actionValue) - 1) * 10000);
       }
-      module.setModValue(action, ((1 + mod) * (1 + actionValue) - 1) * 10000);
     }
   }
 
