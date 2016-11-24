@@ -289,8 +289,6 @@ export default class OutfittingPage extends Page {
         sStr = ship.getStandardString() + '.' + ship.getModificationsString(),
         iStr = ship.getInternalString() + '.' + ship.getModificationsString();
 
-    Router.replace(outfitURL(ship.id, code, buildName));
-
     return (
       <div id='outfit' className={'page'} style={{ fontSize: (sizeRatio * 0.9) + 'em' }}>
         <div id='overview'>
