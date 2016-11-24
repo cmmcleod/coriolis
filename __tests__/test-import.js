@@ -228,6 +228,18 @@ describe('Import Modal', function() {
       expect(MockRouter.go.mock.calls.length).toBe(1);
       expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/federal_corvette?code=2putsFklndzsxf50x0x7l28281919040404040402020l06p05sf63c5ifrv66g2f.AwRj4zNaKA%3D%3D.CwRgDBldUExuBiQqA%3D%3D%3D.H4sIAAAAAAAAA02SP0sDQRDFJ4m5%2FLngJucZL4kxak7FRiGFWgiWGtBaC8UqVsEPYGEh2MRW%2FASCFhFEsRC7NKksIqaRoB%2FBQggh0R3fCCfXPGb3%2Febd7s0G9BoR%2FQQgaSNMpOrMHK1gyUGdFisEGW0aREXLJnLugoAmBsz2oma2zmBzSGeFRDtZFxb8wz6zY8eI7Cp6OKxXvaSZiEk0%2B4Ryqglo%2BgAhsatv5vgblmoJ6RzV296ZMkcRonCry2yU0WNdYtPZAs5xveNlhqv4kmE7RPlb9CdXsFes7hKNdQCy6SMbcZDHOZD1IY%2FswVGPOAcnfGTtL1PIhpDLQt6gUiW5JW5FThmHYaXXvcM6GxCzjTIl4oqomgQnfdAAat4LJOKKqBeBUj7oS6BngURcETUMpnASxTctH%2FmOG5uvQhIqVyp1KnEjPmgBVzI78FMirogy5d84eut%2FxnuINq8lSZrcPjaDxR5z7hxxxgcQu4IfwBld9oInu3gIkXn4c20sA00Z37jPf8CoIi3xQ1gHSvJaCjrv%2Bdl9GSpBnE28nsSnTJZ%2FAWD7326UAgAA&bn=Imported%20Federal%20Corvette');
     });
+
+    it('imports a valid v4 build', function() {
+      const importData = require('./fixtures/companion-api-import-2');
+      pasteText(JSON.stringify(importData));
+
+      expect(modal.state.importValid).toBeTruthy();
+      expect(modal.state.errorMsg).toEqual(null);
+      expect(modal.state.singleBuild).toBe(true);
+      clickProceed();
+      expect(MockRouter.go.mock.calls.length).toBe(1);
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/beluga?code=0pktsFplCdpsnf70t0t2727270004040404043c4fmiml-04mc0iv62i2f.AwRj4yukg%3D%3D%3D.CwRgDBldHi8IUA%3D%3D.H4sIAAAAAAAAA2P8Z8%2FAwPCXEUiIKTMxMPCv%2F%2Ff%2FP8cFIPGf6Z8YTEr0GjMDg%2FJWICERBOTzn%2Fn7%2F7%2FIO5Ai5n9SIEWsQEIoSxAolfbt%2F3%2BJPk4GBhE7YQYGYVmgcuVnf4Aq%2FwMAIrEcGGsAAAA%3D&bn=Imported%20Beluga%20Liner');
+    });
   });
 
   describe('Import E:D Shipyard Builds', function() {

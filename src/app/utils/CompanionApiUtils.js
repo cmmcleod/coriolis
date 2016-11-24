@@ -240,7 +240,7 @@ export function shipFromJson(json) {
   // Add internal compartments
   let internalSlotNum = 1;
   for (let i in shipTemplate.slots.internal) {
-    const internalClassNum = shipTemplate.slots.internal[i];
+    const internalClassNum = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].class : shipTemplate.slots.internal[i];
 
     let internalSlot = null;
     while (internalSlot === null && internalSlotNum < 99) {
