@@ -1,4 +1,16 @@
-#2.2.x
+#2.2.3
+  * Fix hull boost calculation - now shows correct % modifier and total armour
+  * Fix import of DiamondBack - can now be imported
+  * Fix import of Beluga - can now be imported
+  * Use coriolis-data 2.2.3:
+    * Fix mismatch between class 5 and class 7 fighter hangars - now shows correct module
+    * Add details for concordant sequence special effect - now shows correct damage
+    * Fix details for thermal shock special effect - now shows correct damage
+    * Add engineer blueprints
+  * Modification tooltip now shows name and grade of modifications for imported builds
+  * Retain import URL unless user changes the build - allows future updates of Coriolis to take advantage of additional build information
+
+#2.2.2
   * Update DPS/HPS/EPS in real-time as modifiers change
   * Use coriolis-data 2.2.2:
     * Add distributor draw modifier to shield generators

@@ -1,0 +1,552 @@
+{
+  "cargo": {
+    "capacity": 32
+  },
+  "free": false,
+  "fuel": {
+    "main": {
+      "capacity": 128
+    },
+    "reserve": {
+      "capacity": 0.81
+    }
+  },
+  "id": 31,
+  "modules": {
+    "Armour": {
+      "module": {
+        "free": false,
+        "id": 128049346,
+        "name": "BelugaLiner_Armour_Grade1",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    },
+    "Bobble01": [],
+    "Bobble02": [],
+    "Bobble03": [],
+    "Bobble04": [],
+    "Bobble05": [],
+    "Bobble06": [],
+    "Bobble07": [],
+    "Bobble08": [],
+    "Bobble09": [],
+    "Bobble10": [],
+    "Decal1": {
+      "module": {
+        "free": false,
+        "id": 128667757,
+        "name": "Decal_Explorer_Ranger",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    },
+    "Decal2": {
+      "module": {
+        "free": false,
+        "id": 128667742,
+        "name": "Decal_Combat_Deadly",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    },
+    "Decal3": {
+      "module": {
+        "free": false,
+        "id": 128667750,
+        "name": "Decal_Trade_Tycoon",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    },
+    "EngineColour": [],
+    "FrameShiftDrive": {
+      "module": {
+        "free": false,
+        "id": 128064132,
+        "modifiers": {
+          "engineerID": 300100,
+          "id": 175,
+          "modifiers": [
+            {
+              "name": "mod_mass",
+              "type": 1,
+              "value": 0.4457540512085
+            },
+            {
+              "name": "mod_health",
+              "type": 1,
+              "value": -0.24584779143333
+            },
+            {
+              "name": "mod_passive_power",
+              "type": 1,
+              "value": 0.24457727372646
+            },
+            {
+              "name": "mod_fsd_optimised_mass",
+              "type": 1,
+              "value": 0.49257898330688
+            },
+            {
+              "name": "mod_fsd_max_fuel_per_jump",
+              "type": 2,
+              "value": 0.028505677357316
+            },
+            {
+              "name": "mod_fsd_heat_rate",
+              "type": 2,
+              "value": -0.079360365867615
+            }
+          ],
+          "moduleTags": [
+            16
+          ],
+          "recipeID": 128673694,
+          "slotIndex": 53
+        },
+        "name": "Int_Hyperdrive_Size7_Class5",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 5,
+        "recipeName": "FSD_LongRange",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 46160201
+      }
+    },
+    "FuelTank": {
+      "module": {
+        "free": false,
+        "id": 128064352,
+        "name": "Int_FuelTank_Size7_Class3",
+        "on": true,
+        "priority": 1,
+        "unloaned": 1602822,
+        "value": 1602822
+      }
+    },
+    "LifeSupport": {
+      "module": {
+        "free": false,
+        "id": 128064174,
+        "name": "Int_LifeSupport_Size8_Class2",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 1569565
+      }
+    },
+    "MainEngines": {
+      "module": {
+        "free": false,
+        "id": 128064094,
+        "modifiers": {
+          "engineerID": 300100,
+          "id": 253,
+          "modifiers": [
+            {
+              "name": "mod_engine_mass_curve_multiplier",
+              "type": 1,
+              "value": 0.098235413432121
+            },
+            {
+              "name": "mod_engine_heat",
+              "type": 1,
+              "value": 0.18069696426392
+            },
+            {
+              "name": "mod_passive_power",
+              "type": 1,
+              "value": 0.033788848668337
+            },
+            {
+              "name": "mod_health",
+              "type": 1,
+              "value": -0.056404989212751
+            },
+            {
+              "name": "mod_engine_mass_curve",
+              "type": 1,
+              "value": -0.027384582906961
+            },
+            {
+              "name": "mod_engine_heat",
+              "type": 2,
+              "value": -0.072683908045292
+            }
+          ],
+          "moduleTags": [
+            17
+          ],
+          "recipeID": 128673655,
+          "slotIndex": 52
+        },
+        "name": "Int_Engine_Size7_Class2",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 1,
+        "recipeName": "Engine_Dirty",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 1709638
+      }
+    },
+    "MediumHardpoint1": {
+      "module": {
+        "free": false,
+        "id": 128049436,
+        "name": "Hpt_BeamLaser_Turret_Medium",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 1889910
+      }
+    },
+    "MediumHardpoint2": {
+      "module": {
+        "free": false,
+        "id": 128049436,
+        "name": "Hpt_BeamLaser_Turret_Medium",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 1889910
+      }
+    },
+    "MediumHardpoint3": {
+      "module": {
+        "free": false,
+        "id": 128049460,
+        "name": "Hpt_MultiCannon_Gimbal_Medium",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 51300
+      }
+    },
+    "MediumHardpoint4": {
+      "module": {
+        "free": false,
+        "id": 128049460,
+        "name": "Hpt_MultiCannon_Gimbal_Medium",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 51300
+      }
+    },
+    "MediumHardpoint5": {
+      "module": {
+        "free": false,
+        "id": 128049460,
+        "name": "Hpt_MultiCannon_Gimbal_Medium",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 51300
+      }
+    },
+    "PaintJob": {
+      "module": {
+        "free": false,
+        "id": 128732290,
+        "name": "PaintJob_BelugaLiner_Tactical_White",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    },
+    "PlanetaryApproachSuite": {
+      "module": {
+        "free": false,
+        "id": 128672317,
+        "name": "Int_PlanetApproachSuite",
+        "on": true,
+        "priority": 1,
+        "unloaned": 450,
+        "value": 450
+      }
+    },
+    "PowerDistributor": {
+      "module": {
+        "free": false,
+        "id": 128064207,
+        "name": "Int_PowerDistributor_Size6_Class5",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 3128120
+      }
+    },
+    "PowerPlant": {
+      "module": {
+        "free": false,
+        "id": 128064057,
+        "modifiers": {
+          "engineerID": 300100,
+          "id": 277,
+          "modifiers": [
+            {
+              "name": "mod_powerplant_power",
+              "type": 1,
+              "value": 0.054692290723324
+            },
+            {
+              "name": "mod_health",
+              "type": 1,
+              "value": -0.033690698444843
+            },
+            {
+              "name": "mod_powerplant_heat",
+              "type": 1,
+              "value": 0.027470717206597
+            },
+            {
+              "name": "mod_powerplant_heat",
+              "type": 2,
+              "value": -0.056317910552025
+            }
+          ],
+          "moduleTags": [
+            18
+          ],
+          "recipeID": 128673765,
+          "slotIndex": 51
+        },
+        "name": "Int_Powerplant_Size6_Class5",
+        "on": true,
+        "priority": 1,
+        "recipeLevel": 1,
+        "recipeName": "PowerPlant_Boosted",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 14561578
+      }
+    },
+    "Radar": {
+      "module": {
+        "free": false,
+        "id": 128064239,
+        "name": "Int_Sensors_Size5_Class2",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 71500
+      }
+    },
+    "Slot01_Size6": {
+      "module": {
+        "free": false,
+        "id": 128666681,
+        "name": "Int_FuelScoop_Size6_Class5",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 25887249
+      }
+    },
+    "Slot02_Size6": {
+      "module": {
+        "free": false,
+        "id": 128064287,
+        "name": "Int_ShieldGenerator_Size6_Class5",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 14561578
+      }
+    },
+    "Slot03_Size6": {
+      "module": {
+        "free": false,
+        "id": 128727927,
+        "name": "Int_PassengerCabin_Size6_Class2",
+        "on": true,
+        "priority": 1,
+        "unloaned": 165808,
+        "value": 165808
+      }
+    },
+    "Slot04_Size6": {
+      "module": {
+        "free": false,
+        "id": 128727928,
+        "name": "Int_PassengerCabin_Size6_Class3",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 497429
+      }
+    },
+    "Slot05_Size5": {
+      "module": {
+        "free": false,
+        "id": 128727925,
+        "name": "Int_PassengerCabin_Size5_Class4",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 1492286
+      }
+    },
+    "Slot06_Size5": {
+      "module": {
+        "free": false,
+        "id": 128064342,
+        "name": "Int_CargoRack_Size5_Class1",
+        "on": true,
+        "priority": 1,
+        "unloaned": 100409,
+        "value": 100409
+      }
+    },
+    "Slot07_Size4": {
+      "module": {
+        "free": false,
+        "id": 128727922,
+        "name": "Int_PassengerCabin_Size4_Class1",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 17059
+      }
+    },
+    "Slot08_Size3": {
+      "module": {
+        "free": false,
+        "id": 128667632,
+        "name": "Int_Repairer_Size3_Class5",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 2361960
+      }
+    },
+    "Slot09_Size3": {
+      "module": {
+        "free": false,
+        "id": 128672289,
+        "name": "Int_BuggyBay_Size2_Class2",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 19440
+      }
+    },
+    "Slot10_Size3": {
+      "module": {
+        "free": false,
+        "id": 128666634,
+        "name": "Int_DetailedSurfaceScanner_Tiny",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 225000
+      }
+    },
+    "Slot11_Size3": {
+      "module": {
+        "free": false,
+        "id": 128663561,
+        "name": "Int_StellarBodyDiscoveryScanner_Advanced",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 1390500
+      }
+    },
+    "TinyHardpoint1": {
+      "module": {
+        "free": false,
+        "id": 128049513,
+        "name": "Hpt_ChaffLauncher_Tiny",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 7650
+      }
+    },
+    "TinyHardpoint2": {
+      "module": {
+        "free": false,
+        "id": 128668536,
+        "name": "Hpt_ShieldBooster_Size0_Class5",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 252900
+      }
+    },
+    "TinyHardpoint3": {
+      "module": {
+        "free": false,
+        "id": 128668536,
+        "name": "Hpt_ShieldBooster_Size0_Class5",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 252900
+      }
+    },
+    "TinyHardpoint4": {
+      "module": {
+        "free": false,
+        "id": 128668536,
+        "name": "Hpt_ShieldBooster_Size0_Class5",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 281000
+      }
+    },
+    "TinyHardpoint5": {
+      "module": {
+        "free": false,
+        "id": 128668536,
+        "name": "Hpt_ShieldBooster_Size0_Class5",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 281000
+      }
+    },
+    "TinyHardpoint6": {
+      "module": {
+        "free": false,
+        "id": 128668536,
+        "name": "Hpt_ShieldBooster_Size0_Class5",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 281000
+      }
+    },
+    "WeaponColour": {
+      "module": {
+        "free": false,
+        "id": 128732194,
+        "name": "WeaponCustomisation_Purple",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    }
+  },
+  "name": "BelugaLiner",
+  "value": {
+    "hull": 71688743,
+    "modules": 120812762,
+    "unloaned": 1869489
+  }
+}

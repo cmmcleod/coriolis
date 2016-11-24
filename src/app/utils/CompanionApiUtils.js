@@ -13,8 +13,8 @@ const SHIP_FD_NAME_TO_CORIOLIS_NAME = {
   'CobraMkIII': 'cobra_mk_iii',
   'CobraMkIV': 'cobra_mk_iv',
   'Cutter': 'imperial_cutter',
-  'DiamondBack': 'diamondback_explorer',
-  'DiamondBackXL': 'diamondback',
+  'DiamondBackXL': 'diamondback_explorer',
+  'DiamondBack': 'diamondback',
   'Eagle': 'eagle',
   'Empire_Courier': 'imperial_courier',
   'Empire_Eagle': 'imperial_eagle',
@@ -149,13 +149,13 @@ export function shipFromJson(json) {
     throw 'Unknown bulkheads "' + armourJson.name + '"';
   }
   ship.bulkheads.enabled = true;
-  if (armourJson.modifiers) _addModifications(ship.bulkheads.m, armourJson.modifiers);
+  if (armourJson.modifiers) _addModifications(ship.bulkheads.m, armourJson.modifiers, armourJson.recipeName, armourJson.recipeLevel);
 
   // Add the standard modules
   // Power plant
   const powerplantJson = json.modules.PowerPlant.module;
   const powerplant = _moduleFromEdId(powerplantJson.id);
-  if (powerplantJson.modifiers) _addModifications(powerplant, powerplantJson.modifiers);
+  if (powerplantJson.modifiers) _addModifications(powerplant, powerplantJson.modifiers, powerplantJson.recipeName, powerplantJson.recipeLevel);
   ship.use(ship.standard[0], powerplant, true);
   ship.standard[0].enabled = powerplantJson.on === true;
   ship.standard[0].priority = powerplantJson.priority;
@@ -163,7 +163,7 @@ export function shipFromJson(json) {
   // Thrusters
   const thrustersJson = json.modules.MainEngines.module;
   const thrusters = _moduleFromEdId(thrustersJson.id);
-  if (thrustersJson.modifiers) _addModifications(thrusters, thrustersJson.modifiers);
+  if (thrustersJson.modifiers) _addModifications(thrusters, thrustersJson.modifiers, thrustersJson.recipeName, thrustersJson.recipeLevel);
   ship.use(ship.standard[1], thrusters, true);
   ship.standard[1].enabled = thrustersJson.on === true;
   ship.standard[1].priority = thrustersJson.priority;
@@ -171,7 +171,7 @@ export function shipFromJson(json) {
   // FSD
   const frameshiftdriveJson = json.modules.FrameShiftDrive.module;
   const frameshiftdrive = _moduleFromEdId(frameshiftdriveJson.id);
-  if (frameshiftdriveJson.modifiers) _addModifications(frameshiftdrive, frameshiftdriveJson.modifiers);
+  if (frameshiftdriveJson.modifiers) _addModifications(frameshiftdrive, frameshiftdriveJson.modifiers, frameshiftdriveJson.recipeName, frameshiftdriveJson.recipeLevel);
   ship.use(ship.standard[2], frameshiftdrive, true);
   ship.standard[2].enabled = frameshiftdriveJson.on === true;
   ship.standard[2].priority = frameshiftdriveJson.priority;
@@ -179,7 +179,7 @@ export function shipFromJson(json) {
   // Life support
   const lifesupportJson = json.modules.LifeSupport.module;
   const lifesupport = _moduleFromEdId(lifesupportJson.id);
-  if (lifesupportJson.modifiers)_addModifications(lifesupport, lifesupportJson.modifiers);
+  if (lifesupportJson.modifiers)_addModifications(lifesupport, lifesupportJson.modifiers, lifesupportJson.recipeName, lifesupportJson.recipeLevel);
   ship.use(ship.standard[3], lifesupport, true);
   ship.standard[3].enabled = lifesupportJson.on === true;
   ship.standard[3].priority = lifesupportJson.priority;
@@ -187,7 +187,7 @@ export function shipFromJson(json) {
   // Power distributor
   const powerdistributorJson = json.modules.PowerDistributor.module;
   const powerdistributor = _moduleFromEdId(powerdistributorJson.id);
-  if (powerdistributorJson.modifiers) _addModifications(powerdistributor, powerdistributorJson.modifiers);
+  if (powerdistributorJson.modifiers) _addModifications(powerdistributor, powerdistributorJson.modifiers, powerdistributorJson.recipeName, powerdistributorJson.recipeLevel);
   ship.use(ship.standard[4], powerdistributor, true);
   ship.standard[4].enabled = powerdistributorJson.on === true;
   ship.standard[4].priority = powerdistributorJson.priority;
@@ -195,7 +195,7 @@ export function shipFromJson(json) {
   // Sensors
   const sensorsJson = json.modules.Radar.module;
   const sensors = _moduleFromEdId(sensorsJson.id);
-  if (sensorsJson.modifiers) _addModifications(sensors, sensorsJson.modifiers);
+  if (sensorsJson.modifiers) _addModifications(sensors, sensorsJson.modifiers, sensorsJson.recipeName, sensorsJson.recipeLevel);
   ship.use(ship.standard[5], sensors, true);
   ship.standard[5].enabled = sensorsJson.on === true;
   ship.standard[5].priority = sensorsJson.priority;
@@ -229,7 +229,7 @@ export function shipFromJson(json) {
     } else {
       const hardpointJson = hardpointSlot.module;
       const hardpoint = _moduleFromEdId(hardpointJson.id);
-      if (hardpointJson.modifiers) _addModifications(hardpoint, hardpointJson.modifiers);
+      if (hardpointJson.modifiers) _addModifications(hardpoint, hardpointJson.modifiers, hardpointJson.recipeName, hardpointJson.recipeLevel);
       ship.use(ship.hardpoints[hardpointArrayNum], hardpoint, true);
       ship.hardpoints[hardpointArrayNum].enabled = hardpointJson.on === true;
       ship.hardpoints[hardpointArrayNum].priority = hardpointJson.priority;
@@ -240,7 +240,7 @@ export function shipFromJson(json) {
   // Add internal compartments
   let internalSlotNum = 1;
   for (let i in shipTemplate.slots.internal) {
-    const internalClassNum = shipTemplate.slots.internal[i];
+    const internalClassNum = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].class : shipTemplate.slots.internal[i];
 
     let internalSlot = null;
     while (internalSlot === null && internalSlotNum < 99) {
@@ -256,7 +256,7 @@ export function shipFromJson(json) {
     } else {
       const internalJson = internalSlot.module;
       const internal = _moduleFromEdId(internalJson.id);
-      if (internalJson.modifiers) _addModifications(internal, internalJson.modifiers);
+      if (internalJson.modifiers) _addModifications(internal, internalJson.modifiers, internalJson.recipeName, internalJson.recipeLevel);
       ship.use(ship.internal[i], internal, true);
       ship.internal[i].enabled = internalJson.on === true;
       ship.internal[i].priority = internalJson.priority;
@@ -271,8 +271,10 @@ export function shipFromJson(json) {
  * Add the modifications for a module
  * @param {Module} module the module
  * @param {Object} modifiers the modifiers
+ * @param {Object} blueprint the blueprint of the modification
+ * @param {Object} grade the grade of the modification
  */
-function _addModifications(module, modifiers) {
+function _addModifications(module, modifiers, blueprint, grade) {
   if (!modifiers || !modifiers.modifiers) return;
   
   for (const i in modifiers.modifiers) {
@@ -291,6 +293,14 @@ function _addModifications(module, modifiers) {
     }
   }
 
+  // Add the blueprint ID and grade
+  if (blueprint) {
+    module.blueprint = Modifications.blueprints[blueprint];
+    if (grade) {
+      module.blueprint.grade = Number(grade);
+    }
+  }
+  
   // Need to fix up a few items
 
   // Shield boosters are treated internally as straight modifiers, so rather than (for example)
@@ -353,6 +363,12 @@ function _addModifications(module, modifiers) {
     if (module.getModValue('thermres')) {
       module.setModValue('thermres', ((1 - (1 - module.thermres) * (1 + module.getModValue('thermres') / 10000)) - module.thermres) * 10000);
     }
+  }
+
+  // Bulkhead boost is based off the inherent boost of the module
+  if (module.grp == 'bh') {
+    const alteredBoost = (1 + module.hullboost) * (1 + module.getModValue('hullboost') / 10000) - 1;
+    module.setModValue('hullboost', (alteredBoost / module.hullboost - 1) * 10000);
   }
 
   // Jitter is an absolute number, so we need to divide it by 100

@@ -3,11 +3,19 @@ import * as ModuleUtils from './ModuleUtils';
 import * as Utils from '../utils/UtilityFunctions';
 import Module from './Module';
 import LZString from 'lz-string';
+import * as _ from 'lodash';
 import isEqual from 'lodash/lang';
 import { Modifications } from 'coriolis-data/dist';
 const zlib = require('zlib');
 
 const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs', 'fh'];
+
+// Constants for modifications struct
+const SLOT_ID_DONE = -1;
+const MODIFICATION_ID_DONE = -1;
+const MODIFICATION_ID_BLUEPRINT = -2;
+const MODIFICATION_ID_GRADE = -3;
+const MODIFICATION_ID_SPECIAL = -4;
 
 /**
  * Returns the power usage type of a slot and it's particular module
@@ -472,9 +480,10 @@ export default class Ship {
    * @param {array} priorities Slot priorities
    * @param {Array} enabled    Slot active/inactive
    * @param {Array} mods       Modifications
+   * @param {Array} blueprints Blueprints
    * @return {this} The current ship instance for chaining
    */
-  buildWith(comps, priorities, enabled, mods) {
+  buildWith(comps, priorities, enabled, mods, blueprints) {
     let internal = this.internal,
         standard = this.standard,
         hps = this.hardpoints,
@@ -514,6 +523,7 @@ export default class Ship {
     this.bulkheads.m = null;
     this.useBulkhead(comps && comps.bulkheads ? comps.bulkheads : 0, true);
     this.bulkheads.m.mods = mods && mods[0] ? mods[0] : {};
+    this.bulkheads.m.blueprint = blueprints && blueprints[0] ? blueprints[0] : {};
     this.cargoHatch.priority = priorities ? priorities[0] * 1 : 0;
     this.cargoHatch.enabled = enabled ? enabled[0] * 1 : true;
 
@@ -526,7 +536,10 @@ export default class Ship {
       standard[i].discountedCost = 0;
       if (comps) {
         let module = ModuleUtils.standard(i, comps.standard[i]);
-        if (module != null) { module.mods = mods && mods[i + 1] ? mods[i + 1] : {}; }
+        if (module != null) {
+          module.mods = mods && mods[i + 1] ? mods[i + 1] : {};
+          module.blueprint = blueprints && blueprints[i + 1] ? blueprints[i + 1] : {};
+        }
         this.use(standard[i], module, true);
       }
     }
@@ -545,7 +558,10 @@ export default class Ship {
 
       if (comps && comps.hardpoints[i] !== 0) {
         let module = ModuleUtils.hardpoints(comps.hardpoints[i]);
-        if (module != null) { module.mods = mods && mods[cl + i] ? mods[cl + i] : {}; }
+        if (module != null) {
+          module.mods = mods && mods[cl + i] ? mods[cl + i] : {};
+          module.blueprint = blueprints && blueprints[cl + i] ? blueprints[cl + i] : {};
+        }
         this.use(hps[i], module, true);
       }
     }
@@ -562,7 +578,10 @@ export default class Ship {
 
       if (comps && comps.internal[i] !== 0) {
         let module = ModuleUtils.internal(comps.internal[i]);
-        if (module != null) { module.mods = mods && mods[cl + i] ? mods[cl + i] : {}; }
+        if (module != null) {
+          module.mods = mods && mods[cl + i] ? mods[cl + i] : {};
+          module.blueprint = blueprints && blueprints[cl + i] ? blueprints[cl + i] : {};
+        }
         this.use(internal[i], module, true);
       }
     }
@@ -596,6 +615,7 @@ export default class Ship {
         hardpoints = new Array(this.hardpoints.length),
         internal = new Array(this.internal.length),
         modifications = new Array(1 + this.standard.length + this.hardpoints.length + this.internal.length),
+        blueprints = new Array(1 + this.standard.length + this.hardpoints.length + this.internal.length),
         parts = serializedString.split('.'),
         priorities = null,
         enabled = null,
@@ -615,7 +635,7 @@ export default class Ship {
         this.decodeModificationsString(modstr, modifications);
       } else {
         try {
-          this.decodeModificationsStruct(zlib.gunzipSync(new Buffer(Utils.fromUrlSafe(modstr), 'base64')), modifications);
+          this.decodeModificationsStruct(zlib.gunzipSync(new Buffer(Utils.fromUrlSafe(modstr), 'base64')), modifications, blueprints);
         } catch (err) {
           // Could be out-of-date URL; ignore
         }
@@ -633,7 +653,8 @@ export default class Ship {
       },
       priorities,
       enabled,
-      modifications
+      modifications,
+      blueprints,
     );
   };
 
@@ -1305,8 +1326,11 @@ export default class Ship {
   updateModificationsString() {
     // Start off by gathering the information that we need
     let slots = new Array();
+    let blueprints = new Array();
 
     let bulkheadMods = new Array();
+    let bulkheadBlueprint = undefined;
+    let bulkheadBlueprintGrade = undefined;
     if (this.bulkheads.m && this.bulkheads.m.mods) {
       for (let modKey in this.bulkheads.m.mods) {
         // Filter out invalid modifications
@@ -1314,8 +1338,10 @@ export default class Ship {
           bulkheadMods.push({ id: Modifications.modifications.indexOf(modKey), value: this.bulkheads.m.getModValue(modKey) });
         }
       }
+      bulkheadBlueprint = this.bulkheads.m.blueprint;
     }
     slots.push(bulkheadMods);
+    blueprints.push(bulkheadBlueprint)
 
     for (let slot of this.standard) {
       let slotMods = new Array();
@@ -1328,6 +1354,7 @@ export default class Ship {
         }
       }
       slots.push(slotMods);
+      blueprints.push(slot.m ? slot.m.blueprint : undefined);
     }
 
     for (let slot of this.hardpoints) {
@@ -1341,6 +1368,7 @@ export default class Ship {
         }
       }
       slots.push(slotMods);
+      blueprints.push(slot.m ? slot.m.blueprint : undefined);
     }
 
     for (let slot of this.internal) {
@@ -1354,13 +1382,15 @@ export default class Ship {
         }
       }
       slots.push(slotMods);
+      blueprints.push(slot.m ? slot.m.blueprint : undefined);
     }
 
     // Now work out the size of the binary buffer from our modifications array
     let bufsize = 0;
     for (let slot of slots) {
       if (slot.length > 0) {
-        bufsize = bufsize + 1 + (5 * slot.length) + 1;
+        // Length is 1 for the slot ID, 10 for the blueprint name and grade, 5 for each modification, and 1 for the end marker
+        bufsize = bufsize + 1 + 10 + (5 * slot.length) + 1;
       }
     }
 
@@ -1373,18 +1403,26 @@ export default class Ship {
       for (let slot of slots) {
         if (slot.length > 0) {
           buffer.writeInt8(i, curpos++);
+          if (blueprints[i]) {
+            buffer.writeInt8(MODIFICATION_ID_BLUEPRINT, curpos++);
+            buffer.writeInt32LE(blueprints[i].id, curpos);
+            curpos += 4;
+            buffer.writeInt8(MODIFICATION_ID_GRADE, curpos++);
+            buffer.writeInt32LE(blueprints[i].grade, curpos);
+            curpos += 4;
+	  }
           for (let slotMod of slot) {
             buffer.writeInt8(slotMod.id, curpos++);
             buffer.writeInt32LE(slotMod.value, curpos);
             // console.log('ENCODE Slot ' + i + ': ' + Modifications.modifications[slotMod.id] + ' = ' + slotMod.value);
             curpos += 4;
           }
-          buffer.writeInt8(-1, curpos++);
+          buffer.writeInt8(MODIFICATION_ID_DONE, curpos++);
         }
         i++;
       }
       if (curpos > 0) {
-        buffer.writeInt8(-1, curpos++);
+        buffer.writeInt8(SLOT_ID_DONE, curpos++);
       }
 
       this.serialized.modifications = zlib.gzipSync(buffer).toString('base64');
@@ -1397,23 +1435,33 @@ export default class Ship {
   /**
    * Populate the modifications array with modification values from the code.
    * See updateModificationsString() for details of the structure.
-   * @param {String} buffer  Buffer holding modification info
-   * @param {Array}  arr     Modification array
+   * @param {String} buffer         Buffer holding modification info
+   * @param {Array}  modArr         Modification array
+   * @param {Array}  bluprintArr    Blueprint array
    */
-  decodeModificationsStruct(buffer, arr) {
+  decodeModificationsStruct(buffer, modArr, blueprintArr) {
     let curpos = 0;
     let slot = buffer.readInt8(curpos++);
-    while (slot != -1) {
+    while (slot != SLOT_ID_DONE) {
       let modifications = {};
+      let blueprint = {};
       let modificationId = buffer.readInt8(curpos++);
-      while (modificationId != -1) {
+      while (modificationId != MODIFICATION_ID_DONE) {
         let modificationValue = buffer.readInt32LE(curpos);
         curpos += 4;
-        // console.log('DECODE Slot ' + slot + ': ' + Modifications.modifications[modificationId] + ' = ' + modificationValue);
-        modifications[Modifications.modifications[modificationId]] = modificationValue;
+	// There are a number of 'special' modification IDs, check for them here
+	if (modificationId === MODIFICATION_ID_BLUEPRINT) {
+          blueprint = Object.assign(blueprint, _.find(Modifications.blueprints, function(o) { return o.id === modificationValue; }));
+	} else if (modificationId === MODIFICATION_ID_GRADE) {
+          blueprint.grade = modificationValue;
+	} else {
+          // console.log('DECODE Slot ' + slot + ': ' + Modifications.modifications[modificationId] + ' = ' + modificationValue);
+          modifications[Modifications.modifications[modificationId]] = modificationValue;
+	}
         modificationId = buffer.readInt8(curpos++);
       }
-      arr[slot] = modifications;
+      modArr[slot] = modifications;
+      blueprintArr[slot] = blueprint;
       slot = buffer.readInt8(curpos++);
     }
   }
