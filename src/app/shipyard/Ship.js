@@ -1413,7 +1413,12 @@ export default class Ship {
 	  }
           for (let slotMod of slot) {
             buffer.writeInt8(slotMod.id, curpos++);
-            buffer.writeInt32LE(slotMod.value, curpos);
+	    if (isNaN(slotMod.value)) {
+                // We need to write the value out as a four-byte string
+                buffer.writeInt32LE(slotMod.value, curpos);
+	    } else {
+                buffer.writeInt32LE(slotMod.value, curpos);
+	    }
             // console.log('ENCODE Slot ' + i + ': ' + Modifications.modifications[slotMod.id] + ' = ' + slotMod.value);
             curpos += 4;
           }
