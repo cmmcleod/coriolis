@@ -1,3 +1,6 @@
+#2.2.4
+  * Add shortlink for outfitting page
+
 #2.2.3
   * Fix hull boost calculation - now shows correct % modifier and total armour
   * Fix import of DiamondBack - can now be imported
