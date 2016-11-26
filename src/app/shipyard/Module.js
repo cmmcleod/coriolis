@@ -28,7 +28,7 @@ export default class Module {
   /**
    * Get a value for a given modification
    * @param {Number} name  The name of the modification
-   * @return {Number}      The value of the modification, as an integer value scaled so that 1.23% == 123
+   * @return {object}      The value of the modification. If it is a numeric value then it is returned as an integer value scaled so that 1.23% == 123
    */
   getModValue(name) {
     return this.mods  && this.mods[name] ? this.mods[name] : null;
@@ -37,7 +37,7 @@ export default class Module {
   /**
    * Set a value for a given modification ID
    * @param {Number} name   The name of the modification
-   * @param {Number} value  The value of the modification, as an integer scaled so that -2.34% == -234
+   * @param {object} value  The value of the modification. If it is a numeric value then it should be an integer scaled so that -2.34% == -234
    */
   setModValue(name, value) {
     if (!this.mods) {
@@ -47,8 +47,12 @@ export default class Module {
     if (value == null || value == 0) {
       delete this.mods[name];
     } else {
-      // Round just to be sure
-      this.mods[name] = Math.round(value);
+      if (isNaN(value)) {
+        this.mods[name] = value;
+      } else {
+        // Round just to be sure
+        this.mods[name] = Math.round(value);
+      }
     }
   }
 
@@ -539,5 +543,13 @@ export default class Module {
    */
   getJitter() {
     return this._getModifiedValue('jitter', true);
+  }
+
+  /**
+   * Get the damage type for this module, taking in to account modifications
+   * @return {string} the damage types for this module; any combination of E T and K
+   */
+  getDamageType() {
+    return this.getModValue('type') || this.type;
   }
 }
