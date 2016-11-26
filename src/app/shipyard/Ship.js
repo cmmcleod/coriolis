@@ -1246,52 +1246,6 @@ export default class Ship {
   }
 
   /**
-   * Update the modifications string in a human-readable format
-   * @return {this} The ship instance (for chaining operations)
-   */
-  debugupdateModificationsString() {
-    let allMods = new Array();
-
-    let bulkheadMods = new Array();
-    if (this.bulkheads.m && this.bulkheads.m.mods) {
-      for (let modKey in this.bulkheads.m.mods) {
-        bulkheadMods.push(Modifications.modifications.indexOf(modKey) + ':' + this.bulkheads.m.getModValue(modKey));
-      }
-    }
-    allMods.push(bulkheadMods.join(';'));
-
-    for (let slot of this.standard) {
-      let slotMods = new Array();
-      if (slot.m && slot.m.mods) {
-        for (let modKey in slot.m.mods) {
-          slotMods.push(Modifications.modifications.indexOf(modKey) + ':' + slot.m.getModValue(modKey));
-        }
-      }
-      allMods.push(slotMods.join(';'));
-    }
-    for (let slot of this.hardpoints) {
-      let slotMods = new Array();
-      if (slot.m && slot.m.mods) {
-        for (let modKey in slot.m.mods) {
-          slotMods.push(Modifications.modifications.indexOf(modKey) + ':' + slot.m.getModValue(modKey));
-        }
-      }
-      allMods.push(slotMods.join(';'));
-    }
-    for (let slot of this.internal) {
-      let slotMods = new Array();
-      if (slot.m && slot.m.mods) {
-        for (let modKey in slot.m.mods) {
-          slotMods.push(Modifications.modifications.indexOf(modKey) + ':' + slot.m.getModValue(modKey));
-        }
-      }
-      allMods.push(slotMods.join(';'));
-    }
-    this.serialized.modifications = LZString.compressToBase64(allMods.join(',').replace(/,+$/, ''));
-    return this;
-  }
-
-  /**
    * Populate the modifications array with modification values from the code
    * @param {String} code    Serialized modification code
    * @param {Array}  arr     Modification array
@@ -1305,7 +1259,8 @@ export default class Ship {
         for (let j = 0; j < mods.length; j++) {
           let modElements = mods[j].split(':');
           if (modElements[0].match('[0-9]+')) {
-            arr[i][Modifications.modifications[modElements[0]]] = Number(modElements[1]);
+            const modification = _.find(Modifications.modifications, function(o) { return o.id === modElements[0]; });
+	    if (modification != null) arr[i][modification.name] = Number(modElements[1]);
           } else {
             arr[i][modElements[0]] = Number(modElements[1]);
           }
@@ -1335,7 +1290,7 @@ export default class Ship {
       for (let modKey in this.bulkheads.m.mods) {
         // Filter out invalid modifications
         if (Modifications.validity['bh'] && Modifications.validity['bh'].indexOf(modKey) != -1) {
-          bulkheadMods.push({ id: Modifications.modifications.indexOf(modKey), value: this.bulkheads.m.getModValue(modKey) });
+          bulkheadMods.push({ id: Modifications.modifications[modKey].id, value: this.bulkheads.m.getModValue(modKey) });
         }
       }
       bulkheadBlueprint = this.bulkheads.m.blueprint;
@@ -1349,7 +1304,7 @@ export default class Ship {
         for (let modKey in slot.m.mods) {
           // Filter out invalid modifications
           if (Modifications.validity[slot.m.grp] && Modifications.validity[slot.m.grp].indexOf(modKey) != -1) {
-            slotMods.push({ id: Modifications.modifications.indexOf(modKey), value: slot.m.getModValue(modKey) });
+            slotMods.push({ id: Modifications.modifications[modKey].id, value: slot.m.getModValue(modKey) });
           }
         }
       }
@@ -1363,7 +1318,7 @@ export default class Ship {
         for (let modKey in slot.m.mods) {
           // Filter out invalid modifications
           if (Modifications.validity[slot.m.grp] && Modifications.validity[slot.m.grp].indexOf(modKey) != -1) {
-            slotMods.push({ id: Modifications.modifications.indexOf(modKey), value: slot.m.getModValue(modKey) });
+            slotMods.push({ id: Modifications.modifications[modKey].id, value: slot.m.getModValue(modKey) });
           }
         }
       }
@@ -1377,7 +1332,7 @@ export default class Ship {
         for (let modKey in slot.m.mods) {
           // Filter out invalid modifications
           if (Modifications.validity[slot.m.grp] && Modifications.validity[slot.m.grp].indexOf(modKey) != -1) {
-            slotMods.push({ id: Modifications.modifications.indexOf(modKey), value: slot.m.getModValue(modKey) });
+            slotMods.push({ id: Modifications.modifications[modKey].id, value: slot.m.getModValue(modKey) });
           }
         }
       }
@@ -1414,12 +1369,13 @@ export default class Ship {
           for (let slotMod of slot) {
             buffer.writeInt8(slotMod.id, curpos++);
 	    if (isNaN(slotMod.value)) {
-                // Need to write the string with a maximum of four characters
+                // Need to write the string with exactly four characters, so pad with whitespace
 		buffer.write(("    " + slotMod.value).slice(-4), curpos, 4);
 	    } else {
                 buffer.writeInt32LE(slotMod.value, curpos);
 	    }
-            // console.log('ENCODE Slot ' + i + ': ' + Modifications.modifications[slotMod.id] + ' = ' + slotMod.value);
+            // const modification = _.find(Modifications.modifications, function(o) { return o.id === slotMod.id; });
+            // console.log('ENCODE Slot ' + i + ': ' + modification.name + ' = ' + slotMod.value);
             curpos += 4;
           }
           buffer.writeInt8(MODIFICATION_ID_DONE, curpos++);
@@ -1466,8 +1422,9 @@ export default class Ship {
 	} else if (modificationId === MODIFICATION_ID_GRADE) {
           blueprint.grade = modificationValue;
 	} else {
-          // console.log('DECODE Slot ' + slot + ': ' + Modifications.modifications[modificationId] + ' = ' + modificationValue);
-          modifications[Modifications.modifications[modificationId]] = modificationValue;
+          const modification = _.find(Modifications.modifications, function(o) { return o.id === modificationId; });
+          // console.log('DECODE Slot ' + slot + ': ' + modification.name + ' = ' + modificationValue);
+          modifications[modification.name] = modificationValue;
 	}
         modificationId = buffer.readInt8(curpos++);
       }
