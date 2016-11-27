@@ -277,6 +277,7 @@ export function shipFromJson(json) {
 function _addModifications(module, modifiers, blueprint, grade) {
   if (!modifiers || !modifiers.modifiers) return;
   
+  var special;
   for (const i in modifiers.modifiers) {
     // Look up the modifiers to find what we need to do
     const modifierActions = Modifications.modifierActions[modifiers.modifiers[i].name];
@@ -295,13 +296,21 @@ function _addModifications(module, modifiers, blueprint, grade) {
         module.setModValue(action, ((1 + mod) * (1 + actionValue) - 1) * 10000);
       }
     }
+
+    // Note the special if present
+    if (modifiers.modifiers[i].name && modifiers.modifiers[i].name.startsWith('special_')) {
+        special = Modifications.specials[modifiers.modifiers[i].name];
+    }
   }
 
-  // Add the blueprint ID and grade
+  // Add the blueprint ID, grade and special
   if (blueprint) {
-    module.blueprint = Modifications.blueprints[blueprint];
+    module.blueprint = Object.assign({}, Modifications.blueprints[blueprint]);
     if (grade) {
       module.blueprint.grade = Number(grade);
+    }
+    if (special) {
+      module.blueprint.special = special;
     }
   }
   

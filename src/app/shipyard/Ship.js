@@ -480,7 +480,7 @@ export default class Ship {
    * @param {array} priorities Slot priorities
    * @param {Array} enabled    Slot active/inactive
    * @param {Array} mods       Modifications
-   * @param {Array} blueprints Blueprints
+   * @param {Array} blueprints Blueprints for modifications
    * @return {this} The current ship instance for chaining
    */
   buildWith(comps, priorities, enabled, mods, blueprints) {
@@ -1282,10 +1282,11 @@ export default class Ship {
     // Start off by gathering the information that we need
     let slots = new Array();
     let blueprints = new Array();
+    let specials = new Array();
 
     let bulkheadMods = new Array();
-    let bulkheadBlueprint = undefined;
-    let bulkheadBlueprintGrade = undefined;
+    let bulkheadBlueprint = null;
+    let bulkheadBlueprintGrade = null;
     if (this.bulkheads.m && this.bulkheads.m.mods) {
       for (let modKey in this.bulkheads.m.mods) {
         // Filter out invalid modifications
@@ -1297,6 +1298,7 @@ export default class Ship {
     }
     slots.push(bulkheadMods);
     blueprints.push(bulkheadBlueprint)
+    specials.push(bulkheadBlueprint ? bulkheadBlueprint.special : null);
 
     for (let slot of this.standard) {
       let slotMods = new Array();
@@ -1309,7 +1311,8 @@ export default class Ship {
         }
       }
       slots.push(slotMods);
-      blueprints.push(slot.m ? slot.m.blueprint : undefined);
+      blueprints.push(slot.m ? slot.m.blueprint : null);
+      specials.push(slot.m && slot.m.blueprint ? slot.m.blueprint.special : null);
     }
 
     for (let slot of this.hardpoints) {
@@ -1323,7 +1326,8 @@ export default class Ship {
         }
       }
       slots.push(slotMods);
-      blueprints.push(slot.m ? slot.m.blueprint : undefined);
+      blueprints.push(slot.m ? slot.m.blueprint : null);
+      specials.push(slot.m && slot.m.blueprint ? slot.m.blueprint.special : null);
     }
 
     for (let slot of this.internal) {
@@ -1337,7 +1341,8 @@ export default class Ship {
         }
       }
       slots.push(slotMods);
-      blueprints.push(slot.m ? slot.m.blueprint : undefined);
+      blueprints.push(slot.m ? slot.m.blueprint : null);
+      specials.push(slot.m && slot.m.blueprint ? slot.m.blueprint.special : null);
     }
 
     // Now work out the size of the binary buffer from our modifications array
@@ -1346,6 +1351,12 @@ export default class Ship {
       if (slot.length > 0) {
         // Length is 1 for the slot ID, 10 for the blueprint name and grade, 5 for each modification, and 1 for the end marker
         bufsize = bufsize + 1 + 10 + (5 * slot.length) + 1;
+      }
+    }
+    for (let special of specials) {
+      if (special) {
+        // Length is 5 for each special
+	bufsize += 5;
       }
     }
 
@@ -1364,6 +1375,11 @@ export default class Ship {
             curpos += 4;
             buffer.writeInt8(MODIFICATION_ID_GRADE, curpos++);
             buffer.writeInt32LE(blueprints[i].grade, curpos);
+            curpos += 4;
+	  }
+          if (specials[i]) {
+            buffer.writeInt8(MODIFICATION_ID_SPECIAL, curpos++);
+            buffer.writeInt32LE(specials[i].id, curpos);
             curpos += 4;
 	  }
           for (let slotMod of slot) {
@@ -1421,6 +1437,8 @@ export default class Ship {
           blueprint = Object.assign(blueprint, _.find(Modifications.blueprints, function(o) { return o.id === modificationValue; }));
 	} else if (modificationId === MODIFICATION_ID_GRADE) {
           blueprint.grade = modificationValue;
+	} else if (modificationId === MODIFICATION_ID_SPECIAL) {
+          blueprint.special = _.find(Modifications.specials, function(o) { return o.id === modificationValue; });
 	} else {
           const modification = _.find(Modifications.modifications, function(o) { return o.id === modificationId; });
           // console.log('DECODE Slot ' + slot + ': ' + modification.name + ' = ' + modificationValue);
