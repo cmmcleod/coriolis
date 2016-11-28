@@ -8,7 +8,7 @@ import Persist from '../stores/Persist';
 import Ship from '../shipyard/Ship';
 import { toDetailedBuild } from '../shipyard/Serializer';
 import { outfitURL } from '../utils/UrlGenerators';
-import { FloppyDisk, Bin, Switch, Download, Reload, Fuel } from '../components/SvgIcons';
+import { FloppyDisk, Bin, Switch, Download, Reload, Fuel, LinkIcon } from '../components/SvgIcons';
 import ShipSummaryTable from '../components/ShipSummaryTable';
 import StandardSlotSection from '../components/StandardSlotSection';
 import HardpointsSlotSection from '../components/HardpointsSlotSection';
@@ -20,6 +20,7 @@ import LineChart from '../components/LineChart';
 import PowerManagement from '../components/PowerManagement';
 import CostSection from '../components/CostSection';
 import ModalExport from '../components/ModalExport';
+import ModalPermalink from '../components/ModalPermalink';
 import Slider from '../components/Slider';
 
 const SPEED_SERIES = ['boost', '4 Pips', '2 Pips', '0 Pips'];
@@ -271,6 +272,13 @@ export default class OutfittingPage extends Page {
   }
 
   /**
+   * Generates the short URL
+   */
+  _genShortlink() {
+    this.context.showModal(<ModalPermalink url={window.location.href}/>);
+  }
+
+  /**
    * Render the Page
    * @return {React.Component} The page contents
    */
@@ -312,6 +320,9 @@ export default class OutfittingPage extends Page {
             </button>
             <button onClick={buildName && this._exportBuild} disabled={!buildName} onMouseOver={termtip.bind(null, 'export')} onMouseOut={hide}>
               <Download className='lg'/>
+            </button>
+            <button onClick={this._genShortlink} onMouseOver={termtip.bind(null, 'shortlink')} onMouseOut={hide}>
+              <LinkIcon className='lg' />
             </button>
           </div>
         </div>

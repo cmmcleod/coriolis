@@ -8,6 +8,8 @@ import { outfitURL } from '../utils/UrlGenerators';
 
 const STANDARD = ['powerPlant', 'thrusters', 'frameShiftDrive', 'lifeSupport', 'powerDistributor', 'sensors', 'fuelTank'];
 
+const STANDARD_GROUPS = {'powerPlant': 'pp', 'thrusters': 't', 'frameShiftDrive': 'fsd', 'lifeSupport': 'ls', 'powerDistributor': 'pd', 'sensors': 's', 'fuelTank': 'ft'};
+
 /**
  * Generates ship-loadout JSON Schema standard object
  * @param  {Object} standard model
@@ -159,13 +161,12 @@ export function fromDetailedBuild(detailedBuild) {
     enabled.push(stn[c].enabled === undefined ? true : stn[c].enabled);
     modifications.push(stn[c].modifications);
     blueprints.push(stn[c].blueprint);
-    return stn[c].class + stn[c].rating;
+    return ModuleUtils.findStandardId(STANDARD_GROUPS[c], stn[c].class, stn[c].rating, stn[c].name);
   });
 
   let internal = comps.internal.map(c => c ? ModuleUtils.findInternalId(c.group, c.class, c.rating, c.name) : 0);
 
-  let hardpoints = comps.hardpoints
-    .map(c => c ? ModuleUtils.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount], c.missile) : 0)
+  let hardpoints = comps.hardpoints.map(c => c ? ModuleUtils.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount], c.missile) : 0)
     .concat(comps.utility.map(c => c ? ModuleUtils.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount]) : 0));
 
   // The ordering of these arrays must match the order in which they are read in Ship.buildWith
@@ -180,14 +181,14 @@ export function fromDetailedBuild(detailedBuild) {
     comps.internal.map(c => (!c || c.enabled === undefined) ? true : c.enabled * 1)
   );
   modifications = modifications.concat(
-    comps.hardpoints.map(c => (c && c.m ? c.m.modifications : null)),
-    comps.utility.map(c => (c && c.m ? c.m.modifications : null)),
-    comps.internal.map(c => (c && c.m ? c.m.modifications : null))
+    comps.hardpoints.map(c => (c ? c.modifications : null)),
+    comps.utility.map(c => (c ? c.modifications : null)),
+    comps.internal.map(c => (c ? c.modifications : null))
   );
   blueprints = blueprints.concat(
-    comps.hardpoints.map(c => (c && c.m ? c.m.blueprint : null)),
-    comps.utility.map(c => (c && c.m ? c.m.blueprint : null)),
-    comps.internal.map(c => (c && c.m ? c.m.blueprint : null))
+    comps.hardpoints.map(c => (c ? c.blueprint : null)),
+    comps.utility.map(c => (c ? c.blueprint : null)),
+    comps.internal.map(c => (c ? c.blueprint : null))
   );
 
   ship.buildWith({ bulkheads, standard, hardpoints, internal }, priorities, enabled, modifications, blueprints);

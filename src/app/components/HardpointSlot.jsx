@@ -48,6 +48,9 @@ export default class HardpointSlot extends Slot {
       let modTT = translate('modified');
       if (m && m.blueprint) {
         modTT = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
+	if (m.blueprint.special && m.blueprint.special.id) {
+          modTT += ', ' + translate(m.blueprint.special.name);
+	}
       }
 
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
@@ -56,9 +59,9 @@ export default class HardpointSlot extends Slot {
 	  {m.mount && m.mount == 'F' ? <span onMouseOver={termtip.bind(null, 'fixed')} onMouseOut={tooltip.bind(null, null)}><MountFixed /></span> : ''}
 	  {m.mount && m.mount == 'G' ? <span onMouseOver={termtip.bind(null, 'gimballed')} onMouseOut={tooltip.bind(null, null)}><MountGimballed /></span> : ''}
 	  {m.mount && m.mount == 'T' ? <span onMouseOver={termtip.bind(null, 'turreted')} onMouseOut={tooltip.bind(null, null)}><MountTurret /></span> : ''}
-	  {m.type && m.type.match('K') ? <span onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /></span> : ''}
-	  {m.type && m.type.match('T') ? <span onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /></span> : ''}
-	  {m.type && m.type.match('E') ? <span onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /></span> : ''}
+	  {m.getDamageType() && m.getDamageType().match('K') ? <span onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /></span> : ''}
+	  {m.getDamageType() && m.getDamageType().match('T') ? <span onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /></span> : ''}
+	  {m.getDamageType() && m.getDamageType().match('E') ? <span onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /></span> : ''}
           {classRating} {translate(m.name || m.grp)}{ m.mods && Object.keys(m.mods).length > 0 ? <span className='r' onMouseOver={termtip.bind(null, modTT)} onMouseOut={tooltip.bind(null, null)}><Modified /></span> : null }
 	  </div>
 

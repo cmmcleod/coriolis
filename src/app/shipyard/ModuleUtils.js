@@ -106,6 +106,59 @@ export function internal(id) {
 };
 
 /**
+ * Finds a standard module based on Class, Rating, Group and/or name.
+ * At least one of Group name or unique module name must be provided
+ *
+ * @param  {String} groupName [Optional] Full name or abbreviated name for module group
+ * @param  {integer} clss     module Class
+ * @param  {String} rating    module Rating
+ * @param  {String} name      [Optional] Long/unique name for module -e.g. 'Advanced Discover Scanner'
+ * @return {Object}           The module if found, null if not found
+ */
+export function findStandard(groupName, clss, rating, name) {
+  let groups = {};
+
+  if (groupName) {
+    if (Modules.standard[groupName]) {
+      groups[groupName] = Modules.standard[groupName];
+    } else {
+      let grpCode = ModuleNameToGroup[groupName.toLowerCase()];
+      if (grpCode && Modules.standard[grpCode]) {
+        groups[grpCode] = Modules.standard[grpCode];
+      }
+    }
+  } else if (name) {
+    groups = Modules.standard;
+  }
+
+  for (let g in groups) {
+    let group = groups[g];
+    for (let i = 0, l = group.length; i < l; i++) {
+      if (group[i].class == clss && group[i].rating == rating && ((!name && !group[i].name) || group[i].name == name)) {
+        return group[i];
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Finds a standard Module ID based on Class, Rating, Group and/or name.
+ * At least one of Group name or unique module name must be provided
+ *
+ * @param  {String} groupName [Optional] Full name or abbreviated name for module group
+ * @param  {integer} clss     module Class
+ * @param  {String} rating    Module Rating
+ * @param  {String} name      [Optional] Long/unique name for module -e.g. 'Advanced Discover Scanner'
+ * @return {String}           The id of the module if found, null if not found
+ */
+export function findStandardId(groupName, clss, rating, name) {
+  let i = this.findStandard(groupName, clss, rating, name);
+  return i ? i.id : 0;
+}
+
+/**
  * Finds an internal module based on Class, Rating, Group and/or name.
  * At least one ofGroup name or unique module name must be provided
  *
