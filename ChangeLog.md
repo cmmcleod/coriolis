@@ -1,5 +1,11 @@
 #2.2.4
   * Add shortlink for outfitting page
+  * Use coriolis-data 2.2.4:
+    * Fix incorrect ID for class 5 luxury passenger cabin
+    * Add damage type modifier
+    * Change modifications from simple strings to objects, to allow more data-driven behaviour
+    * Add special effects
+  * Modification tooltip now shows special effect
 
 #2.2.3
   * Fix hull boost calculation - now shows correct % modifier and total armour
