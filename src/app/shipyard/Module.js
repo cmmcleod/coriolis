@@ -72,13 +72,13 @@ export default class Module {
       }
       // We store percentages as decimals, so to get them back we need to divide by 10000.  Otherwise
       // we divide by 100.  Both ways we end up with a value with two decimal places
-      var modValue;
+      let modValue;
       if (modification.type === 'percentage') {
-          modValue = this.getModValue(name) / 10000;
+        modValue = this.getModValue(name) / 10000;
       } else if (modification.type === 'numeric') {
-          modValue = this.getModValue(name) / 100;
+        modValue = this.getModValue(name) / 100;
       } else {
-          modValue = this.getModValue(name);
+        modValue = this.getModValue(name);
       }
       if (modValue) {
         if (additive) {
@@ -534,7 +534,7 @@ export default class Module {
     const burstRoF = this.getBurstRoF() || 1;
     const intRoF = this._getModifiedValue('rof');
 
-    return burst / (((burst - 1)/burstRoF) + 1/intRoF);
+    return burst / (((burst - 1) / burstRoF) + 1 / intRoF);
   }
 
   /**

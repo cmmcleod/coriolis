@@ -8,7 +8,7 @@ import Header from './components/Header';
 import Tooltip from './components/Tooltip';
 import ModalImport from './components/ModalImport';
 import * as CompanionApiUtils from './utils/CompanionApiUtils';
-import { outfitURL } from './utils/UrlGenerators'
+import { outfitURL } from './utils/UrlGenerators';
 
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';

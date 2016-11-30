@@ -277,14 +277,14 @@ export function shipFromJson(json) {
 function _addModifications(module, modifiers, blueprint, grade) {
   if (!modifiers || !modifiers.modifiers) return;
   
-  var special;
+  let special;
   for (const i in modifiers.modifiers) {
     // Some special modifications
     if (modifiers.modifiers[i].name === 'mod_weapon_clip_size_override') {
       // This is a numeric addition to the clip size, but we need to work it out in terms of being a percentage so
       // that it works the same as other modifications
       const origClip = module.clip || 1;
-      module.setModValue('clip', ((modifiers.modifiers[i].value  - origClip) / origClip ) * 10000);
+      module.setModValue('clip', ((modifiers.modifiers[i].value  - origClip) / origClip) * 10000);
     } else if (modifiers.modifiers[i].name === 'mod_weapon_burst_size') {
       // This is an absolute number that acts as an override
       module.setModValue('burst', modifiers.modifiers[i].value * 100);
@@ -313,7 +313,7 @@ function _addModifications(module, modifiers, blueprint, grade) {
 
     // Note the special if present
     if (modifiers.modifiers[i].name && modifiers.modifiers[i].name.startsWith('special_')) {
-        special = Modifications.specials[modifiers.modifiers[i].name];
+      special = Modifications.specials[modifiers.modifiers[i].name];
     }
   }
 
