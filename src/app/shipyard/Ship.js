@@ -458,7 +458,7 @@ export default class Ship {
     } else if (name === 'shieldreinforcement') {
       m.setModValue(name, value);
       this.recalculateShieldCells();
-    } else if (name === 'burst' || name === 'clip' || name === 'damage' || name === 'distdraw' || name === 'jitter' || name === 'piercing' || name === 'range' || name === 'reload' || name === 'rof' || name === 'thermload') {
+    } else if (name === 'burst' || name == 'burstrof' || name === 'clip' || name === 'damage' || name === 'distdraw' || name === 'jitter' || name === 'piercing' || name === 'range' || name === 'reload' || name === 'rof' || name === 'thermload') {
       m.setModValue(name, value);
       this.recalculateDps();
       this.recalculateHps();

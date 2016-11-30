@@ -63,9 +63,24 @@ export default class Modification extends TranslatedComponent {
     let translate = this.context.language.translate;
     let name = this.props.name;
 
+    if (name === 'type') {
+      // We don't show type
+      return null;
+    }
+
+    var symbol;
+    if (name === 'jitter') {
+      symbol = '°';
+    } else if (name !== 'burst') {
+      symbol = '%';
+    }
+    if (symbol) {
+      symbol = ' (' + symbol + ')';
+    }
+
     return (
       <div className={'cb'} key={name}>
-        <div className={'cb'}>{translate(name)}{name === 'jitter' ? ' (°)' : ' (%)'}</div>
+        <div className={'cb'}>{translate(name)}{symbol}</div>
         <NumberEditor className={'cb'} style={{ width: '90%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={this.state.value} onValueChange={this._updateValue.bind(this)} />
       </div>
     );

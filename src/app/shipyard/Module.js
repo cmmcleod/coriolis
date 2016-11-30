@@ -1,5 +1,6 @@
 import * as ModuleUtils from './ModuleUtils';
 import * as _ from 'lodash';
+import { Modifications } from 'coriolis-data/dist';
 
 /**
  * Module - active module in a ship's buildout
@@ -65,8 +66,20 @@ export default class Module {
   _getModifiedValue(name, additive) {
     let result = this[name] || (additive ? 0 : null); // Additive NULL === 0
     if (result != null) {
-      // Jitter is special, being the only non-percentage value (it is in fact degrees)
-      const modValue = name === 'jitter' ? this.getModValue(name) / 100 : this.getModValue(name) / 10000;
+      const modification = Modifications.modifications[name];
+      if (!modification) {
+        throw 'Unknown modification ' + name;
+      }
+      // We store percentages as decimals, so to get them back we need to divide by 10000.  Otherwise
+      // we divide by 100.  Both ways we end up with a value with two decimal places
+      var modValue;
+      if (modification.type === 'percentage') {
+          modValue = this.getModValue(name) / 10000;
+      } else if (modification.type === 'numeric') {
+          modValue = this.getModValue(name) / 100;
+      } else {
+          modValue = this.getModValue(name);
+      }
       if (modValue) {
         if (additive) {
           result = result + modValue;
@@ -74,7 +87,18 @@ export default class Module {
           result = result * (1 + modValue);
         }
       }
+    } else {
+      if (name === 'burst') {
+        // Burst is special, as if it can not exist but have a modification
+        const modValue = this.getModValue(name) / 100;
+        return modValue;
+      } else if (name === 'burstrof') {
+        // Burst rate of fire is special, as if it can not exist but have a modification
+        const modValue = this.getModValue(name) / 100;
+        return modValue;
+      }
     }
+
     return result;
   }
 
@@ -425,7 +449,7 @@ export default class Module {
   getDps() {
     // DPS is a synthetic value
     let damage = this.getDamage();
-    let rpshot = this.getRoundsPerShot() || 1;
+    let rpshot = this.roundspershot || 1;
     let rof = this.getRoF() || 1;
 
     return damage * rpshot * rof;
@@ -438,7 +462,7 @@ export default class Module {
   getEps() {
     // EPS is a synthetic value
     let distdraw = this.getDistDraw();
-    let rpshot = this.getRoundsPerShot() || 1;
+    let rpshot = this.roundspershot || 1;
     let rof = this.getRoF() || 1;
 
     return distdraw * rpshot * rof;
@@ -451,7 +475,7 @@ export default class Module {
   getHps() {
     // HPS is a synthetic value
     let heat = this.getThermalLoad();
-    let rpshot = this.getRoundsPerShot() || 1;
+    let rpshot = this.roundspershot || 1;
     let rof = this.getRoF() || 1;
 
     return heat * rpshot * rof;
@@ -509,6 +533,7 @@ export default class Module {
     const burst = this.getBurst() || 1;
     const burstRoF = this.getBurstRoF() || 1;
     const intRoF = this._getModifiedValue('rof');
+
     return burst / (((burst - 1)/burstRoF) + 1/intRoF);
   }
 

@@ -279,21 +279,35 @@ function _addModifications(module, modifiers, blueprint, grade) {
   
   var special;
   for (const i in modifiers.modifiers) {
-    // Look up the modifiers to find what we need to do
-    const modifierActions = Modifications.modifierActions[modifiers.modifiers[i].name];
-    const value = modifiers.modifiers[i].value;
+    // Some special modifications
+    if (modifiers.modifiers[i].name === 'mod_weapon_clip_size_override') {
+      // This is a numeric addition to the clip size, but we need to work it out in terms of being a percentage so
+      // that it works the same as other modifications
+      const origClip = module.clip || 1;
+      module.setModValue('clip', ((modifiers.modifiers[i].value  - origClip) / origClip ) * 10000);
+    } else if (modifiers.modifiers[i].name === 'mod_weapon_burst_size') {
+      // This is an absolute number that acts as an override
+      module.setModValue('burst', modifiers.modifiers[i].value * 100);
+    } else if (modifiers.modifiers[i].name === 'mod_weapon_burst_rof') {
+      // For some reason this is a non-normalised percentage (i.e. 12.23% is 12.23 value rather than 0.1223 as everywhere else), so fix that here
+      module.setModValue('burstrof', modifiers.modifiers[i].value * 100);
+    } else {
+      // Look up the modifiers to find what we need to do
+      const modifierActions = Modifications.modifierActions[modifiers.modifiers[i].name];
+      const value = modifiers.modifiers[i].value;
 
-    // Carry out the required changes
-    for (const action in modifierActions) {
-      if (isNaN(modifierActions[action])) {
-        module.setModValue(action, modifierActions[action]);
-      } else {
-        const actionValue = modifierActions[action] * value;
-        let mod = module.getModValue(action) / 10000;
-        if (!mod) {
-          mod = 0;
+      // Carry out the required changes
+      for (const action in modifierActions) {
+        if (isNaN(modifierActions[action])) {
+          module.setModValue(action, modifierActions[action]);
+        } else {
+          const actionValue = modifierActions[action] * value;
+          let mod = module.getModValue(action) / 10000;
+          if (!mod) {
+            mod = 0;
+          }
+          module.setModValue(action, ((1 + mod) * (1 + actionValue) - 1) * 10000);
         }
-        module.setModValue(action, ((1 + mod) * (1 + actionValue) - 1) * 10000);
       }
     }
 
