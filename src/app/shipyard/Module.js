@@ -68,7 +68,7 @@ export default class Module {
     if (result != null) {
       const modification = Modifications.modifications[name];
       if (!modification) {
-        throw 'Unknown modification ' + name;
+        return result;
       }
       // We store percentages as decimals, so to get them back we need to divide by 10000.  Otherwise
       // we divide by 100.  Both ways we end up with a value with two decimal places
