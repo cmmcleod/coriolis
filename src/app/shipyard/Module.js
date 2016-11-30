@@ -482,11 +482,34 @@ export default class Module {
   }
 
   /**
-   * Get the rate of fire for this module, taking in to account modifications
+   * Get the burst size for this module, taking in to account modifications
+   * @return {Number} the burst size of this module
+   */
+  getBurst() {
+    return this._getModifiedValue('burst');
+  }
+
+  /**
+   * Get the burst rate of fire for this module, taking in to account modifications
+   * @return {Number} the burst rate of fire of this module
+   */
+  getBurstRoF() {
+    return this._getModifiedValue('burstrof');
+  }
+
+  /**
+   * Get the rate of fire for this module, taking in to account modifications.
+   * The rate of fire is a combination value, and needs to take in to account
+   * bursts of fire.
+   * Firing goes [burst 1] [burst interval] [burst 2] [burst interval] ... [burst n] [interval]
+   * where 'n' is 'burst', 'burst interval' is '1/burstrof' and 'interval' is '1/rof'
    * @return {Number} the rate of fire for this module
    */
   getRoF() {
-    return this._getModifiedValue('rof');
+    const burst = this.getBurst() || 1;
+    const burstRoF = this.getBurstRoF() || 1;
+    const intRoF = this._getModifiedValue('rof');
+    return burst / (((burst - 1)/burstRoF) + 1/intRoF);
   }
 
   /**
