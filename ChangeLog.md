@@ -1,5 +1,6 @@
 #2.2.5
   * Calculate rate of fire for multi-burst weapons
+  * Add note to disable ghostery in error situation
 
 #2.2.4
   * Add shortlink for outfitting page

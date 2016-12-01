@@ -42,6 +42,7 @@ export default class ErrorDetails extends React.Component {
     return <div className='error'>
       <h1>Jameson, we have a problem..</h1>
       <h1><small>{error.message}</small></h1>
+      <div>Please note that this site uses Google Analytics to track performance and usage.  If you are blocking cookies, for example using Ghostery, please disable blocking for this site and try again.</div>
       {content}
     </div>;
   }
