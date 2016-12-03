@@ -346,6 +346,7 @@ export default class ModalImport extends TranslatedComponent {
         }
       }
     } catch (e) {
+      // console.log(e.stack);
       this.setState({ errorMsg: (typeof e == 'string') ? e : 'Cannot Parse the data!' });
       return;
     }

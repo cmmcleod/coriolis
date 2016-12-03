@@ -72,7 +72,7 @@ export default class ComparisonTable extends TranslatedComponent {
    * @return {React.Component}    Table row
    */
   _buildRow(build, facets, formats, units) {
-    let url = outfitURL(build.id, build.toString(), build.buildName)
+    let url = outfitURL(build.id, build.toString(), build.buildName);
     let cells = [
       <td key='s' className='tl'><Link href={url}>{build.name}</Link></td>,
       <td key='bn' className='tl'><Link href={url}>{build.buildName}</Link></td>

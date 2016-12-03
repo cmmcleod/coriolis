@@ -8,7 +8,7 @@ import { outfitURL } from '../utils/UrlGenerators';
 
 const STANDARD = ['powerPlant', 'thrusters', 'frameShiftDrive', 'lifeSupport', 'powerDistributor', 'sensors', 'fuelTank'];
 
-const STANDARD_GROUPS = {'powerPlant': 'pp', 'thrusters': 't', 'frameShiftDrive': 'fsd', 'lifeSupport': 'ls', 'powerDistributor': 'pd', 'sensors': 's', 'fuelTank': 'ft'};
+const STANDARD_GROUPS = { 'powerPlant': 'pp', 'thrusters': 't', 'frameShiftDrive': 'fsd', 'lifeSupport': 'ls', 'powerDistributor': 'pd', 'sensors': 's', 'fuelTank': 'ft' };
 
 /**
  * Generates ship-loadout JSON Schema standard object

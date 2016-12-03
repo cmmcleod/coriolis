@@ -458,7 +458,7 @@ export default class Ship {
     } else if (name === 'shieldreinforcement') {
       m.setModValue(name, value);
       this.recalculateShieldCells();
-    } else if (name === 'burst' || name === 'clip' || name === 'damage' || name === 'distdraw' || name === 'jitter' || name === 'piercing' || name === 'range' || name === 'reload' || name === 'rof' || name === 'thermload') {
+    } else if (name === 'burst' || name == 'burstrof' || name === 'clip' || name === 'damage' || name === 'distdraw' || name === 'jitter' || name === 'piercing' || name === 'range' || name === 'reload' || name === 'rof' || name === 'thermload') {
       m.setModValue(name, value);
       this.recalculateDps();
       this.recalculateHps();
@@ -1260,7 +1260,7 @@ export default class Ship {
           let modElements = mods[j].split(':');
           if (modElements[0].match('[0-9]+')) {
             const modification = _.find(Modifications.modifications, function(o) { return o.id === modElements[0]; });
-	    if (modification != null) arr[i][modification.name] = Number(modElements[1]);
+            if (modification != null) arr[i][modification.name] = Number(modElements[1]);
           } else {
             arr[i][modElements[0]] = Number(modElements[1]);
           }
@@ -1297,7 +1297,7 @@ export default class Ship {
       bulkheadBlueprint = this.bulkheads.m.blueprint;
     }
     slots.push(bulkheadMods);
-    blueprints.push(bulkheadBlueprint)
+    blueprints.push(bulkheadBlueprint);
     specials.push(bulkheadBlueprint ? bulkheadBlueprint.special : null);
 
     for (let slot of this.standard) {
@@ -1356,7 +1356,7 @@ export default class Ship {
     for (let special of specials) {
       if (special) {
         // Length is 5 for each special
-	bufsize += 5;
+        bufsize += 5;
       }
     }
 
@@ -1376,20 +1376,20 @@ export default class Ship {
             buffer.writeInt8(MODIFICATION_ID_GRADE, curpos++);
             buffer.writeInt32LE(blueprints[i].grade, curpos);
             curpos += 4;
-	  }
+          }
           if (specials[i]) {
             buffer.writeInt8(MODIFICATION_ID_SPECIAL, curpos++);
             buffer.writeInt32LE(specials[i].id, curpos);
             curpos += 4;
-	  }
+          }
           for (let slotMod of slot) {
             buffer.writeInt8(slotMod.id, curpos++);
-	    if (isNaN(slotMod.value)) {
-                // Need to write the string with exactly four characters, so pad with whitespace
-		buffer.write(("    " + slotMod.value).slice(-4), curpos, 4);
-	    } else {
-                buffer.writeInt32LE(slotMod.value, curpos);
-	    }
+            if (isNaN(slotMod.value)) {
+              // Need to write the string with exactly four characters, so pad with whitespace
+              buffer.write(('    ' + slotMod.value).slice(-4), curpos, 4);
+            } else {
+              buffer.writeInt32LE(slotMod.value, curpos);
+            }
             // const modification = _.find(Modifications.modifications, function(o) { return o.id === slotMod.id; });
             // console.log('ENCODE Slot ' + i + ': ' + modification.name + ' = ' + slotMod.value);
             curpos += 4;
@@ -1414,7 +1414,7 @@ export default class Ship {
    * See updateModificationsString() for details of the structure.
    * @param {String} buffer         Buffer holding modification info
    * @param {Array}  modArr         Modification array
-   * @param {Array}  bluprintArr    Blueprint array
+   * @param {Array}  blueprintArr    Blueprint array
    */
   decodeModificationsStruct(buffer, modArr, blueprintArr) {
     let curpos = 0;
@@ -1428,22 +1428,22 @@ export default class Ship {
         if (modificationId === 40) {
           // Type is special, in that it's a character string
           modificationValue = buffer.toString('utf8', curpos, curpos + 4).trim();
-	} else {
+        } else {
           modificationValue = buffer.readInt32LE(curpos);
-	}
+        }
         curpos += 4;
-	// There are a number of 'special' modification IDs, check for them here
-	if (modificationId === MODIFICATION_ID_BLUEPRINT) {
+        // There are a number of 'special' modification IDs, check for them here
+        if (modificationId === MODIFICATION_ID_BLUEPRINT) {
           blueprint = Object.assign(blueprint, _.find(Modifications.blueprints, function(o) { return o.id === modificationValue; }));
-	} else if (modificationId === MODIFICATION_ID_GRADE) {
+        } else if (modificationId === MODIFICATION_ID_GRADE) {
           blueprint.grade = modificationValue;
-	} else if (modificationId === MODIFICATION_ID_SPECIAL) {
+        } else if (modificationId === MODIFICATION_ID_SPECIAL) {
           blueprint.special = _.find(Modifications.specials, function(o) { return o.id === modificationValue; });
-	} else {
+        } else {
           const modification = _.find(Modifications.modifications, function(o) { return o.id === modificationId; });
           // console.log('DECODE Slot ' + slot + ': ' + modification.name + ' = ' + modificationValue);
           modifications[modification.name] = modificationValue;
-	}
+        }
         modificationId = buffer.readInt8(curpos++);
       }
       modArr[slot] = modifications;
