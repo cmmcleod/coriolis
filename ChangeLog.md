@@ -1,6 +1,11 @@
 #2.2.5
   * Calculate rate of fire for multi-burst weapons
   * Add note to disable ghostery in error situation
+  * Use coriolis-data 2.2.5:
+    * Fix incorrect ID for emissive munitions special
+    * Fix rate of fire for burst lasers
+    * Add fragment cannon modifications
+    * Fix internal name of dazzle shell
 
 #2.2.4
   * Add shortlink for outfitting page
