@@ -16,6 +16,7 @@ import InternalSlotSection from '../components/InternalSlotSection';
 import UtilitySlotSection from '../components/UtilitySlotSection';
 import OffenceSummary from '../components/OffenceSummary';
 import DefenceSummary from '../components/DefenceSummary';
+import MovementSummary from '../components/MovementSummary';
 import LineChart from '../components/LineChart';
 import PowerManagement from '../components/PowerManagement';
 import CostSection from '../components/CostSection';
@@ -344,19 +345,7 @@ export default class OutfittingPage extends Page {
         </div>
 
         <div className='group third'>
-          <h1>{translate('speed')}</h1>
-          <LineChart
-            width={chartWidth}
-            xMax={ship.cargoCapacity}
-            yMax={ship.topBoost + 10}
-            xUnit={translate('T')}
-            yUnit={translate('m/s')}
-            yLabel={translate('speed')}
-            series={SPEED_SERIES}
-            colors={SPEED_COLORS}
-            xLabel={translate('cargo')}
-            func={state.speedChartFunc}
-          />
+          <MovementSummary ship={ship} code={code}/>
         </div>
 
         <div className='group half'>
@@ -402,3 +391,19 @@ export default class OutfittingPage extends Page {
 //            func={state.jumpRangeChartFunc}
 //          />
 //        </div>
+//        <div className='group third'>
+//          <h1>{translate('speed')}</h1>
+//          <LineChart
+//            width={chartWidth}
+//            xMax={ship.cargoCapacity}
+//            yMax={ship.topBoost + 10}
+//            xUnit={translate('T')}
+//            yUnit={translate('m/s')}
+//            yLabel={translate('speed')}
+//            series={SPEED_SERIES}
+//            colors={SPEED_COLORS}
+//            xLabel={translate('cargo')}
+//            func={state.speedChartFunc}
+//          />
+//        </div>
+

@@ -188,10 +188,10 @@ export default class Ship {
    * Calculate the hypothetical top speeds at cargo and fuel tonnage
    * @param  {Number} fuel  Fuel available in tons
    * @param  {Number} cargo Cargo in tons
-   * @return {Object}       Speed at pip settings and boost
+   * @return {array}       Speed at pip settings
    */
   calcSpeedsWith(fuel, cargo) {
-    return Calc.speed(this.unladenMass + fuel + cargo, this.speed, this.boost, this.standard[1].m, this.pipSpeed);
+    return Calc.speed(this.unladenMass + fuel + cargo, this.speed, this.standard[1].m, this.pipSpeed);
   }
 
   /**
@@ -432,7 +432,7 @@ export default class Ship {
       let newMass = m.getMass();
       this.unladenMass = this.unladenMass - oldMass + newMass;
       this.ladenMass = this.ladenMass - oldMass + newMass;
-      this.updateTopSpeed();
+      this.updateMovement();
       this.updateJumpStats();
     } else if (name === 'maxfuel') {
       m.setModValue(name, value);
@@ -440,13 +440,13 @@ export default class Ship {
     } else if (name === 'optmass') {
       m.setModValue(name, value);
       // Could be for any of thrusters, FSD or shield
-      this.updateTopSpeed();
+      this.updateMovement();
       this.updateJumpStats();
       this.recalculateShield();
     } else if (name === 'optmul') {
       m.setModValue(name, value);
       // Could be for any of thrusters, FSD or shield
-      this.updateTopSpeed();
+      this.updateMovement();
       this.updateJumpStats();
       this.recalculateShield();
     } else if (name === 'shieldboost') {
@@ -597,7 +597,7 @@ export default class Ship {
           .recalculateDps()
           .recalculateEps()
           .recalculateHps()
-          .updateTopSpeed();
+          .updateMovement();
     }
 
     return this.updatePowerPrioritesString().updatePowerEnabledString().updateModificationsString();
@@ -876,7 +876,7 @@ export default class Ship {
       if (shieldCellsChange) {
         this.recalculateShieldCells();
       }
-      this.updateTopSpeed();
+      this.updateMovement();
       this.updateJumpStats();
     }
     return this;
@@ -1088,13 +1088,20 @@ export default class Ship {
   }
 
   /**
-   * Update top speed and boost
+   * Update movement values
    * @return {this} The ship instance (for chaining operations)
    */
-  updateTopSpeed() {
-    let speeds = Calc.speed(this.unladenMass + this.fuelCapacity, this.speed, this.boost, this.standard[1].m, this.pipSpeed);
-    this.topSpeed = speeds['4 Pips'];
-    this.topBoost = this.canBoost() ? speeds.boost : 0;
+  updateMovement() {
+    this.speeds = Calc.speed(this.unladenMass + this.fuelCapacity, this.speed, this.standard[1].m, this.pipSpeed);
+    this.topSpeed = this.speeds[4];
+    this.topBoost = this.canBoost() ? this.speeds[4] * this.boost / this.speed : 0;
+
+    this.pitches = Calc.pitch(this.unladenMass + this.fuelCapacity, this.pitch, this.standard[1].m, this.pipSpeed);
+
+    this.rolls = Calc.roll(this.unladenMass + this.fuelCapacity, this.roll, this.standard[1].m, this.pipSpeed);
+
+    this.yaws = Calc.yaw(this.unladenMass + this.fuelCapacity, this.yaw, this.standard[1].m, this.pipSpeed);
+
     return this;
   }
 

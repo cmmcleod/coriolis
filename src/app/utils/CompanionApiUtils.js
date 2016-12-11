@@ -33,7 +33,7 @@ const SHIP_FD_NAME_TO_CORIOLIS_NAME = {
   'Type7': 'type_7_transport',
   'Type9': 'type_9_heavy',
   'Viper': 'viper',
-  'Viper_MKIV': 'viper_mk_iv',
+  'Viper_MkIV': 'viper_mk_iv',
   'Vulture': 'vulture'
 };
 

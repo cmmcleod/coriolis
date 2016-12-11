@@ -1,3 +1,10 @@
+#2.2.6
+  * Add pitch/roll/yaw information
+  * Use combination of pitch, roll and yaw to provide a more useful agility metric
+  * Add movement summary to outfitting page
+  * Add standard internal class sizes to shipyard page
+  * Fix issue when importing Viper Mk IV
+
 #2.2.5
   * Calculate rate of fire for multi-burst weapons
   * Add note to disable ghostery in error situation

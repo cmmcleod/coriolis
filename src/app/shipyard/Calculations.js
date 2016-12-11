@@ -67,14 +67,35 @@ export function shieldStrength(mass, baseShield, sg, multiplier) {
 /**
  * Calculate the a ships speed based on mass, and thrusters.
  *
- * @param  {number} mass        Current mass of the ship
- * @param  {number} baseSpeed   Base speed m/s for ship
- * @param  {number} baseBoost   Base boost speed m/s for ship
- * @param  {object} thrusters   The Thrusters used
- * @param  {number} pipSpeed    Speed pip multiplier
- * @return {object}             Approximate speed by pips
+ * @param {number}   mass       the mass of the ship
+ * @param {number}   baseSpeed  base speed m/s for ship
+ * @param {object}   thrusters  The ship's thrusters
+ * @param {number}   engpip     the multiplier per pip to engines
+ * @return {array}             Speed by pips
  */
-export function speed(mass, baseSpeed, baseBoost, thrusters, pipSpeed) {
+export function speed(mass, baseSpeed, thrusters, engpip) {
+  // thrusters might be a module or a template; handle either here
+  const minMass = thrusters instanceof Module ? thrusters.getMinMass() : thrusters.minmass;
+  const optMass = thrusters instanceof Module ? thrusters.getOptMass() : thrusters.optmass;
+  const maxMass = thrusters instanceof Module ? thrusters.getMaxMass() : thrusters.maxmass;
+  const minMul = thrusters instanceof Module ? thrusters.getMinMul() : thrusters.minmul;
+  const optMul = thrusters instanceof Module ? thrusters.getOptMul() : thrusters.optmul;
+  const maxMul = thrusters instanceof Module ? thrusters.getMaxMul() : thrusters.maxmul;
+
+  let results = normValues(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, baseSpeed, engpip);
+
+  return results;
+}
+
+/**
+ * Calculate pitch of a ship based on mass and thrusters
+ * @param {number}   mass       the mass of the ship
+ * @param {number}   basePitch  base pitch of the ship
+ * @param {object}   thrusters  the ship's thrusters
+ * @param {number}   engpip     the multiplier per pip to engines
+ * @return {array}             Pitch by pips
+ */
+export function pitch(mass, basePitch, thrusters, engpip) {
   // thrusters might be a module or a template; handle either here
   let minMass = thrusters instanceof Module ? thrusters.getMinMass() : thrusters.minmass;
   let optMass = thrusters instanceof Module ? thrusters.getOptMass() : thrusters.optmass;
@@ -83,16 +104,79 @@ export function speed(mass, baseSpeed, baseBoost, thrusters, pipSpeed) {
   let optMul = thrusters instanceof Module ? thrusters.getOptMul() : thrusters.optmul;
   let maxMul = thrusters instanceof Module ? thrusters.getMaxMul() : thrusters.maxmul;
 
-  let xnorm = Math.min(1, (maxMass - mass) / (maxMass - minMass));
-  let exponent = Math.log((optMul - minMul) / (maxMul - minMul)) / Math.log(Math.min(1, (maxMass - optMass) / (maxMass - minMass)));
-  let ynorm = Math.pow(xnorm, exponent);
-  let mul = minMul + ynorm * (maxMul - minMul);
-  let speed = baseSpeed * mul;
+  return normValues(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, basePitch, engpip);
+}
 
-  return {
-    '0 Pips': speed * (1 - (pipSpeed * 4)),
-    '2 Pips': speed * (1 - (pipSpeed * 2)),
-    '4 Pips': speed,
-    'boost': baseBoost * mul
-  };
+/**
+ * Calculate yaw of a ship based on mass and thrusters
+ * @param {number}   mass       the mass of the ship
+ * @param {number}   baseYaw    base yaw of the ship
+ * @param {object}   thrusters  the ship's thrusters
+ * @param {number}   engpip     the multiplier per pip to engines
+ * @return {array}             Yaw by pips
+ */
+export function yaw(mass, baseYaw, thrusters, engpip) {
+  // thrusters might be a module or a template; handle either here
+  let minMass = thrusters instanceof Module ? thrusters.getMinMass() : thrusters.minmass;
+  let optMass = thrusters instanceof Module ? thrusters.getOptMass() : thrusters.optmass;
+  let maxMass = thrusters instanceof Module ? thrusters.getMaxMass() : thrusters.maxmass;
+  let minMul = thrusters instanceof Module ? thrusters.getMinMul() : thrusters.minmul;
+  let optMul = thrusters instanceof Module ? thrusters.getOptMul() : thrusters.optmul;
+  let maxMul = thrusters instanceof Module ? thrusters.getMaxMul() : thrusters.maxmul;
+
+  return normValues(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, baseYaw, engpip);
+}
+
+/**
+ * Calculate roll of a ship based on mass and thrusters
+ * @param {number}   mass       the mass of the ship
+ * @param {number}   baseRoll   base roll of the ship
+ * @param {object}   thrusters  the ship's thrusters
+ * @param {number}   engpip     the multiplier per pip to engines
+ * @return {array}             Roll by pips
+ */
+export function roll(mass, baseRoll, thrusters, engpip) {
+  // thrusters might be a module or a template; handle either here
+  let minMass = thrusters instanceof Module ? thrusters.getMinMass() : thrusters.minmass;
+  let optMass = thrusters instanceof Module ? thrusters.getOptMass() : thrusters.optmass;
+  let maxMass = thrusters instanceof Module ? thrusters.getMaxMass() : thrusters.maxmass;
+  let minMul = thrusters instanceof Module ? thrusters.getMinMul() : thrusters.minmul;
+  let optMul = thrusters instanceof Module ? thrusters.getOptMul() : thrusters.optmul;
+  let maxMul = thrusters instanceof Module ? thrusters.getMaxMul() : thrusters.maxmul;
+
+  return normValues(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, baseRoll, engpip);
+}
+
+/**
+ * Normalise according to FD's calculations and return suitable values
+ * @param {number}   minMass  the minimum mass of the thrusters
+ * @param {number}   optMass  the optimum mass of the thrusters
+ * @param {number}   maxMass  the maximum mass of the thrusters
+ * @param {number}   minMul   the minimum multiplier of the thrusters
+ * @param {number}   optMul   the optimum multiplier of the thrusters
+ * @param {number}   maxMul   the maximum multiplier of the thrusters
+ * @param {number}   mass     the mass of the ship
+ * @param {base}     base     the base value from which to calculate
+ * @param {number}   engpip   the multiplier per pip to engines
+ * @return {array}            values by pips
+ */
+function normValues(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, base, engpip) {
+  const xnorm = Math.min(1, (maxMass - mass) / (maxMass - minMass));
+  const exponent = Math.log((optMul - minMul) / (maxMul - minMul)) / Math.log(Math.min(1, (maxMass - optMass) / (maxMass - minMass)));
+  const ynorm = Math.pow(xnorm, exponent);
+  const mul = minMul + ynorm * (maxMul - minMul);
+  const res = base * mul;
+
+  return [res * (1 - (engpip * 4)),
+          res * (1 - (engpip * 3)),
+	  res * (1 - (engpip * 2)),
+	  res * (1 - (engpip * 1)),
+	  res];
+  //return {
+  //  '0 Pips': res * (1 - (engpip * 4)),
+  //  '1 Pip':  res * (1 - (engpip * 3)),
+  //  '2 Pips': res * (1 - (engpip * 2)),
+  //  '3 Pips': res * (1 - (engpip)),
+  //  '4 Pips': res
+  //};
 }

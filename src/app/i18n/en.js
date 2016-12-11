@@ -94,7 +94,7 @@ export const terms = {
   // Unit for seconds
   secs: 's',
 
-  // Weapon, offence and defence
+  // Weapon, offence, defence and movement
   dpe: 'Damage per MJ of energy',
   dps: 'Damage per second',
   sdps: 'Sustained damage per second',
@@ -106,6 +106,13 @@ export const terms = {
   'damage by': 'Damage by',
   'damage from': 'Damage from',
   'shield cells': 'Shield cells',
+  'recovery': 'Recovery',
+  'recharge': 'Recharge',
+  'engine pips': 'Engine Pips',
+  'speed': 'Speed',
+  'pitch': 'Pitch',
+  'roll': 'Roll',
+  'yaw': 'Yaw',
 
   // Modifications
   ammo: 'Ammunition maximum',

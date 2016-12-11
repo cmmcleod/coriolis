@@ -31,6 +31,7 @@
       "jsx"
     ],
     "automock": true,
+    "bail": false,
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/lodash",
       "<rootDir>/node_modules/react",
