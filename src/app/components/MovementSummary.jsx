@@ -46,7 +46,7 @@ export default class MovementSummary extends TranslatedComponent {
               <td>2</td>
               <td>3</td>
               <td>4</td>
-              <td>4B</td>
+              <td onMouseOver={termtip.bind(null, '4b')} onMouseOut={tooltip.bind(null, null)}>4B</td>
             </tr>
             <tr>
               <td className='ri'>{translate('speed')} ({units['m/s']})</td>

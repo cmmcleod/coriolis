@@ -109,6 +109,7 @@ export const terms = {
   'recovery': 'Recovery',
   'recharge': 'Recharge',
   'engine pips': 'Engine Pips',
+  '4b': '4 pips and boost',
   'speed': 'Speed',
   'pitch': 'Pitch',
   'roll': 'Roll',
