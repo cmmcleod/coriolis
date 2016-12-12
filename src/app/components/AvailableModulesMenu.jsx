@@ -203,6 +203,12 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     this.context.tooltip();
   }
 
+  /**
+   * Order two modules suitably for display in module selection
+   * @param  {Object} a the first module
+   * @param  {Object} b the second module
+   * @return {int}      -1 if the first module should go first, 1 if the second module should go first
+   */
   _moduleOrder(a, b) {
     // Named modules go last
     if (!a.name && b.name) {

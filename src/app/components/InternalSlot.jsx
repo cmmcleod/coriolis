@@ -43,6 +43,7 @@ export default class InternalSlot extends Slot {
           { m.getMaxMass() ? <div className={'l'}>{translate('max mass')}: {formats.int(m.getMaxMass())}{u.T}</div> : null }
           { m.bins ? <div className={'l'}>{m.bins} <u>{translate('bins')}</u></div> : null }
           { m.bays ? <div className={'l'}>{translate('bays')}: {m.bays}</div> : null }
+          { m.rebuildsperbay ? <div className={'l'}>{translate('rebuildsperbay')}: {m.rebuildsperbay}</div> : null }
           { m.rate ? <div className={'l'}>{translate('rate')}: {m.rate}{u.kgs}&nbsp;&nbsp;&nbsp;{translate('refuel time')}: {formats.time(this.props.fuel * 1000 / m.rate)}</div> : null }
           { m.getAmmo() ? <div className={'l'}>{translate('ammunition')}: {formats.gen(m.getAmmo())}</div> : null }
           { m.cells ? <div className={'l'}>{translate('cells')}: {m.cells}</div> : null }

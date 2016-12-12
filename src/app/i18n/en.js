@@ -94,6 +94,8 @@ export const terms = {
   // Unit for seconds
   secs: 's',
 
+  rebuildsperbay: 'Rebuilds per bay',
+
   // Weapon, offence, defence and movement
   dpe: 'Damage per MJ of energy',
   dps: 'Damage per second',
@@ -120,6 +122,7 @@ export const terms = {
   boot: 'Boot time',
   brokenregen: 'Broken regeneration rate',
   burst: 'Burst',
+  burstrof: 'Burst rate of fire',
   clip: 'Ammunition clip',
   damage: 'Damage',
   distdraw: 'Distributor draw',

@@ -172,11 +172,4 @@ function normValues(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, bas
 	  res * (1 - (engpip * 2)),
 	  res * (1 - (engpip * 1)),
 	  res];
-  //return {
-  //  '0 Pips': res * (1 - (engpip * 4)),
-  //  '1 Pip':  res * (1 - (engpip * 3)),
-  //  '2 Pips': res * (1 - (engpip * 2)),
-  //  '3 Pips': res * (1 - (engpip)),
-  //  '4 Pips': res
-  //};
 }
