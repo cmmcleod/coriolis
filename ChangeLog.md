@@ -6,6 +6,7 @@
   * Fix issue when importing Viper Mk IV
   * Ensure ordering of all types of modules (standard, internal, utilities) is consistent
   * Add rebuilds per bay information for fighter hangars
+  * Use separate speed/rotation/acceleration multipliers for thrusters if available
 
 #2.2.5
   * Calculate rate of fire for multi-burst weapons

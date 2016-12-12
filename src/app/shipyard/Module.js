@@ -370,42 +370,60 @@ export default class Module {
 
   /**
    * Get the minimum multiplier for this module, taking in to account modifications
+   * @param {string} type the type for which we are obtaining the multiplier.  Can be 'speed', 'rotation', 'acceleration', or null
    * @return {Number} the minimum multiplier of this module
    */
-  getMinMul() {
+  getMinMul(type = null) {
     // Modifier is optmul
     let result = 0;
-    if (this['minmul']) {
+    if (this['minmul' + type]) {
+      result = this['minmul' + type];
+    } else if (this['minmul']) {
       result = this['minmul'];
-      if (result) {
-        let mult = this.getModValue('optmul') / 10000;
-        if (mult) { result = result * (1 + mult); }
-      }
+    }
+    if (result) {
+      let mult = this.getModValue('optmul') / 10000;
+      if (mult) { result = result * (1 + mult); }
     }
     return result;
   }
 
   /**
    * Get the optimum multiplier for this module, taking in to account modifications
+   * @param {string} type the type for which we are obtaining the multiplier.  Can be 'speed', 'rotation', 'acceleration', or null
    * @return {Number} the optimum multiplier of this module
    */
-  getOptMul() {
-    return this._getModifiedValue('optmul');
+  getOptMul(type = null) {
+    // Modifier is optmul
+    let result = 0;
+    if (this['optmul' + type]) {
+      result = this['optmul' + type];
+    } else if (this['optmul']) {
+      result = this['optmul'];
+    }
+    if (result) {
+      let mult = this.getModValue('optmul') / 10000;
+      if (mult) { result = result * (1 + mult); }
+    }
+    return result;
   }
 
   /**
    * Get the maximum multiplier for this module, taking in to account modifications
+   * @param {string} type the type for which we are obtaining the multiplier.  Can be 'speed', 'rotation', 'acceleration', or null
    * @return {Number} the maximum multiplier of this module
    */
-  getMaxMul() {
+  getMaxMul(type = null) {
     // Modifier is optmul
     let result = 0;
-    if (this['maxmul']) {
+    if (this['maxmul' + type]) {
+      result = this['maxmul' + type];
+    } else if (this['maxmul']) {
       result = this['maxmul'];
-      if (result) {
-        let mult = this.getModValue('optmul') / 10000;
-        if (mult) { result = result * (1 + mult); }
-      }
+    }
+    if (result) {
+      let mult = this.getModValue('optmul') / 10000;
+      if (mult) { result = result * (1 + mult); }
     }
     return result;
   }
