@@ -1114,7 +1114,7 @@ export default class Ship {
    */
   recalculateShield() {
     let shield = 0;
-    let shieldBoost = 0;
+    let shieldBoost = 1;
     let shieldExplRes = null;
     let shieldKinRes = null;
     let shieldThermRes = null;
@@ -1130,7 +1130,6 @@ export default class Ship {
       // Shield from boosters
       for (let slot of this.hardpoints) {
         if (slot.m && slot.m.grp == 'sb') {
-          //shield += baseShield * slot.m.getShieldBoost();
           shieldBoost += slot.m.getShieldBoost();
           shieldExplRes *= (1 - slot.m.getExplosiveResistance());
           shieldKinRes *= (1 - slot.m.getKineticResistance());
