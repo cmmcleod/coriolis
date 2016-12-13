@@ -88,38 +88,5 @@ export default class MovementSummary extends TranslatedComponent {
         </table>
       </span>
     );
-//    return (
-//      <span>
-//        <h1>{translate('movement summary')}</h1>
-//        <table className='summary' style={{ marginLeft: 'auto', marginRight: 'auto', lineHeight: '1em', backgroundColor: 'transparent' }}>
-//          <tbody>
-//            <tr>
-//              <td colSpan='4' className='summary'><h2>{translate('normal')}</h2></td>
-//            </tr>
-//            <tr>
-//              <td className='summary'>{translate('speed')} {formats.int(ship.topSpeed)}{units['m/s']}</td>
-//              <td className='summary'>{translate('pitch')} {formats.f1(ship.pitches[4])}{units['°/s']}</td>
-//              <td className='summary'>{translate('roll')} {formats.f1(ship.rolls[4])}{units['°/s']}</td>
-//              <td className='summary'>{translate('yaw')} {formats.f1(ship.yaws[4])}{units['°/s']}</td>
-//            </tr>
-//            <tr>
-//              <td colSpan='4' className='summary'><h2>{translate('boost')}</h2></td>
-//            </tr>
-//            <tr>
-//              <td className='summary'>{translate('speed')} {formats.int(ship.topSpeed * boostMultiplier)}{units['m/s']}</td>
-//              <td className='summary'>{translate('pitch')} {formats.f1(ship.pitches[4] * boostMultiplier)}{units['°/s']}</td>
-//              <td className='summary'>{translate('roll')} {formats.f1(ship.rolls[4] * boostMultiplier)}{units['°/s']}</td>
-//              <td className='summary'>{translate('yaw')} {formats.f1(ship.yaws[4] * boostMultiplier)}{units['°/s']}</td>
-//            </tr>
-//            <tr>
-//              <td colSpan='4' className='summary'><h2>Frame Shift</h2></td>
-//            </tr>
-//            <tr>
-//              <td colSpan='4' className='summary'>Maximum {formats.f2(ship.fullTankRange)} {units.LY}</td>
-//            </tr>
-//          </tbody>
-//        </table>
-//      </span>
-//    );
   }
 }

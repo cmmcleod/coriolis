@@ -105,8 +105,9 @@ export const BulkheadNames = [
 export const ShipFacets = [
     {                   // 0
       title: 'agility',
-      props: ['agility'],
-      fmt: 'int',
+      props: ['topPitch', 'topRoll', 'topYaw'],
+      lbls: ['pitch', 'roll', 'yaw'],
+      fmt: 'f1',
       i: 0
     },
     {                   // 1
@@ -185,10 +186,17 @@ export const ShipFacets = [
     },
     {                   // 11
       title: 'DPS',
-      props: ['totalDps'],
-      lbls: ['DPS'],
+      props: ['totalDps', 'totalExplDps', 'totalKinDps', 'totalThermDps'],
+      lbls: ['total', 'explosive', 'kinetic', 'thermal'],
       fmt: 'round',
       i: 11
+    },
+    {                   // 14
+      title: 'Sustained DPS',
+      props: ['totalSDps', 'totalExplSDps', 'totalKinSDps', 'totalThermSDps'],
+      lbls: ['total', 'explosive', 'kinetic', 'thermal'],
+      fmt: 'round',
+      i: 14
     },
     {                   // 12
       title: 'EPS',

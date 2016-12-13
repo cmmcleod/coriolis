@@ -223,8 +223,16 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     }
     if (a.class > b.class) {
       return -1;
-    // Rating ordered from lowest (E) to highest (A)
     }
+    // Mount type, if applicable
+    if (a.mount && b.mount && a.mount !== b.mount) {
+      if (a.mount === 'F' || (a.mount === 'G' && b.mount === 'T')) {
+        return -1;
+      } else {
+        return 1;
+      }
+    }
+    // Rating ordered from lowest (E) to highest (A)
     if (a.rating < b.rating) {
       return 1;
     }

@@ -452,7 +452,7 @@ export default class Ship {
     } else if (name === 'shieldboost') {
       m.setModValue(name, value);
       this.recalculateShield();
-    } else if (name === 'hullboost' || name === 'hullreinforcement') {
+    } else if (name === 'hullboost' || name === 'hullreinforcement' || name === 'modulereinforcement') {
       m.setModValue(name, value);
       this.recalculateArmour();
     } else if (name === 'shieldreinforcement') {
@@ -801,7 +801,7 @@ export default class Ship {
     let epsChanged = n && n.getEps() || old && old.getEps();
     let hpsChanged = n && n.getHps() || old && old.getHps();
 
-    let armourChange = (slot === this.bulkheads) || (n && n.grp === 'hr') || (old && old.grp === 'hr');
+    let armourChange = (slot === this.bulkheads) || (n && n.grp === 'hr') || (old && old.grp === 'hr') || (n && n.grp === 'mrp') || (old && old.grp === 'mrp');
 
     let shieldChange = (n && n.grp === 'bsg') || (old && old.grp === 'bsg') || (n && n.grp === 'psg') || (old && old.grp === 'psg') || (n && n.grp === 'sg') || (old && old.grp === 'sg') || (n && n.grp === 'sb') || (old && old.grp === 'sb');
 
@@ -1097,10 +1097,13 @@ export default class Ship {
     this.topBoost = this.canBoost() ? this.speeds[4] * this.boost / this.speed : 0;
 
     this.pitches = Calc.pitch(this.unladenMass + this.fuelCapacity, this.pitch, this.standard[1].m, this.pipSpeed);
+    this.topPitch = this.pitches[4];
 
     this.rolls = Calc.roll(this.unladenMass + this.fuelCapacity, this.roll, this.standard[1].m, this.pipSpeed);
+    this.topRoll = this.rolls[4];
 
     this.yaws = Calc.yaw(this.unladenMass + this.fuelCapacity, this.yaw, this.standard[1].m, this.pipSpeed);
+    this.topYaw = this.yaws[4];
 
     return this;
   }
@@ -1111,6 +1114,7 @@ export default class Ship {
    */
   recalculateShield() {
     let shield = 0;
+    let shieldBoost = 0;
     let shieldExplRes = null;
     let shieldKinRes = null;
     let shieldThermRes = null;
@@ -1118,8 +1122,7 @@ export default class Ship {
     const sgSlot = this.findInternalByGroup('sg');
     if (sgSlot && sgSlot.enabled) {
       // Shield from generator
-      const baseShield = Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sgSlot.m, 1);
-      shield = baseShield;
+      shield = Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sgSlot.m, 1);
       shieldExplRes = 1 - sgSlot.m.getExplosiveResistance();
       shieldKinRes = 1 - sgSlot.m.getKineticResistance();
       shieldThermRes = 1 - sgSlot.m.getThermalResistance();
@@ -1127,7 +1130,8 @@ export default class Ship {
       // Shield from boosters
       for (let slot of this.hardpoints) {
         if (slot.m && slot.m.grp == 'sb') {
-          shield += baseShield * slot.m.getShieldBoost();
+          //shield += baseShield * slot.m.getShieldBoost();
+          shieldBoost += slot.m.getShieldBoost();
           shieldExplRes *= (1 - slot.m.getExplosiveResistance());
           shieldKinRes *= (1 - slot.m.getKineticResistance());
           shieldThermRes *= (1 - slot.m.getThermalResistance());
@@ -1135,6 +1139,10 @@ export default class Ship {
       }
     }
 
+    // We apply diminishing returns to the boosted value
+    shieldBoost = Math.min(shieldBoost, (1 - Math.pow(Math.E, -0.7 * shieldBoost)) * 2.5);
+    shield = shield * shieldBoost;
+    
     this.shield = shield;
     this.shieldExplRes = shieldExplRes ? 1 - this.diminishingReturns(1 - shieldExplRes, 0.5, 0.75) : null;
     this.shieldKinRes = shieldKinRes ? 1 - this.diminishingReturns(1 - shieldKinRes, 0.5, 0.75) : null;
@@ -1169,11 +1177,13 @@ export default class Ship {
     // Armour from bulkheads
     let bulkhead = this.bulkheads.m;
     let armour = this.baseArmour + (this.baseArmour * bulkhead.getHullBoost());
+    let modulearmour = 0;
+    let moduleprotection = 1;
     let hullExplRes = 1 - bulkhead.getExplosiveResistance();
     let hullKinRes = 1 - bulkhead.getKineticResistance();
     let hullThermRes = 1 - bulkhead.getThermalResistance();
 
-    // Armour from HRPs
+    // Armour from HRPs and module armour from MRPs
     for (let slot of this.internal) {
       if (slot.m && slot.m.grp == 'hr') {
         armour += slot.m.getHullReinforcement();
@@ -1184,9 +1194,16 @@ export default class Ship {
         hullKinRes *= (1 - slot.m.getKineticResistance());
         hullThermRes *= (1 - slot.m.getThermalResistance());
       }
+      if (slot.m && slot.m.grp == 'mrp') {
+        modulearmour += slot.m.getIntegrity();
+        moduleprotection = moduleprotection * (1 - slot.m.getProtection());
+      }
     }
+    moduleprotection = 1 - moduleprotection;
 
     this.armour = armour;
+    this.modulearmour = modulearmour;
+    this.moduleprotection = moduleprotection;
     this.hullExplRes = 1 - this.diminishingReturns(1 - hullExplRes, 0.5, 0.75);
     this.hullKinRes = 1 - this.diminishingReturns(1 - hullKinRes, 0.5, 0.75);
     this.hullThermRes = 1 - this.diminishingReturns(1 - hullThermRes, 0.5, 0.75);

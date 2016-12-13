@@ -303,6 +303,14 @@ export default class Module {
   }
 
   /**
+   * Get the protection for this module, taking in to account modifications
+   * @return {Number} the protection of this module
+   */
+  getProtection() {
+    return this._getModifiedValue('protection');
+  }
+
+  /**
    * Get the delay for this module, taking in to account modifications
    * @return {Number} the delay of this module
    */

@@ -6,6 +6,9 @@
   * Fix issue when importing Viper Mk IV
   * Ensure ordering of all types of modules (standard, internal, utilities) is consistent
   * Add rebuilds per bay information for fighter hangars
+  * Add ability to show military compartments
+  * Add diminishing returns for shield boosters
+  * Show module reinforcement package results in defence summary
   * Use separate speed/rotation/acceleration multipliers for thrusters if available
 
 #2.2.5

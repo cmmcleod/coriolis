@@ -67,6 +67,17 @@ export default class DefenceSummary extends TranslatedComponent {
               <td className='ri' onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /> {formats.pct1(ship.hullKinRes || 1)}</td>
               <td className='ri' onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /> {formats.pct1(ship.hullThermRes || 1)}</td>
             </tr>
+
+	    {ship.modulearmour > 0 ?
+            <tr>
+              <td colSpan='4'><h2>{translate('module armour')}: {formats.int(ship.modulearmour)}</h2></td>
+            </tr> : null }
+
+	    {ship.moduleprotection > 0 ?
+            <tr>
+              <td colSpan='2' className='cn'>{translate('internal protection')} {formats.pct1(ship.moduleprotection)}</td>
+              <td colSpan='2' className='cn'>{translate('external protection')} {formats.pct1(ship.moduleprotection / 2)}</td>
+            </tr> : null }
           </tbody>
         </table>
       </span>

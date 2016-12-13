@@ -59,6 +59,7 @@ export const terms = {
   mc: 'Multi-cannon',
   ml: 'Mining Laser',
   mr: 'Missile Rack',
+  mrp: 'Module Reinforcement Package',
   nl: 'Mine Launcher',
   pa: 'Plasma Accelerator',
   pas: 'Planetary Approach Suite',
@@ -116,6 +117,8 @@ export const terms = {
   'pitch': 'Pitch',
   'roll': 'Roll',
   'yaw': 'Yaw',
+  'internal protection': 'Internal protection',
+  'external protection': 'External protection',
 
   // Modifications
   ammo: 'Ammunition maximum',
@@ -144,6 +147,7 @@ export const terms = {
   pgen: 'Power generation',
   piercing: 'Piercing',
   power: 'Power draw',
+  protection: 'Protection',
   range: 'Range',
   ranget: 'Range', // Range in time (for FSD interdictor)
   regen: 'Regeneration rate',
