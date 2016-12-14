@@ -224,7 +224,9 @@ export function shipFromJson(json) {
     // Now that we know what we're looking for, find it
     const hardpointName = HARDPOINT_NUM_TO_CLASS[hardpointClassNum] + 'Hardpoint' + hardpointSlotNum;
     const hardpointSlot = json.modules[hardpointName];
-    if (!hardpointSlot.module) {
+    if (!hardpointSlot) {
+      // This can happen with old imports that don't contain new hardpoints
+    } else if (!hardpointSlot.module) {
       // No module
     } else {
       const hardpointJson = hardpointSlot.module;
@@ -251,7 +253,9 @@ export function shipFromJson(json) {
       }
       internalSlotNum++;
     }
-    if (!internalSlot.module) {
+    if (!internalSlot) {
+      // This can happen with old imports that don't contain new slots
+    } else if (!internalSlot.module) {
       // No module
     } else {
       const internalJson = internalSlot.module;
