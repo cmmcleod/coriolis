@@ -644,18 +644,10 @@ export default class Ship {
 
     decodeToArray(code, internal, decodeToArray(code, hardpoints, decodeToArray(code, standard, 1)));
 
-console.log('Priorities was ' + JSON.stringify(priorities));
-console.log('Enableds was ' + JSON.stringify(enabled));
-console.log('Modifications was ' + JSON.stringify(modifications));
-console.log('Blueprints was ' + JSON.stringify(blueprints));
     if (version != 2) {
       // Alter as required due to changes in the (build) code from one version to the next
       this.upgradeInternals(this.id, internal, 1 + this.standard.length + this.hardpoints.length, priorities, enabled, modifications, blueprints, version);
     }
-console.log('Priorities is ' + JSON.stringify(priorities));
-console.log('Enableds is ' + JSON.stringify(enabled));
-console.log('Modifications is ' + JSON.stringify(modifications));
-console.log('Blueprints is ' + JSON.stringify(blueprints));
     
     return this.buildWith(
       {
@@ -1472,11 +1464,11 @@ console.log('Blueprints is ' + JSON.stringify(blueprints));
         if (modificationId === MODIFICATION_ID_BLUEPRINT) {
           if (modificationValue !== 0) {
             blueprint = Object.assign(blueprint, _.find(Modifications.blueprints, function(o) { return o.id === modificationValue; }));
-	  }
+          }
         } else if (modificationId === MODIFICATION_ID_GRADE) {
           if (modificationValue !== 0) {
             blueprint.grade = modificationValue;
-	  }
+          }
         } else if (modificationId === MODIFICATION_ID_SPECIAL) {
           blueprint.special = _.find(Modifications.specials, function(o) { return o.id === modificationValue; });
         } else {
@@ -1658,18 +1650,29 @@ console.log('Blueprints is ' + JSON.stringify(blueprints));
     return this;
   }
 
+  /**
+   * Upgrade information about internals with version changes
+   * @param {int}   shipId        the ID of the ship
+   * @param {array} internals     the internals from the ship code
+   * @param {int}   offset        the offset of the internals information in the priorities etc. arrays
+   * @param {array} priorities    the existing priorities arrray
+   * @param {array} enableds      the existing enableds arrray
+   * @param {array} modifications the existing modifications arrray
+   * @param {array} blueprints    the existing blueprints arrray
+   * @param {int}   version       the version of the information
+   */
   upgradeInternals(shipId, internals, offset, priorities, enableds, modifications, blueprints, version) {
     if (version == 1) {
       // Version 2 reflects the addition of military slots.  this means that we need to juggle the internals and their
       // associated information around to make holes in the appropriate places
-      for (var slotId = 0; slotId < this.internal.length; slotId++) {
+      for (let slotId = 0; slotId < this.internal.length; slotId++) {
         if (this.internal[slotId].eligible && this.internal[slotId].eligible.mrp) {
           // Found an MRP - push all of the existing items down one to compensate for the fact that they didn't exist before now
           internals.push.apply(internals, [0].concat(internals.splice(slotId).slice(0, -1)));
 
           const offsetSlotId = offset + slotId;
 
-	  // Same for priorities etc.
+          // Same for priorities etc.
           priorities.push.apply(priorities, [0].concat(priorities.splice(offsetSlotId)));
           enableds.push.apply(enableds, [1].concat(enableds.splice(offsetSlotId)));
           modifications.push.apply(modifications, [null].concat(modifications.splice(offsetSlotId).slice(0, -1)));

@@ -163,7 +163,7 @@ export default class InternalSlotSection extends SlotSection {
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
       if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.hr)) {
-          ship.use(slot, ModuleUtils.findInternal('hr', Math.min(slot.maxClass, 5), 'D')); // Hull reinforcements top out at 5D
+        ship.use(slot, ModuleUtils.findInternal('hr', Math.min(slot.maxClass, 5), 'D')); // Hull reinforcements top out at 5D
       }
     });
     this.props.onChange();
