@@ -610,7 +610,7 @@ export default class Ship {
    * @param {String}  serializedString  The string to deserialize
    * @return {this} The current ship instance for chaining
    */
-  buildFrom(serializedString) {
+  buildFrom(serializedString, version = 1) {
     let standard = new Array(this.standard.length),
         hardpoints = new Array(this.hardpoints.length),
         internal = new Array(this.internal.length),
@@ -644,6 +644,19 @@ export default class Ship {
 
     decodeToArray(code, internal, decodeToArray(code, hardpoints, decodeToArray(code, standard, 1)));
 
+console.log('Priorities was ' + JSON.stringify(priorities));
+console.log('Enableds was ' + JSON.stringify(enabled));
+console.log('Modifications was ' + JSON.stringify(modifications));
+console.log('Blueprints was ' + JSON.stringify(blueprints));
+    if (version != 2) {
+      // Alter as required due to changes in the (build) code from one version to the next
+      this.upgradeInternals(this.id, internal, 1 + this.standard.length + this.hardpoints.length, priorities, enabled, modifications, blueprints, version);
+    }
+console.log('Priorities is ' + JSON.stringify(priorities));
+console.log('Enableds is ' + JSON.stringify(enabled));
+console.log('Modifications is ' + JSON.stringify(modifications));
+console.log('Blueprints is ' + JSON.stringify(blueprints));
+    
     return this.buildWith(
       {
         bulkheads: code.charAt(0) * 1,
@@ -1392,7 +1405,7 @@ export default class Ship {
       for (let slot of slots) {
         if (slot.length > 0) {
           buffer.writeInt8(i, curpos++);
-          if (blueprints[i]) {
+          if (blueprints[i] && blueprints[i].id) {
             buffer.writeInt8(MODIFICATION_ID_BLUEPRINT, curpos++);
             buffer.writeInt32LE(blueprints[i].id, curpos);
             curpos += 4;
@@ -1457,9 +1470,13 @@ export default class Ship {
         curpos += 4;
         // There are a number of 'special' modification IDs, check for them here
         if (modificationId === MODIFICATION_ID_BLUEPRINT) {
-          blueprint = Object.assign(blueprint, _.find(Modifications.blueprints, function(o) { return o.id === modificationValue; }));
+          if (modificationValue !== 0) {
+            blueprint = Object.assign(blueprint, _.find(Modifications.blueprints, function(o) { return o.id === modificationValue; }));
+	  }
         } else if (modificationId === MODIFICATION_ID_GRADE) {
-          blueprint.grade = modificationValue;
+          if (modificationValue !== 0) {
+            blueprint.grade = modificationValue;
+	  }
         } else if (modificationId === MODIFICATION_ID_SPECIAL) {
           blueprint.special = _.find(Modifications.specials, function(o) { return o.id === modificationValue; });
         } else {
@@ -1470,7 +1487,9 @@ export default class Ship {
         modificationId = buffer.readInt8(curpos++);
       }
       modArr[slot] = modifications;
-      blueprintArr[slot] = blueprint;
+      if (blueprint.id) {
+        blueprintArr[slot] = blueprint;
+      }
       slot = buffer.readInt8(curpos++);
     }
   }
@@ -1637,5 +1656,26 @@ export default class Ship {
       }
     }
     return this;
+  }
+
+  upgradeInternals(shipId, internals, offset, priorities, enableds, modifications, blueprints, version) {
+    if (version == 1) {
+      // Version 2 reflects the addition of military slots.  this means that we need to juggle the internals and their
+      // associated information around to make holes in the appropriate places
+      for (var slotId = 0; slotId < this.internal.length; slotId++) {
+        if (this.internal[slotId].eligible && this.internal[slotId].eligible.mrp) {
+          // Found an MRP - push all of the existing items down one to compensate for the fact that they didn't exist before now
+          internals.push.apply(internals, [0].concat(internals.splice(slotId).slice(0, -1)));
+
+          const offsetSlotId = offset + slotId;
+
+	  // Same for priorities etc.
+          priorities.push.apply(priorities, [0].concat(priorities.splice(offsetSlotId)));
+          enableds.push.apply(enableds, [1].concat(enableds.splice(offsetSlotId)));
+          modifications.push.apply(modifications, [null].concat(modifications.splice(offsetSlotId).slice(0, -1)));
+          blueprints.push.apply(blueprints, [null].concat(blueprints.splice(offsetSlotId).slice(0, -1)));
+        }
+      }
+    }
   }
 }

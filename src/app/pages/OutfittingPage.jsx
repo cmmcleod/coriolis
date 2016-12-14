@@ -61,6 +61,7 @@ export default class OutfittingPage extends Page {
     let params = context.route.params;
     let shipId = params.ship;
     let code = params.code;
+    let version = params.ver;
     let buildName = params.bn;
     let data = Ships[shipId];   // Retrieve the basic ship properties, slots and defaults
     let savedCode = Persist.getBuild(shipId, buildName);
@@ -72,7 +73,7 @@ export default class OutfittingPage extends Page {
     let ship = new Ship(shipId, data.properties, data.slots);          // Create a new Ship instance
 
     if (code) {
-      ship.buildFrom(code);  // Populate modules from serialized 'code' URL param
+      ship.buildFrom(code, version);  // Populate modules from serialized 'code' URL param
     } else {
       ship.buildWith(data.defaults);  // Populate with default components
     }

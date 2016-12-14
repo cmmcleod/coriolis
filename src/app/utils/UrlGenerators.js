@@ -11,7 +11,7 @@ export function outfitURL(shipId, code, buildName) {
   let sepChar = '?';
 
   if (code) {
-    path = path + sepChar + 'code=' + encodeURIComponent(code);
+    path = path + sepChar + 'code=' + encodeURIComponent(code) + '&ver=2';
     sepChar = '&';
   }
 
