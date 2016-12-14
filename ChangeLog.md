@@ -10,6 +10,7 @@
   * Add diminishing returns for shield boosters
   * Show module reinforcement package results in defence summary
   * Use separate speed/rotation/acceleration multipliers for thrusters if available
+  * Obey restricted slot rules when adding all for internal slots
 
 #2.2.5
   * Calculate rate of fire for multi-burst weapons
