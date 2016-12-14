@@ -301,6 +301,7 @@ export default class Ship {
    */
   toString() {
     return [
+      'A',
       this.getStandardString(),
       this.getHardpointsString(),
       this.getInternalString(),
@@ -610,7 +611,7 @@ export default class Ship {
    * @param {String}  serializedString  The string to deserialize
    * @return {this} The current ship instance for chaining
    */
-  buildFrom(serializedString, version = 1) {
+  buildFrom(serializedString) {
     let standard = new Array(this.standard.length),
         hardpoints = new Array(this.hardpoints.length),
         internal = new Array(this.internal.length),
@@ -620,6 +621,19 @@ export default class Ship {
         priorities = null,
         enabled = null,
         code = parts[0];
+
+    // Code has a version ID embedded as the first character (if it is alphabetic)
+    let version;
+    if (code && code.match(/^[0-4]/)) {
+      // Starting with bulkhead number is version 1
+      version = 1;
+    } else {
+      // Version 2 (current version)
+      version = 2;
+      if (code) {
+        code = code.substring(1);
+      }
+    }
 
     if (parts[1]) {
       enabled = LZString.decompressFromBase64(Utils.fromUrlSafe(parts[1])).split('');
