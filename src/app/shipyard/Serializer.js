@@ -127,6 +127,11 @@ export function toDetailedBuild(buildName, ship) {
   return data;
 };
 
+/**
+ * Instantiates a ship from a ship-loadout  object
+ * @param  {Object} detailedBuild ship-loadout object
+ * @return {Ship} Ship instance
+ */
 export function fromDetailedBuild(detailedBuild) {
   let shipId = Object.keys(Ships).find((shipId) => Ships[shipId].properties.name.toLowerCase() == detailedBuild.ship.toLowerCase());
   if (!shipId) {
