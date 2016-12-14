@@ -1134,7 +1134,7 @@ export default class Ship {
 
       // Shield from boosters
       for (let slot of this.hardpoints) {
-        if (slot.m && slot.m.grp == 'sb') {
+        if (slot.enabled && slot.m && slot.m.grp == 'sb') {
           shieldBoost += slot.m.getShieldBoost();
           shieldExplRes *= (1 - slot.m.getExplosiveResistance());
           shieldKinRes *= (1 - slot.m.getKineticResistance());

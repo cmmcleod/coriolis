@@ -12,6 +12,7 @@
   * Use separate speed/rotation/acceleration multipliers for thrusters if available
   * Obey restricted slot rules when adding all for internal slots
   * Version URLs to handle changes to ship specifications over time
+  * Do not include disabled shield boosters in calculations
 
 #2.2.5
   * Calculate rate of fire for multi-burst weapons
