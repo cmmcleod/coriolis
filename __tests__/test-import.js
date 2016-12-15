@@ -147,7 +147,7 @@ describe('Import Modal', function() {
 
     it('catches an invalid build', function() {
       const importData = require('./fixtures/anaconda-test-detailed-export-v3');
-      pasteText(JSON.stringify(importData).replace('components', 'comps'));
+      pasteText(JSON.stringify(importData).replace('references', 'refs'));
 
       expect(modal.state.importValid).toBeFalsy();
       expect(modal.state.errorMsg).toEqual('Anaconda Build "Test My Ship": Invalid data');

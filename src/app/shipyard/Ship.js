@@ -1687,10 +1687,10 @@ export default class Ship {
           const offsetSlotId = offset + slotId;
 
           // Same for priorities etc.
-          priorities.push.apply(priorities, [0].concat(priorities.splice(offsetSlotId)));
-          enableds.push.apply(enableds, [1].concat(enableds.splice(offsetSlotId)));
-          modifications.push.apply(modifications, [null].concat(modifications.splice(offsetSlotId).slice(0, -1)));
-          blueprints.push.apply(blueprints, [null].concat(blueprints.splice(offsetSlotId).slice(0, -1)));
+          if (priorities) { priorities.push.apply(priorities, [0].concat(priorities.splice(offsetSlotId))); }
+          if (enableds) { enableds.push.apply(enableds, [1].concat(enableds.splice(offsetSlotId))); }
+          if (modifications) { modifications.push.apply(modifications, [null].concat(modifications.splice(offsetSlotId).slice(0, -1))); }
+          if (blueprints) { blueprints.push.apply(blueprints, [null].concat(blueprints.splice(offsetSlotId).slice(0, -1))); }
         }
       }
     }
