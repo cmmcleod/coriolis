@@ -32,7 +32,8 @@ export default class DamageDealt extends TranslatedComponent {
   }
 
   /**
-   * Triggered when the comparator ship changes
+   * Triggered when the ship changes
+   * @param {string} s the new ship ID
    */
   _onShipChange(s) {
     this.setState({ against: Ships[s] });

@@ -41,6 +41,7 @@ export default class ShipSelector extends TranslatedComponent {
 
   /**
    * Handle opening the menu
+   * @param  {string}         menu  The ID of the opened menu
    * @param  {SyntheticEvent} event Event
    */
   _openMenu(menu, event) {
