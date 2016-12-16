@@ -87,8 +87,9 @@ export const terms = {
   ws: 'Frame Shift Wake Scanner',
 
   // Items on the outfitting page
-  // Notification of restricted slot for Orca/Beluga
+  // Notification of restricted slot
   emptyrestricted: 'empty (restricted)',
+  'damage dealt against': 'Damage dealt against',
   // 'ammo' was overloaded for outfitting page and modul info, so changed to ammunition for outfitting page
   ammunition: 'Ammo',
 
