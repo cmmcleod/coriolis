@@ -588,6 +588,14 @@ export default class Module {
   }
 
   /**
+   * Get the piercing for this module, taking in to account modifications
+   * @return {Number} the piercing for this module
+   */
+  getPiercing() {
+    return this._getModifiedValue('piercing');
+  }
+
+  /**
    * Get the bays for this module, taking in to account modifications
    * @return {Number} the bays for this module
    */
