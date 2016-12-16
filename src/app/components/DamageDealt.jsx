@@ -124,7 +124,7 @@ export default class DamageDealt extends TranslatedComponent {
     return (
       <span>
         <h1>{translate('damage dealt against')}</h1>
-        <ShipSelector currentMenu={this.props.currentMenu} onChange={this._onShipChange} />
+        <ShipSelector initial={this.state.against} currentMenu={this.props.currentMenu} onChange={this._onShipChange} />
         <table style={{ width: '100%' }}>
           <thead>
           <tr className='main'>

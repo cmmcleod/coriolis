@@ -9,6 +9,7 @@ import { Rocket } from './SvgIcons';
  */
 export default class ShipSelector extends TranslatedComponent {
   static PropTypes = {
+    initial: React.PropTypes.object.isRequired,
     onChange: React.PropTypes.func.isRequired
   };
 
@@ -19,7 +20,7 @@ export default class ShipSelector extends TranslatedComponent {
   constructor(props) {
     super(props);
 
-    this.state = { shipId : 'adder' };
+    this.state = { ship : this.props.initial };
   }
 
   /**
@@ -58,7 +59,7 @@ export default class ShipSelector extends TranslatedComponent {
    * @param {string} s  The selected ship ID
    */
   _selectShip(s) {
-    this.setState({ shipId: s });
+    this.setState({ ship: Ships[s] });
 
     this.context.openMenu(null);
     this.props.onChange(s);
@@ -70,13 +71,13 @@ export default class ShipSelector extends TranslatedComponent {
    */
   render() {
     const currentMenu = this.props.currentMenu;
-    const shipId = this.state.shipId;
+    const ship = this.state.ship;
 
     return (
       <div className='shipselector'>
       <div className='menu'>
         <div className={cn('menu-header', { selected: currentMenu == 'wds' })} onClick={this._openMenu.bind(this, 'wds')}>
-          <Rocket className='warning' /><span className='menu-item-label'>{Ships[shipId].properties.name}</span>
+          <Rocket className='warning' /><span className='menu-item-label'>{ship.properties.name}</span>
 	  {currentMenu == 'wds' ? 
           <div className='menu-list quad no-wrap' onClick={ (e) => e.stopPropagation() }>
             {this._getShipsMenu()}
