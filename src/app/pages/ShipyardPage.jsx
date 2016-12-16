@@ -145,6 +145,7 @@ export default class ShipyardPage extends Page {
       <td className='ri'>{fInt(s.speed)}{u['m/s']}</td>
       <td className='ri'>{fInt(s.boost)}{u['m/s']}</td>
       <td className='ri'>{fInt(s.baseArmour)}</td>
+      <td className='ri'>{fInt(s.hardness)}</td>
       <td className='ri'>{fInt(s.baseShieldStrength)}{u.MJ}</td>
       <td className='ri'>{fInt(s.topSpeed)}{u['m/s']}</td>
       <td className='ri'>{fInt(s.topBoost)}{u['m/s']}</td>
@@ -269,7 +270,7 @@ export default class ShipyardPage extends Page {
                 <th rowSpan={2} className='sortable' onClick={sortShips('manufacturer')}>{translate('manufacturer')}</th>
                 <th rowSpan={2} className='sortable' onClick={sortShips('class')}>{translate('size')}</th>
                 <th rowSpan={2} className='sortable' onClick={sortShips('agility')}>{translate('agility')}</th>
-                <th colSpan={4}>{translate('base')}</th>
+                <th colSpan={5}>{translate('base')}</th>
                 <th colSpan={4}>{translate('max')}</th>
                 <th colSpan={6}>{translate('core module classes')}</th>
                 <th colSpan={5} className='sortable' onClick={sortShips('hpCount')}>{translate('hardpoints')}</th>
@@ -282,6 +283,7 @@ export default class ShipyardPage extends Page {
                 <th className='sortable lft' onClick={sortShips('speed')}>{translate('speed')}</th>
                 <th className='sortable' onClick={sortShips('boost')}>{translate('boost')}</th>
                 <th className='sortable' onClick={sortShips('baseArmour')}>{translate('armour')}</th>
+                <th className='sortable' onClick={sortShips('hardness')}>{translate('hardness')}</th>
                 <th className='sortable' onClick={sortShips('baseShieldStrength')}>{translate('shields')}</th>
 
                 <th className='sortable lft' onClick={sortShips('topSpeed')}>{translate('speed')}</th>
