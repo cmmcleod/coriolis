@@ -5,7 +5,7 @@ import Module from './Module';
 import LZString from 'lz-string';
 import * as _ from 'lodash';
 import isEqual from 'lodash/lang';
-import { Modifications } from 'coriolis-data/dist';
+import { Ships, Modifications } from 'coriolis-data/dist';
 const zlib = require('zlib');
 
 const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs', 'fh'];
@@ -660,7 +660,7 @@ export default class Ship {
 
     if (version != 2) {
       // Alter as required due to changes in the (build) code from one version to the next
-      this.upgradeInternals(this.id, internal, 1 + this.standard.length + this.hardpoints.length, priorities, enabled, modifications, blueprints, version);
+      this.upgradeInternals(internal, 1 + this.standard.length + this.hardpoints.length, priorities, enabled, modifications, blueprints, version);
     }
     
     return this.buildWith(
@@ -1675,13 +1675,13 @@ export default class Ship {
    * @param {array} blueprints    the existing blueprints arrray
    * @param {int}   version       the version of the information
    */
-  upgradeInternals(shipId, internals, offset, priorities, enableds, modifications, blueprints, version) {
+  upgradeInternals(internals, offset, priorities, enableds, modifications, blueprints, version) {
     if (version == 1) {
       // Version 2 reflects the addition of military slots.  this means that we need to juggle the internals and their
       // associated information around to make holes in the appropriate places
       for (let slotId = 0; slotId < this.internal.length; slotId++) {
         if (this.internal[slotId].eligible && this.internal[slotId].eligible.mrp) {
-          // Found an MRP - push all of the existing items down one to compensate for the fact that they didn't exist before now
+          // Found a restricted military slot - push all of the existing items down one to compensate for the fact that they didn't exist before now
           internals.push.apply(internals, [0].concat(internals.splice(slotId).slice(0, -1)));
 
           const offsetSlotId = offset + slotId;
@@ -1693,6 +1693,8 @@ export default class Ship {
           if (blueprints) { blueprints.push.apply(blueprints, [null].concat(blueprints.splice(offsetSlotId).slice(0, -1))); }
         }
       }
+      // Ensure that all items are the correct length
+      internals.splice(Ships[this.id].slots.internal.length);
     }
   }
 }

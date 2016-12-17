@@ -90,6 +90,9 @@ export const terms = {
   // Notification of restricted slot
   emptyrestricted: 'empty (restricted)',
   'damage dealt against': 'Damage dealt against',
+  'damage received by': 'Damage received by',
+  'against shields': 'Against shields',
+  'against hull': 'Against hull',
   // 'ammo' was overloaded for outfitting page and modul info, so changed to ammunition for outfitting page
   ammunition: 'Ammo',
 

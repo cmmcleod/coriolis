@@ -14,6 +14,7 @@
   * Version URLs to handle changes to ship specifications over time
   * Do not include disabled shield boosters in calculations
   * Add 'Damage dealt' section
+  * Add 'Damage received' section
 
 #2.2.5
   * Calculate rate of fire for multi-burst weapons

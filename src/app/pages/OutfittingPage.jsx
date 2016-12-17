@@ -18,6 +18,7 @@ import OffenceSummary from '../components/OffenceSummary';
 import DefenceSummary from '../components/DefenceSummary';
 import MovementSummary from '../components/MovementSummary';
 import DamageDealt from '../components/DamageDealt';
+import DamageReceived from '../components/DamageReceived';
 import LineChart from '../components/LineChart';
 import PowerManagement from '../components/PowerManagement';
 import CostSection from '../components/CostSection';
@@ -351,6 +352,10 @@ export default class OutfittingPage extends Page {
 
         <div>
           <DamageDealt ship={ship} code={code} currentMenu={menu}/>
+        </div>
+
+        <div>
+          <DamageReceived ship={ship} code={code} currentMenu={menu}/>
         </div>
 
       </div>
