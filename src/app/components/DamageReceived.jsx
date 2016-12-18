@@ -3,6 +3,7 @@ import TranslatedComponent from './TranslatedComponent';
 import { Modules } from 'coriolis-data/dist';
 import { nameComparator } from '../utils/SlotFunctions';
 import { MountFixed, MountGimballed, MountTurret } from './SvgIcons';
+import Module from '../shipyard/Module';
 
 /**
  * Generates an internationalization friendly weapon comparator that will
@@ -92,30 +93,25 @@ export default class DamageReceived extends TranslatedComponent {
     for (let grp in Modules.hardpoints) {
       if (Modules.hardpoints[grp][0].damage && Modules.hardpoints[grp][0].type) {
         for (let mId in Modules.hardpoints[grp]) {
-          const m = Modules.hardpoints[grp][mId];
+          const m = new Module(Modules.hardpoints[grp][mId]);
           const classRating = `${m.class}${m.rating}${m.missile ? '/' + m.missile : ''}`;
 
-          // Basic values
-          let damage = m.damage;
-          let rpshot = m.roundspershot || 1;
-          let rof = m.rof || 1;
-
           // Base DPS
-          const baseDps = damage * rpshot * rof;
-          const baseSDps = m.clip ?  (m.clip * baseDps / m.rof) / ((m.clip / m.rof) + m.reload) : baseDps;
+          const baseDps = m.getDps();
+          const baseSDps = m.getClip() ?  (m.getClip() * baseDps / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) : baseDps;
 
           // Effective DPS taking in to account shield resistance
           let effectivenessShields = 0;
-          if (m.type.indexOf('E') != -1) {
+          if (m.getDamageType().indexOf('E') != -1) {
             effectivenessShields += ship.shieldExplRes;
           }
-          if (m.type.indexOf('K') != -1) {
+          if (m.getDamageType().indexOf('K') != -1) {
             effectivenessShields += ship.shieldKinRes;
           }
-          if (m.type.indexOf('T') != -1) {
+          if (m.getDamageType().indexOf('T') != -1) {
             effectivenessShields += ship.shieldThermRes;
           }
-          effectivenessShields /= m.type.length;
+          effectivenessShields /= m.getDamageType().length;
           // Plasma accelerators deal absolute damage
           if (m.grp == 'pa') effectivenessShields = 1;
           const effectiveDpsShields = baseDps * effectivenessShields;
@@ -123,19 +119,19 @@ export default class DamageReceived extends TranslatedComponent {
 
           // Effective DPS taking in to account hull hardness and resistance
           let effectivenessHull = 0;
-          if (m.type.indexOf('E') != -1) {
+          if (m.getDamageType().indexOf('E') != -1) {
             effectivenessHull += ship.hullExplRes;
           }
-          if (m.type.indexOf('K') != -1) {
+          if (m.getDamageType().indexOf('K') != -1) {
             effectivenessHull += ship.hullKinRes;
           }
-          if (m.type.indexOf('T') != -1) {
+          if (m.getDamageType().indexOf('T') != -1) {
             effectivenessHull += ship.hullThermRes;
           }
-          effectivenessHull /= m.type.length;
+          effectivenessHull /= m.getDamageType().length;
           // Plasma accelerators deal absolute damage (but could be reduced by hardness)
           if (m.grp == 'pa') effectivenessHull = 1;
-          effectivenessHull *= Math.min(m.piercing / ship.hardness, 1);
+          effectivenessHull *= Math.min(m.getPiercing() / ship.hardness, 1);
           const effectiveDpsHull = baseDps * effectivenessHull;
           const effectiveSDpsHull = baseSDps * effectivenessHull;
 
