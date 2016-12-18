@@ -12,18 +12,26 @@ export default class Module {
    * @param {Object} params   Module parameters.  Either grp/id or template
    */
   constructor(params) {
-    let properties = Object.assign({ grp: null, id: null, template: null, }, params);
+    let properties = Object.assign({ grp: null, id: null, template: null }, params);
 
-    let template;
-    if (properties.template == undefined) {
-      return ModuleUtils.findModule(properties.grp, properties.id);
+    if (properties.class != undefined) {
+      // We already have a fully-formed module; copy the data over
+      for (let p in properties) { this[p] = properties[p]; }
+    } else if (properties.template != undefined) {
+      // We have a template from coriolis-data; copy the data over
+      for (let p in properties.template) { this[p] = properties.template[p]; }
     } else {
-      template = properties.template;
-      if (template) {
-        // Copy all properties from coriolis-data template
-        for (let p in template) { this[p] = template[p]; }
-      }
+      // We don't have a template; find it given the group and ID
+      return ModuleUtils.findModule(properties.grp, properties.id);
     }
+  }
+
+  /**
+   * Clone an existing module
+   * @return {Object}  A clone of the existing module
+   */
+  clone() {
+    return new Module(JSON.parse(JSON.stringify(this)));
   }
 
   /**

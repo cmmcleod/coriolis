@@ -28,7 +28,7 @@ export default class InternalSlot extends Slot {
 
       // Modifications tooltip shows blueprint and grade, if available
       let modTT = translate('modified');
-      if (m && m.blueprint) {
+      if (m && m.blueprint && m.blueprint.name) {
         modTT = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
       }
 
