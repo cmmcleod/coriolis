@@ -1666,7 +1666,6 @@ export default class Ship {
 
   /**
    * Upgrade information about internals with version changes
-   * @param {int}   shipId        the ID of the ship
    * @param {array} internals     the internals from the ship code
    * @param {int}   offset        the offset of the internals information in the priorities etc. arrays
    * @param {array} priorities    the existing priorities arrray

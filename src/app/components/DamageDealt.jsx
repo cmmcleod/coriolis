@@ -73,20 +73,30 @@ export default class DamageDealt extends TranslatedComponent {
    */
   componentWillMount() {
     const weapons = this._calcWeapons(this.props.ship, this.state.against);
-    this.setState({ weapons: weapons });
+    this.setState({ weapons });
   }
 
   /**
-   * Set the updated weapons state
+   * Set the updated weapons state if our ship changes
+   * @param  {Object} nextProps   Incoming/Next properties
+   * @param  {Object} nextContext Incoming/Next conext
+   * @return {boolean}            Returns true if the component should be rerendered
    */
   componentWillReceiveProps(nextProps, nextContext) {
-    const weapons = this._calcWeapons(this.props.ship, this.state.against);
-    this.setState({ weapons: weapons });
+    if (nextProps.code != this.props.code) {
+      const weapons = this._calcWeapons(this.props.ship, this.state.against);
+      this.setState({ weapons });
+    }
     return true;
   }
 
+  /**
+   * Calculate the damage dealt by a ship
+   * @param  {Object} ship        The ship which will deal the damage 
+   * @param  {Object} against     The ship against which damage will be dealt
+   * @return {boolean}            Returns the per-weapon damage
+   */
   _calcWeapons(ship, against) {
-    // Create a list of the ship's weapons and include required stats - this is so that we muck around with re-ordering and the like on the fly
     let weapons = [];
 
     for (let i = 0; i < ship.hardpoints.length; i++) {
@@ -97,13 +107,13 @@ export default class DamageDealt extends TranslatedComponent {
         const effectiveDps = m.getDps() * effectiveness;
         const effectiveSDps = m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) * effectiveness : effectiveDps;
 
-        weapons.push({id: i,
-                      mount: m.mount,
-                      name: m.name || m.grp,
-                      classRating: classRating,
-                      effectiveDps: effectiveDps,
-                      effectiveSDps: effectiveSDps,
-                      effectiveness: effectiveness});
+        weapons.push({ id: i,
+                       mount: m.mount,
+                       name: m.name || m.grp,
+                       classRating,
+                       effectiveDps,
+                       effectiveSDps,
+                       effectiveness });
       }
     }
 
@@ -111,16 +121,13 @@ export default class DamageDealt extends TranslatedComponent {
   }
 
   /**
-   * Triggered when the ship changes
+   * Triggered when the ship we compare against changes
    * @param {string} s the new ship ID
    */
   _onShipChange(s) {
     const against = Ships[s];
     const weapons = this._calcWeapons(this.props.ship, against);
-    // This is not the correct 'this'
-console.log('1) State against is' + this.state.against.properties.name);
-    this.setState({ against: against, weapons: weapons });
-console.log('2) State against is' + this.state.against.properties.name);
+    this.setState({ against, weapons });
   }
 
   /**

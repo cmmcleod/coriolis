@@ -72,14 +72,21 @@ export default class DamageReceived extends TranslatedComponent {
 
   /**
    * Set the updated weapons state
+   * @param  {Object} nextProps   Incoming/Next properties
+   * @param  {Object} nextContext Incoming/Next conext
+   * @return {boolean}            Returns true if the component should be rerendered
    */
   componentWillReceiveProps(nextProps, nextContext) {
     this.setState({ weapons: this._calcWeapons(nextProps.ship) });
     return true;
   }
 
+  /**
+   * Calculate the damage received by a ship
+   * @param  {Object} ship        The ship which will receive the damage
+   * @return {boolean}            Returns the per-weapon damage
+   */
   _calcWeapons(ship) {
-    // Create a list of all weapons and include their stats - this is so that we can muck around with re-ordering and the like on the fly
     let weapons = [];
 
     for (let grp in Modules.hardpoints) {
@@ -132,16 +139,16 @@ export default class DamageReceived extends TranslatedComponent {
           const effectiveDpsHull = baseDps * effectivenessHull;
           const effectiveSDpsHull = baseSDps * effectivenessHull;
 
-          weapons.push({id: m.id,
-                        classRating: classRating,
-                        name: m.name || m.grp,
-                        mount: m.mount,
-                        effectiveDpsShields: effectiveDpsShields,
-                        effectiveSDpsShields: effectiveSDpsShields,
-                        effectivenessShields: effectivenessShields,
-                        effectiveDpsHull: effectiveDpsHull,
-                        effectiveSDpsHull: effectiveSDpsHull,
-                        effectivenessHull: effectivenessHull});
+          weapons.push({ id: m.id,
+                         classRating,
+                         name: m.name || m.grp,
+                         mount: m.mount,
+                         effectiveDpsShields,
+                         effectiveSDpsShields,
+                         effectivenessShields,
+                         effectiveDpsHull,
+                         effectiveSDpsHull,
+                         effectivenessHull });
         }
       }
     }
