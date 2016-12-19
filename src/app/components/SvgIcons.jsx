@@ -476,6 +476,52 @@ export class MountTurret extends SvgIcon {
 }
 
 /**
+ * Collapse section
+ */
+export class CollapseSection extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <g>
+	     <path d='m 100,180 0,-140' />
+	     <path d='m 100,40 25,45' />
+	     <path d='m 100,40 -25,45' />
+	     <path d='m 20,20 160,0' />
+	   </g>;
+  }
+}
+
+/**
+ * Expand section
+ */
+export class ExpandSection extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <g>
+	     <path d='m 100,20 0,140' />
+	     <path d='m 100,160 25,-45' />
+	     <path d='m 100,160 -25,-45' />
+	     <path d='m 20,180 160,0' />
+	   </g>;
+  }
+}
+
+/**
  * Rocket ship
  */
 export class Rocket extends SvgIcon {

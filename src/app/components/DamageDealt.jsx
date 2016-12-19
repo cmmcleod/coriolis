@@ -3,7 +3,7 @@ import TranslatedComponent from './TranslatedComponent';
 import { Ships } from 'coriolis-data/dist';
 import ShipSelector from './ShipSelector';
 import { nameComparator } from '../utils/SlotFunctions';
-import { MountFixed, MountGimballed, MountTurret } from './SvgIcons';
+import { CollapseSection, ExpandSection, MountFixed, MountGimballed, MountTurret } from './SvgIcons';
 
 /**
  * Generates an internationalization friendly weapon comparator that will
@@ -60,11 +60,13 @@ export default class DamageDealt extends TranslatedComponent {
 
     this._sort = this._sort.bind(this);
     this._onShipChange = this._onShipChange.bind(this);
+    this._onCollapseExpand = this._onCollapseExpand.bind(this);
 
     this.state = {
       predicate: 'n',
       desc: true,
-      against: DamageDealt.DEFAULT_AGAINST
+      against: DamageDealt.DEFAULT_AGAINST,
+      expanded: false
     };
   }
 
@@ -118,6 +120,13 @@ export default class DamageDealt extends TranslatedComponent {
     }
 
     return weapons;
+  }
+
+  /**
+   * Triggered when the collapse or expand icons are clicked
+   */
+  _onCollapseExpand() {
+    this.setState({ expanded: !this.state.expanded });
   }
 
   /**
@@ -206,12 +215,15 @@ export default class DamageDealt extends TranslatedComponent {
   render() {
     const { language, tooltip, termtip } = this.context;
     const { formats, translate } = language;
+    const { expanded } = this.state;
 
     const sortOrder = this._sortOrder;
+    const onCollapseExpand = this._onCollapseExpand;
 
     return (
       <span>
-        <h1>{translate('damage dealt against')}</h1>
+        <h1>{translate('damage dealt against')} {expanded ? <span onClick={onCollapseExpand}><CollapseSection className='summary'/></span> : <span onClick={onCollapseExpand}><ExpandSection className='summary'/></span>}</h1>
+        {expanded ?  <span>
         <ShipSelector initial={this.state.against} currentMenu={this.props.currentMenu} onChange={this._onShipChange} />
         <table className='summary' style={{ width: '100%' }}>
           <thead>
@@ -225,7 +237,7 @@ export default class DamageDealt extends TranslatedComponent {
           <tbody>
             {this._renderRows(translate, formats)}
           </tbody>
-        </table>
+        </table></span> : null }
       </span>
     );
   }

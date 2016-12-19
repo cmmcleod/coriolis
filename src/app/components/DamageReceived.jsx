@@ -2,7 +2,7 @@ import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
 import { Modules } from 'coriolis-data/dist';
 import { nameComparator } from '../utils/SlotFunctions';
-import { MountFixed, MountGimballed, MountTurret } from './SvgIcons';
+import { CollapseSection, ExpandSection, MountFixed, MountGimballed, MountTurret } from './SvgIcons';
 import Module from '../shipyard/Module';
 
 /**
@@ -57,10 +57,12 @@ export default class DamageReceived extends TranslatedComponent {
     super(props);
 
     this._sort = this._sort.bind(this);
+    this._onCollapseExpand = this._onCollapseExpand.bind(this);
 
     this.state = {
       predicate: 'n',
-      desc: true
+      desc: true,
+      expanded: false
     };
   }
 
@@ -153,6 +155,13 @@ export default class DamageReceived extends TranslatedComponent {
   }
 
   /**
+   * Triggered when the collapse or expand icons are clicked
+   */
+  _onCollapseExpand() {
+    this.setState({ expanded: !this.state.expanded });
+  }
+
+  /**
    * Set the sort order and sort
    * @param  {string} predicate Sort predicate
    */
@@ -230,12 +239,15 @@ export default class DamageReceived extends TranslatedComponent {
   render() {
     const { language, tooltip, termtip } = this.context;
     const { formats, translate } = language;
+    const { expanded } = this.state;
 
     const sortOrder = this._sortOrder;
+    const onCollapseExpand = this._onCollapseExpand;
 
     return (
       <span>
-        <h1>{translate('damage received by')}</h1>
+        <h1>{translate('damage received by')} {expanded ? <span onClick={onCollapseExpand}><CollapseSection className='summary'/></span> : <span onClick={onCollapseExpand}><ExpandSection className='summary'/></span>}</h1>
+	{expanded ? <span>
         <table className='summary' style={{ width: '100%' }}>
           <thead>
           <tr className='main'>
@@ -255,7 +267,7 @@ export default class DamageReceived extends TranslatedComponent {
           <tbody>
             {this._renderRows(translate, formats)}
           </tbody>
-        </table>
+        </table></span> : null }
       </span>
     );
   }
