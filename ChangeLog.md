@@ -18,6 +18,7 @@
   * Add 'Piercing' information to hardpoints
   * Add 'Hardness' information to ship summary
   * Add module copy functionality - drag module whilst holding 'alt' to copy
+  * Add base resistances to defence summary tooltip
 
 #2.2.5
   * Calculate rate of fire for multi-burst weapons

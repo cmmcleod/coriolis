@@ -296,6 +296,15 @@ export default class Ship {
   }
 
   /**
+   * Find the shield generator for this ship
+   * @return {object}       The shield generator module for this ship
+   */
+  findShieldGenerator() {
+    const slot = this.internal.find(slot => slot.m && ModuleUtils.isShieldGenerator(slot.m.grp));
+    return slot ? slot.m : undefined;
+  }
+
+  /**
    * Serializes the ship to a string
    * @return {String} Serialized ship 'code'
    */
