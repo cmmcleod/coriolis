@@ -201,13 +201,11 @@ export default class Ship {
    * @return {Number} Recovery time in seconds
    */
   calcShieldRecovery() {
-    if (this.shield > 0) {
-      const sgSlot = this.findInternalByGroup('sg');
-      if (sgSlot != null) {
-        let brokenRegenRate = 1 + sgSlot.m.getModValue('brokenregen') / 10000;
-        // 50% of shield strength / recovery recharge rate + 15 second delay before recharge starts
-        return ((this.shield / 2) / (sgSlot.m.recover * brokenRegenRate)) + 15;
-      }
+    const shieldGenerator = this.findShieldGenerator();
+    if (shieldGenerator) {
+      const brokenRegenRate = shieldGenerator.getBrokenRegenerationRate();
+      // 50% of shield strength / broken recharge rate + 15 second delay before recharge starts
+      return ((this.shield / 2) / brokenRegenRate) + 15;
     }
     return 0;
   }
@@ -219,13 +217,12 @@ export default class Ship {
    * @return {Number} 50 - 100% Recharge time in seconds
    */
   calcShieldRecharge() {
-    if (this.shield > 0) {
-      const sgSlot = this.findInternalByGroup('sg');
-      if (sgSlot != null) {
-        let regenRate = 1 + sgSlot.m.getModValue('regen') / 10000;
-        // 50% -> 100% recharge time, Bi-Weave shields charge at 1.8 MJ/s
-        return (this.shield / 2) / ((sgSlot.m.grp == 'bsg' ? 1.8 : 1) * regenRate);
-      }
+    const shieldGenerator = this.findShieldGenerator();
+    if (shieldGenerator) {
+      const regenRate = shieldGenerator.getRegenerationRate();
+
+      // 50% of shield strength / recharge rate
+      return (this.shield / 2) / regenRate;
     }
     return 0;
   }

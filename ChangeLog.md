@@ -19,6 +19,7 @@
   * Add 'Hardness' information to ship summary
   * Add module copy functionality - drag module whilst holding 'alt' to copy
   * Add base resistances to defence summary tooltip
+  * Update shield recovery/regeneration calculations
 
 #2.2.5
   * Calculate rate of fire for multi-burst weapons
