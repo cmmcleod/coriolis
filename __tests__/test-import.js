@@ -142,7 +142,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda?code=A4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04----0303326b.AwRj4zNLZI%3D%3D.CwBhCYzBGW9qCTSq15xA.&bn=Test%20My%20Ship');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda?code=A4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04---0303326b.AwRj4zNLaA%3D%3D.CwBhCYzBGW9qCTSqq5xA.&bn=Test%20My%20Ship');
     });
 
     it('catches an invalid build', function() {
@@ -167,7 +167,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda?code=A4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04----0303326b.AwRj4zNLZI%3D%3D.CwBhCYzBGW9qCTSq15xA.H4sIAAAAAAAAA2MUe8HMwPD%2FPwMcAABTINwTEgAAAA%3D%3D&bn=Test%20My%20Ship');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda?code=A4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04---0303326b.AwRj4zNLaA%3D%3D.CwBhCYzBGW9qCTSqq5xA.H4sIAAAAAAAAA2MUe8HMwPD%2FPwMcAABTINwTEgAAAA%3D%3D&bn=Test%20My%20Ship');
     });
   });
 
@@ -238,7 +238,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/federal_corvette?code=A2putsFklndzsxf50x0x7l28281919040404040402020l06p05sf63c5ifr------.AwRj4zNapI%3D%3D.CwRgDBldUExuBiZA.H4sIAAAAAAAAA02SP0vDUBTFb1qTtE3xtTFqav0Tbfy3KHRQB8FRO7gJOuioU%2FEDODgILrqKn0DQQUEUB3Hr0smhYhcp%2BiEEEVvf9VwhmuVw3zu%2Fe959eTH0EhF9G5A%2ByyRSl8yc2saSE7pPrCSkt24RlVyPyL9JABpuM3uzmtk9hs1JPSAk2sk9deHvfjH7XprIq6KHTb0YJY3bDtHEA8rROqCxHYSkzzvMmRcs1RzSOaXXo5k6I5DCnk1kNj6YrQoa3TM4%2Fip6OKM3ouBOFmJWcabl%2BURD10jKLWCvVN0k6m%2BBngqCYI2d%2Fx6zlgG%2BXwR%2B2RXhn3DUPcbibIw8%2Bg0WsibkvJBXqFRZLo1Lkl%2FBWKz0cjS7vwJxmijzIqGIOpLgXAxqQ51bgURCEfUkUD4GvQv0KJBIKKK6wYwcpHCmGyNfcW3nWUhCFUqlDiWuJwbN4EpOC35eJBRRDhj29erfk28h2rmQJGkKv7CZKH0yF08QZ70B8bbxAbigK1Fw8IH%2Fwp6GP9nE0qjLaw7G%2FDs8mt0QP4m1UZafh38AuKZDe4MCAAA%3D&bn=Imported%20Federal%20Corvette');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/federal_corvette?code=A2putsFklndzsxf50x0x7l28281919040404040402020l06p05sf63c5ifr-----.AwRj4zNaqA%3D%3D.CwRgDBldUExuBjpA.H4sIAAAAAAAAA02SP0vDUBTFb1qTtE3xtTFqav0Tbfy3KHRQB8FRO7gJOuioU%2FEDODgILrqKn0DQQUEUB3Hr0smhYhcp%2BiEEEVvf9VwhmuVw3zu%2Fe959eTH0EhF9G5A%2ByyRSl8yc2saSE7pPrCSkt24RlVyPyL9JABpuM3uzmtk9hs1JPSAk2sk9deHvfjH7XprIq6KHTb0YJY3bDtHEA8rROqCxHYSkzzvMmRcs1RzSOaXXo5k6I5DCnk1kNj6YrQoa3TM4%2Fip6OKM3ouBOFmJWcabl%2BURD10jKLWCvVN0k6m%2BBngqCYI2d%2Fx6zlgG%2BXwR%2B2RXhn3DUPcbibIw8%2Bg0WsibkvJBXqFRZLo1Lkl%2FBWKz0cjS7vwJxmijzIqGIOpLgXAxqQ51bgURCEfUkUD4GvQv0KJBIKKK6wYwcpHCmGyNfcW3nWUhCFUqlDiWuJwbN4EpOC35eJBRRDhj29erfk28h2rmQJGkKv7CZKH0yF08QZ70B8bbxAbigK1Fw8IH%2Fwp6GP9nE0qjLaw7G%2FDs8mt0QP4m1UZafh38AuKZDe4MCAAA%3D&bn=Imported%20Federal%20Corvette');
     });
 
     it('imports a valid v4 build', function() {
