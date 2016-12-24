@@ -155,7 +155,7 @@ export const terms = {
   range: 'Range',
   ranget: 'Range', // Range in time (for FSD interdictor)
   regen: 'Regeneration rate',
-  reload: 'Reload time',
+  reload: 'Reload',
   rof: 'Rate of fire',
   shield: 'Shield',
   shieldboost: 'Shield boost',
