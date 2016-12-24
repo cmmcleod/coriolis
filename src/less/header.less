@@ -20,7 +20,10 @@ header {
   line-height: 3em;
   font-family: @fTitle;
   vertical-align: middle;
-  position: relative;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
   z-index: 2;
   .user-select-none();
 
@@ -186,6 +189,7 @@ header {
   }
 
   .no-wrap {
+    overflow-x: auto;
     white-space: nowrap;
   }
 
