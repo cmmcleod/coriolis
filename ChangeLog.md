@@ -20,6 +20,8 @@
   * Add module copy functionality - drag module whilst holding 'alt' to copy
   * Add base resistances to defence summary tooltip
   * Update shield recovery/regeneration calculations
+  * Pin menu to top of page
+  * Switch to custom shortlink method to avoid google length limitations
 
 #2.2.5
   * Calculate rate of fire for multi-burst weapons
