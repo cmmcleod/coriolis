@@ -32,25 +32,6 @@
     cursor: pointer;
     color: @warning;
     text-transform: uppercase;
-    // Less than 600px screen width: hide text
-
-    &.disabled {
-      color: @warning-disabled;
-      cursor: default;
-    }
-
-    &.selected {
-      background-color: @bgBlack;
-    }
-
-    .menu-item-label {
-      margin-left: 1em;
-      display: inline-block;
-
-      .smallTablet({
-        display: none;
-      });
-    }
   }
 
   .menu-list {
