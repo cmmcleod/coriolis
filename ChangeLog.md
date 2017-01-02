@@ -22,6 +22,9 @@
   * Update shield recovery/regeneration calculations
   * Pin menu to top of page
   * Switch to custom shortlink method to avoid google length limitations
+  * Ensure that information is not lost on narrow screens
+  * Do not lose ship selector selection on narrow screens
+  * Reinstate jump range graph
 
 #2.2.5
   * Calculate rate of fire for multi-burst weapons
