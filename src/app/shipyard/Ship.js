@@ -5,7 +5,7 @@ import Module from './Module';
 import LZString from 'lz-string';
 import * as _ from 'lodash';
 import isEqual from 'lodash/lang';
-import { Modifications } from 'coriolis-data/dist';
+import { Ships, Modifications } from 'coriolis-data/dist';
 const zlib = require('zlib');
 
 const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs', 'fh'];
@@ -188,10 +188,10 @@ export default class Ship {
    * Calculate the hypothetical top speeds at cargo and fuel tonnage
    * @param  {Number} fuel  Fuel available in tons
    * @param  {Number} cargo Cargo in tons
-   * @return {Object}       Speed at pip settings and boost
+   * @return {array}       Speed at pip settings
    */
   calcSpeedsWith(fuel, cargo) {
-    return Calc.speed(this.unladenMass + fuel + cargo, this.speed, this.boost, this.standard[1].m, this.pipSpeed);
+    return Calc.speed(this.unladenMass + fuel + cargo, this.speed, this.standard[1].m, this.pipSpeed);
   }
 
   /**
@@ -201,13 +201,11 @@ export default class Ship {
    * @return {Number} Recovery time in seconds
    */
   calcShieldRecovery() {
-    if (this.shield > 0) {
-      const sgSlot = this.findInternalByGroup('sg');
-      if (sgSlot != null) {
-        let brokenRegenRate = 1 + sgSlot.m.getModValue('brokenregen') / 10000;
-        // 50% of shield strength / recovery recharge rate + 15 second delay before recharge starts
-        return ((this.shield / 2) / (sgSlot.m.recover * brokenRegenRate)) + 15;
-      }
+    const shieldGenerator = this.findShieldGenerator();
+    if (shieldGenerator) {
+      const brokenRegenRate = shieldGenerator.getBrokenRegenerationRate();
+      // 50% of shield strength / broken recharge rate + 15 second delay before recharge starts
+      return ((this.shield / 2) / brokenRegenRate) + 15;
     }
     return 0;
   }
@@ -219,13 +217,12 @@ export default class Ship {
    * @return {Number} 50 - 100% Recharge time in seconds
    */
   calcShieldRecharge() {
-    if (this.shield > 0) {
-      const sgSlot = this.findInternalByGroup('sg');
-      if (sgSlot != null) {
-        let regenRate = 1 + sgSlot.m.getModValue('regen') / 10000;
-        // 50% -> 100% recharge time, Bi-Weave shields charge at 1.8 MJ/s
-        return (this.shield / 2) / ((sgSlot.m.grp == 'bsg' ? 1.8 : 1) * regenRate);
-      }
+    const shieldGenerator = this.findShieldGenerator();
+    if (shieldGenerator) {
+      const regenRate = shieldGenerator.getRegenerationRate();
+
+      // 50% of shield strength / recharge rate
+      return (this.shield / 2) / regenRate;
     }
     return 0;
   }
@@ -296,11 +293,21 @@ export default class Ship {
   }
 
   /**
+   * Find the shield generator for this ship
+   * @return {object}       The shield generator module for this ship
+   */
+  findShieldGenerator() {
+    const slot = this.internal.find(slot => slot.m && ModuleUtils.isShieldGenerator(slot.m.grp));
+    return slot ? slot.m : undefined;
+  }
+
+  /**
    * Serializes the ship to a string
    * @return {String} Serialized ship 'code'
    */
   toString() {
     return [
+      'A',
       this.getStandardString(),
       this.getHardpointsString(),
       this.getInternalString(),
@@ -432,7 +439,7 @@ export default class Ship {
       let newMass = m.getMass();
       this.unladenMass = this.unladenMass - oldMass + newMass;
       this.ladenMass = this.ladenMass - oldMass + newMass;
-      this.updateTopSpeed();
+      this.updateMovement();
       this.updateJumpStats();
     } else if (name === 'maxfuel') {
       m.setModValue(name, value);
@@ -440,19 +447,19 @@ export default class Ship {
     } else if (name === 'optmass') {
       m.setModValue(name, value);
       // Could be for any of thrusters, FSD or shield
-      this.updateTopSpeed();
+      this.updateMovement();
       this.updateJumpStats();
       this.recalculateShield();
     } else if (name === 'optmul') {
       m.setModValue(name, value);
       // Could be for any of thrusters, FSD or shield
-      this.updateTopSpeed();
+      this.updateMovement();
       this.updateJumpStats();
       this.recalculateShield();
     } else if (name === 'shieldboost') {
       m.setModValue(name, value);
       this.recalculateShield();
-    } else if (name === 'hullboost' || name === 'hullreinforcement') {
+    } else if (name === 'hullboost' || name === 'hullreinforcement' || name === 'modulereinforcement') {
       m.setModValue(name, value);
       this.recalculateArmour();
     } else if (name === 'shieldreinforcement') {
@@ -597,7 +604,7 @@ export default class Ship {
           .recalculateDps()
           .recalculateEps()
           .recalculateHps()
-          .updateTopSpeed();
+          .updateMovement();
     }
 
     return this.updatePowerPrioritesString().updatePowerEnabledString().updateModificationsString();
@@ -620,6 +627,19 @@ export default class Ship {
         priorities = null,
         enabled = null,
         code = parts[0];
+
+    // Code has a version ID embedded as the first character (if it is alphabetic)
+    let version;
+    if (code && code.match(/^[0-4]/)) {
+      // Starting with bulkhead number is version 1
+      version = 1;
+    } else {
+      // Version 2 (current version)
+      version = 2;
+      if (code) {
+        code = code.substring(1);
+      }
+    }
 
     if (parts[1]) {
       enabled = LZString.decompressFromBase64(Utils.fromUrlSafe(parts[1])).split('');
@@ -644,6 +664,11 @@ export default class Ship {
 
     decodeToArray(code, internal, decodeToArray(code, hardpoints, decodeToArray(code, standard, 1)));
 
+    if (version != 2) {
+      // Alter as required due to changes in the (build) code from one version to the next
+      this.upgradeInternals(internal, 1 + this.standard.length + this.hardpoints.length, priorities, enabled, modifications, blueprints, version);
+    }
+    
     return this.buildWith(
       {
         bulkheads: code.charAt(0) * 1,
@@ -801,7 +826,7 @@ export default class Ship {
     let epsChanged = n && n.getEps() || old && old.getEps();
     let hpsChanged = n && n.getHps() || old && old.getHps();
 
-    let armourChange = (slot === this.bulkheads) || (n && n.grp === 'hr') || (old && old.grp === 'hr');
+    let armourChange = (slot === this.bulkheads) || (n && n.grp === 'hr') || (old && old.grp === 'hr') || (n && n.grp === 'mrp') || (old && old.grp === 'mrp');
 
     let shieldChange = (n && n.grp === 'bsg') || (old && old.grp === 'bsg') || (n && n.grp === 'psg') || (old && old.grp === 'psg') || (n && n.grp === 'sg') || (old && old.grp === 'sg') || (n && n.grp === 'sb') || (old && old.grp === 'sb');
 
@@ -876,7 +901,7 @@ export default class Ship {
       if (shieldCellsChange) {
         this.recalculateShieldCells();
       }
-      this.updateTopSpeed();
+      this.updateMovement();
       this.updateJumpStats();
     }
     return this;
@@ -1088,13 +1113,23 @@ export default class Ship {
   }
 
   /**
-   * Update top speed and boost
+   * Update movement values
    * @return {this} The ship instance (for chaining operations)
    */
-  updateTopSpeed() {
-    let speeds = Calc.speed(this.unladenMass + this.fuelCapacity, this.speed, this.boost, this.standard[1].m, this.pipSpeed);
-    this.topSpeed = speeds['4 Pips'];
-    this.topBoost = this.canBoost() ? speeds.boost : 0;
+  updateMovement() {
+    this.speeds = Calc.speed(this.unladenMass + this.fuelCapacity, this.speed, this.standard[1].m, this.pipSpeed);
+    this.topSpeed = this.speeds[4];
+    this.topBoost = this.canBoost() ? this.speeds[4] * this.boost / this.speed : 0;
+
+    this.pitches = Calc.pitch(this.unladenMass + this.fuelCapacity, this.pitch, this.standard[1].m, this.pipSpeed);
+    this.topPitch = this.pitches[4];
+
+    this.rolls = Calc.roll(this.unladenMass + this.fuelCapacity, this.roll, this.standard[1].m, this.pipSpeed);
+    this.topRoll = this.rolls[4];
+
+    this.yaws = Calc.yaw(this.unladenMass + this.fuelCapacity, this.yaw, this.standard[1].m, this.pipSpeed);
+    this.topYaw = this.yaws[4];
+
     return this;
   }
 
@@ -1104,6 +1139,7 @@ export default class Ship {
    */
   recalculateShield() {
     let shield = 0;
+    let shieldBoost = 1;
     let shieldExplRes = null;
     let shieldKinRes = null;
     let shieldThermRes = null;
@@ -1111,16 +1147,15 @@ export default class Ship {
     const sgSlot = this.findInternalByGroup('sg');
     if (sgSlot && sgSlot.enabled) {
       // Shield from generator
-      const baseShield = Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sgSlot.m, 1);
-      shield = baseShield;
+      shield = Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sgSlot.m, 1);
       shieldExplRes = 1 - sgSlot.m.getExplosiveResistance();
       shieldKinRes = 1 - sgSlot.m.getKineticResistance();
       shieldThermRes = 1 - sgSlot.m.getThermalResistance();
 
       // Shield from boosters
       for (let slot of this.hardpoints) {
-        if (slot.m && slot.m.grp == 'sb') {
-          shield += baseShield * slot.m.getShieldBoost();
+        if (slot.enabled && slot.m && slot.m.grp == 'sb') {
+          shieldBoost += slot.m.getShieldBoost();
           shieldExplRes *= (1 - slot.m.getExplosiveResistance());
           shieldKinRes *= (1 - slot.m.getKineticResistance());
           shieldThermRes *= (1 - slot.m.getThermalResistance());
@@ -1128,6 +1163,12 @@ export default class Ship {
       }
     }
 
+    // We apply diminishing returns to the boosted value
+    // (no we don't; FD pulled back on this idea.  But leave this here in case they reinstate it)
+    // shieldBoost = Math.min(shieldBoost, (1 - Math.pow(Math.E, -0.7 * shieldBoost)) * 2.5);
+
+    shield = shield * shieldBoost;
+    
     this.shield = shield;
     this.shieldExplRes = shieldExplRes ? 1 - this.diminishingReturns(1 - shieldExplRes, 0.5, 0.75) : null;
     this.shieldKinRes = shieldKinRes ? 1 - this.diminishingReturns(1 - shieldKinRes, 0.5, 0.75) : null;
@@ -1162,11 +1203,13 @@ export default class Ship {
     // Armour from bulkheads
     let bulkhead = this.bulkheads.m;
     let armour = this.baseArmour + (this.baseArmour * bulkhead.getHullBoost());
+    let modulearmour = 0;
+    let moduleprotection = 1;
     let hullExplRes = 1 - bulkhead.getExplosiveResistance();
     let hullKinRes = 1 - bulkhead.getKineticResistance();
     let hullThermRes = 1 - bulkhead.getThermalResistance();
 
-    // Armour from HRPs
+    // Armour from HRPs and module armour from MRPs
     for (let slot of this.internal) {
       if (slot.m && slot.m.grp == 'hr') {
         armour += slot.m.getHullReinforcement();
@@ -1177,9 +1220,16 @@ export default class Ship {
         hullKinRes *= (1 - slot.m.getKineticResistance());
         hullThermRes *= (1 - slot.m.getThermalResistance());
       }
+      if (slot.m && slot.m.grp == 'mrp') {
+        modulearmour += slot.m.getIntegrity();
+        moduleprotection = moduleprotection * (1 - slot.m.getProtection());
+      }
     }
+    moduleprotection = 1 - moduleprotection;
 
     this.armour = armour;
+    this.modulearmour = modulearmour;
+    this.moduleprotection = moduleprotection;
     this.hullExplRes = 1 - this.diminishingReturns(1 - hullExplRes, 0.5, 0.75);
     this.hullKinRes = 1 - this.diminishingReturns(1 - hullKinRes, 0.5, 0.75);
     this.hullThermRes = 1 - this.diminishingReturns(1 - hullThermRes, 0.5, 0.75);
@@ -1369,7 +1419,7 @@ export default class Ship {
       for (let slot of slots) {
         if (slot.length > 0) {
           buffer.writeInt8(i, curpos++);
-          if (blueprints[i]) {
+          if (blueprints[i] && blueprints[i].id) {
             buffer.writeInt8(MODIFICATION_ID_BLUEPRINT, curpos++);
             buffer.writeInt32LE(blueprints[i].id, curpos);
             curpos += 4;
@@ -1434,9 +1484,13 @@ export default class Ship {
         curpos += 4;
         // There are a number of 'special' modification IDs, check for them here
         if (modificationId === MODIFICATION_ID_BLUEPRINT) {
-          blueprint = Object.assign(blueprint, _.find(Modifications.blueprints, function(o) { return o.id === modificationValue; }));
+          if (modificationValue !== 0) {
+            blueprint = Object.assign(blueprint, _.find(Modifications.blueprints, function(o) { return o.id === modificationValue; }));
+          }
         } else if (modificationId === MODIFICATION_ID_GRADE) {
-          blueprint.grade = modificationValue;
+          if (modificationValue !== 0) {
+            blueprint.grade = modificationValue;
+          }
         } else if (modificationId === MODIFICATION_ID_SPECIAL) {
           blueprint.special = _.find(Modifications.specials, function(o) { return o.id === modificationValue; });
         } else {
@@ -1447,7 +1501,9 @@ export default class Ship {
         modificationId = buffer.readInt8(curpos++);
       }
       modArr[slot] = modifications;
-      blueprintArr[slot] = blueprint;
+      if (blueprint.id) {
+        blueprintArr[slot] = blueprint;
+      }
       slot = buffer.readInt8(curpos++);
     }
   }
@@ -1614,5 +1670,38 @@ export default class Ship {
       }
     }
     return this;
+  }
+
+  /**
+   * Upgrade information about internals with version changes
+   * @param {array} internals     the internals from the ship code
+   * @param {int}   offset        the offset of the internals information in the priorities etc. arrays
+   * @param {array} priorities    the existing priorities arrray
+   * @param {array} enableds      the existing enableds arrray
+   * @param {array} modifications the existing modifications arrray
+   * @param {array} blueprints    the existing blueprints arrray
+   * @param {int}   version       the version of the information
+   */
+  upgradeInternals(internals, offset, priorities, enableds, modifications, blueprints, version) {
+    if (version == 1) {
+      // Version 2 reflects the addition of military slots.  this means that we need to juggle the internals and their
+      // associated information around to make holes in the appropriate places
+      for (let slotId = 0; slotId < this.internal.length; slotId++) {
+        if (this.internal[slotId].eligible && this.internal[slotId].eligible.mrp) {
+          // Found a restricted military slot - push all of the existing items down one to compensate for the fact that they didn't exist before now
+          internals.push.apply(internals, [0].concat(internals.splice(slotId).slice(0, -1)));
+
+          const offsetSlotId = offset + slotId;
+
+          // Same for priorities etc.
+          if (priorities) { priorities.push.apply(priorities, [0].concat(priorities.splice(offsetSlotId))); }
+          if (enableds) { enableds.push.apply(enableds, [1].concat(enableds.splice(offsetSlotId))); }
+          if (modifications) { modifications.push.apply(modifications, [null].concat(modifications.splice(offsetSlotId).slice(0, -1))); }
+          if (blueprints) { blueprints.push.apply(blueprints, [null].concat(blueprints.splice(offsetSlotId).slice(0, -1))); }
+        }
+      }
+      // Ensure that all items are the correct length
+      internals.splice(Ships[this.id].slots.internal.length);
+    }
   }
 }

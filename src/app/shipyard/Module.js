@@ -12,18 +12,26 @@ export default class Module {
    * @param {Object} params   Module parameters.  Either grp/id or template
    */
   constructor(params) {
-    let properties = Object.assign({ grp: null, id: null, template: null, }, params);
+    let properties = Object.assign({ grp: null, id: null, template: null }, params);
 
-    let template;
-    if (properties.template == undefined) {
-      return ModuleUtils.findModule(properties.grp, properties.id);
+    if (properties.class != undefined) {
+      // We already have a fully-formed module; copy the data over
+      for (let p in properties) { this[p] = properties[p]; }
+    } else if (properties.template != undefined) {
+      // We have a template from coriolis-data; copy the data over
+      for (let p in properties.template) { this[p] = properties.template[p]; }
     } else {
-      template = properties.template;
-      if (template) {
-        // Copy all properties from coriolis-data template
-        for (let p in template) { this[p] = template[p]; }
-      }
+      // We don't have a template; find it given the group and ID
+      return ModuleUtils.findModule(properties.grp, properties.id);
     }
+  }
+
+  /**
+   * Clone an existing module
+   * @return {Object}  A clone of the existing module
+   */
+  clone() {
+    return new Module(JSON.parse(JSON.stringify(this)));
   }
 
   /**
@@ -303,6 +311,14 @@ export default class Module {
   }
 
   /**
+   * Get the protection for this module, taking in to account modifications
+   * @return {Number} the protection of this module
+   */
+  getProtection() {
+    return this._getModifiedValue('protection');
+  }
+
+  /**
    * Get the delay for this module, taking in to account modifications
    * @return {Number} the delay of this module
    */
@@ -370,42 +386,60 @@ export default class Module {
 
   /**
    * Get the minimum multiplier for this module, taking in to account modifications
+   * @param {string} type the type for which we are obtaining the multiplier.  Can be 'speed', 'rotation', 'acceleration', or null
    * @return {Number} the minimum multiplier of this module
    */
-  getMinMul() {
+  getMinMul(type = null) {
     // Modifier is optmul
     let result = 0;
-    if (this['minmul']) {
+    if (this['minmul' + type]) {
+      result = this['minmul' + type];
+    } else if (this['minmul']) {
       result = this['minmul'];
-      if (result) {
-        let mult = this.getModValue('optmul') / 10000;
-        if (mult) { result = result * (1 + mult); }
-      }
+    }
+    if (result) {
+      let mult = this.getModValue('optmul') / 10000;
+      if (mult) { result = result * (1 + mult); }
     }
     return result;
   }
 
   /**
    * Get the optimum multiplier for this module, taking in to account modifications
+   * @param {string} type the type for which we are obtaining the multiplier.  Can be 'speed', 'rotation', 'acceleration', or null
    * @return {Number} the optimum multiplier of this module
    */
-  getOptMul() {
-    return this._getModifiedValue('optmul');
+  getOptMul(type = null) {
+    // Modifier is optmul
+    let result = 0;
+    if (this['optmul' + type]) {
+      result = this['optmul' + type];
+    } else if (this['optmul']) {
+      result = this['optmul'];
+    }
+    if (result) {
+      let mult = this.getModValue('optmul') / 10000;
+      if (mult) { result = result * (1 + mult); }
+    }
+    return result;
   }
 
   /**
    * Get the maximum multiplier for this module, taking in to account modifications
+   * @param {string} type the type for which we are obtaining the multiplier.  Can be 'speed', 'rotation', 'acceleration', or null
    * @return {Number} the maximum multiplier of this module
    */
-  getMaxMul() {
+  getMaxMul(type = null) {
     // Modifier is optmul
     let result = 0;
-    if (this['maxmul']) {
+    if (this['maxmul' + type]) {
+      result = this['maxmul' + type];
+    } else if (this['maxmul']) {
       result = this['maxmul'];
-      if (result) {
-        let mult = this.getModValue('optmul') / 10000;
-        if (mult) { result = result * (1 + mult); }
-      }
+    }
+    if (result) {
+      let mult = this.getModValue('optmul') / 10000;
+      if (mult) { result = result * (1 + mult); }
     }
     return result;
   }
@@ -559,6 +593,14 @@ export default class Module {
    */
   getShieldReinforcement() {
     return this._getModifiedValue('shieldreinforcement');
+  }
+
+  /**
+   * Get the piercing for this module, taking in to account modifications
+   * @return {Number} the piercing for this module
+   */
+  getPiercing() {
+    return this._getModifiedValue('piercing');
   }
 
   /**

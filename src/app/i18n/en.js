@@ -59,6 +59,7 @@ export const terms = {
   mc: 'Multi-cannon',
   ml: 'Mining Laser',
   mr: 'Missile Rack',
+  mrp: 'Module Reinforcement Package',
   nl: 'Mine Launcher',
   pa: 'Plasma Accelerator',
   pas: 'Planetary Approach Suite',
@@ -86,15 +87,21 @@ export const terms = {
   ws: 'Frame Shift Wake Scanner',
 
   // Items on the outfitting page
-  // Notification of restricted slot for Orca/Beluga
+  // Notification of restricted slot
   emptyrestricted: 'empty (restricted)',
+  'damage dealt against': 'Damage dealt against',
+  'damage received by': 'Damage received by',
+  'against shields': 'Against shields',
+  'against hull': 'Against hull',
   // 'ammo' was overloaded for outfitting page and modul info, so changed to ammunition for outfitting page
   ammunition: 'Ammo',
 
   // Unit for seconds
   secs: 's',
 
-  // Weapon, offence and defence
+  rebuildsperbay: 'Rebuilds per bay',
+
+  // Weapon, offence, defence and movement
   dpe: 'Damage per MJ of energy',
   dps: 'Damage per second',
   sdps: 'Sustained damage per second',
@@ -106,12 +113,23 @@ export const terms = {
   'damage by': 'Damage by',
   'damage from': 'Damage from',
   'shield cells': 'Shield cells',
+  'recovery': 'Recovery',
+  'recharge': 'Recharge',
+  'engine pips': 'Engine Pips',
+  '4b': '4 pips and boost',
+  'speed': 'Speed',
+  'pitch': 'Pitch',
+  'roll': 'Roll',
+  'yaw': 'Yaw',
+  'internal protection': 'Internal protection',
+  'external protection': 'External protection',
 
   // Modifications
   ammo: 'Ammunition maximum',
   boot: 'Boot time',
   brokenregen: 'Broken regeneration rate',
   burst: 'Burst',
+  burstrof: 'Burst rate of fire',
   clip: 'Ammunition clip',
   damage: 'Damage',
   distdraw: 'Distributor draw',
@@ -133,10 +151,11 @@ export const terms = {
   pgen: 'Power generation',
   piercing: 'Piercing',
   power: 'Power draw',
+  protection: 'Protection',
   range: 'Range',
   ranget: 'Range', // Range in time (for FSD interdictor)
   regen: 'Regeneration rate',
-  reload: 'Reload time',
+  reload: 'Reload',
   rof: 'Rate of fire',
   shield: 'Shield',
   shieldboost: 'Shield boost',

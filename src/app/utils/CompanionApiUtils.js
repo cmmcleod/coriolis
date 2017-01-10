@@ -33,7 +33,7 @@ const SHIP_FD_NAME_TO_CORIOLIS_NAME = {
   'Type7': 'type_7_transport',
   'Type9': 'type_9_heavy',
   'Viper': 'viper',
-  'Viper_MKIV': 'viper_mk_iv',
+  'Viper_MkIV': 'viper_mk_iv',
   'Vulture': 'vulture'
 };
 
@@ -224,7 +224,9 @@ export function shipFromJson(json) {
     // Now that we know what we're looking for, find it
     const hardpointName = HARDPOINT_NUM_TO_CLASS[hardpointClassNum] + 'Hardpoint' + hardpointSlotNum;
     const hardpointSlot = json.modules[hardpointName];
-    if (!hardpointSlot.module) {
+    if (!hardpointSlot) {
+      // This can happen with old imports that don't contain new hardpoints
+    } else if (!hardpointSlot.module) {
       // No module
     } else {
       const hardpointJson = hardpointSlot.module;
@@ -239,19 +241,31 @@ export function shipFromJson(json) {
 
   // Add internal compartments
   let internalSlotNum = 1;
+  let militarySlotNum = 1;
   for (let i in shipTemplate.slots.internal) {
     const internalClassNum = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].class : shipTemplate.slots.internal[i];
+    const isMilitary = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].name == 'Military' : false;
 
+    // The internal slot might be a standard or a military slot.  Military slots have a different naming system
     let internalSlot = null;
-    while (internalSlot === null && internalSlotNum < 99) {
-      // Slot numbers are not contiguous so handle skips
-      const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '') + internalSlotNum + '_Size' + internalClassNum;
-      if (json.modules[internalName]) {
-        internalSlot = json.modules[internalName];
+    if (isMilitary) {
+      const internalName = 'Military0' + militarySlotNum;
+      internalSlot = json.modules[internalName];
+      militarySlotNum++;
+    } else {
+      while (internalSlot === null && internalSlotNum < 99) {
+        // Slot numbers are not contiguous so handle skips
+        const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '') + internalSlotNum + '_Size' + internalClassNum;
+        if (json.modules[internalName]) {
+          internalSlot = json.modules[internalName];
+        }
+        internalSlotNum++;
       }
-      internalSlotNum++;
     }
-    if (!internalSlot.module) {
+
+    if (!internalSlot) {
+      // This can happen with old imports that don't contain new slots
+    } else if (!internalSlot.module) {
       // No module
     } else {
       const internalJson = internalSlot.module;

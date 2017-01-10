@@ -1,3 +1,31 @@
+#2.2.6
+  * Add pitch/roll/yaw information
+  * Use combination of pitch, roll and yaw to provide a more useful agility metric
+  * Add movement summary to outfitting page
+  * Add standard internal class sizes to shipyard page
+  * Fix issue when importing Viper Mk IV
+  * Ensure ordering of all types of modules (standard, internal, utilities) is consistent
+  * Add rebuilds per bay information for fighter hangars
+  * Add ability to show military compartments
+  * Add diminishing returns for shield boosters
+  * Show module reinforcement package results in defence summary
+  * Use separate speed/rotation/acceleration multipliers for thrusters if available
+  * Obey restricted slot rules when adding all for internal slots
+  * Version URLs to handle changes to ship specifications over time
+  * Do not include disabled shield boosters in calculations
+  * Add 'Damage dealt' section
+  * Add 'Damage received' section
+  * Add 'Piercing' information to hardpoints
+  * Add 'Hardness' information to ship summary
+  * Add module copy functionality - drag module whilst holding 'alt' to copy
+  * Add base resistances to defence summary tooltip
+  * Update shield recovery/regeneration calculations
+  * Pin menu to top of page
+  * Switch to custom shortlink method to avoid google length limitations
+  * Ensure that information is not lost on narrow screens
+  * Do not lose ship selector selection on narrow screens
+  * Reinstate jump range graph
+
 #2.2.5
   * Calculate rate of fire for multi-burst weapons
   * Add note to disable ghostery in error situation

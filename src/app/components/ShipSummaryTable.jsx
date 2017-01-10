@@ -43,6 +43,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <th onMouseEnter={termtip.bind(null, 'damage per second')} onMouseLeave={hide} rowSpan={2}>{translate('DPS')}</th>
             <th onMouseEnter={termtip.bind(null, 'energy per second')} onMouseLeave={hide} rowSpan={2}>{translate('EPS')}</th>
             <th onMouseEnter={termtip.bind(null, 'heat per second')} onMouseLeave={hide} rowSpan={2}>{translate('HPS')}</th>
+            <th rowSpan={2}>{translate('hardness')}</th>
             <th rowSpan={2}>{translate('armour')}</th>
             <th rowSpan={2}>{translate('shields')}</th>
             <th colSpan={3}>{translate('mass')}</th>
@@ -71,6 +72,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{f1(ship.totalDps)}</td>
             <td>{f1(ship.totalEps)}</td>
             <td>{f1(ship.totalHps)}</td>
+            <td>{int(ship.hardness)}</td>
             <td>{int(ship.armour)}</td>
             <td className={sgClassNames}>{int(ship.shield)} {u.MJ}</td>
             <td>{ship.hullMass} {u.T}</td>
