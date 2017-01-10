@@ -7,7 +7,6 @@
   * Ensure ordering of all types of modules (standard, internal, utilities) is consistent
   * Add rebuilds per bay information for fighter hangars
   * Add ability to show military compartments
-  * Add diminishing returns for shield boosters
   * Show module reinforcement package results in defence summary
   * Use separate speed/rotation/acceleration multipliers for thrusters if available
   * Obey restricted slot rules when adding all for internal slots
@@ -25,6 +24,21 @@
   * Ensure that information is not lost on narrow screens
   * Do not lose ship selector selection on narrow screens
   * Reinstate jump range graph
+  * Use coriolis-data 2.2.6:
+    * Update weapons with changed values for 2.2.03
+    * Add individual pitch/roll/yaw statistics for each ship
+    * Remove old and meaningless agility stat
+    * Use sane order for multi-module JSON - coriolis can re-order as it sees fit when displaying modules
+    * Fix cost of fighter hangars
+    * Update Powerplay weapons with current statistics
+    * Add separate min/opt/max multipliers for enhanced thrusters for speed, acceleration and rotation
+    * Add module reinforcement packages
+    * Add military compartments
+    * Fix missing damage value for 2B dumbfires
+    * Update shield recharge rates
+    * Reduce hull mass of Viper to 50T
+    * Fix incorrect optimal mass value for 8A thrusters
+    * Add power draw for detailed surface scanner
 
 #2.2.5
   * Calculate rate of fire for multi-burst weapons
