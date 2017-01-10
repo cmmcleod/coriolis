@@ -241,18 +241,28 @@ export function shipFromJson(json) {
 
   // Add internal compartments
   let internalSlotNum = 1;
+  let militarySlotNum = 1;
   for (let i in shipTemplate.slots.internal) {
     const internalClassNum = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].class : shipTemplate.slots.internal[i];
+    const isMilitary = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].name == 'Military' : false;
 
+    // The internal slot might be a standard or a military slot.  Military slots have a different naming system
     let internalSlot = null;
-    while (internalSlot === null && internalSlotNum < 99) {
-      // Slot numbers are not contiguous so handle skips
-      const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '') + internalSlotNum + '_Size' + internalClassNum;
-      if (json.modules[internalName]) {
-        internalSlot = json.modules[internalName];
+    if (isMilitary) {
+      const internalName = 'Military0' + militarySlotNum;
+      internalSlot = json.modules[internalName];
+      militarySlotNum++;
+    } else {
+      while (internalSlot === null && internalSlotNum < 99) {
+        // Slot numbers are not contiguous so handle skips
+        const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '') + internalSlotNum + '_Size' + internalClassNum;
+        if (json.modules[internalName]) {
+          internalSlot = json.modules[internalName];
+        }
+        internalSlotNum++;
       }
-      internalSlotNum++;
     }
+
     if (!internalSlot) {
       // This can happen with old imports that don't contain new slots
     } else if (!internalSlot.module) {
