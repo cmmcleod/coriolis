@@ -16,6 +16,9 @@ import InternalSlotSection from '../components/InternalSlotSection';
 import UtilitySlotSection from '../components/UtilitySlotSection';
 import OffenceSummary from '../components/OffenceSummary';
 import DefenceSummary from '../components/DefenceSummary';
+import MovementSummary from '../components/MovementSummary';
+import DamageDealt from '../components/DamageDealt';
+import DamageReceived from '../components/DamageReceived';
 import LineChart from '../components/LineChart';
 import PowerManagement from '../components/PowerManagement';
 import CostSection from '../components/CostSection';
@@ -335,7 +338,7 @@ export default class OutfittingPage extends Page {
         <PowerManagement ship={ship} code={code} onChange={shipUpdated} />
         <CostSection ship={ship} buildName={buildName} code={sStr + hStr + iStr} />
 
-        <div ref='chartThird' className='group third'>
+        <div className='group third'>
           <OffenceSummary ship={ship} code={code}/>
         </div>
 
@@ -344,22 +347,21 @@ export default class OutfittingPage extends Page {
         </div>
 
         <div className='group third'>
-          <h1>{translate('speed')}</h1>
+          <MovementSummary ship={ship} code={code}/>
+        </div>
+
+        <div ref='chartThird' className='group third'>
+          <h1>{translate('jump range')}</h1>
           <LineChart
             width={chartWidth}
             xMax={ship.cargoCapacity}
-            yMax={ship.topBoost + 10}
+            yMax={ship.unladenRange}
             xUnit={translate('T')}
-            yUnit={translate('m/s')}
-            yLabel={translate('speed')}
-            series={SPEED_SERIES}
-            colors={SPEED_COLORS}
+            yUnit={translate('LY')}
+            yLabel={translate('jump range')}
             xLabel={translate('cargo')}
-            func={state.speedChartFunc}
+            func={state.jumpRangeChartFunc}
           />
-        </div>
-
-        <div className='group half'>
           <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
             <tbody >
               <tr>
@@ -385,7 +387,15 @@ export default class OutfittingPage extends Page {
           </table>
         </div>
 
+        <div>
+          <DamageDealt ship={ship} code={code} currentMenu={menu}/>
+        </div>
+
+        <div>
+          <DamageReceived ship={ship} code={code} currentMenu={menu}/>
+        </div>
       </div>
+
     );
   }
 }
@@ -401,4 +411,44 @@ export default class OutfittingPage extends Page {
 //            xLabel={translate('cargo')}
 //            func={state.jumpRangeChartFunc}
 //          />
+//        </div>
+//        <div className='group third'>
+//          <h1>{translate('speed')}</h1>
+//          <LineChart
+//            width={chartWidth}
+//            xMax={ship.cargoCapacity}
+//            yMax={ship.topBoost + 10}
+//            xUnit={translate('T')}
+//            yUnit={translate('m/s')}
+//            yLabel={translate('speed')}
+//            series={SPEED_SERIES}
+//            colors={SPEED_COLORS}
+//            xLabel={translate('cargo')}
+//            func={state.speedChartFunc}
+//          />
+//        </div>
+//        <div className='group half'>
+//          <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
+//            <tbody >
+//              <tr>
+//                <td style={{ verticalAlign: 'top', padding: 0, width: '2.5em' }} onMouseEnter={termtip.bind(null, 'fuel level')} onMouseLeave={hide}>
+//                  <Fuel className='xl primary-disabled' />
+//                </td>
+//                <td>
+//                  <Slider
+//                    axis={true}
+//                    onChange={this._fuelChange}
+//                    axisUnit={translate('T')}
+//                    percent={fuelLevel}
+//                    max={fuelCapacity}
+//                    scale={sizeRatio}
+//                    onResize={onWindowResize}
+//                  />
+//                </td>
+//                <td className='primary' style={{ width: '10em', verticalAlign: 'top', fontSize: '0.9em', textAlign: 'left' }}>
+//                  {formats.f2(fuelLevel * fuelCapacity)}{units.T} {formats.pct1(fuelLevel)}
+//                </td>
+//              </tr>
+//            </tbody>
+//          </table>
 //        </div>

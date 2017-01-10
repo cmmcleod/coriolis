@@ -134,67 +134,21 @@ export function toDetailedBuild(buildName, ship) {
  */
 export function fromDetailedBuild(detailedBuild) {
   let shipId = Object.keys(Ships).find((shipId) => Ships[shipId].properties.name.toLowerCase() == detailedBuild.ship.toLowerCase());
-
   if (!shipId) {
     throw 'No such ship: ' + detailedBuild.ship;
   }
 
-  let comps = detailedBuild.components;
-  let stn = comps.standard;
-  let priorities = [stn.cargoHatch && stn.cargoHatch.priority !== undefined ? stn.cargoHatch.priority - 1 : 0];
-  let enabled = [stn.cargoHatch && stn.cargoHatch.enabled !== undefined ? stn.cargoHatch.enabled : true];
   let shipData = Ships[shipId];
   let ship = new Ship(shipId, shipData.properties, shipData.slots);
-  let bulkheads = ModuleUtils.bulkheadIndex(stn.bulkheads);
-  let modifications = new Array(stn.bulkheads.modifications);
-  let blueprints = new Array(stn.bulkheads.blueprint);
 
-  if (bulkheads < 0) {
-    throw 'Invalid bulkheads: ' + stn.bulkheads;
+  if (!detailedBuild.references[0] || !detailedBuild.references[0].code) {
+    throw 'Missing reference code';
   }
 
-  let standard = STANDARD.map((c) => {
-    if (!stn[c].class || !stn[c].rating) {
-      throw 'Invalid value for ' + c;
-    }
-    priorities.push(stn[c].priority === undefined ? 0 : stn[c].priority - 1);
-    enabled.push(stn[c].enabled === undefined ? true : stn[c].enabled);
-    modifications.push(stn[c].modifications);
-    blueprints.push(stn[c].blueprint);
-    return ModuleUtils.findStandardId(STANDARD_GROUPS[c], stn[c].class, stn[c].rating, stn[c].name);
-  });
-
-  let internal = comps.internal.map(c => c ? ModuleUtils.findInternalId(c.group, c.class, c.rating, c.name) : 0);
-
-  let hardpoints = comps.hardpoints.map(c => c ? ModuleUtils.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount], c.missile) : 0)
-    .concat(comps.utility.map(c => c ? ModuleUtils.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount]) : 0));
-
-  // The ordering of these arrays must match the order in which they are read in Ship.buildWith
-  priorities = priorities.concat(
-    comps.hardpoints.map(c => (!c || c.priority === undefined) ? 0 : c.priority - 1),
-    comps.utility.map(c => (!c || c.priority === undefined) ? 0 : c.priority - 1),
-    comps.internal.map(c => (!c || c.priority === undefined) ? 0 : c.priority - 1)
-  );
-  enabled = enabled.concat(
-    comps.hardpoints.map(c => (!c || c.enabled === undefined) ? true : c.enabled * 1),
-    comps.utility.map(c => (!c || c.enabled === undefined) ? true : c.enabled * 1),
-    comps.internal.map(c => (!c || c.enabled === undefined) ? true : c.enabled * 1)
-  );
-  modifications = modifications.concat(
-    comps.hardpoints.map(c => (c ? c.modifications : null)),
-    comps.utility.map(c => (c ? c.modifications : null)),
-    comps.internal.map(c => (c ? c.modifications : null))
-  );
-  blueprints = blueprints.concat(
-    comps.hardpoints.map(c => (c ? c.blueprint : null)),
-    comps.utility.map(c => (c ? c.blueprint : null)),
-    comps.internal.map(c => (c ? c.blueprint : null))
-  );
-
-  ship.buildWith({ bulkheads, standard, hardpoints, internal }, priorities, enabled, modifications, blueprints);
+  ship.buildFrom(detailedBuild.references[0].code);
 
   return ship;
-};
+}
 
 /**
  * Generates an array of ship-loadout JSON Schema object for export

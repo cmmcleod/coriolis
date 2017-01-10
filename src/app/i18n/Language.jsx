@@ -65,6 +65,7 @@ export function getLanguage(langCode) {
       LY: <u> {translate('LY')}</u>,     // Light Years
       MJ: <u> {translate('MJ')}</u>,     // Mega Joules
       'm/s': <u> {translate('m/s')}</u>, // Meters per second
+      '°/s': <u> {translate('°/s')}</u>, // Degrees per second
       MW: <u> {translate('MW')}</u>,     // Mega Watts (same as Mega Joules per second)
       ps: <u>{translate('/s')}</u>,           // per second
       pm: <u>{translate('/min')}</u>,         // per minute

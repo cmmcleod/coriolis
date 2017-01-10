@@ -28,7 +28,7 @@ export default class InternalSlot extends Slot {
 
       // Modifications tooltip shows blueprint and grade, if available
       let modTT = translate('modified');
-      if (m && m.blueprint) {
+      if (m && m.blueprint && m.blueprint.name) {
         modTT = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
       }
 
@@ -43,6 +43,7 @@ export default class InternalSlot extends Slot {
           { m.getMaxMass() ? <div className={'l'}>{translate('max mass')}: {formats.int(m.getMaxMass())}{u.T}</div> : null }
           { m.bins ? <div className={'l'}>{m.bins} <u>{translate('bins')}</u></div> : null }
           { m.bays ? <div className={'l'}>{translate('bays')}: {m.bays}</div> : null }
+          { m.rebuildsperbay ? <div className={'l'}>{translate('rebuildsperbay')}: {m.rebuildsperbay}</div> : null }
           { m.rate ? <div className={'l'}>{translate('rate')}: {m.rate}{u.kgs}&nbsp;&nbsp;&nbsp;{translate('refuel time')}: {formats.time(this.props.fuel * 1000 / m.rate)}</div> : null }
           { m.getAmmo() ? <div className={'l'}>{translate('ammunition')}: {formats.gen(m.getAmmo())}</div> : null }
           { m.cells ? <div className={'l'}>{translate('cells')}: {m.cells}</div> : null }
@@ -58,10 +59,13 @@ export default class InternalSlot extends Slot {
           { m.rangeLS === null ? <div className={'l'}>∞{u.Ls}</div> : null }
           { m.rangeRating ? <div className={'l'}>{translate('range')}: {m.rangeRating}</div> : null }
           { m.getHullReinforcement() ? <div className={'l'}>+{formats.int(m.getHullReinforcement() + ship.baseArmour * m.getModValue('hullboost') / 10000)} <u className='cap'>{translate('armour')}</u></div> : null }
+          { m.getProtection() ? <div className={'l'}>{formats.rPct(m.getProtection())} <u className='cap'>{translate('protection')}</u></div> : null }
           { m.passengers ? <div className={'l'}>{translate('passengers')}: {m.passengers}</div> : null }
           { showModuleResistances && m.getExplosiveResistance() ? <div className='l'>{translate('explres')}: {formats.pct(m.getExplosiveResistance())}</div> : null }
           { showModuleResistances && m.getKineticResistance() ? <div className='l'>{translate('kinres')}: {formats.pct(m.getKineticResistance())}</div> : null }
           { showModuleResistances && m.getThermalResistance() ? <div className='l'>{translate('thermres')}: {formats.pct(m.getThermalResistance())}</div> : null }
+          { m.getRegenerationRate() ? <div className='l'>{translate('regen')}: {formats.round1(m.getRegenerationRate())}{u.ps}</div> : null }
+          { m.getBrokenRegenerationRate() ? <div className='l'>{translate('brokenregen')}: {formats.round1(m.getBrokenRegenerationRate())}{u.ps}</div> : null }
 
 	  { m && validMods.length > 0 ? <div className='r' ><button onClick={this._toggleModifications.bind(this)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
 

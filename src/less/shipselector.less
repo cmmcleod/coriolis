@@ -1,31 +1,13 @@
-#app-update {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3em;
-  z-index: 3;
-  line-height: 3em;
-  text-align: center;
-  background-color: @bg;
-  color: @warning;
-  cursor: pointer;
-}
-
-header {
-  background-color: @bg;
+.shipselector {
+  background-color: @bgBlack;
   margin: 0;
   padding: 0 0 0 1em;
   height: 3em;
   line-height: 3em;
   font-family: @fTitle;
   vertical-align: middle;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  z-index: 2;
-  box-sizing: border-box;
+  position: relative;
+
   .user-select-none();
 
   .menu {
@@ -46,31 +28,10 @@ header {
   }
 
   .menu-header {
-    height: 100%;
-    z-index: 2;
     padding : 0 1em;
     cursor: pointer;
     color: @warning;
     text-transform: uppercase;
-    // Less than 600px screen width: hide text
-
-    &.disabled {
-      color: @warning-disabled;
-      cursor: default;
-    }
-
-    &.selected {
-      background-color: @bgBlack;
-    }
-
-    .menu-item-label {
-      margin-left: 1em;
-      display: inline-block;
-
-      .smallTablet({
-        display: none;
-      });
-    }
   }
 
   .menu-list {
@@ -153,6 +114,37 @@ header {
     });
   }
 
+  .quad {
+    -webkit-column-count: 4; /* Chrome, Safari, Opera */
+    -moz-column-count: 4; /* Firefox */
+    column-count: 4;
+    ul {
+      min-width: 10em;
+    }
+
+    .smallTablet({
+      -webkit-column-count: 3; /* Chrome, Safari, Opera */
+      -moz-column-count: 3; /* Firefox */
+      column-count: 3;
+
+      ul {
+        min-width: 20em;
+      }
+    });
+
+    .largePhone({
+      -webkit-column-count: 2; /* Chrome, Safari, Opera */
+      -moz-column-count: 2; /* Firefox */
+      column-count: 2;
+    });
+
+    .smallPhone({
+      -webkit-column-count: 1; /* Chrome, Safari, Opera */
+      -moz-column-count: 1; /* Firefox */
+      column-count: 1;
+    });
+  }
+
   ul {
     display: inline-block;
     white-space: nowrap;
@@ -190,7 +182,6 @@ header {
   }
 
   .no-wrap {
-    overflow-x: auto;
     white-space: nowrap;
   }
 

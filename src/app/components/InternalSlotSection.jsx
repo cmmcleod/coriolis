@@ -22,6 +22,7 @@ export default class InternalSlotSection extends SlotSection {
     this._fillWithCargo = this._fillWithCargo.bind(this);
     this._fillWithCells = this._fillWithCells.bind(this);
     this._fillWithArmor = this._fillWithArmor.bind(this);
+    this._fillWithModuleReinforcementPackages = this._fillWithModuleReinforcementPackages.bind(this);
     this._fillWithFuelTanks = this._fillWithFuelTanks.bind(this);
     this._fillWithLuxuryCabins = this._fillWithLuxuryCabins.bind(this);
     this._fillWithFirstClassCabins = this._fillWithFirstClassCabins.bind(this);
@@ -46,7 +47,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if (clobber || !slot.m) {
+      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.cr)) {
         ship.use(slot, ModuleUtils.findInternal('cr', slot.maxClass, 'E'));
       }
     });
@@ -62,7 +63,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if (clobber || !slot.m) {
+      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.ft)) {
         ship.use(slot, ModuleUtils.findInternal('ft', slot.maxClass, 'C'));
       }
     });
@@ -78,7 +79,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if (clobber || !slot.m) {
+      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.pcq)) {
         ship.use(slot, ModuleUtils.findInternal('pcq', Math.min(slot.maxClass, 6), 'B')); // Passenger cabins top out at 6
       }
     });
@@ -94,7 +95,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if (clobber || !slot.m) {
+      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.pcm)) {
         ship.use(slot, ModuleUtils.findInternal('pcm', Math.min(slot.maxClass, 6), 'C')); // Passenger cabins top out at 6
       }
     });
@@ -110,7 +111,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if (clobber || !slot.m) {
+      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.pci)) {
         ship.use(slot, ModuleUtils.findInternal('pci', Math.min(slot.maxClass, 6), 'D')); // Passenger cabins top out at 6
       }
     });
@@ -126,7 +127,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if (clobber || !slot.m) {
+      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.pce)) {
         ship.use(slot, ModuleUtils.findInternal('pce', Math.min(slot.maxClass, 6), 'E')); // Passenger cabins top out at 6
       }
     });
@@ -143,7 +144,7 @@ export default class InternalSlotSection extends SlotSection {
     let ship = this.props.ship;
     let chargeCap = 0; // Capacity of single activation
     ship.internal.forEach(function(slot) {
-      if ((!slot.m || (clobber && !ModuleUtils.isShieldGenerator(slot.m.grp))) && (!slot.eligible || slot.eligible.scb)) { // Check eligibility due to passenger ships special case
+      if ((clobber || (!slot.m && !ModuleUtils.isShieldGenerator(slot.m.grp))) && (!slot.eligible || slot.eligible.scb)) {
         ship.use(slot, ModuleUtils.findInternal('scb', slot.maxClass, 'A'));
         ship.setSlotEnabled(slot, chargeCap <= ship.shieldStrength); // Don't waste cell capacity on overcharge
         chargeCap += slot.m.recharge;
@@ -161,8 +162,24 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if (clobber || !slot.m) {
+      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.hr)) {
         ship.use(slot, ModuleUtils.findInternal('hr', Math.min(slot.maxClass, 5), 'D')); // Hull reinforcements top out at 5D
+      }
+    });
+    this.props.onChange();
+    this._close();
+  }
+
+  /**
+   * Fill all slots with Module Reinforcement Packages
+   * @param  {SyntheticEvent} event Event
+   */
+  _fillWithModuleReinforcementPackages(event) {
+    let clobber = event.getModifierState('Alt');
+    let ship = this.props.ship;
+    ship.internal.forEach((slot) => {
+      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.mrp)) {
+        ship.use(slot, ModuleUtils.findInternal('mrp', Math.min(slot.maxClass, 5), 'D')); // Module reinforcements top out at 5D
       }
     });
     this.props.onChange();
@@ -226,6 +243,7 @@ export default class InternalSlotSection extends SlotSection {
         <li className='lc' onClick={this._fillWithCargo}>{translate('cargo')}</li>
         <li className='lc' onClick={this._fillWithCells}>{translate('scb')}</li>
         <li className='lc' onClick={this._fillWithArmor}>{translate('hr')}</li>
+        <li className='lc' onClick={this._fillWithModuleReinforcementPackages}>{translate('mrp')}</li>
         <li className='lc' onClick={this._fillWithFuelTanks}>{translate('ft')}</li>
         <li className='lc' onClick={this._fillWithEconomyClassCabins}>{translate('pce')}</li>
         <li className='lc' onClick={this._fillWithBusinessClassCabins}>{translate('pci')}</li>

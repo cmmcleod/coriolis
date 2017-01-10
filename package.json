@@ -1,6 +1,6 @@
 {
   "name": "coriolis_shipyard",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "repository": {
     "type": "git",
     "url": "https://github.com/EDCD/coriolis"
@@ -31,6 +31,7 @@
       "jsx"
     ],
     "automock": true,
+    "bail": false,
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/lodash",
       "<rootDir>/node_modules/react",

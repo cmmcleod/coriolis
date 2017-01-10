@@ -46,7 +46,7 @@ export default class HardpointSlot extends Slot {
 
       // Modifications tooltip shows blueprint and grade, if available
       let modTT = translate('modified');
-      if (m && m.blueprint) {
+      if (m && m.blueprint && m.blueprint.name) {
         modTT = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
         if (m.blueprint.special && m.blueprint.special.id) {
           modTT += ', ' + translate(m.blueprint.special.name);
@@ -76,6 +76,7 @@ export default class HardpointSlot extends Slot {
           { m.getRange() ? <div className={'l'}>{translate('range')} {formats.f1(m.getRange() / 1000)}{u.km}</div> : null }
           { m.getShieldBoost() ? <div className={'l'}>+{formats.pct1(m.getShieldBoost())}</div> : null }
           { m.getAmmo() ? <div className={'l'}>{translate('ammunition')}: {formats.int(m.getClip())}/{formats.int(m.getAmmo())}</div> : null }
+          { m.getPiercing() ? <div className={'l'}>{translate('piercing')}: {formats.int(m.getPiercing())}</div> : null }
           { m.getJitter() ? <div className={'l'}>{translate('jitter')}: {formats.f2(m.getJitter())}°</div> : null }
           { showModuleResistances && m.getExplosiveResistance() ? <div className='l'>{translate('explres')}: {formats.pct(m.getExplosiveResistance())}</div> : null }
           { showModuleResistances && m.getKineticResistance() ? <div className='l'>{translate('kinres')}: {formats.pct(m.getKineticResistance())}</div> : null }
