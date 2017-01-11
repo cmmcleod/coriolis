@@ -1,6 +1,12 @@
 import request from 'superagent';
 
 
+/**
+ * Shorten a URL
+ * @param  {string} url        The URL to shorten
+ * @param  {function} success   Success callback
+ * @param  {function} error     Failure/Error callback
+ */ 
 export default function shorternUrl(url, success, error) {
   shortenUrlEddp(url, success, error);
 }

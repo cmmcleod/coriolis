@@ -918,11 +918,10 @@ export default class Ship {
    * @return {this} The ship instance (for chaining operations)
    */
   diminishingReturns(val, drll, drul) {
-    if (val > drll) {
-      val = drll + (val - drll) / 2;
-    }
-    if (val > drul) {
-      val = drul;
+    if (val < drll) {
+      val = drll;
+    }  else if (val < drul) {
+      val = drul - (drul - val) / 2;
     }
     return val;
   }
@@ -1143,14 +1142,26 @@ export default class Ship {
     let shieldExplRes = null;
     let shieldKinRes = null;
     let shieldThermRes = null;
+    let shieldExplDRStart = null;
+    let shieldExplDREnd = null;
+    let shieldKinDRStart = null;
+    let shieldKinDREnd = null;
+    let shieldThermDRStart = null;
+    let shieldThermDREnd = null;
 
     const sgSlot = this.findInternalByGroup('sg');
     if (sgSlot && sgSlot.enabled) {
       // Shield from generator
       shield = Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sgSlot.m, 1);
       shieldExplRes = 1 - sgSlot.m.getExplosiveResistance();
+      shieldExplDRStart = shieldExplRes * 0.7;
+      shieldExplDREnd = shieldExplRes * 0; // Currently don't know where this is
       shieldKinRes = 1 - sgSlot.m.getKineticResistance();
+      shieldKinDRStart = shieldKinRes * 0.7;
+      shieldKinDREnd = shieldKinRes * 0; // Currently don't know where this is
       shieldThermRes = 1 - sgSlot.m.getThermalResistance();
+      shieldThermDRStart = shieldThermRes * 0.7;
+      shieldThermDREnd = shieldThermRes * 0; // Currently don't know where this is
 
       // Shield from boosters
       for (let slot of this.hardpoints) {
@@ -1170,9 +1181,9 @@ export default class Ship {
     shield = shield * shieldBoost;
     
     this.shield = shield;
-    this.shieldExplRes = shieldExplRes ? 1 - this.diminishingReturns(1 - shieldExplRes, 0.5, 0.75) : null;
-    this.shieldKinRes = shieldKinRes ? 1 - this.diminishingReturns(1 - shieldKinRes, 0.5, 0.75) : null;
-    this.shieldThermRes = shieldThermRes ? 1 - this.diminishingReturns(1 - shieldThermRes, 0.5, 0.75) : null;
+    this.shieldExplRes = shieldExplRes ? 1 - this.diminishingReturns(shieldExplRes, shieldExplDREnd, shieldExplDRStart) : null;
+    this.shieldKinRes = shieldKinRes ? 1 - this.diminishingReturns(shieldKinRes, shieldKinDREnd, shieldKinDRStart) : null;
+    this.shieldThermRes = shieldThermRes ? 1 - this.diminishingReturns(shieldThermRes, shieldThermDREnd, shieldThermDRStart) : null;
 
     return this;
   }
@@ -1206,8 +1217,14 @@ export default class Ship {
     let modulearmour = 0;
     let moduleprotection = 1;
     let hullExplRes = 1 - bulkhead.getExplosiveResistance();
+    const hullExplResDRStart = hullExplRes * 0.7;
+    const hullExplResDREnd = hullExplRes * 0; // Currently don't know where this is
     let hullKinRes = 1 - bulkhead.getKineticResistance();
+    const hullKinResDRStart = hullKinRes * 0.7;
+    const hullKinResDREnd = hullKinRes * 0; // Currently don't know where this is
     let hullThermRes = 1 - bulkhead.getThermalResistance();
+    const hullThermResDRStart = hullThermRes * 0.7;
+    const hullThermResDREnd = hullThermRes * 0; // Currently don't know where this is
 
     // Armour from HRPs and module armour from MRPs
     for (let slot of this.internal) {
@@ -1230,9 +1247,9 @@ export default class Ship {
     this.armour = armour;
     this.modulearmour = modulearmour;
     this.moduleprotection = moduleprotection;
-    this.hullExplRes = 1 - this.diminishingReturns(1 - hullExplRes, 0.5, 0.75);
-    this.hullKinRes = 1 - this.diminishingReturns(1 - hullKinRes, 0.5, 0.75);
-    this.hullThermRes = 1 - this.diminishingReturns(1 - hullThermRes, 0.5, 0.75);
+    this.hullExplRes = 1 - this.diminishingReturns(hullExplRes, hullExplResDREnd, hullExplResDRStart);
+    this.hullKinRes = 1 - this.diminishingReturns(hullKinRes, hullKinResDREnd, hullKinResDRStart);
+    this.hullThermRes = 1 - this.diminishingReturns(hullThermRes, hullThermResDREnd, hullThermResDRStart);
 
     return this;
   }
