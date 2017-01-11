@@ -285,10 +285,10 @@
     "totalThermSDps": 53.82,
     "baseShieldStrength": 350,
     "baseArmour": 945,
-    "hullExplRes": 0.78,
-    "hullKinRes": 0.73,
+    "hullExplRes": 0.22,
+    "hullKinRes": 0.27,
     "hullMass": 400,
-    "hullThermRes": 1.37,
+    "hullThermRes": -0.36,
     "masslock": 23,
     "pipSpeed": 0.14,
     "pitch": 25,
@@ -316,7 +316,7 @@
     "shield": 833,
     "shieldCells": 1840,
     "shieldExplRes": 0.5,
-    "shieldKinRes": 0.6,
-    "shieldThermRes": 1.2
+    "shieldKinRes": 0.4,
+    "shieldThermRes": -0.2
   }
 }

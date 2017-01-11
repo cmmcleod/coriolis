@@ -42,9 +42,9 @@ export default class Modification extends TranslatedComponent {
       scaledValue = 100000;
       value = 1000;
     }
-    if (scaledValue < -10000) {
-      scaledValue = -10000;
-      value = -100;
+    if (scaledValue < -9999) {
+      scaledValue = -9999;
+      value = -99.99;
     }
 
     let m = this.props.m;

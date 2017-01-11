@@ -31,6 +31,7 @@ export default class DefenceSummary extends TranslatedComponent {
 
     const shieldGenerator = ship.findShieldGenerator();
 
+    // Damage values are 1 - resistance values
     return (
       <span>
         <h1>{translate('defence summary')}</h1>
@@ -52,15 +53,15 @@ export default class DefenceSummary extends TranslatedComponent {
               <td className='le'>{translate('damage from')}</td>
               <td className='ri'>
                 <span onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /></span>&nbsp;
-                <span onMouseOver={termtip.bind(null, translate('base') + ' ' + formats.pct1(1 - shieldGenerator.explres))} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(ship.shieldExplRes || 1)}</span>
+                <span onMouseOver={termtip.bind(null, translate('base') + ' ' + formats.pct1(1 - shieldGenerator.explres))} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(1 - ship.shieldExplRes)}</span>
               </td>
               <td className='ri'>
                 <span onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /></span>&nbsp;
-                <span onMouseOver={termtip.bind(null, translate('base') + ' ' + formats.pct1(1 - shieldGenerator.kinres))} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(ship.shieldKinRes || 1)}</span>
+                <span onMouseOver={termtip.bind(null, translate('base') + ' ' + formats.pct1(1 - shieldGenerator.kinres))} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(1 - ship.shieldKinRes)}</span>
               </td>
               <td className='ri'>
                 <span onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /></span>&nbsp;
-                <span onMouseOver={termtip.bind(null, translate('base') + ' ' + formats.pct1(1 - shieldGenerator.thermres))} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(ship.shieldThermRes || 1)}</span>
+                <span onMouseOver={termtip.bind(null, translate('base') + ' ' + formats.pct1(1 - shieldGenerator.thermres))} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(1 - ship.shieldThermRes)}</span>
               </td>
             </tr> : null }
 
@@ -76,14 +77,14 @@ export default class DefenceSummary extends TranslatedComponent {
               <td className='le'>{translate('damage from')}</td>
               <td className='ri'>
                 <span onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /></span>&nbsp;
-                <span onMouseOver={termtip.bind(null, translate('base') + ' ' + formats.pct1(1 - ship.bulkheads.m.explres))} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(ship.hullExplRes || 1)}</span></td>
+                <span onMouseOver={termtip.bind(null, translate('base') + ' ' + formats.pct1(1 - ship.bulkheads.m.explres))} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(1 - ship.hullExplRes)}</span></td>
               <td className='ri'>
                 <span onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /></span>&nbsp;
-                <span onMouseOver={termtip.bind(null, translate('base') + ' ' + formats.pct1(1 - ship.bulkheads.m.kinres))} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(ship.hullKinRes || 1)}</span>
+                <span onMouseOver={termtip.bind(null, translate('base') + ' ' + formats.pct1(1 - ship.bulkheads.m.kinres))} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(1 - ship.hullKinRes)}</span>
               </td>
               <td className='ri'>
                 <span onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /></span>&nbsp;
-                <span onMouseOver={termtip.bind(null, translate('base') + ' ' + formats.pct1(1 - ship.bulkheads.m.thermres))} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(ship.hullThermRes || 1)}</span>
+                <span onMouseOver={termtip.bind(null, translate('base') + ' ' + formats.pct1(1 - ship.bulkheads.m.thermres))} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(1 - ship.hullThermRes)}</span>
               </td>
             </tr>
 

@@ -1,3 +1,7 @@
+#2.2.7
+  * Fix resistance diminishing return calculations
+  * Do not allow -100% to be entered as a modification value
+
 #2.2.6
   * Add pitch/roll/yaw information
   * Use combination of pitch, roll and yaw to provide a more useful agility metric

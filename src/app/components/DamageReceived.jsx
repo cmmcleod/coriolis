@@ -105,34 +105,36 @@ export default class DamageReceived extends TranslatedComponent {
           // Effective DPS taking in to account shield resistance
           let effectivenessShields = 0;
           if (m.getDamageType().indexOf('E') != -1) {
-            effectivenessShields += ship.shieldExplRes;
+            effectivenessShields += (1 - ship.shieldExplRes);
           }
           if (m.getDamageType().indexOf('K') != -1) {
-            effectivenessShields += ship.shieldKinRes;
+            effectivenessShields += (1 - ship.shieldKinRes);
           }
           if (m.getDamageType().indexOf('T') != -1) {
-            effectivenessShields += ship.shieldThermRes;
+            effectivenessShields += (1 - ship.shieldThermRes);
+          }
+          if (m.getDamageType().indexOf('A') != -1) {
+            effectivenessShields += 1;
           }
           effectivenessShields /= m.getDamageType().length;
-          // Plasma accelerators deal absolute damage
-          if (m.grp == 'pa') effectivenessShields = 1;
           const effectiveDpsShields = baseDps * effectivenessShields;
           const effectiveSDpsShields = baseSDps * effectivenessShields;
 
           // Effective DPS taking in to account hull hardness and resistance
           let effectivenessHull = 0;
           if (m.getDamageType().indexOf('E') != -1) {
-            effectivenessHull += ship.hullExplRes;
+            effectivenessHull += (1 - ship.hullExplRes);
           }
           if (m.getDamageType().indexOf('K') != -1) {
-            effectivenessHull += ship.hullKinRes;
+            effectivenessHull += (1 - ship.hullKinRes);
           }
           if (m.getDamageType().indexOf('T') != -1) {
-            effectivenessHull += ship.hullThermRes;
+            effectivenessHull += (1 - ship.hullThermRes);
+          }
+          if (m.getDamageType().indexOf('A') != -1) {
+            effectivenessHull += 1;
           }
           effectivenessHull /= m.getDamageType().length;
-          // Plasma accelerators deal absolute damage (but could be reduced by hardness)
-          if (m.grp == 'pa') effectivenessHull = 1;
           effectivenessHull *= Math.min(m.getPiercing() / ship.hardness, 1);
           const effectiveDpsHull = baseDps * effectivenessHull;
           const effectiveSDpsHull = baseSDps * effectivenessHull;
