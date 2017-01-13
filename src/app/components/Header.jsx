@@ -25,11 +25,11 @@ const SIZE_RANGE = 0.55;
  * @return {Number}     Normalized value
  */
 function normalizePercent(val) {
-  if (val === '' || isNaN(val)) {
-    return 0;
-  }
-  val = Math.round(val * 1000) / 1000;
-  return val >= 100 ? 100 : val;
+	if (val === '' || isNaN(val)) {
+		return 0;
+	}
+	val = Math.round(val * 1000) / 1000;
+	return val >= 100 ? 100 : val;
 }
 
 /**
@@ -38,7 +38,7 @@ function normalizePercent(val) {
  * @return {Number}     Rounded value
  */
 function nearestQtrPct(val) {
-  return  Math.round(val * 4) / 4;
+	return  Math.round(val * 4) / 4;
 }
 
 /**
@@ -46,7 +46,7 @@ function nearestQtrPct(val) {
  * @param {SyntheticEvent} e Event
  */
 function selectAll(e) {
-  e.target.select();
+	e.target.select();
 }
 
 /**
@@ -54,11 +54,11 @@ function selectAll(e) {
  */
 export default class Header extends TranslatedComponent {
 
-  /**
-   * Constructor
-   * @param  {Object} props   React Component properties
-   * @param  {Object} context React Component context
-   */
+	/**
+	 * Constructor
+	 * @param  {Object} props   React Component properties
+	 * @param  {Object} context React Component context
+	 */
   constructor(props, context) {
     super(props);
     this.shipOrder = Object.keys(Ships).sort();
@@ -368,6 +368,23 @@ export default class Header extends TranslatedComponent {
         <hr />
         <Link href='/compare/all' className='block cap'>{translate('compare all')}</Link>
         <Link href='/compare' className='block cap'>{translate('create new')}</Link>
+      </div>
+    );
+  }
+
+  /**
+   * Generate the help menu
+   * @return {React.Component} Menu
+   */
+  _getHelpMenu() {
+    let translate = this.context.language.translate;
+
+    return (
+      <div className='menu-list' onClick={ (e) => e.stopPropagation() } style={{ whiteSpace: 'nowrap' }}>
+        <div>{translate('introduction')}</div>
+        <div>{translate('importing your build')}</div>
+        <div>{translate('engineers')}</div>
+        <div>{translate('tricks and tips')}</div>
       </div>
     );
   }
