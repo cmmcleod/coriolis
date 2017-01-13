@@ -74,6 +74,7 @@ export default class Header extends TranslatedComponent {
     this._openBuilds = this._openMenu.bind(this, 'b');
     this._openComp = this._openMenu.bind(this, 'comp');
     this._openSettings = this._openMenu.bind(this, 'settings');
+    this._openHelp = this._openMenu.bind(this, 'help');
     this.languageOptions = [];
     this.insuranceOptions = [];
     this.state = {
@@ -360,6 +361,23 @@ export default class Header extends TranslatedComponent {
   }
 
   /**
+   * Generate the help menu
+   * @return {React.Component} Menu
+   */
+  _getHelpMenu() {
+    let translate = this.context.language.translate;
+
+    return (
+      <div className='menu-list' onClick={ (e) => e.stopPropagation() } style={{ whiteSpace: 'nowrap' }}>
+        <div>{translate('introduction')}</div>
+        <div>{translate('importing your build')}</div>
+        <div>{translate('engineers')}</div>
+        <div>{translate('tricks and tips')}</div>
+      </div>
+    );
+  }
+
+  /**
    * Generate the settings menu
    * @return {React.Component} Menu
    */
@@ -520,6 +538,12 @@ export default class Header extends TranslatedComponent {
             <Cogs className='xl warning'/><span className='menu-item-label'>{translate('settings')}</span>
           </div>
           {openedMenu == 'settings' ? this._getSettingsMenu() : null}
+        </div>
+        <div className='r menu'>
+          <div className={cn('menu-header', { selected: openedMenu == 'help' })} onClick={this._openHelp}>
+            <Cogs className='xl warning'/><span className='menu-item-label'>{translate('help')}</span>
+          </div>
+          {openedMenu == 'help' ? this._getHelpMenu() : null}
         </div>
       </header>
     );
