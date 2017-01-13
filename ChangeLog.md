@@ -1,3 +1,6 @@
+#2.2.9
+  * Use SSL-enabled server for shortlinks
+
 #2.2.8
   * Fix issue where filling all internals with cargo racks would include restricted slots
   * Use coriolis-data 2.2.8:
