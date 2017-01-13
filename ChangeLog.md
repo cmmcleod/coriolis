@@ -1,3 +1,10 @@
+#2.2.8
+  * Fix issue where filling all internals with cargo racks would include restricted slots
+  * Use coriolis-data 2.2.8:
+    * Set military slot of Viper Mk IV to class 3; was incorrectly set as class 2
+    * Update base regeneration rate of prismatic shield generators to values in 2.2.03
+    * Update specials with information in 2.2.03
+
 #2.2.7
   * Fix resistance diminishing return calculations
   * Do not allow -100% to be entered as a modification value

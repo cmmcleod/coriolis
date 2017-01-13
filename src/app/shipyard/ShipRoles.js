@@ -39,7 +39,9 @@ export function trader(ship, shielded, standardOpts) {
       ship.use(slot, sg);
       sg = null;
     } else {
-      ship.use(slot, ModuleUtils.findInternal('cr', slot.maxClass, 'E'));
+      if (canMount(ship, slot, 'cr')) {
+        ship.use(slot, ModuleUtils.findInternal('cr', slot.maxClass, 'E'));
+      }
     }
   }
 
