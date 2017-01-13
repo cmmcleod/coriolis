@@ -1,3 +1,6 @@
+#2.2.8
+  * Fix issue where filling all internals with cargo racks would include restricted slots
+
 #2.2.7
   * Fix resistance diminishing return calculations
   * Do not allow -100% to be entered as a modification value

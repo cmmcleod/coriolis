@@ -4,6 +4,7 @@ import SlotSection from './SlotSection';
 import InternalSlot from './InternalSlot';
 import * as ModuleUtils from '../shipyard/ModuleUtils';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
+import { canMount } from '../utils/SlotFunctions';
 
 /**
  * Internal slot section
@@ -47,7 +48,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.cr)) {
+      if ((clobber || !slot.m) && canMount(ship, slot, 'cr')) {
         ship.use(slot, ModuleUtils.findInternal('cr', slot.maxClass, 'E'));
       }
     });
@@ -63,7 +64,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.ft)) {
+      if ((clobber || !slot.m) && canMount(ship, slot, 'ft')) {
         ship.use(slot, ModuleUtils.findInternal('ft', slot.maxClass, 'C'));
       }
     });
@@ -79,7 +80,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.pcq)) {
+      if ((clobber || !slot.m) && canMount(ship, slot, 'pcq')) {
         ship.use(slot, ModuleUtils.findInternal('pcq', Math.min(slot.maxClass, 6), 'B')); // Passenger cabins top out at 6
       }
     });
@@ -95,7 +96,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.pcm)) {
+      if ((clobber || !slot.m) && canMount(ship, slot, 'pcm')) {
         ship.use(slot, ModuleUtils.findInternal('pcm', Math.min(slot.maxClass, 6), 'C')); // Passenger cabins top out at 6
       }
     });
@@ -111,7 +112,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.pci)) {
+      if ((clobber || !slot.m) && canMount(ship, slot, 'pci')) {
         ship.use(slot, ModuleUtils.findInternal('pci', Math.min(slot.maxClass, 6), 'D')); // Passenger cabins top out at 6
       }
     });
@@ -127,7 +128,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.pce)) {
+      if ((clobber || !slot.m) && canMount(ship, slot, 'pce')) {
         ship.use(slot, ModuleUtils.findInternal('pce', Math.min(slot.maxClass, 6), 'E')); // Passenger cabins top out at 6
       }
     });
@@ -144,7 +145,7 @@ export default class InternalSlotSection extends SlotSection {
     let ship = this.props.ship;
     let chargeCap = 0; // Capacity of single activation
     ship.internal.forEach(function(slot) {
-      if ((clobber || (!slot.m && !ModuleUtils.isShieldGenerator(slot.m.grp))) && (!slot.eligible || slot.eligible.scb)) {
+      if ((clobber && !(slot.m && ModuleUtils.isShieldGenerator(slot.m.grp)) || !slot.m) && canMount(ship, slot, 'scb')) {
         ship.use(slot, ModuleUtils.findInternal('scb', slot.maxClass, 'A'));
         ship.setSlotEnabled(slot, chargeCap <= ship.shieldStrength); // Don't waste cell capacity on overcharge
         chargeCap += slot.m.recharge;
@@ -162,7 +163,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.hr)) {
+      if ((clobber || !slot.m) && canMount(ship, slot, 'hr')) {
         ship.use(slot, ModuleUtils.findInternal('hr', Math.min(slot.maxClass, 5), 'D')); // Hull reinforcements top out at 5D
       }
     });
@@ -178,7 +179,7 @@ export default class InternalSlotSection extends SlotSection {
     let clobber = event.getModifierState('Alt');
     let ship = this.props.ship;
     ship.internal.forEach((slot) => {
-      if ((clobber || !slot.m) && (!slot.eligible || slot.eligible.mrp)) {
+      if ((clobber || !slot.m) && canMount(ship, slot, 'mrp')) {
         ship.use(slot, ModuleUtils.findInternal('mrp', Math.min(slot.maxClass, 5), 'D')); // Module reinforcements top out at 5D
       }
     });
