@@ -39,7 +39,9 @@ export default class ModificationsMenu extends TranslatedComponent {
     let list = [];
 
     for (let modName of Modifications.validity[m.grp]) {
-      list.push(<Modification key={ modName } ship={ ship } m={ m } name={ modName } onChange={ onChange }/>);
+      if (Modifications.modifications[modName].type != 'hidden') {
+        list.push(<Modification key={ modName } ship={ ship } m={ m } name={ modName } onChange={ onChange }/>);
+      }
     }
 
     return { list };

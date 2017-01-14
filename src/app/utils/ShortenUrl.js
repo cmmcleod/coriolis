@@ -38,7 +38,7 @@ function shortenUrlGoogle(url, success, error) {
   }
 }
 
-const SHORTEN_API_EDDP = 'http://eddp.co/u';
+const SHORTEN_API_EDDP = 'https://eddp.co/u';
 /**
  * Shorten a URL using EDDP's URL shortener API
  * @param  {string} url        The URL to shorten

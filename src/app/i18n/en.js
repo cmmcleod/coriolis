@@ -28,6 +28,7 @@ export const terms = {
   PHRASE_SG_RECOVER: 'Recovery (to 50%) after collapse',
   PHRASE_UNLADEN: 'Ship mass excluding fuel and cargo',
   PHRASE_UPDATE_RDY: 'Update Available! Click to refresh',
+  PHRASE_ENGAGEMENT_RANGE: 'The distance between your ship and its target',
 
   HELP_MODIFICATIONS_MENU: 'Click on a number to enter a new value, or drag along the bar for small changes',
 
@@ -123,6 +124,8 @@ export const terms = {
   'yaw': 'Yaw',
   'internal protection': 'Internal protection',
   'external protection': 'External protection',
+  'engagement range': 'Engagement range',
+  'total': 'Total',
 
   // Modifications
   ammo: 'Ammunition maximum',

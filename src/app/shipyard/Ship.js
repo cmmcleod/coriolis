@@ -947,51 +947,27 @@ export default class Ship {
     for (let slotNum in this.hardpoints) {
       const slot = this.hardpoints[slotNum];
       if (slot.m && slot.enabled && slot.m.getDps()) {
-        const dpe = slot.m.getDps() / slot.m.getEps();
+        const dpe = slot.m.getEps() === 0 ? 0 : slot.m.getDps() / slot.m.getEps();
         const dps = slot.m.getDps();
         const sdps = slot.m.getClip() ? (slot.m.getClip() * slot.m.getDps() / slot.m.getRoF()) / ((slot.m.getClip() / slot.m.getRoF()) + slot.m.getReload()) : dps;
 
         totalDpe += dpe;
         totalDps += dps;
         totalSDps += sdps;
-        if (slot.m.getDamageType() === 'E') {
-          totalExplDpe += dpe;
-          totalExplDps += dps;
-          totalExplSDps += sdps;
+        if (slot.m.getDamageType().indexOf('E') != -1) {
+          totalExplDpe += dpe / slot.m.getDamageType().length;
+          totalExplDps += dps / slot.m.getDamageType().length;
+          totalExplSDps += sdps / slot.m.getDamageType().length;
         }
-        if (slot.m.getDamageType() === 'K') {
-          totalKinDpe += dpe;
-          totalKinDps += dps;
-          totalKinSDps += sdps;
+        if (slot.m.getDamageType().indexOf('K') != -1) {
+          totalKinDpe += dpe / slot.m.getDamageType().length;
+          totalKinDps += dps / slot.m.getDamageType().length;
+          totalKinSDps += sdps / slot.m.getDamageType().length;
         }
-        if (slot.m.getDamageType() === 'T') {
-          totalThermDpe += dpe;
-          totalThermDps += dps;
-          totalThermSDps += sdps;
-        }
-        if (slot.m.getDamageType() === 'EK') {
-          totalExplDpe += dpe / 2;
-          totalKinDpe += dpe / 2;
-          totalExplDps += dps / 2;
-          totalKinDps += dps / 2;
-          totalExplSDps += sdps / 2;
-          totalKinSDps += sdps / 2;
-        }
-        if (slot.m.getDamageType() === 'ET') {
-          totalExplDpe += dpe / 2;
-          totalThermDpe += dpe / 2;
-          totalExplDps += dps / 2;
-          totalThermDps += dps / 2;
-          totalExplSDps += sdps / 2;
-          totalThermSDps += sdps / 2;
-        }
-        if (slot.m.getDamageType() === 'KT') {
-          totalKinDpe += dpe / 2;
-          totalThermDpe += dpe / 2;
-          totalKinDps += dps / 2;
-          totalThermDps += dps / 2;
-          totalKinSDps += sdps / 2;
-          totalThermSDps += sdps / 2;
+        if (slot.m.getDamageType().indexOf('T') != -1) {
+          totalThermDpe += dpe / slot.m.getDamageType().length;
+          totalThermDps += dps / slot.m.getDamageType().length;
+          totalThermSDps += sdps / slot.m.getDamageType().length;
         }
       }
     }
