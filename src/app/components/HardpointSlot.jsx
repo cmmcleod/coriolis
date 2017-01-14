@@ -74,6 +74,7 @@ export default class HardpointSlot extends Slot {
           { m.getDps() && m.getEps() ? <div className={'l'} onMouseOver={termtip.bind(null, 'dpe')} onMouseOut={tooltip.bind(null, null)}>{translate('DPE')}: {formats.f1(m.getDps() / m.getEps())}</div> : null }
           { m.getRoF() ? <div className={'l'} onMouseOver={termtip.bind(null, 'rof')} onMouseOut={tooltip.bind(null, null)}>{translate('ROF')}: {formats.f1(m.getRoF())}{u.ps}</div> : null }
           { m.getRange() ? <div className={'l'}>{translate('range')} {formats.f1(m.getRange() / 1000)}{u.km}</div> : null }
+          { m.getFalloff() ? <div className={'l'}>{translate('falloff')} {formats.f1(m.getFalloff() / 1000)}{u.km}</div> : null }
           { m.getShieldBoost() ? <div className={'l'}>+{formats.pct1(m.getShieldBoost())}</div> : null }
           { m.getAmmo() ? <div className={'l'}>{translate('ammunition')}: {formats.int(m.getClip())}/{formats.int(m.getAmmo())}</div> : null }
           { m.getPiercing() ? <div className={'l'}>{translate('piercing')}: {formats.int(m.getPiercing())}</div> : null }

@@ -104,18 +104,20 @@ export default class DamageDealt extends TranslatedComponent {
     for (let i = 0; i < ship.hardpoints.length; i++) {
       if (ship.hardpoints[i].m) {
         const m = ship.hardpoints[i].m;
-        const classRating = `${m.class}${m.rating}${m.missile ? '/' + m.missile : ''}`;
-        const effectiveness = m.getPiercing() >= against.properties.hardness ? 1 : m.getPiercing() / against.properties.hardness;
-        const effectiveDps = m.getDps() * effectiveness;
-        const effectiveSDps = m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) * effectiveness : effectiveDps;
+        if (m.getDamage() && m.grp !== 'po') {
+          const classRating = `${m.class}${m.rating}${m.missile ? '/' + m.missile : ''}`;
+          const effectiveness = m.getPiercing() >= against.properties.hardness ? 1 : m.getPiercing() / against.properties.hardness;
+          const effectiveDps = m.getDps() * effectiveness;
+          const effectiveSDps = m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) * effectiveness : effectiveDps;
 
-        weapons.push({ id: i,
-                       mount: m.mount,
-                       name: m.name || m.grp,
-                       classRating,
-                       effectiveDps,
-                       effectiveSDps,
-                       effectiveness });
+          weapons.push({ id: i,
+                         mount: m.mount,
+                         name: m.name || m.grp,
+                         classRating,
+                         effectiveDps,
+                         effectiveSDps,
+                         effectiveness });
+        }
       }
     }
 
