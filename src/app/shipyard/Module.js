@@ -287,6 +287,20 @@ export default class Module {
   }
 
   /**
+   * Get the falloff for this module, taking in to account modifications
+   * @return {Number} the falloff of this module
+   */
+  getFalloff() {
+    if (this.getModValue('fallofffromrange')) {
+      return this.getRange();
+    } else {
+      const falloff = this._getModifiedValue('falloff');
+      const range = this.getRange();
+      return (falloff > range ? range : falloff);
+    }
+  }
+
+  /**
    * Get the range (in terms of seconds, for FSDI) for this module, taking in to account modifications
    * @return {Number} the range of this module
    */

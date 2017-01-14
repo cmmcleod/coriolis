@@ -1,3 +1,14 @@
+#2.2.9
+  * Use SSL-enabled server for shortlinks
+  * Add falloff for weapons
+  * Use falloff when calculating weapon effectiveness in damage dealt
+  * Add engagement range slider to 'Damage Dealt' section to allow user to see change in weapon effectiveness with range
+  * Use better DPE calculation methodology
+  * Add total DPS and effectiveness information to 'Damage Dealt' section
+  * Use coriolis-data 2.2.9:
+    * Add falloff metric for weapons
+    * Add falloff from range modification
+
 #2.2.8
   * Fix issue where filling all internals with cargo racks would include restricted slots
   * Use coriolis-data 2.2.8:
