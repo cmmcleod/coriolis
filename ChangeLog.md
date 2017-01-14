@@ -3,6 +3,7 @@
   * Add falloff for weapons
   * Use falloff when calculating weapon effectiveness in damage dealt
   * Add engagement range slider to allow user to see change in weapon effectiveness with range
+  * Use better DPE calculation methodology
 
 #2.2.8
   * Fix issue where filling all internals with cargo racks would include restricted slots
