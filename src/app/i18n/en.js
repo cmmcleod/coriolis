@@ -125,6 +125,7 @@ export const terms = {
   'internal protection': 'Internal protection',
   'external protection': 'External protection',
   'engagement range': 'Engagement range',
+  'total': 'Total',
 
   // Modifications
   ammo: 'Ammunition maximum',

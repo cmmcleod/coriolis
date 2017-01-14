@@ -77,8 +77,8 @@ export default class DamageDealt extends TranslatedComponent {
    * Set the initial weapons state
    */
   componentWillMount() {
-    const weapons = this._calcWeapons(this.props.ship, this.state.against, this.state.range * this.state.maxRange);
-    this.setState({ weapons });
+    const data = this._calcWeapons(this.props.ship, this.state.against, this.state.range * this.state.maxRange);
+    this.setState({ weapons: data.weapons, totals: data.totals });
   }
 
   /**
@@ -89,8 +89,8 @@ export default class DamageDealt extends TranslatedComponent {
    */
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.code != this.props.code) {
-      const weapons = this._calcWeapons(this.props.ship, this.state.against, this.state.range * this.state.maxRange);
-      this.setState({ weapons });
+      const data = this._calcWeapons(this.props.ship, this.state.against, this.state.range * this.state.maxRange);
+      this.setState({ weapons: data.weapons, totals: data.totals });
     }
     return true;
   }
@@ -105,6 +105,13 @@ export default class DamageDealt extends TranslatedComponent {
   _calcWeapons(ship, against, range) {
     // Tidy up the range so that it's to 4 decimal places
     range = Math.round(10000 * range) / 10000;
+
+    // Track totals
+    let totals = {};
+    totals.effectiveness = 0;
+    totals.effectiveDps = 0;
+    totals.effectiveSDps = 0;
+    let totalDps = 0;
 
     let weapons = [];
     for (let i = 0; i < ship.hardpoints.length; i++) {
@@ -130,6 +137,9 @@ export default class DamageDealt extends TranslatedComponent {
           const effectiveness = (m.getPiercing() >= against.properties.hardness ? 1 : m.getPiercing() / against.properties.hardness) * dropoff;
           const effectiveDps = m.getDps() * effectiveness * dropoff;
           const effectiveSDps = (m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) * effectiveness : effectiveDps) * dropoff;
+          totals.effectiveDps += effectiveDps;
+          totals.effectiveSDps += effectiveSDps;
+          totalDps += m.getDps();
 
           weapons.push({ id: i,
                          mount: m.mount,
@@ -141,8 +151,9 @@ export default class DamageDealt extends TranslatedComponent {
         }
       }
     }
-
-    return weapons;
+    totals.effectiveness = totals.effectiveDps / totalDps;
+    
+    return {weapons: weapons, totals: totals};
   }
 
   /**
@@ -158,8 +169,8 @@ export default class DamageDealt extends TranslatedComponent {
    */
   _onShipChange(s) {
     const against = Ships[s];
-    const weapons = this._calcWeapons(this.props.ship, against);
-    this.setState({ against, weapons });
+    const data = this._calcWeapons(this.props.ship, against);
+    this.setState({ against, weapons: data.weapons, totals: data.totals });
   }
 
   /**
@@ -236,8 +247,8 @@ export default class DamageDealt extends TranslatedComponent {
    * @param  {number} range Range 0-1
    */
   _rangeChange(range) {
-    const weapons = this._calcWeapons(this.props.ship, this.state.against, this.state.range * this.state.maxRange);
-    this.setState({ range, weapons });
+    const data = this._calcWeapons(this.props.ship, this.state.against, this.state.range * this.state.maxRange);
+    this.setState({ range, weapons: data.weapons, totals: data.totals });
   }
 
   /**
@@ -247,7 +258,7 @@ export default class DamageDealt extends TranslatedComponent {
   render() {
     const { language, onWindowResize, sizeRatio, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
-    const { expanded, maxRange, range } = this.state;
+    const { expanded, maxRange, range, totals } = this.state;
 
     const sortOrder = this._sortOrder;
     const onCollapseExpand = this._onCollapseExpand;
@@ -259,16 +270,24 @@ export default class DamageDealt extends TranslatedComponent {
         <ShipSelector initial={this.state.against} currentMenu={this.props.currentMenu} onChange={this._onShipChange} />
         <table className='summary' style={{ width: '100%' }}>
           <thead>
-          <tr className='main'>
-            <td className='sortable' onClick={sortOrder.bind(this, 'n')}>{translate('weapon')}</td>
-            <td className='sortable' onClick={sortOrder.bind(this, 'edps')}>{translate('effective dps')}</td>
-            <td className='sortable' onClick={sortOrder.bind(this, 'esdps')}>{translate('effective sdps')}</td>
-            <td className='sortable' onClick={sortOrder.bind(this, 'e')}>{translate('effectiveness')}</td>
-          </tr>
+            <tr className='main'>
+              <td className='sortable' onClick={sortOrder.bind(this, 'n')}>{translate('weapon')}</td>
+              <td className='sortable' onClick={sortOrder.bind(this, 'edps')}>{translate('effective dps')}</td>
+              <td className='sortable' onClick={sortOrder.bind(this, 'esdps')}>{translate('effective sdps')}</td>
+              <td className='sortable' onClick={sortOrder.bind(this, 'e')}>{translate('effectiveness')}</td>
+            </tr>
           </thead>
           <tbody>
             {this._renderRows(translate, formats)}
           </tbody>
+          <tfoot>
+            <tr className='main'>
+              <td className='ri'><i>{translate('total')}</i></td>
+              <td className='ri'><i>{formats.round1(totals.effectiveDps)}</i></td>
+              <td className='ri'><i>{formats.round1(totals.effectiveSDps)}</i></td>
+              <td className='ri'><i>{formats.pct(totals.effectiveness)}</i></td>
+            </tr>
+          </tfoot>
         </table>
         <table style={{ width: '80%', lineHeight: '1em', backgroundColor: 'transparent', margin: 'auto' }}>
           <tbody >
