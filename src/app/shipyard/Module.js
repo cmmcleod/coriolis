@@ -650,10 +650,10 @@ export default class Module {
   }
 
   /**
-   * Get the damage type for this module, taking in to account modifications
-   * @return {string} the damage types for this module; any combination of E T and K
+   * Get the damage distribution for this module, taking in to account modifications
+   * @return {string} the damage distribution for this module
    */
-  getDamageType() {
-    return this.getModValue('type') || this.type;
+  getDamageDist() {
+    return this.getModValue('damagedist') || this.damagedist;
   }
 }

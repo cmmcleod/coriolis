@@ -63,8 +63,8 @@ export default class Modification extends TranslatedComponent {
     let translate = this.context.language.translate;
     let name = this.props.name;
 
-    if (name === 'type') {
-      // We don't show type
+    if (name === 'damagedist') {
+      // We don't show damage distribution
       return null;
     }
 
