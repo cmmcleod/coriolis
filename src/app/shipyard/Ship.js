@@ -954,20 +954,22 @@ export default class Ship {
         totalDpe += dpe;
         totalDps += dps;
         totalSDps += sdps;
-        if (slot.m.getDamageType().indexOf('E') != -1) {
-          totalExplDpe += dpe / slot.m.getDamageType().length;
-          totalExplDps += dps / slot.m.getDamageType().length;
-          totalExplSDps += sdps / slot.m.getDamageType().length;
-        }
-        if (slot.m.getDamageType().indexOf('K') != -1) {
-          totalKinDpe += dpe / slot.m.getDamageType().length;
-          totalKinDps += dps / slot.m.getDamageType().length;
-          totalKinSDps += sdps / slot.m.getDamageType().length;
-        }
-        if (slot.m.getDamageType().indexOf('T') != -1) {
-          totalThermDpe += dpe / slot.m.getDamageType().length;
-          totalThermDps += dps / slot.m.getDamageType().length;
-          totalThermSDps += sdps / slot.m.getDamageType().length;
+        if (slot.m.getDamageDist()) {
+          if (slot.m.getDamageDist().E) {
+            totalExplDpe += dpe * slot.m.getDamageDist().E;
+            totalExplDps += dps * slot.m.getDamageDist().E;
+            totalExplSDps += sdps * slot.m.getDamageDist().E;
+          }
+          if (slot.m.getDamageDist().K) {
+            totalKinDpe += dpe * slot.m.getDamageDist().K;
+            totalKinDps += dps * slot.m.getDamageDist().K;
+            totalKinSDps += sdps * slot.m.getDamageDist().K;
+          }
+          if (slot.m.getDamageDist().T) {
+            totalThermDpe += dpe * slot.m.getDamageDist().T;
+            totalThermDps += dps * slot.m.getDamageDist().T;
+            totalThermSDps += sdps * slot.m.getDamageDist().T;
+          }
         }
       }
     }

@@ -93,7 +93,7 @@ export default class DamageReceived extends TranslatedComponent {
     let weapons = [];
 
     for (let grp in Modules.hardpoints) {
-      if (Modules.hardpoints[grp][0].damage && Modules.hardpoints[grp][0].type) {
+      if (Modules.hardpoints[grp][0].damage && Modules.hardpoints[grp][0].damagedist) {
         for (let mId in Modules.hardpoints[grp]) {
           const m = new Module(Modules.hardpoints[grp][mId]);
           const classRating = `${m.class}${m.rating}${m.missile ? '/' + m.missile : ''}`;
@@ -104,37 +104,35 @@ export default class DamageReceived extends TranslatedComponent {
 
           // Effective DPS taking in to account shield resistance
           let effectivenessShields = 0;
-          if (m.getDamageType().indexOf('E') != -1) {
-            effectivenessShields += (1 - ship.shieldExplRes);
+          if (m.getDamageDist().E) {
+            effectivenessShields += m.getDamageDist().E * (1 - ship.shieldExplRes);
           }
-          if (m.getDamageType().indexOf('K') != -1) {
-            effectivenessShields += (1 - ship.shieldKinRes);
+          if (m.getDamageDist().K) {
+            effectivenessShields += m.getDamageDist().K * (1 - ship.shieldKinRes);
           }
-          if (m.getDamageType().indexOf('T') != -1) {
-            effectivenessShields += (1 - ship.shieldThermRes);
+          if (m.getDamageDist().T) {
+            effectivenessShields += m.getDamageDist().T * (1 - ship.shieldThermRes);
           }
-          if (m.getDamageType().indexOf('A') != -1) {
-            effectivenessShields += 1;
+          if (m.getDamageDist().A) {
+            effectivenessShields += m.getDamageDist().A;
           }
-          effectivenessShields /= m.getDamageType().length;
           const effectiveDpsShields = baseDps * effectivenessShields;
           const effectiveSDpsShields = baseSDps * effectivenessShields;
 
           // Effective DPS taking in to account hull hardness and resistance
           let effectivenessHull = 0;
-          if (m.getDamageType().indexOf('E') != -1) {
-            effectivenessHull += (1 - ship.hullExplRes);
+          if (m.getDamageDist().E) {
+            effectivenessHull += m.getDamageDist().E * (1 - ship.hullExplRes);
           }
-          if (m.getDamageType().indexOf('K') != -1) {
-            effectivenessHull += (1 - ship.hullKinRes);
+          if (m.getDamageDist().K) {
+            effectivenessHull += m.getDamageDist().K * (1 - ship.hullKinRes);
           }
-          if (m.getDamageType().indexOf('T') != -1) {
-            effectivenessHull += (1 - ship.hullThermRes);
+          if (m.getDamageDist().T) {
+            effectivenessHull += m.getDamageDist().T * (1 - ship.hullThermRes);
           }
-          if (m.getDamageType().indexOf('A') != -1) {
-            effectivenessHull += 1;
+          if (m.getDamageDist().A) {
+            effectivenessHull += m.getDamageDist().A;
           }
-          effectivenessHull /= m.getDamageType().length;
           effectivenessHull *= Math.min(m.getPiercing() / ship.hardness, 1);
           const effectiveDpsHull = baseDps * effectivenessHull;
           const effectiveSDpsHull = baseSDps * effectivenessHull;
