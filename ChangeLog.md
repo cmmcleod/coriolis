@@ -1,3 +1,6 @@
+#2.2.10
+  * Fix detailed export of module reinforcement packages
+
 #2.2.9
   * Use SSL-enabled server for shortlinks
   * Add falloff for weapons

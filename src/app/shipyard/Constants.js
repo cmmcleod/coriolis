@@ -33,6 +33,7 @@ export const ModuleGroupToName = {
   fi: 'Frame Shift Drive Interdictor',
   hb: 'Hatch Breaker Limpet Controller',
   hr: 'Hull Reinforcement Package',
+  mrp: 'Module Reinforcement Package',
   rf: 'Refinery',
   scb: 'Shield Cell Bank',
   sg: 'Shield Generator',
