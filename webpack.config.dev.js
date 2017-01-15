@@ -1,8 +1,20 @@
 var path = require('path');
+var exec = require('child_process').exec;
 var webpack = require('webpack');
 var pkgJson = require('./package');
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+function CopyDirPlugin(source, destination) {
+  this.source = source;
+  this.destination = destination;
+}
+CopyDirPlugin.prototype.apply = function(compiler) {
+  compiler.plugin('done', function() {
+    console.log(compiler.outputPath, this.destination);
+    exec('cp -r ' + this.source + ' ' + path.join(compiler.outputPath, this.destination));
+  }.bind(this));
+};
 
 module.exports = {
   devtool: 'eval',
@@ -23,6 +35,7 @@ module.exports = {
     publicPath: '/'
   },
   plugins: [
+    new CopyDirPlugin(path.join(__dirname, 'src/.htaccess'), ''),
     new webpack.optimize.CommonsChunkPlugin('lib', 'lib.js'),
     new HtmlWebpackPlugin({
         inject: false,

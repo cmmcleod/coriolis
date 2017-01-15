@@ -69,6 +69,7 @@ export default class HardpointsSlotSection extends SlotSection {
           availableModules={() => availableModules.getHps(h.maxClass)}
           onOpen={this._openMenu.bind(this, h)}
           onSelect={this._selectModule.bind(this, h)}
+          onChange={this.props.onChange}
           selected={currentMenu == h}
           drag={this._drag.bind(this, h)}
           dragOver={this._dragOverSlot.bind(this, h)}
@@ -125,6 +126,20 @@ export default class HardpointsSlotSection extends SlotSection {
         <li className='c' onClick={_fill.bind(this, 'c', 'F')}><MountFixed className='lg'/></li>
         <li className='c' onClick={_fill.bind(this, 'c', 'G')}><MountGimballed className='lg'/></li>
         <li className='c' onClick={_fill.bind(this, 'c', 'T')}><MountTurret className='lg'/></li>
+      </ul>
+      <div className='select-group cap'>{translate('fc')}</div>
+      <ul>
+        <li className='c' onClick={_fill.bind(this, 'fc', 'F')}><MountFixed className='lg'/></li>
+        <li className='c' onClick={_fill.bind(this, 'fc', 'G')}><MountGimballed className='lg'/></li>
+        <li className='c' onClick={_fill.bind(this, 'fc', 'T')}><MountTurret className='lg'/></li>
+      </ul>
+      <div className='select-group cap'>{translate('pa')}</div>
+      <ul>
+        <li className='lc' onClick={_fill.bind(this, 'pa', 'F')}>{translate('pa')}</li>
+      </ul>
+      <div className='select-group cap'>{translate('nl')}</div>
+      <ul>
+        <li className='lc' onClick={_fill.bind(this, 'nl', 'F')}>{translate('nl')}</li>
       </ul>
     </div>;
   }

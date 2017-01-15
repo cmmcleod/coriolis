@@ -27,7 +27,7 @@ function normalizePercent(val) {
   if (val === '' || isNaN(val)) {
     return 0;
   }
-  val = Math.round(val * 100) / 100;
+  val = Math.round(val * 1000) / 1000;
   return val >= 100 ? 100 : val;
 }
 
@@ -204,6 +204,13 @@ export default class Header extends TranslatedComponent {
   }
 
   /**
+   * Toggle module resistances setting
+   */
+  _toggleModuleResistances() {
+    Persist.showModuleResistances(!Persist.showModuleResistances());
+  }
+
+  /**
    * Show delete all modal
    * @param  {SyntheticEvent} e Event
    */
@@ -359,6 +366,7 @@ export default class Header extends TranslatedComponent {
   _getSettingsMenu() {
     let translate = this.context.language.translate;
     let tips = Persist.showTooltips();
+    let moduleResistances = Persist.showModuleResistances();
 
     return (
       <div className='menu-list no-wrap cap' onClick={ (e) => e.stopPropagation() }>
@@ -375,6 +383,10 @@ export default class Header extends TranslatedComponent {
             <tr className='cap ptr' onClick={this._toggleTooltips} >
               <td>{translate('tooltips')}</td>
               <td className={cn('ri', { disabled: !tips, 'primary-disabled': tips })}>{(tips ? '✓' : '✗')}</td>
+            </tr>
+            <tr className='cap ptr' onClick={this._toggleModuleResistances} >
+              <td>{translate('module resistances')}</td>
+              <td className={cn('ri', { disabled: !moduleResistances, 'primary-disabled': moduleResistances })}>{(moduleResistances ? '✓' : '✗')}</td>
             </tr>
             <tr>
               <td>{translate('insurance')}</td>
@@ -438,6 +450,7 @@ export default class Header extends TranslatedComponent {
     Persist.addListener('deletedAll', update);
     Persist.addListener('builds', update);
     Persist.addListener('tooltips', update);
+    Persist.addListener('moduleresistances', update);
   }
 
   /**

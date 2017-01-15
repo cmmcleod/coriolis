@@ -26,7 +26,7 @@ export default class ErrorDetails extends React.Component {
     if (ed) {
       content = <div style={{ textAlign:'left', fontSize:'0.8em', width: '43em', margin: '0 auto' }}>
         <div className='cen'>
-          <a href='https://github.com/cmmcleod/coriolis/issues' target='_blank' title='Coriolis Github Project'>Create an issue on Github</a>
+          <a href='https://github.com/edcd/coriolis/issues' target='_blank' title='Coriolis Github Project'>Create an issue on Github</a>
           {' if this keeps happening. Add these details:'}
         </div>
         <div style={{ marginTop: '2em' }}>
@@ -42,6 +42,7 @@ export default class ErrorDetails extends React.Component {
     return <div className='error'>
       <h1>Jameson, we have a problem..</h1>
       <h1><small>{error.message}</small></h1>
+      <div>Please note that this site uses Google Analytics to track performance and usage.  If you are blocking cookies, for example using Ghostery, please disable blocking for this site and try again.</div>
       {content}
     </div>;
   }

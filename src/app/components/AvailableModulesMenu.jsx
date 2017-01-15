@@ -93,11 +93,13 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     let prevClass = null, prevRating = null;
     let elems = [];
 
-    for (let i = 0; i < modules.length; i++) {
-      let m = modules[i];
+    const sortedModules = modules.sort(this._moduleOrder);
+
+    for (let i = 0; i < sortedModules.length; i++) {
+      let m = sortedModules[i];
       let mount = null;
       let disabled = m.maxmass && (mass + (m.mass ? m.mass : 0)) > m.maxmass;
-      let active = mountedModule && mountedModule === m;
+      let active = mountedModule && mountedModule.id === m.id;
       let classes = cn(m.name ? 'lc' : 'c', {
         warning: !disabled && warningFunc && warningFunc(m),
         active,
@@ -126,7 +128,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         case 'T': mount = <MountTurret className={'lg'}/>; break;
       }
 
-      if (i > 0 && modules.length > 3 && m.class != prevClass && (m.rating != prevRating || m.mount) && m.grp != 'pa') {
+      if (i > 0 && sortedModules.length > 3 && m.class != prevClass && (m.rating != prevRating || m.mount) && m.grp != 'pa') {
         elems.push(<br key={'b' + m.grp + i} />);
       }
 
@@ -199,6 +201,46 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     clearTimeout(this.touchTimeout);
     this.touchTimeout = null;
     this.context.tooltip();
+  }
+
+  /**
+   * Order two modules suitably for display in module selection
+   * @param  {Object} a the first module
+   * @param  {Object} b the second module
+   * @return {int}      -1 if the first module should go first, 1 if the second module should go first
+   */
+  _moduleOrder(a, b) {
+    // Named modules go last
+    if (!a.name && b.name) {
+      return -1;
+    }
+    if (a.name && !b.name) {
+      return 1;
+    }
+    // Class ordered from highest (8) to lowest (1)
+    if (a.class < b.class) {
+      return 1;
+    }
+    if (a.class > b.class) {
+      return -1;
+    }
+    // Mount type, if applicable
+    if (a.mount && b.mount && a.mount !== b.mount) {
+      if (a.mount === 'F' || (a.mount === 'G' && b.mount === 'T')) {
+        return -1;
+      } else {
+        return 1;
+      }
+    }
+    // Rating ordered from lowest (E) to highest (A)
+    if (a.rating < b.rating) {
+      return 1;
+    }
+    if (a.rating > b.rating) {
+      return -1;
+    }
+    // Do not attempt to order by name at this point, as that mucks up the order of armour
+    return 0;
   }
 
   /**

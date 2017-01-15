@@ -15,7 +15,7 @@ export function multiPurpose(ship, shielded, bulkheadIndex) {
 
   if (shielded) {
     ship.internal.some(function(slot) {
-      if (canMount(slot, 'sg')) { // Assuming largest slot can hold an eligible shield
+      if (canMount(ship, slot, 'sg')) { // Assuming largest slot can hold an eligible shield
         ship.use(slot, ModuleUtils.findInternal('sg', slot.maxClass, 'A'));
         ship.setSlotEnabled(slot, true);
         return true;
@@ -35,11 +35,13 @@ export function trader(ship, shielded, standardOpts) {
 
   for (let i = ship.internal.length; i--;) {
     let slot = ship.internal[i];
-    if (sg && canMount(slot, 'sg', sg.class)) {
+    if (sg && canMount(ship, slot, 'sg', sg.class)) {
       ship.use(slot, sg);
       sg = null;
     } else {
-      ship.use(slot, ModuleUtils.findInternal('cr', slot.maxClass, 'E'));
+      if (canMount(ship, slot, 'cr')) {
+        ship.use(slot, ModuleUtils.findInternal('cr', slot.maxClass, 'E'));
+      }
     }
   }
 
@@ -77,23 +79,23 @@ export function explorer(ship, planetary) {
     let slot = ship.internal[i];
     let nextSlot = (i + 1) < intLength ? ship.internal[i + 1] : null;
     // Fit best possible Fuel Scoop
-    if (!fuelScoopSlot && canMount(slot, 'fs')) {
+    if (!fuelScoopSlot && canMount(ship, slot, 'fs')) {
       fuelScoopSlot = slot;
       ship.use(slot, ModuleUtils.findInternal('fs', slot.maxClass, 'A'));
       ship.setSlotEnabled(slot, true);
     // Mount a Shield generator if possible AND an AFM Unit has been mounted already (Guarantees at least 1 AFM Unit)
-    } else if (!sgSlot && shieldNext && canMount(slot, 'sg', sg.class) && !canMount(nextSlot, 'sg', sg.class)) {
+    } else if (!sgSlot && shieldNext && canMount(ship, slot, 'sg', sg.class) && !canMount(ship, nextSlot, 'sg', sg.class)) {
       sgSlot = slot;
       shieldNext = false;
       ship.use(slot, sg);
       ship.setSlotEnabled(slot, true);
     // if planetary explorer and the next slot cannot mount a PVH or the next modul to mount is a SG
-    } else if (planetary && !pvhSlot && canMount(slot, 'pv') && (shieldNext || !canMount(nextSlot, 'pv', 2))) {
+    } else if (planetary && !pvhSlot && canMount(ship, slot, 'pv') && (shieldNext || !canMount(ship, nextSlot, 'pv', 2))) {
       pvhSlot = slot;
       ship.use(slot, ModuleUtils.findInternal('pv', Math.min(Math.floor(pvhSlot.maxClass / 2) * 2, 6), 'G'));
       ship.setSlotEnabled(slot, false);   // Disabled power for PVH
       shieldNext = !sgSlot;
-    } else if (afmUnitCount > 0 && canMount(slot, 'am')) {
+    } else if (afmUnitCount > 0 && canMount(ship, slot, 'am')) {
       afmUnitCount--;
       ship.use(slot, ModuleUtils.findInternal('am', slot.maxClass, 'A'));
       ship.setSlotEnabled(slot, false);   // Disabled power for AFM Unit
@@ -115,7 +117,7 @@ export function explorer(ship, planetary) {
 
   if (sgSlot) {
     // The SG and Fuel scoop to not need to be powered at the same time
-    if (sgSlot.m.power > fuelScoopSlot.m.power) { // The Shield generator uses the most power
+    if (sgSlot.m.getPowerUsage() > fuelScoopSlot.m.getPowerUsage()) { // The Shield generator uses the most power
       ship.setSlotEnabled(fuelScoopSlot, false);
     } else {                                    // The Fuel scoop uses the most power
       ship.setSlotEnabled(sgSlot, false);

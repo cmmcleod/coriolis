@@ -7,6 +7,8 @@ import Persist from './stores/Persist';
 import Header from './components/Header';
 import Tooltip from './components/Tooltip';
 import ModalImport from './components/ModalImport';
+import * as CompanionApiUtils from './utils/CompanionApiUtils';
+import { outfitURL } from './utils/UrlGenerators';
 
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -14,6 +16,8 @@ import OutfittingPage from './pages/OutfittingPage';
 import ComparisonPage from './pages/ComparisonPage';
 import ShipyardPage from './pages/ShipyardPage';
 import ErrorDetails from './pages/ErrorDetails';
+
+const zlib = require('zlib');
 
 /**
  * Coriolis App
@@ -52,6 +56,7 @@ export default class Coriolis extends React.Component {
     this._onLanguageChange = this._onLanguageChange.bind(this);
     this._onSizeRatioChange = this._onSizeRatioChange.bind(this);
     this._keyDown = this._keyDown.bind(this);
+    this._importBuild = this._importBuild.bind(this);
 
     this.emitter = new EventEmitter();
     this.state = {
@@ -63,11 +68,34 @@ export default class Coriolis extends React.Component {
     };
 
     Router('', (r) => this._setPage(ShipyardPage, r));
+    Router('/import?', (r) => this._importBuild(r));
+    Router('/import/:data', (r) => this._importBuild(r));
+    Router('/outfit/?', (r) => this._setPage(OutfittingPage, r));
+    Router('/outfit/:ship/?', (r) => this._setPage(OutfittingPage, r));
     Router('/outfit/:ship/:code?', (r) => this._setPage(OutfittingPage, r));
     Router('/compare/:name?', (r) => this._setPage(ComparisonPage, r));
+    Router('/comparison?', (r) => this._setPage(ComparisonPage, r));
     Router('/comparison/:code', (r) => this._setPage(ComparisonPage, r));
     Router('/about', (r) => this._setPage(AboutPage, r));
     Router('*', (r) => this._setPage(null, r));
+  }
+
+  /**
+   * Import a build directly
+   * @param {Object} r The current route
+   */
+  _importBuild(r) {
+    try {
+      // Need to decode and gunzip the data, then build the ship
+      const data = zlib.gunzipSync(new Buffer(r.params.data, 'base64'));
+      const json = JSON.parse(data);
+      const ship = CompanionApiUtils.shipFromJson(json);
+      r.params.ship = ship.id;
+      r.params.code = ship.toString();
+      this._setPage(OutfittingPage, r);
+    } catch (err) {
+      this._onError('Failed to import ship', r.path, 0, 0, err);
+    }
   }
 
   /**
@@ -291,7 +319,7 @@ export default class Coriolis extends React.Component {
       { this.state.tooltip }
       <footer>
         <div className="right cap">
-          <a href="https://github.com/cmmcleod/coriolis/releases/" target="_blank" title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
+          <a href="https://github.com/EDCD/coriolis" target="_blank" title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
         </div>
       </footer>
     </div>;

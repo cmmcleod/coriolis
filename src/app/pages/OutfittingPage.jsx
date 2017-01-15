@@ -8,17 +8,22 @@ import Persist from '../stores/Persist';
 import Ship from '../shipyard/Ship';
 import { toDetailedBuild } from '../shipyard/Serializer';
 import { outfitURL } from '../utils/UrlGenerators';
-
-import { FloppyDisk, Bin, Switch, Download, Reload, Fuel } from '../components/SvgIcons';
+import { FloppyDisk, Bin, Switch, Download, Reload, Fuel, LinkIcon } from '../components/SvgIcons';
 import ShipSummaryTable from '../components/ShipSummaryTable';
 import StandardSlotSection from '../components/StandardSlotSection';
 import HardpointsSlotSection from '../components/HardpointsSlotSection';
 import InternalSlotSection from '../components/InternalSlotSection';
 import UtilitySlotSection from '../components/UtilitySlotSection';
+import OffenceSummary from '../components/OffenceSummary';
+import DefenceSummary from '../components/DefenceSummary';
+import MovementSummary from '../components/MovementSummary';
+import DamageDealt from '../components/DamageDealt';
+import DamageReceived from '../components/DamageReceived';
 import LineChart from '../components/LineChart';
 import PowerManagement from '../components/PowerManagement';
 import CostSection from '../components/CostSection';
 import ModalExport from '../components/ModalExport';
+import ModalPermalink from '../components/ModalPermalink';
 import Slider from '../components/Slider';
 
 const SPEED_SERIES = ['boost', '4 Pips', '2 Pips', '0 Pips'];
@@ -270,6 +275,13 @@ export default class OutfittingPage extends Page {
   }
 
   /**
+   * Generates the short URL
+   */
+  _genShortlink() {
+    this.context.showModal(<ModalPermalink url={window.location.href}/>);
+  }
+
+  /**
    * Render the Page
    * @return {React.Component} The page contents
    */
@@ -284,16 +296,16 @@ export default class OutfittingPage extends Page {
         canSave = (newBuildName || buildName) && code !== savedCode,
         canRename = buildName && newBuildName && buildName != newBuildName,
         canReload = savedCode && canSave,
-        hStr = ship.getHardpointsString(),
-        sStr = ship.getStandardString(),
-        iStr = ship.getInternalString();
+        hStr = ship.getHardpointsString() + '.' + ship.getModificationsString(),
+        sStr = ship.getStandardString() + '.' + ship.getModificationsString(),
+        iStr = ship.getInternalString() + '.' + ship.getModificationsString();
 
     return (
       <div id='outfit' className={'page'} style={{ fontSize: (sizeRatio * 0.9) + 'em' }}>
         <div id='overview'>
           <h1>{ship.name}</h1>
           <div id='build'>
-            <input value={newBuildName} onChange={this._buildNameChange} placeholder={translate('Enter Name')} maxsize={50} />
+            <input value={newBuildName || ''} onChange={this._buildNameChange} placeholder={translate('Enter Name')} maxLength={50} />
             <button onClick={canSave && this._saveBuild} disabled={!canSave} onMouseOver={termtip.bind(null, 'save')} onMouseOut={hide}>
               <FloppyDisk className='lg' />
             </button>
@@ -312,6 +324,9 @@ export default class OutfittingPage extends Page {
             <button onClick={buildName && this._exportBuild} disabled={!buildName} onMouseOver={termtip.bind(null, 'export')} onMouseOut={hide}>
               <Download className='lg'/>
             </button>
+            <button onClick={this._genShortlink} onMouseOver={termtip.bind(null, 'shortlink')} onMouseOut={hide}>
+              <LinkIcon className='lg' />
+            </button>
           </div>
         </div>
 
@@ -322,6 +337,18 @@ export default class OutfittingPage extends Page {
         <UtilitySlotSection ship={ship} code={hStr} onChange={shipUpdated} currentMenu={menu} />
         <PowerManagement ship={ship} code={code} onChange={shipUpdated} />
         <CostSection ship={ship} buildName={buildName} code={sStr + hStr + iStr} />
+
+        <div className='group third'>
+          <OffenceSummary ship={ship} code={code}/>
+        </div>
+
+        <div className='group third'>
+          <DefenceSummary ship={ship} code={code}/>
+        </div>
+
+        <div className='group third'>
+          <MovementSummary ship={ship} code={code}/>
+        </div>
 
         <div ref='chartThird' className='group third'>
           <h1>{translate('jump range')}</h1>
@@ -335,39 +362,6 @@ export default class OutfittingPage extends Page {
             xLabel={translate('cargo')}
             func={state.jumpRangeChartFunc}
           />
-        </div>
-
-        <div className='group third'>
-          <h1>{translate('total range')}</h1>
-          <LineChart
-            width={chartWidth}
-            xMax={ship.cargoCapacity}
-            yMax={ship.unladenFastestRange}
-            xUnit={translate('T')}
-            yUnit={translate('LY')}
-            yLabel={translate('fastest range')}
-            xLabel={translate('cargo')}
-            func={state.fastestRangeChartFunc}
-          />
-        </div>
-
-        <div className='group third'>
-          <h1>{translate('speed')}</h1>
-          <LineChart
-            width={chartWidth}
-            xMax={ship.cargoCapacity}
-            yMax={ship.topBoost + 10}
-            xUnit={translate('T')}
-            yUnit={translate('m/s')}
-            yLabel={translate('speed')}
-            series={SPEED_SERIES}
-            colors={SPEED_COLORS}
-            xLabel={translate('cargo')}
-            func={state.speedChartFunc}
-          />
-        </div>
-
-        <div className='group half'>
           <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
             <tbody >
               <tr>
@@ -393,7 +387,68 @@ export default class OutfittingPage extends Page {
           </table>
         </div>
 
+        <div>
+          <DamageDealt ship={ship} code={code} currentMenu={menu}/>
+        </div>
+
+        <div>
+          <DamageReceived ship={ship} code={code} currentMenu={menu}/>
+        </div>
       </div>
+
     );
   }
 }
+//        <div ref='chartThird' className='group third'>
+//          <h1>{translate('jump range')}</h1>
+//          <LineChart
+//            width={chartWidth}
+//            xMax={ship.cargoCapacity}
+//            yMax={ship.unladenRange}
+//            xUnit={translate('T')}
+//            yUnit={translate('LY')}
+//            yLabel={translate('jump range')}
+//            xLabel={translate('cargo')}
+//            func={state.jumpRangeChartFunc}
+//          />
+//        </div>
+//        <div className='group third'>
+//          <h1>{translate('speed')}</h1>
+//          <LineChart
+//            width={chartWidth}
+//            xMax={ship.cargoCapacity}
+//            yMax={ship.topBoost + 10}
+//            xUnit={translate('T')}
+//            yUnit={translate('m/s')}
+//            yLabel={translate('speed')}
+//            series={SPEED_SERIES}
+//            colors={SPEED_COLORS}
+//            xLabel={translate('cargo')}
+//            func={state.speedChartFunc}
+//          />
+//        </div>
+//        <div className='group half'>
+//          <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
+//            <tbody >
+//              <tr>
+//                <td style={{ verticalAlign: 'top', padding: 0, width: '2.5em' }} onMouseEnter={termtip.bind(null, 'fuel level')} onMouseLeave={hide}>
+//                  <Fuel className='xl primary-disabled' />
+//                </td>
+//                <td>
+//                  <Slider
+//                    axis={true}
+//                    onChange={this._fuelChange}
+//                    axisUnit={translate('T')}
+//                    percent={fuelLevel}
+//                    max={fuelCapacity}
+//                    scale={sizeRatio}
+//                    onResize={onWindowResize}
+//                  />
+//                </td>
+//                <td className='primary' style={{ width: '10em', verticalAlign: 'top', fontSize: '0.9em', textAlign: 'left' }}>
+//                  {formats.f2(fuelLevel * fuelCapacity)}{units.T} {formats.pct1(fuelLevel)}
+//                </td>
+//              </tr>
+//            </tbody>
+//          </table>
+//        </div>

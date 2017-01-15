@@ -63,7 +63,7 @@ export default class ComparisonPage extends Page {
    * @return {Object}          New state object
    */
   _initState(context) {
-    let defaultFacets = [9, 6, 4, 1, 3, 2]; // Reverse order of Armour, Shields, Speed, Jump Range, Cargo Capacity, Cost
+    let defaultFacets = [13, 12, 11, 9, 6, 4, 1, 3, 2]; // Reverse order of Armour, Shields, Speed, Jump Range, Cargo Capacity, Cost, DPS, EPS, HPS
     let params = context.route.params;
     let code = params.code;
     let name = params.name ? decodeURIComponent(params.name) : null;
@@ -131,7 +131,7 @@ export default class ComparisonPage extends Page {
     builds.sort(sortBy(predicate));
 
     return {
-      title: 'Coriolis - Compare',
+      title: 'Coriolis EDCD Edition - Compare',
       predicate,
       desc,
       facets,
@@ -345,7 +345,7 @@ export default class ComparisonPage extends Page {
 
     let code = fromComparison(name, builds, selectedFacets, predicate, desc);
     let loc = window.location;
-    return `${loc.protocol}//${loc.host}/comparison/${code}`;
+    return loc.protocol + '//' + loc.host + '/comparison?code=' + encodeURIComponent(code);
   }
 
   /**

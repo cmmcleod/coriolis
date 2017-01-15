@@ -2,9 +2,44 @@ import { ModuleGroupToName, MountMap, BulkheadNames } from './Constants';
 import { Ships } from 'coriolis-data/dist';
 import Ship from './Ship';
 import * as ModuleUtils from './ModuleUtils';
+import * as Utils from '../utils/UtilityFunctions';
 import LZString from 'lz-string';
+import { outfitURL } from '../utils/UrlGenerators';
 
 const STANDARD = ['powerPlant', 'thrusters', 'frameShiftDrive', 'lifeSupport', 'powerDistributor', 'sensors', 'fuelTank'];
+
+const STANDARD_GROUPS = { 'powerPlant': 'pp', 'thrusters': 't', 'frameShiftDrive': 'fsd', 'lifeSupport': 'ls', 'powerDistributor': 'pd', 'sensors': 's', 'fuelTank': 'ft' };
+
+/**
+ * Generates ship-loadout JSON Schema standard object
+ * @param  {Object} standard model
+ * @return {Object} JSON Schema
+ */
+function standardToSchema(standard) {
+  if (standard.m) {
+    let o = {
+      class: standard.m.class,
+      rating: standard.m.rating,
+      enabled: Boolean(standard.enabled),
+      priority: standard.priority + 1
+    };
+
+    if (standard.m.name) {
+      o.name = standard.m.name;
+    }
+
+    if (standard.m.mods && Object.keys(standard.m.mods).length > 0) {
+      o.modifications = standard.m.mods;
+    }
+
+    if (standard.m.blueprint && Object.keys(standard.m.blueprint).length > 0) {
+      o.blueprint = standard.m.blueprint;
+    }
+
+    return o;
+  }
+  return null;
+}
 
 /**
  * Generates ship-loadout JSON Schema slot object
@@ -30,6 +65,13 @@ function slotToSchema(slot) {
     if (slot.m.missile) {
       o.missile = slot.m.missile;
     }
+    if (slot.m.mods && Object.keys(slot.m.mods).length > 0) {
+      o.modifications = slot.m.mods;
+    }
+    if (slot.m.blueprint && Object.keys(slot.m.blueprint).length > 0) {
+      o.blueprint = slot.m.blueprint;
+    }
+
     return o;
   }
   return null;
@@ -48,12 +90,12 @@ export function toDetailedBuild(buildName, ship) {
       code = ship.toString();
 
   let data = {
-    $schema: 'http://cdn.coriolis.io/schemas/ship-loadout/3.json#',
+    $schema: 'http://cdn.coriolis.io/schemas/ship-loadout/4.json#',
     name: buildName,
     ship: ship.name,
     references: [{
       name: 'Coriolis.io',
-      url: `https://coriolis.io/outfit/${ship.id}/${code}?bn=${encodeURIComponent(buildName)}`,
+      url: 'https://coriolis.edcd.io' + outfitURL(ship.id, code, buildName),
       code,
       shipId: ship.id
     }],
@@ -61,13 +103,13 @@ export function toDetailedBuild(buildName, ship) {
       standard: {
         bulkheads: BulkheadNames[ship.bulkheads.m.index],
         cargoHatch: { enabled: Boolean(ship.cargoHatch.enabled), priority: ship.cargoHatch.priority + 1 },
-        powerPlant: { class: standard[0].m.class, rating: standard[0].m.rating, enabled: Boolean(standard[0].enabled), priority: standard[0].priority + 1 },
-        thrusters: { class: standard[1].m.class, rating: standard[1].m.rating, enabled: Boolean(standard[1].enabled), priority: standard[1].priority + 1 },
-        frameShiftDrive: { class: standard[2].m.class, rating: standard[2].m.rating, enabled: Boolean(standard[2].enabled), priority: standard[2].priority + 1 },
-        lifeSupport: { class: standard[3].m.class, rating: standard[3].m.rating, enabled: Boolean(standard[3].enabled), priority: standard[3].priority + 1 },
-        powerDistributor: { class: standard[4].m.class, rating: standard[4].m.rating, enabled: Boolean(standard[4].enabled), priority: standard[4].priority + 1 },
-        sensors: { class: standard[5].m.class, rating: standard[5].m.rating, enabled: Boolean(standard[5].enabled), priority: standard[5].priority + 1 },
-        fuelTank: { class: standard[6].m.class, rating: standard[6].m.rating, enabled: Boolean(standard[6].enabled), priority: standard[6].priority + 1 }
+        powerPlant: standardToSchema(standard[0]),
+        thrusters: standardToSchema(standard[1]),
+        frameShiftDrive: standardToSchema(standard[2]),
+        lifeSupport: standardToSchema(standard[3]),
+        powerDistributor: standardToSchema(standard[4]),
+        sensors: standardToSchema(standard[5]),
+        fuelTank: standardToSchema(standard[6])
       },
       hardpoints: hardpoints.filter(slot => slot.maxClass > 0).map(slotToSchema),
       utility: hardpoints.filter(slot => slot.maxClass === 0).map(slotToSchema),
@@ -92,54 +134,21 @@ export function toDetailedBuild(buildName, ship) {
  */
 export function fromDetailedBuild(detailedBuild) {
   let shipId = Object.keys(Ships).find((shipId) => Ships[shipId].properties.name.toLowerCase() == detailedBuild.ship.toLowerCase());
-
   if (!shipId) {
     throw 'No such ship: ' + detailedBuild.ship;
   }
 
-  let comps = detailedBuild.components;
-  let stn = comps.standard;
-  let priorities = [stn.cargoHatch && stn.cargoHatch.priority !== undefined ? stn.cargoHatch.priority - 1 : 0];
-  let enabled = [stn.cargoHatch && stn.cargoHatch.enabled !== undefined ? stn.cargoHatch.enabled : true];
   let shipData = Ships[shipId];
   let ship = new Ship(shipId, shipData.properties, shipData.slots);
-  let bulkheads = ModuleUtils.bulkheadIndex(stn.bulkheads);
 
-  if (bulkheads < 0) {
-    throw 'Invalid bulkheads: ' + stn.bulkheads;
+  if (!detailedBuild.references[0] || !detailedBuild.references[0].code) {
+    throw 'Missing reference code';
   }
 
-  let standard = STANDARD.map((c) => {
-    if (!stn[c].class || !stn[c].rating) {
-      throw 'Invalid value for ' + c;
-    }
-    priorities.push(stn[c].priority === undefined ? 0 : stn[c].priority - 1);
-    enabled.push(stn[c].enabled === undefined ? true : stn[c].enabled);
-    return stn[c].class + stn[c].rating;
-  });
-
-  let internal = comps.internal.map(c => c ? ModuleUtils.findInternalId(c.group, c.class, c.rating, c.name) : 0);
-
-  let hardpoints = comps.hardpoints
-    .map(c => c ? ModuleUtils.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount], c.missile) : 0)
-    .concat(comps.utility.map(c => c ? ModuleUtils.findHardpointId(c.group, c.class, c.rating, c.name, MountMap[c.mount]) : 0));
-
-  // The ordering of these arrays must match the order in which they are read in Ship.buildWith
-  priorities = priorities.concat(
-    comps.hardpoints.map(c => (!c || c.priority === undefined) ? 0 : c.priority - 1),
-    comps.utility.map(c => (!c || c.priority === undefined) ? 0 : c.priority - 1),
-    comps.internal.map(c => (!c || c.priority === undefined) ? 0 : c.priority - 1)
-  );
-  enabled = enabled.concat(
-    comps.hardpoints.map(c => (!c || c.enabled === undefined) ? true : c.enabled * 1),
-    comps.utility.map(c => (!c || c.enabled === undefined) ? true : c.enabled * 1),
-    comps.internal.map(c => (!c || c.enabled === undefined) ? true : c.enabled * 1)
-  );
-
-  ship.buildWith({ bulkheads, standard, hardpoints, internal }, priorities, enabled);
+  ship.buildFrom(detailedBuild.references[0].code);
 
   return ship;
-};
+}
 
 /**
  * Generates an array of ship-loadout JSON Schema object for export
@@ -178,7 +187,7 @@ export function fromComparison(name, builds, facets, predicate, desc) {
     f: facets,
     p: predicate,
     d: desc ? 1 : 0
-  })).replace(/\//g, '-');
+  }));
 };
 
 /**
@@ -187,5 +196,5 @@ export function fromComparison(name, builds, facets, predicate, desc) {
  * @return {Object} Comparison data object
  */
 export function toComparison(code) {
-  return JSON.parse(LZString.decompressFromBase64(code.replace(/-/g, '/')));
+  return JSON.parse(LZString.decompressFromBase64(Utils.fromUrlSafe(code)));
 };

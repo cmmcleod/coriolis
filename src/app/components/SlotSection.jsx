@@ -1,6 +1,7 @@
 import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
 import { wrapCtxMenu } from '../utils/UtilityFunctions';
+import { canMount } from '../utils/SlotFunctions';
 import { Equalizer } from '../components/SvgIcons';
 import cn from 'classnames';
 
@@ -76,7 +77,7 @@ export default class SlotSection extends TranslatedComponent {
   _drag(originSlot, e) {
     e.dataTransfer.setData('text/html', e.currentTarget);
     e.dataTransfer.effectAllowed = 'all';
-    this.setState({ originSlot });
+    this.setState({ originSlot, copy: e.getModifierState('Alt') });
     this._close();
   }
 
@@ -90,7 +91,9 @@ export default class SlotSection extends TranslatedComponent {
     e.stopPropagation();
     let os = this.state.originSlot;
     if (os) {
-      e.dataTransfer.dropEffect = os != targetSlot && targetSlot.maxClass >= os.m.class ? 'copyMove' : 'none';
+      // Show correct icon
+      const effect = this.state.copy ? 'copy' : 'move';
+      e.dataTransfer.dropEffect = os != targetSlot && canMount(this.props.ship, targetSlot, os.m.grp, os.m.class) ? effect : 'none';
       this.setState({ targetSlot });
     } else {
       e.dataTransfer.dropEffect = 'none';
@@ -113,20 +116,30 @@ export default class SlotSection extends TranslatedComponent {
    * the origin slot will be empty.
    */
   _drop() {
-    let { originSlot, targetSlot } = this.state;
+    let { originSlot, targetSlot, copy } = this.state;
     let m = originSlot.m;
 
-    if (targetSlot && m && targetSlot.maxClass >= m.class) {
-      // Swap modules if possible
-      if (targetSlot.m && originSlot.maxClass >= targetSlot.m.class) {
-        this.props.ship.use(originSlot, targetSlot.m, true);
-      } else { // Otherwise empty the  origin slot
-        this.props.ship.use(originSlot, null, true);  // Empty but prevent summary update
+    if (copy) {
+      // We want to copy the module in to the target slot
+      if (targetSlot && canMount(this.props.ship, targetSlot, m.grp, m.class)) {
+        const mCopy = m.clone();
+        this.props.ship.use(targetSlot, mCopy);
+        this.props.onChange();
       }
-      this.props.ship.use(targetSlot, m); // update target slot
-      this.props.onChange();
+    } else {
+      // We want to move the module in to the target slot, and swap back any module that was originally in the target slot
+      if (targetSlot && m && canMount(this.props.ship, targetSlot, m.grp, m.class)) {
+        // Swap modules if possible
+        if (targetSlot.m && canMount(this.props.ship, originSlot, targetSlot.m.grp, targetSlot.m.class)) {
+          this.props.ship.use(originSlot, targetSlot.m, true);
+        } else { // Otherwise empty the  origin slot
+          this.props.ship.use(originSlot, null, true);  // Empty but prevent summary update
+        }
+        this.props.ship.use(targetSlot, m); // update target slot
+        this.props.onChange();
+      }
     }
-    this.setState({ originSlot: null, targetSlot: null });
+    this.setState({ originSlot: null, targetSlot: null, copy: null });
   }
 
   /**
@@ -141,12 +154,12 @@ export default class SlotSection extends TranslatedComponent {
       return null;
     }
     if (slot === originSlot) {
-      if (targetSlot && targetSlot.m && originSlot.maxClass < targetSlot.m.class) {
+      if (targetSlot && targetSlot.m && !canMount(this.props.ship, originSlot, targetSlot.m.grp, targetSlot.m.class)) {
         return 'dropEmpty'; // Origin slot will be emptied
       }
       return null;
     }
-    if (originSlot.m && slot.maxClass >= originSlot.m.class) { // Eligble drop slot
+    if (originSlot.m && canMount(this.props.ship, slot, originSlot.m.grp, originSlot.m.class)) { // Eligble drop slot
       if (slot === targetSlot) {
         return 'drop';  // Can drop
       }
@@ -179,7 +192,7 @@ export default class SlotSection extends TranslatedComponent {
       <div id={this.sectionId} className={'group'}  onDragLeave={this._dragOverNone}>
         <div className={cn('section-menu', { selected: sectionMenuOpened })} onClick={open} onContextMenu={ctx}>
           <h1>{translate(this.sectionName)} <Equalizer/></h1>
-          {sectionMenuOpened ? this._getSectionMenu(translate) : null }
+          {sectionMenuOpened ? this._getSectionMenu(translate, this.props.ship) : null }
         </div>
         {this._getSlots()}
       </div>

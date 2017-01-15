@@ -1,0 +1,327 @@
+{
+  "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/4.json#",
+  "name": "Multi-purpose Imperial Courier",
+  "ship": "Imperial Courier",
+  "references": [
+    {
+      "name": "Coriolis.io",
+      "url": "https://coriolis.edcd.io/outfit/imperial_courier?code=0patzF5l0das8f31a1a270202000e402t0101-2f.AwRj4zKA.CwRgDBldLiQ%3D.H4sIAAAAAAAAA12OP0tCYRjFj9fuVbvF1du9ekkT8s%2FkIg4NElyIBBd321yaGvwUQTS3N7UFfYygIT9EoyQUJA36ns47XJCWA%2B%2Fz%2Bz3Pe3ImBbDNKaqNPSBoGrL4ngfomKpFGiJ%2BLgHteR1IPjxJT5pF11uSeXNsJVcRfgdC92syWUuK0iMdKZqrjJ%2F0aoA71lJ5oKf38knWcCiptCPdhJIerdS00vlK0qktlqoj983UmqqHjQ33VsW8eazFmaTyULP2hQ4lX8LBme6g%2F6v0TTdbxJ2KhdEIaCw15MF%2FNB0L%2BS2hwEwyFM8KgP%2BqEpWWA3Qu9Z3z9kPWHzakt7Dt%2BAeD7ghSTgEAAA%3D%3D&bn=Multi-purpose%20Imperial%20Courier",
+      "code": "0patzF5l0das8f31a1a270202000e402t0101-2f.AwRj4zKA.CwRgDBldLiQ=.H4sIAAAAAAAAA12OP0tCYRjFj9fuVbvF1du9ekkT8s/kIg4NElyIBBd321yaGvwUQTS3N7UFfYygIT9EoyQUJA36ns47XJCWA+/z+z3Pe3ImBbDNKaqNPSBoGrL4ngfomKpFGiJ+LgHteR1IPjxJT5pF11uSeXNsJVcRfgdC92syWUuK0iMdKZqrjJ/0aoA71lJ5oKf38knWcCiptCPdhJIerdS00vlK0qktlqoj983UmqqHjQ33VsW8eazFmaTyULP2hQ4lX8LBme6g/6v0TTdbxJ2KhdEIaCw15MF/NB0L+S2hwEwyFM8KgP+qEpWWA3Qu9Z3z9kPWHzakt7Dt+AeD7ghSTgEAAA==",
+      "shipId": "imperial_courier"
+    }
+  ],
+  "components": {
+    "standard": {
+      "bulkheads": "Lightweight Alloy",
+      "cargoHatch": {
+        "enabled": false,
+        "priority": 5
+      },
+      "powerPlant": {
+        "class": 4,
+        "rating": "A",
+        "enabled": true,
+        "priority": 2,
+        "modifications": {
+          "pgen": 1052,
+          "integrity": -482,
+          "eff": 974
+        },
+        "blueprint": {
+          "id": 63,
+          "name": "Overcharged",
+          "grade": 1
+        }
+      },
+      "thrusters": {
+        "class": 3,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1,
+        "name": "Enhanced Performance",
+        "modifications": {
+          "optmul": 2476,
+          "thermload": 7023,
+          "power": 1763,
+          "integrity": 165,
+          "optmass": -667
+        },
+        "blueprint": {
+          "id": 22,
+          "name": "Dirty",
+          "grade": 4
+        }
+      },
+      "frameShiftDrive": {
+        "class": 3,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1,
+        "modifications": {
+          "mass": 4082,
+          "integrity": -2422,
+          "power": 1782,
+          "optmass": 4927
+        },
+        "blueprint": {
+          "id": 26,
+          "name": "Increased range",
+          "grade": 5
+        }
+      },
+      "lifeSupport": {
+        "class": 1,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1
+      },
+      "powerDistributor": {
+        "class": 3,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1
+      },
+      "sensors": {
+        "class": 2,
+        "rating": "D",
+        "enabled": true,
+        "priority": 1
+      },
+      "fuelTank": {
+        "class": 3,
+        "rating": "C",
+        "enabled": true,
+        "priority": 1
+      }
+    },
+    "hardpoints": [
+      {
+        "class": 2,
+        "rating": "F",
+        "enabled": true,
+        "priority": 1,
+        "group": "Pulse Laser",
+        "mount": "Fixed",
+        "modifications": {
+          "rof": 5931,
+          "damage": -184,
+          "jitter": 50,
+          "distdraw": -4689,
+          "piercing": 3328
+        },
+        "blueprint": {
+          "id": 89,
+          "name": "Rapid fire",
+          "grade": 5
+        }
+      },
+      {
+        "class": 2,
+        "rating": "F",
+        "enabled": true,
+        "priority": 1,
+        "group": "Pulse Laser",
+        "mount": "Fixed",
+        "modifications": {
+          "rof": 4715,
+          "damage": -97,
+          "jitter": 30,
+          "distdraw": -4548,
+          "piercing": 1057,
+          "integrity": 319
+        },
+        "blueprint": {
+          "id": 89,
+          "name": "Rapid fire",
+          "grade": 5
+        }
+      },
+      {
+        "class": 2,
+        "rating": "F",
+        "enabled": true,
+        "priority": 1,
+        "group": "Multi-cannon",
+        "mount": "Gimballed",
+        "modifications": {
+          "damage": 2437,
+          "distdraw": 5487,
+          "rof": 1120,
+          "jitter": 58,
+          "thermload": 1346,
+          "power": 1009,
+          "integrity": -202,
+          "ammo": -2000
+        },
+        "blueprint": {
+          "id": 88,
+          "name": "Overcharged",
+          "grade": 3,
+          "special": {
+            "id": 3,
+            "name": "Corrosive shell"
+          }
+        }
+      }
+    ],
+    "utility": [
+      {
+        "class": 0,
+        "rating": "I",
+        "enabled": true,
+        "priority": 1,
+        "group": "Heat Sink Launcher",
+        "name": "Heat Sink Launcher",
+        "modifications": {
+          "ammo": 5000,
+          "mass": 17684,
+          "reload": 9707
+        },
+        "blueprint": {
+          "id": 37,
+          "name": "Ammo capacity",
+          "grade": 3
+        }
+      },
+      {
+        "class": 0,
+        "rating": "I",
+        "enabled": true,
+        "priority": 1,
+        "group": "Heat Sink Launcher",
+        "name": "Heat Sink Launcher",
+        "modifications": {
+          "ammo": 5000,
+          "mass": 18520,
+          "reload": 8715
+        },
+        "blueprint": {
+          "id": 37,
+          "name": "Ammo capacity",
+          "grade": 3
+        }
+      },
+      {
+        "class": 0,
+        "rating": "I",
+        "enabled": true,
+        "priority": 1,
+        "group": "Chaff Launcher",
+        "name": "Chaff Launcher"
+      },
+      {
+        "class": 0,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1,
+        "group": "Frame Shift Wake Scanner"
+      }
+    ],
+    "internal": [
+      {
+        "class": 3,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1,
+        "group": "Shield Generator",
+        "modifications": {
+          "optmul": 1888,
+          "explres": 455,
+          "kinres": 546,
+          "thermres": 1092,
+          "brokenregen": -2614,
+          "regen": -876,
+          "distdraw": 463
+        },
+        "blueprint": {
+          "id": 77,
+          "name": "Reinforced",
+          "grade": 3
+        }
+      },
+      {
+        "class": 3,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1,
+        "group": "Fuel Scoop"
+      },
+      {
+        "class": 2,
+        "rating": "E",
+        "enabled": true,
+        "priority": 2,
+        "group": "Cargo Rack"
+      },
+      {
+        "class": 2,
+        "rating": "E",
+        "enabled": true,
+        "priority": 2,
+        "group": "Cargo Rack"
+      },
+      null,
+      {
+        "class": 1,
+        "rating": "C",
+        "enabled": true,
+        "priority": 2,
+        "group": "Scanner",
+        "name": "Advanced Discovery Scanner"
+      }
+    ]
+  },
+  "stats": {
+    "class": 1,
+    "hullCost": 2481550,
+    "speed": 280,
+    "boost": 380,
+    "boostEnergy": 10,
+    "agility": 6,
+    "baseShieldStrength": 200,
+    "baseArmour": 80,
+    "hullMass": 35,
+    "masslock": 7,
+    "pipSpeed": 0.05,
+    "moduleCostMultiplier": 1,
+    "fuelCapacity": 8,
+    "cargoCapacity": 8,
+    "ladenMass": 104.25,
+    "armour": 144,
+    "shield": 404.19,
+    "shieldCells": 0,
+    "totalCost": 14059860,
+    "unladenMass": 88.25,
+    "totalDpe": 32.25,
+    "totalExplDpe": 0,
+    "totalKinDpe": 9.41,
+    "totalThermDpe": 22.84,
+    "totalDps": 53.8,
+    "totalExplDps": 0,
+    "totalKinDps": 17.44,
+    "totalThermDps": 36.35,
+    "totalSDps": 48.99,
+    "totalExplSDps": 0,
+    "totalKinSDps": 12.64,
+    "totalThermSDps": 36.35,
+    "totalEps": 9.84,
+    "totalHps": 12.28,
+    "shieldExplRes": 0.48,
+    "shieldKinRes": 0.55,
+    "shieldThermRes": 1.09,
+    "hullExplRes": 1.4,
+    "hullKinRes": 1.2,
+    "hullThermRes": 1,
+    "powerAvailable": 17.24,
+    "powerRetracted": 11.3,
+    "powerDeployed": 16.41,
+    "unladenRange": 25.57,
+    "fullTankRange": 23.92,
+    "ladenRange": 22.09,
+    "unladenFastestRange": 116.23,
+    "ladenFastestRange": 107,
+    "maxJumpCount": 5,
+    "topSpeed": 386.56,
+    "topBoost": 524.62
+  }
+}

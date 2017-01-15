@@ -1,5 +1,10 @@
 import React from 'react';
 import Slot from './Slot';
+import Persist from '../stores/Persist';
+import { DamageKinetic, DamageThermal, DamageExplosive, MountFixed, MountGimballed, MountTurret, ListModifications, Modified } from './SvgIcons';
+import { Modifications } from 'coriolis-data/dist';
+import { stopCtxPropagation } from '../utils/UtilityFunctions';
+
 
 /**
  * Hardpoint / Utility Slot
@@ -33,24 +38,51 @@ export default class HardpointSlot extends Slot {
    */
   _getSlotDetails(m, translate, formats, u) {
     if (m) {
-      let classRating = `${m.class}${m.rating}${m.mount ? '/' + m.mount : ''}${m.missile ? m.missile : ''}`;
+      let classRating = `${m.class}${m.rating}${m.missile ? '/' + m.missile : ''}`;
       let { drag, drop } = this.props;
+      let { termtip, tooltip } = this.context;
+      let validMods = Modifications.validity[m.grp] || [];
+      let showModuleResistances = Persist.showModuleResistances();
+
+      // Modifications tooltip shows blueprint and grade, if available
+      let modTT = translate('modified');
+      if (m && m.blueprint && m.blueprint.name) {
+        modTT = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
+        if (m.blueprint.special && m.blueprint.special.id) {
+          modTT += ', ' + translate(m.blueprint.special.name);
+        }
+      }
 
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
-          <div className={'l'}>{classRating} {translate(m.name || m.grp)}</div>
-          <div className={'r'}>{m.mass}{u.T}</div>
+          <div className={'l'}>
+          {m.mount && m.mount == 'F' ? <span onMouseOver={termtip.bind(null, 'fixed')} onMouseOut={tooltip.bind(null, null)}><MountFixed /></span> : ''}
+          {m.mount && m.mount == 'G' ? <span onMouseOver={termtip.bind(null, 'gimballed')} onMouseOut={tooltip.bind(null, null)}><MountGimballed /></span> : ''}
+          {m.mount && m.mount == 'T' ? <span onMouseOver={termtip.bind(null, 'turreted')} onMouseOut={tooltip.bind(null, null)}><MountTurret /></span> : ''}
+          {m.getDamageType() && m.getDamageType().match('K') ? <span onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /></span> : ''}
+          {m.getDamageType() && m.getDamageType().match('T') ? <span onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /></span> : ''}
+          {m.getDamageType() && m.getDamageType().match('E') ? <span onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /></span> : ''}
+          {classRating} {translate(m.name || m.grp)}{ m.mods && Object.keys(m.mods).length > 0 ? <span className='r' onMouseOver={termtip.bind(null, modTT)} onMouseOut={tooltip.bind(null, null)}><Modified /></span> : null }
+          </div>
+
+          <div className={'r'}>{formats.round(m.getMass())}{u.T}</div>
         </div>
         <div className={'cb'}>
-          { m.damage ? <div className={'l'}>{translate('damage')}: {m.damage} { m.ssdam ? <span>({formats.int(m.ssdam)} {u.MJ})</span> : null }</div> : null }
-          { m.dps ? <div className={'l'}>{translate('DPS')}: {m.dps} { m.mjdps ? <span>({formats.int(m.mjdps)} {u.MJ})</span> : null }</div> : null }
-          { m.thermload ? <div className={'l'}>{translate('T-Load')}: {m.thermload}</div> : null }
-          { m.type ? <div className={'l'}>{translate('type')}: {m.type}</div> : null }
-          { m.rof ? <div className={'l'}>{translate('ROF')}: {m.rof}{u.ps}</div> : null }
-          { m.armourpen ? <div className={'l'}>{translate('pen')}: {m.armourpen}</div> : null }
-          { m.shieldmul ? <div className={'l'}>+{formats.rPct(m.shieldmul)}</div> : null }
-          { m.range ? <div className={'l'}>{m.range} <u>km</u></div> : null }
-          { m.ammo >= 0 ? <div className={'l'}>{translate('ammo')}: {formats.int(m.clip)}+{formats.int(m.ammo)}</div> : null }
+          { m.getDps() ? <div className={'l'} onMouseOver={termtip.bind(null, m.getClip() ? 'dpssdps' : 'dps')} onMouseOut={tooltip.bind(null, null)}>{translate('DPS')}: {formats.round1(m.getDps())} { m.getClip() ? <span>({formats.round1((m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload())) })</span> : null }</div> : null }
+          { m.getEps() ? <div className={'l'} onMouseOver={termtip.bind(null, m.getClip() ? 'epsseps' : 'eps')} onMouseOut={tooltip.bind(null, null)}>{translate('EPS')}: {formats.round1(m.getEps())}{u.MW} { m.getClip() ? <span>({formats.round1((m.getClip() * m.getEps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload())) }{u.MW})</span> : null }</div> : null }
+          { m.getHps() ? <div className={'l'} onMouseOver={termtip.bind(null, m.getClip() ? 'hpsshps' : 'hps')} onMouseOut={tooltip.bind(null, null)}>{translate('HPS')}: {formats.round1(m.getHps())} { m.getClip() ? <span>({formats.round1((m.getClip() * m.getHps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload())) })</span> : null }</div> : null }
+          { m.getDps() && m.getEps() ? <div className={'l'} onMouseOver={termtip.bind(null, 'dpe')} onMouseOut={tooltip.bind(null, null)}>{translate('DPE')}: {formats.f1(m.getDps() / m.getEps())}</div> : null }
+          { m.getRoF() ? <div className={'l'} onMouseOver={termtip.bind(null, 'rof')} onMouseOut={tooltip.bind(null, null)}>{translate('ROF')}: {formats.f1(m.getRoF())}{u.ps}</div> : null }
+          { m.getRange() ? <div className={'l'}>{translate('range')} {formats.f1(m.getRange() / 1000)}{u.km}</div> : null }
+          { m.getShieldBoost() ? <div className={'l'}>+{formats.pct1(m.getShieldBoost())}</div> : null }
+          { m.getAmmo() ? <div className={'l'}>{translate('ammunition')}: {formats.int(m.getClip())}/{formats.int(m.getAmmo())}</div> : null }
+          { m.getPiercing() ? <div className={'l'}>{translate('piercing')}: {formats.int(m.getPiercing())}</div> : null }
+          { m.getJitter() ? <div className={'l'}>{translate('jitter')}: {formats.f2(m.getJitter())}°</div> : null }
+          { showModuleResistances && m.getExplosiveResistance() ? <div className='l'>{translate('explres')}: {formats.pct(m.getExplosiveResistance())}</div> : null }
+          { showModuleResistances && m.getKineticResistance() ? <div className='l'>{translate('kinres')}: {formats.pct(m.getKineticResistance())}</div> : null }
+          { showModuleResistances && m.getThermalResistance() ? <div className='l'>{translate('thermres')}: {formats.pct(m.getThermalResistance())}</div> : null }
+          { m && validMods.length > 0 ? <div className='r' ><button onClick={this._toggleModifications.bind(this)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
+
         </div>
       </div>;
     } else {

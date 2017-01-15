@@ -2,8 +2,8 @@ import React from 'react';
 import cn from 'classnames';
 import SlotSection from './SlotSection';
 import StandardSlot from './StandardSlot';
+import Module from '../shipyard/Module';
 import { diffDetails } from '../utils/SlotFunctions';
-import * as ModuleUtils from '../shipyard/ModuleUtils';
 import * as ShipRoles from '../shipyard/ShipRoles';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
@@ -18,7 +18,7 @@ export default class StandardSlotSection extends SlotSection {
    * @param  {Object} context React Component context
    */
   constructor(props, context) {
-    super(props, context, 'standard', 'standard');
+    super(props, context, 'standard', 'core internal');
     this._optimizeStandard = this._optimizeStandard.bind(this);
     this._selectBulkhead = this._selectBulkhead.bind(this);
   }
@@ -86,12 +86,10 @@ export default class StandardSlotSection extends SlotSection {
    * @return {Array} Array of Slots
    */
   _getSlots() {
-    let { translate, units, formats } = this.context.language;
     let { ship, currentMenu } = this.props;
     let slots = new Array(8);
     let open = this._openMenu;
     let select = this._selectModule;
-    let selBulkhead = this._selectBulkhead;
     let st = ship.standard;
     let avail = ship.getAvailableModules().standard;
     let bh = ship.bulkheads;
@@ -103,6 +101,7 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, bh)}
       onSelect={this._selectBulkhead}
       selected={currentMenu == bh}
+      onChange={this.props.onChange}
       ship={ship}
     />;
 
@@ -113,8 +112,9 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[0])}
       onSelect={select.bind(this, st[0])}
       selected={currentMenu == st[0]}
+      onChange={this.props.onChange}
       ship={ship}
-      warning={m => m.pGen < ship.powerRetracted}
+      warning={m => m instanceof Module ? m.getPowerGeneration() < ship.powerRetracted : m.pgen < ship.powerRetracted}
     />;
 
     slots[2] = <StandardSlot
@@ -124,8 +124,9 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[1])}
       onSelect={select.bind(this, st[1])}
       selected={currentMenu == st[1]}
+      onChange={this.props.onChange}
       ship={ship}
-      warning={m => m.maxmass < (ship.ladenMass - st[1].mass + m.mass)}
+      warning={m => m instanceof Module ? m.getMaxMass() < (ship.ladenMass - st[1].mass + m.mass) : m.maxmass < (ship.ladenMass - st[1].mass + m.mass)}
     />;
 
 
@@ -135,6 +136,7 @@ export default class StandardSlotSection extends SlotSection {
       modules={avail[2]}
       onOpen={open.bind(this, st[2])}
       onSelect={select.bind(this, st[2])}
+      onChange={this.props.onChange}
       ship={ship}
       selected={currentMenu == st[2]}
     />;
@@ -145,6 +147,7 @@ export default class StandardSlotSection extends SlotSection {
       modules={avail[3]}
       onOpen={open.bind(this, st[3])}
       onSelect={select.bind(this, st[3])}
+      onChange={this.props.onChange}
       ship={ship}
       selected={currentMenu == st[3]}
     />;
@@ -156,8 +159,9 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[4])}
       onSelect={select.bind(this, st[4])}
       selected={currentMenu == st[4]}
+      onChange={this.props.onChange}
       ship={ship}
-      warning= {m => m.enginecapacity < ship.boostEnergy}
+      warning={m => m instanceof Module ? m.getEnginesCapacity() < ship.boostEnergy : m.engcap < ship.boostEnergy}
     />;
 
     slots[6] = <StandardSlot
@@ -167,8 +171,8 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[5])}
       onSelect={select.bind(this, st[5])}
       selected={currentMenu == st[5]}
+      onChange={this.props.onChange}
       ship={ship}
-      warning= {m => m.enginecapacity < ship.boostEnergy}
     />;
 
     slots[7] = <StandardSlot
@@ -178,6 +182,7 @@ export default class StandardSlotSection extends SlotSection {
       onOpen={open.bind(this, st[6])}
       onSelect={select.bind(this, st[6])}
       selected={currentMenu == st[6]}
+      onChange={this.props.onChange}
       ship={ship}
       warning= {m => m.fuel < st[2].m.maxfuel}  // Show warning when fuel tank is smaller than FSD Max Fuel
     />;
