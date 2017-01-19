@@ -153,7 +153,7 @@ export function diffDetails(language, m, mm) {
 
   let mPowerGeneration = m.pgen || 0;
   let mmPowerGeneration = mm ? mm.getPowerGeneration() : 0;
-  if (mPowerGeneration != mmPowerGeneration) propDiffs.push(<div key='pgen'>{translate('pgen')}: <span className={diffClass(mPowerGeneration, mmPowerGeneration, true)}>{diff(formats.round, mPowerGeneration, mmPowerGeneration)}{units.MJ}</span></div>);
+  if (mPowerGeneration != mmPowerGeneration) propDiffs.push(<div key='pgen'>{translate('pgen')}: <span className={diffClass(mPowerGeneration, mmPowerGeneration)}>{diff(formats.round, mPowerGeneration, mmPowerGeneration)}{units.MJ}</span></div>);
 
   let mPowerUsage = m.power || 0;
   let mmPowerUsage = mm ? mm.getPowerUsage() : 0;

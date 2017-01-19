@@ -36,15 +36,22 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _initState(props, context) {
     let { m, onChange, ship } = props;
-    let list = [];
 
-    for (let modName of Modifications.validity[m.grp]) {
-      if (Modifications.modifications[modName].type != 'hidden') {
-        list.push(<Modification key={ modName } ship={ ship } m={ m } name={ modName } onChange={ onChange }/>);
+    let blueprints = [];
+    for (const blueprintName in Modifications.modules[m.grp].blueprints) {
+      for (const grade of Modifications.modules[m.grp].blueprints[blueprintName]) {
+        blueprints.push(<div>{Modifications.blueprints[blueprintName].name} grade {grade}</div>);
       }
     }
 
-    return { list };
+    let modifications = [];
+    for (const modName of Modifications.modules[m.grp].modifications) {
+      if (Modifications.modifications[modName].type === 'percentage' || Modifications.modifications[modName].type === 'numeric') {
+        modifications.push(<Modification key={ modName } ship={ ship } m={ m } name={ modName } onChange={ onChange }/>);
+      }
+    }
+
+    return { blueprints, modifications };
   }
 
   /**
@@ -60,7 +67,8 @@ export default class ModificationsMenu extends TranslatedComponent {
           onContextMenu={stopCtxPropagation}
           onMouseOver={termtip.bind(null, 'HELP_MODIFICATIONS_MENU')} onMouseOut={tooltip.bind(null, null)} 
       >
-        {this.state.list}
+        {this.state.blueprints}
+        {this.state.modifications}
       </div>
     );
   }
