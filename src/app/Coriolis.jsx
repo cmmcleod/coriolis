@@ -6,7 +6,10 @@ import Persist from './stores/Persist';
 
 import Header from './components/Header';
 import Tooltip from './components/Tooltip';
+import ModalExport from './components/ModalExport';
+import ModalHelp from './components/ModalHelp';
 import ModalImport from './components/ModalImport';
+import ModalPermalink from './components/ModalPermalink';
 import * as CompanionApiUtils from './utils/CompanionApiUtils';
 import { outfitURL } from './utils/UrlGenerators';
 
@@ -159,14 +162,25 @@ export default class Coriolis extends React.Component {
         this._hideModal();
         this._closeMenu();
         break;
+      case 72:     // 'h'
+        if (e.ctrlKey || e.metaKey) { // CTRL/CMD + h
+          e.preventDefault();
+          this._showModal(<ModalHelp />);
+        }
+        break;
       case 73:     // 'i'
         if (e.ctrlKey || e.metaKey) { // CTRL/CMD + i
           e.preventDefault();
           this._showModal(<ModalImport />);
         }
         break;
-      case 101010:  // 's'
-        if (e.ctrlKey || e.metaKey) { // CTRL/CMD + i
+      case 76:  // 'l'
+        if (e.ctrlKey || e.metaKey) { // CTRL/CMD + l
+          e.preventDefault();
+          this._showModal(<ModalPermalink url={window.location.href}/>);
+        }
+      case 83:  // 's'
+        if (e.ctrlKey || e.metaKey) { // CTRL/CMD + s
           e.preventDefault();
           this.emitter.emit('command', 'save');
         }
