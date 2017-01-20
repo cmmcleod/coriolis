@@ -373,23 +373,6 @@ export default class Header extends TranslatedComponent {
   }
 
   /**
-   * Generate the help menu
-   * @return {React.Component} Menu
-   */
-  _getHelpMenu() {
-    let translate = this.context.language.translate;
-
-    return (
-      <div className='menu-list' onClick={ (e) => e.stopPropagation() } style={{ whiteSpace: 'nowrap' }}>
-        <div>{translate('introduction')}</div>
-        <div>{translate('importing your build')}</div>
-        <div>{translate('engineers')}</div>
-        <div>{translate('tricks and tips')}</div>
-      </div>
-    );
-  }
-
-  /**
    * Generate the settings menu
    * @return {React.Component} Menu
    */
