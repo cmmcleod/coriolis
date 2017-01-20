@@ -1,6 +1,7 @@
 #2.2.10
   * Fix detailed export of module reinforcement packages
   * Use damagedist for exact breakdown of weapons that have more than one type of damage
+  * Add help system and initial help file
 
 #2.2.9
   * Use SSL-enabled server for shortlinks

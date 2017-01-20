@@ -5,12 +5,13 @@ import { Insurance } from '../shipyard/Constants';
 import Link from './Link';
 import ActiveLink from './ActiveLink';
 import cn from 'classnames';
-import { Cogs, CoriolisLogo, Hammer, Rocket, StatsBars } from './SvgIcons';
+import { Cogs, CoriolisLogo, Hammer, Help, Rocket, StatsBars } from './SvgIcons';
 import { Ships } from 'coriolis-data/dist';
 import Persist from '../stores/Persist';
 import { toDetailedExport } from '../shipyard/Serializer';
 import ModalDeleteAll from './ModalDeleteAll';
 import ModalExport from './ModalExport';
+import ModalHelp from './ModalHelp';
 import ModalImport from './ModalImport';
 import Slider from './Slider';
 import { outfitURL } from '../utils/UrlGenerators';
@@ -74,7 +75,7 @@ export default class Header extends TranslatedComponent {
     this._openBuilds = this._openMenu.bind(this, 'b');
     this._openComp = this._openMenu.bind(this, 'comp');
     this._openSettings = this._openMenu.bind(this, 'settings');
-    this._openHelp = this._openMenu.bind(this, 'help');
+    this._showHelp = this._showHelp.bind(this);
     this.languageOptions = [];
     this.insuranceOptions = [];
     this.state = {
@@ -250,6 +251,17 @@ export default class Header extends TranslatedComponent {
   }
 
   /**
+   * Show help modal
+   * @param  {SyntheticEvent} e Event
+   */
+  _showHelp(e) {
+    let translate = this.context.language.translate;
+    e.preventDefault();
+
+    this.context.showModal(<ModalHelp title={translate('help')} />);
+  }
+
+  /**
    * Show import modal
    * @param  {SyntheticEvent} e Event
    */
@@ -356,23 +368,6 @@ export default class Header extends TranslatedComponent {
         <hr />
         <Link href='/compare/all' className='block cap'>{translate('compare all')}</Link>
         <Link href='/compare' className='block cap'>{translate('create new')}</Link>
-      </div>
-    );
-  }
-
-  /**
-   * Generate the help menu
-   * @return {React.Component} Menu
-   */
-  _getHelpMenu() {
-    let translate = this.context.language.translate;
-
-    return (
-      <div className='menu-list' onClick={ (e) => e.stopPropagation() } style={{ whiteSpace: 'nowrap' }}>
-        <div>{translate('introduction')}</div>
-        <div>{translate('importing your build')}</div>
-        <div>{translate('engineers')}</div>
-        <div>{translate('tricks and tips')}</div>
       </div>
     );
   }
@@ -539,11 +534,11 @@ export default class Header extends TranslatedComponent {
           </div>
           {openedMenu == 'settings' ? this._getSettingsMenu() : null}
         </div>
+
         <div className='r menu'>
-          <div className={cn('menu-header', { selected: openedMenu == 'help' })} onClick={this._openHelp}>
-            <Cogs className='xl warning'/><span className='menu-item-label'>{translate('help')}</span>
+          <div className={cn('menu-header')} onClick={this._showHelp}>
+            <Help className='xl warning'/>
           </div>
-          {openedMenu == 'help' ? this._getHelpMenu() : null}
         </div>
       </header>
     );
