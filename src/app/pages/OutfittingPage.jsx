@@ -52,6 +52,8 @@ export default class OutfittingPage extends Page {
   constructor(props, context) {
     super(props, context);
     this.state = this._initState(context);
+    this._keyDown = this._keyDown.bind(this);
+    this._exportBuild = this._exportBuild.bind(this);
   }
 
   /**
@@ -181,7 +183,7 @@ export default class OutfittingPage extends Page {
     let translate = this.context.language.translate;
     let { buildName, ship } = this.state;
     this.context.showModal(<ModalExport
-      title={buildName + ' ' + translate('export')}
+      title={(buildName || ship.name) + ' ' + translate('export')}
       description={translate('PHRASE_EXPORT_DESC')}
       data={toDetailedBuild(buildName, ship, ship.toString())}
     />);
@@ -258,6 +260,7 @@ export default class OutfittingPage extends Page {
    */
   componentWillMount() {
     this.resizeListener = this.context.onWindowResize(this._updateDimensions);
+    document.addEventListener('keydown', this._keyDown);
   }
 
   /**
@@ -280,6 +283,23 @@ export default class OutfittingPage extends Page {
   _genShortlink() {
     this.context.showModal(<ModalPermalink url={window.location.href}/>);
   }
+
+  /**
+   * Handle Key Down
+   * @param  {Event} e  Keyboard Event
+   */
+  _keyDown(e) {
+    // .keyCode will eventually be replaced with .key
+    switch (e.keyCode) {
+      case 69:     // 'e'
+        if (e.ctrlKey || e.metaKey) { // CTRL/CMD + e
+          e.preventDefault();
+          console.log('Export')
+          this._exportBuild();
+        }
+        break;
+      }
+    }
 
   /**
    * Render the Page
