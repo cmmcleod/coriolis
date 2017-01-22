@@ -29,6 +29,11 @@ export const terms = {
   PHRASE_UNLADEN: 'Ship mass excluding fuel and cargo',
   PHRASE_UPDATE_RDY: 'Update Available! Click to refresh',
   PHRASE_ENGAGEMENT_RANGE: 'The distance between your ship and its target',
+  PHRASE_SELECT_BLUEPRINT: 'Click to select a blueprint',
+  PHRASE_BLUEPRINT_WORST: 'Worst primary values for this blueprint',
+  PHRASE_BLUEPRINT_RANDOM: 'Random selection between worst and best primary values for this blueprint',
+  PHRASE_BLUEPRINT_BEST: 'Best primary values for this blueprint',
+  PHRASE_BLUEPRINT_RESET: 'Remove all modifications and blueprint',
 
   HELP_MODIFICATIONS_MENU: 'Click on a number to enter a new value, or drag along the bar for small changes',
 
@@ -101,6 +106,12 @@ export const terms = {
   secs: 's',
 
   rebuildsperbay: 'Rebuilds per bay',
+
+  // Blueprint rolls
+  worst: 'Worst',
+  random: 'Random',
+  best: 'Best',
+  reset: 'Reset',
 
   // Weapon, offence, defence and movement
   dpe: 'Damage per MJ of energy',

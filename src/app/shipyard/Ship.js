@@ -412,6 +412,32 @@ export default class Ship {
   }
 
   /**
+   * Clear all modification values for a module
+   * @param  {Number} m      The module for which to clear the modifications
+   */
+  clearModifications(m) {
+    m.mods = {};
+    this.updatePowerGenerated()
+        .updatePowerUsed()
+        .updateJumpStats()
+        .recalculateShield()
+        .recalculateShieldCells()
+        .recalculateArmour()
+        .recalculateDps()
+        .recalculateEps()
+        .recalculateHps()
+        .updateMovement();
+  }
+
+  /**
+   * Clear blueprint for a module
+   * @param  {Number} m      The module for which to clear the modifications
+   */
+  clearBlueprint(m) {
+    m.blueprint = {};
+  }
+
+  /**
    * Set a modification value
    * @param {Object} m The module to change
    * @param {Object} name The name of the modification to change
@@ -1335,7 +1361,7 @@ export default class Ship {
     if (this.bulkheads.m && this.bulkheads.m.mods) {
       for (let modKey in this.bulkheads.m.mods) {
         // Filter out invalid modifications
-        if (Modifications.validity['bh'] && Modifications.validity['bh'].indexOf(modKey) != -1) {
+        if (Modifications.modules['bh'] && Modifications.modules['bh'].modifications.indexOf(modKey) != -1) {
           bulkheadMods.push({ id: Modifications.modifications[modKey].id, value: this.bulkheads.m.getModValue(modKey) });
         }
       }
@@ -1350,7 +1376,7 @@ export default class Ship {
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
           // Filter out invalid modifications
-          if (Modifications.validity[slot.m.grp] && Modifications.validity[slot.m.grp].indexOf(modKey) != -1) {
+          if (Modifications.modules[slot.m.grp] && Modifications.modules[slot.m.grp].modifications.indexOf(modKey) != -1) {
             slotMods.push({ id: Modifications.modifications[modKey].id, value: slot.m.getModValue(modKey) });
           }
         }
@@ -1365,7 +1391,7 @@ export default class Ship {
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
           // Filter out invalid modifications
-          if (Modifications.validity[slot.m.grp] && Modifications.validity[slot.m.grp].indexOf(modKey) != -1) {
+          if (Modifications.modules[slot.m.grp] && Modifications.modules[slot.m.grp].modifications.indexOf(modKey) != -1) {
             slotMods.push({ id: Modifications.modifications[modKey].id, value: slot.m.getModValue(modKey) });
           }
         }
@@ -1380,7 +1406,7 @@ export default class Ship {
       if (slot.m && slot.m.mods) {
         for (let modKey in slot.m.mods) {
           // Filter out invalid modifications
-          if (Modifications.validity[slot.m.grp] && Modifications.validity[slot.m.grp].indexOf(modKey) != -1) {
+          if (Modifications.modules[slot.m.grp] && Modifications.modules[slot.m.grp].modifications.indexOf(modKey) != -1) {
             slotMods.push({ id: Modifications.modifications[modKey].id, value: slot.m.getModValue(modKey) });
           }
         }
