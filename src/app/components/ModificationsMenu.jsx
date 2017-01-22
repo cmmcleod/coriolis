@@ -111,7 +111,12 @@ export default class ModificationsMenu extends TranslatedComponent {
     const { m, ship } = this.props;
     const features = m.blueprint.features[m.blueprint.grade];
     for (const featureName in features) {
-      const value = features[featureName][0];
+      let value = features[featureName][0];
+      if (m.grp == 'sb') {
+        // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
+        value = ((1 + m.shieldboost)*(1 + value) - 1) / m.shieldboost - 1
+      }
+
       if (Modifications.modifications[featureName].type == 'percentage') {
         ship.setModification(m, featureName, value * 10000);
       } else if (Modifications.modifications[featureName].type == 'numeric') {
@@ -130,7 +135,12 @@ export default class ModificationsMenu extends TranslatedComponent {
     const { m, ship } = this.props;
     const features = m.blueprint.features[m.blueprint.grade];
     for (const featureName in features) {
-      const value = features[featureName][0] + (Math.random() * (features[featureName][1] - features[featureName][0]));
+      let value = features[featureName][0] + (Math.random() * (features[featureName][1] - features[featureName][0]));
+      if (m.grp == 'sb') {
+        // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
+        value = ((1 + m.shieldboost)*(1 + value) - 1) / m.shieldboost - 1
+      }
+
       if (Modifications.modifications[featureName].type == 'percentage') {
         ship.setModification(m, featureName, value * 10000);
       } else if (Modifications.modifications[featureName].type == 'numeric') {
@@ -149,7 +159,12 @@ export default class ModificationsMenu extends TranslatedComponent {
     const { m, ship } = this.props;
     const features = m.blueprint.features[m.blueprint.grade];
     for (const featureName in features) {
-      const value = features[featureName][1];
+      let value = features[featureName][1];
+      if (m.grp == 'sb') {
+        // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
+        value = ((1 + m.shieldboost)*(1 + value) - 1) / m.shieldboost - 1
+      }
+
       if (Modifications.modifications[featureName].type == 'percentage') {
         ship.setModification(m, featureName, value * 10000);
       } else if (Modifications.modifications[featureName].type == 'numeric') {
