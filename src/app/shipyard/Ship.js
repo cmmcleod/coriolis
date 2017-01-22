@@ -412,6 +412,32 @@ export default class Ship {
   }
 
   /**
+   * Clear all modification values for a module
+   * @param  {Number} m      The module for which to clear the modifications
+   */
+  clearModifications(m) {
+    m.mods = {};
+    this.updatePowerGenerated()
+        .updatePowerUsed()
+        .updateJumpStats()
+        .recalculateShield()
+        .recalculateShieldCells()
+        .recalculateArmour()
+        .recalculateDps()
+        .recalculateEps()
+        .recalculateHps()
+        .updateMovement();
+  }
+
+  /**
+   * Clear blueprint for a module
+   * @param  {Number} m      The module for which to clear the modifications
+   */
+  clearBlueprint(m) {
+    m.blueprint = {};
+  }
+
+  /**
    * Set a modification value
    * @param {Object} m The module to change
    * @param {Object} name The name of the modification to change

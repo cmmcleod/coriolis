@@ -32,6 +32,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     this._rollWorst = this._rollWorst.bind(this);
     this._rollRandom = this._rollRandom.bind(this);
     this._rollBest = this._rollBest.bind(this);
+    this._reset = this._reset.bind(this);
   }
 
   /**
@@ -48,7 +49,7 @@ export default class ModificationsMenu extends TranslatedComponent {
       for (const grade of Modifications.modules[m.grp].blueprints[blueprintName]) {
         const close = this._blueprintSelected.bind(this, Modifications.blueprints[blueprintName].id, grade);
         const key = blueprintName + ':' + grade;
-        blueprints.push(<div key={ key } onClick={ close }>{Modifications.blueprints[blueprintName].name} grade {grade}</div>);
+        blueprints.push(<div style={{ cursor: 'pointer' }} key={ key } onClick={ close }>{Modifications.blueprints[blueprintName].name} grade {grade}</div>);
       }
     }
 
@@ -111,7 +112,11 @@ export default class ModificationsMenu extends TranslatedComponent {
     const features = m.blueprint.features[m.blueprint.grade];
     for (const featureName in features) {
       const value = features[featureName][0];
-      ship.setModification(m, featureName, value * 10000);
+      if (Modifications.modifications[featureName].type == 'percentage') {
+        ship.setModification(m, featureName, value * 10000);
+      } else if (Modifications.modifications[featureName].type == 'numeric') {
+        ship.setModification(m, featureName, value * 100);
+      }
     }
 
     this.setState({ modifications: this._setModifications(this.props) });
@@ -126,7 +131,11 @@ export default class ModificationsMenu extends TranslatedComponent {
     const features = m.blueprint.features[m.blueprint.grade];
     for (const featureName in features) {
       const value = features[featureName][0] + (Math.random() * (features[featureName][1] - features[featureName][0]));
-      ship.setModification(m, featureName, value * 10000);
+      if (Modifications.modifications[featureName].type == 'percentage') {
+        ship.setModification(m, featureName, value * 10000);
+      } else if (Modifications.modifications[featureName].type == 'numeric') {
+        ship.setModification(m, featureName, value * 100);
+      }
     }
 
     this.setState({ modifications: this._setModifications(this.props) });
@@ -141,8 +150,24 @@ export default class ModificationsMenu extends TranslatedComponent {
     const features = m.blueprint.features[m.blueprint.grade];
     for (const featureName in features) {
       const value = features[featureName][1];
-      ship.setModification(m, featureName, value * 10000);
+      if (Modifications.modifications[featureName].type == 'percentage') {
+        ship.setModification(m, featureName, value * 10000);
+      } else if (Modifications.modifications[featureName].type == 'numeric') {
+        ship.setModification(m, featureName, value * 100);
+      }
     }
+
+    this.setState({ modifications: this._setModifications(this.props) });
+    this.props.onChange();
+  }
+
+  /**
+   * Reset modification information
+   */
+  _reset() {
+    const { m, ship } = this.props;
+    ship.clearModifications(m);
+    ship.clearBlueprint(m);
 
     this.setState({ modifications: this._setModifications(this.props) });
     this.props.onChange();
@@ -163,6 +188,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     const _rollBest = this._rollBest;
     const _rollWorst = this._rollWorst;
     const _rollRandom = this._rollRandom;
+    const _reset = this._reset;
 
     let blueprintLabel;
     let haveBlueprint = false;
@@ -180,21 +206,22 @@ export default class ModificationsMenu extends TranslatedComponent {
           onContextMenu={stopCtxPropagation}
       >
         <div className={ cn('section-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleBlueprintsMenu}>{blueprintLabel}</div>
-        { blueprintMenuOpened ? this.state.blueprints : 
-          <span>
-            <table style={{ width: '100%' }}>
-              <tbody>
-                <tr>
-                  <td> { translate('roll') } </td>
-                  <td style={{ cursor: 'pointer' }} onClick={_rollWorst}> { translate('worst') } </td>
-                  <td style={{ cursor: 'pointer' }} onClick={_rollRandom}> { translate('random') } </td>
-                  <td style={{ cursor: 'pointer' }} onClick={_rollBest}> { translate('best') } </td>
-                </tr>
-              </tbody>
-            </table>
-            <span onMouseOver={termtip.bind(null, 'HELP_MODIFICATIONS_MENU')} onMouseOut={tooltip.bind(null, null)} >
-              { this.state.modifications }
-            </span>
+        { blueprintMenuOpened ? this.state.blueprints : '' }
+        { haveBlueprint ?
+          <table style={{ width: '100%' }}>
+            <tbody>
+              <tr>
+                <td> { translate('roll') } </td>
+                <td style={{ cursor: 'pointer' }} onClick={_rollWorst}> { translate('worst') } </td>
+                <td style={{ cursor: 'pointer' }} onClick={_rollRandom}> { translate('random') } </td>
+                <td style={{ cursor: 'pointer' }} onClick={_rollBest}> { translate('best') } </td>
+                <td style={{ cursor: 'pointer' }} onClick={_reset}> { translate('reset') } </td>
+              </tr>
+            </tbody>
+          </table> : '' }
+        { blueprintMenuOpened ? '' : 
+          <span onMouseOver={termtip.bind(null, 'HELP_MODIFICATIONS_MENU')} onMouseOut={tooltip.bind(null, null)} >
+            { this.state.modifications }
           </span> }
       </div>
     );
