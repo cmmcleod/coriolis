@@ -111,16 +111,20 @@ export default class ModificationsMenu extends TranslatedComponent {
     const { m, ship } = this.props;
     const features = m.blueprint.features[m.blueprint.grade];
     for (const featureName in features) {
-      let value = features[featureName][0];
-      if (m.grp == 'sb') {
-        // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
-        value = ((1 + m.shieldboost)*(1 + value) - 1) / m.shieldboost - 1
-      }
+      if (Modifications.modifications[featureName].method == 'overwrite') {
+        ship.setModification(m, featureName, features[featureName][1]);
+      } else {
+        let value = features[featureName][0];
+        if (m.grp == 'sb' && featureName == 'shieldboost') {
+          // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
+          value = ((1 + m.shieldboost)*(1 + value) - 1) / m.shieldboost - 1
+        }
 
-      if (Modifications.modifications[featureName].type == 'percentage') {
-        ship.setModification(m, featureName, value * 10000);
-      } else if (Modifications.modifications[featureName].type == 'numeric') {
-        ship.setModification(m, featureName, value * 100);
+        if (Modifications.modifications[featureName].type == 'percentage') {
+          ship.setModification(m, featureName, value * 10000);
+        } else if (Modifications.modifications[featureName].type == 'numeric') {
+          ship.setModification(m, featureName, value * 100);
+        }
       }
     }
 
@@ -135,16 +139,20 @@ export default class ModificationsMenu extends TranslatedComponent {
     const { m, ship } = this.props;
     const features = m.blueprint.features[m.blueprint.grade];
     for (const featureName in features) {
-      let value = features[featureName][0] + (Math.random() * (features[featureName][1] - features[featureName][0]));
-      if (m.grp == 'sb') {
-        // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
-        value = ((1 + m.shieldboost)*(1 + value) - 1) / m.shieldboost - 1
-      }
+      if (Modifications.modifications[featureName].method == 'overwrite') {
+        ship.setModification(m, featureName, features[featureName][1]);
+      } else {
+        let value = features[featureName][0] + (Math.random() * (features[featureName][1] - features[featureName][0]));
+        if (m.grp == 'sb' && featureName == 'shieldboost') {
+          // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
+          value = ((1 + m.shieldboost)*(1 + value) - 1) / m.shieldboost - 1
+        }
 
-      if (Modifications.modifications[featureName].type == 'percentage') {
-        ship.setModification(m, featureName, value * 10000);
-      } else if (Modifications.modifications[featureName].type == 'numeric') {
-        ship.setModification(m, featureName, value * 100);
+        if (Modifications.modifications[featureName].type == 'percentage') {
+          ship.setModification(m, featureName, value * 10000);
+        } else if (Modifications.modifications[featureName].type == 'numeric') {
+          ship.setModification(m, featureName, value * 100);
+        }
       }
     }
 
@@ -159,16 +167,20 @@ export default class ModificationsMenu extends TranslatedComponent {
     const { m, ship } = this.props;
     const features = m.blueprint.features[m.blueprint.grade];
     for (const featureName in features) {
-      let value = features[featureName][1];
-      if (m.grp == 'sb') {
-        // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
-        value = ((1 + m.shieldboost)*(1 + value) - 1) / m.shieldboost - 1
-      }
+      if (Modifications.modifications[featureName].method == 'overwrite') {
+          ship.setModification(m, featureName, features[featureName][1]);
+      } else {
+        let value = features[featureName][1];
+        if (m.grp == 'sb' && featureName == 'shieldboost') {
+          // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
+          value = ((1 + m.shieldboost)*(1 + value) - 1) / m.shieldboost - 1
+        }
 
-      if (Modifications.modifications[featureName].type == 'percentage') {
-        ship.setModification(m, featureName, value * 10000);
-      } else if (Modifications.modifications[featureName].type == 'numeric') {
-        ship.setModification(m, featureName, value * 100);
+        if (Modifications.modifications[featureName].type == 'percentage') {
+          ship.setModification(m, featureName, value * 10000);
+        } else if (Modifications.modifications[featureName].type == 'numeric') {
+          ship.setModification(m, featureName, value * 100);
+        }
       }
     }
 
@@ -211,7 +223,7 @@ export default class ModificationsMenu extends TranslatedComponent {
       blueprintLabel = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
       haveBlueprint = true;
     } else {
-      blueprintLabel = translate('select a blueprint');
+      blueprintLabel = translate('PHRASE_SELECT_BLUEPRINT');
     }
 
     return (
@@ -220,17 +232,17 @@ export default class ModificationsMenu extends TranslatedComponent {
           onClick={(e) => e.stopPropagation() }
           onContextMenu={stopCtxPropagation}
       >
-        <div className={ cn('section-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleBlueprintsMenu}>{blueprintLabel}</div>
+        <div className={ cn('section-menu', { selected: true })} style={{ cursor: 'pointer' }} onClick={_toggleBlueprintsMenu}>{blueprintLabel}</div>
         { blueprintMenuOpened ? this.state.blueprints : '' }
         { haveBlueprint ?
-          <table style={{ width: '100%' }}>
+          <table style={{ width: '100%', backgroundColor: 'transparent' }}>
             <tbody>
               <tr>
-                <td> { translate('roll') } </td>
-                <td style={{ cursor: 'pointer' }} onClick={_rollWorst}> { translate('worst') } </td>
-                <td style={{ cursor: 'pointer' }} onClick={_rollRandom}> { translate('random') } </td>
-                <td style={{ cursor: 'pointer' }} onClick={_rollBest}> { translate('best') } </td>
-                <td style={{ cursor: 'pointer' }} onClick={_reset}> { translate('reset') } </td>
+                <td> { translate('roll') }: </td>
+                <td style={{ cursor: 'pointer' }} onClick={_rollWorst} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_WORST')} onMouseOut={tooltip.bind(null, null)}> { translate('worst') } </td>
+                <td style={{ cursor: 'pointer' }} onClick={_rollRandom} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RANDOM')} onMouseOut={tooltip.bind(null, null)}> { translate('random') } </td>
+                <td style={{ cursor: 'pointer' }} onClick={_rollBest}onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_BEST')} onMouseOut={tooltip.bind(null, null)}> { translate('best') } </td>
+                <td style={{ cursor: 'pointer' }} onClick={_reset}onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RESET')} onMouseOut={tooltip.bind(null, null)}> { translate('reset') } </td>
               </tr>
             </tbody>
           </table> : '' }
