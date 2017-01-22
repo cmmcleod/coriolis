@@ -2,6 +2,7 @@
   * Fix detailed export of module reinforcement packages
   * Use damagedist for exact breakdown of weapons that have more than one type of damage
   * Use new-style modification validity data
+  * Provide ability to select engineering blueprint and roll sample values for them
 
 #2.2.9
   * Use SSL-enabled server for shortlinks

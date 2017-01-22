@@ -117,7 +117,7 @@ export default class ModificationsMenu extends TranslatedComponent {
         let value = features[featureName][0];
         if (m.grp == 'sb' && featureName == 'shieldboost') {
           // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
-          value = ((1 + m.shieldboost)*(1 + value) - 1) / m.shieldboost - 1
+          value = ((1 + m.shieldboost) * (1 + value) - 1) / m.shieldboost - 1;
         }
 
         if (Modifications.modifications[featureName].type == 'percentage') {
@@ -145,7 +145,7 @@ export default class ModificationsMenu extends TranslatedComponent {
         let value = features[featureName][0] + (Math.random() * (features[featureName][1] - features[featureName][0]));
         if (m.grp == 'sb' && featureName == 'shieldboost') {
           // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
-          value = ((1 + m.shieldboost)*(1 + value) - 1) / m.shieldboost - 1
+          value = ((1 + m.shieldboost) * (1 + value) - 1) / m.shieldboost - 1;
         }
 
         if (Modifications.modifications[featureName].type == 'percentage') {
@@ -168,12 +168,12 @@ export default class ModificationsMenu extends TranslatedComponent {
     const features = m.blueprint.features[m.blueprint.grade];
     for (const featureName in features) {
       if (Modifications.modifications[featureName].method == 'overwrite') {
-          ship.setModification(m, featureName, features[featureName][1]);
+        ship.setModification(m, featureName, features[featureName][1]);
       } else {
         let value = features[featureName][1];
         if (m.grp == 'sb' && featureName == 'shieldboost') {
           // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
-          value = ((1 + m.shieldboost)*(1 + value) - 1) / m.shieldboost - 1
+          value = ((1 + m.shieldboost) * (1 + value) - 1) / m.shieldboost - 1;
         }
 
         if (Modifications.modifications[featureName].type == 'percentage') {
