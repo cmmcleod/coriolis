@@ -656,4 +656,12 @@ export default class Module {
   getDamageDist() {
     return this.getModValue('damagedist') || this.damagedist;
   }
+
+  /**
+   * Get the shot speed for this module, taking in to account modifications
+   * @return {string} the damage distribution for this module
+   */
+  getShotSpeed() {
+    return this._getModifiedValue('shotspeed');
+  }
 }
