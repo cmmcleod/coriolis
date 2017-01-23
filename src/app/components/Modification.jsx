@@ -13,6 +13,7 @@ export default class Modification extends TranslatedComponent {
     ship: React.PropTypes.object.isRequired,
     m: React.PropTypes.object.isRequired,
     name: React.PropTypes.string.isRequired,
+    value: React.PropTypes.number.isRequired,
     onChange: React.PropTypes.func.isRequired
   };
 
@@ -24,7 +25,7 @@ export default class Modification extends TranslatedComponent {
   constructor(props, context) {
     super(props);
     this.state = {};
-    this.state.value = this.props.m.getModValue(this.props.name) / 100 || 0;
+    this.state.value = props.value;
   }
 
   /**
@@ -61,10 +62,10 @@ export default class Modification extends TranslatedComponent {
    */
   render() {
     let translate = this.context.language.translate;
-    let name = this.props.name;
+    let { m, name } = this.props;
 
-    if (name === 'type') {
-      // We don't show type
+    if (name === 'damagedist') {
+      // We don't show damage distribution
       return null;
     }
 
@@ -81,7 +82,7 @@ export default class Modification extends TranslatedComponent {
     return (
       <div className={'cb'} key={name}>
         <div className={'cb'}>{translate(name)}{symbol}</div>
-        <NumberEditor className={'cb'} style={{ width: '90%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={this.state.value} onValueChange={this._updateValue.bind(this)} />
+        <NumberEditor className={'cb'} style={{ width: '90%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={m.getModValue(name) / 100 || 0} onValueChange={this._updateValue.bind(this)} />
       </div>
     );
   }

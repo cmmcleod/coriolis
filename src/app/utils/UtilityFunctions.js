@@ -71,3 +71,15 @@ export function shallowEqual(objA, objB) {
 export function fromUrlSafe(data) {
   return data ? data.replace(/-/g, '/').replace(/_/g, '+') : null;
 }
+
+/**
+ * Check if an object is empty
+ * @param {object} obj the object
+ * @return {bool} true if the object is empty, otherwise false
+ */
+export function isEmpty(obj) {
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) return false;
+  }
+  return true;
+};

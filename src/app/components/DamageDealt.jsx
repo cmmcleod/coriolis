@@ -153,7 +153,7 @@ export default class DamageDealt extends TranslatedComponent {
     }
     totals.effectiveness = totals.effectiveDps / totalDps;
     
-    return {weapons: weapons, totals: totals};
+    return { weapons, totals };
   }
 
   /**
