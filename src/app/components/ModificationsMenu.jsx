@@ -74,7 +74,8 @@ export default class ModificationsMenu extends TranslatedComponent {
     let modifications = [];
     for (const modName of Modifications.modules[m.grp].modifications) {
       if (Modifications.modifications[modName].type === 'percentage' || Modifications.modifications[modName].type === 'numeric') {
-        modifications.push(<Modification key={ modName } ship={ ship } m={ m } name={ modName } value={ m.getModValue(modName) / 100 || 0 } onChange={ onChange }/>);
+        const key = modName + (m.getModValue(modName) / 100 || 0);
+        modifications.push(<Modification key={ key } ship={ ship } m={ m } name={ modName } value={ m.getModValue(modName) / 100 || 0 } onChange={ onChange }/>);
       }
     }
     return modifications;
