@@ -82,7 +82,7 @@ export default class Modification extends TranslatedComponent {
     return (
       <div className={'cb'} key={name}>
         <div className={'cb'}>{translate(name)}{symbol}</div>
-        <NumberEditor className={'cb'} style={{ width: '90%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={m.getModValue(name) / 100 || 0} onValueChange={this._updateValue.bind(this)} />
+        <NumberEditor className={'cb'} style={{ width: '90%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={this.state.value} onValueChange={this._updateValue.bind(this)} />
       </div>
     );
   }
