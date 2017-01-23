@@ -3,6 +3,12 @@
   * Use damagedist for exact breakdown of weapons that have more than one type of damage
   * Use new-style modification validity data
   * Provide ability to select engineering blueprint and roll sample values for them
+  * Use coriolis-data 2.2.10:
+    * Fix incorrect base shield values for Cutter and Corvette
+    * Update weapons to have %-based damage distributions
+    * Remove power draw for detailed surface scanner - although shown in outfitting it is not part of active power
+    * Fix incorrect names for lightweight and kinetic armour
+    * Add engineering blueprints
 
 #2.2.9
   * Use SSL-enabled server for shortlinks

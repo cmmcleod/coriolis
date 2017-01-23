@@ -174,6 +174,7 @@ export const terms = {
   shield: 'Shield',
   shieldboost: 'Shield boost',
   shieldreinforcement: 'Shield reinforcement',
+  shotspeed: 'Shot speed',
   spinup: 'Spin up time',
   syscap: 'Systems capacity',
   sysrate: 'Systems recharge rate',

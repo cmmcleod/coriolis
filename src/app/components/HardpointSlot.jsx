@@ -77,6 +77,7 @@ export default class HardpointSlot extends Slot {
           { m.getFalloff() ? <div className={'l'}>{translate('falloff')} {formats.f1(m.getFalloff() / 1000)}{u.km}</div> : null }
           { m.getShieldBoost() ? <div className={'l'}>+{formats.pct1(m.getShieldBoost())}</div> : null }
           { m.getAmmo() ? <div className={'l'}>{translate('ammunition')}: {formats.int(m.getClip())}/{formats.int(m.getAmmo())}</div> : null }
+          { m.getShotSpeed() ? <div className={'l'}>{translate('shotspeed')}: {formats.int(m.getShotSpeed())}{u.mps}</div> : null }
           { m.getPiercing() ? <div className={'l'}>{translate('piercing')}: {formats.int(m.getPiercing())}</div> : null }
           { m.getJitter() ? <div className={'l'}>{translate('jitter')}: {formats.f2(m.getJitter())}°</div> : null }
           { showModuleResistances && m.getExplosiveResistance() ? <div className='l'>{translate('explres')}: {formats.pct(m.getExplosiveResistance())}</div> : null }
