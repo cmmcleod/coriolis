@@ -294,12 +294,11 @@ export default class OutfittingPage extends Page {
       case 69:     // 'e'
         if (e.ctrlKey || e.metaKey) { // CTRL/CMD + e
           e.preventDefault();
-          console.log('Export')
           this._exportBuild();
         }
         break;
-      }
     }
+  }
 
   /**
    * Render the Page

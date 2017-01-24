@@ -25,11 +25,11 @@ const SIZE_RANGE = 0.55;
  * @return {Number}     Normalized value
  */
 function normalizePercent(val) {
-	if (val === '' || isNaN(val)) {
-		return 0;
-	}
-	val = Math.round(val * 1000) / 1000;
-	return val >= 100 ? 100 : val;
+  if (val === '' || isNaN(val)) {
+    return 0;
+  }
+  val = Math.round(val * 1000) / 1000;
+  return val >= 100 ? 100 : val;
 }
 
 /**
@@ -38,7 +38,7 @@ function normalizePercent(val) {
  * @return {Number}     Rounded value
  */
 function nearestQtrPct(val) {
-	return  Math.round(val * 4) / 4;
+  return  Math.round(val * 4) / 4;
 }
 
 /**
@@ -46,7 +46,7 @@ function nearestQtrPct(val) {
  * @param {SyntheticEvent} e Event
  */
 function selectAll(e) {
-	e.target.select();
+  e.target.select();
 }
 
 /**

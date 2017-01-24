@@ -40,7 +40,7 @@ export default class ModalHelp extends TranslatedComponent {
 
     return <div className='modal' onClick={ (e) => e.stopPropagation() }>
       <h2>{translate(this.props.title || 'Help')}</h2>
-      <div dangerouslySetInnerHTML={{__html: text}} />
+      <div dangerouslySetInnerHTML={{ __html: text }} />
       <button className='r dismiss cap' onClick={this.context.hideModal}>{translate('close')}</button>
     </div>;
   }
