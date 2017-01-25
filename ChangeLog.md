@@ -8,6 +8,7 @@
   * Add engagement range to damage received panel
   * Handle burst rate of fire as an absolute number rather than a perentage modification
   * Ensure that clip values are always rounded up
+  * Ensure that focused weapon mod uses range modifier to increase falloff as well
 
 #2.2.10
   * Fix detailed export of module reinforcement packages

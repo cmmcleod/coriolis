@@ -293,11 +293,19 @@ export default class Module {
    */
   getFalloff() {
     if (this.getModValue('fallofffromrange')) {
+      // Falloff from range means what it says, so use range instead of falloff
       return this.getRange();
     } else {
-      const falloff = this._getModifiedValue('falloff');
-      const range = this.getRange();
-      return (falloff > range ? range : falloff);
+      // Need to find out if we have a focused modification, in which case our falloff is scaled to range
+      if (this.blueprint && this.blueprint.name === 'Focused') {
+        const rangeMod = this.getModValue('range') / 10000;
+        return this.falloff * (1 + rangeMod);
+      } else {
+        // Standard falloff calculation
+        const range = this.getRange();
+        const falloff = this._getModifiedValue('falloff');
+        return (falloff > range ? range : falloff);
+      }
     }
   }
 
