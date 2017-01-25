@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
-import { DamageKinetic, DamageThermal, DamageExplosive } from './SvgIcons';
+import { DamageAbsolute, DamageKinetic, DamageThermal, DamageExplosive } from './SvgIcons';
 
 /**
  * Offence summary
@@ -34,30 +34,33 @@ export default class OffenceSummary extends TranslatedComponent {
         <table className='summary' style={{ marginLeft: 'auto', marginRight: 'auto', lineHeight: '1em', backgroundColor: 'transparent' }}>
           <tbody>
             <tr>
-              <td colSpan='4' className='summary'><h2>{translate('dps')}: {formats.f1(ship.totalDps)}</h2></td>
+              <td colSpan='5' className='summary'><h2>{translate('dps')}: {formats.f1(ship.totalDps)}</h2></td>
             </tr>
             <tr>
               <td className='le'>{translate('damage by')}</td>
+              <td className='ri' onMouseOver={termtip.bind(null, 'absolute')} onMouseOut={tooltip.bind(null, null)}><DamageAbsolute /> {formats.f1(ship.totalAbsDps)}</td>
               <td className='ri' onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /> {formats.f1(ship.totalExplDps)}</td>
               <td className='ri' onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /> {formats.f1(ship.totalKinDps)}</td>
               <td className='ri' onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /> {formats.f1(ship.totalThermDps)}</td>
             </tr>
             
             <tr>
-              <td colSpan='4' className='summary'><h2>{translate('sdps')}: {formats.f1(ship.totalSDps)}</h2></td>
+              <td colSpan='5' className='summary'><h2>{translate('sdps')}: {formats.f1(ship.totalSDps)}</h2></td>
             </tr>
             <tr>
               <td className='le'>{translate('damage by')}</td>
+              <td className='ri' onMouseOver={termtip.bind(null, 'absolute')} onMouseOut={tooltip.bind(null, null)}><DamageAbsolute /> {formats.f1(ship.totalAbsSDps)}</td>
               <td className='ri' onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /> {formats.f1(ship.totalExplSDps)}</td>
               <td className='ri' onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /> {formats.f1(ship.totalKinSDps)}</td>
               <td className='ri' onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /> {formats.f1(ship.totalThermSDps)}</td>
             </tr>
             
             <tr>
-              <td colSpan='4' className='summary'><h2>{translate('dpe')}: {formats.f1(ship.totalDpe)}</h2></td>
+              <td colSpan='5' className='summary'><h2>{translate('dpe')}: {formats.f1(ship.totalDpe)}</h2></td>
             </tr>
             <tr>
               <td className='le'>{translate('damage by')}</td>
+              <td className='ri' onMouseOver={termtip.bind(null, 'absolute')} onMouseOut={tooltip.bind(null, null)}><DamageAbsolute /> {formats.f1(ship.totalAbsDpe)}</td>
               <td className='ri' onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /> {formats.f1(ship.totalExplDpe)}</td>
               <td className='ri' onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /> {formats.f1(ship.totalKinDpe)}</td>
               <td className='ri' onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /> {formats.f1(ship.totalThermDpe)}</td>

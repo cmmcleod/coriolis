@@ -303,7 +303,7 @@ function _addModifications(module, modifiers, blueprint, grade) {
       // This is an absolute number that acts as an override
       module.setModValue('burst', modifiers.modifiers[i].value * 100);
     } else if (modifiers.modifiers[i].name === 'mod_weapon_burst_rof') {
-      // For some reason this is a non-normalised percentage (i.e. 12.23% is 12.23 value rather than 0.1223 as everywhere else), so fix that here
+      // This is an absolute number that acts as an override
       module.setModValue('burstrof', modifiers.modifiers[i].value * 100);
     } else if (modifiers.modifiers[i].name === 'mod_weapon_falloffrange_from_range') {
       // Obtain the falloff value directly from the range

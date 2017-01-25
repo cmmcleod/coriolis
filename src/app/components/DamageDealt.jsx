@@ -108,14 +108,17 @@ export default class DamageDealt extends TranslatedComponent {
 
     // Track totals
     let totals = {};
-    totals.effectiveness = 0;
-    totals.effectiveDps = 0;
-    totals.effectiveSDps = 0;
+    totals.effectivenessShields = 0;
+    totals.effectiveDpsShields = 0;
+    totals.effectiveSDpsShields = 0;
+    totals.effectivenessHull = 0;
+    totals.effectiveDpsHull = 0;
+    totals.effectiveSDpsHull = 0;
     let totalDps = 0;
 
     let weapons = [];
     for (let i = 0; i < ship.hardpoints.length; i++) {
-      if (ship.hardpoints[i].m) {
+      if (ship.hardpoints[i].m && ship.hardpoints[i].enabled) {
         const m = ship.hardpoints[i].m;
         if (m.getDamage() && m.grp !== 'po') {
           let dropoff = 1;
@@ -134,24 +137,33 @@ export default class DamageDealt extends TranslatedComponent {
             }
           }
           const classRating = `${m.class}${m.rating}${m.missile ? '/' + m.missile : ''}`;
-          const effectiveness = (m.getPiercing() >= against.properties.hardness ? 1 : m.getPiercing() / against.properties.hardness) * dropoff;
-          const effectiveDps = m.getDps() * effectiveness * dropoff;
-          const effectiveSDps = (m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) * effectiveness : effectiveDps) * dropoff;
-          totals.effectiveDps += effectiveDps;
-          totals.effectiveSDps += effectiveSDps;
+          const effectivenessShields = dropoff;
+          const effectiveDpsShields = m.getDps() * effectivenessShields * dropoff;
+          const effectiveSDpsShields = (m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) * effectivenessShields : effectiveDpsShields) * dropoff;
+          const effectivenessHull = (m.getPiercing() >= against.properties.hardness ? 1 : m.getPiercing() / against.properties.hardness) * dropoff;
+          const effectiveDpsHull = m.getDps() * effectivenessHull * dropoff;
+          const effectiveSDpsHull = (m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) * effectivenessHull : effectiveDpsHull) * dropoff;
+          totals.effectiveDpsShields += effectiveDpsShields;
+          totals.effectiveSDpsShields += effectiveSDpsShields;
+          totals.effectiveDpsHull += effectiveDpsHull;
+          totals.effectiveSDpsHull += effectiveSDpsHull;
           totalDps += m.getDps();
 
           weapons.push({ id: i,
                          mount: m.mount,
                          name: m.name || m.grp,
                          classRating,
-                         effectiveDps,
-                         effectiveSDps,
-                         effectiveness });
+                         effectiveDpsShields,
+                         effectiveSDpsShields,
+                         effectivenessShields,
+                         effectiveDpsHull,
+                         effectiveSDpsHull,
+                         effectivenessHull });
         }
       }
     }
-    totals.effectiveness = totals.effectiveDps / totalDps;
+    totals.effectivenessShields = totalDps == 0 ? 0 : totals.effectiveDpsShields / totalDps;
+    totals.effectivenessHull = totalDps == 0 ? 0 : totals.effectiveDpsHull / totalDps;
     
     return { weapons, totals };
   }
@@ -169,7 +181,7 @@ export default class DamageDealt extends TranslatedComponent {
    */
   _onShipChange(s) {
     const against = Ships[s];
-    const data = this._calcWeapons(this.props.ship, against);
+    const data = this._calcWeapons(this.props.ship, against, this.state.range * this.state.maxRange);
     this.setState({ against, weapons: data.weapons, totals: data.totals });
   }
 
@@ -201,9 +213,12 @@ export default class DamageDealt extends TranslatedComponent {
 
     switch (predicate) {
       case 'n': comp = comp(null, desc); break;
-      case 'edps': comp = comp((a, b) => a.effectiveDps - b.effectiveDps, desc); break;
-      case 'esdps': comp = comp((a, b) => a.effectiveSDps - b.effectiveSDps, desc); break;
-      case 'e': comp = comp((a, b) => a.effectiveness - b.effectiveness, desc); break;
+      case 'edpss': comp = comp((a, b) => a.effectiveDpsShields - b.effectiveDpsShields, desc); break;
+      case 'esdpss': comp = comp((a, b) => a.effectiveSDpsShields - b.effectiveSDpsShields, desc); break;
+      case 'es': comp = comp((a, b) => a.effectivenessShields - b.effectivenessShields, desc); break;
+      case 'edpsh': comp = comp((a, b) => a.effectiveDpsHull - b.effectiveDpsHull, desc); break;
+      case 'esdpsh': comp = comp((a, b) => a.effectiveSDpsHull - b.effectiveSDpsHull, desc); break;
+      case 'eh': comp = comp((a, b) => a.effectivenessHull - b.effectivenessHull, desc); break;
     }
 
     this.state.weapons.sort(comp);
@@ -232,9 +247,12 @@ export default class DamageDealt extends TranslatedComponent {
                       {weapon.mount == 'T' ? <span onMouseOver={termtip.bind(null, 'turreted')} onMouseOut={tooltip.bind(null, null)}><MountTurret /></span> : null}
                       {weapon.classRating} {translate(weapon.name)}
                     </td>
-                    <td className='ri'>{formats.round1(weapon.effectiveDps)}</td>
-                    <td className='ri'>{formats.round1(weapon.effectiveSDps)}</td>
-                    <td className='ri'>{formats.pct(weapon.effectiveness)}</td>
+                    <td className='ri'>{formats.round1(weapon.effectiveDpsShields)}</td>
+                    <td className='ri'>{formats.round1(weapon.effectiveSDpsShields)}</td>
+                    <td className='ri'>{formats.pct(weapon.effectivenessShields)}</td>
+                    <td className='ri'>{formats.round1(weapon.effectiveDpsHull)}</td>
+                    <td className='ri'>{formats.round1(weapon.effectiveSDpsHull)}</td>
+                    <td className='ri'>{formats.pct(weapon.effectivenessHull)}</td>
                   </tr>);
       }
     }
@@ -271,10 +289,17 @@ export default class DamageDealt extends TranslatedComponent {
         <table className='summary' style={{ width: '100%' }}>
           <thead>
             <tr className='main'>
-              <td className='sortable' onClick={sortOrder.bind(this, 'n')}>{translate('weapon')}</td>
-              <td className='sortable' onClick={sortOrder.bind(this, 'edps')}>{translate('effective dps')}</td>
-              <td className='sortable' onClick={sortOrder.bind(this, 'esdps')}>{translate('effective sdps')}</td>
-              <td className='sortable' onClick={sortOrder.bind(this, 'e')}>{translate('effectiveness')}</td>
+              <th rowSpan='2' className='sortable' onClick={sortOrder.bind(this, 'n')}>{translate('weapon')}</th>
+              <th colSpan='3'>{translate('shields')}</th>
+              <th colSpan='3'>{translate('armour')}</th>
+            </tr>
+            <tr>
+              <th className='lft sortable' onClick={sortOrder.bind(this, 'edpss')}>{translate('effective dps')}</th>
+              <th className='sortable' onClick={sortOrder.bind(this, 'esdpss')}>{translate('effective sdps')}</th>
+              <th className='sortable' onClick={sortOrder.bind(this, 'es')}>{translate('effectiveness')}</th>
+              <th className='lft sortable' onClick={sortOrder.bind(this, 'edpsh')}>{translate('effective dps')}</th>
+              <th className='sortable' onClick={sortOrder.bind(this, 'esdpsh')}>{translate('effective sdps')}</th>
+              <th className='sortable' onClick={sortOrder.bind(this, 'eh')}>{translate('effectiveness')}</th>
             </tr>
           </thead>
           <tbody>
@@ -283,9 +308,12 @@ export default class DamageDealt extends TranslatedComponent {
           <tfoot>
             <tr className='main'>
               <td className='ri'><i>{translate('total')}</i></td>
-              <td className='ri'><i>{formats.round1(totals.effectiveDps)}</i></td>
-              <td className='ri'><i>{formats.round1(totals.effectiveSDps)}</i></td>
-              <td className='ri'><i>{formats.pct(totals.effectiveness)}</i></td>
+              <td className='ri'><i>{formats.round1(totals.effectiveDpsShields)}</i></td>
+              <td className='ri'><i>{formats.round1(totals.effectiveSDpsShields)}</i></td>
+              <td className='ri'><i>{formats.pct(totals.effectivenessShields)}</i></td>
+              <td className='ri'><i>{formats.round1(totals.effectiveDpsHull)}</i></td>
+              <td className='ri'><i>{formats.round1(totals.effectiveSDpsHull)}</i></td>
+              <td className='ri'><i>{formats.pct(totals.effectivenessHull)}</i></td>
             </tr>
           </tfoot>
         </table>

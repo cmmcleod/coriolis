@@ -1,3 +1,21 @@
+#2.2.11
+  * Add help system and initial help file
+  * Make absolute damage visible
+  * Add 'average' roll for blueprints
+  * Update spacing for movement summary to make it more readable
+  * Provide damage dealt statistics for both shields and hull
+  * Damage dealt panel only shows enabled weapons
+  * Add engagement range to damage received panel
+  * Handle burst rate of fire as an absolute number rather than a perentage modification
+  * Ensure that clip values are always rounded up
+  * Ensure that focused weapon mod uses range modifier to increase falloff as well
+  * Use coriolis-data 2.2.11:
+    * Remove non-existent chaff launcher capacity blueprint grades
+    * Fix incorrect values for charge enhanced power distributor
+    * Remove incorrect AFMU blueprints
+    * Correct fragment cannon Double Shot blueprint information
+    * Correct Focused weapon blueprint information
+
 #2.2.10
   * Fix detailed export of module reinforcement packages
   * Use damagedist for exact breakdown of weapons that have more than one type of damage

@@ -5,12 +5,13 @@ import { Insurance } from '../shipyard/Constants';
 import Link from './Link';
 import ActiveLink from './ActiveLink';
 import cn from 'classnames';
-import { Cogs, CoriolisLogo, Hammer, Rocket, StatsBars } from './SvgIcons';
+import { Cogs, CoriolisLogo, Hammer, Help, Rocket, StatsBars } from './SvgIcons';
 import { Ships } from 'coriolis-data/dist';
 import Persist from '../stores/Persist';
 import { toDetailedExport } from '../shipyard/Serializer';
 import ModalDeleteAll from './ModalDeleteAll';
 import ModalExport from './ModalExport';
+import ModalHelp from './ModalHelp';
 import ModalImport from './ModalImport';
 import Slider from './Slider';
 import { outfitURL } from '../utils/UrlGenerators';
@@ -53,11 +54,11 @@ function selectAll(e) {
  */
 export default class Header extends TranslatedComponent {
 
-  /**
-   * Constructor
-   * @param  {Object} props   React Component properties
-   * @param  {Object} context React Component context
-   */
+	/**
+	 * Constructor
+	 * @param  {Object} props   React Component properties
+	 * @param  {Object} context React Component context
+	 */
   constructor(props, context) {
     super(props);
     this.shipOrder = Object.keys(Ships).sort();
@@ -74,6 +75,7 @@ export default class Header extends TranslatedComponent {
     this._openBuilds = this._openMenu.bind(this, 'b');
     this._openComp = this._openMenu.bind(this, 'comp');
     this._openSettings = this._openMenu.bind(this, 'settings');
+    this._showHelp = this._showHelp.bind(this);
     this.languageOptions = [];
     this.insuranceOptions = [];
     this.state = {
@@ -246,6 +248,17 @@ export default class Header extends TranslatedComponent {
       description={translate('PHRASE_EXPORT_DESC')}
       data={toDetailedExport(Persist.getBuilds())}
     />);
+  }
+
+  /**
+   * Show help modal
+   * @param  {SyntheticEvent} e Event
+   */
+  _showHelp(e) {
+    let translate = this.context.language.translate;
+    e.preventDefault();
+
+    this.context.showModal(<ModalHelp title={translate('help')} />);
   }
 
   /**
@@ -520,6 +533,12 @@ export default class Header extends TranslatedComponent {
             <Cogs className='xl warning'/><span className='menu-item-label'>{translate('settings')}</span>
           </div>
           {openedMenu == 'settings' ? this._getSettingsMenu() : null}
+        </div>
+
+        <div className='r menu'>
+          <div className={cn('menu-header')} onClick={this._showHelp}>
+            <Help className='xl warning'/>
+          </div>
         </div>
       </header>
     );

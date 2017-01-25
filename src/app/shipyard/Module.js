@@ -78,6 +78,7 @@ export default class Module {
       if (!modification) {
         return result;
       }
+
       // We store percentages as decimals, so to get them back we need to divide by 10000.  Otherwise
       // we divide by 100.  Both ways we end up with a value with two decimal places
       let modValue;
@@ -292,11 +293,19 @@ export default class Module {
    */
   getFalloff() {
     if (this.getModValue('fallofffromrange')) {
+      // Falloff from range means what it says, so use range instead of falloff
       return this.getRange();
     } else {
-      const falloff = this._getModifiedValue('falloff');
-      const range = this.getRange();
-      return (falloff > range ? range : falloff);
+      // Need to find out if we have a focused modification, in which case our falloff is scaled to range
+      if (this.blueprint && this.blueprint.name === 'Focused') {
+        const rangeMod = this.getModValue('range') / 10000;
+        return this.falloff * (1 + rangeMod);
+      } else {
+        // Standard falloff calculation
+        const range = this.getRange();
+        const falloff = this._getModifiedValue('falloff');
+        return (falloff > range ? range : falloff);
+      }
     }
   }
 
@@ -534,7 +543,10 @@ export default class Module {
    * @return {Number} the clip size of this module
    */
   getClip() {
-    return this._getModifiedValue('clip');
+    // Clip size is always rounded up
+    let result = this._getModifiedValue('clip');
+    if (result) { result = Math.ceil(result); }
+    return result;
   }
 
   /**
