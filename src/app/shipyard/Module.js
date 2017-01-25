@@ -545,7 +545,7 @@ export default class Module {
   getClip() {
     // Clip size is always rounded up
     let result = this._getModifiedValue('clip');
-    if (result) { result = Math.ceil(result) };
+    if (result) { result = Math.ceil(result); }
     return result;
   }
 
