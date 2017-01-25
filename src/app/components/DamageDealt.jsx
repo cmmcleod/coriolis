@@ -118,7 +118,7 @@ export default class DamageDealt extends TranslatedComponent {
 
     let weapons = [];
     for (let i = 0; i < ship.hardpoints.length; i++) {
-      if (ship.hardpoints[i].m) {
+      if (ship.hardpoints[i].m && ship.hardpoints[i].enabled) {
         const m = ship.hardpoints[i].m;
         if (m.getDamage() && m.grp !== 'po') {
           let dropoff = 1;
@@ -162,8 +162,8 @@ export default class DamageDealt extends TranslatedComponent {
         }
       }
     }
-    totals.effectivenessShields = totals.effectiveDpsShields / totalDps;
-    totals.effectivenessHull = totals.effectiveDpsHull / totalDps;
+    totals.effectivenessShields = totalDps == 0 ? 0 : totals.effectiveDpsShields / totalDps;
+    totals.effectivenessHull = totalDps == 0 ? 0 : totals.effectiveDpsHull / totalDps;
     
     return { weapons, totals };
   }

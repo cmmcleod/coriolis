@@ -4,6 +4,7 @@
   * Add 'average' roll for blueprints
   * Update spacing for movement summary
   * Provide damage dealt statistics for both shields and hull
+  * Damage dealt panel only shows enabled weapons
 
 #2.2.10
   * Fix detailed export of module reinforcement packages
