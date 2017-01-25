@@ -1,5 +1,6 @@
 #2.2.11
   * Add help system and initial help file
+  * Make absolute damage visible
 
 #2.2.10
   * Fix detailed export of module reinforcement packages

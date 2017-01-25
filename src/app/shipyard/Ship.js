@@ -533,14 +533,17 @@ export default class Ship {
     this.totalCost = this.m.incCost ? this.m.discountedCost : 0;
     this.unladenMass = this.hullMass;
     this.totalDpe = 0;
+    this.totalAbsDpe = 0;
     this.totalExplDpe = 0;
     this.totalKinDpe = 0;
     this.totalThermDpe = 0;
     this.totalDps = 0;
+    this.totalAbsDps = 0;
     this.totalExplDps = 0;
     this.totalKinDps = 0;
     this.totalThermDps = 0;
     this.totalSDps = 0;
+    this.totalAbsSDps = 0;
     this.totalExplSDps = 0;
     this.totalKinSDps = 0;
     this.totalThermSDps = 0;
@@ -958,14 +961,17 @@ export default class Ship {
    */
   recalculateDps() {
     let totalDpe = 0;
+    let totalAbsDpe = 0;
     let totalExplDpe = 0;
     let totalKinDpe = 0;
     let totalThermDpe = 0;
     let totalDps = 0;
+    let totalAbsDps = 0;
     let totalExplDps = 0;
     let totalKinDps = 0;
     let totalThermDps = 0;
     let totalSDps = 0;
+    let totalAbsSDps = 0;
     let totalExplSDps = 0;
     let totalKinSDps = 0;
     let totalThermSDps = 0;
@@ -981,6 +987,11 @@ export default class Ship {
         totalDps += dps;
         totalSDps += sdps;
         if (slot.m.getDamageDist()) {
+          if (slot.m.getDamageDist().A) {
+            totalAbsDpe += dpe * slot.m.getDamageDist().A;
+            totalAbsDps += dps * slot.m.getDamageDist().A;
+            totalAbsSDps += sdps * slot.m.getDamageDist().A;
+          }
           if (slot.m.getDamageDist().E) {
             totalExplDpe += dpe * slot.m.getDamageDist().E;
             totalExplDps += dps * slot.m.getDamageDist().E;
@@ -1001,14 +1012,17 @@ export default class Ship {
     }
 
     this.totalDpe = totalDpe;
+    this.totalAbsDpe = totalAbsDpe;
     this.totalExplDpe = totalExplDpe;
     this.totalKinDpe = totalKinDpe;
     this.totalThermDpe = totalThermDpe;
     this.totalDps = totalDps;
+    this.totalAbsDps = totalAbsDps;
     this.totalExplDps = totalExplDps;
     this.totalKinDps = totalKinDps;
     this.totalThermDps = totalThermDps;
     this.totalSDps = totalSDps;
+    this.totalAbsSDps = totalAbsSDps;
     this.totalExplSDps = totalExplSDps;
     this.totalKinSDps = totalKinSDps;
     this.totalThermSDps = totalThermSDps;

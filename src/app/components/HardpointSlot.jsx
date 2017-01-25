@@ -1,7 +1,7 @@
 import React from 'react';
 import Slot from './Slot';
 import Persist from '../stores/Persist';
-import { DamageKinetic, DamageThermal, DamageExplosive, MountFixed, MountGimballed, MountTurret, ListModifications, Modified } from './SvgIcons';
+import { DamageAbsolute, DamageKinetic, DamageThermal, DamageExplosive, MountFixed, MountGimballed, MountTurret, ListModifications, Modified } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
@@ -62,6 +62,7 @@ export default class HardpointSlot extends Slot {
           {m.getDamageDist() && m.getDamageDist().K ? <span onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /></span> : ''}
           {m.getDamageDist() && m.getDamageDist().T ? <span onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /></span> : ''}
           {m.getDamageDist() && m.getDamageDist().E ? <span onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /></span> : ''}
+          {m.getDamageDist() && m.getDamageDist().A ? <span onMouseOver={termtip.bind(null, 'absolute')} onMouseOut={tooltip.bind(null, null)}><DamageAbsolute /></span> : ''}
           {classRating} {translate(m.name || m.grp)}{ m.mods && Object.keys(m.mods).length > 0 ? <span className='r' onMouseOver={termtip.bind(null, modTT)} onMouseOut={tooltip.bind(null, null)}><Modified /></span> : null }
           </div>
 

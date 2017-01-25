@@ -320,6 +320,24 @@ export class Warning extends SvgIcon {
 }
 
 /**
+ * Absolute damage
+ */
+export class DamageAbsolute extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <ellipse cx='100' cy='100' rx='90' ry='90' fillOpacity='0' />;
+  }
+}
+
+/**
  * Thermal damage
  */
 export class DamageThermal extends SvgIcon {
