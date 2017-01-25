@@ -5,6 +5,7 @@
   * Update spacing for movement summary
   * Provide damage dealt statistics for both shields and hull
   * Damage dealt panel only shows enabled weapons
+  * Add engagement range to damage received panel
 
 #2.2.10
   * Fix detailed export of module reinforcement packages
