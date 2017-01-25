@@ -72,7 +72,7 @@ export default class Modification extends TranslatedComponent {
     let symbol;
     if (name === 'jitter') {
       symbol = '°';
-    } else if (name !== 'burst') {
+    } else if (name !== 'burst' && name != 'burstrof') {
       symbol = '%';
     }
     if (symbol) {

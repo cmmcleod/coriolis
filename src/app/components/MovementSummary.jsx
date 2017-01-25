@@ -1,7 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
-import { DamageKinetic, DamageThermal, DamageExplosive } from './SvgIcons';
 
 /**
  * Movement summary
@@ -33,7 +32,7 @@ export default class MovementSummary extends TranslatedComponent {
     return (
       <span>
         <h1>{translate('movement summary')}</h1>
-        <table style={{ marginLeft: 'auto', marginRight: 'auto', lineHeight: '1em', backgroundColor: 'transparent' }}>
+        <table style={{ marginLeft: 'auto', marginRight: 'auto', lineHeight: '1em', backgroundColor: 'transparent', borderSpacing: '0.5em' }}>
           <tbody>
             <tr>
               <td >&nbsp;</td>
