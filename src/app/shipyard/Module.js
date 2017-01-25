@@ -78,6 +78,7 @@ export default class Module {
       if (!modification) {
         return result;
       }
+
       // We store percentages as decimals, so to get them back we need to divide by 10000.  Otherwise
       // we divide by 100.  Both ways we end up with a value with two decimal places
       let modValue;
@@ -534,7 +535,10 @@ export default class Module {
    * @return {Number} the clip size of this module
    */
   getClip() {
-    return this._getModifiedValue('clip');
+    // Clip size is always rounded up
+    let result = this._getModifiedValue('clip');
+    if (result) { result = Math.ceil(result) };
+    return result;
   }
 
   /**
