@@ -9,6 +9,12 @@
   * Handle burst rate of fire as an absolute number rather than a perentage modification
   * Ensure that clip values are always rounded up
   * Ensure that focused weapon mod uses range modifier to increase falloff as well
+  * Use coriolis-data 2.2.11:
+    * Remove non-existent chaff launcher capacity blueprint grades
+    * Fix incorrect values for charge enhanced power distributor
+    * Remove incorrect AFMU blueprints
+    * Correct fragment cannon Double Shot blueprint information
+    * Correct Focused weapon blueprint information
 
 #2.2.10
   * Fix detailed export of module reinforcement packages
