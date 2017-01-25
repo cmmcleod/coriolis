@@ -181,7 +181,7 @@ export default class DamageDealt extends TranslatedComponent {
    */
   _onShipChange(s) {
     const against = Ships[s];
-    const data = this._calcWeapons(this.props.ship, against this.state.range * this.state.maxRange);
+    const data = this._calcWeapons(this.props.ship, against, this.state.range * this.state.maxRange);
     this.setState({ against, weapons: data.weapons, totals: data.totals });
   }
 

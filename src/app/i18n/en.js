@@ -31,6 +31,7 @@ export const terms = {
   PHRASE_ENGAGEMENT_RANGE: 'The distance between your ship and its target',
   PHRASE_SELECT_BLUEPRINT: 'Click to select a blueprint',
   PHRASE_BLUEPRINT_WORST: 'Worst primary values for this blueprint',
+  PHRASE_BLUEPRINT_AVERAGE: 'Average primary values for this blueprint',
   PHRASE_BLUEPRINT_RANDOM: 'Random selection between worst and best primary values for this blueprint',
   PHRASE_BLUEPRINT_BEST: 'Best primary values for this blueprint',
   PHRASE_BLUEPRINT_RESET: 'Remove all modifications and blueprint',
@@ -109,6 +110,7 @@ export const terms = {
 
   // Blueprint rolls
   worst: 'Worst',
+  average: 'Average',
   random: 'Random',
   best: 'Best',
   reset: 'Reset',
@@ -192,9 +194,9 @@ Coriolis is a ship builder for Elite: Dangerous.  This help file provides you wi
 Often, you will want to start with your existing ship in Coriolis and see how particular changes might affect it, for example upgrading your FSD.  There are a number of tools that can be used to import your ship without you having to create it manually.  This has the added benefit of copying over any engineering modifications that have taken place as well. </p>
 
 <h2>Importing Your Ship From EDDI</h2>
-To import your ship from EDDI first ensure that your connection to the Frontier servers' companion API is working.  To do this check the 'Companion App' tab where you should see "Your connection to the companion app is operational".  If not then follow the instructions in the companion app tab in EDDI to connect to the Frontier servers.</p>
+To import your ship from EDDI first ensure that your connection to the Frontier servers&apos; companion API is working.  To do this check the &apos;Companion App&apos; tab where you should see "Your connection to the companion app is operational".  If not then follow the instructions in the companion app tab in EDDI to connect to the Frontier servers.</p>
 
-Once you have a working companion API connection go to the 'Shipyard' tab.  At the right-hand side of each ship is an 'Export to Coriolis' button that will open your default web browser in Coriolis with the ship's build. </p>
+Once you have a working companion API connection go to the &apos;Shipyard&apos; tab.  At the right-hand side of each ship is an &apos;Export to Coriolis&apos; button that will open your default web browser in Coriolis with the ship&apos;s build. </p>
 
 Note that Internet Explorer and Edge might not import correctly, due to their internal restrictions on URL length.  If you find that this is the case then please change your default browser to Chrome. </p>
 
@@ -215,26 +217,69 @@ To add a module to a slot left-click on the slot and select the required module.
 
 To remove a module from a slot right-click on the module. </p>
 
-To move a module from one slot to another drag it.  If you instead want to copy the module drag it whilst holding down the 'Alt' key. </p>
+To move a module from one slot to another drag it.  If you instead want to copy the module drag it whilst holding down the &apos;Alt&apos; key. </p>
 
 <h2>Power Management</h2>
-The power management panel provides information about power usage and priorities.  It allows you to enable and disable individual modules, as well as set power priorities for each module.
+The power management panel provides information about power usage and priorities.  It allows you to enable and disable individual modules, as well as set power priorities for each module.</p>
 
 <h2>Costs</h2>
+The costs panel provides information about the costs for each of your modules, and the total cost and insurance for your build.  By default Coriolis uses the standard costs, however discounts for your ship, modules and insurance can be altered in the &apos;Settings&apos; at the top-right of the page.</p>
 
-By default Coriolis uses the standard costs, however discounts for your ship, modules and insurance can be altered in the 'Settings' at the top-right of the page.
+The retrofit costs provides information about the costs of changing the base build for your ship, or your saved build, to the current build.</p>
+
+The reload costs provides information about the costs of reloading your current build.</p>
 
 <h2>Offence Summary</h2>
+The offence summary panel provides information about the damage that you deal with your weapons.</p>
+
+The first headline gives an overall damage per second rating: this is the optimum amount of damage the build will do per second according to weapon statistics.  After that is a breakdown of the damage per second the build will do for each type of damage: absolute, explosive, kinetic, and thermal.</p>
+
+The next headline gives an overall sustained damage per second rating: this is the optimum amount of damage the build will do per second over a longer period of time, taking in to account ammunition clip capacities and reload times.  After that is a breakdown of the sustained damage per second the build will do for each type of damage: absolute, explosive, kinetic, and thermal.</p>
+
+The final headline gives an overall damage per energy rating: this is the amount of damage the build will do per unit of weapon capacitor energy expended.  After that is a breakdown of the damage per energy the build will do for each type of damage: absolute, explosive, kinetic, and thermal.</p>
 
 <h2>Defence Summary</h2>
+The defence summary panel provides information about the strength of your defences and the damage that you receive from opponents.</p>
+
+The first headline gives your total shield strength (if you have shields), taking in to account your base shield plus boosters.  After that are the details of how long it will take for your shields to recover from 0 to 50% (recovery time) and from 50% to 100% (recharge time).  The next line provides a breakdown of the shield damage taken from different damage types.  For example, if you damage from kinetic is 60% then it means that a weapon usually dealing 10 points of damage will only deal 6, the rest being resisted by the shield.  Note that this does not include any resistance alterations due to pips in your SYS capacitor.</p>
+
+The second headline gives your total shield cell strength (if you have shield cell banks).  This is the sum of the recharge of all of equipped shield cell banks.</p>
+
+The third headline gives your total armour strength, taking in to account your base armour plus hull reinforcement packages.  The next line provides a breakdown of the hull damage taken from different damage types.  For example, if you damage from kinetic is 120% then it means that a weapon usually dealing 10 points of damage will deal 12.</p>
+
+The fourth headline gives your total module protection strength from module reinforcement packages. The next line provides a breakdown of the protection for both internal and external modules whilst all module reinforcement packages are functioning.  For example, if external module protection is 20% then 10 points of damage will 2 points of damage to the module reinforcement packages and 8 points of damage to the module</p>
 
 <h2>Movement Summary</h2>
+The movement summary panel provides information about the build&apos;s speed and agility.</p>
+
+Along the top of this panel are the number of pips you put in to your ENG capacitor, from 0 to 4 and also include 4 pips and boost (4b).  Along the side of this panel are the names of the metrics.  These are:
+<dl>
+<dt>Speed</dt><dd>The fastest the ship can move, in metres per second</dd>
+<dt>Pitch</dt><dd>The fastest the ship can raise or lower its nose, in degrees per second</dd>
+<dt>Roll</dt><dd>The fastest the ship can roll its body, in degrees per second</dd>
+<dt>Yaw</dt><dd>The fastest the ship can turn its nose left or right, in degrees per second</dd>
+</dl>
 
 <h2>Jump Range</h2>
+The jump range panel provides information about the build&apos; jump range.  The graph shows how the build&apos;s jump range changes with the amount of cargo on-board.  The slider can be altered to change the amount of fuel you have on-board.
 
 <h2>Damage Dealt</h2>
+The damage dealt panel provides information about the effectiveness of your build&apos;s weapons against opponents&apos; shields and hull at different engagement distances.</p>
+
+The ship against which you want to check damage dealt can be selected by clicking on the red ship icon or the red ship name at the top of this panel.</p>
+
+The main section of this panel is a table showing your weapons and their effectiveness.  Effectiveness against shields takes in to account the weapon and its engagement range, but does not consider the target ship&apos;s resistances.  Effectiveness against hull takes in to account the weapon and, its engagement range and the target&apos;s hardness, but does not consider the target ship&apos;s resistances.  This is because resistances will alter significantly depending on the target&apos;s build.</p>
+
+Effective DPS and effective SDPS are the equivalent of DPS and SDPS for the weapon.  Effectiveness is a percentage value that shows how effective the DPS of the weapon is compared in reality against the given target compared to the weapon&apos;s stated DPS.  Effectiveness can never go above 100%.</p>
+
+Total effective DPS, SDPS and effectiveness against both shields and hull are provided at the bottom of the table.</p>
+
+At the bottom of this panel you can change your engagement range.  The engagement range is the distance between your ship and your target.  Many weapons suffer from what is known as damage falloff, where their effectiveness decreases the further the distance between your ship and your target.  This allows you to model the effect of engaging at different ranges.
+
+Note that this panel only shows enabled weapons, so if you want to see your overall effectiveness for a subset of your weapons you can disable the undesired weapons in the power management panel.
 
 <h2>Damage Received</h2>
+The damage received panel provides information about the effectiveness of your build&apos;s defences against opponent&apos;s weapons at different engagement range.  Features and functions are the same as the damage dealt panel, except that it does take in to account your build&apos;s resistances.</p>
 
 <h1>Keyboard Shortcuts</h1>
 <dl>
@@ -250,9 +295,9 @@ By default Coriolis uses the standard costs, however discounts for your ship, mo
 <dt>DPS</dt><dd>Damage per second; the amount of damage that a weapon or a ship can deal per second to a target under optimum conditions</dd>
 <dt>EPS</dt><dd>Energy per second; the amount of energy that a weapon or a ship drains from the weapons capacitor per second when firing</dd>
 <dt>HPS</dt><dd>Heat per second; the amount of heat that a weapon or a ship generates per second when firing</dd>
-<dt>Effectivness</dt><dd>A comparison of the maximum DPS of a given weapon to the actual DPS of the given weapon in a specific situation.  DPS can be reduced by range to the target, the target's hull and shield resistances, and the target's hardness</dd>
+<dt>Effectivness</dt><dd>A comparison of the maximum DPS of a given weapon to the actual DPS of the given weapon in a specific situation.  DPS can be reduced by range to the target, the target&apos;s hull and shield resistances, and the target&apos;s hardness</dd>
 <dt>Explosive damage</dt><dd>A type of damage, protected against by explosive resistance</dd>
-<dt>Hardness</dt><dd>The inherent resistance to damage of a ship's hull.  Hardness is defined on a per-ship basis and there is currently nothing that can be done to change it.  Hardness of a ship's hull is compared to the piercing of weapons: if piercing is higher than hardness the weapon does 100% damage, otherwise it does a fraction of its damage calculated as piercing/hardness</dd>
+<dt>Hardness</dt><dd>The inherent resistance to damage of a ship&apos;s hull.  Hardness is defined on a per-ship basis and there is currently nothing that can be done to change it.  Hardness of a ship&apos;s hull is compared to the piercing of weapons: if piercing is higher than hardness the weapon does 100% damage, otherwise it does a fraction of its damage calculated as piercing/hardness</dd>
 <dt>Falloff</dt><dd>The distance at which a weapons starts to do less damage than its stated DPS</dd>
 <dt>Kinetic damage</dt><dd>A type of damage, protected against by kinetic resistance</dd>
 <dt>SDPS</dt><dd>Sustained damage per second; the amount of damage that a weapon or a ship can deal per second to a target, taking in to account ammunition reload</dd>
