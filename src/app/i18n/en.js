@@ -201,6 +201,9 @@ Once you have a working companion API connection go to the &apos;Shipyard&apos; 
 Note that Internet Explorer and Edge might not import correctly, due to their internal restrictions on URL length.  If you find that this is the case then please change your default browser to Chrome. </p>
 
 <h2>Importing Your Ship From EDMC</h2>
+To import your ship from EDMC once your connection to the Frontier servers&apos; companion API is working go to &apos;Settings -&gt;Configuration&apos; and set the &apos;Preferred Shipyard&apos; to &apos;Coriolis&apos;.  Once this is set up clicking on your ship in the main window will open your default web browser in Coriolis with the ship&apos;s build.</p>
+
+Note that Internet Explorer and Edge might not import correctly, due to their internal restrictions on URL length.  If you find that this is the case then please change your default browser to Chrome. </p>
 
 <h1>Understanding And Using The Outfitting Panels</h1>
 The outfitting page is where you will spend most of your time, and contains the information for your ship.  Information on each of the panels is provided below. </p>

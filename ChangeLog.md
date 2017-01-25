@@ -2,7 +2,7 @@
   * Add help system and initial help file
   * Make absolute damage visible
   * Add 'average' roll for blueprints
-  * Update spacing for movement summary
+  * Update spacing for movement summary to make it more readable
   * Provide damage dealt statistics for both shields and hull
   * Damage dealt panel only shows enabled weapons
   * Add engagement range to damage received panel
