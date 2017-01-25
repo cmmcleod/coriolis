@@ -31,6 +31,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     this._toggleBlueprintsMenu = this._toggleBlueprintsMenu.bind(this);
     this._rollWorst = this._rollWorst.bind(this);
     this._rollRandom = this._rollRandom.bind(this);
+    this._rollAverage = this._rollAverage.bind(this);
     this._rollBest = this._rollBest.bind(this);
     this._reset = this._reset.bind(this);
   }
@@ -134,6 +135,34 @@ export default class ModificationsMenu extends TranslatedComponent {
   }
 
   /**
+   * Provide an 'average' roll within the information we have
+   */
+  _rollAverage() {
+    const { m, ship } = this.props;
+    const features = m.blueprint.features[m.blueprint.grade];
+    for (const featureName in features) {
+      if (Modifications.modifications[featureName].method == 'overwrite') {
+        ship.setModification(m, featureName, (features[featureName][0] + features[featureName][1]) / 2);
+      } else {
+        let value = (features[featureName][0] + features[featureName][1]) / 2;
+        if (m.grp == 'sb' && featureName == 'shieldboost') {
+          // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
+          value = ((1 + m.shieldboost) * (1 + value) - 1) / m.shieldboost - 1;
+        }
+
+        if (Modifications.modifications[featureName].type == 'percentage') {
+          ship.setModification(m, featureName, value * 10000);
+        } else if (Modifications.modifications[featureName].type == 'numeric') {
+          ship.setModification(m, featureName, value * 100);
+        }
+      }
+    }
+
+    this.setState({ modifications: this._setModifications(this.props) });
+    this.props.onChange();
+  }
+
+  /**
    * Provide a random roll within the information we have
    */
   _rollRandom() {
@@ -215,6 +244,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     const _toggleBlueprintsMenu = this._toggleBlueprintsMenu;
     const _rollBest = this._rollBest;
     const _rollWorst = this._rollWorst;
+    const _rollAverage = this._rollAverage;
     const _rollRandom = this._rollRandom;
     const _reset = this._reset;
 
@@ -241,8 +271,9 @@ export default class ModificationsMenu extends TranslatedComponent {
               <tr>
                 <td> { translate('roll') }: </td>
                 <td style={{ cursor: 'pointer' }} onClick={_rollWorst} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_WORST')} onMouseOut={tooltip.bind(null, null)}> { translate('worst') } </td>
-                <td style={{ cursor: 'pointer' }} onClick={_rollRandom} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RANDOM')} onMouseOut={tooltip.bind(null, null)}> { translate('random') } </td>
+                <td style={{ cursor: 'pointer' }} onClick={_rollAverage}onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_AVERAGE')} onMouseOut={tooltip.bind(null, null)}> { translate('average') } </td>
                 <td style={{ cursor: 'pointer' }} onClick={_rollBest}onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_BEST')} onMouseOut={tooltip.bind(null, null)}> { translate('best') } </td>
+                <td style={{ cursor: 'pointer' }} onClick={_rollRandom} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RANDOM')} onMouseOut={tooltip.bind(null, null)}> { translate('random') } </td>
                 <td style={{ cursor: 'pointer' }} onClick={_reset}onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RESET')} onMouseOut={tooltip.bind(null, null)}> { translate('reset') } </td>
               </tr>
             </tbody>
