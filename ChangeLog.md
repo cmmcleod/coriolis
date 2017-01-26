@@ -1,3 +1,6 @@
+#2.2.12
+  * Tidy up old references to coriolis.io
+
 #2.2.11
   * Add help system and initial help file
   * Make absolute damage visible
