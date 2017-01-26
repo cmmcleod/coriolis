@@ -179,6 +179,7 @@ export default class Coriolis extends React.Component {
           e.preventDefault();
           this._showModal(<ModalPermalink url={window.location.href}/>);
         }
+        break;
       case 83:  // 's'
         if (e.ctrlKey || e.metaKey) { // CTRL/CMD + s
           e.preventDefault();
