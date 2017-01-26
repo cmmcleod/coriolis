@@ -36,75 +36,126 @@ export default class Module {
 
   /**
    * Get a value for a given modification
-   * @param {Number} name  The name of the modification
-   * @return {object}      The value of the modification. If it is a numeric value then it is returned as an integer value scaled so that 1.23% == 123
+   * @param {Number} name The name of the modification
+   * @param {Number} raw  True if the value returned should be raw i.e. without the influence of special effects
+   * @return {object}     The value of the modification. If it is a numeric value then it is returned as an integer value scaled so that 1.23% == 123
    */
-  getModValue(name) {
-    return this.mods  && this.mods[name] ? this.mods[name] : null;
+  getModValue(name, raw) {
+    let result = this.mods  && this.mods[name] ? this.mods[name] : null;
+    if ((!raw) && this.blueprint && this.blueprint.special) {
+      // This module has a special effect, see if we need to alter our returned value
+      const modifierActions = Modifications.modifierActions[this.blueprint.special.edname];
+      if (modifierActions && modifierActions[name]) {
+        // this special effect modifies our returned value
+        const modification = Modifications.modifications[name];
+        if (modification.method === 'additive') {
+          result = result + modifierActions[name];
+        } else if (modification.method === 'overwrite') {
+          result = modifierActions[name];
+        } else {
+          // rate of fire is special, as it's really burst interval.  Handle that here
+          let mod = null;
+          if (name === 'rof') {
+            mod = 1 / (1 + modifierActions[name]) - 1;
+          } else {
+            mod = modifierActions[name];
+          }
+          result = (((1 + result / 10000) * (1 + mod)) - 1) * 10000;
+        }
+      }
+    }
+
+    // Sanitise the resultant value to 4dp equivalent
+    return isNaN(result) ? result : Math.round(result);
   }
 
   /**
    * Set a value for a given modification ID
-   * @param {Number} name   The name of the modification
+   * @param {Number} name                 The name of the modification
    * @param {object} value  The value of the modification. If it is a numeric value then it should be an integer scaled so that -2.34% == -234
+   * @param {bool}   valueiswithspecial   true if the value includes the special effect (when coming from a UI component)
    */
-  setModValue(name, value) {
+  setModValue(name, value, valueiswithspecial) {
     if (!this.mods) {
       this.mods = {};
+    }
+    if (valueiswithspecial && this.blueprint && this.blueprint.special) {
+      // This module has a special effect, see if we need to alter the stored value
+      const modifierActions = Modifications.modifierActions[this.blueprint.special.edname];
+      if (modifierActions && modifierActions[name]) {
+        // This special effect modifies the value being set, so we need to revert it prior to storing the value
+        const modification = Modifications.modifications[name];
+        if (modification.method === 'additive') {
+          value = value - modifierActions[name];
+        } else if (modification.method === 'overwrite') {
+          value = null;
+        } else {
+          // rate of fire is special, as it's really burst interval.  Handle that here
+          let mod = null;
+          if (name === 'rof') {
+            mod = 1 / (1 + modifierActions[name]) - 1;
+          } else {
+            mod = modifierActions[name];
+          }
+          value = ((value / 10000 + 1) / (1 + mod) - 1) * 10000;
+        }
+      }
     }
 
     if (value == null || value == 0) {
       delete this.mods[name];
     } else {
-      if (isNaN(value)) {
-        this.mods[name] = value;
-      } else {
-        // Round just to be sure
-        this.mods[name] = Math.round(value);
-      }
+      this.mods[name] = value;
     }
   }
 
   /**
    * Helper to obtain a modified value using standard multipliers
    * @param {String}  name     the name of the modifier to obtain
-   * @param {Boolean} additive Optional true if the value is additive rather than multiplicative
    * @return {Number}          the mass of this module
    */
-  _getModifiedValue(name, additive) {
-    let result = this[name] || (additive ? 0 : null); // Additive NULL === 0
-    if (result != null) {
-      const modification = Modifications.modifications[name];
-      if (!modification) {
-        return result;
-      }
+  _getModifiedValue(name) {
+    const modification = Modifications.modifications[name];
+    let result = this[name];
 
-      // We store percentages as decimals, so to get them back we need to divide by 10000.  Otherwise
-      // we divide by 100.  Both ways we end up with a value with two decimal places
-      let modValue;
-      if (modification.type === 'percentage') {
-        modValue = this.getModValue(name) / 10000;
-      } else if (modification.type === 'numeric') {
-        modValue = this.getModValue(name) / 100;
+    if (!result) {
+      if (modification && modification.method === 'additive') {
+        // Additive modifications start at 0 rather than NULL
+        result = 0;
       } else {
-        modValue = this.getModValue(name);
+        result = null;
       }
-      if (modValue) {
-        if (additive) {
-          result = result + modValue;
+    }
+
+    if (result != null) {
+      if (modification) {
+        // We store percentages as decimals, so to get them back we need to divide by 10000.  Otherwise
+        // we divide by 100.  Both ways we end up with a value with two decimal places
+        let modValue;
+        if (modification.type === 'percentage') {
+          modValue = this.getModValue(name) / 10000;
+        } else if (modification.type === 'numeric') {
+          modValue = this.getModValue(name) / 100;
         } else {
-          result = result * (1 + modValue);
+          modValue = this.getModValue(name);
+        }
+        if (modValue) {
+          if (modification.method === 'additive') {
+            result = result + modValue;
+          } else if (modification.method === 'overwrite') {
+            result = modValue;
+          } else {
+            result = result * (1 + modValue);
+          }
         }
       }
     } else {
       if (name === 'burst') {
         // Burst is special, as if it can not exist but have a modification
-        const modValue = this.getModValue(name) / 100;
-        return modValue;
+        result = this.getModValue(name) / 100;
       } else if (name === 'burstrof') {
         // Burst rate of fire is special, as if it can not exist but have a modification
-        const modValue = this.getModValue(name) / 100;
-        return modValue;
+        result = this.getModValue(name) / 100;
       }
     }
 
@@ -244,7 +295,7 @@ export default class Module {
    * @return {Number} the kinetic resistance of this module
    */
   getKineticResistance() {
-    return this._getModifiedValue('kinres', true);
+    return this._getModifiedValue('kinres');
   }
 
   /**
@@ -252,7 +303,7 @@ export default class Module {
    * @return {Number} the thermal resistance of this module
    */
   getThermalResistance() {
-    return this._getModifiedValue('thermres', true);
+    return this._getModifiedValue('thermres');
   }
 
   /**
@@ -260,7 +311,7 @@ export default class Module {
    * @return {Number} the explosive resistance of this module
    */
   getExplosiveResistance() {
-    return this._getModifiedValue('explres', true);
+    return this._getModifiedValue('explres');
   }
 
   /**
@@ -671,9 +722,25 @@ export default class Module {
 
   /**
    * Get the shot speed for this module, taking in to account modifications
-   * @return {string} the damage distribution for this module
+   * @return {string} the shot speed for this module
    */
   getShotSpeed() {
     return this._getModifiedValue('shotspeed');
+  }
+
+  /**
+   * Get the spinup for this module, taking in to account modifications
+   * @return {string} the spinup for this module
+   */
+  getSpinup() {
+    return this._getModifiedValue('spinup');
+  }
+
+  /**
+   * Get the time for this module, taking in to account modifications
+   * @return {string} the time for this module
+   */
+  getTime() {
+    return this._getModifiedValue('time');
   }
 }

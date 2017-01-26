@@ -47,13 +47,13 @@ export default class InternalSlot extends Slot {
           { m.rate ? <div className={'l'}>{translate('rate')}: {m.rate}{u.kgs}&nbsp;&nbsp;&nbsp;{translate('refuel time')}: {formats.time(this.props.fuel * 1000 / m.rate)}</div> : null }
           { m.getAmmo() ? <div className={'l'}>{translate('ammunition')}: {formats.gen(m.getAmmo())}</div> : null }
           { m.cells ? <div className={'l'}>{translate('cells')}: {m.cells}</div> : null }
-          { m.shieldreinforcement ? <div className={'l'}>{translate('shieldreinforcement')}: {formats.int(m.getShieldReinforcement())} <u>MJ</u>&nbsp;&nbsp;&nbsp;{translate('total')}: {formats.int(m.cells * m.getShieldReinforcement())}{u.MJ}</div> : null }
+          { m.getShieldReinforcement() ? <div className={'l'}>{translate('shieldreinforcement')}: {formats.int(m.getShieldReinforcement())} <u>MJ</u>&nbsp;&nbsp;&nbsp;{translate('total')}: {formats.int(m.cells * m.getShieldReinforcement())}{u.MJ}</div> : null }
           { m.repair ? <div className={'l'}>{translate('repair')}: {m.repair}</div> : null }
           { m.getFacingLimit() ? <div className={'l'}>{translate('facinglimit')} {formats.f1(m.getFacingLimit())}°</div> : null }
           { m.getRange() ? <div className={'l'}>{translate('range')} {formats.f2(m.getRange())}{u.km}</div> : null }
           { m.getRangeT() ? <div className={'l'}>{translate('ranget')} {formats.f1(m.getRangeT())}{u.s}</div> : null }
-          { m.spinup ? <div className={'l'}>{translate('spinup')}: {formats.f1(m.spinup)}{u.s}</div> : null }
-          { m.time ? <div className={'l'}>{translate('time')}: {formats.time(m.time)}</div> : null }
+          { m.getSpinup() ? <div className={'l'}>{translate('spinup')}: {formats.f1(m.getSpinup())}{u.s}</div> : null }
+          { m.getTime() ? <div className={'l'}>{translate('time')}: {formats.getTime()(m.time)}</div> : null }
           { m.maximum ? <div className={'l'}>{translate('max')}: {(m.maximum)}</div> : null }
           { m.rangeLS ? <div className={'l'}>{translate('range')}: {m.rangeLS}{u.Ls}</div> : null }
           { m.rangeLS === null ? <div className={'l'}>∞{u.Ls}</div> : null }

@@ -1,5 +1,6 @@
 #2.2.12
   * Tidy up old references to coriolis.io
+  * Add ability to add and remove special effects to weapon modifications
 
 #2.2.11
   * Add help system and initial help file
