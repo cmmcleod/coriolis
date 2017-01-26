@@ -308,6 +308,9 @@ function _addModifications(module, modifiers, blueprint, grade) {
     } else if (modifiers.modifiers[i].name === 'mod_weapon_falloffrange_from_range') {
       // Obtain the falloff value directly from the range
       module.setModValue('fallofffromrange', 1);
+    } else if (modifiers.modifiers[i].name && modifiers.modifiers[i].name.startsWith('special_')) {
+      // We don't add special effects directly, but keep a note of them so they can be added when fetching values
+      special = Modifications.specials[modifiers.modifiers[i].name];
     } else {
       // Look up the modifiers to find what we need to do
       const modifierActions = Modifications.modifierActions[modifiers.modifiers[i].name];
@@ -326,11 +329,6 @@ function _addModifications(module, modifiers, blueprint, grade) {
           module.setModValue(action, ((1 + mod) * (1 + actionValue) - 1) * 10000);
         }
       }
-    }
-
-    // Note the special if present
-    if (modifiers.modifiers[i].name && modifiers.modifiers[i].name.startsWith('special_')) {
-      special = Modifications.specials[modifiers.modifiers[i].name];
     }
   }
 
