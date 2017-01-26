@@ -1,5 +1,5 @@
 {
-	"name": "Coriolis.io",
+	"name": "Coriolis EDCD Edition",
 	"short_name": "Coriolis",
 	"icons": [
 		{
@@ -27,7 +27,7 @@
 			"density": "4.0"
 		}
 	],
-	"start_url": "http:\/\/coriolis.io",
+	"start_url": "https:\/\/edcd.coriolis.io",
 	"display": "standalone",
 	"orientation": "portrait"
 }
