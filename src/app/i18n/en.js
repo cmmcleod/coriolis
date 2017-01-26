@@ -35,6 +35,8 @@ export const terms = {
   PHRASE_BLUEPRINT_RANDOM: 'Random selection between worst and best primary values for this blueprint',
   PHRASE_BLUEPRINT_BEST: 'Best primary values for this blueprint',
   PHRASE_BLUEPRINT_RESET: 'Remove all modifications and blueprint',
+  PHRASE_SELECT_SPECIAL: 'Click to select an experimental effect',
+  PHRASE_NO_SPECIAL: 'No experimental effect',
 
   HELP_MODIFICATIONS_MENU: 'Click on a number to enter a new value, or drag along the bar for small changes',
 
