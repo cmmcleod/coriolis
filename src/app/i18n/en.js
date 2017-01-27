@@ -291,7 +291,7 @@ The damage received panel provides information about the effectiveness of your b
 <dt>Ctrl-e</dt><dd>open export dialogue (outfitting page only)</dd>
 <dt>Ctrl-h</dt><dd>open help dialogue</dd>
 <dt>Ctrl-i</dt><dd>open import dialogue</dd>
-<dt>Ctrl-l</dt><dd>open shortlink dialogue</dd>
+<dt>Ctrl-o</dt><dd>open shortlink dialogue</dd>
 <dt>Esc</dt><dd>close any open dialogue</dd>
 </dl>
 <h1>Glossary</h1>
