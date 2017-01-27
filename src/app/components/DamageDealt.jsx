@@ -103,6 +103,8 @@ export default class DamageDealt extends TranslatedComponent {
    * @return {boolean}            Returns the per-weapon damage
    */
   _calcWeapons(ship, against, range) {
+    const translate = this.context.language.translate;
+
     // Tidy up the range so that it's to 4 decimal places
     range = Math.round(10000 * range) / 10000;
 
@@ -137,6 +139,13 @@ export default class DamageDealt extends TranslatedComponent {
             }
           }
           const classRating = `${m.class}${m.rating}${m.missile ? '/' + m.missile : ''}`;
+          let engineering;
+          if (m.blueprint && m.blueprint.name) {
+            engineering = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
+            if (m.blueprint.special && m.blueprint.special.id) {
+              engineering += ', ' + translate(m.blueprint.special.name);
+            }
+          }
           const effectivenessShields = dropoff;
           const effectiveDpsShields = m.getDps() * effectivenessShields;
           const effectiveSDpsShields = (m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) * effectivenessShields : effectiveDpsShields);
@@ -154,6 +163,7 @@ export default class DamageDealt extends TranslatedComponent {
                          mount: m.mount,
                          name: m.name || m.grp,
                          classRating,
+                         engineering,
                          effectiveDpsShields,
                          effectiveSDpsShields,
                          effectivenessShields,
@@ -249,6 +259,7 @@ console.log('total effective dps shields is ' + totals.effectiveDpsShields);
                       {weapon.mount == 'G' ? <span onMouseOver={termtip.bind(null, 'gimballed')} onMouseOut={tooltip.bind(null, null)}><MountGimballed /></span> : null}
                       {weapon.mount == 'T' ? <span onMouseOver={termtip.bind(null, 'turreted')} onMouseOut={tooltip.bind(null, null)}><MountTurret /></span> : null}
                       {weapon.classRating} {translate(weapon.name)}
+                      {weapon.engineering ? ' (' + weapon.engineering + ')' : null }
                     </td>
                     <td className='ri'>{formats.round1(weapon.effectiveDpsShields)}</td>
                     <td className='ri'>{formats.round1(weapon.effectiveSDpsShields)}</td>
