@@ -138,16 +138,17 @@ export default class DamageDealt extends TranslatedComponent {
           }
           const classRating = `${m.class}${m.rating}${m.missile ? '/' + m.missile : ''}`;
           const effectivenessShields = dropoff;
-          const effectiveDpsShields = m.getDps() * effectivenessShields * dropoff;
-          const effectiveSDpsShields = (m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) * effectivenessShields : effectiveDpsShields) * dropoff;
+          const effectiveDpsShields = m.getDps() * effectivenessShields;
+          const effectiveSDpsShields = (m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) * effectivenessShields : effectiveDpsShields);
           const effectivenessHull = (m.getPiercing() >= against.properties.hardness ? 1 : m.getPiercing() / against.properties.hardness) * dropoff;
-          const effectiveDpsHull = m.getDps() * effectivenessHull * dropoff;
-          const effectiveSDpsHull = (m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) * effectivenessHull : effectiveDpsHull) * dropoff;
+          const effectiveDpsHull = m.getDps() * effectivenessHull;
+          const effectiveSDpsHull = (m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) * effectivenessHull : effectiveDpsHull);
           totals.effectiveDpsShields += effectiveDpsShields;
           totals.effectiveSDpsShields += effectiveSDpsShields;
           totals.effectiveDpsHull += effectiveDpsHull;
           totals.effectiveSDpsHull += effectiveSDpsHull;
           totalDps += m.getDps();
+
 
           weapons.push({ id: i,
                          mount: m.mount,
@@ -162,7 +163,9 @@ export default class DamageDealt extends TranslatedComponent {
         }
       }
     }
+console.log('total dps is ' + totalDps);
     totals.effectivenessShields = totalDps == 0 ? 0 : totals.effectiveDpsShields / totalDps;
+console.log('total effective dps shields is ' + totals.effectiveDpsShields);
     totals.effectivenessHull = totalDps == 0 ? 0 : totals.effectiveDpsHull / totalDps;
     
     return { weapons, totals };
