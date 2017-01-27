@@ -173,9 +173,7 @@ export default class DamageDealt extends TranslatedComponent {
         }
       }
     }
-console.log('total dps is ' + totalDps);
     totals.effectivenessShields = totalDps == 0 ? 0 : totals.effectiveDpsShields / totalDps;
-console.log('total effective dps shields is ' + totals.effectiveDpsShields);
     totals.effectivenessHull = totalDps == 0 ? 0 : totals.effectiveDpsHull / totalDps;
     
     return { weapons, totals };
