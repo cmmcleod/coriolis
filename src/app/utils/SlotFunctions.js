@@ -151,13 +151,15 @@ export function diffDetails(language, m, mm) {
   let mmMass = mm ? mm.getMass() : 0;
   if (mMass != mmMass) propDiffs.push(<div key='mass'>{translate('mass')}: <span className={diffClass(mMass, mmMass, true)}>{diff(formats.round, mMass, mmMass)}{units.T}</span></div>);
 
-  let mPowerGeneration = m.pgen || 0;
-  let mmPowerGeneration = mm ? mm.getPowerGeneration() : 0;
-  if (mPowerGeneration != mmPowerGeneration) propDiffs.push(<div key='pgen'>{translate('pgen')}: <span className={diffClass(mPowerGeneration, mmPowerGeneration)}>{diff(formats.round, mPowerGeneration, mmPowerGeneration)}{units.MJ}</span></div>);
-
-  let mPowerUsage = m.power || 0;
-  let mmPowerUsage = mm ? mm.getPowerUsage() : 0;
-  if (mPowerUsage != mmPowerUsage) propDiffs.push(<div key='power'>{translate('power')}: <span className={diffClass(mPowerUsage, mmPowerUsage, true)}>{diff(formats.round, mPowerUsage, mmPowerUsage)}{units.MJ}</span></div>);
+  if (m.grp === 'pp') {
+    let mPowerGeneration = m.pgen || 0;
+    let mmPowerGeneration = mm ? mm.getPowerGeneration() : 0;
+    if (mPowerGeneration != mmPowerGeneration) propDiffs.push(<div key='pgen'>{translate('pgen')}: <span className={diffClass(mPowerGeneration, mmPowerGeneration)}>{diff(formats.round, mPowerGeneration, mmPowerGeneration)}{units.MJ}</span></div>);
+  } else {
+    let mPowerUsage = m.power || 0;
+    let mmPowerUsage = mm ? mm.getPowerUsage() : 0;
+    if (mPowerUsage != mmPowerUsage) propDiffs.push(<div key='power'>{translate('power')}: <span className={diffClass(mPowerUsage, mmPowerUsage, true)}>{diff(formats.round, mPowerUsage, mmPowerUsage)}{units.MJ}</span></div>);
+  }
 
   let mDps = m.damage * (m.rpshot || 1) * (m.rof || 1) || 0;
   let mmDps = mm ? mm.getDps() || 0 : 0;

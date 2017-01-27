@@ -3,6 +3,7 @@
   * Add ability to add and remove special effects to weapon modifications
   * Add weapon engineering information to Damage Dealt section
   * Change shortcut for link from ctrl-l to ctrl-o to avoid clash with location bar
+  * Only show one of power generation or draw in tooltips, according to module
 
 #2.2.11
   * Add help system and initial help file
