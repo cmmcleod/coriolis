@@ -211,30 +211,6 @@ export default class Module {
   }
 
   /**
-   * Get the maximum mass of this module, taking in to account modifications
-   * @return {Number} the maximum mass of this module
-   */
-  getMaxMass() {
-    return this._getModifiedValue('maxmass');
-  }
-
-  /**
-   * Get the optimal mass of this module, taking in to account modifications
-   * @return {Number} the optimal mass of this module
-   */
-  getOptimalMass() {
-    return this._getModifiedValue('optmass');
-  }
-
-  /**
-   * Get the optimal multiplier of this module, taking in to account modifications
-   * @return {Number} the optimal multiplier of this module
-   */
-  getOptimalMultiplier() {
-    return this._getModifiedValue('optmult');
-  }
-
-  /**
    * Get the maximum fuel per jump for this module, taking in to account modifications
    * @return {Number} the maximum fuel per jump of this module
    */
