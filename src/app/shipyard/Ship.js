@@ -438,12 +438,13 @@ export default class Ship {
   }
 
   /**
-   * Set a modification value
-   * @param {Object} m The module to change
-   * @param {Object} name The name of the modification to change
+   * Set a modification value and update ship stats
+   * @param {Object} m          The module to change
+   * @param {Object} name       The name of the modification to change
    * @param {Number} value The new value of the modification.  The value of the modification is scaled to provide two decimal places of precision in an integer.  For example 1.23% is stored as 123
+   * @param {bool}   sentfromui True if this update was sent from the UI
    */
-  setModification(m, name, value) {
+  setModification(m, name, value, sentfromui) {
     if (isNaN(value)) {
       // Value passed is invalid; reset it to 0
       value = 0;
@@ -452,58 +453,58 @@ export default class Ship {
     // Handle special cases
     if (name === 'pgen') {
       // Power generation
-      m.setModValue(name, value);
+      m.setModValue(name, value, sentfromui);
       this.updatePowerGenerated();
     } else if (name === 'power') {
       // Power usage
-      m.setModValue(name, value);
+      m.setModValue(name, value, sentfromui);
       this.updatePowerUsed();
     } else if (name === 'mass') {
       // Mass
       let oldMass = m.getMass();
-      m.setModValue(name, value);
+      m.setModValue(name, value, sentfromui);
       let newMass = m.getMass();
       this.unladenMass = this.unladenMass - oldMass + newMass;
       this.ladenMass = this.ladenMass - oldMass + newMass;
       this.updateMovement();
       this.updateJumpStats();
     } else if (name === 'maxfuel') {
-      m.setModValue(name, value);
+      m.setModValue(name, value, sentfromui);
       this.updateJumpStats();
     } else if (name === 'optmass') {
-      m.setModValue(name, value);
+      m.setModValue(name, value, sentfromui);
       // Could be for any of thrusters, FSD or shield
       this.updateMovement();
       this.updateJumpStats();
       this.recalculateShield();
     } else if (name === 'optmul') {
-      m.setModValue(name, value);
+      m.setModValue(name, value, sentfromui);
       // Could be for any of thrusters, FSD or shield
       this.updateMovement();
       this.updateJumpStats();
       this.recalculateShield();
     } else if (name === 'shieldboost') {
-      m.setModValue(name, value);
+      m.setModValue(name, value, sentfromui);
       this.recalculateShield();
     } else if (name === 'hullboost' || name === 'hullreinforcement' || name === 'modulereinforcement') {
-      m.setModValue(name, value);
+      m.setModValue(name, value, sentfromui);
       this.recalculateArmour();
     } else if (name === 'shieldreinforcement') {
-      m.setModValue(name, value);
+      m.setModValue(name, value, sentfromui);
       this.recalculateShieldCells();
     } else if (name === 'burst' || name == 'burstrof' || name === 'clip' || name === 'damage' || name === 'distdraw' || name === 'jitter' || name === 'piercing' || name === 'range' || name === 'reload' || name === 'rof' || name === 'thermload') {
-      m.setModValue(name, value);
+      m.setModValue(name, value, sentfromui);
       this.recalculateDps();
       this.recalculateHps();
       this.recalculateEps();
     } else if (name === 'explres' || name === 'kinres' || name === 'thermres') {
-      m.setModValue(name, value);
+      m.setModValue(name, value, sentfromui);
       // Could be for shields or armour
       this.recalculateArmour();
       this.recalculateShield();
     } else {
       // Generic
-      m.setModValue(name, value);
+      m.setModValue(name, value, sentfromui);
     }
   }
 
@@ -1376,7 +1377,7 @@ export default class Ship {
       for (let modKey in this.bulkheads.m.mods) {
         // Filter out invalid modifications
         if (Modifications.modules['bh'] && Modifications.modules['bh'].modifications.indexOf(modKey) != -1) {
-          bulkheadMods.push({ id: Modifications.modifications[modKey].id, value: this.bulkheads.m.getModValue(modKey) });
+          bulkheadMods.push({ id: Modifications.modifications[modKey].id, value: this.bulkheads.m.getModValue(modKey, true) });
         }
       }
       bulkheadBlueprint = this.bulkheads.m.blueprint;
@@ -1391,7 +1392,7 @@ export default class Ship {
         for (let modKey in slot.m.mods) {
           // Filter out invalid modifications
           if (Modifications.modules[slot.m.grp] && Modifications.modules[slot.m.grp].modifications.indexOf(modKey) != -1) {
-            slotMods.push({ id: Modifications.modifications[modKey].id, value: slot.m.getModValue(modKey) });
+            slotMods.push({ id: Modifications.modifications[modKey].id, value: slot.m.getModValue(modKey, true) });
           }
         }
       }
@@ -1406,7 +1407,7 @@ export default class Ship {
         for (let modKey in slot.m.mods) {
           // Filter out invalid modifications
           if (Modifications.modules[slot.m.grp] && Modifications.modules[slot.m.grp].modifications.indexOf(modKey) != -1) {
-            slotMods.push({ id: Modifications.modifications[modKey].id, value: slot.m.getModValue(modKey) });
+            slotMods.push({ id: Modifications.modifications[modKey].id, value: slot.m.getModValue(modKey, true) });
           }
         }
       }
@@ -1421,7 +1422,7 @@ export default class Ship {
         for (let modKey in slot.m.mods) {
           // Filter out invalid modifications
           if (Modifications.modules[slot.m.grp] && Modifications.modules[slot.m.grp].modifications.indexOf(modKey) != -1) {
-            slotMods.push({ id: Modifications.modifications[modKey].id, value: slot.m.getModValue(modKey) });
+            slotMods.push({ id: Modifications.modifications[modKey].id, value: slot.m.getModValue(modKey, true) });
           }
         }
       }
