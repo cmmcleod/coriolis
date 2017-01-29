@@ -50,7 +50,7 @@ export default class Modification extends TranslatedComponent {
 
     let m = this.props.m;
     let ship = this.props.ship;
-    ship.setModification(m, name, scaledValue);
+    ship.setModification(m, name, scaledValue, true);
 
     this.setState({ value });
     this.props.onChange();

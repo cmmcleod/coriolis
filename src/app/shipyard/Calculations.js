@@ -10,7 +10,7 @@ import Module from './Module';
  */
 export function jumpRange(mass, fsd, fuel) {
   let fsdMaxFuelPerJump = fsd instanceof Module ? fsd.getMaxFuelPerJump() : fsd.maxfuel;
-  let fsdOptimalMass = fsd instanceof Module ? fsd.getOptimalMass() : fsd.optmass;
+  let fsdOptimalMass = fsd instanceof Module ? fsd.getOptMass() : fsd.optmass;
   return Math.pow(Math.min(fuel === undefined ? fsdMaxFuelPerJump : fuel, fsdMaxFuelPerJump) / fsd.fuelmul, 1 / fsd.fuelpower) * fsdOptimalMass / mass;
 }
 
@@ -24,7 +24,7 @@ export function jumpRange(mass, fsd, fuel) {
  */
 export function fastestRange(mass, fsd, fuel) {
   let fsdMaxFuelPerJump = fsd instanceof Module ? fsd.getMaxFuelPerJump() : fsd.maxfuel;
-  let fsdOptimalMass = fsd instanceof Module ? fsd.getOptimalMass() : fsd.optmass;
+  let fsdOptimalMass = fsd instanceof Module ? fsd.getOptMass() : fsd.optmass;
   let fuelRemaining = fuel % fsdMaxFuelPerJump;  // Fuel left after making N max jumps
   let jumps = Math.floor(fuel / fsdMaxFuelPerJump);
   mass += fuelRemaining;
