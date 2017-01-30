@@ -407,7 +407,7 @@ export default class OutfittingPage extends Page {
         </div>
 
         <div>
-          <DamageDealt ship={ship} code={code} currentMenu={menu}/>
+          <DamageDealt ship={ship} code={code} chartWidth={chartWidth} currentMenu={menu}/>
         </div>
 
         <div>
