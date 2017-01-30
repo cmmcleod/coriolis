@@ -426,6 +426,7 @@ export default class Ship {
         .recalculateDps()
         .recalculateEps()
         .recalculateHps()
+        .recalculateTtd()
         .updateMovement();
   }
 
@@ -497,11 +498,15 @@ export default class Ship {
       this.recalculateDps();
       this.recalculateHps();
       this.recalculateEps();
+      this.recalculateTtd();
     } else if (name === 'explres' || name === 'kinres' || name === 'thermres') {
       m.setModValue(name, value, sentfromui);
       // Could be for shields or armour
       this.recalculateArmour();
       this.recalculateShield();
+    } else if (name === 'wepcap' || name === 'weprate') {
+      m.setModValue(name, value, sentfromui);
+      this.recalculateTtd();
     } else {
       // Generic
       m.setModValue(name, value, sentfromui);
@@ -634,6 +639,7 @@ export default class Ship {
           .recalculateDps()
           .recalculateEps()
           .recalculateHps()
+          .recalculateTtd()
           .updateMovement();
     }
 
@@ -815,6 +821,7 @@ export default class Ship {
 
         if (slot.m.getEps()) {
           this.recalculateEps();
+          this.recalculateTtd();
         }
       }
     }
@@ -851,6 +858,7 @@ export default class Ship {
    */
   updateStats(slot, n, old, preventUpdate) {
     let powerGeneratedChange = slot == this.standard[0];
+    let powerDistributorChange = slot == this.standard[4];
     let powerUsedChange = false;
     let dpsChanged = n && n.getDps() || old && old.getDps();
     let epsChanged = n && n.getEps() || old && old.getEps();
@@ -919,6 +927,9 @@ export default class Ship {
       if (powerGeneratedChange) {
         this.updatePowerGenerated();
       }
+      if (powerDistributorChange) {
+        this.recalculateTtd();
+      }
       if (powerUsedChange) {
         this.updatePowerUsed();
       }
@@ -957,7 +968,34 @@ export default class Ship {
   }
 
   /**
-   * Calculate damage per second for weapons
+   * Calculate time to drain WEP capacitor
+   * @return {this} The ship instance (for chaining operations)
+   */
+  recalculateTtd() {
+    let totalSEps = 0;
+
+    for (let slotNum in this.hardpoints) {
+      const slot = this.hardpoints[slotNum];
+      if (slot.m && slot.enabled && slot.type === 'WEP' && slot.m.getDps()) {
+        totalSEps += slot.m.getClip() ? (slot.m.getClip() * slot.m.getEps() / slot.m.getRoF()) / ((slot.m.getClip() / slot.m.getRoF()) + slot.m.getReload()) : slot.m.getEps();
+      }
+    }
+
+    // Calculate the drain time
+    const drainPerSecond = totalSEps - this.standard[4].m.getWeaponsRechargeRate();
+    if (drainPerSecond <= 0) {
+      // Can fire forever
+      this.timeToDrain = Infinity;
+    } else {
+      const initialCharge = this.standard[4].m.getWeaponsCapacity();
+      this.timeToDrain = initialCharge / drainPerSecond;
+    }
+
+    return this;
+  }
+
+  /**
+   * Calculate damage per second and related items for weapons
    * @return {this} The ship instance (for chaining operations)
    */
   recalculateDps() {
@@ -979,7 +1017,7 @@ export default class Ship {
 
     for (let slotNum in this.hardpoints) {
       const slot = this.hardpoints[slotNum];
-      if (slot.m && slot.enabled && slot.m.getDps()) {
+      if (slot.m && slot.enabled && slot.type === 'WEP' && slot.m.getDps()) {
         const dpe = slot.m.getEps() === 0 ? 0 : slot.m.getDps() / slot.m.getEps();
         const dps = slot.m.getDps();
         const sdps = slot.m.getClip() ? (slot.m.getClip() * slot.m.getDps() / slot.m.getRoF()) / ((slot.m.getClip() / slot.m.getRoF()) + slot.m.getReload()) : dps;
@@ -1040,7 +1078,7 @@ export default class Ship {
 
     for (let slotNum in this.hardpoints) {
       const slot = this.hardpoints[slotNum];
-      if (slot.m && slot.enabled && slot.m.getHps()) {
+      if (slot.m && slot.enabled && slot.type === 'WEP' && slot.m.getHps()) {
         totalHps += slot.m.getHps();
       }
     }
@@ -1058,7 +1096,7 @@ export default class Ship {
 
     for (let slotNum in this.hardpoints) {
       const slot = this.hardpoints[slotNum];
-      if (slot.m && slot.enabled && slot.m.getEps()) {
+      if (slot.m && slot.enabled && slot.m.getEps() && slot.type === 'WEP') {
         totalEps += slot.m.getEps();
       }
     }

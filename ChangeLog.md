@@ -1,3 +1,7 @@
+#2.2.13
+  * Add 'time to drain' summary value.  This is the time to drain the WEP capacitor if firing all enabled weapons
+  * Do not include utility slot DPS/EPS/HPS in summary information
+
 #2.2.12
   * Tidy up old references to coriolis.io
   * Add ability to add and remove special effects to weapon modifications
