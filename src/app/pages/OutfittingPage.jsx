@@ -239,7 +239,8 @@ export default class OutfittingPage extends Page {
 
     if (elem) {
       this.setState({
-        chartWidth: findDOMNode(this.refs.chartThird).offsetWidth
+        thirdChartWidth: findDOMNode(this.refs.chartThird).offsetWidth,
+        halfChartWidth: findDOMNode(this.refs.chartHalf).offsetWidth
       });
     }
   }
@@ -322,7 +323,7 @@ export default class OutfittingPage extends Page {
     let state = this.state,
         { language, termtip, tooltip, sizeRatio, onWindowResize } = this.context,
         { translate, units, formats } = language,
-        { ship, code, savedCode, buildName, newBuildName, chartWidth, fuelCapacity, fuelLevel } = state,
+        { ship, code, savedCode, buildName, newBuildName, halfChartWidth, thirdChartWidth, fuelCapacity, fuelLevel } = state,
         hide = tooltip.bind(null, null),
         menu = this.props.currentMenu,
         shipUpdated = this._shipUpdated,
@@ -385,10 +386,13 @@ export default class OutfittingPage extends Page {
           <MovementSummary ship={ship} code={code}/>
         </div>
 
+        <div ref='chartHalf' className='group half' />
+        <div className='group half' />
+
         <div ref='chartThird' className='group third'>
           <h1>{translate('jump range')}</h1>
           <LineChart
-            width={chartWidth}
+            width={thirdChartWidth}
             xMax={ship.cargoCapacity}
             yMax={ship.unladenRange}
             xUnit={translate('T')}
@@ -423,7 +427,7 @@ export default class OutfittingPage extends Page {
         </div>
 
         <div>
-          <DamageDealt ship={ship} code={code} chartWidth={chartWidth} currentMenu={menu}/>
+          <DamageDealt ship={ship} code={code} chartWidth={halfChartWidth} currentMenu={menu}/>
         </div>
 
         <div>
