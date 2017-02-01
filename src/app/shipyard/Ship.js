@@ -463,7 +463,6 @@ export default class Ship {
       this.updatePowerUsed();
     } else if (name === 'mass') {
       // Mass
-      //let oldMass = m.getMass();
       m.setModValue(name, value, sentfromui);
       this.recalculateMass();
       this.updateMovement();
@@ -1154,13 +1153,15 @@ export default class Ship {
     let cargoCapacity = 0;
     let fuelCapacity = 0;
 
+    unladenMass += this.bulkheads.m.getMass();
+
     for (let slotNum in this.standard) {
       const slot = this.standard[slotNum];
       if (slot.m) {
         unladenMass += slot.m.getMass();
         if (slot.m.grp === 'ft') {
           fuelCapacity += slot.m.fuel;
-	}
+        }
       }
     }
 
@@ -1170,9 +1171,9 @@ export default class Ship {
         unladenMass += slot.m.getMass();
         if (slot.m.grp === 'ft') {
           fuelCapacity += slot.m.fuel;
-	} else if (slot.m.grp === 'cr') {
+        } else if (slot.m.grp === 'cr') {
           cargoCapacity += slot.m.cargo;
-	}
+        }
       }
     }
 
