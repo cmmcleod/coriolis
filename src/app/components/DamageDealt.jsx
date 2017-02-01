@@ -7,7 +7,7 @@ import { CollapseSection, ExpandSection, MountFixed, MountGimballed, MountTurret
 import LineChart from '../components/LineChart';
 import Slider from '../components/Slider';
 
-const DAMAGE_DEALT_COLORS = ['#0088d2', '#ff8c0d', '#D26D00', '#c06400'];
+const DAMAGE_DEALT_COLORS = ['#FFFFFF', '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#777777'];
 
 /**
  * Generates an internationalization friendly weapon comparator that will
@@ -60,7 +60,7 @@ export default class DamageDealt extends TranslatedComponent {
    * Constructor
    * @param  {Object} props   React Component properties
    */
-  constructor(props) {
+  constructor(props, context) {
     super(props);
 
     this._sort = this._sort.bind(this);
@@ -72,7 +72,7 @@ export default class DamageDealt extends TranslatedComponent {
     const range = 0.1667;
     const maxRange = 6000;
     const maxDps = this._calcMaxDps(ship, against)
-    const weaponNames = this._weaponNames(ship);
+    const weaponNames = this._weaponNames(ship, context);
 
     this.state = {
       predicate: 'n',
@@ -83,7 +83,7 @@ export default class DamageDealt extends TranslatedComponent {
       maxRange,
       maxDps,
       weaponNames,
-      calcDpsFunc: this._calcDps.bind(this, ship, against)
+      calcDpsFunc: this._calcDps.bind(this, context, ship, weaponNames, against)
     };
   }
 
@@ -91,7 +91,7 @@ export default class DamageDealt extends TranslatedComponent {
    * Set the initial weapons state
    */
   componentWillMount() {
-    const data = this._calcWeapons(this.props.ship, this.state.against, this.state.range * this.state.maxRange);
+    const data = this._calcWeaponsDps(this.props.ship, this.state.against, this.state.range * this.state.maxRange);
     this.setState({ weapons: data.weapons, totals: data.totals });
   }
 
@@ -103,12 +103,12 @@ export default class DamageDealt extends TranslatedComponent {
    */
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.code != this.props.code) {
-      const data = this._calcWeapons(nextProps.ship, this.state.against, this.state.range * this.state.maxRange);
-      const weaponNames = this._weaponNames(nextProps.ship);
+      const data = this._calcWeaponsDps(nextProps.ship, this.state.against, this.state.range * this.state.maxRange);
+      const weaponNames = this._weaponNames(nextProps.ship, nextContext);
       this.setState({ weapons: data.weapons,
                       totals: data.totals,
                       weaponNames,
-                      calcDpsFunc: this._calcDps.bind(this, nextProps.ship, this.state.against) });
+                      calcDpsFunc: this._calcDps.bind(this, nextContext, nextProps.ship, this.state.weaponNames, this.state.against) });
     }
     return true;
   }
@@ -140,13 +140,13 @@ export default class DamageDealt extends TranslatedComponent {
    * @param  {Object}  range    The engagement range
    * @return {array}            The array of weapon DPS
    */
-  _calcDps(ship, against, range) {
+  _calcDps(context, ship, weaponNames, against, range) {
     let results = {}
-    for (let i =0; i < ship.hardpoints.length; i++) {
+    let weaponNum = 0;
+    for (let i = 0; i < ship.hardpoints.length; i++) {
       if (ship.hardpoints[i].m && ship.hardpoints[i].enabled) {
         const m = ship.hardpoints[i].m;
-        const thisDps = m.getDps() * (m.getPiercing() >= against.properties.hardness ? 1 : m.getPiercing() / against.properties.hardness);
-        results[i] = thisDps;
+        results[weaponNames[weaponNum++]] = this._calcWeaponDps(context, m, against, range);
       }
     }
     return results;
@@ -157,13 +157,14 @@ export default class DamageDealt extends TranslatedComponent {
    * @param  {Object}  ship  The ship
    * @return {array}         The weapon names
    */
-  _weaponNames(ship) {
+  _weaponNames(ship, context) {
+    const translate = context.language.translate
     let names = [];
+    let num = 1;
     for (let i =0; i < ship.hardpoints.length; i++) {
       if (ship.hardpoints[i].m && ship.hardpoints[i].enabled) {
         const m = ship.hardpoints[i].m;
-        // TODO translate
-        let name = m.class + m.rating + (m.missile ? '/' + m.missile : '') + ' ' + (m.name || m.grp);
+        let name = '' + num++ + ': ' + m.class + m.rating + (m.missile ? '/' + m.missile : '') + ' ' + translate(m.name || m.grp);
         let engineering;
         if (m.blueprint && m.blueprint.name) {
           engineering = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
@@ -181,6 +182,41 @@ export default class DamageDealt extends TranslatedComponent {
   }
 
 
+  _calcWeaponDps(context, m, against, range) {
+    const translate = context.language.translate
+    let dropoff = 1;
+    if (m.getFalloff()) {
+      // Calculate the dropoff % due to range
+      if (range > m.getRange()) {
+        // Weapon is out of range
+        dropoff = 0;
+      } else {
+        const falloff = m.getFalloff();
+        if (range > falloff) {
+          const dropoffRange = m.getRange() - falloff;
+          // Assuming straight-line falloff
+          dropoff = 1 - (range - falloff) / dropoffRange;
+        }
+      }
+    }
+    const classRating = `${m.class}${m.rating}${m.missile ? '/' + m.missile : ''}`;
+    let engineering;
+    if (m.blueprint && m.blueprint.name) {
+      engineering = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
+      if (m.blueprint.special && m.blueprint.special.id) {
+        engineering += ', ' + translate(m.blueprint.special.name);
+      }
+    }
+    const effectivenessShields = dropoff;
+    const effectiveDpsShields = m.getDps() * effectivenessShields;
+    const effectiveSDpsShields = (m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) * effectivenessShields : effectiveDpsShields);
+    const effectivenessHull = (m.getPiercing() >= against.properties.hardness ? 1 : m.getPiercing() / against.properties.hardness) * dropoff;
+    const effectiveDpsHull = m.getDps() * effectivenessHull;
+    const effectiveSDpsHull = (m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) * effectivenessHull : effectiveDpsHull);
+
+    return effectiveSDpsHull;
+  }
+
   /**
    * Calculate the damage dealt by a ship
    * @param  {Object} ship        The ship which will deal the damage 
@@ -188,7 +224,7 @@ export default class DamageDealt extends TranslatedComponent {
    * @param  {Object} range       The engagement range
    * @return {boolean}            Returns the per-weapon damage
    */
-  _calcWeapons(ship, against, range) {
+  _calcWeaponsDps(ship, against, range) {
     const translate = this.context.language.translate;
 
     // Tidy up the range so that it's to 4 decimal places
@@ -244,7 +280,6 @@ export default class DamageDealt extends TranslatedComponent {
           totals.effectiveSDpsHull += effectiveSDpsHull;
           totalDps += m.getDps();
 
-
           weapons.push({ id: i,
                          mount: m.mount,
                          name: m.name || m.grp,
@@ -278,13 +313,13 @@ export default class DamageDealt extends TranslatedComponent {
    */
   _onShipChange(s) {
     const against = Ships[s];
-    const data = this._calcWeapons(this.props.ship, against, this.state.range * this.state.maxRange);
+    const data = this._calcWeaponsDps(this.props.ship, against, this.state.range * this.state.maxRange);
     const maxDps = this._calcMaxDps(this.props.ship, against)
     this.setState({ against,
                     weapons: data.weapons,
                     totals: data.totals,
                     maxDps,
-                    calcDpsFunc: this.props.ship.calcDps.bind(this, this.props.ship, against) });
+                    calcDpsFunc: this._calcDps.bind(this, this.context, this.props.ship, this.state.weaponNames, against) });
   }
 
   /**
@@ -368,11 +403,11 @@ export default class DamageDealt extends TranslatedComponent {
    * @param  {number} range Range 0-1
    */
   _rangeChange(range) {
-    const data = this._calcWeapons(this.props.ship, this.state.against, this.state.range * this.state.maxRange);
+    const data = this._calcWeaponsDps(this.props.ship, this.state.against, this.state.range * this.state.maxRange);
     this.setState({ range,
                     weapons: data.weapons,
                     totals: data.totals,
-                    calcDpsFunc: this.props.ship.calcDps.bind(this, this.props.ship, against) });
+                    calcDpsFunc: this.props.ship.calcDps.bind(this, this.props.ship, this.state.weaponNames, against) });
   }
 
   /**
@@ -446,7 +481,22 @@ export default class DamageDealt extends TranslatedComponent {
           </tbody>
         </table>
         <div className='group half'>
-          <h1>{translate('damage')}</h1>
+          <h1>{translate('damage against shields')}</h1>
+          <LineChart
+            width={this.props.chartWidth}
+            xMax={6000}
+            yMax={this.state.maxDps}
+            xLabel={translate('distance')}
+            xUnit={translate('m')}
+            yLabel={translate('damage')}
+            yUnit={translate('ps')}
+            series={this.state.weaponNames}
+            colors={DAMAGE_DEALT_COLORS}
+            func={this.state.calcDpsFunc}
+          />
+        </div>
+        <div className='group half'>
+          <h1>{translate('damage against hull')}</h1>
           <LineChart
             width={this.props.chartWidth}
             xMax={6000}
