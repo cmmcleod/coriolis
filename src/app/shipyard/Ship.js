@@ -889,8 +889,9 @@ export default class Ship {
       }
     }
 
-    this.recalculateMass();
     if (!preventUpdate) {
+      // Must recalculate mass first, as movement, jump etc. relies on it
+      this.recalculateMass();
       if (dpsChanged) {
         this.recalculateDps();
       }
