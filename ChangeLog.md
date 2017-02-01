@@ -1,6 +1,8 @@
 #2.2.13
   * Add 'time to drain' summary value.  This is the time to drain the WEP capacitor if firing all enabled weapons
   * Do not include utility slot DPS/EPS/HPS in summary information
+  * Ensure that auto loader special shows in the tooltip
+  * Ensure that ship mass is recalculated when appropriate
 
 #2.2.12
   * Tidy up old references to coriolis.io

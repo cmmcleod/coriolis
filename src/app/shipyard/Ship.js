@@ -419,6 +419,7 @@ export default class Ship {
     m.mods = {};
     this.updatePowerGenerated()
         .updatePowerUsed()
+        .recalculateMass()
         .updateJumpStats()
         .recalculateShield()
         .recalculateShieldCells()
@@ -462,11 +463,9 @@ export default class Ship {
       this.updatePowerUsed();
     } else if (name === 'mass') {
       // Mass
-      let oldMass = m.getMass();
+      //let oldMass = m.getMass();
       m.setModValue(name, value, sentfromui);
-      let newMass = m.getMass();
-      this.unladenMass = this.unladenMass - oldMass + newMass;
-      this.ladenMass = this.ladenMass - oldMass + newMass;
+      this.recalculateMass();
       this.updateMovement();
       this.updateJumpStats();
     } else if (name === 'maxfuel') {
@@ -632,6 +631,7 @@ export default class Ship {
     if (comps) {
       this.updatePowerGenerated()
           .updatePowerUsed()
+          .recalculateMass()
           .updateJumpStats()
           .recalculateShield()
           .recalculateShieldCells()
@@ -871,15 +871,6 @@ export default class Ship {
     let shieldCellsChange = (n && n.grp === 'scb') || (old && old.grp === 'scb');
 
     if (old) {  // Old modul now being removed
-      switch (old.grp) {
-        case 'ft':
-          this.fuelCapacity -= old.fuel;
-          break;
-        case 'cr':
-          this.cargoCapacity -= old.cargo;
-          break;
-      }
-
       if (slot.incCost && old.cost) {
         this.totalCost -= old.cost * this.moduleCostMultiplier;
       }
@@ -887,20 +878,9 @@ export default class Ship {
       if (old.getPowerUsage() > 0 && slot.enabled) {
         powerUsedChange = true;
       }
-
-      this.unladenMass -= old.getMass() || 0;
     }
 
     if (n) {
-      switch (n.grp) {
-        case 'ft':
-          this.fuelCapacity += n.fuel;
-          break;
-        case 'cr':
-          this.cargoCapacity += n.cargo;
-          break;
-      }
-
       if (slot.incCost && n.cost) {
         this.totalCost += n.cost * this.moduleCostMultiplier;
       }
@@ -908,12 +888,9 @@ export default class Ship {
       if (n.power && slot.enabled) {
         powerUsedChange = true;
       }
-
-      this.unladenMass += n.getMass() || 0;
     }
 
-    this.ladenMass = this.unladenMass + this.cargoCapacity + this.fuelCapacity;
-
+    this.recalculateMass();
     if (!preventUpdate) {
       if (dpsChanged) {
         this.recalculateDps();
@@ -1164,6 +1141,53 @@ export default class Ship {
     this.powerRetracted = prevRetracted;
     this.powerDeployed = prevDeployed;
     this.priorityBands = bands;
+
+    return this;
+  }
+
+  /**
+   * Eecalculate mass
+   * @return {this} The ship instance (for chaining operations)
+   */
+  recalculateMass() {
+    let unladenMass = this.hullMass;
+    let cargoCapacity = 0;
+    let fuelCapacity = 0;
+
+    for (let slotNum in this.standard) {
+      const slot = this.standard[slotNum];
+      if (slot.m) {
+        unladenMass += slot.m.getMass();
+        if (slot.m.grp === 'ft') {
+          fuelCapacity += slot.m.fuel;
+	}
+      }
+    }
+
+    for (let slotNum in this.internal) {
+      const slot = this.internal[slotNum];
+      if (slot.m) {
+        unladenMass += slot.m.getMass();
+        if (slot.m.grp === 'ft') {
+          fuelCapacity += slot.m.fuel;
+	} else if (slot.m.grp === 'cr') {
+          cargoCapacity += slot.m.cargo;
+	}
+      }
+    }
+
+    for (let slotNum in this.hardpoints) {
+      const slot = this.hardpoints[slotNum];
+      if (slot.m) {
+        unladenMass += slot.m.getMass();
+      }
+    }
+
+    // Update global stats
+    this.unladenMass = unladenMass;
+    this.cargoCapacity = cargoCapacity;
+    this.fuelCapacity = fuelCapacity;
+    this.ladenMass = unladenMass + fuelCapacity + cargoCapacity;
 
     return this;
   }
