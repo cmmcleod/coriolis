@@ -142,7 +142,7 @@ export default class DamageDealt extends TranslatedComponent {
           let engineering;
           if (m.blueprint && m.blueprint.name) {
             engineering = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
-            if (m.blueprint.special && m.blueprint.special.id) {
+            if (m.blueprint.special && m.blueprint.special.id >= 0) {
               engineering += ', ' + translate(m.blueprint.special.name);
             }
           }
