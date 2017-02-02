@@ -48,7 +48,7 @@ export default class HardpointSlot extends Slot {
       let modTT = translate('modified');
       if (m && m.blueprint && m.blueprint.name) {
         modTT = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
-        if (m.blueprint.special && m.blueprint.special.id) {
+        if (m.blueprint.special && m.blueprint.special.id >= 0) {
           modTT += ', ' + translate(m.blueprint.special.name);
         }
       }
