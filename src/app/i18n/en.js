@@ -215,6 +215,8 @@ Along the top of the screen are some of the key values for your build.  This is 
 
 Here, along with most places in Coriolis, acronyms will have tooltips explaining what they mean.  Hover over the acronym to obtain more detail, or look in the glossary at the end of this help.</p>
 
+All values are the highest possible, assuming that you have maximum pips in the relevant capacitor (ENG for speed, WEP for time to drain, etc.).</p>
+
 <h2>Modules</h2>
 The next set of panels laid out horizontally across the screen contain the modules you have put in your build.  From left to right these are the core modules, the internal modules, the hardpoints and the utility mounts.  These represent the available slots in your ship and cannot be altered.  Each slot has a class, or size, and in general any module up to a given size can fit in a given slot (exceptions being bulkheads, life support and sensors in core modules and restricted internal slots, which can only take a subset of module depending on their restrictions). </p>
 

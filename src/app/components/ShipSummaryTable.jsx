@@ -42,10 +42,11 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !ship.canBoost() }) }>{translate('boost')}</th>
             <th onMouseEnter={termtip.bind(null, 'damage per second')} onMouseLeave={hide} rowSpan={2}>{translate('DPS')}</th>
             <th onMouseEnter={termtip.bind(null, 'energy per second')} onMouseLeave={hide} rowSpan={2}>{translate('EPS')}</th>
+            <th onMouseEnter={termtip.bind(null, 'time to drain WEP capacitor')} onMouseLeave={hide} rowSpan={2}>{translate('TTD')}</th>
             <th onMouseEnter={termtip.bind(null, 'heat per second')} onMouseLeave={hide} rowSpan={2}>{translate('HPS')}</th>
-            <th rowSpan={2}>{translate('hardness')}</th>
-            <th rowSpan={2}>{translate('armour')}</th>
-            <th rowSpan={2}>{translate('shields')}</th>
+            <th onMouseEnter={termtip.bind(null, 'hull hardness')} onMouseLeave={hide} rowSpan={2}>{translate('hrd')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour')} onMouseLeave={hide} rowSpan={2}>{translate('arm')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shields')} onMouseLeave={hide} rowSpan={2}>{translate('shld')}</th>
             <th colSpan={3}>{translate('mass')}</th>
             <th rowSpan={2}>{translate('cargo')}</th>
             <th rowSpan={2}>{translate('fuel')}</th>
@@ -71,6 +72,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{ ship.canBoost() ? <span>{int(ship.topBoost)} {u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
             <td>{f1(ship.totalDps)}</td>
             <td>{f1(ship.totalEps)}</td>
+            <td>{ship.timeToDrain === Infinity ? '∞' : time(ship.timeToDrain)}</td>
             <td>{f1(ship.totalHps)}</td>
             <td>{int(ship.hardness)}</td>
             <td>{int(ship.armour)}</td>

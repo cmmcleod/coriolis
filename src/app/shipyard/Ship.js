@@ -419,6 +419,7 @@ export default class Ship {
     m.mods = {};
     this.updatePowerGenerated()
         .updatePowerUsed()
+        .recalculateMass()
         .updateJumpStats()
         .recalculateShield()
         .recalculateShieldCells()
@@ -426,6 +427,7 @@ export default class Ship {
         .recalculateDps()
         .recalculateEps()
         .recalculateHps()
+        .recalculateTtd()
         .updateMovement();
   }
 
@@ -461,11 +463,8 @@ export default class Ship {
       this.updatePowerUsed();
     } else if (name === 'mass') {
       // Mass
-      let oldMass = m.getMass();
       m.setModValue(name, value, sentfromui);
-      let newMass = m.getMass();
-      this.unladenMass = this.unladenMass - oldMass + newMass;
-      this.ladenMass = this.ladenMass - oldMass + newMass;
+      this.recalculateMass();
       this.updateMovement();
       this.updateJumpStats();
     } else if (name === 'maxfuel') {
@@ -497,11 +496,15 @@ export default class Ship {
       this.recalculateDps();
       this.recalculateHps();
       this.recalculateEps();
+      this.recalculateTtd();
     } else if (name === 'explres' || name === 'kinres' || name === 'thermres') {
       m.setModValue(name, value, sentfromui);
       // Could be for shields or armour
       this.recalculateArmour();
       this.recalculateShield();
+    } else if (name === 'wepcap' || name === 'weprate') {
+      m.setModValue(name, value, sentfromui);
+      this.recalculateTtd();
     } else {
       // Generic
       m.setModValue(name, value, sentfromui);
@@ -627,6 +630,7 @@ export default class Ship {
     if (comps) {
       this.updatePowerGenerated()
           .updatePowerUsed()
+          .recalculateMass()
           .updateJumpStats()
           .recalculateShield()
           .recalculateShieldCells()
@@ -634,6 +638,7 @@ export default class Ship {
           .recalculateDps()
           .recalculateEps()
           .recalculateHps()
+          .recalculateTtd()
           .updateMovement();
     }
 
@@ -815,6 +820,7 @@ export default class Ship {
 
         if (slot.m.getEps()) {
           this.recalculateEps();
+          this.recalculateTtd();
         }
       }
     }
@@ -851,6 +857,7 @@ export default class Ship {
    */
   updateStats(slot, n, old, preventUpdate) {
     let powerGeneratedChange = slot == this.standard[0];
+    let powerDistributorChange = slot == this.standard[4];
     let powerUsedChange = false;
     let dpsChanged = n && n.getDps() || old && old.getDps();
     let epsChanged = n && n.getEps() || old && old.getEps();
@@ -863,15 +870,6 @@ export default class Ship {
     let shieldCellsChange = (n && n.grp === 'scb') || (old && old.grp === 'scb');
 
     if (old) {  // Old modul now being removed
-      switch (old.grp) {
-        case 'ft':
-          this.fuelCapacity -= old.fuel;
-          break;
-        case 'cr':
-          this.cargoCapacity -= old.cargo;
-          break;
-      }
-
       if (slot.incCost && old.cost) {
         this.totalCost -= old.cost * this.moduleCostMultiplier;
       }
@@ -879,20 +877,9 @@ export default class Ship {
       if (old.getPowerUsage() > 0 && slot.enabled) {
         powerUsedChange = true;
       }
-
-      this.unladenMass -= old.getMass() || 0;
     }
 
     if (n) {
-      switch (n.grp) {
-        case 'ft':
-          this.fuelCapacity += n.fuel;
-          break;
-        case 'cr':
-          this.cargoCapacity += n.cargo;
-          break;
-      }
-
       if (slot.incCost && n.cost) {
         this.totalCost += n.cost * this.moduleCostMultiplier;
       }
@@ -900,13 +887,11 @@ export default class Ship {
       if (n.power && slot.enabled) {
         powerUsedChange = true;
       }
-
-      this.unladenMass += n.getMass() || 0;
     }
 
-    this.ladenMass = this.unladenMass + this.cargoCapacity + this.fuelCapacity;
-
     if (!preventUpdate) {
+      // Must recalculate mass first, as movement, jump etc. relies on it
+      this.recalculateMass();
       if (dpsChanged) {
         this.recalculateDps();
       }
@@ -918,6 +903,9 @@ export default class Ship {
       }
       if (powerGeneratedChange) {
         this.updatePowerGenerated();
+      }
+      if (powerDistributorChange) {
+        this.recalculateTtd();
       }
       if (powerUsedChange) {
         this.updatePowerUsed();
@@ -957,7 +945,34 @@ export default class Ship {
   }
 
   /**
-   * Calculate damage per second for weapons
+   * Calculate time to drain WEP capacitor
+   * @return {this} The ship instance (for chaining operations)
+   */
+  recalculateTtd() {
+    let totalSEps = 0;
+
+    for (let slotNum in this.hardpoints) {
+      const slot = this.hardpoints[slotNum];
+      if (slot.m && slot.enabled && slot.type === 'WEP' && slot.m.getDps()) {
+        totalSEps += slot.m.getClip() ? (slot.m.getClip() * slot.m.getEps() / slot.m.getRoF()) / ((slot.m.getClip() / slot.m.getRoF()) + slot.m.getReload()) : slot.m.getEps();
+      }
+    }
+
+    // Calculate the drain time
+    const drainPerSecond = totalSEps - this.standard[4].m.getWeaponsRechargeRate();
+    if (drainPerSecond <= 0) {
+      // Can fire forever
+      this.timeToDrain = Infinity;
+    } else {
+      const initialCharge = this.standard[4].m.getWeaponsCapacity();
+      this.timeToDrain = initialCharge / drainPerSecond;
+    }
+
+    return this;
+  }
+
+  /**
+   * Calculate damage per second and related items for weapons
    * @return {this} The ship instance (for chaining operations)
    */
   recalculateDps() {
@@ -979,7 +994,7 @@ export default class Ship {
 
     for (let slotNum in this.hardpoints) {
       const slot = this.hardpoints[slotNum];
-      if (slot.m && slot.enabled && slot.m.getDps()) {
+      if (slot.m && slot.enabled && slot.type === 'WEP' && slot.m.getDps()) {
         const dpe = slot.m.getEps() === 0 ? 0 : slot.m.getDps() / slot.m.getEps();
         const dps = slot.m.getDps();
         const sdps = slot.m.getClip() ? (slot.m.getClip() * slot.m.getDps() / slot.m.getRoF()) / ((slot.m.getClip() / slot.m.getRoF()) + slot.m.getReload()) : dps;
@@ -1040,7 +1055,7 @@ export default class Ship {
 
     for (let slotNum in this.hardpoints) {
       const slot = this.hardpoints[slotNum];
-      if (slot.m && slot.enabled && slot.m.getHps()) {
+      if (slot.m && slot.enabled && slot.type === 'WEP' && slot.m.getHps()) {
         totalHps += slot.m.getHps();
       }
     }
@@ -1058,7 +1073,7 @@ export default class Ship {
 
     for (let slotNum in this.hardpoints) {
       const slot = this.hardpoints[slotNum];
-      if (slot.m && slot.enabled && slot.m.getEps()) {
+      if (slot.m && slot.enabled && slot.m.getEps() && slot.type === 'WEP') {
         totalEps += slot.m.getEps();
       }
     }
@@ -1126,6 +1141,55 @@ export default class Ship {
     this.powerRetracted = prevRetracted;
     this.powerDeployed = prevDeployed;
     this.priorityBands = bands;
+
+    return this;
+  }
+
+  /**
+   * Eecalculate mass
+   * @return {this} The ship instance (for chaining operations)
+   */
+  recalculateMass() {
+    let unladenMass = this.hullMass;
+    let cargoCapacity = 0;
+    let fuelCapacity = 0;
+
+    unladenMass += this.bulkheads.m.getMass();
+
+    for (let slotNum in this.standard) {
+      const slot = this.standard[slotNum];
+      if (slot.m) {
+        unladenMass += slot.m.getMass();
+        if (slot.m.grp === 'ft') {
+          fuelCapacity += slot.m.fuel;
+        }
+      }
+    }
+
+    for (let slotNum in this.internal) {
+      const slot = this.internal[slotNum];
+      if (slot.m) {
+        unladenMass += slot.m.getMass();
+        if (slot.m.grp === 'ft') {
+          fuelCapacity += slot.m.fuel;
+        } else if (slot.m.grp === 'cr') {
+          cargoCapacity += slot.m.cargo;
+        }
+      }
+    }
+
+    for (let slotNum in this.hardpoints) {
+      const slot = this.hardpoints[slotNum];
+      if (slot.m) {
+        unladenMass += slot.m.getMass();
+      }
+    }
+
+    // Update global stats
+    this.unladenMass = unladenMass;
+    this.cargoCapacity = cargoCapacity;
+    this.fuelCapacity = fuelCapacity;
+    this.ladenMass = unladenMass + fuelCapacity + cargoCapacity;
 
     return this;
   }
