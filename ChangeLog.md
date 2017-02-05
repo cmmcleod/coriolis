@@ -1,3 +1,7 @@
+#2.2.14
+  * Ensure that jitter is shown correctly when the result of a special effect
+  * Use restyled blueprint information
+
 #2.2.13
   * Add 'time to drain' summary value.  This is the time to drain the WEP capacitor if firing all enabled weapons
   * Do not include utility slot DPS/EPS/HPS in summary information

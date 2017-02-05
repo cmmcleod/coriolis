@@ -60,7 +60,8 @@ export default class Module {
           } else {
             mod = modifierActions[name];
           }
-          result = (((1 + result / 10000) * (1 + mod)) - 1) * 10000;
+          const multiplier = modification.type === 'percentage' ? 10000 : 100;
+          result = (((1 + result / multiplier) * (1 + mod)) - 1) * multiplier;
         }
       }
     }

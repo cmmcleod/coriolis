@@ -152,7 +152,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollWorst() {
     const { m, ship } = this.props;
-    const features = m.blueprint.features[m.blueprint.grade];
+    const features = m.blueprint.grades[m.blueprint.grade].features;
     for (const featureName in features) {
       if (Modifications.modifications[featureName].method == 'overwrite') {
         ship.setModification(m, featureName, features[featureName][1]);
@@ -180,7 +180,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollAverage() {
     const { m, ship } = this.props;
-    const features = m.blueprint.features[m.blueprint.grade];
+    const features = m.blueprint.grades[m.blueprint.grade].features;
     for (const featureName in features) {
       if (Modifications.modifications[featureName].method == 'overwrite') {
         ship.setModification(m, featureName, (features[featureName][0] + features[featureName][1]) / 2);
@@ -208,7 +208,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollRandom() {
     const { m, ship } = this.props;
-    const features = m.blueprint.features[m.blueprint.grade];
+    const features = m.blueprint.grades[m.blueprint.grade].features;
     for (const featureName in features) {
       if (Modifications.modifications[featureName].method == 'overwrite') {
         ship.setModification(m, featureName, features[featureName][1]);
@@ -236,7 +236,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollBest() {
     const { m, ship } = this.props;
-    const features = m.blueprint.features[m.blueprint.grade];
+    const features = m.blueprint.grades[m.blueprint.grade].features;
     for (const featureName in features) {
       if (Modifications.modifications[featureName].method == 'overwrite') {
         ship.setModification(m, featureName, features[featureName][1]);
