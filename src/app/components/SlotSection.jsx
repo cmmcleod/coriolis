@@ -64,7 +64,7 @@ export default class SlotSection extends TranslatedComponent {
    * @param  {Object} m    Selected module
    */
   _selectModule(slot, m) {
-    this.props.ship.use(slot, m);
+    this.props.ship.use(slot, m, false);
     this.props.onChange();
     this._close();
   }
@@ -123,7 +123,7 @@ export default class SlotSection extends TranslatedComponent {
       // We want to copy the module in to the target slot
       if (targetSlot && canMount(this.props.ship, targetSlot, m.grp, m.class)) {
         const mCopy = m.clone();
-        this.props.ship.use(targetSlot, mCopy);
+        this.props.ship.use(targetSlot, mCopy, false);
         this.props.onChange();
       }
     } else {

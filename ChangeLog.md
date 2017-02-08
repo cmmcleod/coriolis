@@ -1,3 +1,6 @@
+#2.2.15
+  * Ensure that standard slots are repainted when any component changes
+
 #2.2.14
   * Ensure that jitter is shown correctly when the result of a special effect
   * Use restyled blueprint information
