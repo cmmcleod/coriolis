@@ -36,7 +36,7 @@ const SPEED_COLORS = ['#0088d2', '#ff8c0d', '#D26D00', '#c06400'];
  * @return {String}           Document title
  */
 function getTitle(shipName, buildName) {
-  return `${shipName}${buildName ? ` - ${buildName}` : ''}`;
+  return buildName ? buildName : shipName;
 }
 
 /**

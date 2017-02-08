@@ -87,7 +87,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     const { m, onChange, ship } = props;
     let modifications = [];
     for (const modName of Modifications.modules[m.grp].modifications) {
-      if (Modifications.modifications[modName].type === 'percentage' || Modifications.modifications[modName].type === 'numeric') {
+      if (!Modifications.modifications[modName].hidden) {
         const key = modName + (m.getModValue(modName) / 100 || 0);
         modifications.push(<Modification key={ key } ship={ ship } m={ m } name={ modName } value={ m.getModValue(modName) / 100 || 0 } onChange={ onChange }/>);
       }
@@ -148,29 +148,39 @@ export default class ModificationsMenu extends TranslatedComponent {
   }
 
   /**
+   * Set the result of a roll
+   * @param  {object} ship          The ship to which the roll applies
+   * @param  {object} m             The module to which the roll applies
+   * @param  {string} featureName   The modification feature to which the roll applies
+   * @param  {number} value         The value of the roll
+   */
+  _setRollResult(ship, m, featureName, value) {
+    if (Modifications.modifications[featureName].method !== 'overwrite') {
+      if (m.grp == 'sb' && featureName == 'shieldboost') {
+        // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
+        value = ((1 + m.shieldboost) * (1 + value) - 1) / m.shieldboost - 1;
+      }
+    }
+
+    if (Modifications.modifications[featureName].type == 'percentage') {
+      ship.setModification(m, featureName, value * 10000);
+    } else if (Modifications.modifications[featureName].type == 'numeric') {
+      ship.setModification(m, featureName, value * 100);
+    } else {
+      ship.setModification(m, featureName, value);
+    }
+  }
+
+  /**
    * Provide a 'worst' roll within the information we have
    */
   _rollWorst() {
     const { m, ship } = this.props;
-    const features = m.blueprint.features[m.blueprint.grade];
+    const features = m.blueprint.grades[m.blueprint.grade].features;
     for (const featureName in features) {
-      if (Modifications.modifications[featureName].method == 'overwrite') {
-        ship.setModification(m, featureName, features[featureName][1]);
-      } else {
-        let value = features[featureName][0];
-        if (m.grp == 'sb' && featureName == 'shieldboost') {
-          // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
-          value = ((1 + m.shieldboost) * (1 + value) - 1) / m.shieldboost - 1;
-        }
-
-        if (Modifications.modifications[featureName].type == 'percentage') {
-          ship.setModification(m, featureName, value * 10000);
-        } else if (Modifications.modifications[featureName].type == 'numeric') {
-          ship.setModification(m, featureName, value * 100);
-        }
-      }
+      let value = features[featureName][0];
+      this._setRollResult(ship, m, featureName, value);
     }
-
     this.setState({ modifications: this._setModifications(this.props) });
     this.props.onChange();
   }
@@ -180,25 +190,11 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollAverage() {
     const { m, ship } = this.props;
-    const features = m.blueprint.features[m.blueprint.grade];
+    const features = m.blueprint.grades[m.blueprint.grade].features;
     for (const featureName in features) {
-      if (Modifications.modifications[featureName].method == 'overwrite') {
-        ship.setModification(m, featureName, (features[featureName][0] + features[featureName][1]) / 2);
-      } else {
-        let value = (features[featureName][0] + features[featureName][1]) / 2;
-        if (m.grp == 'sb' && featureName == 'shieldboost') {
-          // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
-          value = ((1 + m.shieldboost) * (1 + value) - 1) / m.shieldboost - 1;
-        }
-
-        if (Modifications.modifications[featureName].type == 'percentage') {
-          ship.setModification(m, featureName, value * 10000);
-        } else if (Modifications.modifications[featureName].type == 'numeric') {
-          ship.setModification(m, featureName, value * 100);
-        }
-      }
+      let value = (features[featureName][0] + features[featureName][1]) / 2;
+      this._setRollResult(ship, m, featureName, value);
     }
-
     this.setState({ modifications: this._setModifications(this.props) });
     this.props.onChange();
   }
@@ -208,25 +204,11 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollRandom() {
     const { m, ship } = this.props;
-    const features = m.blueprint.features[m.blueprint.grade];
+    const features = m.blueprint.grades[m.blueprint.grade].features;
     for (const featureName in features) {
-      if (Modifications.modifications[featureName].method == 'overwrite') {
-        ship.setModification(m, featureName, features[featureName][1]);
-      } else {
-        let value = features[featureName][0] + (Math.random() * (features[featureName][1] - features[featureName][0]));
-        if (m.grp == 'sb' && featureName == 'shieldboost') {
-          // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
-          value = ((1 + m.shieldboost) * (1 + value) - 1) / m.shieldboost - 1;
-        }
-
-        if (Modifications.modifications[featureName].type == 'percentage') {
-          ship.setModification(m, featureName, value * 10000);
-        } else if (Modifications.modifications[featureName].type == 'numeric') {
-          ship.setModification(m, featureName, value * 100);
-        }
-      }
+      let value = features[featureName][0] + (Math.random() * (features[featureName][1] - features[featureName][0]));
+      this._setRollResult(ship, m, featureName, value);
     }
-
     this.setState({ modifications: this._setModifications(this.props) });
     this.props.onChange();
   }
@@ -236,25 +218,11 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollBest() {
     const { m, ship } = this.props;
-    const features = m.blueprint.features[m.blueprint.grade];
+    const features = m.blueprint.grades[m.blueprint.grade].features;
     for (const featureName in features) {
-      if (Modifications.modifications[featureName].method == 'overwrite') {
-        ship.setModification(m, featureName, features[featureName][1]);
-      } else {
-        let value = features[featureName][1];
-        if (m.grp == 'sb' && featureName == 'shieldboost') {
-          // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
-          value = ((1 + m.shieldboost) * (1 + value) - 1) / m.shieldboost - 1;
-        }
-
-        if (Modifications.modifications[featureName].type == 'percentage') {
-          ship.setModification(m, featureName, value * 10000);
-        } else if (Modifications.modifications[featureName].type == 'numeric') {
-          ship.setModification(m, featureName, value * 100);
-        }
-      }
+      let value = features[featureName][1];
+      this._setRollResult(ship, m, featureName, value);
     }
-
     this.setState({ modifications: this._setModifications(this.props) });
     this.props.onChange();
   }

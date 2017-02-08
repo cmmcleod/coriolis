@@ -897,6 +897,7 @@ export default class Ship {
       }
       if (epsChanged) {
         this.recalculateEps();
+        this.recalculateTtd();
       }
       if (hpsChanged) {
         this.recalculateHps();
