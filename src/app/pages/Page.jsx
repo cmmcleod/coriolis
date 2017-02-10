@@ -39,6 +39,14 @@ export default class Page extends React.Component {
         this[prop] = this[prop].bind(this);
       }
     });
+
+    let fix = sessionStorage.getItem('__safari_history_fix');
+    sessionStorage.removeItem('__safari_history_fix');
+    if (fix) {
+      fix = JSON.parse(fix);
+      history.replaceState(history.state, document.title, location.href);
+      history.pushState(fix.state, fix.title, fix.path);
+    }
   }
 
   /**
