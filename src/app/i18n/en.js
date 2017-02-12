@@ -31,9 +31,9 @@ export const terms = {
   PHRASE_ENGAGEMENT_RANGE: 'The distance between your ship and its target',
   PHRASE_SELECT_BLUEPRINT: 'Click to select a blueprint',
   PHRASE_BLUEPRINT_WORST: 'Worst primary values for this blueprint',
-  PHRASE_BLUEPRINT_AVERAGE: 'Average primary values for this blueprint',
   PHRASE_BLUEPRINT_RANDOM: 'Random selection between worst and best primary values for this blueprint',
   PHRASE_BLUEPRINT_BEST: 'Best primary values for this blueprint',
+  PHRASE_BLUEPRINT_EXTREME: 'Best beneficial and worst detrimental primary values for this blueprint',
   PHRASE_BLUEPRINT_RESET: 'Remove all modifications and blueprint',
   PHRASE_SELECT_SPECIAL: 'Click to select an experimental effect',
   PHRASE_NO_SPECIAL: 'No experimental effect',
@@ -115,6 +115,7 @@ export const terms = {
   average: 'Average',
   random: 'Random',
   best: 'Best',
+  extreme: 'Extreme',
   reset: 'Reset',
 
   // Weapon, offence, defence and movement

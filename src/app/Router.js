@@ -76,7 +76,16 @@ Router.go = function(path, state) {
     if (isStandAlone()) {
       Persist.setState(ctx);
     }
-    history.pushState(ctx.state, ctx.title, ctx.canonicalPath);
+    try {
+      history.pushState(ctx.state, ctx.title, ctx.canonicalPath);
+    } catch (ex) {
+      sessionStorage.setItem('__safari_history_fix', JSON.stringify({
+        state: ctx.state,
+        title: ctx.title,
+        path: ctx.canonicalPath
+      }));
+      location.reload();
+    }
   }
   return ctx;
 };
@@ -99,7 +108,16 @@ Router.replace = function(path, state, dispatch) {
   if (isStandAlone()) {
     Persist.setState(ctx);
   }
-  history.replaceState(ctx.state, ctx.title, ctx.canonicalPath);
+  try {
+    history.replaceState(ctx.state, ctx.title, ctx.canonicalPath);
+  } catch (ex) {
+    sessionStorage.setItem('__safari_history_fix', JSON.stringify({
+      state: ctx.state,
+      title: ctx.title,
+      path: ctx.canonicalPath
+    }));
+    location.reload();
+  }
   return ctx;
 };
 

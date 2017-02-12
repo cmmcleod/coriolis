@@ -32,8 +32,8 @@ export default class ModificationsMenu extends TranslatedComponent {
     this._toggleSpecialsMenu = this._toggleSpecialsMenu.bind(this);
     this._rollWorst = this._rollWorst.bind(this);
     this._rollRandom = this._rollRandom.bind(this);
-    this._rollAverage = this._rollAverage.bind(this);
     this._rollBest = this._rollBest.bind(this);
+    this._rollExtreme = this._rollExtreme.bind(this);
     this._reset = this._reset.bind(this);
   }
 
@@ -186,20 +186,6 @@ export default class ModificationsMenu extends TranslatedComponent {
   }
 
   /**
-   * Provide an 'average' roll within the information we have
-   */
-  _rollAverage() {
-    const { m, ship } = this.props;
-    const features = m.blueprint.grades[m.blueprint.grade].features;
-    for (const featureName in features) {
-      let value = (features[featureName][0] + features[featureName][1]) / 2;
-      this._setRollResult(ship, m, featureName, value);
-    }
-    this.setState({ modifications: this._setModifications(this.props) });
-    this.props.onChange();
-  }
-
-  /**
    * Provide a random roll within the information we have
    */
   _rollRandom() {
@@ -221,6 +207,20 @@ export default class ModificationsMenu extends TranslatedComponent {
     const features = m.blueprint.grades[m.blueprint.grade].features;
     for (const featureName in features) {
       let value = features[featureName][1];
+      this._setRollResult(ship, m, featureName, value);
+    }
+    this.setState({ modifications: this._setModifications(this.props) });
+    this.props.onChange();
+  }
+
+  /**
+   * Provide an 'extreme' roll within the information we have
+   */
+  _rollExtreme() {
+    const { m, ship } = this.props;
+    const features = m.blueprint.grades[m.blueprint.grade].features;
+    for (const featureName in features) {
+      const value = Math.abs(features[featureName][0]) < Math.abs(features[featureName][1]) ? features[featureName][1] : features[featureName][0];
       this._setRollResult(ship, m, featureName, value);
     }
     this.setState({ modifications: this._setModifications(this.props) });
@@ -252,8 +252,8 @@ export default class ModificationsMenu extends TranslatedComponent {
     const _toggleBlueprintsMenu = this._toggleBlueprintsMenu;
     const _toggleSpecialsMenu = this._toggleSpecialsMenu;
     const _rollBest = this._rollBest;
+    const _rollExtreme = this._rollExtreme;
     const _rollWorst = this._rollWorst;
-    const _rollAverage = this._rollAverage;
     const _rollRandom = this._rollRandom;
     const _reset = this._reset;
 
@@ -278,6 +278,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     const showSpecial = haveBlueprint && this.state.specials.length > 0;
     const showSpecialsMenu = specialMenuOpened;
     const showRolls = haveBlueprint && !blueprintMenuOpened && !specialMenuOpened;
+    const showReset = !blueprintMenuOpened && !specialMenuOpened;
     const showMods = !blueprintMenuOpened && !specialMenuOpened;
 
     return (
@@ -287,26 +288,30 @@ export default class ModificationsMenu extends TranslatedComponent {
           onContextMenu={stopCtxPropagation}
       >
         <div className={ cn('section-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleBlueprintsMenu}>{blueprintLabel}</div>
-        { showBlueprintsMenu ? this.state.blueprints : '' }
-        { showSpecial ? <div className={ cn('section-menu', { selected: specialMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleSpecialsMenu}>{specialLabel}</div> : '' }
-        { showSpecialsMenu ? this.state.specials : '' }
-        { showRolls ?
+        { showBlueprintsMenu ? this.state.blueprints : null }
+        { showSpecial ? <div className={ cn('section-menu', { selected: specialMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleSpecialsMenu}>{specialLabel}</div> : null }
+        { showSpecialsMenu ? this.state.specials : null }
+        { showRolls || showReset ?
             <table style={{ width: '100%', backgroundColor: 'transparent' }}>
               <tbody>
+          { showRolls ?
                 <tr>
                   <td> { translate('roll') }: </td>
                   <td style={{ cursor: 'pointer' }} onClick={_rollWorst} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_WORST')} onMouseOut={tooltip.bind(null, null)}> { translate('worst') } </td>
-                  <td style={{ cursor: 'pointer' }} onClick={_rollAverage}onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_AVERAGE')} onMouseOut={tooltip.bind(null, null)}> { translate('average') } </td>
                   <td style={{ cursor: 'pointer' }} onClick={_rollBest}onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_BEST')} onMouseOut={tooltip.bind(null, null)}> { translate('best') } </td>
+                  <td style={{ cursor: 'pointer' }} onClick={_rollExtreme}onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_EXTREME')} onMouseOut={tooltip.bind(null, null)}> { translate('extreme') } </td>
                   <td style={{ cursor: 'pointer' }} onClick={_rollRandom} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RANDOM')} onMouseOut={tooltip.bind(null, null)}> { translate('random') } </td>
-                  <td style={{ cursor: 'pointer' }} onClick={_reset}onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RESET')} onMouseOut={tooltip.bind(null, null)}> { translate('reset') } </td>
-                </tr>
+                </tr> : null }
+          { showReset ?
+                <tr>
+                  <td colSpan={'5'} style={{ cursor: 'pointer' }} onClick={_reset}onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RESET')} onMouseOut={tooltip.bind(null, null)}> { translate('reset') } </td>
+                </tr> : null }
               </tbody>
-          </table> : '' }
+          </table> : null }
         { showMods ?
           <span onMouseOver={termtip.bind(null, 'HELP_MODIFICATIONS_MENU')} onMouseOut={tooltip.bind(null, null)} >
             { this.state.modifications }
-          </span> : '' }
+          </span> : null }
       </div>
     );
   }

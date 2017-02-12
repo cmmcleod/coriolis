@@ -316,7 +316,6 @@ export default class OutfittingPage extends Page {
         canRename = buildName && newBuildName && buildName != newBuildName,
         canReload = savedCode && canSave,
         hStr = ship.getHardpointsString() + '.' + ship.getModificationsString(),
-        sStr = ship.getStandardString() + '.' + ship.getModificationsString(),
         iStr = ship.getInternalString() + '.' + ship.getModificationsString();
 
     return (
@@ -349,13 +348,13 @@ export default class OutfittingPage extends Page {
           </div>
         </div>
 
-        <ShipSummaryTable ship={ship} code={code} />
-        <StandardSlotSection ship={ship} code={sStr} onChange={shipUpdated} currentMenu={menu} />
+        <ShipSummaryTable ship={ship} code={code || ''} />
+        <StandardSlotSection ship={ship} code={code || ''} onChange={shipUpdated} currentMenu={menu} />
         <InternalSlotSection ship={ship} code={iStr} onChange={shipUpdated} currentMenu={menu} />
-        <HardpointsSlotSection ship={ship} code={hStr} onChange={shipUpdated} currentMenu={menu} />
-        <UtilitySlotSection ship={ship} code={hStr} onChange={shipUpdated} currentMenu={menu} />
-        <PowerManagement ship={ship} code={code} onChange={shipUpdated} />
-        <CostSection ship={ship} buildName={buildName} code={sStr + hStr + iStr} />
+        <HardpointsSlotSection ship={ship} code={hStr || ''} onChange={shipUpdated} currentMenu={menu} />
+        <UtilitySlotSection ship={ship} code={hStr || ''} onChange={shipUpdated} currentMenu={menu} />
+        <PowerManagement ship={ship} code={code || ''} onChange={shipUpdated} />
+        <CostSection ship={ship} buildName={buildName} code={code || ''} />
 
         <div className='group third'>
           <OffenceSummary ship={ship} code={code}/>
