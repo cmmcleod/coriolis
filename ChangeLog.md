@@ -5,6 +5,7 @@
   * Add 'Extreme' blueprint roll: best beneficial and worst detrimental outcome (in place of 'Average' roll)
   * Display information about Microsoft browser issues when an import fails
   * Add 'purchase this build' icon link to EDDB
+  * Add 'miner' and 'shielded miner' ship roles
 
 #2.2.14
   * Ensure that jitter is shown correctly when the result of a special effect

@@ -228,6 +228,8 @@ To remove a module from a slot right-click on the module. </p>
 
 To move a module from one slot to another drag it.  If you instead want to copy the module drag it whilst holding down the &apos;Alt&apos; key. </p>
 
+Clicking on the headings for each set of modules gives you the ability to either select an overall role for your ship (when clicking the core internal header) or a specific module with which you want to fill all applicable slots (when clicking the other headers). </p>
+
 <h2>Power Management</h2>
 The power management panel provides information about power usage and priorities.  It allows you to enable and disable individual modules, as well as set power priorities for each module.</p>
 
