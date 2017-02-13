@@ -6,6 +6,10 @@
   * Display information about Microsoft browser issues when an import fails
   * Add 'purchase this build' icon link to EDDB
   * Add 'miner' and 'shielded miner' ship roles
+  * Use coriolis-data 2.2.15:
+    * Fix location of initial cargo rack for Vulture
+    * Fix broken regeneration rate for 6B shield generators
+    * Tidy up breach damage values
 
 #2.2.14
   * Ensure that jitter is shown correctly when the result of a special effect
