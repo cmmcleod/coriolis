@@ -126,3 +126,104 @@ export function explorer(ship, planetary) {
 
   ship.useLightestStandard(standardOpts);
 }
+
+/**
+ * Miner Role
+ * @param  {Ship} ship         Ship instance
+ * @param  {Boolean} shielded  True if shield generator should be included
+ */
+export function miner(ship, shielded) {
+  let standardOpts = { ppRating: 'A' },
+      miningLaserCount = 2,
+      usedSlots = [],
+      sg = ship.getAvailableModules().lightestShieldGenerator(ship.hullMass);
+
+  // Cargo hatch should be enabled
+  ship.setSlotEnabled(ship.cargoHatch, true);
+
+  // 4A or largest possible refinery
+  const refineryOrder = [4, 5, 6, 7, 8, 3, 2, 1];
+  const refineryInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
+                                         .filter(a => (!a.eligible) || a.eligible.rf)
+                                         .sort((a,b) => refineryOrder.indexOf(a.maxClass) - refineryOrder.indexOf(b.maxClass));
+  for (let i = 0; i < refineryInternals.length; i++) {
+    if (canMount(ship, refineryInternals[i], 'rf')) {
+      ship.use(refineryInternals[i], ModuleUtils.findInternal('rf', refineryInternals[i].maxClass, 'A'));
+      usedSlots.push(refineryInternals[i]);
+      break;
+    }
+  }
+
+  // Prospector limpet controller - 3A if possible
+  const prospectorOrder = [3, 4, 5, 6, 7, 8, 2, 1];
+  const prospectorInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
+                                           .filter(a => (!a.eligible) || a.eligible.pc)
+                                           .sort((a,b) => prospectorOrder.indexOf(a.maxClass) - prospectorOrder.indexOf(b.maxClass));
+  for (let i = 0; i < prospectorInternals.length; i++) {
+    if (canMount(ship, prospectorInternals[i], 'pc')) {
+      // Prospector only has odd classes
+      const prospectorClass = prospectorInternals[i].maxClass % 2 === 0 ? prospectorInternals[i].maxClass - 1 : prospectorInternals[i].maxClass;
+      ship.use(prospectorInternals[i], ModuleUtils.findInternal('pc', prospectorClass, 'A'));
+      usedSlots.push(prospectorInternals[i]);
+      break;
+    }
+  }
+
+  // Shield generator if required
+  if (shielded) {
+    const shieldOrder = [1, 2, 3, 4, 5, 6, 7, 8];
+    const shieldInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
+                                         .filter(a => (!a.eligible) || a.eligible.pc)
+                                         .filter(a => a.maxClass >= sg.class)
+                                         .sort((a,b) => shieldOrder.indexOf(a.maxClass) - shieldOrder.indexOf(b.maxClass));
+    for (let i = 0; i < shieldInternals.length; i++) {
+      if (canMount(ship, shieldInternals[i], 'sg')) {
+        ship.use(shieldInternals[i], sg);
+        usedSlots.push(shieldInternals[i]);
+        break;
+      }
+    }
+  }
+
+  // Collector limpet controller if there are enough internals left
+  let collectorLimpetsRequired = Math.max(ship.internal.filter(a => (!a.eligible) || a.eligible.cr).length - 6, 0);
+  if (collectorLimpetsRequired > 0) {
+    const collectorOrder = [1, 2, 3, 4, 5, 6, 7, 8];
+    const collectorInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
+                                            .filter(a => (!a.eligible) || a.eligible.cc)
+                                            .sort((a,b) => collectorOrder.indexOf(a.maxClass) - collectorOrder.indexOf(b.maxClass));
+    for (let i = 0; i < collectorInternals.length && collectorLimpetsRequired > 0; i++) {
+      if (canMount(ship, collectorInternals[i], 'cc')) {
+        // Collector only has odd classes
+        const collectorClass = collectorInternals[i].maxClass % 2 === 0 ? collectorInternals[i].maxClass - 1 : collectorInternals[i].maxClass;
+        ship.use(collectorInternals[i], ModuleUtils.findInternal('cc', collectorClass, 'A'));
+        usedSlots.push(collectorInternals[i]);
+        collectorLimpetsRequired -= collectorInternals[i].m.maximum;
+      }
+    }
+  }
+
+  // Dual mining lasers of highest possible class; remove anything else
+  const miningLaserOrder = [2, 3, 4, 1, 0];
+  const miningLaserHardpoints = ship.hardpoints.concat().sort(function(a,b) {
+    return miningLaserOrder.indexOf(a.maxClass) - miningLaserOrder.indexOf(b.maxClass);
+  });
+  for (let s of miningLaserHardpoints) {
+    if (s.maxClass >= 1 && miningLaserCount) {
+      ship.use(s, ModuleUtils.hardpoints(s.maxClass >= 2 ? '2m' : '2l'));
+      miningLaserCount--;
+    } else {
+      ship.use(s, null);
+    }
+  }
+
+  // Fill the empty internals with cargo racks
+  for (let i = ship.internal.length; i--;) {
+    let slot = ship.internal[i];
+    if (usedSlots.indexOf(slot) == -1 && canMount(ship, slot, 'cr')) {
+      ship.use(slot, ModuleUtils.findInternal('cr', slot.maxClass, 'E'));
+    }
+  }
+
+  ship.useLightestStandard(standardOpts);
+}

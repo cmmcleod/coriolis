@@ -228,6 +228,26 @@ export class LinkIcon extends SvgIcon {
 }
 
 /**
+ * Shopping icon (dollar sign)
+ */
+export class ShoppingIcon extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <g>
+      <path d='M94 188v-17c-9-1-16-3-21-6-6-3-11-7-15-14-4-6-6-14-6-23l17-3c2 9 4 16 7 21 5 6 11 9 18 10v-56c-7-1-14-4-22-8-6-3-10-8-13-13-3-6-4-12-4-19 0-13 4-23 13-31 6-5 15-8 26-9v-8h11v8c10 1 18 4 24 9 8 6 12 15 14 26l-18 3c-1-7-4-12-7-16s-8-6-13-7v50l17 6c6 2 10 5 13 8 4 4 7 8 8 13 2 4 3 10 3 15 0 12-4 22-11 31-8 8-18 12-30 13v17H94zm0-153c-7 1-12 3-16 8-4 4-6 9-6 15s2 11 5 16c4 4 9 7 17 9V35zm11 121a28 28 0 0 0 24-28c-1-6-2-11-6-15-3-4-9-7-18-10v53z'/>
+    </g>;
+  }
+}
+
+/**
  * No Power - Lightning bolt + no entry
  */
 export class NoPower extends SvgIcon {

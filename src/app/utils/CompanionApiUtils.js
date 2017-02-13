@@ -253,11 +253,15 @@ export function shipFromJson(json) {
       internalSlot = json.modules[internalName];
       militarySlotNum++;
     } else {
+      // Slot numbers are not contiguous so handle skips.
       while (internalSlot === null && internalSlotNum < 99) {
-        // Slot numbers are not contiguous so handle skips
-        const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '') + internalSlotNum + '_Size' + internalClassNum;
-        if (json.modules[internalName]) {
-          internalSlot = json.modules[internalName];
+        // Slot sizes have no relationship to the actual size, either, so check all possibilities
+        for (let slotsize = 0; slotsize < 9; slotsize++) {
+          const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '') + internalSlotNum + '_Size' + slotsize;
+          if (json.modules[internalName]) {
+            internalSlot = json.modules[internalName];
+            break;
+          }
         }
         internalSlotNum++;
       }

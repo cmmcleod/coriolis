@@ -31,12 +31,13 @@ export const terms = {
   PHRASE_ENGAGEMENT_RANGE: 'The distance between your ship and its target',
   PHRASE_SELECT_BLUEPRINT: 'Click to select a blueprint',
   PHRASE_BLUEPRINT_WORST: 'Worst primary values for this blueprint',
-  PHRASE_BLUEPRINT_AVERAGE: 'Average primary values for this blueprint',
   PHRASE_BLUEPRINT_RANDOM: 'Random selection between worst and best primary values for this blueprint',
   PHRASE_BLUEPRINT_BEST: 'Best primary values for this blueprint',
+  PHRASE_BLUEPRINT_EXTREME: 'Best beneficial and worst detrimental primary values for this blueprint',
   PHRASE_BLUEPRINT_RESET: 'Remove all modifications and blueprint',
   PHRASE_SELECT_SPECIAL: 'Click to select an experimental effect',
   PHRASE_NO_SPECIAL: 'No experimental effect',
+  PHRASE_SHOPPING_LIST: 'Stations that sell this build',
 
   HELP_MODIFICATIONS_MENU: 'Click on a number to enter a new value, or drag along the bar for small changes',
 
@@ -115,6 +116,7 @@ export const terms = {
   average: 'Average',
   random: 'Random',
   best: 'Best',
+  extreme: 'Extreme',
   reset: 'Reset',
 
   // Weapon, offence, defence and movement
@@ -225,6 +227,8 @@ To add a module to a slot left-click on the slot and select the required module.
 To remove a module from a slot right-click on the module. </p>
 
 To move a module from one slot to another drag it.  If you instead want to copy the module drag it whilst holding down the &apos;Alt&apos; key. </p>
+
+Clicking on the headings for each set of modules gives you the ability to either select an overall role for your ship (when clicking the core internal header) or a specific module with which you want to fill all applicable slots (when clicking the other headers). </p>
 
 <h2>Power Management</h2>
 The power management panel provides information about power usage and priorities.  It allows you to enable and disable individual modules, as well as set power priorities for each module.</p>

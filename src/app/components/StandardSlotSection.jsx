@@ -54,6 +54,16 @@ export default class StandardSlotSection extends SlotSection {
   }
 
   /**
+   * Miner Build
+   * @param  {Boolean} shielded True if shield generator should be included
+   */
+  _optimizeMiner(shielded) {
+    ShipRoles.miner(this.props.ship, shielded);
+    this.props.onChange();
+    this._close();
+  }
+
+  /**
    * Explorer role
    * @param  {Boolean} planetary True if Planetary Vehicle Hangar (PVH) should be included
    */
@@ -209,6 +219,8 @@ export default class StandardSlotSection extends SlotSection {
         <li className='lc' onClick={this._optimizeCargo.bind(this, true)}>{translate('Shielded Trader')}</li>
         <li className='lc' onClick={this._optimizeExplorer.bind(this, false)}>{translate('Explorer')}</li>
         <li className={cn('lc', { disabled:  planetaryDisabled })} onClick={!planetaryDisabled && this._optimizeExplorer.bind(this, true)}>{translate('Planetary Explorer')}</li>
+        <li className='lc' onClick={this._optimizeMiner.bind(this, false)}>{translate('Miner')}</li>
+        <li className='lc' onClick={this._optimizeMiner.bind(this, true)}>{translate('Shielded Miner')}</li>
       </ul>
     </div>;
   }

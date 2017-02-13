@@ -1,3 +1,16 @@
+#2.2.15
+  * Ensure that standard slots are repainted when any component changes
+  * Reload page if Safari throws a security error
+  * Handle import of ships with incorrectly-sized slots
+  * Add 'Extreme' blueprint roll: best beneficial and worst detrimental outcome (in place of 'Average' roll)
+  * Display information about Microsoft browser issues when an import fails
+  * Add 'purchase this build' icon link to EDDB
+  * Add 'miner' and 'shielded miner' ship roles
+  * Use coriolis-data 2.2.15:
+    * Fix location of initial cargo rack for Vulture
+    * Fix broken regeneration rate for 6B shield generators
+    * Tidy up breach damage values
+
 #2.2.14
   * Ensure that jitter is shown correctly when the result of a special effect
   * Use restyled blueprint information

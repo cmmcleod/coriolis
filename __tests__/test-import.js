@@ -229,7 +229,7 @@ describe('Import Modal', function() {
 
     beforeEach(reset);
 
-    it('imports a valid v4 build', function() {
+    it('imports a valid companion API build', function() {
       const importData = require('./fixtures/companion-api-import-1');
       pasteText(JSON.stringify(importData));
 
@@ -241,7 +241,7 @@ describe('Import Modal', function() {
       expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/federal_corvette?code=A2putsFklndzsxf50x0x7l28281919040404040402020l06p05sf63c5ifr--v66g2f.AwRj4zNaqA%3D%3D.CwRgDBldUExuBiIlUA%3D%3D.H4sIAAAAAAAAA02SPy9DURjG3%2F65vW1v47TXVbeqqF7EQtIIBomRJswsYmISH8BgkFhqFZ9AwlALMYitkXQyEF2k4SMYJNK0dV7PK7nc5ck55%2Fm9z%2FnznpBeJqLvECQbM4hUjZnjO5hyWGfFikAGGjGiku0QuddhQCNdZmdWM9snsDmih4REOdlnNvz9DrPrJIicPdSwoZf8pAnTIpq8x7DYADS%2Bi5DERY85%2BYqpmkc6x%2FWGf6beKCR3YBIZFZCxCgrtczjuOmo4qTf94F4KYuxhz5jjEhXmUJNexFrpIUo02ALN1j9u1JMgD%2FMga1GfbMNRd9iHUwGy%2BpspZF3IBSGvMFJluS%2FuR24FJ2KlV%2Fxju6sQq4lhRsQTUVUJTgegLtS6EUjEE1HPAmUC0KdAjwKJeCKqD8zoURx72gHyDW9nvQhJGHkyUscS1x%2BAZnAlqwU%2FI%2BKJKEvextXrf93eQrR1KUlS5HWwGC61mfOn0oN3IM4OHoBzuuIHj33hS5jT8KeamIYa0sjhgH%2BLfplP4kcwD5Xl3xR1wfeHtqWzBHHX8I9SH9Je%2FgGvXxeungIAAA%3D%3D&bn=Imported%20Federal%20Corvette');
     });
 
-    it('imports a valid v4 build', function() {
+    it('imports a valid companion API build', function() {
       const importData = require('./fixtures/companion-api-import-2');
       pasteText(JSON.stringify(importData));
 
@@ -251,6 +251,18 @@ describe('Import Modal', function() {
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
       expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/beluga?code=A0pktsFplCdpsnf70t0t2727270004040404043c4fmimlmm04mc0iv62i2f.AwRj4yukg%3D%3D%3D.CwRgDBldHi8IUA%3D%3D.H4sIAAAAAAAAA2P8Z8%2FAwPCXEUiIKTMxMPCv%2F%2Ff%2FP8cFIPGf6Z8YTEr0GjMDg%2FJWICERBOTzn%2Fn7%2F7%2FIO5Ai5n9SIEWsQEIoSxAolfbt%2F3%2BJPk4GBhE7YQYGYVmgcuVnf4Aq%2FwMAIrEcGGsAAAA%3D&bn=Imported%20Beluga%20Liner');
+    });
+
+    it('imports a valid companion API build', function() {
+      const importData = require('./fixtures/companion-api-import-3');
+      pasteText(JSON.stringify(importData));
+
+      expect(modal.state.importValid).toBeTruthy();
+      expect(modal.state.errorMsg).toEqual(null);
+      expect(modal.state.singleBuild).toBe(true);
+      clickProceed();
+      expect(MockRouter.go.mock.calls.length).toBe(1);
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/type_7_transport?code=A0patfFflidasdf5----0404040005050504044d2402.AwRj4yrI.CwRgDBlVK7EiA%3D%3D%3D.&bn=Imported%20Type-7%20Transporter');
     });
   });
 
