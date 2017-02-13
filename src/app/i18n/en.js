@@ -37,6 +37,7 @@ export const terms = {
   PHRASE_BLUEPRINT_RESET: 'Remove all modifications and blueprint',
   PHRASE_SELECT_SPECIAL: 'Click to select an experimental effect',
   PHRASE_NO_SPECIAL: 'No experimental effect',
+  PHRASE_SHOPPING_LIST: 'Stations that sell this build',
 
   HELP_MODIFICATIONS_MENU: 'Click on a number to enter a new value, or drag along the bar for small changes',
 

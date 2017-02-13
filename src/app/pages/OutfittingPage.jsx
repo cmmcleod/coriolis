@@ -8,7 +8,7 @@ import Persist from '../stores/Persist';
 import Ship from '../shipyard/Ship';
 import { toDetailedBuild } from '../shipyard/Serializer';
 import { outfitURL } from '../utils/UrlGenerators';
-import { FloppyDisk, Bin, Switch, Download, Reload, Fuel, LinkIcon } from '../components/SvgIcons';
+import { FloppyDisk, Bin, Switch, Download, Reload, Fuel, LinkIcon, ShoppingIcon } from '../components/SvgIcons';
 import ShipSummaryTable from '../components/ShipSummaryTable';
 import StandardSlotSection from '../components/StandardSlotSection';
 import HardpointsSlotSection from '../components/HardpointsSlotSection';
@@ -285,6 +285,20 @@ export default class OutfittingPage extends Page {
   }
 
   /**
+   * Open up a window for EDDB with a shopping list of our components
+   */
+  _eddbShoppingList() {
+    const ship = this.state.ship;
+
+    const shipId = Ships[ship.id].eddbID;
+    // Provide unique list of non-PP module EDDB IDs
+    const modIds = ship.internal.concat(ship.bulkheads, ship.standard, ship.hardpoints).filter(slot => slot !== null && slot.m !== null && !slot.m.pp).map(slot => slot.m.eddbID).filter((v, i, a) => a.indexOf(v) === i);
+
+    // Open up the relevant URL
+    window.open('https://eddb.io/station?s=' + shipId + '&m=' + modIds.join(','));
+  }
+
+  /**
    * Handle Key Down
    * @param  {Event} e  Keyboard Event
    */
@@ -341,6 +355,9 @@ export default class OutfittingPage extends Page {
             </button>
             <button onClick={buildName && this._exportBuild} disabled={!buildName} onMouseOver={termtip.bind(null, 'export')} onMouseOut={hide}>
               <Download className='lg'/>
+            </button>
+            <button onClick={this._eddbShoppingList} onMouseOver={termtip.bind(null, 'PHRASE_SHOPPING_LIST')} onMouseOut={hide}>
+              <ShoppingIcon className='lg' />
             </button>
             <button onClick={this._genShortlink} onMouseOver={termtip.bind(null, 'shortlink')} onMouseOut={hide}>
               <LinkIcon className='lg' />
