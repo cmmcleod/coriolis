@@ -1,3 +1,9 @@
+#2.2.16
+  * Fix 'Extreme' blueprint roll where some incorrect ranges were chosen
+  * Use coriolis-data 2.2.16:
+    * Fix incorrect thermal load modifiers for dirty drives
+    * Provide explicit information about if values are higher numeric value == better or not
+
 #2.2.15
   * Ensure that standard slots are repainted when any component changes
   * Reload page if Safari throws a security error
