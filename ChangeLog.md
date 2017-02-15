@@ -1,3 +1,6 @@
+#2.2.16
+  * Fix 'Extreme' blueprint roll where some incorrect ranges were chosen
+
 #2.2.15
   * Ensure that standard slots are repainted when any component changes
   * Reload page if Safari throws a security error

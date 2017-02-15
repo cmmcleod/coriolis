@@ -220,7 +220,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     const { m, ship } = this.props;
     const features = m.blueprint.grades[m.blueprint.grade].features;
     for (const featureName in features) {
-      const value = Math.abs(features[featureName][0]) < Math.abs(features[featureName][1]) ? features[featureName][1] : features[featureName][0];
+      const value = Modifications.modifications[featureName].higherbetter ? features[featureName][1] : features[featureName][0];
       this._setRollResult(ship, m, featureName, value);
     }
     this.setState({ modifications: this._setModifications(this.props) });
