@@ -143,6 +143,7 @@ export default class ShipyardPage extends Page {
       <td className='cap'>{translate(SizeMap[s.class])}</td>
       <td className='ri'>{fInt(s.agility)}</td>
       <td className='ri'>{fInt(s.hardness)}</td>
+      <td className='ri'>{fInt(s.crew)}</td>
       <td className='ri'>{fInt(s.speed)}{u['m/s']}</td>
       <td className='ri'>{fInt(s.boost)}{u['m/s']}</td>
       <td className='ri'>{fInt(s.baseArmour)}</td>
@@ -270,6 +271,7 @@ export default class ShipyardPage extends Page {
                 <th rowSpan={2} className='sortable' onClick={sortShips('class')}>{translate('size')}</th>
                 <th rowSpan={2} className='sortable' onClick={sortShips('agility')}>{translate('agility')}</th>
                 <th rowSpan={2} className='sortable' onClick={sortShips('hardness')}>{translate('hardness')}</th>
+                <th rowSpan={2} className='sortable' onClick={sortShips('crew')}>{translate('crew')}</th>
                 <th colSpan={4}>{translate('base')}</th>
                 <th colSpan={4}>{translate('max')}</th>
                 <th colSpan={6}>{translate('core module classes')}</th>

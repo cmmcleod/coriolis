@@ -1,3 +1,6 @@
+#2.2.17
+  * Add crew to shipyard and outfitting page information
+
 #2.2.16
   * Fix 'Extreme' blueprint roll where some incorrect ranges were chosen
   * Use coriolis-data 2.2.16:
