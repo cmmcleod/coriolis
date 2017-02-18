@@ -52,6 +52,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <th rowSpan={2}>{translate('fuel')}</th>
             <th colSpan={3}>{translate('jump range')}</th>
             <th onMouseEnter={termtip.bind(null, 'PHRASE_FASTEST_RANGE')} onMouseLeave={hide} colSpan={3}>{translate('fastest range')}</th>
+            <th rowSpan={2}>{translate('crew')}</th>
             <th onMouseEnter={termtip.bind(null, 'mass lock factor')} onMouseLeave={hide} rowSpan={2}>{translate('MLF')}</th>
           </tr>
           <tr>
@@ -88,6 +89,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{int(ship.maxJumpCount)}</td>
             <td>{f2(ship.unladenFastestRange)} {u.LY}</td>
             <td>{f2(ship.ladenFastestRange)} {u.LY}</td>
+            <td>{ship.crew}</td>
             <td>{ship.masslock}</td>
           </tr>
         </tbody>

@@ -189,6 +189,14 @@ export const terms = {
   wepcap: 'Weapons capacity',
   weprate: 'Weapons recharge rate',
 
+  // Shield generators use a different terminology
+  minmass_sg: 'Minimum hull mass',
+  optmass_sg: 'Optimal hull mass',
+  maxmass_sg: 'Maximum hull mass',
+  minmul_sg: 'Minimum strength',
+  optmul_sg: 'Optimal strength',
+  maxmul_sg: 'Minimum strength',
+
   // Help text
   HELP_TEXT: `
 <h1>Introduction</h1>

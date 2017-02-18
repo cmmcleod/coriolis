@@ -34,9 +34,9 @@ export function getLanguage(langCode) {
   let gen = d3Locale.numberFormat('n');
 
   if(lang === EN) {
-    translate = (t) => { return currentTerms[t] || t; };
+    translate = (t, x) => { return currentTerms[t + '_' + x] || currentTerms[t] || t; };
   } else {
-    translate = (t) => { return currentTerms[t] || fallbackTerms[t] || t; };
+    translate = (t, x) => { return currentTerms[t + '_' + x] || currentTerms[t] || fallbackTerms[t + '_' + x] || fallbackTerms[t] || t; };
   }
 
   return {

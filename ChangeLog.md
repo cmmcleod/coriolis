@@ -1,3 +1,12 @@
+#2.2.17
+  * Use in-game terminology for shield generator optmul and optmass items
+  * Add crew to shipyard and outfitting page information
+  * Use coriolis-data 2.2.17:
+    * Add mass as potential SCB modification
+    * Fix mining laser statistics
+    * Remove non-existent grade 4 and 5 wake scanner modifications
+    * Add number of crew for each ship
+
 #2.2.16
   * Fix 'Extreme' blueprint roll where some incorrect ranges were chosen
   * Use coriolis-data 2.2.16:
