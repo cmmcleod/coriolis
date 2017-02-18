@@ -39,8 +39,8 @@ export default class InternalSlot extends Slot {
           <div className={'r'}>{formats.round(mass)}{u.T}</div>
         </div>
         <div className={'cb'}>
-          { m.getOptMass() ? <div className={'l'}>{translate('optimal mass')}: {formats.int(m.getOptMass())}{u.T}</div> : null }
-          { m.getMaxMass() ? <div className={'l'}>{translate('max mass')}: {formats.int(m.getMaxMass())}{u.T}</div> : null }
+          { m.getOptMass() ? <div className={'l'}>{translate('optmass', m.grp)}: {formats.int(m.getOptMass())}{u.T}</div> : null }
+          { m.getMaxMass() ? <div className={'l'}>{translate('maxmass', m.grp)}: {formats.int(m.getMaxMass())}{u.T}</div> : null }
           { m.bins ? <div className={'l'}>{m.bins} <u>{translate('bins')}</u></div> : null }
           { m.bays ? <div className={'l'}>{translate('bays')}: {m.bays}</div> : null }
           { m.rebuildsperbay ? <div className={'l'}>{translate('rebuildsperbay')}: {m.rebuildsperbay}</div> : null }
