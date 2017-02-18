@@ -1,5 +1,6 @@
 #2.2.17
   * Use in-game terminology for shield generator optmul and optmass items
+  * Add crew to shipyard and outfitting page information
 
 #2.2.16
   * Fix 'Extreme' blueprint roll where some incorrect ranges were chosen

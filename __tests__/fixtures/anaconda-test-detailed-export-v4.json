@@ -320,6 +320,7 @@
     "shieldExplRes": 0.5,
     "shieldKinRes": 0.4,
     "shieldThermRes": -0.2,
-    "timeToDrain": 7.04
+    "timeToDrain": 7.04,
+    "crew": 3
   }
 }
