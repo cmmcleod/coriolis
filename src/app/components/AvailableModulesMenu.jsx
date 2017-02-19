@@ -41,6 +41,13 @@ const GRPCAT = {
   'mr': 'ordnance',
   'tp': 'ordnance',
   'nl': 'ordnance',
+  // Utilities
+  'cs': 'scanners',
+  'kw': 'scanners',
+  'ws': 'scanners',
+  'ch': 'defence',
+  'po': 'defence',
+  'ec': 'defence',
 };
 // Order here is the order in which items will be shown in the modules menu
 const CATEGORIES = {
@@ -64,12 +71,8 @@ const CATEGORIES = {
   // Utilities
   'sb': ['sb'],
   'hs': ['hs'],
-  'ch': ['ch'],
-  'po': ['po'],
-  'ec': ['ec'],
-  'cs': ['cs'],
-  'kw': ['kw'],
-  'ws': ['ws'],
+  'defence': ['ch', 'po', 'ec'],
+  'scanners': ['cs', 'kw', 'ws'],
 };
 
 /**
@@ -128,7 +131,9 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     } else {
       list = [];
       // At present time slots with grouped options (Hardpoints and Internal) can be empty
-      list.push(<div className='empty-c upp' key='empty' onClick={onSelect.bind(null, null)} >{translate('empty')}</div>);
+      if (m) {
+        list.push(<div className='empty-c upp' key='empty' onClick={onSelect.bind(null, null)} >{translate('empty')}</div>);
+      }
 
       // Need to regroup the modules by our own categorisation
       let catmodules = {};

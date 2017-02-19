@@ -143,13 +143,7 @@ export function diffDetails(language, m, mm) {
   let { formats, translate, units } = language;
   let propDiffs = [];
 
-  let mCost = m.cost || 0;
-  let mmCost = mm ? mm.cost : 0;
-  if (mCost != mmCost) propDiffs.push(<div key='cost'>{translate('cost')}: <span className={diffClass(mCost, mmCost, true) }>{mCost ? Math.round(mCost * (1 - Persist.getModuleDiscount())) : 0}{units.CR}</span></div>);
-
-  let mMass = m.mass || 0;
-  let mmMass = mm ? mm.getMass() : 0;
-  if (mMass != mmMass) propDiffs.push(<div key='mass'>{translate('mass')}: <span className={diffClass(mMass, mmMass, true)}>{diff(formats.round, mMass, mmMass)}{units.T}</span></div>);
+  // Module-specific items
 
   if (m.grp === 'pp') {
     let mPowerGeneration = m.pgen || 0;
@@ -157,7 +151,7 @@ export function diffDetails(language, m, mm) {
     if (mPowerGeneration != mmPowerGeneration) propDiffs.push(<div key='pgen'>{translate('pgen')}: <span className={diffClass(mPowerGeneration, mmPowerGeneration)}>{diff(formats.round, mPowerGeneration, mmPowerGeneration)}{units.MJ}</span></div>);
   } else {
     let mPowerUsage = m.power || 0;
-    let mmPowerUsage = mm ? mm.getPowerUsage() : 0;
+    let mmPowerUsage = mm ? mm.getPowerUsage() || 0 : 0;
     if (mPowerUsage != mmPowerUsage) propDiffs.push(<div key='power'>{translate('power')}: <span className={diffClass(mPowerUsage, mmPowerUsage, true)}>{diff(formats.round, mPowerUsage, mmPowerUsage)}{units.MJ}</span></div>);
   }
 
@@ -187,6 +181,20 @@ export function diffDetails(language, m, mm) {
     propDiffs.push(<div key='shields'>{translate('shields')}: <span className={sgDiffClass}>{diff(formats.int, newShield, shield)}{units.MJ}</span></div>);
   }
 
+  if (m.grp === 'mrp') {
+    let mProtection = m.protection;
+    let mmProtection = mm ? mm.getProtection() || 0 : 0;
+    if (mProtection != mmProtection) {
+      propDiffs.push(<div key='protection'>{translate('protection')}: <span className={diffClass(mmProtection, mProtection, true)}>{diff(formats.pct, mProtection, mmProtection)}</span></div>);
+    }
+
+    let mIntegrity = m.integrity;
+    let mmIntegrity = mm ? mm.getIntegrity() || 0 : 0;
+    if (mIntegrity != mmIntegrity) {
+      propDiffs.push(<div key='integrity'>{translate('integrity')}: <span className={diffClass(mmIntegrity, mIntegrity, true)}>{diff(formats.round, mIntegrity, mmIntegrity)}</span></div>);
+    }
+  }
+
   if (m.grp == 'pd') {
     propDiffs.push(<div key='wep'>
       {`${translate('WEP')}: `}
@@ -207,6 +215,16 @@ export function diffDetails(language, m, mm) {
       <span className={diffClass(m.engrate, mm.getEnginesRechargeRate())}>{m.engrate}{units.MW}</span>
     </div>);
   }
+
+  // Common items
+
+  let mCost = m.cost || 0;
+  let mmCost = mm ? mm.cost : 0;
+  if (mCost != mmCost) propDiffs.push(<div key='cost'>{translate('cost')}: <span className={diffClass(mCost, mmCost, true) }>{mCost ? Math.round(mCost * (1 - Persist.getModuleDiscount())) : 0}{units.CR}</span></div>);
+
+  let mMass = m.mass || 0;
+  let mmMass = mm ? mm.getMass() : 0;
+  if (mMass != mmMass) propDiffs.push(<div key='mass'>{translate('mass')}: <span className={diffClass(mMass, mmMass, true)}>{diff(formats.round, mMass, mmMass)}{units.T}</span></div>);
 
   let massDiff = mMass - mmMass;
   let mCap = m.fuel || m.cargo || 0;
