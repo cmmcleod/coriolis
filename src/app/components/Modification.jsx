@@ -1,5 +1,4 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
 import TranslatedComponent from './TranslatedComponent';
 import cn from 'classnames';
 import NumberEditor from 'react-number-editor';

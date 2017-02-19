@@ -11,7 +11,6 @@ import ModalHelp from './components/ModalHelp';
 import ModalImport from './components/ModalImport';
 import ModalPermalink from './components/ModalPermalink';
 import * as CompanionApiUtils from './utils/CompanionApiUtils';
-import { outfitURL } from './utils/UrlGenerators';
 
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';

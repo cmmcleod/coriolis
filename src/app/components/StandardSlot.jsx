@@ -2,7 +2,6 @@ import React from 'react';
 import cn from 'classnames';
 import Persist from '../stores/Persist';
 import TranslatedComponent from './TranslatedComponent';
-import { jumpRange } from '../shipyard/Calculations';
 import { diffDetails } from '../utils/SlotFunctions';
 import AvailableModulesMenu from './AvailableModulesMenu';
 import ModificationsMenu from './ModificationsMenu';

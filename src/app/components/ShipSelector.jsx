@@ -29,7 +29,6 @@ export default class ShipSelector extends TranslatedComponent {
    */
   _getShipsMenu() {
     const _selectShip = this._selectShip;
-    const _openMenu = this._openMenu;
 
     let shipList = [];
 

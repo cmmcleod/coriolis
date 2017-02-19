@@ -1,10 +1,8 @@
 import React from 'react';
 import * as _ from 'lodash';
-import { findDOMNode } from 'react-dom';
 import TranslatedComponent from './TranslatedComponent';
 import { isEmpty, stopCtxPropagation } from '../utils/UtilityFunctions';
 import cn from 'classnames';
-import { MountFixed, MountGimballed, MountTurret } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
 import Modification from './Modification';
 
@@ -44,8 +42,8 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @return {Object}         list: Array of React Components
    */
   _initState(props, context) {
-    let { m, onChange, ship } = props;
-    const { language, tooltip, termtip } = context;
+    let { m } = props;
+    const { language } = context;
     const translate = language.translate;
 
     // Set up the blueprints
@@ -267,7 +265,6 @@ export default class ModificationsMenu extends TranslatedComponent {
     }
 
     let specialLabel;
-    let haveSpecial = false;
     if (m.blueprint && m.blueprint.special) {
       specialLabel = m.blueprint.special.name;
     } else {

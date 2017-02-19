@@ -835,7 +835,6 @@ export default class Ship {
    */
   setSlotPriority(slot, newPriority) {
     if (newPriority >= 0 && newPriority < this.priorityBands.length) {
-      let oldPriority = slot.priority;
       slot.priority = newPriority;
       this.updatePowerPrioritesString();
 
@@ -1437,7 +1436,6 @@ export default class Ship {
 
     let bulkheadMods = new Array();
     let bulkheadBlueprint = null;
-    let bulkheadBlueprintGrade = null;
     if (this.bulkheads.m && this.bulkheads.m.mods) {
       for (let modKey in this.bulkheads.m.mods) {
         // Filter out invalid modifications

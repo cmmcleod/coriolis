@@ -3,7 +3,6 @@ import cn from 'classnames';
 import SlotSection from './SlotSection';
 import StandardSlot from './StandardSlot';
 import Module from '../shipyard/Module';
-import { diffDetails } from '../utils/SlotFunctions';
 import * as ShipRoles from '../shipyard/ShipRoles';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
