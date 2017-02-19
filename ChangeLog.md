@@ -1,3 +1,6 @@
+#2.2.18
+  * Change methodology for calculating explorer role; can result in lighter builds
+
 #2.2.17
   * Use in-game terminology for shield generator optmul and optmass items
   * Add crew to shipyard and outfitting page information
