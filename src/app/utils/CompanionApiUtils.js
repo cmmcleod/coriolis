@@ -243,7 +243,6 @@ export function shipFromJson(json) {
   let internalSlotNum = 1;
   let militarySlotNum = 1;
   for (let i in shipTemplate.slots.internal) {
-    const internalClassNum = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].class : shipTemplate.slots.internal[i];
     const isMilitary = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].name == 'Military' : false;
 
     // The internal slot might be a standard or a military slot.  Military slots have a different naming system

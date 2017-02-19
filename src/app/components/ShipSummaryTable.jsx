@@ -1,7 +1,6 @@
 import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
 import cn from 'classnames';
-import { SizeMap } from '../shipyard/Constants';
 import { Warning } from './SvgIcons';
 
 /**
@@ -23,7 +22,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
     let translate = language.translate;
     let u = language.units;
     let formats = language.formats;
-    let { time, int, round, f1, f2, pct } = formats;
+    let { time, int, round, f1, f2 } = formats;
     let sgClassNames = cn({ warning: ship.findInternalByGroup('sg') && !ship.shield, muted: !ship.findInternalByGroup('sg') });
     let sgRecover = '-';
     let sgRecharge = '-';

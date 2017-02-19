@@ -26,7 +26,6 @@ export default class MovementSummary extends TranslatedComponent {
     let ship = this.props.ship;
     let { language, tooltip, termtip } = this.context;
     let { formats, translate, units } = language;
-    let hide = tooltip.bind(null, null);
     let boostMultiplier = ship.topBoost / ship.topSpeed;
 
     return (

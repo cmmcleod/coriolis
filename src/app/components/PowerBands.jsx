@@ -186,9 +186,9 @@ export default class PowerBands extends TranslatedComponent {
 
     let { wattScale, pctScale, context, props, state } = this;
     let { translate, formats } = context.language;
-    let { f2, pct1, rPct, r2 } = formats; // wattFmt, pctFmt, pctAxis, wattAxis
-    let { available, bands, width } = props;
-    let { innerWidth, maxPwr, ret, dep } = state;
+    let { f2, pct1 } = formats; // wattFmt, pctFmt
+    let { available, bands } = props;
+    let { innerWidth, ret, dep } = state;
     let pwrWarningClass = cn('threshold', { exceeded: bands[0].retractedSum * 2 >= available });
     let deployed = [];
     let retracted = [];

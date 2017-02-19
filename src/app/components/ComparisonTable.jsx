@@ -3,7 +3,6 @@ import TranslatedComponent from './TranslatedComponent';
 import Link from './Link';
 import cn from 'classnames';
 import { outfitURL } from '../utils/UrlGenerators';
-import { SizeMap } from '../shipyard/Constants';
 
 
 /**

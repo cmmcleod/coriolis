@@ -7,6 +7,71 @@ import { MountFixed, MountGimballed, MountTurret } from './SvgIcons';
 
 const PRESS_THRESHOLD = 500; // mouse/touch down threshold
 
+/*
+ * Categorisation of module groups
+ */
+const GRPCAT = {
+  'sg': 'shields',
+  'bsg': 'shields',
+  'psg': 'shields',
+  'scb': 'shields',
+  'cc': 'limpet controllers',
+  'fx': 'limpet controllers',
+  'hb': 'limpet controllers',
+  'pc': 'limpet controllers',
+  'pce': 'passenger cabins',
+  'pci': 'passenger cabins',
+  'pcm': 'passenger cabins',
+  'pcq': 'passenger cabins',
+  'fh': 'hangars',
+  'pv': 'hangars',
+  'fs': 'fuel',
+  'ft': 'fuel',
+  'hr': 'structural reinforcement',
+  'mrp': 'structural reinforcement',
+  'bl': 'lasers',
+  'pl': 'lasers',
+  'ul': 'lasers',
+  'ml': 'lasers',
+  'c': 'projectiles',
+  'mc': 'projectiles',
+  'fc': 'projectiles',
+  'pa': 'projectiles',
+  'rg': 'projectiles',
+  'mr': 'ordnance',
+  'tp': 'ordnance',
+  'nl': 'ordnance',
+};
+// Order here is the order in which items will be shown in the modules menu
+const CATEGORIES = {
+  // Internals
+  'am': ['am'],
+  'cr': ['cr'],
+  'fi': ['fi'],
+  'fuel': ['ft', 'fs'],
+  'hangars': ['fh', 'pv'],
+  'limpet controllers': ['cc', 'fx', 'hb', 'pc'],
+  'passenger cabins': ['pce', 'pci', 'pcm', 'pcq'],
+  'rf': ['rf'],
+  'sc': ['sc'],
+  'shields': ['sg', 'bsg', 'psg', 'scb'],
+  'structural reinforcement': ['hr', 'mrp'],
+  'dc': ['dc'],
+  // Hardpoints
+  'lasers': ['pl', 'ul', 'bl', 'ml'],
+  'projectiles': ['mc', 'c', 'fc', 'pa', 'rg'],
+  'ordnance': ['mr', 'tp', 'nl'],
+  // Utilities
+  'sb': ['sb'],
+  'hs': ['hs'],
+  'ch': ['ch'],
+  'po': ['po'],
+  'ec': ['ec'],
+  'cs': ['cs'],
+  'kw': ['kw'],
+  'ws': ['ws'],
+};
+
 /**
  * Available modules menu
  */
@@ -64,14 +129,52 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       list = [];
       // At present time slots with grouped options (Hardpoints and Internal) can be empty
       list.push(<div className='empty-c upp' key='empty' onClick={onSelect.bind(null, null)} >{translate('empty')}</div>);
-      for (let g in modules) {
-        if (m && g == m.grp) {
-          list.push(<div ref={(elem) => this.groupElem = elem} key={g} className={'select-group cap'}>{translate(g)}</div>);
-        } else {
-          list.push(<div key={g} className={'select-group cap'}>{translate(g)}</div>);
-        }
 
-        list.push(buildGroup(g, modules[g]));
+      // Need to regroup the modules by our own categorisation
+      let catmodules = {};
+      // Pre-create to preserve ordering
+      for (let cat in CATEGORIES) {
+        catmodules[cat] = [];
+      }
+      for (let g in modules) {
+        const moduleCategory = GRPCAT[g] || g;
+        const existing = catmodules[moduleCategory] || [];
+        catmodules[moduleCategory] = existing.concat(modules[g]);
+      }
+      
+      for (let category in catmodules) {
+        let categoryHeader = false;
+        // Order through CATEGORIES if present
+        const categories = CATEGORIES[category] || [category];
+        if (categories && categories.length) {
+          for (let n in categories) {
+            const grp = categories[n];
+            // We now have the group and the category.  We might not have any modules, though...
+            if (modules[grp]) {
+              // Decide if we need a category header as well as a group header
+              if (categories.length === 1) {
+                // Show category header instead of group header
+                if (m && grp == m.grp) {
+                  list.push(<div ref={(elem) => this.groupElem = elem} key={category} className={'select-category upp'}>{translate(category)}</div>);
+                } else {
+                  list.push(<div key={category} className={'select-category upp'}>{translate(category)}</div>);
+                }
+              } else {
+                // Show category header as well as group header
+                if (!categoryHeader) {
+                  list.push(<div key={category} className={'select-category upp'}>{translate(category)}</div>);
+                  categoryHeader = true;
+                }
+                if (m && grp == m.grp) {
+                  list.push(<div ref={(elem) => this.groupElem = elem} key={grp} className={'select-group cap'}>{translate(grp)}</div>);
+                } else {
+                  list.push(<div key={grp} className={'select-group cap'}>{translate(grp)}</div>);
+                }
+              }
+              list.push(buildGroup(grp, modules[grp]));
+            }
+          }
+        }
       }
     }
 
@@ -94,6 +197,10 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     let elems = [];
 
     const sortedModules = modules.sort(this._moduleOrder);
+
+    // Calculate the number of items per class.  Used so we don't have long lists with only a few items in each row
+    const tmp = sortedModules.map((v, i) => v['class']).reduce((count, cls) => { count[cls] = ++count[cls] || 1; return count; }, {});
+    const itemsPerClass = Math.max.apply(null, Object.keys(tmp).map(key => tmp[key]));
 
     for (let i = 0; i < sortedModules.length; i++) {
       let m = sortedModules[i];
@@ -128,7 +235,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         case 'T': mount = <MountTurret className={'lg'}/>; break;
       }
 
-      if (i > 0 && sortedModules.length > 3 && m.class != prevClass && (m.rating != prevRating || m.mount) && m.grp != 'pa') {
+      if (i > 0 && sortedModules.length > 3 && itemsPerClass > 2 && m.class != prevClass && (m.rating != prevRating || m.mount)) {
         elems.push(<br key={'b' + m.grp + i} />);
       }
 
@@ -232,12 +339,12 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         return 1;
       }
     }
-    // Rating ordered from lowest (E) to highest (A)
+    // Rating ordered from highest (A) to lowest (E)
     if (a.rating < b.rating) {
-      return 1;
+      return -1;
     }
     if (a.rating > b.rating) {
-      return -1;
+      return 1;
     }
     // Do not attempt to order by name at this point, as that mucks up the order of armour
     return 0;

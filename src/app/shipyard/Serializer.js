@@ -1,14 +1,9 @@
 import { ModuleGroupToName, MountMap, BulkheadNames } from './Constants';
 import { Ships } from 'coriolis-data/dist';
 import Ship from './Ship';
-import * as ModuleUtils from './ModuleUtils';
 import * as Utils from '../utils/UtilityFunctions';
 import LZString from 'lz-string';
 import { outfitURL } from '../utils/UrlGenerators';
-
-const STANDARD = ['powerPlant', 'thrusters', 'frameShiftDrive', 'lifeSupport', 'powerDistributor', 'sensors', 'fuelTank'];
-
-const STANDARD_GROUPS = { 'powerPlant': 'pp', 'thrusters': 't', 'frameShiftDrive': 'fsd', 'lifeSupport': 'ls', 'powerDistributor': 'pd', 'sensors': 's', 'fuelTank': 'ft' };
 
 /**
  * Generates ship-loadout JSON Schema standard object
