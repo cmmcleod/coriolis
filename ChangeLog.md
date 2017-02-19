@@ -1,5 +1,6 @@
 #2.2.18
   * Change methodology for calculating explorer role; can result in lighter builds
+  * Tidy up layout for module selection and lay everything out in a consistent best-to-worst for both class and grade
 
 #2.2.17
   * Use in-game terminology for shield generator optmul and optmass items
