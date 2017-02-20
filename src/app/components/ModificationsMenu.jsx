@@ -218,7 +218,23 @@ export default class ModificationsMenu extends TranslatedComponent {
     const { m, ship } = this.props;
     const features = m.blueprint.grades[m.blueprint.grade].features;
     for (const featureName in features) {
-      const value = Modifications.modifications[featureName].higherbetter ? features[featureName][1] : features[featureName][0];
+      let value;
+      if (Modifications.modifications[featureName].higherbetter) {
+        // Higher is better, but is this making it better or worse?
+        if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
+          value = features[featureName][0];
+        } else {
+          value = features[featureName][1];
+        }
+      } else {
+        // Higher is worse, but is this making it better or worse?
+        if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
+          value = features[featureName][1];
+        } else {
+          value = features[featureName][0];
+        }
+      }
+
       this._setRollResult(ship, m, featureName, value);
     }
     this.setState({ modifications: this._setModifications(this.props) });
