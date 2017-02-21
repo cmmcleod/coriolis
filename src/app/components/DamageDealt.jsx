@@ -162,7 +162,7 @@ export default class DamageDealt extends TranslatedComponent {
     let names = [];
     let num = 1;
     for (let i =0; i < ship.hardpoints.length; i++) {
-      if (ship.hardpoints[i].m && ship.hardpoints[i].enabled) {
+      if (ship.hardpoints[i].maxClass > 0 && ship.hardpoints[i].m && ship.hardpoints[i].enabled) {
         const m = ship.hardpoints[i].m;
         let name = '' + num++ + ': ' + m.class + m.rating + (m.missile ? '/' + m.missile : '') + ' ' + translate(m.name || m.grp);
         let engineering;
@@ -242,7 +242,7 @@ export default class DamageDealt extends TranslatedComponent {
 
     let weapons = [];
     for (let i = 0; i < ship.hardpoints.length; i++) {
-      if (ship.hardpoints[i].m && ship.hardpoints[i].enabled) {
+      if (ship.hardpoints[i].maxClass > 0 && ship.hardpoints[i].m && ship.hardpoints[i].enabled) {
         const m = ship.hardpoints[i].m;
         if (m.getDamage() && m.grp !== 'po') {
           let dropoff = 1;
@@ -493,6 +493,7 @@ export default class DamageDealt extends TranslatedComponent {
             series={this.state.weaponNames}
             colors={DAMAGE_DEALT_COLORS}
             func={this.state.calcDpsFunc}
+            points={200}
           />
         </div>
         <div className='group half'>
@@ -508,6 +509,7 @@ export default class DamageDealt extends TranslatedComponent {
             series={this.state.weaponNames}
             colors={DAMAGE_DEALT_COLORS}
             func={this.state.calcDpsFunc}
+            points={200}
           />
         </div>
         </span> : null }

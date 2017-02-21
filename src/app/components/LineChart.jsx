@@ -1,8 +1,7 @@
 import React from 'react';
-import d3 from 'd3';
+import * as d3 from 'd3';
 import TranslatedComponent from './TranslatedComponent';
 
-const RENDER_POINTS = 20;   // Only render 20 points on the graph
 const MARGIN = { top: 15, right: 20, bottom: 35, left: 60 };
 
 /**
@@ -13,6 +12,7 @@ export default class LineChart extends TranslatedComponent {
   static defaultProps = {
     xMin: 0,
     yMin: 0,
+    points: 20,
     colors: ['#ff8c0d']
   };
 
@@ -29,6 +29,7 @@ export default class LineChart extends TranslatedComponent {
     yUnit: React.PropTypes.string.isRequired,
     series: React.PropTypes.array,
     colors: React.PropTypes.array,
+    points: React.PropTypes.number,
   };
 
   /**
@@ -48,19 +49,19 @@ export default class LineChart extends TranslatedComponent {
 
     let markerElems = [];
     let detailElems = [<text key='lbl' className='text-tip x' y='1.25em'/>];
-    let xScale = d3.scale.linear();
-    let xAxisScale = d3.scale.linear();
-    let yScale = d3.scale.linear();
+    let xScale = d3.scaleLinear();
+    let xAxisScale = d3.scaleLinear();
+    let yScale = d3.scaleLinear();
     let series = props.series;
     let seriesLines = [];
 
-    this.xAxis = d3.svg.axis().scale(xAxisScale).outerTickSize(0).orient('bottom');
-    this.yAxis = d3.svg.axis().scale(yScale).ticks(6).outerTickSize(0).orient('left');
+    this.xAxis = d3.axisBottom(xAxisScale).tickSizeOuter(0);
+    this.yAxis = d3.axisLeft(yScale).ticks(6).tickSizeOuter(0);
 
     for(let i = 0, l = series ? series.length : 1; i < l; i++) {
       let yAccessor = series ? function(d) { return yScale(d[1][this]); }.bind(series[i]) : (d) => yScale(d[1]);
-      seriesLines.push(d3.svg.line().x((d) => xScale(d[0])).y(yAccessor));
-      detailElems.push(<text key={i} className='text-tip y' y={1.25 * (i + 2) + 'em'}/>);
+      seriesLines.push(d3.line().x((d, i) => xScale(d[0])).y(yAccessor));
+      detailElems.push(<text key={i} className='text-tip y' stroke={props.colors[i]} y={1.25 * (i + 2) + 'em'}/>);
       markerElems.push(<circle key={i} className='marker' r='4' />);
     }
 
@@ -168,17 +169,17 @@ export default class LineChart extends TranslatedComponent {
    * @param  {Object} props   React Component properties
    */
   _updateSeriesData(props) {
-    let { func, xMin, xMax, series } = props;
-    let delta = (xMax - xMin) / RENDER_POINTS;
-    let seriesData = new Array(RENDER_POINTS);
+    let { func, xMin, xMax, series, points } = props;
+    let delta = (xMax - xMin) / points;
+    let seriesData = new Array(points);
 
     if (delta) {
-      seriesData = new Array(RENDER_POINTS);
-      for (let i = 0, x = xMin; i < RENDER_POINTS; i++) {
+      seriesData = new Array(points);
+      for (let i = 0, x = xMin; i < points; i++) {
         seriesData[i] = [x, func(x)];
         x += delta;
       }
-      seriesData[RENDER_POINTS - 1] = [xMax, func(xMax)];
+      seriesData[points - 1] = [xMax, func(xMax)];
     } else {
       let yVal = func(xMin);
       seriesData = [[0, yVal], [1, yVal]];
