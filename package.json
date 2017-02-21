@@ -87,7 +87,7 @@
     "classnames": "^2.2.0",
     "browserify-zlib": "ipfs/browserify-zlib",
     "coriolis-data": "EDCD/coriolis-data",
-    "d3": "3.5.16",
+    "d3": "4.6.0",
     "fbemitter": "^2.0.0",
     "lodash": "^4.15.0",
     "lz-string": "^1.4.4",

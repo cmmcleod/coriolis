@@ -1,5 +1,5 @@
 import React from 'react';
-import d3 from 'd3';
+import * as d3 from 'd3';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
 import { wrapCtxMenu } from '../utils/UtilityFunctions';
@@ -46,10 +46,10 @@ export default class PowerBands extends TranslatedComponent {
    */
   constructor(props, context) {
     super(props);
-    this.wattScale = d3.scale.linear();
-    this.pctScale = d3.scale.linear().domain([0, 1]);
-    this.wattAxis = d3.svg.axis().scale(this.wattScale).outerTickSize(0).orient('top').tickFormat(context.language.formats.r2);
-    this.pctAxis = d3.svg.axis().scale(this.pctScale).outerTickSize(0).orient('bottom').tickFormat(context.language.formats.rPct);
+    this.wattScale = d3.scaleLinear();
+    this.pctScale = d3.scaleLinear().domain([0, 1]);
+    this.wattAxis = d3.axisTop(this.wattScale).tickSizeOuter(0).tickFormat(context.language.formats.r2);
+    this.pctAxis = d3.axisBottom(this.pctScale).tickSizeOuter(0).tickFormat(context.language.formats.rPct);
 
     this._updateDimensions = this._updateDimensions.bind(this);
     this._updateScales = this._updateScales.bind(this);
