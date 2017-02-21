@@ -26,7 +26,7 @@ export default class LineChart extends TranslatedComponent {
     yLabel: React.PropTypes.string.isRequired,
     yMin: React.PropTypes.number,
     yMax: React.PropTypes.number.isRequired,
-    yUnit: React.PropTypes.string.isRequired,
+    yUnit: React.PropTypes.string,
     series: React.PropTypes.array,
     colors: React.PropTypes.array,
     points: React.PropTypes.number,
@@ -99,7 +99,7 @@ export default class LineChart extends TranslatedComponent {
       let yVal = series ? y0[series[i]] : y0;
       yTotal += yVal;
       return (series ? translate(series[i]) : '') + ' ' + formats.f2(yVal);
-    }).append('tspan').attr('class', 'metric').text(' ' + yUnit);
+    }).append('tspan').attr('class', 'metric').text(yUnit ? ' ' + yUnit : '');
 
     tips.selectAll('text').each(function() {
       if (this.getBBox().width > tipWidth) {
@@ -228,7 +228,7 @@ export default class LineChart extends TranslatedComponent {
     let { xLabel, yLabel, xUnit, yUnit, colors } = this.props;
     let { innerWidth, outerHeight, innerHeight, tipHeight, detailElems, markerElems, seriesData, seriesLines } = this.state;
     let line = this.line;
-    let lines = seriesLines.map((line, i) => <path key={i} className='line' stroke={colors[i]} strokeWidth='2' d={line(seriesData)} />);
+    let lines = seriesLines.map((line, i) => <path key={i} className='line' fill='none' stroke={colors[i]} strokeWidth='1' d={line(seriesData)} />);
 
     return <svg style={{ width: '100%', height: outerHeight }}>
       <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
@@ -242,7 +242,7 @@ export default class LineChart extends TranslatedComponent {
         <g className='y axis' ref={(elem) => d3.select(elem).call(this.yAxis)}>
           <text className='cap' transform='rotate(-90)' y='-50' dy='.1em' x={innerHeight / -2} style={{ textAnchor: 'middle' }}>
             <tspan>{yLabel}</tspan>
-            <tspan className='metric'> ({yUnit})</tspan>
+            { yUnit && <tspan className='metric'> ({yUnit})</tspan> }
           </text>
         </g>
         <g ref={(g) => this.tipContainer = d3.select(g)} style={{ display: 'none' }}>
