@@ -2,6 +2,7 @@
   * Change methodology for calculating explorer role; can result in lighter builds
   * Tidy up layout for module selection and lay everything out in a consistent best-to-worst for both class and grade
   * Make integrity for module reinforcement packages visible
+  * Clean up breakpoints for modules in available modules list; stops 7- or 8- module long lines
 
 #2.2.17
   * Use in-game terminology for shield generator optmul and optmass items

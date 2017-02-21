@@ -207,6 +207,8 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     const tmp = sortedModules.map((v, i) => v['class']).reduce((count, cls) => { count[cls] = ++count[cls] || 1; return count; }, {});
     const itemsPerClass = Math.max.apply(null, Object.keys(tmp).map(key => tmp[key]));
 
+    let itemsOnThisRow = 0;
+
     for (let i = 0; i < sortedModules.length; i++) {
       let m = sortedModules[i];
       let mount = null;
@@ -240,8 +242,9 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         case 'T': mount = <MountTurret className={'lg'}/>; break;
       }
 
-      if (i > 0 && sortedModules.length > 3 && itemsPerClass > 2 && m.class != prevClass && (m.rating != prevRating || m.mount)) {
+      if (itemsOnThisRow == 6 || i > 0 && sortedModules.length > 3 && itemsPerClass > 2 && m.class != prevClass && (m.rating != prevRating || m.mount)) {
         elems.push(<br key={'b' + m.grp + i} />);
+        itemsOnThisRow = 0;
       }
 
       elems.push(
@@ -250,6 +253,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
           {(mount ? ' ' : '') + m.class + m.rating + (m.missile ? '/' + m.missile : '') + (m.name ? ' ' + translate(m.name) : '')}
         </li>
       );
+      itemsOnThisRow++;
       prevClass = m.class;
       prevRating = m.rating;
     }
