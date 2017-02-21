@@ -7,7 +7,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var AppCachePlugin = require('appcache-webpack-plugin');
 
 var node_modules_dir = path.resolve(__dirname, 'node_modules');
-var d3Path = path.resolve(node_modules_dir, 'd3/d3.min.js');
+var d3Path = path.resolve(__dirname, 'd3.min.js');
 var reactPath = path.resolve(node_modules_dir, 'react/dist/react.min.js');
 var reactDomPath = path.resolve(node_modules_dir, 'react-dom/dist/react-dom.min.js');
 var lzStringPath = path.resolve(node_modules_dir, 'lz-string/libs/lz-string.min.js');
