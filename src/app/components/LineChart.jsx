@@ -10,6 +10,7 @@ const MARGIN = { top: 15, right: 20, bottom: 35, left: 60 };
 export default class LineChart extends TranslatedComponent {
 
   static defaultProps = {
+    code: '',
     xMin: 0,
     yMin: 0,
     points: 20,
@@ -30,6 +31,7 @@ export default class LineChart extends TranslatedComponent {
     series: React.PropTypes.array,
     colors: React.PropTypes.array,
     points: React.PropTypes.number,
+    code: React.PropTypes.string,
   };
 
   /**
@@ -42,36 +44,29 @@ export default class LineChart extends TranslatedComponent {
 
     this._updateDimensions = this._updateDimensions.bind(this);
     this._updateSeriesData = this._updateSeriesData.bind(this);
+    this._updateSeries = this._updateSeries.bind(this);
     this._tooltip = this._tooltip.bind(this);
     this._showTip = this._showTip.bind(this);
     this._hideTip = this._hideTip.bind(this);
     this._moveTip = this._moveTip.bind(this);
 
-    let markerElems = [];
-    let detailElems = [<text key='lbl' className='text-tip x' y='1.25em'/>];
+    //const data = _updateSeries(this.props);
+    const series = props.series;
+
     let xScale = d3.scaleLinear();
-    let xAxisScale = d3.scaleLinear();
     let yScale = d3.scaleLinear();
-    let series = props.series;
-    let seriesLines = [];
+    let xAxisScale = d3.scaleLinear();
 
     this.xAxis = d3.axisBottom(xAxisScale).tickSizeOuter(0);
     this.yAxis = d3.axisLeft(yScale).ticks(6).tickSizeOuter(0);
-
-    for(let i = 0, l = series ? series.length : 1; i < l; i++) {
-      let yAccessor = series ? function(d) { return yScale(d[1][this]); }.bind(series[i]) : (d) => yScale(d[1]);
-      seriesLines.push(d3.line().x((d, i) => xScale(d[0])).y(yAccessor));
-      detailElems.push(<text key={i} className='text-tip y' stroke={props.colors[i]} y={1.25 * (i + 2) + 'em'}/>);
-      markerElems.push(<circle key={i} className='marker' r='4' />);
-    }
 
     this.state = {
       xScale,
       xAxisScale,
       yScale,
-      seriesLines,
-      detailElems,
-      markerElems,
+      //seriesLines: data.seriesLines,
+      //detailElems: data.detailElems,
+      //markerElems: data.markerElems,
       tipHeight: 2 + (1.2 * (series ? series.length : 0.8))
     };
   }
@@ -165,7 +160,43 @@ export default class LineChart extends TranslatedComponent {
   }
 
   /**
-   * Update series data generated from props
+   * Update series generated from props
+   * @param  {Object} props   React Component properties
+   */
+  _updateSeries(props, state) {
+    let { func, xMin, xMax, series, points } = props;
+    let delta = (xMax - xMin) / points;
+    let seriesData = new Array(points);
+
+    if (delta) {
+      seriesData = new Array(points);
+      for (let i = 0, x = xMin; i < points; i++) {
+        seriesData[i] = [x, func(x)];
+        x += delta;
+      }
+      seriesData[points - 1] = [xMax, func(xMax)];
+    } else {
+      let yVal = func(xMin);
+      seriesData = [[0, yVal], [1, yVal]];
+    }
+
+
+    const markerElems = [];
+    const detailElems = [<text key='lbl' className='text-tip x' y='1.25em'/>];
+    const seriesLines = [];
+    for (let i = 0, l = series ? series.length : 1; i < l; i++) {
+      const yAccessor = series ? function(d) { return state.yScale(d[1][this]); }.bind(series[i]) : (d) => state.yScale(d[1]);
+      seriesLines.push(d3.line().x((d, i) => this.state.xScale(d[0])).y(yAccessor));
+      detailElems.push(<text key={i} className='text-tip y' stroke={props.colors[i]} y={1.25 * (i + 2) + 'em'}/>);
+      markerElems.push(<circle key={i} className='marker' r='4' />);
+    }
+
+    this.setState({ markerElems, detailElems, seriesLines, seriesData });
+    return { seriesData };
+  }
+
+  /**
+   * Update series and data generated from props
    * @param  {Object} props   React Component properties
    */
   _updateSeriesData(props) {
@@ -193,7 +224,7 @@ export default class LineChart extends TranslatedComponent {
    */
   componentWillMount() {
     this._updateDimensions(this.props, this.context.sizeRatio);
-    this._updateSeriesData(this.props);
+    this._updateSeries(this.props, this.state);
   }
 
   /**
@@ -211,9 +242,12 @@ export default class LineChart extends TranslatedComponent {
       this._updateDimensions(nextProps, nextContext.sizeRatio);
     }
 
-    if (domainChanged) {
-      this._updateSeriesData(nextProps);
+    if (props.code != nextProps.code) {
+      console.log('Code changed');
     }
+//    if (domainChanged) {
+      this._updateSeries(nextProps, this.state);
+//    }
   }
 
   /**
