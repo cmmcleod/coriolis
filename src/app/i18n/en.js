@@ -282,7 +282,7 @@ Along the top of this panel are the number of pips you put in to your ENG capaci
 </dl>
 
 <h2>Jump Range</h2>
-The jump range panel provides information about the build&apos; jump range.  The graph shows how the build&apos;s jump range changes with the amount of cargo on-board.  The slider can be altered to change the amount of fuel you have on-board.
+The jump range panel provides information about the build&apos; jump range.  The graph shows how the build&apos;s jump range changes with the amount of cargo on-board.  The slider can be altered to change the amount of fuel you have on-board.</p>
 
 <h2>Damage Dealt</h2>
 The damage dealt panel provides information about the effectiveness of your build&apos;s weapons against opponents&apos; shields and hull at different engagement distances.</p>
@@ -297,7 +297,7 @@ Total effective DPS, SDPS and effectiveness against both shields and hull are pr
 
 At the bottom of this panel you can change your engagement range.  The engagement range is the distance between your ship and your target.  Many weapons suffer from what is known as damage falloff, where their effectiveness decreases the further the distance between your ship and your target.  This allows you to model the effect of engaging at different ranges.
 
-Note that this panel only shows enabled weapons, so if you want to see your overall effectiveness for a subset of your weapons you can disable the undesired weapons in the power management panel.
+Note that this panel only shows enabled weapons, so if you want to see your overall effectiveness for a subset of your weapons you can disable the undesired weapons in the power management panel.</p>
 
 <h2>Damage Received</h2>
 The damage received panel provides information about the effectiveness of your build&apos;s defences against opponent&apos;s weapons at different engagement range.  Features and functions are the same as the damage dealt panel, except that it does take in to account your build&apos;s resistances.</p>
