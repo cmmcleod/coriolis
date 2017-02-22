@@ -289,7 +289,7 @@ The damage dealt panel provides information about the effectiveness of your buil
 
 The ship against which you want to check damage dealt can be selected by clicking on the red ship icon or the red ship name at the top of this panel.</p>
 
-The main section of this panel is a table showing your weapons and their effectiveness.  Effectiveness against shields takes in to account the weapon and its engagement range, but does not consider the target ship&apos;s resistances.  Effectiveness against hull takes in to account the weapon and, its engagement range and the target&apos;s hardness, but does not consider the target ship&apos;s resistances.  This is because resistances will alter significantly depending on the target&apos;s build.</p>
+The main section of this panel is a table showing your weapons and their effectiveness.  Effectiveness against shields takes in to account the weapon and its engagement range, and assumes standard shield resistances.  Effectiveness against hull takes in to account the weapon and, its engagement range and the target&apos;s hardness, and assumes military grade armour resistances.</p>
 
 Effective DPS and effective SDPS are the equivalent of DPS and SDPS for the weapon.  Effectiveness is a percentage value that shows how effective the DPS of the weapon is compared in reality against the given target compared to the weapon&apos;s stated DPS.  Effectiveness can never go above 100%.</p>
 
