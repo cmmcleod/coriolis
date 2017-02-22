@@ -483,7 +483,7 @@ export default class DamageDealt extends TranslatedComponent {
 
     return (
       <span>
-        <h1>{translate('damage dealt against')} {expanded ? <span onClick={onCollapseExpand}><CollapseSection className='summary'/></span> : <span onClick={onCollapseExpand}><ExpandSection className='summary'/></span>}</h1>
+        <h1>{translate('damage dealt to')} {expanded ? <span onClick={onCollapseExpand}><CollapseSection className='summary'/></span> : <span onClick={onCollapseExpand}><ExpandSection className='summary'/></span>}</h1>
         {expanded ?  <span>
         <ShipSelector initial={this.state.against} currentMenu={this.props.currentMenu} onChange={this._onShipChange} />
         <table className='summary' style={{ width: '100%' }}>
@@ -539,7 +539,7 @@ export default class DamageDealt extends TranslatedComponent {
           </tbody>
         </table>
         <div className='group half'>
-          <h1>{translate('damage against standard shields')}</h1>
+          <h1>{translate('sustained dps against standard shields')}</h1>
           <LineChart
             width={this.props.chartWidth}
             xMax={maxRange}
@@ -555,7 +555,7 @@ export default class DamageDealt extends TranslatedComponent {
           />
         </div>
         <div className='group half'>
-          <h1>{translate('damage against standard armour')}</h1>
+          <h1>{translate('sustained dps against standard armour')}</h1>
           <LineChart
             width={this.props.chartWidth}
             xMax={maxRange}

@@ -371,20 +371,19 @@ export default class OutfittingPage extends Page {
         <InternalSlotSection ship={ship} code={iStr} onChange={shipUpdated} currentMenu={menu} />
         <HardpointsSlotSection ship={ship} code={hStr || ''} onChange={shipUpdated} currentMenu={menu} />
         <UtilitySlotSection ship={ship} code={hStr || ''} onChange={shipUpdated} currentMenu={menu} />
-        <PowerManagement ship={ship} code={code || ''} onChange={shipUpdated} />
-        <CostSection ship={ship} buildName={buildName} code={code || ''} />
 
         <div className='group third'>
           <OffenceSummary ship={ship} code={code}/>
         </div>
-
         <div className='group third'>
           <DefenceSummary ship={ship} code={code}/>
         </div>
-
         <div className='group third'>
           <MovementSummary ship={ship} code={code}/>
         </div>
+
+        <PowerManagement ship={ship} code={code || ''} onChange={shipUpdated} />
+        <CostSection ship={ship} buildName={buildName} code={code || ''} />
 
         <div ref='chartHalf' className='group half' />
         <div className='group half' />

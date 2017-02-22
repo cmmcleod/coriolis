@@ -278,7 +278,7 @@ export default class DamageReceived extends TranslatedComponent {
 
     return (
       <span>
-        <h1>{translate('damage received by')} {expanded ? <span onClick={onCollapseExpand}><CollapseSection className='summary'/></span> : <span onClick={onCollapseExpand}><ExpandSection className='summary'/></span>}</h1>
+        <h1>{translate('damage received from')} {expanded ? <span onClick={onCollapseExpand}><CollapseSection className='summary'/></span> : <span onClick={onCollapseExpand}><ExpandSection className='summary'/></span>}</h1>
 	{expanded ? <span>
         <table className='summary' style={{ width: '100%' }}>
           <thead>
