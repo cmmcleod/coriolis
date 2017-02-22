@@ -1,5 +1,4 @@
 import * as ModuleUtils from './ModuleUtils';
-import * as _ from 'lodash';
 import { Modifications } from 'coriolis-data/dist';
 
 /**

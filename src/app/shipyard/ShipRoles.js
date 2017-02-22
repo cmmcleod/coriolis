@@ -31,18 +31,36 @@ export function multiPurpose(ship, shielded, bulkheadIndex) {
  * @param  {Object} standardOpts  [Optional] Standard module optional overrides
  */
 export function trader(ship, shielded, standardOpts) {
-  let sg = shielded ? ship.getAvailableModules().lightestShieldGenerator(ship.hullMass) : null;
-
-  for (let i = ship.internal.length; i--;) {
-    let slot = ship.internal[i];
-    if (sg && canMount(ship, slot, 'sg', sg.class)) {
-      ship.use(slot, sg);
-      sg = null;
-    } else {
-      if (canMount(ship, slot, 'cr')) {
-        ship.use(slot, ModuleUtils.findInternal('cr', slot.maxClass, 'E'));
+  let usedSlots = [],
+      sg = ship.getAvailableModules().lightestShieldGenerator(ship.hullMass);
+ 
+  // Shield generator if required
+  if (shielded) {
+    const shieldOrder = [1, 2, 3, 4, 5, 6, 7, 8];
+    const shieldInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
+                                         .filter(a => (!a.eligible) || a.eligible.sg)
+                                         .filter(a => a.maxClass >= sg.class)
+                                         .sort((a,b) => shieldOrder.indexOf(a.maxClass) - shieldOrder.indexOf(b.maxClass));
+    for (let i = 0; i < shieldInternals.length; i++) {
+      if (canMount(ship, shieldInternals[i], 'sg')) {
+        ship.use(shieldInternals[i], sg);
+        usedSlots.push(shieldInternals[i]);
+        break;
       }
     }
+  }
+
+  // Fill the empty internals with cargo racks
+  for (let i = ship.internal.length; i--;) {
+    let slot = ship.internal[i];
+    if (usedSlots.indexOf(slot) == -1 && canMount(ship, slot, 'cr')) {
+      ship.use(slot, ModuleUtils.findInternal('cr', slot.maxClass, 'E'));
+    }
+  }
+
+  // Empty the hardpoints
+  for (let s of ship.hardpoints) {
+    ship.use(s, null);
   }
 
   ship.useLightestStandard(standardOpts);
@@ -55,53 +73,102 @@ export function trader(ship, shielded, standardOpts) {
  */
 export function explorer(ship, planetary) {
   let standardOpts = { ppRating: 'A' },
-      intLength = ship.internal.length,
       heatSinkCount = 2,  // Fit 2 heat sinks if possible
-      afmUnitCount = 2,   // Fit 2 AFM Units if possible
-      shieldNext = planetary,
+      usedSlots = [],
       sgSlot,
       fuelScoopSlot,
-      pvhSlot,
       sg = ship.getAvailableModules().lightestShieldGenerator(ship.hullMass);
 
   if (!planetary) { // Non-planetary explorers don't really need to boost
     standardOpts.pd = '1D';
   }
 
-  ship.setSlotEnabled(ship.cargoHatch, false)
-      .use(ship.internal[--intLength], ModuleUtils.internal('2f'));      // Advanced Discovery Scanner
+  // Cargo hatch can be disabled
+  ship.setSlotEnabled(ship.cargoHatch, false);
 
-  if (!planetary || intLength > 3) {  // Don't mount a DDS on planetary explorer ships too small for both a PVH and DDS
-    ship.use(ship.internal[--intLength], ModuleUtils.internal('2i'));      // Detailed Surface Scanner
+  // Advanced Discovery Scanner - class 1 or higher
+  const adsOrder = [1, 2, 3, 4, 5, 6, 7, 8];
+  const adsInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
+                                    .filter(a => (!a.eligible) || a.eligible.sc)
+                                    .sort((a,b) => adsOrder.indexOf(a.maxClass) - adsOrder.indexOf(b.maxClass));
+  for (let i = 0; i < adsInternals.length; i++) {
+    if (canMount(ship, adsInternals[i], 'sc')) {
+      ship.use(adsInternals[i], ModuleUtils.internal('2f'));
+      usedSlots.push(adsInternals[i]);
+      break;
+    }
   }
 
-  for (let i = 0; i < intLength; i++) {
-    let slot = ship.internal[i];
-    let nextSlot = (i + 1) < intLength ? ship.internal[i + 1] : null;
-    // Fit best possible Fuel Scoop
-    if (!fuelScoopSlot && canMount(ship, slot, 'fs')) {
-      fuelScoopSlot = slot;
-      ship.use(slot, ModuleUtils.findInternal('fs', slot.maxClass, 'A'));
-      ship.setSlotEnabled(slot, true);
-    // Mount a Shield generator if possible AND an AFM Unit has been mounted already (Guarantees at least 1 AFM Unit)
-    } else if (!sgSlot && shieldNext && canMount(ship, slot, 'sg', sg.class) && !canMount(ship, nextSlot, 'sg', sg.class)) {
-      sgSlot = slot;
-      shieldNext = false;
-      ship.use(slot, sg);
-      ship.setSlotEnabled(slot, true);
-    // if planetary explorer and the next slot cannot mount a PVH or the next modul to mount is a SG
-    } else if (planetary && !pvhSlot && canMount(ship, slot, 'pv') && (shieldNext || !canMount(ship, nextSlot, 'pv', 2))) {
-      pvhSlot = slot;
-      ship.use(slot, ModuleUtils.findInternal('pv', Math.min(Math.floor(pvhSlot.maxClass / 2) * 2, 6), 'G'));
-      ship.setSlotEnabled(slot, false);   // Disabled power for PVH
-      shieldNext = !sgSlot;
-    } else if (afmUnitCount > 0 && canMount(ship, slot, 'am')) {
-      afmUnitCount--;
-      ship.use(slot, ModuleUtils.findInternal('am', slot.maxClass, 'A'));
-      ship.setSlotEnabled(slot, false);   // Disabled power for AFM Unit
-      shieldNext = !sgSlot;
-    } else {
-      ship.use(slot, null);
+  if (planetary) {
+    // Planetary Vehicle Hangar - class 2 or higher
+    const pvhOrder = [2, 3, 4, 5, 6, 7, 8, 1];
+    const pvhInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
+                                      .filter(a => (!a.eligible) || a.eligible.pv)
+                                      .sort((a,b) => pvhOrder.indexOf(a.maxClass) - pvhOrder.indexOf(b.maxClass));
+    for (let i = 0; i < pvhInternals.length; i++) {
+      if (canMount(ship, pvhInternals[i], 'pv')) {
+        // Planetary Vehical Hangar only has even classes
+        const pvhClass = pvhInternals[i].maxClass % 2 === 1 ? pvhInternals[i].maxClass - 1 : pvhInternals[i].maxClass;
+        ship.use(pvhInternals[i], ModuleUtils.findInternal('pv', pvhClass, 'G')); // G is lower mass
+        ship.setSlotEnabled(pvhInternals[i], false);   // Disable power for Planetary Vehical Hangar
+        usedSlots.push(pvhInternals[i]);
+        break;
+      }
+    }
+  }
+
+  // Shield generator
+  const shieldOrder = [1, 2, 3, 4, 5, 6, 7, 8];
+  const shieldInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
+                                       .filter(a => (!a.eligible) || a.eligible.sg)
+                                       .filter(a => a.maxClass >= sg.class)
+                                       .sort((a,b) => shieldOrder.indexOf(a.maxClass) - shieldOrder.indexOf(b.maxClass));
+  for (let i = 0; i < shieldInternals.length; i++) {
+    if (canMount(ship, shieldInternals[i], 'sg')) {
+      ship.use(shieldInternals[i], sg);
+      usedSlots.push(shieldInternals[i]);
+      sgSlot = shieldInternals[i];
+      break;
+    }
+  }
+
+  // Detailed Surface Scanner
+  const dssOrder = [1, 2, 3, 4, 5, 6, 7, 8];
+  const dssInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
+                                    .filter(a => (!a.eligible) || a.eligible.sc)
+                                    .sort((a,b) => dssOrder.indexOf(a.maxClass) - dssOrder.indexOf(b.maxClass));
+  for (let i = 0; i < dssInternals.length; i++) {
+    if (canMount(ship, dssInternals[i], 'sc')) {
+      ship.use(dssInternals[i], ModuleUtils.internal('2i'));
+      usedSlots.push(dssInternals[i]);
+      break;
+    }
+  }
+
+  // Fuel scoop - best possible
+  const fuelScoopOrder = [8, 7, 6, 5, 4, 3, 2, 1];
+  const fuelScoopInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
+                                       .filter(a => (!a.eligible) || a.eligible.fs)
+                                       .sort((a,b) => fuelScoopOrder.indexOf(a.maxClass) - fuelScoopOrder.indexOf(b.maxClass));
+  for (let i = 0; i < fuelScoopInternals.length; i++) {
+    if (canMount(ship, fuelScoopInternals[i], 'fs')) {
+      ship.use(fuelScoopInternals[i], ModuleUtils.findInternal('fs', fuelScoopInternals[i].maxClass, 'A'));
+      usedSlots.push(fuelScoopInternals[i]);
+      fuelScoopSlot = fuelScoopInternals[i];
+      break;
+    }
+  }
+
+  // AFMUs - fill as they are 0-weight
+  const afmuOrder = [8, 7, 6, 5, 4, 3, 2, 1];
+  const afmuInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
+                                       .filter(a => (!a.eligible) || a.eligible.pc)
+                                       .sort((a,b) => afmuOrder.indexOf(a.maxClass) - afmuOrder.indexOf(b.maxClass));
+  for (let i = 0; i < afmuInternals.length; i++) {
+    if (canMount(ship, afmuInternals[i], 'am')) {
+      ship.use(afmuInternals[i], ModuleUtils.findInternal('am', afmuInternals[i].maxClass, 'A'));
+      usedSlots.push(afmuInternals[i]);
+      ship.setSlotEnabled(afmuInternals[i], false);   // Disable power for AFM Unit
     }
   }
 
@@ -115,7 +182,7 @@ export function explorer(ship, planetary) {
     }
   }
 
-  if (sgSlot) {
+  if (sgSlot && fuelScoopSlot) {
     // The SG and Fuel scoop to not need to be powered at the same time
     if (sgSlot.m.getPowerUsage() > fuelScoopSlot.m.getPowerUsage()) { // The Shield generator uses the most power
       ship.setSlotEnabled(fuelScoopSlot, false);
@@ -173,7 +240,7 @@ export function miner(ship, shielded) {
   if (shielded) {
     const shieldOrder = [1, 2, 3, 4, 5, 6, 7, 8];
     const shieldInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
-                                         .filter(a => (!a.eligible) || a.eligible.pc)
+                                         .filter(a => (!a.eligible) || a.eligible.sg)
                                          .filter(a => a.maxClass >= sg.class)
                                          .sort((a,b) => shieldOrder.indexOf(a.maxClass) - shieldOrder.indexOf(b.maxClass));
     for (let i = 0; i < shieldInternals.length; i++) {

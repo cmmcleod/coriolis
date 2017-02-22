@@ -99,11 +99,11 @@ export default class UtilitySlotSection extends SlotSection {
       </ul>
       <div className='select-group cap'>{translate('sb')}</div>
       <ul>
-        <li className='c' onClick={_use.bind(this, 'sb', 'E', null)}>E</li>
-        <li className='c' onClick={_use.bind(this, 'sb', 'D', null)}>D</li>
-        <li className='c' onClick={_use.bind(this, 'sb', 'C', null)}>C</li>
-        <li className='c' onClick={_use.bind(this, 'sb', 'B', null)}>B</li>
         <li className='c' onClick={_use.bind(this, 'sb', 'A', null)}>A</li>
+        <li className='c' onClick={_use.bind(this, 'sb', 'B', null)}>B</li>
+        <li className='c' onClick={_use.bind(this, 'sb', 'C', null)}>C</li>
+        <li className='c' onClick={_use.bind(this, 'sb', 'D', null)}>D</li>
+        <li className='c' onClick={_use.bind(this, 'sb', 'E', null)}>E</li>
       </ul>
       <div className='select-group cap'>{translate('hs')}</div>
       <ul>

@@ -39,8 +39,8 @@ export default class InternalSlot extends Slot {
           <div className={'r'}>{formats.round(mass)}{u.T}</div>
         </div>
         <div className={'cb'}>
-          { m.getOptMass() ? <div className={'l'}>{translate('optmass', m.grp)}: {formats.int(m.getOptMass())}{u.T}</div> : null }
-          { m.getMaxMass() ? <div className={'l'}>{translate('maxmass', m.grp)}: {formats.int(m.getMaxMass())}{u.T}</div> : null }
+          { m.getOptMass() ? <div className={'l'}>{translate('optmass', 'sg')}: {formats.int(m.getOptMass())}{u.T}</div> : null }
+          { m.getMaxMass() ? <div className={'l'}>{translate('maxmass', 'sg')}: {formats.int(m.getMaxMass())}{u.T}</div> : null }
           { m.bins ? <div className={'l'}>{m.bins} <u>{translate('bins')}</u></div> : null }
           { m.bays ? <div className={'l'}>{translate('bays')}: {m.bays}</div> : null }
           { m.rebuildsperbay ? <div className={'l'}>{translate('rebuildsperbay')}: {m.rebuildsperbay}</div> : null }
@@ -60,6 +60,7 @@ export default class InternalSlot extends Slot {
           { m.rangeRating ? <div className={'l'}>{translate('range')}: {m.rangeRating}</div> : null }
           { m.getHullReinforcement() ? <div className={'l'}>+{formats.int(m.getHullReinforcement() + ship.baseArmour * m.getModValue('hullboost') / 10000)} <u className='cap'>{translate('armour')}</u></div> : null }
           { m.getProtection() ? <div className={'l'}>{formats.rPct(m.getProtection())} <u className='cap'>{translate('protection')}</u></div> : null }
+          { m.getIntegrity() && m.grp === 'mrp' ? <div className={'l'}>{formats.int(m.getIntegrity())} <u className='cap'>{translate('integrity')}</u></div> : null }
           { m.passengers ? <div className={'l'}>{translate('passengers')}: {m.passengers}</div> : null }
           { showModuleResistances && m.getExplosiveResistance() ? <div className='l'>{translate('explres')}: {formats.pct(m.getExplosiveResistance())}</div> : null }
           { showModuleResistances && m.getKineticResistance() ? <div className='l'>{translate('kinres')}: {formats.pct(m.getKineticResistance())}</div> : null }

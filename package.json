@@ -1,6 +1,6 @@
 {
   "name": "coriolis_shipyard",
-  "version": "2.2.17",
+  "version": "2.2.18",
   "repository": {
     "type": "git",
     "url": "https://github.com/EDCD/coriolis"
@@ -11,6 +11,7 @@
   "engine": "node >= 4.0.0",
   "license": "MIT",
   "scripts": {
+    "prepublish": "rollup -c && uglifyjs d3.js -c -m -o d3.min.js",
     "extract-translations": "grep -hroE \"(translate\\('[^']+'\\))|(tip.bind\\(null, '[^']+')\" src/* | grep -oE \"'[^']+'\" | grep -oE \"[^']+\" | sort -u -f",
     "clean": "rimraf build",
     "start": "node devServer.js",
@@ -62,6 +63,7 @@
     "babel-preset-react": "*",
     "babel-preset-stage-0": "*",
     "css-loader": "^0.23.0",
+    "d3-selection": "1",
     "eslint": "2.2.0",
     "eslint-plugin-react": "^4.0.0",
     "expose-loader": "^0.7.1",
@@ -77,6 +79,8 @@
     "react-addons-test-utils": "^15.0.1",
     "react-testutils-additions": "^15.1.0",
     "rimraf": "^2.4.3",
+    "rollup": "0.36",
+    "rollup-plugin-node-resolve": "2",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.6",
     "webpack": "^1.9.6",
@@ -87,7 +91,7 @@
     "classnames": "^2.2.0",
     "browserify-zlib": "ipfs/browserify-zlib",
     "coriolis-data": "EDCD/coriolis-data",
-    "d3": "3.5.16",
+    "d3": "4.6.0",
     "fbemitter": "^2.0.0",
     "lodash": "^4.15.0",
     "lz-string": "^1.4.4",

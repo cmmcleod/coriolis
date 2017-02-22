@@ -3,8 +3,6 @@ import TranslatedComponent from './TranslatedComponent';
 import cn from 'classnames';
 import AvailableModulesMenu from './AvailableModulesMenu';
 import ModificationsMenu from './ModificationsMenu';
-import { Modifications } from 'coriolis-data/dist';
-import { ListModifications } from './SvgIcons';
 import { diffDetails } from '../utils/SlotFunctions';
 import { wrapCtxMenu } from '../utils/UtilityFunctions';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';

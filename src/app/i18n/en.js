@@ -99,8 +99,8 @@ export const terms = {
   // Items on the outfitting page
   // Notification of restricted slot
   emptyrestricted: 'empty (restricted)',
-  'damage dealt against': 'Damage dealt against',
-  'damage received by': 'Damage received by',
+  'damage dealt to': 'Damage dealt to',
+  'damage received from': 'Damage received from',
   'against shields': 'Against shields',
   'against hull': 'Against hull',
   // 'ammo' was overloaded for outfitting page and modul info, so changed to ammunition for outfitting page
@@ -212,6 +212,8 @@ Once you have a working companion API connection go to the &apos;Shipyard&apos; 
 
 Note that Internet Explorer and Edge might not import correctly, due to their internal restrictions on URL length.  If you find that this is the case then please change your default browser to Chrome. </p>
 
+Also, the imported information does not provide any data on the power priority or enabled status of your cargo hatch.  Coriolis sets this item to have a power priority of "5" and to be disabled by default.  You can change this after import in the Power Management section. </p>
+
 <h2>Importing Your Ship From EDMC</h2>
 To import your ship from EDMC once your connection to the Frontier servers&apos; companion API is working go to &apos;Settings -&gt;Configuration&apos; and set the &apos;Preferred Shipyard&apos; to &apos;Coriolis&apos;.  Once this is set up clicking on your ship in the main window will open your default web browser in Coriolis with the ship&apos;s build.</p>
 
@@ -237,16 +239,6 @@ To remove a module from a slot right-click on the module. </p>
 To move a module from one slot to another drag it.  If you instead want to copy the module drag it whilst holding down the &apos;Alt&apos; key. </p>
 
 Clicking on the headings for each set of modules gives you the ability to either select an overall role for your ship (when clicking the core internal header) or a specific module with which you want to fill all applicable slots (when clicking the other headers). </p>
-
-<h2>Power Management</h2>
-The power management panel provides information about power usage and priorities.  It allows you to enable and disable individual modules, as well as set power priorities for each module.</p>
-
-<h2>Costs</h2>
-The costs panel provides information about the costs for each of your modules, and the total cost and insurance for your build.  By default Coriolis uses the standard costs, however discounts for your ship, modules and insurance can be altered in the &apos;Settings&apos; at the top-right of the page.</p>
-
-The retrofit costs provides information about the costs of changing the base build for your ship, or your saved build, to the current build.</p>
-
-The reload costs provides information about the costs of reloading your current build.</p>
 
 <h2>Offence Summary</h2>
 The offence summary panel provides information about the damage that you deal with your weapons.</p>
@@ -279,15 +271,25 @@ Along the top of this panel are the number of pips you put in to your ENG capaci
 <dt>Yaw</dt><dd>The fastest the ship can turn its nose left or right, in degrees per second</dd>
 </dl>
 
+<h2>Power Management</h2>
+The power management panel provides information about power usage and priorities.  It allows you to enable and disable individual modules, as well as set power priorities for each module.</p>
+
+<h2>Costs</h2>
+The costs panel provides information about the costs for each of your modules, and the total cost and insurance for your build.  By default Coriolis uses the standard costs, however discounts for your ship, modules and insurance can be altered in the &apos;Settings&apos; at the top-right of the page.</p>
+
+The retrofit costs provides information about the costs of changing the base build for your ship, or your saved build, to the current build.</p>
+
+The reload costs provides information about the costs of reloading your current build.</p>
+
 <h2>Jump Range</h2>
-The jump range panel provides information about the build&apos; jump range.  The graph shows how the build&apos;s jump range changes with the amount of cargo on-board.  The slider can be altered to change the amount of fuel you have on-board.
+The jump range panel provides information about the build&apos; jump range.  The graph shows how the build&apos;s jump range changes with the amount of cargo on-board.  The slider can be altered to change the amount of fuel you have on-board.</p>
 
 <h2>Damage Dealt</h2>
 The damage dealt panel provides information about the effectiveness of your build&apos;s weapons against opponents&apos; shields and hull at different engagement distances.</p>
 
 The ship against which you want to check damage dealt can be selected by clicking on the red ship icon or the red ship name at the top of this panel.</p>
 
-The main section of this panel is a table showing your weapons and their effectiveness.  Effectiveness against shields takes in to account the weapon and its engagement range, but does not consider the target ship&apos;s resistances.  Effectiveness against hull takes in to account the weapon and, its engagement range and the target&apos;s hardness, but does not consider the target ship&apos;s resistances.  This is because resistances will alter significantly depending on the target&apos;s build.</p>
+The main section of this panel is a table showing your weapons and their effectiveness.  Effectiveness against shields takes in to account the weapon and its engagement range, and assumes standard shield resistances.  Effectiveness against hull takes in to account the weapon and, its engagement range and the target&apos;s hardness, and assumes military grade armour resistances.</p>
 
 Effective DPS and effective SDPS are the equivalent of DPS and SDPS for the weapon.  Effectiveness is a percentage value that shows how effective the DPS of the weapon is compared in reality against the given target compared to the weapon&apos;s stated DPS.  Effectiveness can never go above 100%.</p>
 
@@ -295,7 +297,9 @@ Total effective DPS, SDPS and effectiveness against both shields and hull are pr
 
 At the bottom of this panel you can change your engagement range.  The engagement range is the distance between your ship and your target.  Many weapons suffer from what is known as damage falloff, where their effectiveness decreases the further the distance between your ship and your target.  This allows you to model the effect of engaging at different ranges.
 
-Note that this panel only shows enabled weapons, so if you want to see your overall effectiveness for a subset of your weapons you can disable the undesired weapons in the power management panel.
+Note that this panel only shows enabled weapons, so if you want to see your overall effectiveness for a subset of your weapons you can disable the undesired weapons in the power management panel.</p>
+
+At the bottom of this panel are two graphs showing how your sustained DPS changes with engagement range.  This shows at a glance how effective each weapon is at different distances.</p>
 
 <h2>Damage Received</h2>
 The damage received panel provides information about the effectiveness of your build&apos;s defences against opponent&apos;s weapons at different engagement range.  Features and functions are the same as the damage dealt panel, except that it does take in to account your build&apos;s resistances.</p>
