@@ -5,6 +5,8 @@
   * Clean up breakpoints for modules in available modules list; stops 7- or 8- module long lines
   * Add damager/range graphs to damage dealt
   * Reorder panels
+  * Use coriolis-data 2.2.18:
+    * Correct lower efficiency value to be better, not worse
 
 #2.2.17
   * Use in-game terminology for shield generator optmul and optmass items

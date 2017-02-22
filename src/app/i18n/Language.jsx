@@ -32,7 +32,7 @@ export function getLanguage(langCode) {
   let currentTerms = lang.terms;
   let d3Locale = d3.formatLocale(lang.formats);
   let gen = d3Locale.format('');
-  const round = function(x, n) { var ten_n = Math.pow(10,n); return Math.round(x * ten_n) / ten_n; }
+  const round = function(x, n) { const ten_n = Math.pow(10,n); return Math.round(x * ten_n) / ten_n; };
 
   if(lang === EN) {
     translate = (t, x) => { return currentTerms[t + '_' + x] || currentTerms[t] || t; };
