@@ -240,16 +240,6 @@ To move a module from one slot to another drag it.  If you instead want to copy 
 
 Clicking on the headings for each set of modules gives you the ability to either select an overall role for your ship (when clicking the core internal header) or a specific module with which you want to fill all applicable slots (when clicking the other headers). </p>
 
-<h2>Power Management</h2>
-The power management panel provides information about power usage and priorities.  It allows you to enable and disable individual modules, as well as set power priorities for each module.</p>
-
-<h2>Costs</h2>
-The costs panel provides information about the costs for each of your modules, and the total cost and insurance for your build.  By default Coriolis uses the standard costs, however discounts for your ship, modules and insurance can be altered in the &apos;Settings&apos; at the top-right of the page.</p>
-
-The retrofit costs provides information about the costs of changing the base build for your ship, or your saved build, to the current build.</p>
-
-The reload costs provides information about the costs of reloading your current build.</p>
-
 <h2>Offence Summary</h2>
 The offence summary panel provides information about the damage that you deal with your weapons.</p>
 
@@ -281,6 +271,16 @@ Along the top of this panel are the number of pips you put in to your ENG capaci
 <dt>Yaw</dt><dd>The fastest the ship can turn its nose left or right, in degrees per second</dd>
 </dl>
 
+<h2>Power Management</h2>
+The power management panel provides information about power usage and priorities.  It allows you to enable and disable individual modules, as well as set power priorities for each module.</p>
+
+<h2>Costs</h2>
+The costs panel provides information about the costs for each of your modules, and the total cost and insurance for your build.  By default Coriolis uses the standard costs, however discounts for your ship, modules and insurance can be altered in the &apos;Settings&apos; at the top-right of the page.</p>
+
+The retrofit costs provides information about the costs of changing the base build for your ship, or your saved build, to the current build.</p>
+
+The reload costs provides information about the costs of reloading your current build.</p>
+
 <h2>Jump Range</h2>
 The jump range panel provides information about the build&apos; jump range.  The graph shows how the build&apos;s jump range changes with the amount of cargo on-board.  The slider can be altered to change the amount of fuel you have on-board.</p>
 
@@ -298,6 +298,8 @@ Total effective DPS, SDPS and effectiveness against both shields and hull are pr
 At the bottom of this panel you can change your engagement range.  The engagement range is the distance between your ship and your target.  Many weapons suffer from what is known as damage falloff, where their effectiveness decreases the further the distance between your ship and your target.  This allows you to model the effect of engaging at different ranges.
 
 Note that this panel only shows enabled weapons, so if you want to see your overall effectiveness for a subset of your weapons you can disable the undesired weapons in the power management panel.</p>
+
+At the bottom of this panel are two graphs showing how your sustained DPS changes with engagement range.  This shows at a glance how effective each weapon is at different distances.</p>
 
 <h2>Damage Received</h2>
 The damage received panel provides information about the effectiveness of your build&apos;s defences against opponent&apos;s weapons at different engagement range.  Features and functions are the same as the damage dealt panel, except that it does take in to account your build&apos;s resistances.</p>
