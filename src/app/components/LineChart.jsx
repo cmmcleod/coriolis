@@ -1,8 +1,7 @@
 import React from 'react';
-import d3 from 'd3';
+import * as d3 from 'd3';
 import TranslatedComponent from './TranslatedComponent';
 
-const RENDER_POINTS = 20;   // Only render 20 points on the graph
 const MARGIN = { top: 15, right: 20, bottom: 35, left: 60 };
 
 /**
@@ -11,8 +10,10 @@ const MARGIN = { top: 15, right: 20, bottom: 35, left: 60 };
 export default class LineChart extends TranslatedComponent {
 
   static defaultProps = {
+    code: '',
     xMin: 0,
     yMin: 0,
+    points: 20,
     colors: ['#ff8c0d']
   };
 
@@ -26,9 +27,11 @@ export default class LineChart extends TranslatedComponent {
     yLabel: React.PropTypes.string.isRequired,
     yMin: React.PropTypes.number,
     yMax: React.PropTypes.number.isRequired,
-    yUnit: React.PropTypes.string.isRequired,
+    yUnit: React.PropTypes.string,
     series: React.PropTypes.array,
     colors: React.PropTypes.array,
+    points: React.PropTypes.number,
+    code: React.PropTypes.string,
   };
 
   /**
@@ -41,36 +44,29 @@ export default class LineChart extends TranslatedComponent {
 
     this._updateDimensions = this._updateDimensions.bind(this);
     this._updateSeriesData = this._updateSeriesData.bind(this);
+    this._updateSeries = this._updateSeries.bind(this);
     this._tooltip = this._tooltip.bind(this);
     this._showTip = this._showTip.bind(this);
     this._hideTip = this._hideTip.bind(this);
     this._moveTip = this._moveTip.bind(this);
 
-    let markerElems = [];
-    let detailElems = [<text key='lbl' className='text-tip x' y='1.25em'/>];
-    let xScale = d3.scale.linear();
-    let xAxisScale = d3.scale.linear();
-    let yScale = d3.scale.linear();
-    let series = props.series;
-    let seriesLines = [];
+    //const data = _updateSeries(this.props);
+    const series = props.series;
 
-    this.xAxis = d3.svg.axis().scale(xAxisScale).outerTickSize(0).orient('bottom');
-    this.yAxis = d3.svg.axis().scale(yScale).ticks(6).outerTickSize(0).orient('left');
+    let xScale = d3.scaleLinear();
+    let yScale = d3.scaleLinear();
+    let xAxisScale = d3.scaleLinear();
 
-    for(let i = 0, l = series ? series.length : 1; i < l; i++) {
-      let yAccessor = series ? function(d) { return yScale(d[1][this]); }.bind(series[i]) : (d) => yScale(d[1]);
-      seriesLines.push(d3.svg.line().x((d) => xScale(d[0])).y(yAccessor));
-      detailElems.push(<text key={i} className='text-tip y' y={1.25 * (i + 2) + 'em'}/>);
-      markerElems.push(<circle key={i} className='marker' r='4' />);
-    }
+    this.xAxis = d3.axisBottom(xAxisScale).tickSizeOuter(0);
+    this.yAxis = d3.axisLeft(yScale).ticks(6).tickSizeOuter(0);
 
     this.state = {
       xScale,
       xAxisScale,
       yScale,
-      seriesLines,
-      detailElems,
-      markerElems,
+      //seriesLines: data.seriesLines,
+      //detailElems: data.detailElems,
+      //markerElems: data.markerElems,
       tipHeight: 2 + (1.2 * (series ? series.length : 0.8))
     };
   }
@@ -98,7 +94,7 @@ export default class LineChart extends TranslatedComponent {
       let yVal = series ? y0[series[i]] : y0;
       yTotal += yVal;
       return (series ? translate(series[i]) : '') + ' ' + formats.f2(yVal);
-    }).append('tspan').attr('class', 'metric').text(' ' + yUnit);
+    }).append('tspan').attr('class', 'metric').text(yUnit ? ' ' + yUnit : '');
 
     tips.selectAll('text').each(function() {
       if (this.getBBox().width > tipWidth) {
@@ -129,7 +125,7 @@ export default class LineChart extends TranslatedComponent {
 
     this.state.xScale.range([0, innerWidth]).domain([xMin, xMax || 1]).clamp(true);
     this.state.xAxisScale.range([0, innerWidth]).domain([xMin, xMax]).clamp(true);
-    this.state.yScale.range([innerHeight, 0]).domain([yMin, yMax]);
+    this.state.yScale.range([innerHeight, 0]).domain([yMin, yMax * 1.1]); // 10% higher than maximum value for tooltip visibility
     this.setState({ innerWidth, outerHeight, innerHeight });
   }
 
@@ -164,21 +160,57 @@ export default class LineChart extends TranslatedComponent {
   }
 
   /**
-   * Update series data generated from props
+   * Update series generated from props
    * @param  {Object} props   React Component properties
    */
-  _updateSeriesData(props) {
-    let { func, xMin, xMax, series } = props;
-    let delta = (xMax - xMin) / RENDER_POINTS;
-    let seriesData = new Array(RENDER_POINTS);
+  _updateSeries(props, state) {
+    let { func, xMin, xMax, series, points } = props;
+    let delta = (xMax - xMin) / points;
+    let seriesData = new Array(points);
 
     if (delta) {
-      seriesData = new Array(RENDER_POINTS);
-      for (let i = 0, x = xMin; i < RENDER_POINTS; i++) {
+      seriesData = new Array(points);
+      for (let i = 0, x = xMin; i < points; i++) {
         seriesData[i] = [x, func(x)];
         x += delta;
       }
-      seriesData[RENDER_POINTS - 1] = [xMax, func(xMax)];
+      seriesData[points - 1] = [xMax, func(xMax)];
+    } else {
+      let yVal = func(xMin);
+      seriesData = [[0, yVal], [1, yVal]];
+    }
+
+
+    const markerElems = [];
+    const detailElems = [<text key='lbl' className='text-tip x' y='1.25em'/>];
+    const seriesLines = [];
+    for (let i = 0, l = series ? series.length : 1; i < l; i++) {
+      const yAccessor = series ? function(d) { return state.yScale(d[1][this]); }.bind(series[i]) : (d) => state.yScale(d[1]);
+      seriesLines.push(d3.line().x((d, i) => this.state.xScale(d[0])).y(yAccessor));
+      detailElems.push(<text key={i} className='text-tip y' stroke={props.colors[i]} y={1.25 * (i + 2) + 'em'}/>);
+      markerElems.push(<circle key={i} className='marker' r='4' />);
+    }
+
+    this.setState({ markerElems, detailElems, seriesLines, seriesData });
+    return { seriesData };
+  }
+
+  /**
+   * Update series and data generated from props
+   * @param  {Object} props   React Component properties
+   */
+  _updateSeriesData(props) {
+    let { func, xMin, xMax, series, points } = props;
+    let delta = (xMax - xMin) / points;
+    let seriesData = new Array(points);
+
+    if (delta) {
+      seriesData = new Array(points);
+      for (let i = 0, x = xMin; i < points; i++) {
+        seriesData[i] = [x, func(x)];
+        x += delta;
+      }
+      seriesData[points - 1] = [xMax, func(xMax)];
     } else {
       let yVal = func(xMin);
       seriesData = [[0, yVal], [1, yVal]];
@@ -192,7 +224,7 @@ export default class LineChart extends TranslatedComponent {
    */
   componentWillMount() {
     this._updateDimensions(this.props, this.context.sizeRatio);
-    this._updateSeriesData(this.props);
+    this._updateSeries(this.props, this.state);
   }
 
   /**
@@ -210,9 +242,12 @@ export default class LineChart extends TranslatedComponent {
       this._updateDimensions(nextProps, nextContext.sizeRatio);
     }
 
-    if (domainChanged) {
-      this._updateSeriesData(nextProps);
+    if (props.code != nextProps.code) {
+      console.log('Code changed');
     }
+//    if (domainChanged) {
+      this._updateSeries(nextProps, this.state);
+//    }
   }
 
   /**
@@ -227,7 +262,7 @@ export default class LineChart extends TranslatedComponent {
     let { xLabel, yLabel, xUnit, yUnit, colors } = this.props;
     let { innerWidth, outerHeight, innerHeight, tipHeight, detailElems, markerElems, seriesData, seriesLines } = this.state;
     let line = this.line;
-    let lines = seriesLines.map((line, i) => <path key={i} className='line' stroke={colors[i]} strokeWidth='2' d={line(seriesData)} />);
+    let lines = seriesLines.map((line, i) => <path key={i} className='line' fill='none' stroke={colors[i]} strokeWidth='1' d={line(seriesData)} />).reverse();
 
     return <svg style={{ width: '100%', height: outerHeight }}>
       <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
@@ -241,7 +276,7 @@ export default class LineChart extends TranslatedComponent {
         <g className='y axis' ref={(elem) => d3.select(elem).call(this.yAxis)}>
           <text className='cap' transform='rotate(-90)' y='-50' dy='.1em' x={innerHeight / -2} style={{ textAnchor: 'middle' }}>
             <tspan>{yLabel}</tspan>
-            <tspan className='metric'> ({yUnit})</tspan>
+            { yUnit && <tspan className='metric'> ({yUnit})</tspan> }
           </text>
         </g>
         <g ref={(g) => this.tipContainer = d3.select(g)} style={{ display: 'none' }}>
