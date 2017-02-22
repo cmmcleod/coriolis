@@ -125,7 +125,7 @@ export default class LineChart extends TranslatedComponent {
 
     this.state.xScale.range([0, innerWidth]).domain([xMin, xMax || 1]).clamp(true);
     this.state.xAxisScale.range([0, innerWidth]).domain([xMin, xMax]).clamp(true);
-    this.state.yScale.range([innerHeight, 0]).domain([yMin, yMax]);
+    this.state.yScale.range([innerHeight, 0]).domain([yMin, yMax * 1.1]); // 10% higher than maximum value for tooltip visibility
     this.setState({ innerWidth, outerHeight, innerHeight });
   }
 
@@ -262,7 +262,7 @@ export default class LineChart extends TranslatedComponent {
     let { xLabel, yLabel, xUnit, yUnit, colors } = this.props;
     let { innerWidth, outerHeight, innerHeight, tipHeight, detailElems, markerElems, seriesData, seriesLines } = this.state;
     let line = this.line;
-    let lines = seriesLines.map((line, i) => <path key={i} className='line' fill='none' stroke={colors[i]} strokeWidth='1' d={line(seriesData)} />);
+    let lines = seriesLines.map((line, i) => <path key={i} className='line' fill='none' stroke={colors[i]} strokeWidth='1' d={line(seriesData)} />).reverse();
 
     return <svg style={{ width: '100%', height: outerHeight }}>
       <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>

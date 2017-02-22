@@ -9,7 +9,7 @@ import Slider from '../components/Slider';
 import * as ModuleUtils from '../shipyard/ModuleUtils';
 import Module from '../shipyard/Module';
 
-const DAMAGE_DEALT_COLORS = ['#FFFFFF', '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#777777'];
+const DAMAGE_DEALT_COLORS = ['#FFFFFF', '#FF0000', '#00FF00', '#7777FF', '#FFFF00', '#FF00FF', '#00FFFF', '#777777'];
 
 /**
  * Generates an internationalization friendly weapon comparator that will
