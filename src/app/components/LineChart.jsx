@@ -43,14 +43,12 @@ export default class LineChart extends TranslatedComponent {
     super(props);
 
     this._updateDimensions = this._updateDimensions.bind(this);
-    this._updateSeriesData = this._updateSeriesData.bind(this);
     this._updateSeries = this._updateSeries.bind(this);
     this._tooltip = this._tooltip.bind(this);
     this._showTip = this._showTip.bind(this);
     this._hideTip = this._hideTip.bind(this);
     this._moveTip = this._moveTip.bind(this);
 
-    //const data = _updateSeries(this.props);
     const series = props.series;
 
     let xScale = d3.scaleLinear();
@@ -64,9 +62,6 @@ export default class LineChart extends TranslatedComponent {
       xScale,
       xAxisScale,
       yScale,
-      //seriesLines: data.seriesLines,
-      //detailElems: data.detailElems,
-      //markerElems: data.markerElems,
       tipHeight: 2 + (1.2 * (series ? series.length : 0.8))
     };
   }
@@ -161,7 +156,8 @@ export default class LineChart extends TranslatedComponent {
 
   /**
    * Update series generated from props
-   * @param  {Object} props   React Component properties
+   * @param   {Object} props   React Component properties
+   * @param   {Object} state   React Component state
    */
   _updateSeries(props, state) {
     let { func, xMin, xMax, series, points } = props;
@@ -192,31 +188,6 @@ export default class LineChart extends TranslatedComponent {
     }
 
     this.setState({ markerElems, detailElems, seriesLines, seriesData });
-    return { seriesData };
-  }
-
-  /**
-   * Update series and data generated from props
-   * @param  {Object} props   React Component properties
-   */
-  _updateSeriesData(props) {
-    let { func, xMin, xMax, series, points } = props;
-    let delta = (xMax - xMin) / points;
-    let seriesData = new Array(points);
-
-    if (delta) {
-      seriesData = new Array(points);
-      for (let i = 0, x = xMin; i < points; i++) {
-        seriesData[i] = [x, func(x)];
-        x += delta;
-      }
-      seriesData[points - 1] = [xMax, func(xMax)];
-    } else {
-      let yVal = func(xMin);
-      seriesData = [[0, yVal], [1, yVal]];
-    }
-
-    this.setState({ seriesData });
   }
 
   /**
@@ -243,11 +214,8 @@ export default class LineChart extends TranslatedComponent {
     }
 
     if (props.code != nextProps.code) {
-      console.log('Code changed');
-    }
-//    if (domainChanged) {
       this._updateSeries(nextProps, this.state);
-//    }
+    }
   }
 
   /**
