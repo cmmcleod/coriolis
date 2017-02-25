@@ -6,11 +6,11 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var AppCachePlugin = require('appcache-webpack-plugin');
 
-var node_modules_dir = path.resolve(__dirname, 'node_modules');
-var d3Path = path.resolve(__dirname, 'd3.min.js');
-var reactPath = path.resolve(node_modules_dir, 'react/dist/react.min.js');
-var reactDomPath = path.resolve(node_modules_dir, 'react-dom/dist/react-dom.min.js');
-var lzStringPath = path.resolve(node_modules_dir, 'lz-string/libs/lz-string.min.js');
+//var node_modules_dir = path.resolve(__dirname, 'node_modules');
+//var d3Path = path.resolve(__dirname, 'd3.min.js');
+//var reactPath = path.resolve(node_modules_dir, 'react/dist/react.min.js');
+//var reactDomPath = path.resolve(node_modules_dir, 'react-dom/dist/react-dom.min.js');
+//var lzStringPath = path.resolve(node_modules_dir, 'lz-string/libs/lz-string.min.js');
 
 function CopyDirPlugin(source, destination) {
     this.source = source;
@@ -26,16 +26,16 @@ CopyDirPlugin.prototype.apply = function(compiler) {
 module.exports = {
   entry: {
     app: ['babel-polyfill', path.resolve(__dirname, 'src/app/index')],
-    lib: ['babel-polyfill', 'd3', 'react', 'react-dom', 'classnames', 'fbemitter', 'lz-string']
+    lib: ['d3', 'react', 'react-dom', 'classnames', 'fbemitter', 'lz-string']
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.less'],
-    alias: {
-      'd3': d3Path,
-      'react': reactPath,
-      'react-dom': reactDomPath,
-      'lz-string': lzStringPath
-    },
+//    alias: {
+//      'd3': d3Path,
+//      'react': reactPath,
+//      'react-dom': reactDomPath,
+//      'lz-string': lzStringPath
+//    },
   },
   output: {
     path: path.join(__dirname, 'build'),
@@ -51,10 +51,10 @@ module.exports = {
       },
       'screw-ie8': true
     }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'lib',
-      filename: 'lib.[chunkhash:6].js'
-    }),
+    //new webpack.optimize.CommonsChunkPlugin({
+    //  name: 'lib',
+    //  filename: 'lib.[chunkhash:6].js'
+    //}),
     new HtmlWebpackPlugin({
         inject: false,
         appCache: 'coriolis.appcache',
@@ -90,12 +90,15 @@ module.exports = {
     })
   ],
   module: {
-    noParse: /.*\.min\.js$/,
+    //noParse: /.*\.min\.js$/,
     rules: [
       // Expose non-parsed globally scoped libs
-      { test: reactPath, loader: "expose-loader?React" },
-      { test: d3Path, loader: "expose-loader?d3" },
-      { test: lzStringPath, loader: "expose-loader?LZString" },
+      //{ test: reactPath, loader: "expose-loader?React" },
+      //{ test: d3Path, loader: "expose-loader?d3" },
+      //{ test: lzStringPath, loader: "expose-loader?LZString" },
+      //{ test: reactPath, use: [ { loader: 'expose-loader', options: 'React' } ] },
+      //{ test: d3Path, use: [ { loader: 'expose-loader', options: 'd3' } ] },
+      //{ test: lzStringPath, use: [ { loader: 'expose-loader', options: 'LZString' } ] },
 
       { test: /\.css$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader'}) },
       { test: /\.less$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader',use: 'css-loader!less-loader'}) },
