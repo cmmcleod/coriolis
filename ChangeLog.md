@@ -1,6 +1,7 @@
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
   * Shot speed can no longer be modified directly.  Its value is derived from the range modifier for Long Range and Focused modifications
+  * Ensure that jump range chart updates when fuel slider is changed
 
 #2.2.18
   * Change methodology for calculating explorer role; can result in lighter builds

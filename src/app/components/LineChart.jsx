@@ -176,7 +176,6 @@ export default class LineChart extends TranslatedComponent {
       seriesData = [[0, yVal], [1, yVal]];
     }
 
-
     const markerElems = [];
     const detailElems = [<text key='lbl' className='text-tip x' y='1.25em'/>];
     const seriesLines = [];
@@ -187,7 +186,9 @@ export default class LineChart extends TranslatedComponent {
       markerElems.push(<circle key={i} className='marker' r='4' />);
     }
 
-    this.setState({ markerElems, detailElems, seriesLines, seriesData });
+    const tipHeight = 2 + (1.2 * (seriesLines ? seriesLines.length : 0.8))
+
+    this.setState({ markerElems, detailElems, seriesLines, seriesData, tipHeight });
   }
 
   /**

@@ -1,6 +1,6 @@
 {
   "name": "coriolis_shipyard",
-  "version": "2.2.18",
+  "version": "2.2.19b",
   "repository": {
     "type": "git",
     "url": "https://github.com/EDCD/coriolis"
@@ -19,7 +19,7 @@
     "test": "jest",
     "prod-serve": "nginx -p $(pwd) -c nginx.conf",
     "prod-stop": "kill -QUIT $(cat nginx.pid)",
-    "build": "npm run clean && NODE_ENV=production webpack -d -p --config webpack.config.prod.js",
+    "build": "npm run clean && NODE_ENV=production webpack -p --config webpack.config.prod.js",
     "rsync": "rsync -ae \"ssh -i $CORIOLIS_PEM\" --delete build/ $CORIOLIS_USER@$CORIOLIS_HOST:~/wwws",
     "deploy": "npm run lint && npm test && npm run build && npm run rsync"
   },

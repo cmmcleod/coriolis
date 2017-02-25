@@ -399,6 +399,7 @@ export default class OutfittingPage extends Page {
             yLabel={translate('jump range')}
             xLabel={translate('cargo')}
             func={state.jumpRangeChartFunc}
+            code={state.fuelLevel}
           />
           <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
             <tbody >

@@ -52,7 +52,7 @@ module.exports = {
         allChunks: true
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   ],
   module: {
     rules: [

@@ -45,10 +45,6 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      mangle: {
-        except: []
-      },
       'screw-ie8': true
     }),
     //new webpack.optimize.CommonsChunkPlugin({
@@ -90,16 +86,7 @@ module.exports = {
     })
   ],
   module: {
-    //noParse: /.*\.min\.js$/,
     rules: [
-      // Expose non-parsed globally scoped libs
-      //{ test: reactPath, loader: "expose-loader?React" },
-      //{ test: d3Path, loader: "expose-loader?d3" },
-      //{ test: lzStringPath, loader: "expose-loader?LZString" },
-      //{ test: reactPath, use: [ { loader: 'expose-loader', options: 'React' } ] },
-      //{ test: d3Path, use: [ { loader: 'expose-loader', options: 'd3' } ] },
-      //{ test: lzStringPath, use: [ { loader: 'expose-loader', options: 'LZString' } ] },
-
       { test: /\.css$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader'}) },
       { test: /\.less$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader',use: 'css-loader!less-loader'}) },
       { test: /\.(js|jsx)$/, loaders: [ 'babel-loader' ], include: path.join(__dirname, 'src') },
