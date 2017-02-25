@@ -29,7 +29,7 @@ module.exports = {
     lib: ['babel-polyfill', 'd3', 'react', 'react-dom', 'classnames', 'fbemitter', 'lz-string']
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.json', '.less'],
+    extensions: ['.js', '.jsx', '.json', '.less'],
     alias: {
       'd3': d3Path,
       'react': reactPath,
@@ -45,12 +45,16 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
       mangle: {
         except: []
       },
       'screw-ie8': true
     }),
-    new webpack.optimize.CommonsChunkPlugin('lib', 'lib.[chunkhash:6].js'),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'lib',
+      filename: 'lib.[chunkhash:6].js'
+    }),
     new HtmlWebpackPlugin({
         inject: false,
         appCache: 'coriolis.appcache',
@@ -64,12 +68,14 @@ module.exports = {
           removeScriptTypeAttributes: true,
           removeStyleLinkTypeAttributes: true
         },
-        template: path.join(__dirname, "src/index.html"),
+        template: path.join(__dirname, "src/index.ejs"),
         uaTracking: process.env.CORIOLIS_UA_TRACKING || '',
         gapiKey: process.env.CORIOLIS_GAPI_KEY || '',
         version: pkgJson.version
     }),
-    new ExtractTextPlugin('[contenthash:6].css', {
+    new ExtractTextPlugin({
+        filename: '[contenthash:6].css',
+        disable: false,
         allChunks: true
     }),
     new CopyDirPlugin(path.join(__dirname, 'src/schemas'), 'schemas'),
@@ -84,22 +90,21 @@ module.exports = {
     })
   ],
   module: {
-    noParse: [d3Path, reactPath, lzStringPath],
-    loaders: [
+    noParse: /.*\.min\.js$/,
+    rules: [
       // Expose non-parsed globally scoped libs
-      { test: reactPath, loader: "expose?React" },
-      { test: d3Path, loader: "expose?d3" },
-      { test: lzStringPath, loader: "expose?LZString" },
+      { test: reactPath, loader: "expose-loader?React" },
+      { test: d3Path, loader: "expose-loader?d3" },
+      { test: lzStringPath, loader: "expose-loader?LZString" },
 
-      { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader','css-loader') },
-      { test: /\.less$/, loader: ExtractTextPlugin.extract('style-loader','css-loader!less-loader') },
-      { test: /\.(js|jsx)$/, loaders: [ 'babel' ], include: path.join(__dirname, 'src') },
-      { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' }
+      { test: /\.css$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader'}) },
+      { test: /\.less$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader',use: 'css-loader!less-loader'}) },
+      { test: /\.(js|jsx)$/, loaders: [ 'babel-loader' ], include: path.join(__dirname, 'src') },
+      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
+      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
+      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml' }
     ]
   }
 };
