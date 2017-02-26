@@ -3,6 +3,9 @@
   * Shot speed can no longer be modified directly.  Its value is derived from the range modifier for Long Range and Focused modifications
   * Ensure that jump range chart updates when fuel slider is changed
   * Add 'Engine profile' and 'FSD profile' charts.  These show how your maximum speed/jump range will alter as you alter the mass of your build
+  * Use coriolis-data 2.2.19:
+    * Remove shot speed modification - it is directly tied to range
+    * Fix incorrect minimal mass for 3C bi-weave shield generator
 
 #2.2.18
   * Change methodology for calculating explorer role; can result in lighter builds
