@@ -494,7 +494,7 @@ export default class DamageDealt extends TranslatedComponent {
     const sortOrder = this._sortOrder;
     const onCollapseExpand = this._onCollapseExpand;
 
-    const code = ship.getHardpointsString() + '.' + ship.getModificationsString() + '.' + against.properties.name;
+    const code = ship.getHardpointsString() + '.' + ship.getModificationsString() + '.' + ship.getPowerEnabledString() + '.' + against.properties.name;
 
     return (
       <span>

@@ -1,6 +1,8 @@
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
   * Shot speed can no longer be modified directly.  Its value is derived from the range modifier for Long Range and Focused modifications
+  * Ensure that jump range chart updates when fuel slider is changed
+  * Add 'Engine profile' and 'FSD profile' charts.  These show how your maximum speed/jump range will alter as you alter the mass of your build
 
 #2.2.18
   * Change methodology for calculating explorer role; can result in lighter builds

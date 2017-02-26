@@ -27,7 +27,7 @@ module.exports = {
   },
   resolve: {
     // When requiring, you don't need to add these extensions
-    extensions: ['', '.js', '.jsx', '.json', '.less']
+    extensions: ['.js', '.jsx', '.json', '.less']
   },
   output: {
     path: path.join(__dirname, 'build'),
@@ -36,30 +36,34 @@ module.exports = {
   },
   plugins: [
     new CopyDirPlugin(path.join(__dirname, 'src/.htaccess'), ''),
-    new webpack.optimize.CommonsChunkPlugin('lib', 'lib.js'),
+    new webpack.optimize.CommonsChunkPlugin({
+        name: 'lib',
+        filename: 'lib.js'
+    }),
     new HtmlWebpackPlugin({
         inject: false,
-        template: path.join(__dirname, "src/index.html"),
+        template: path.join(__dirname, "src/index.ejs"),
         version: pkgJson.version,
         gapiKey: process.env.CORIOLIS_GAPI_KEY || '',
     }),
-    new ExtractTextPlugin('app.css', {
+    new ExtractTextPlugin({
+        filename: 'app.css', 
+        disable: false,
         allChunks: true
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   ],
   module: {
-    loaders: [
-      { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader','css-loader') },
-      { test: /\.less$/, loader: ExtractTextPlugin.extract('style-loader','css-loader!less-loader') },
-      { test: /\.(js|jsx)$/, loaders: [ 'babel' ], include: path.join(__dirname, 'src') },
-      { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' }
+    rules: [
+      { test: /\.css$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader'}) },
+      { test: /\.less$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!less-loader'}) },
+      { test: /\.(js|jsx)$/, loaders: [ 'babel-loader' ], include: path.join(__dirname, 'src') },
+      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
+      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
+      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml' }
     ]
   }
 };
