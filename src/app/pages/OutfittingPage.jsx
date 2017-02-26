@@ -8,7 +8,7 @@ import Persist from '../stores/Persist';
 import Ship from '../shipyard/Ship';
 import { toDetailedBuild } from '../shipyard/Serializer';
 import { outfitURL } from '../utils/UrlGenerators';
-import { FloppyDisk, Bin, Switch, Download, Reload, Fuel, LinkIcon, ShoppingIcon } from '../components/SvgIcons';
+import { FloppyDisk, Bin, Switch, Download, Reload, LinkIcon, ShoppingIcon } from '../components/SvgIcons';
 import ShipSummaryTable from '../components/ShipSummaryTable';
 import StandardSlotSection from '../components/StandardSlotSection';
 import HardpointsSlotSection from '../components/HardpointsSlotSection';
@@ -17,17 +17,16 @@ import UtilitySlotSection from '../components/UtilitySlotSection';
 import OffenceSummary from '../components/OffenceSummary';
 import DefenceSummary from '../components/DefenceSummary';
 import MovementSummary from '../components/MovementSummary';
+import EngineProfile from '../components/EngineProfile';
+import FSDProfile from '../components/FSDProfile';
+import JumpRange from '../components/JumpRange';
 import DamageDealt from '../components/DamageDealt';
 import DamageReceived from '../components/DamageReceived';
-import LineChart from '../components/LineChart';
 import PowerManagement from '../components/PowerManagement';
 import CostSection from '../components/CostSection';
 import ModalExport from '../components/ModalExport';
 import ModalPermalink from '../components/ModalPermalink';
 import Slider from '../components/Slider';
-
-const SPEED_SERIES = ['boost', '4 Pips', '2 Pips', '0 Pips'];
-const SPEED_COLORS = ['#0088d2', '#ff8c0d', '#D26D00', '#c06400'];
 
 /**
  * Document Title Generator
@@ -81,7 +80,6 @@ export default class OutfittingPage extends Page {
       ship.buildWith(data.defaults);  // Populate with default components
     }
 
-    let fuelCapacity = ship.fuelCapacity;
     this._getTitle = getTitle.bind(this, data.properties.name);
 
     return {
@@ -93,12 +91,7 @@ export default class OutfittingPage extends Page {
       shipId,
       ship,
       code,
-      savedCode,
-      fuelCapacity,
-      fuelLevel: 1,
-      jumpRangeChartFunc: ship.calcJumpRangeWith.bind(ship, fuelCapacity),
-      fastestRangeChartFunc: ship.calcFastestRangeWith.bind(ship, fuelCapacity),
-      speedChartFunc: ship.calcSpeedsWith.bind(ship, fuelCapacity)
+      savedCode
     };
   }
 
@@ -193,12 +186,8 @@ export default class OutfittingPage extends Page {
    * Trigger render on ship model change
    */
   _shipUpdated() {
-    let { shipId, buildName, ship, fuelCapacity } = this.state;
+    let { shipId, buildName, ship } = this.state;
     let code = ship.toString();
-
-    if (fuelCapacity != ship.fuelCapacity) {
-      this._fuelChange(this.state.fuelLevel);
-    }
 
     this._updateRoute(shipId, buildName, code);
     this.setState({ code });
@@ -215,23 +204,6 @@ export default class OutfittingPage extends Page {
   }
 
   /**
-   * Update current fuel level
-   * @param  {number} fuelLevel Fuel leval 0 - 1
-   */
-  _fuelChange(fuelLevel) {
-    let ship = this.state.ship;
-    let fuelCapacity = ship.fuelCapacity;
-    let fuel = fuelCapacity * fuelLevel;
-    this.setState({
-      fuelLevel,
-      fuelCapacity,
-      jumpRangeChartFunc: ship.calcJumpRangeWith.bind(ship, fuel),
-      fastestRangeChartFunc: ship.calcFastestRangeWith.bind(ship, fuel),
-      speedChartFunc: ship.calcSpeedsWith.bind(ship, fuel)
-    });
-  }
-
-  /**
    * Update dimenions from rendered DOM
    */
   _updateDimensions() {
@@ -240,7 +212,7 @@ export default class OutfittingPage extends Page {
     if (elem) {
       this.setState({
         thirdChartWidth: findDOMNode(this.refs.chartThird).offsetWidth,
-        halfChartWidth: findDOMNode(this.refs.chartHalf).offsetWidth
+        halfChartWidth: findDOMNode(this.refs.chartThird).offsetWidth * 3 / 2
       });
     }
   }
@@ -323,7 +295,7 @@ export default class OutfittingPage extends Page {
     let state = this.state,
         { language, termtip, tooltip, sizeRatio, onWindowResize } = this.context,
         { translate, units, formats } = language,
-        { ship, code, savedCode, buildName, newBuildName, halfChartWidth, thirdChartWidth, fuelCapacity, fuelLevel } = state,
+        { ship, code, savedCode, buildName, newBuildName, halfChartWidth, thirdChartWidth } = state,
         hide = tooltip.bind(null, null),
         menu = this.props.currentMenu,
         shipUpdated = this._shipUpdated,
@@ -332,6 +304,9 @@ export default class OutfittingPage extends Page {
         canReload = savedCode && canSave,
         hStr = ship.getHardpointsString() + '.' + ship.getModificationsString(),
         iStr = ship.getInternalString() + '.' + ship.getModificationsString();
+
+    // Code can be blank for a default loadout.  Prefix it with the ship name to ensure that changes in default ships is picked up
+    code = ship.name + (code || '');
 
     return (
       <div id='outfit' className={'page'} style={{ fontSize: (sizeRatio * 0.9) + 'em' }}>
@@ -366,13 +341,13 @@ export default class OutfittingPage extends Page {
           </div>
         </div>
 
-        <ShipSummaryTable ship={ship} code={code || ''} />
-        <StandardSlotSection ship={ship} code={code || ''} onChange={shipUpdated} currentMenu={menu} />
+        <ShipSummaryTable ship={ship} code={code} />
+        <StandardSlotSection ship={ship} code={code} onChange={shipUpdated} currentMenu={menu} />
         <InternalSlotSection ship={ship} code={iStr} onChange={shipUpdated} currentMenu={menu} />
         <HardpointsSlotSection ship={ship} code={hStr || ''} onChange={shipUpdated} currentMenu={menu} />
         <UtilitySlotSection ship={ship} code={hStr || ''} onChange={shipUpdated} currentMenu={menu} />
 
-        <div className='group third'>
+        <div ref='chartThird' className='group third'>
           <OffenceSummary ship={ship} code={code}/>
         </div>
         <div className='group third'>
@@ -382,48 +357,19 @@ export default class OutfittingPage extends Page {
           <MovementSummary ship={ship} code={code}/>
         </div>
 
-        <PowerManagement ship={ship} code={code || ''} onChange={shipUpdated} />
-        <CostSection ship={ship} buildName={buildName} code={code || ''} />
+        <PowerManagement ship={ship} code={code} onChange={shipUpdated} />
+        <CostSection ship={ship} buildName={buildName} code={code} />
 
-        <div ref='chartHalf' className='group half' />
-        <div className='group half' />
+        <div className='group third'>
+          <EngineProfile ship={ship} code={code} chartWidth={thirdChartWidth} />
+        </div>
 
-        <div ref='chartThird' className='group third'>
-          <h1>{translate('jump range')}</h1>
-          <LineChart
-            width={thirdChartWidth}
-            xMax={ship.cargoCapacity}
-            yMax={ship.unladenRange}
-            xUnit={translate('T')}
-            yUnit={translate('LY')}
-            yLabel={translate('jump range')}
-            xLabel={translate('cargo')}
-            func={state.jumpRangeChartFunc}
-            code={state.fuelLevel}
-          />
-          <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
-            <tbody >
-              <tr>
-                <td style={{ verticalAlign: 'top', padding: 0, width: '2.5em' }} onMouseEnter={termtip.bind(null, 'fuel level')} onMouseLeave={hide}>
-                  <Fuel className='xl primary-disabled' />
-                </td>
-                <td>
-                  <Slider
-                    axis={true}
-                    onChange={this._fuelChange}
-                    axisUnit={translate('T')}
-                    percent={fuelLevel}
-                    max={fuelCapacity}
-                    scale={sizeRatio}
-                    onResize={onWindowResize}
-                  />
-                </td>
-                <td className='primary' style={{ width: '10em', verticalAlign: 'top', fontSize: '0.9em', textAlign: 'left' }}>
-                  {formats.f2(fuelLevel * fuelCapacity)}{units.T} {formats.pct1(fuelLevel)}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div className='group third'>
+          <FSDProfile ship={ship} code={code} chartWidth={thirdChartWidth} />
+        </div>
+
+        <div className='group third'>
+          <JumpRange ship={ship} code={code} chartWidth={thirdChartWidth} />
         </div>
 
         <div>
@@ -438,56 +384,3 @@ export default class OutfittingPage extends Page {
     );
   }
 }
-//        <div ref='chartThird' className='group third'>
-//          <h1>{translate('jump range')}</h1>
-//          <LineChart
-//            width={chartWidth}
-//            xMax={ship.cargoCapacity}
-//            yMax={ship.unladenRange}
-//            xUnit={translate('T')}
-//            yUnit={translate('LY')}
-//            yLabel={translate('jump range')}
-//            xLabel={translate('cargo')}
-//            func={state.jumpRangeChartFunc}
-//          />
-//        </div>
-//        <div className='group third'>
-//          <h1>{translate('speed')}</h1>
-//          <LineChart
-//            width={chartWidth}
-//            xMax={ship.cargoCapacity}
-//            yMax={ship.topBoost + 10}
-//            xUnit={translate('T')}
-//            yUnit={translate('m/s')}
-//            yLabel={translate('speed')}
-//            series={SPEED_SERIES}
-//            colors={SPEED_COLORS}
-//            xLabel={translate('cargo')}
-//            func={state.speedChartFunc}
-//          />
-//        </div>
-//        <div className='group half'>
-//          <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
-//            <tbody >
-//              <tr>
-//                <td style={{ verticalAlign: 'top', padding: 0, width: '2.5em' }} onMouseEnter={termtip.bind(null, 'fuel level')} onMouseLeave={hide}>
-//                  <Fuel className='xl primary-disabled' />
-//                </td>
-//                <td>
-//                  <Slider
-//                    axis={true}
-//                    onChange={this._fuelChange}
-//                    axisUnit={translate('T')}
-//                    percent={fuelLevel}
-//                    max={fuelCapacity}
-//                    scale={sizeRatio}
-//                    onResize={onWindowResize}
-//                  />
-//                </td>
-//                <td className='primary' style={{ width: '10em', verticalAlign: 'top', fontSize: '0.9em', textAlign: 'left' }}>
-//                  {formats.f2(fuelLevel * fuelCapacity)}{units.T} {formats.pct1(fuelLevel)}
-//                </td>
-//              </tr>
-//            </tbody>
-//          </table>
-//        </div>

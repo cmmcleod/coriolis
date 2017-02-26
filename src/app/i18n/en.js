@@ -281,6 +281,12 @@ The retrofit costs provides information about the costs of changing the base bui
 
 The reload costs provides information about the costs of reloading your current build.</p>
 
+<h2>Engine Profile</h2>
+The engine profile panel provides information about the capabilities of your current thrusters.  The graph shows you how the maximum speed (with 4 pips to engines) alters with the overall mass of your build.  The slider can be altered to change the amount of cargo you have on-board.  Your engine profile can be altered by obtaining different thrusters or engineering your existing thrusters.</p>
+
+<h2>FSD Profile</h2>
+The FSD profile panel provides information about the capabilities of your current frame shift drive.  The graph shows you how the maximum jump range alters with the overall mass of your build.  The slider can be altered to change the amount of cargo you have on-board.  Your FSD profile can be altered by obtaining a different FSD or engineering your existing FSD.</p>
+
 <h2>Jump Range</h2>
 The jump range panel provides information about the build&apos; jump range.  The graph shows how the build&apos;s jump range changes with the amount of cargo on-board.  The slider can be altered to change the amount of fuel you have on-board.</p>
 

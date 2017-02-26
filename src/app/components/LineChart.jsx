@@ -24,6 +24,7 @@ export default class LineChart extends TranslatedComponent {
     xMin: React.PropTypes.number,
     xMax: React.PropTypes.number.isRequired,
     xUnit: React.PropTypes.string.isRequired,
+    xMark: React.PropTypes.number,
     yLabel: React.PropTypes.string.isRequired,
     yMin: React.PropTypes.number,
     yMax: React.PropTypes.number.isRequired,
@@ -120,7 +121,7 @@ export default class LineChart extends TranslatedComponent {
 
     this.state.xScale.range([0, innerWidth]).domain([xMin, xMax || 1]).clamp(true);
     this.state.xAxisScale.range([0, innerWidth]).domain([xMin, xMax]).clamp(true);
-    this.state.yScale.range([innerHeight, 0]).domain([yMin, yMax * 1.1]); // 10% higher than maximum value for tooltip visibility
+    this.state.yScale.range([innerHeight, 0]).domain([yMin, yMax + (yMax - yMin) * 0.1]); // 10% higher than maximum value for tooltip visibility
     this.setState({ innerWidth, outerHeight, innerHeight });
   }
 
@@ -186,7 +187,7 @@ export default class LineChart extends TranslatedComponent {
       markerElems.push(<circle key={i} className='marker' r='4' />);
     }
 
-    const tipHeight = 2 + (1.2 * (seriesLines ? seriesLines.length : 0.8))
+    const tipHeight = 2 + (1.2 * (seriesLines ? seriesLines.length : 0.8));
 
     this.setState({ markerElems, detailElems, seriesLines, seriesData, tipHeight });
   }
@@ -228,13 +229,17 @@ export default class LineChart extends TranslatedComponent {
       return null;
     }
 
-    let { xLabel, yLabel, xUnit, yUnit, colors } = this.props;
+    let { xMin, xMax, xLabel, yLabel, xUnit, yUnit, xMark, colors } = this.props;
     let { innerWidth, outerHeight, innerHeight, tipHeight, detailElems, markerElems, seriesData, seriesLines } = this.state;
     let line = this.line;
     let lines = seriesLines.map((line, i) => <path key={i} className='line' fill='none' stroke={colors[i]} strokeWidth='1' d={line(seriesData)} />).reverse();
 
+    const markX = xMark ? innerWidth * (xMark - xMin) / (xMax - xMin) : 0;
+    const xmark = xMark ? <path key={'mark'} className='line' fill='none' strokeDasharray='5,5' stroke={colors[0]} strokeWidth='1' d={'M ' + markX + ' ' + innerHeight + ' L ' + markX + ' 0'} /> : '';
+
     return <svg style={{ width: '100%', height: outerHeight }}>
       <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
+        <g>{xmark}</g>
         <g>{lines}</g>
         <g className='x axis' ref={(elem) => d3.select(elem).call(this.xAxis)} transform={`translate(0,${innerHeight})`}>
           <text className='cap' y='30' dy='.1em' x={innerWidth / 2} style={{ textAnchor: 'middle' }}>
