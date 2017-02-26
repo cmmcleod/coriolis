@@ -34,8 +34,8 @@ export default class PowerManagement extends TranslatedComponent {
     this._sort = this._sort.bind(this);
 
     this.state = {
-      predicate: 'n',
-      desc: true,
+      predicate: 'pwr',
+      desc: false,
       width: 0
     };
   }
