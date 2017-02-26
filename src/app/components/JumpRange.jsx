@@ -102,7 +102,7 @@ export default class JumpRange extends TranslatedComponent {
           points={200}
           code={code}
         />
-        <h3>{translate('fuel carried')}</h3>
+        <h3>{translate('fuel carried')}: {formats.f2(fuelLevel * ship.fuelCapacity)}{units.T}</h3>
         <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
           <tbody >
             <tr>
@@ -116,9 +116,6 @@ export default class JumpRange extends TranslatedComponent {
                   scale={sizeRatio}
                   onResize={onWindowResize}
                 />
-              </td>
-              <td className='primary' style={{ width: '10em', verticalAlign: 'top', fontSize: '0.9em', textAlign: 'left' }}>
-                {formats.f2(fuelLevel * ship.fuelCapacity)}{units.T} {formats.pct1(fuelLevel)}
               </td>
             </tr>
           </tbody>

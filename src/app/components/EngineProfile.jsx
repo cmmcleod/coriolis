@@ -125,7 +125,7 @@ export default class EngineProfile extends TranslatedComponent {
         />
         {ship.cargoCapacity ? 
         <span>
-          <h3>{translate('cargo carried')}</h3>
+          <h3>{translate('cargo carried')}: {formats.int(cargo)}{units.T}</h3>
           <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
             <tbody >
               <tr>
@@ -139,9 +139,6 @@ export default class EngineProfile extends TranslatedComponent {
                     scale={sizeRatio}
                     onResize={onWindowResize}
                   />
-                </td>
-                <td className='primary' style={{ width: '5em', verticalAlign: 'top', fontSize: '0.9em', textAlign: 'left' }}>
-                  {formats.int(cargo)}{units.T}
                 </td>
               </tr>
             </tbody>
