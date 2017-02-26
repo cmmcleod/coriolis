@@ -6,12 +6,6 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var AppCachePlugin = require('appcache-webpack-plugin');
 
-//var node_modules_dir = path.resolve(__dirname, 'node_modules');
-//var d3Path = path.resolve(__dirname, 'd3.min.js');
-//var reactPath = path.resolve(node_modules_dir, 'react/dist/react.min.js');
-//var reactDomPath = path.resolve(node_modules_dir, 'react-dom/dist/react-dom.min.js');
-//var lzStringPath = path.resolve(node_modules_dir, 'lz-string/libs/lz-string.min.js');
-
 function CopyDirPlugin(source, destination) {
     this.source = source;
     this.destination = destination;
@@ -29,13 +23,7 @@ module.exports = {
     lib: ['d3', 'react', 'react-dom', 'classnames', 'fbemitter', 'lz-string']
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.json', '.less'],
-//    alias: {
-//      'd3': d3Path,
-//      'react': reactPath,
-//      'react-dom': reactDomPath,
-//      'lz-string': lzStringPath
-//    },
+    extensions: ['.js', '.jsx', '.json', '.less']
   },
   output: {
     path: path.join(__dirname, 'build'),
@@ -76,7 +64,6 @@ module.exports = {
     }),
     new CopyDirPlugin(path.join(__dirname, 'src/schemas'), 'schemas'),
     new CopyDirPlugin(path.join(__dirname, 'src/images/logo/*'), ''),
-    new CopyDirPlugin(path.join(__dirname, 'src/migrate.html'), ''),
     new CopyDirPlugin(path.join(__dirname, 'src/.htaccess'), ''),
     new AppCachePlugin({
       network: ['*'],
