@@ -88,19 +88,13 @@ export default class FSDProfile extends TranslatedComponent {
     // Calculate bounds for our line chart - use thruster info for X
     const thrusters = ship.standard[1].m;
     const fsd = ship.standard[2].m;
-    const minMass = thrusters.getMinMass();
+    const minMass = ship.calcLowestPossibleMass({th: thrusters});
     const maxMass = thrusters.getMaxMass();
-    const minRange = 0;
+    let mass = ship.unladenMass + ship.fuelCapacity + cargo;
+    const minRange = Calc.jumpRange(maxMass, fsd, ship.fuelCapacity);
     const maxRange = Calc.jumpRange(minMass + fsd.getMaxFuelPerJump(), fsd, fsd.getMaxFuelPerJump());
-    let mass = ship.unladenMass + fsd.getMaxFuelPerJump() + cargo;
-    let mark;
-    if (mass < minMass) {
-      mark = minMass;
-    } else if (mass > maxMass) {
-      mark = maxMass;
-    } else {
-      mark = mass;
-    }
+    // Add a mark at our current mass
+    const mark = Math.min(mass, maxMass);
 
     const cargoPercent = cargo / ship.cargoCapacity;
 
