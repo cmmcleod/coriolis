@@ -1683,6 +1683,25 @@ export default class Ship {
   }
 
   /**
+   * Calculate the lowest possible mass for this ship.
+   * @param  {Object} m Module override set (standard type => Module)
+   * @return {number} The lowest possible mass for this ship
+   */
+  calcLowestPossibleMass(m) {
+    m = m || {};
+
+    let mass = this.hullMass;
+    mass += m.pp ? m.pp.getMass() : ModuleUtils.standard(0, '2D').getMass();
+    mass += m.th ? m.th.getMass() : ModuleUtils.standard(1, '2D').getMass();
+    mass += m.fsd ? m.fsd.getMass() : ModuleUtils.standard(2, this.standard[2].maxClass + 'D').getMass();
+    mass += m.ls ? m.ls.getMass() : ModuleUtils.standard(3, this.standard[3].maxClass + 'D').getMass() * 0.3; // Lightweight grade 4 mod reduces mass by up to 70%
+    mass += m.pd ? m.pd.getMass() : ModuleUtils.standard(4, '2D').getMass();
+    mass += m.s ? m.s.getMass() : ModuleUtils.standard(5, this.standard[5].maxClass + 'D').getMass();
+    mass += m.ft ? m.ft.getMass() : ModuleUtils.standard(6, '1C').getMass();
+    return mass;
+  }
+
+  /**
    * Use the lightest standard ModuleUtils unless otherwise specified
    * @param  {Object} m Module override set (standard type => module ID)
    * @return {this} The ship instance (for chaining operations)

@@ -86,19 +86,13 @@ export default class EngineProfile extends TranslatedComponent {
 
     // Calculate bounds for our line chart
     const thrusters = ship.standard[1].m;
-    const minMass = thrusters.getMinMass();
+    const minMass = ship.calcLowestPossibleMass({ th: thrusters });
     const maxMass = thrusters.getMaxMass();
+    let mass = ship.unladenMass + ship.fuelCapacity + cargo;
     const minSpeed = Calc.speed(maxMass, ship.speed, thrusters, ship.engpip)[4];
     const maxSpeed = Calc.speed(minMass, ship.speed, thrusters, ship.engpip)[4];
-    let mass = ship.unladenMass + ship.fuelCapacity + cargo;
-    let mark;
-    if (mass < minMass) {
-      mark = minMass;
-    } else if (mass > maxMass) {
-      mark = maxMass;
-    } else {
-      mark = mass;
-    }
+    // Add a mark at our current mass
+    const mark = Math.min(mass, maxMass);
 
     const cargoPercent = cargo / ship.cargoCapacity;
 
