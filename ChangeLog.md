@@ -1,3 +1,7 @@
+#2.3.0
+  * Add 2.3 diminishing returns on shield value
+  * Make scan time visible on scanners where available
+
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
   * Shot speed can no longer be modified directly.  Its value is derived from the range modifier for Long Range and Focused modifications

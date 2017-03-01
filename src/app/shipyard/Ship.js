@@ -1258,8 +1258,7 @@ export default class Ship {
     }
 
     // We apply diminishing returns to the boosted value
-    // (no we don't; FD pulled back on this idea.  But leave this here in case they reinstate it)
-    // shieldBoost = Math.min(shieldBoost, (1 - Math.pow(Math.E, -0.7 * shieldBoost)) * 2.5);
+    shieldBoost = Math.min(shieldBoost, (1 - Math.pow(Math.E, -0.7 * shieldBoost)) * 2.5);
 
     shield = shield * shieldBoost;
     

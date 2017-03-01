@@ -41,6 +41,8 @@ const GRPCAT = {
   'mr': 'ordnance',
   'tp': 'ordnance',
   'nl': 'ordnance',
+  'sc': 'scanners',
+  'ss': 'scanners',
   // Utilities
   'cs': 'scanners',
   'kw': 'scanners',
@@ -60,7 +62,6 @@ const CATEGORIES = {
   'limpet controllers': ['cc', 'fx', 'hb', 'pc'],
   'passenger cabins': ['pce', 'pci', 'pcm', 'pcq'],
   'rf': ['rf'],
-  'sc': ['sc'],
   'shields': ['sg', 'bsg', 'psg', 'scb'],
   'structural reinforcement': ['hr', 'mrp'],
   'dc': ['dc'],
@@ -72,7 +73,7 @@ const CATEGORIES = {
   'sb': ['sb'],
   'hs': ['hs'],
   'defence': ['ch', 'po', 'ec'],
-  'scanners': ['cs', 'kw', 'ws'],
+  'scanners': ['sc', 'ss', 'cs', 'kw', 'ws'], // Overloaded with internal scanners
 };
 
 /**
