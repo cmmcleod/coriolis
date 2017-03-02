@@ -1,6 +1,7 @@
 #2.3.0
   * Add 2.3 diminishing returns on shield value
   * Make scan time visible on scanners where available
+  * Update power distributor able-to-boost calculation to take fractional MJ values in to account
 
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
