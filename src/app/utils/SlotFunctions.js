@@ -155,9 +155,9 @@ export function diffDetails(language, m, mm) {
     if (mPowerUsage != mmPowerUsage) propDiffs.push(<div key='power'>{translate('power')}: <span className={diffClass(mPowerUsage, mmPowerUsage, true)}>{diff(formats.round, mPowerUsage, mmPowerUsage)}{units.MJ}</span></div>);
   }
 
-  let mDps = m.damage * (m.rpshot || 1) * (m.rof || 1) || 0;
+  let mDps = m.damage * (m.rpshot || 1) * (m.rof || 1);
   let mmDps = mm ? mm.getDps() || 0 : 0;
-  if (mDps != mmDps) propDiffs.push(<div key='dps'>{translate('dps')}: <span className={diffClass(mmDps, mDps, true)}>{diff(formats.round, mDps, mmDps)}</span></div>);
+  if (mDps && mDps != mmDps) propDiffs.push(<div key='dps'>{translate('dps')}: <span className={diffClass(mmDps, mDps, true)}>{diff(formats.round, mDps, mmDps)}</span></div>);
 
   let mAffectsShield = isShieldGenerator(m.grp)  || m.grp == 'sb';
   let mmAffectsShield = isShieldGenerator(mm ? mm.grp : null) || mm && mm.grp == 'sb';
@@ -193,6 +193,12 @@ export function diffDetails(language, m, mm) {
     if (mIntegrity != mmIntegrity) {
       propDiffs.push(<div key='integrity'>{translate('integrity')}: <span className={diffClass(mmIntegrity, mIntegrity, true)}>{diff(formats.round, mIntegrity, mmIntegrity)}</span></div>);
     }
+  }
+
+  if (m.grp === 'hr') {
+    let mHullReinforcement = m.hullreinforcement;
+    let mmHullReinforcement = mm ? mm.getHullReinforcement() || 0 : 0;
+    if (mHullReinforcement && mHullReinforcement != mmHullReinforcement) propDiffs.push(<div key='hullreinforcement'>{translate('hullreinforcement')}: <span className={diffClass(mmHullReinforcement, mHullReinforcement, true)}>{diff(formats.round, mHullReinforcement, mmHullReinforcement)}</span></div>);
   }
 
   if (m.grp == 'pd') {
