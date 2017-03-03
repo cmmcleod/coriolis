@@ -2,6 +2,7 @@
   * Add 2.3 diminishing returns on shield value
   * Make scan time visible on scanners where available
   * Update power distributor able-to-boost calculation to take fractional MJ values in to account
+  * Revert to floating header due to issues on iOS
 
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
