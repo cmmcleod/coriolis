@@ -3,6 +3,8 @@
   * Make scan time visible on scanners where available
   * Update power distributor able-to-boost calculation to take fractional MJ values in to account
   * Revert to floating header due to issues on iOS
+  * Add effective total shield value to defence summary
+  * Fix issue where new module added to a slot did not reset its enabled status
 
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
