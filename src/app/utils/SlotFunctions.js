@@ -187,12 +187,6 @@ export function diffDetails(language, m, mm) {
     if (mProtection != mmProtection) {
       propDiffs.push(<div key='protection'>{translate('protection')}: <span className={diffClass(mmProtection, mProtection, true)}>{diff(formats.pct, mProtection, mmProtection)}</span></div>);
     }
-
-    let mIntegrity = m.integrity;
-    let mmIntegrity = mm ? mm.getIntegrity() || 0 : 0;
-    if (mIntegrity != mmIntegrity) {
-      propDiffs.push(<div key='integrity'>{translate('integrity')}: <span className={diffClass(mmIntegrity, mIntegrity, true)}>{diff(formats.round, mIntegrity, mmIntegrity)}</span></div>);
-    }
   }
 
   if (m.grp === 'hr') {
@@ -249,5 +243,11 @@ export function diffDetails(language, m, mm) {
     }
   }
 
-  return propDiffs ? <div className='cap' style={{ whiteSpace: 'nowrap' }}>{propDiffs}</div> : null;
+  let mIntegrity = m.integrity;
+  let mmIntegrity = mm ? mm.getIntegrity() || 0 : 0;
+  if (mIntegrity != mmIntegrity) {
+    propDiffs.push(<div key='integrity'>{translate('integrity')}: <span className={diffClass(mmIntegrity, mIntegrity, true)}>{diff(formats.round, mIntegrity, mmIntegrity)}</span></div>);
+  }
+
+  return propDiffs.length > 0 ? <div className='cap' style={{ whiteSpace: 'nowrap' }}>{propDiffs}</div> : null;
 }

@@ -5,6 +5,7 @@
   * Revert to floating header due to issues on iOS
   * Add effective total shield value to defence summary
   * Fix issue where new module added to a slot did not reset its enabled status
+  * Show integrity value for relevant modules
 
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
