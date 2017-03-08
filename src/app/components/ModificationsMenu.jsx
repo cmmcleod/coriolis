@@ -174,6 +174,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollWorst() {
     const { m, ship } = this.props;
+    ship.clearModifications(m);
     const features = m.blueprint.grades[m.blueprint.grade].features;
     for (const featureName in features) {
       let value = features[featureName][0];
@@ -188,6 +189,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollRandom() {
     const { m, ship } = this.props;
+    ship.clearModifications(m);
     const features = m.blueprint.grades[m.blueprint.grade].features;
     for (const featureName in features) {
       let value = features[featureName][0] + (Math.random() * (features[featureName][1] - features[featureName][0]));
@@ -216,6 +218,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollExtreme() {
     const { m, ship } = this.props;
+    ship.clearModifications(m);
     const features = m.blueprint.grades[m.blueprint.grade].features;
     for (const featureName in features) {
       let value;

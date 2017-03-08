@@ -6,6 +6,7 @@
   * Add effective total shield value to defence summary
   * Fix issue where new module added to a slot did not reset its enabled status
   * Show integrity value for relevant modules
+  * Reset old modification values when a new roll is applied
 
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
