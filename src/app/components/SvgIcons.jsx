@@ -709,6 +709,24 @@ export class Switch extends SvgIcon {
 }
 
 /**
+ * Pip
+ */
+export class Pip extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <rect x='10' y='10' width='180' height='180'/>;
+  }
+}
+
+/**
  * In-game Coriolis Station logo
  */
 export class StationCoriolis extends SvgIcon {

@@ -20,13 +20,11 @@ import MovementSummary from '../components/MovementSummary';
 import EngineProfile from '../components/EngineProfile';
 import FSDProfile from '../components/FSDProfile';
 import JumpRange from '../components/JumpRange';
-import DamageDealt from '../components/DamageDealt';
-import DamageReceived from '../components/DamageReceived';
+import BattleCentre from '../components/BattleCentre';
 import PowerManagement from '../components/PowerManagement';
 import CostSection from '../components/CostSection';
 import ModalExport from '../components/ModalExport';
 import ModalPermalink from '../components/ModalPermalink';
-import Slider from '../components/Slider';
 
 /**
  * Document Title Generator
@@ -373,11 +371,7 @@ export default class OutfittingPage extends Page {
         </div>
 
         <div>
-          <DamageDealt ship={ship} code={code} chartWidth={halfChartWidth} currentMenu={menu}/>
-        </div>
-
-        <div>
-          <DamageReceived ship={ship} code={code} currentMenu={menu}/>
+          <BattleCentre ship={ship} />
         </div>
       </div>
 
