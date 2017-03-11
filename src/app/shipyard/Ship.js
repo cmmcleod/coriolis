@@ -195,6 +195,54 @@ export default class Ship {
   }
 
   /**
+   * Calculate the speed for a given configuration
+   * @param  {Number}  eng   Number of pips in ENG
+   * @param  {Number}  fuel  Amount of fuel carried
+   * @param  {Number}  cargo Amount of cargo carried
+   * @param  {boolean} boost true if boost is applied
+   * @return {Number}        Speed
+   */
+  calcSpeed(eng, fuel, cargo, boost) {
+    return Calc.calcSpeed(this.unladenMass + fuel + cargo, this.speed, this.standard[1].m, this.pipSpeed, eng, this.topBoost / this.topSpeed, boost);
+  }
+
+  /**
+   * Calculate the pitch for a given configuration
+   * @param  {Number}  eng   Number of pips in ENG
+   * @param  {Number}  fuel  Amount of fuel carried
+   * @param  {Number}  cargo Amount of cargo carried
+   * @param  {boolean} boost true if boost is applied
+   * @return {Number}        Pitch
+   */
+  calcPitch(eng, fuel, cargo, boost) {
+    return Calc.calcPitch(this.unladenMass + fuel + cargo, this.pitch, this.standard[1].m, this.pipSpeed, eng, this.topBoost / this.topSpeed, boost);
+  }
+
+  /**
+   * Calculate the roll for a given configuration
+   * @param  {Number}  eng   Number of pips in ENG
+   * @param  {Number}  fuel  Amount of fuel carried
+   * @param  {Number}  cargo Amount of cargo carried
+   * @param  {boolean} boost true if boost is applied
+   * @return {Number}        Roll
+   */
+  calcRoll(eng, fuel, cargo, boost) {
+    return Calc.calcRoll(this.unladenMass + fuel + cargo, this.roll, this.standard[1].m, this.pipSpeed, eng, this.topBoost / this.topSpeed, boost);
+  }
+
+  /**
+   * Calculate the yaw for a given configuration
+   * @param  {Number}  eng   Number of pips in ENG
+   * @param  {Number}  fuel  Amount of fuel carried
+   * @param  {Number}  cargo Amount of cargo carried
+   * @param  {boolean} boost true if boost is applied
+   * @return {Number}        Yaw
+   */
+  calcYaw(eng, fuel, cargo, boost) {
+    return Calc.calcYaw(this.unladenMass + fuel + cargo, this.yaw, this.standard[1].m, this.pipSpeed, eng, this.topBoost / this.topSpeed, boost);
+  }
+
+  /**
    * Calculate the recovery time after losing or turning on shields
    * Thanks to CMDRs Al Gray, GIF, and Nomad Enigma for providing Shield recharge data and formulas
    *

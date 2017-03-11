@@ -173,3 +173,82 @@ function normValues(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, bas
 	  res * (1 - (engpip * 1)),
 	  res];
 }
+
+function calcValue(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, base, engpip, eng) {
+  const xnorm = Math.min(1, (maxMass - mass) / (maxMass - minMass));
+  const exponent = Math.log((optMul - minMul) / (maxMul - minMul)) / Math.log(Math.min(1, (maxMass - optMass) / (maxMass - minMass)));
+  const ynorm = Math.pow(xnorm, exponent);
+  const mul = minMul + ynorm * (maxMul - minMul);
+  const res = base * mul;
+
+  return res * (1 - (engpip * (4 - eng)));
+}
+
+export function calcSpeed(mass, baseSpeed, thrusters, engpip, eng, boostFactor, boost) {
+  // thrusters might be a module or a template; handle either here
+  const minMass = thrusters instanceof Module ? thrusters.getMinMass() : thrusters.minmass;
+  const optMass = thrusters instanceof Module ? thrusters.getOptMass() : thrusters.optmass;
+  const maxMass = thrusters instanceof Module ? thrusters.getMaxMass() : thrusters.maxmass;
+  const minMul = thrusters instanceof Module ? thrusters.getMinMul('speed') : (thrusters.minmulspeed ? thrusters.minmulspeed : thrusters.minmul);
+  const optMul = thrusters instanceof Module ? thrusters.getOptMul('speed') : (thrusters.optmulspeed ? thrusters.minmulspeed : thrusters.minmul);
+  const maxMul = thrusters instanceof Module ? thrusters.getMaxMul('speed') : (thrusters.maxmulspeed ? thrusters.minmulspeed : thrusters.minmul);
+
+  let result = calcValue(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, baseSpeed, engpip, eng);
+  if (boost == true) {
+    result *= boostFactor;
+  }
+
+  return result;
+}
+
+export function calcPitch(mass, basePitch, thrusters, engpip, eng, boostFactor, boost) {
+  // thrusters might be a module or a template; handle either here
+  let minMass = thrusters instanceof Module ? thrusters.getMinMass() : thrusters.minmass;
+  let optMass = thrusters instanceof Module ? thrusters.getOptMass() : thrusters.optmass;
+  let maxMass = thrusters instanceof Module ? thrusters.getMaxMass() : thrusters.maxmass;
+  let minMul = thrusters instanceof Module ? thrusters.getMinMul('rotation') : (thrusters.minmulrotation ? thrusters.minmulrotation : thrusters.minmul);
+  let optMul = thrusters instanceof Module ? thrusters.getOptMul('rotation') : (thrusters.optmulrotation ? thrusters.optmulrotation : thrusters.optmul);
+  let maxMul = thrusters instanceof Module ? thrusters.getMaxMul('rotation') : (thrusters.maxmulrotation ? thrusters.maxmulrotation : thrusters.maxmul);
+
+  let result = calcValue(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, basePitch, engpip, eng);
+  if (boost == true) {
+    result *= boostFactor;
+  }
+
+  return result;
+}
+
+export function calcRoll(mass, baseRoll, thrusters, engpip, eng, boostFactor, boost) {
+  // thrusters might be a module or a template; handle either here
+  let minMass = thrusters instanceof Module ? thrusters.getMinMass() : thrusters.minmass;
+  let optMass = thrusters instanceof Module ? thrusters.getOptMass() : thrusters.optmass;
+  let maxMass = thrusters instanceof Module ? thrusters.getMaxMass() : thrusters.maxmass;
+  let minMul = thrusters instanceof Module ? thrusters.getMinMul('rotation') : (thrusters.minmulrotation ? thrusters.minmulrotation : thrusters.minmul);
+  let optMul = thrusters instanceof Module ? thrusters.getOptMul('rotation') : (thrusters.optmulrotation ? thrusters.optmulrotation : thrusters.optmul);
+  let maxMul = thrusters instanceof Module ? thrusters.getMaxMul('rotation') : (thrusters.maxmulrotation ? thrusters.maxmulrotation : thrusters.maxmul);
+
+  let result = calcValue(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, baseRoll, engpip, eng);
+  if (boost == true) {
+    result *= boostFactor;
+  }
+
+  return result;
+}
+
+export function calcYaw(mass, baseYaw, thrusters, engpip, eng, boostFactor, boost) {
+  // thrusters might be a module or a template; handle either here
+  let minMass = thrusters instanceof Module ? thrusters.getMinMass() : thrusters.minmass;
+  let optMass = thrusters instanceof Module ? thrusters.getOptMass() : thrusters.optmass;
+  let maxMass = thrusters instanceof Module ? thrusters.getMaxMass() : thrusters.maxmass;
+  let minMul = thrusters instanceof Module ? thrusters.getMinMul('rotation') : (thrusters.minmulrotation ? thrusters.minmulrotation : thrusters.minmul);
+  let optMul = thrusters instanceof Module ? thrusters.getOptMul('rotation') : (thrusters.optmulrotation ? thrusters.optmulrotation : thrusters.optmul);
+  let maxMul = thrusters instanceof Module ? thrusters.getMaxMul('rotation') : (thrusters.maxmulrotation ? thrusters.maxmulrotation : thrusters.maxmul);
+
+  let result = calcValue(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, baseYaw, engpip, eng);
+  if (boost == true) {
+    result *= boostFactor;
+  }
+
+  return result;
+}
+
