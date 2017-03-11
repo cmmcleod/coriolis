@@ -7,7 +7,7 @@ import { DamageKinetic, DamageThermal, DamageExplosive } from './SvgIcons';
  * Defence summary
  */
 export default class DefenceSummary extends TranslatedComponent {
-  static PropTypes = {
+  static propTypes = {
     ship: React.PropTypes.object.isRequired
   };
 

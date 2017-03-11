@@ -17,7 +17,7 @@ const POWER = [
  * Power Management Section
  */
 export default class PowerManagement extends TranslatedComponent {
-  static PropTypes = {
+  static propTypes = {
     ship: React.PropTypes.object.isRequired,
     code: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func.isRequired

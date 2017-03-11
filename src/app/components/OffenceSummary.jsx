@@ -7,7 +7,7 @@ import { DamageAbsolute, DamageKinetic, DamageThermal, DamageExplosive } from '.
  * Offence summary
  */
 export default class OffenceSummary extends TranslatedComponent {
-  static PropTypes = {
+  static propTypes = {
     ship: React.PropTypes.object.isRequired
   };
 

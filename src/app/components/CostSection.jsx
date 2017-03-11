@@ -12,7 +12,7 @@ import TranslatedComponent from './TranslatedComponent';
  */
 export default class CostSection extends TranslatedComponent {
 
-  static PropTypes = {
+  static propTypes = {
     ship: React.PropTypes.object.isRequired,
     code: React.PropTypes.string.isRequired,
     buildName: React.PropTypes.string

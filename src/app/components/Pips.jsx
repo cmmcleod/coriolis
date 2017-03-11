@@ -14,7 +14,7 @@ import Module from '../shipyard/Module';
  * Requires an onChange() function of the form onChange(sys, eng, wep) which is triggered whenever the pips change.
  */
 export default class Pips extends TranslatedComponent {
-  static PropTypes = {
+  static propTypes = {
     ship: React.PropTypes.object.isRequired,
     onChange: React.PropTypes.func.isRequired
   };

@@ -17,7 +17,7 @@ export default class LineChart extends TranslatedComponent {
     colors: ['#ff8c0d']
   };
 
-  static PropTypes = {
+  static propTypes = {
     width: React.PropTypes.number.isRequired,
     func: React.PropTypes.func.isRequired,
     xLabel: React.PropTypes.string.isRequired,

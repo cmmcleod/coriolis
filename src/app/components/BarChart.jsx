@@ -44,7 +44,7 @@ export default class BarChart extends TranslatedComponent {
     unit: ''
   };
 
-  static PropTypes = {
+  static propTypes = {
     colors: React.PropTypes.array,
     data: React.PropTypes.array.isRequired,
     desc: React.PropTypes.bool,

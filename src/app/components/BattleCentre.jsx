@@ -1,23 +1,22 @@
 import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
 import { Ships } from 'coriolis-data/dist';
-import Slider from '../components/Slider';
-import Pips from '../components/Pips';
-import Fuel from '../components/Fuel';
-import Cargo from '../components/Cargo';
-import Movement from '../components/Movement';
-import EngagementRange from '../components/EngagementRange';
+import Slider from './Slider';
+import Pips from './Pips';
+import Fuel from './Fuel';
+import Cargo from './Cargo';
+import Movement from './Movement';
+import EngagementRange from './EngagementRange';
+import ShipPicker from './ShipPicker';
 
 /**
  * Battle centre allows you to pit your current build against another ship,
  * adjust pips and engagement range, and see a wide variety of information
  */
 export default class BattleCentre extends TranslatedComponent {
-  static PropTypes = {
+  static propTypes = {
     ship: React.PropTypes.object.isRequired
   };
-
-  static DEFAULT_OPPONENT = { ship: Ships['anaconda'] };
 
   /**
    * Constructor
@@ -34,18 +33,17 @@ export default class BattleCentre extends TranslatedComponent {
     this._fuelUpdated = this._fuelUpdated.bind(this);
     this._pipsUpdated = this._pipsUpdated.bind(this);
     this._engagementRangeUpdated = this._engagementRangeUpdated.bind(this);
+    this._targetShipUpdated = this._targetShipUpdated.bind(this);
 
     this.state = { 
       // Pips
       sys: 2,
       eng: 2,
       wep: 2,
-      // Fuel
       fuel: ship.fuelCapacity,
-      // Cargo
       cargo: ship.cargoCapacity,
-      // Engagement range
       engagementRange: 1500,
+      targetShip: Ships['anaconda']
     };
   }
 
@@ -84,18 +82,26 @@ export default class BattleCentre extends TranslatedComponent {
   }
 
   /**
+   * Triggered when target ship has been updated
+   */
+  _targetShipUpdated(targetShip, targetBuild) {
+    this.setState({ targetShip, targetBuild: targetBuild });
+  }
+
+  /**
    * Render
    * @return {React.Component} contents
    */
   render() {
     const { language, onWindowResize, sizeRatio, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
-    const { sys, eng, wep, cargo, fuel, engagementRange, totals } = this.state;
+    const { sys, eng, wep, cargo, fuel, engagementRange } = this.state;
     const { ship } = this.props;
 
     return (
       <span>
         <h1>{translate('battle centre')}</h1>
+        <ShipPicker onChange={this._targetShipUpdated}/>
         <div className='group third'>
           <Pips ship={ship} onChange={this._pipsUpdated}/>
         </div>
