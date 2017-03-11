@@ -8,7 +8,7 @@ import Slider from '../components/Slider';
  * Requires an onChange() function of the form onChange(cargo), providing the cargo in tonnes, which is triggered on cargo level change
  */
 export default class Cargo extends TranslatedComponent {
-  static PropTypes = {
+  static propTypes = {
     ship: React.PropTypes.object.isRequired,
     onChange: React.PropTypes.func.isRequired
   };

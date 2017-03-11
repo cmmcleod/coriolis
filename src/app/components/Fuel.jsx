@@ -8,7 +8,7 @@ import Slider from '../components/Slider';
  * Requires an onChange() function of the form onChange(fuel), providing the fuel in tonnes, which is triggered on fuel level change
  */
 export default class Fuel extends TranslatedComponent {
-  static PropTypes = {
+  static propTypes = {
     ship: React.PropTypes.object.isRequired,
     onChange: React.PropTypes.func.isRequired
   };

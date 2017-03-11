@@ -6,7 +6,7 @@ import TranslatedComponent from './TranslatedComponent';
  * Movement summary
  */
 export default class MovementSummary extends TranslatedComponent {
-  static PropTypes = {
+  static propTypes = {
     ship: React.PropTypes.object.isRequired
   };
 
