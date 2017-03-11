@@ -85,6 +85,7 @@ export default class OutfittingPage extends Page {
       title: this._getTitle(buildName),
       costTab: Persist.getCostTab() || 'costs',
       buildName,
+      thirdChartWidth: 400,
       newBuildName: buildName,
       shipId,
       ship,
