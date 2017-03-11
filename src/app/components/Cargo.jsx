@@ -58,12 +58,14 @@ export default class Cargo extends TranslatedComponent {
    */
   _cargoChange(cargoLevel) {
     const { cargoCapacity } = this.state;
-    // We round the cargo level to a suitable value given the capacity
-    cargoLevel = Math.round(cargoLevel * cargoCapacity) / cargoCapacity;
+    if (cargoCapacity > 0) {
+      // We round the cargo level to a suitable value given the capacity
+      cargoLevel = Math.round(cargoLevel * cargoCapacity) / cargoCapacity;
 
-    if (cargoLevel != this.state.cargoLevel) {
-      this.setState({ cargoLevel });
-      this.props.onChange(Math.round(cargoLevel * cargoCapacity));
+      if (cargoLevel != this.state.cargoLevel) {
+        this.setState({ cargoLevel });
+        this.props.onChange(Math.round(cargoLevel * cargoCapacity));
+      }
     }
   }
 

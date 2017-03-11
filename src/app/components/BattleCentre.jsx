@@ -5,6 +5,7 @@ import Slider from '../components/Slider';
 import Pips from '../components/Pips';
 import Fuel from '../components/Fuel';
 import Cargo from '../components/Cargo';
+import Movement from '../components/Movement';
 import EngagementRange from '../components/EngagementRange';
 
 /**
@@ -29,7 +30,23 @@ export default class BattleCentre extends TranslatedComponent {
     const { ship } = this.props;
     const opponent = BattleCentre.DEFAULT_OPPONENT;
 
-    this.state = { };
+    this._cargoUpdated = this._cargoUpdated.bind(this);
+    this._fuelUpdated = this._fuelUpdated.bind(this);
+    this._pipsUpdated = this._pipsUpdated.bind(this);
+    this._engagementRangeUpdated = this._engagementRangeUpdated.bind(this);
+
+    this.state = { 
+      // Pips
+      sys: 2,
+      eng: 2,
+      wep: 2,
+      // Fuel
+      fuel: ship.fuelCapacity,
+      // Cargo
+      cargo: ship.cargoCapacity,
+      // Engagement range
+      engagementRange: 1500,
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -42,28 +59,28 @@ export default class BattleCentre extends TranslatedComponent {
    * Triggered when pips have been updated
    */
   _pipsUpdated(sys, eng, wep) {
-    console.log('Pips are now ' + sys + '/' + eng + '/' + wep);
+    this.setState({ sys, eng, wep });
   }
 
   /**
    * Triggered when fuel has been updated
    */
   _fuelUpdated(fuel) {
-    console.log('Fuel is now ' + fuel);
+    this.setState({ fuel });
   }
 
   /**
    * Triggered when cargo has been updated
    */
   _cargoUpdated(cargo) {
-    console.log('Cargo is now ' + cargo);
+    this.setState({ cargo });
   }
 
   /**
    * Triggered when engagement range has been updated
    */
   _engagementRangeUpdated(engagementRange) {
-    console.log('Engagement range is now ' + engagementRange);
+    this.setState({ engagementRange });
   }
 
   /**
@@ -73,24 +90,22 @@ export default class BattleCentre extends TranslatedComponent {
   render() {
     const { language, onWindowResize, sizeRatio, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
-    const { against, expanded, maxRange, range, totals } = this.state;
+    const { sys, eng, wep, cargo, fuel, engagementRange, totals } = this.state;
     const { ship } = this.props;
-    const shipUpdated = this._shipUpdated;
-    const pipsUpdated = this._pipsUpdated;
-    const fuelUpdated = this._fuelUpdated;
-    const cargoUpdated = this._cargoUpdated;
-    const engagementRangeUpdated = this._engagementRangeUpdated;
 
     return (
       <span>
         <h1>{translate('battle centre')}</h1>
         <div className='group third'>
-          <Pips ship={ship} onChange={pipsUpdated}/>
+          <Pips ship={ship} onChange={this._pipsUpdated}/>
         </div>
         <div className='group twothirds'>
-          <Fuel ship={ship} onChange={fuelUpdated}/>
-          <Cargo ship={ship} onChange={cargoUpdated}/>
-          <EngagementRange ship={ship} onChange={engagementRangeUpdated}/>
+          <Fuel ship={ship} onChange={this._fuelUpdated}/>
+          <Cargo ship={ship} onChange={this._cargoUpdated}/>
+          <EngagementRange ship={ship} onChange={this._engagementRangeUpdated}/>
+        </div>
+        <div className='group third'>
+          <Movement ship={ship} eng={eng} cargo={cargo} fuel={fuel}/>
         </div>
       </span>
     );
