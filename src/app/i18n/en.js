@@ -38,6 +38,7 @@ export const terms = {
   PHRASE_SELECT_SPECIAL: 'Click to select an experimental effect',
   PHRASE_NO_SPECIAL: 'No experimental effect',
   PHRASE_SHOPPING_LIST: 'Stations that sell this build',
+  PHRASE_TOTAL_EFFECTIVE_SHIELD: 'Total amount of damage that can be taken from each damage type, if using all shield cells',
 
   HELP_MODIFICATIONS_MENU: 'Click on a number to enter a new value, or drag along the bar for small changes',
 
@@ -88,9 +89,10 @@ export const terms = {
   rg: 'Rail Gun',
   s: 'Sensors',
   sb: 'Shield Booster',
-  sc: 'Scanner',
+  sc: 'Stellar Scanners',
   scb: 'Shield Cell Bank',
   sg: 'Shield Generator',
+  ss: 'Surface Scanners',
   t: 'thrusters',
   tp: 'Torpedo Pylon',
   ul: 'Burst Laser',
@@ -103,6 +105,8 @@ export const terms = {
   'damage received from': 'Damage received from',
   'against shields': 'Against shields',
   'against hull': 'Against hull',
+  'total effective shield': 'Total effective shield',
+
   // 'ammo' was overloaded for outfitting page and modul info, so changed to ammunition for outfitting page
   ammunition: 'Ammo',
 
@@ -177,6 +181,9 @@ export const terms = {
   regen: 'Regeneration rate',
   reload: 'Reload',
   rof: 'Rate of fire',
+  scanangle: 'Scan angle',
+  scanrange: 'Scan range',
+  scantime: 'Scan time',
   shield: 'Shield',
   shieldboost: 'Shield boost',
   shieldreinforcement: 'Shield reinforcement',

@@ -1,3 +1,13 @@
+#2.3.0
+  * Add 2.3 diminishing returns on shield value
+  * Make scan time visible on scanners where available
+  * Update power distributor able-to-boost calculation to take fractional MJ values in to account
+  * Revert to floating header due to issues on iOS
+  * Add effective total shield value to defence summary
+  * Fix issue where new module added to a slot did not reset its enabled status
+  * Show integrity value for relevant modules
+  * Reset old modification values when a new roll is applied
+
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
   * Shot speed can no longer be modified directly.  Its value is derived from the range modifier for Long Range and Focused modifications

@@ -64,6 +64,22 @@ export default class DefenceSummary extends TranslatedComponent {
                 <span onMouseOver={termtip.bind(null, translate('base') + ' ' + formats.pct1(1 - shieldGenerator.thermres))} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(1 - ship.shieldThermRes)}</span>
               </td>
             </tr> : null }
+            {ship.shield ?
+            <tr>
+              <td className='le'><span onMouseOver={termtip.bind(null,'PHRASE_TOTAL_EFFECTIVE_SHIELD')} onMouseOut={tooltip.bind(null, null)}>{translate('total effective shield')}</span></td>
+              <td className='ri'>
+                <span onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /></span>&nbsp;
+                {formats.int((ship.shield + ship.shieldCells) / (1 - ship.shieldExplRes))}{units.MJ}
+              </td>
+              <td className='ri'>
+                <span onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /></span>&nbsp;
+                {formats.int((ship.shield + ship.shieldCells) / (1 - ship.shieldKinRes))}{units.MJ}
+              </td>
+              <td className='ri'>
+                <span onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /></span>&nbsp;
+                {formats.int((ship.shield + ship.shieldCells) / (1 - ship.shieldThermRes))}{units.MJ}
+              </td>
+            </tr> : null }
 
             { ship.shield && ship.shieldCells ?
             <tr>

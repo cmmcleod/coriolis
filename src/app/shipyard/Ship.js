@@ -135,7 +135,7 @@ export default class Ship {
    */
   canBoost() {
     return this.canThrust() &&                                       // Thrusters operational
-        this.boostEnergy <= this.standard[4].m.getEnginesCapacity(); // PD capacitor is sufficient for boost
+        this.standard[4].m.getEnginesCapacity() > this.boostEnergy; // PD capacitor is sufficient for boost
   }
 
     /**
@@ -569,7 +569,6 @@ export default class Ship {
 
     for (i = 0; i < cl; i++) {
       standard[i].cat = 0;
-      standard[i].enabled = enabled ? enabled[i + 1] * 1 : true;
       standard[i].priority = priorities && priorities[i + 1] ? priorities[i + 1] * 1 : 0;
       standard[i].type = 'SYS';
       standard[i].m = null; // Resetting 'old' modul if there was one
@@ -582,6 +581,7 @@ export default class Ship {
         }
         this.use(standard[i], module, true);
       }
+      standard[i].enabled = enabled ? enabled[i + 1] * 1 : true;
     }
 
     standard[1].type = 'ENG'; // Thrusters
@@ -590,7 +590,6 @@ export default class Ship {
 
     for (i = 0, l = hps.length; i < l; i++) {
       hps[i].cat = 1;
-      hps[i].enabled = enabled ? enabled[cl + i] * 1 : true;
       hps[i].priority = priorities && priorities[cl + i] ? priorities[cl + i] * 1 : 0;
       hps[i].type = hps[i].maxClass ? 'WEP' : 'SYS';
       hps[i].m = null; // Resetting 'old' modul if there was one
@@ -604,13 +603,13 @@ export default class Ship {
         }
         this.use(hps[i], module, true);
       }
+      hps[i].enabled = enabled ? enabled[cl + i] * 1 : true;
     }
 
     cl += hps.length; // Increase accounts for hardpoints
 
     for (i = 0, l = internal.length; i < l; i++) {
       internal[i].cat = 2;
-      internal[i].enabled = enabled ? enabled[cl + i] * 1 : true;
       internal[i].priority = priorities && priorities[cl + i] ? priorities[cl + i] * 1 : 0;
       internal[i].type = 'SYS';
       internal[i].m = null; // Resetting 'old' modul if there was one
@@ -624,6 +623,7 @@ export default class Ship {
         }
         this.use(internal[i], module, true);
       }
+      internal[i].enabled = enabled ? enabled[cl + i] * 1 : true;
     }
 
     // Update aggragated stats
@@ -1258,8 +1258,7 @@ export default class Ship {
     }
 
     // We apply diminishing returns to the boosted value
-    // (no we don't; FD pulled back on this idea.  But leave this here in case they reinstate it)
-    // shieldBoost = Math.min(shieldBoost, (1 - Math.pow(Math.E, -0.7 * shieldBoost)) * 2.5);
+    shieldBoost = Math.min(shieldBoost, (1 - Math.pow(Math.E, -0.7 * shieldBoost)) * 2.5);
 
     shield = shield * shieldBoost;
     
@@ -1641,6 +1640,7 @@ export default class Ship {
       }
       let oldModule = slot.m;
       slot.m = m;
+      slot.enabled = true;
       slot.discountedCost = (m && m.cost) ? m.cost * this.moduleCostMultiplier : 0;
       this.updateStats(slot, m, oldModule, preventUpdate);
 

@@ -345,6 +345,14 @@ export default class Module {
   }
 
   /**
+   * Get the scan time for this module, taking in to account modifications
+   * @return {Number} the scan time of this module
+   */
+  getScanTime() {
+    return this._getModifiedValue('scantime');
+  }
+
+  /**
    * Get the capture arc for this module, taking in to account modifications
    * @return {Number} the capture arc of this module
    */
