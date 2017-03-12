@@ -242,6 +242,7 @@ export default class Pips extends TranslatedComponent {
 
   /**
    * Handle a click
+   * @param {string} which  Which item was clicked
    */
   onClick(which) {
     if (which == 'SYS') {

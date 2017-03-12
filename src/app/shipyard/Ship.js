@@ -1286,13 +1286,13 @@ export default class Ship {
       shield = Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sgSlot.m, 1);
       shieldExplRes = 1 - sgSlot.m.getExplosiveResistance();
       shieldExplDRStart = shieldExplRes * 0.7;
-      shieldExplDREnd = shieldExplRes * 0; // Currently don't know where this is
+      shieldExplDREnd = 0;
       shieldKinRes = 1 - sgSlot.m.getKineticResistance();
       shieldKinDRStart = shieldKinRes * 0.7;
-      shieldKinDREnd = shieldKinRes * 0; // Currently don't know where this is
+      shieldKinDREnd = 0;
       shieldThermRes = 1 - sgSlot.m.getThermalResistance();
       shieldThermDRStart = shieldThermRes * 0.7;
-      shieldThermDREnd = shieldThermRes * 0; // Currently don't know where this is
+      shieldThermDREnd = 0;
 
       // Shield from boosters
       for (let slot of this.hardpoints) {
