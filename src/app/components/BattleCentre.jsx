@@ -1,5 +1,6 @@
 import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
+import Ship from '../shipyard/Ship';
 import { Ships } from 'coriolis-data/dist';
 import Slider from './Slider';
 import Pips from './Pips';
@@ -8,6 +9,7 @@ import Cargo from './Cargo';
 import Movement from './Movement';
 import EngagementRange from './EngagementRange';
 import ShipPicker from './ShipPicker';
+import Shields from './Shields';
 
 /**
  * Battle centre allows you to pit your current build against another ship,
@@ -27,26 +29,29 @@ export default class BattleCentre extends TranslatedComponent {
     super(props);
 
     const { ship } = this.props;
-    const opponent = BattleCentre.DEFAULT_OPPONENT;
 
     this._cargoUpdated = this._cargoUpdated.bind(this);
     this._fuelUpdated = this._fuelUpdated.bind(this);
     this._pipsUpdated = this._pipsUpdated.bind(this);
     this._engagementRangeUpdated = this._engagementRangeUpdated.bind(this);
-    this._targetShipUpdated = this._targetShipUpdated.bind(this);
+    this._opponentUpdated = this._opponentUpdated.bind(this);
 
     this.state = { 
-      // Pips
       sys: 2,
       eng: 2,
       wep: 2,
       fuel: ship.fuelCapacity,
       cargo: ship.cargoCapacity,
       engagementRange: 1500,
-      targetShip: Ships['anaconda']
+      opponent: new Ship('anaconda', Ships['anaconda'].properties, Ships['anaconda'].slots)
     };
   }
 
+  /**
+   * Update state based on property and context changes
+   * @param  {Object} nextProps   Incoming/Next properties
+   * @returns {boolean} true if an update is required
+   */
   componentWillReceiveProps(nextProps) {
     // Rather than try to keep track of what changes our children require we force an update and let them work it out
     this.forceUpdate();
@@ -55,6 +60,9 @@ export default class BattleCentre extends TranslatedComponent {
 
   /**
    * Triggered when pips have been updated
+   * @param {number} sys SYS pips
+   * @param {number} eng ENG pips
+   * @param {number} wep WEP pips
    */
   _pipsUpdated(sys, eng, wep) {
     this.setState({ sys, eng, wep });
@@ -62,6 +70,7 @@ export default class BattleCentre extends TranslatedComponent {
 
   /**
    * Triggered when fuel has been updated
+   * @param {number} fuel the amount of fuel, in T
    */
   _fuelUpdated(fuel) {
     this.setState({ fuel });
@@ -69,6 +78,7 @@ export default class BattleCentre extends TranslatedComponent {
 
   /**
    * Triggered when cargo has been updated
+   * @param {number} cargo the amount of cargo, in T
    */
   _cargoUpdated(cargo) {
     this.setState({ cargo });
@@ -76,6 +86,7 @@ export default class BattleCentre extends TranslatedComponent {
 
   /**
    * Triggered when engagement range has been updated
+   * @param {number} engagementRange the engagement range, in m
    */
   _engagementRangeUpdated(engagementRange) {
     this.setState({ engagementRange });
@@ -83,9 +94,11 @@ export default class BattleCentre extends TranslatedComponent {
 
   /**
    * Triggered when target ship has been updated
+   * @param {object} opponent the opponent's ship
+   * @param {string} opponentBuild the name of the opponent's build
    */
-  _targetShipUpdated(targetShip, targetBuild) {
-    this.setState({ targetShip, targetBuild: targetBuild });
+  _opponentUpdated(opponent, opponentBuild) {
+    this.setState({ opponent, opponentBuild });
   }
 
   /**
@@ -95,13 +108,17 @@ export default class BattleCentre extends TranslatedComponent {
   render() {
     const { language, onWindowResize, sizeRatio, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
-    const { sys, eng, wep, cargo, fuel, engagementRange } = this.state;
+    const { sys, eng, wep, cargo, fuel, engagementRange, opponent } = this.state;
     const { ship } = this.props;
+
+    // Markers are used to propagate state changes
+    const movementMarker = '' + ship.topSpeed + ':' + ship.pitch + ':' + ship.roll + ':' + ship.yaw;
+    const shieldMarker = '' + ship.shield + ':' + ship.cells + ':' + ship.shieldExplRes + ':' + ship.shieldKinRes + ':' + ship.shieldThermRes;
 
     return (
       <span>
         <h1>{translate('battle centre')}</h1>
-        <ShipPicker onChange={this._targetShipUpdated}/>
+        <ShipPicker onChange={this._opponentUpdated}/>
         <div className='group third'>
           <Pips ship={ship} onChange={this._pipsUpdated}/>
         </div>
@@ -111,7 +128,10 @@ export default class BattleCentre extends TranslatedComponent {
           <EngagementRange ship={ship} onChange={this._engagementRangeUpdated}/>
         </div>
         <div className='group third'>
-          <Movement ship={ship} eng={eng} cargo={cargo} fuel={fuel}/>
+          <Shields marker={shieldMarker} ship={ship} opponent={opponent} sys={sys}/>
+        </div>
+        <div className='group third'>
+          <Movement marker={movementMarker} ship={ship} eng={eng} cargo={cargo} fuel={fuel}/>
         </div>
       </span>
     );

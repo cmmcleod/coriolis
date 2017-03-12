@@ -174,6 +174,20 @@ function normValues(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, bas
 	  res];
 }
 
+/**
+ * Calculate a single value
+ * @param {number}   minMass  the minimum mass of the thrusters
+ * @param {number}   optMass  the optimum mass of the thrusters
+ * @param {number}   maxMass  the maximum mass of the thrusters
+ * @param {number}   minMul   the minimum multiplier of the thrusters
+ * @param {number}   optMul   the optimum multiplier of the thrusters
+ * @param {number}   maxMul   the maximum multiplier of the thrusters
+ * @param {number}   mass     the mass of the ship
+ * @param {base}     base     the base value from which to calculate
+ * @param {number}   engpip   the multiplier per pip to engines
+ * @param {number}   eng      the pips to engines
+ * @returns {number}           the resultant value
+ */
 function calcValue(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, base, engpip, eng) {
   const xnorm = Math.min(1, (maxMass - mass) / (maxMass - minMass));
   const exponent = Math.log((optMul - minMul) / (maxMul - minMul)) / Math.log(Math.min(1, (maxMass - optMass) / (maxMass - minMass)));
@@ -184,6 +198,17 @@ function calcValue(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, base
   return res * (1 - (engpip * (4 - eng)));
 }
 
+/**
+ * Calculate speed for a given setup
+ * @param {number}   mass         the mass of the ship
+ * @param {number}   baseSpeed    the base speed of the ship
+ * @param {ojbect}   thrusters    the thrusters of the ship
+ * @param {number}   engpip       the multiplier per pip to engines
+ * @param {number}   eng          the pips to engines
+ * @param {number}   boostFactor  the boost factor for ths ship
+ * @param {boolean}  boost        true if the boost is activated
+ * @returns {number}              the resultant speed
+ */
 export function calcSpeed(mass, baseSpeed, thrusters, engpip, eng, boostFactor, boost) {
   // thrusters might be a module or a template; handle either here
   const minMass = thrusters instanceof Module ? thrusters.getMinMass() : thrusters.minmass;
@@ -201,6 +226,17 @@ export function calcSpeed(mass, baseSpeed, thrusters, engpip, eng, boostFactor, 
   return result;
 }
 
+/**
+ * Calculate pitch for a given setup
+ * @param {number}   mass         the mass of the ship
+ * @param {number}   basePitch    the base pitch of the ship
+ * @param {ojbect}   thrusters    the thrusters of the ship
+ * @param {number}   engpip       the multiplier per pip to engines
+ * @param {number}   eng          the pips to engines
+ * @param {number}   boostFactor  the boost factor for ths ship
+ * @param {boolean}  boost        true if the boost is activated
+ * @returns {number}              the resultant pitch
+ */
 export function calcPitch(mass, basePitch, thrusters, engpip, eng, boostFactor, boost) {
   // thrusters might be a module or a template; handle either here
   let minMass = thrusters instanceof Module ? thrusters.getMinMass() : thrusters.minmass;
@@ -218,6 +254,17 @@ export function calcPitch(mass, basePitch, thrusters, engpip, eng, boostFactor, 
   return result;
 }
 
+/**
+ * Calculate roll for a given setup
+ * @param {number}   mass         the mass of the ship
+ * @param {number}   baseRoll     the base roll of the ship
+ * @param {ojbect}   thrusters    the thrusters of the ship
+ * @param {number}   engpip       the multiplier per pip to engines
+ * @param {number}   eng          the pips to engines
+ * @param {number}   boostFactor  the boost factor for ths ship
+ * @param {boolean}  boost        true if the boost is activated
+ * @returns {number}              the resultant roll
+ */
 export function calcRoll(mass, baseRoll, thrusters, engpip, eng, boostFactor, boost) {
   // thrusters might be a module or a template; handle either here
   let minMass = thrusters instanceof Module ? thrusters.getMinMass() : thrusters.minmass;
@@ -235,6 +282,17 @@ export function calcRoll(mass, baseRoll, thrusters, engpip, eng, boostFactor, bo
   return result;
 }
 
+/**
+ * Calculate yaw for a given setup
+ * @param {number}   mass         the mass of the ship
+ * @param {number}   baseYaw      the base yaw of the ship
+ * @param {ojbect}   thrusters    the thrusters of the ship
+ * @param {number}   engpip       the multiplier per pip to engines
+ * @param {number}   eng          the pips to engines
+ * @param {number}   boostFactor  the boost factor for ths ship
+ * @param {boolean}  boost        true if the boost is activated
+ * @returns {number}              the resultant yaw
+ */
 export function calcYaw(mass, baseYaw, thrusters, engpip, eng, boostFactor, boost) {
   // thrusters might be a module or a template; handle either here
   let minMass = thrusters instanceof Module ? thrusters.getMinMass() : thrusters.minmass;

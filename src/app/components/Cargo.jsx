@@ -25,7 +25,7 @@ export default class Cargo extends TranslatedComponent {
 
     this.state = {
       cargoCapacity: ship.cargoCapacity,
-      cargoLevel: 1,
+      cargoLevel: 0,
     };
   }
 

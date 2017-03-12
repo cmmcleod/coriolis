@@ -7,6 +7,7 @@ import TranslatedComponent from './TranslatedComponent';
  */
 export default class Movement extends TranslatedComponent {
   static propTypes = {
+    marker: React.PropTypes.string.isRequired,
     ship: React.PropTypes.object.isRequired,
     eng: React.PropTypes.number.isRequired,
     fuel: React.PropTypes.number.isRequired,
@@ -44,7 +45,6 @@ export default class Movement extends TranslatedComponent {
     const { formats, translate, units } = language;
     const { boost } = this.state;
 
-        //<svg style={{ width: '100%', height: '100%', stroke: '#FF8C0D', fill: '#FF8C0D' }} viewBox='0 0 600 600' fillRule="evenodd" clipRule="evenodd">
     return (
       <span id='movement'>
         <svg viewBox='0 0 600 600' fillRule="evenodd" clipRule="evenodd">
@@ -73,13 +73,13 @@ export default class Movement extends TranslatedComponent {
           // Speed
           <text x="500" y="80" strokeWidth='1'>{formats.int(ship.calcSpeed(eng, fuel, cargo, boost))}m/s</text>
           // Pitch
-          <text x="355" y="410" strokeWidth='1'>{formats.f1(ship.calcPitch(eng, fuel, cargo, boost))}°/s</text>
+          <text x="355" y="410" strokeWidth='1'>{formats.int(ship.calcPitch(eng, fuel, cargo, boost))}°/s</text>
           // Roll
-          <text x="450" y="100" strokeWidth='1'>{formats.f1(ship.calcRoll(eng, fuel, cargo, boost))}°/s</text>
+          <text x="450" y="100" strokeWidth='1'>{formats.int(ship.calcRoll(eng, fuel, cargo, boost))}°/s</text>
           // Yaw
-          <text x="160" y="430" strokeWidth='1'>{formats.f1(ship.calcYaw(eng, fuel, cargo, boost))}°/s</text>
+          <text x="160" y="430" strokeWidth='1'>{formats.int(ship.calcYaw(eng, fuel, cargo, boost))}°/s</text>
         </svg>
-        <button className={boost ? 'boost' : 'noboost'} onClick={this._toggleBoost}>Boost</button>
+      { ship.canBoost() ? <button className={boost ? 'boost' : 'noboost'} onClick={this._toggleBoost}>Boost</button> : null }
       </span>);
   }
 }

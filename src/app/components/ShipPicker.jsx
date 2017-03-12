@@ -56,7 +56,8 @@ export default class ShipPicker extends TranslatedComponent {
 
   /**
    * Update ship
-   * @param  {object} ship the ship
+   * @param  {object} shipId  the ship
+   * @param  {string} build   the build, if present
    */
   _shipChange(shipId, build) {
     const ship = new Ship(shipId, Ships[shipId].properties, Ships[shipId].slots);
@@ -71,6 +72,7 @@ export default class ShipPicker extends TranslatedComponent {
 
   /**
    * Render the menu for the picker
+   * @returns {object}    the picker menu
    */
   _renderPickerMenu() {
     const { ship, build } = this.state;

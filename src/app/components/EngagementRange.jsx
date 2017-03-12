@@ -26,7 +26,7 @@ export default class Range extends TranslatedComponent {
     const maxRange = this._calcMaxRange(ship);
 
     this.state = {
-      maxRange: maxRange,
+      maxRange,
       rangeLevel: 1,
     };
   }
@@ -75,7 +75,7 @@ export default class Range extends TranslatedComponent {
 
   /**
    * Update range
-   * @param  {number} range percentage level from 0 to 1
+   * @param  {number} rangeLevel percentage level from 0 to 1
    */
   _rangeChange(rangeLevel) {
     const { maxRange } = this.state;
