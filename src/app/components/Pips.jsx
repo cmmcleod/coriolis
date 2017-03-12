@@ -11,7 +11,7 @@ import Module from '../shipyard/Module';
 
 /**
  * Pips displays SYS/ENG/WEP pips and allows users to change them with key presses by clicking on the relevant area.
- * Requires an onChange() function of the form onChange(sys, eng, wep) which is triggered whenever the pips change.
+ * Requires an onChange() function of the form onChange(sys, eng, wep, boost) which is triggered whenever the pips change.
  */
 export default class Pips extends TranslatedComponent {
   static propTypes = {
@@ -30,12 +30,14 @@ export default class Pips extends TranslatedComponent {
     const pd = ship.standard[4].m;
 
     this._keyDown = this._keyDown.bind(this);
+    this._toggleBoost = this._toggleBoost.bind(this);
 
     let pipsSvg = this._renderPips(2, 2, 2);
     this.state = {
       sys: 2,
       eng: 2,
       wep: 2,
+      boost: false,
       sysCap: pd.getSystemsCapacity(),
       engCap: pd.getEnginesCapacity(),
       wepCap: pd.getWeaponsCapacity(),
@@ -101,6 +103,10 @@ export default class Pips extends TranslatedComponent {
    */
   _keyDown(e) {
     switch (e.keyCode) {
+      case 9:     // Tab == boost
+        e.preventDefault();
+        this._toggleBoost();
+        break;
       case 37:     // Left arrow == increase SYS
         e.preventDefault();
         this._incSys();
@@ -121,14 +127,30 @@ export default class Pips extends TranslatedComponent {
   }
 
   /**
+   * Handle a click
+   * @param {string} which  Which item was clicked
+   */
+  onClick(which) {
+    if (which == 'SYS') {
+      this._incSys();
+    } else if (which == 'ENG') {
+      this._incEng();
+    } else if (which == 'WEP') {
+      this._incWep();
+    } else if (which == 'RST') {
+      this._reset();
+    }
+  }
+
+  /**
    * Reset the capacitor
    */
   _reset() {
-    let { sys, eng, wep } = this.state;
+    let { sys, eng, wep, boost } = this.state;
     if (sys != 2 || eng != 2 || wep != 2) {
       sys = eng = wep = 2;
       this.setState({ sys, eng, wep, pipsSvg: this._renderPips(sys, eng, wep) });
-      this.props.onChange(sys, eng, wep);
+      this.props.onChange(sys, eng, wep, boost);
     }
   }
 
@@ -136,7 +158,7 @@ export default class Pips extends TranslatedComponent {
    * Increment the SYS capacitor
    */
   _incSys() {
-    let { sys, eng, wep } = this.state;
+    let { sys, eng, wep, boost } = this.state;
 
     const required = Math.min(1, 4 - sys);
     if (required > 0) {
@@ -164,7 +186,7 @@ export default class Pips extends TranslatedComponent {
         }
       }
       this.setState({ sys, eng, wep, pipsSvg: this._renderPips(sys, eng, wep) });
-      this.props.onChange(sys, eng, wep);
+      this.props.onChange(sys, eng, wep, boost);
     }
   }
 
@@ -172,7 +194,7 @@ export default class Pips extends TranslatedComponent {
    * Increment the ENG capacitor
    */
   _incEng() {
-    let { sys, eng, wep } = this.state;
+    let { sys, eng, wep, boost } = this.state;
 
     const required = Math.min(1, 4 - eng);
     if (required > 0) {
@@ -200,7 +222,7 @@ export default class Pips extends TranslatedComponent {
         }
       }
       this.setState({ sys, eng, wep, pipsSvg: this._renderPips(sys, eng, wep) });
-      this.props.onChange(sys, eng, wep);
+      this.props.onChange(sys, eng, wep, boost);
     }
   }
 
@@ -208,7 +230,7 @@ export default class Pips extends TranslatedComponent {
    * Increment the WEP capacitor
    */
   _incWep() {
-    let { sys, eng, wep } = this.state;
+    let { sys, eng, wep, boost } = this.state;
 
     const required = Math.min(1, 4 - wep);
     if (required > 0) {
@@ -236,24 +258,18 @@ export default class Pips extends TranslatedComponent {
         }
       }
       this.setState({ sys, eng, wep, pipsSvg: this._renderPips(sys, eng, wep) });
-      this.props.onChange(sys, eng, wep);
+      this.props.onChange(sys, eng, wep, boost);
     }
   }
 
   /**
-   * Handle a click
-   * @param {string} which  Which item was clicked
+   * Toggle the boost feature
    */
-  onClick(which) {
-    if (which == 'SYS') {
-      this._incSys();
-    } else if (which == 'ENG') {
-      this._incEng();
-    } else if (which == 'WEP') {
-      this._incWep();
-    } else if (which == 'RST') {
-      this._reset();
-    }
+  _toggleBoost() {
+    let { boost, sys, eng, wep } = this.state;
+    boost = !boost;
+    this.setState({ boost });
+    this.props.onChange(sys, eng, wep, boost);
   }
 
   /**
@@ -269,37 +285,37 @@ export default class Pips extends TranslatedComponent {
     // SYS
     pipsSvg['SYS'] = [];
     for (let i = 0; i < Math.floor(sys); i++) {
-      pipsSvg['SYS'].push(<Pip className='fullpip' key={i} />);
+      pipsSvg['SYS'].push(<Pip className='full' key={i} />);
     }
     if (sys > Math.floor(sys)) {
-      pipsSvg['SYS'].push(<Pip className='halfpip' key={'half'} />);
+      pipsSvg['SYS'].push(<Pip className='half' key={'half'} />);
     }
     for (let i = Math.floor(sys + 0.5); i < 4; i++) {
-      pipsSvg['SYS'].push(<Pip className='emptypip' key={i} />);
+      pipsSvg['SYS'].push(<Pip className='empty' key={i} />);
     }
 
     // ENG
     pipsSvg['ENG'] = [];
     for (let i = 0; i < Math.floor(eng); i++) {
-      pipsSvg['ENG'].push(<Pip className='fullpip' key={i} />);
+      pipsSvg['ENG'].push(<Pip className='full' key={i} />);
     }
     if (eng > Math.floor(eng)) {
-      pipsSvg['ENG'].push(<Pip className='halfpip' key={'half'} />);
+      pipsSvg['ENG'].push(<Pip className='half' key={'half'} />);
     }
     for (let i = Math.floor(eng + 0.5); i < 4; i++) {
-      pipsSvg['ENG'].push(<Pip className='emptypip' key={i} />);
+      pipsSvg['ENG'].push(<Pip className='empty' key={i} />);
     }
 
     // WEP
     pipsSvg['WEP'] = [];
     for (let i = 0; i < Math.floor(wep); i++) {
-      pipsSvg['WEP'].push(<Pip className='fullpip' key={i} />);
+      pipsSvg['WEP'].push(<Pip className='full' key={i} />);
     }
     if (wep > Math.floor(wep)) {
-      pipsSvg['WEP'].push(<Pip className='halfpip' key={'half'} />);
+      pipsSvg['WEP'].push(<Pip className='half' key={'half'} />);
     }
     for (let i = Math.floor(wep + 0.5); i < 4; i++) {
-      pipsSvg['WEP'].push(<Pip className='emptypip' key={i} />);
+      pipsSvg['WEP'].push(<Pip className='empty' key={i} />);
     }
 
     return pipsSvg;
@@ -312,7 +328,7 @@ export default class Pips extends TranslatedComponent {
   render() {
     const { formats, translate, units } = this.context.language;
     const { ship } = this.props;
-    const { sys, eng, wep, sysCap, engCap, wepCap, sysRate, engRate, wepRate, pipsSvg } = this.state;
+    const { boost, sys, eng, wep, sysCap, engCap, wepCap, sysRate, engRate, wepRate, pipsSvg } = this.state;
 
     const onSysClicked = this.onClick.bind(this, 'SYS');
     const onEngClicked = this.onClick.bind(this, 'ENG');
@@ -320,40 +336,49 @@ export default class Pips extends TranslatedComponent {
     const onRstClicked = this.onClick.bind(this, 'RST');
 
     return (
-      <table className='pipstable'>
-        <tbody>
-          <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td className = 'pipsclickable' onClick={onEngClicked}>{pipsSvg['ENG']}</td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td className = 'pipsclickable' onClick={onSysClicked}>{pipsSvg['SYS']}</td>
-            <td className = 'pipsclickable' onClick={onEngClicked}>{translate('ENG')}</td>
-            <td className = 'pipsclickable' onClick={onWepClicked}>{pipsSvg['WEP']}</td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td className = 'pipsclickable' onClick={onSysClicked}>{translate('SYS')}</td>
-            <td className = 'pipsclickable' onClick={onRstClicked}>{translate('RST')}</td>
-            <td className = 'pipsclickable' onClick={onWepClicked}>{translate('WEP')}</td>
-          </tr>
-          <tr>
-            <td>{translate('capacity')} ({units.MJ})</td>
-            <td>{formats.f1(sysCap)}</td>
-            <td>{formats.f1(engCap)}</td>
-            <td>{formats.f1(wepCap)}</td>
-          </tr>
-          <tr>
-            <td>{translate('recharge')} ({units.MW})</td>
-            <td>{formats.f1(sysRate * (sys / 4))}</td>
-            <td>{formats.f1(engRate * (eng / 4))}</td>
-            <td>{formats.f1(wepRate * (wep / 4))}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div id='pips'>
+        <table>
+          <tbody>
+	    { ship.canBoost() ?
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td><button className={boost ? 'selected' : null} onClick={this._toggleBoost}>{translate('boost')}</button></td>
+              <td>&nbsp;</td>
+            </tr> : null }
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td className='clickable' onClick={onEngClicked}>{pipsSvg['ENG']}</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td className='clickable' onClick={onSysClicked}>{pipsSvg['SYS']}</td>
+              <td className='clickable' onClick={onEngClicked}>{translate('ENG')}</td>
+              <td className='clickable' onClick={onWepClicked}>{pipsSvg['WEP']}</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td className='clickable' onClick={onSysClicked}>{translate('SYS')}</td>
+              <td className='clickable' onClick={onRstClicked}>{translate('RST')}</td>
+              <td className='clickable' onClick={onWepClicked}>{translate('WEP')}</td>
+            </tr>
+            <tr>
+              <td>{translate('capacity')} ({units.MJ})</td>
+              <td>{formats.f1(sysCap)}</td>
+              <td>{formats.f1(engCap)}</td>
+              <td>{formats.f1(wepCap)}</td>
+            </tr>
+            <tr>
+              <td>{translate('recharge')} ({units.MW})</td>
+              <td>{formats.f1(sysRate * (sys / 4))}</td>
+              <td>{formats.f1(engRate * (eng / 4))}</td>
+              <td>{formats.f1(wepRate * (wep / 4))}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     );
   }
 }

@@ -74,8 +74,8 @@ export default class Shields extends TranslatedComponent {
     // Remove base shield generator strength
     boost -= 1;
     boosterExplDmg = boosterExplDmg > 0.7 ? boosterExplDmg : 0.7 - (0.7 - boosterExplDmg) / 2;
-    boosterKinDmg = boosterKinDmg > 0.7 ? boosterExplDmg : 0.7 - (0.7 - boosterKinDmg) / 2;
-    boosterThermDmg = boosterThermDmg > 0.7 ? boosterExplDmg : 0.7 - (0.7 - boosterThermDmg) / 2;
+    boosterKinDmg = boosterKinDmg > 0.7 ? boosterKinDmg : 0.7 - (0.7 - boosterKinDmg) / 2;
+    boosterThermDmg = boosterThermDmg > 0.7 ? boosterThermDmg : 0.7 - (0.7 - boosterThermDmg) / 2;
 
     const generatorStrength = Calc.shieldStrength(ship.hullMass, ship.baseShieldStrength, shieldGenerator, 1);
     const boostersStrength = generatorStrength * boost;

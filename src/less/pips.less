@@ -1,29 +1,44 @@
 // The pips table - keep the background black
-.pipstable {
-  background-color: @bgBlack;
-  color: @primary;
-}
+#pips {
+  table {
+    background-color: @bgBlack;
+    color: @primary;
+  }
 
-// A clickable entity in the pips table
-.pipsclickable {
-  cursor: pointer;
-}
+  // A clickable entity in the pips table
+  .clickable {
+    cursor: pointer;
+  }
 
-// A full pip
-.fullpip {
-  stroke: @primary;
-  fill: @primary;
-}
+  button {
+    font-size: 1.2em;
+    background: @primary-bg;
+    color: @primary;
+    border: 1px solid @primary;
+    margin: 20px;
+    &.selected {
+      // Shown when button is selected
+      background: @primary;
+      color: @primary-bg;
+    }
+  }
 
-// A half pip
-.halfpip {
-  stroke: @primary-disabled;
-  fill: @primary-disabled;
-}
+  // A full pip
+  .full {
+    stroke: @primary;
+    fill: @primary;
+  }
 
-// An empty pip
-.emptypip {
-  stroke: @primary-bg;
-  fill: @primary-bg;
+  // A half pip
+  .half {
+    stroke: @primary-disabled;
+    fill: @primary-disabled;
+  }
+
+  // An empty pip
+  .empty {
+    stroke: @primary-bg;
+    fill: @primary-bg;
+  }
 }
 

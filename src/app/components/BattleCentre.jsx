@@ -42,6 +42,7 @@ export default class BattleCentre extends TranslatedComponent {
       wep: 2,
       fuel: ship.fuelCapacity,
       cargo: ship.cargoCapacity,
+      boost: false,
       engagementRange: 1500,
       opponent: new Ship('anaconda', Ships['anaconda'].properties, Ships['anaconda'].slots)
     };
@@ -60,12 +61,13 @@ export default class BattleCentre extends TranslatedComponent {
 
   /**
    * Triggered when pips have been updated
-   * @param {number} sys SYS pips
-   * @param {number} eng ENG pips
-   * @param {number} wep WEP pips
+   * @param {number} sys    SYS pips
+   * @param {number} eng    ENG pips
+   * @param {number} wep    WEP pips
+   * @param {boolean} boost true if boosting
    */
-  _pipsUpdated(sys, eng, wep) {
-    this.setState({ sys, eng, wep });
+  _pipsUpdated(sys, eng, wep, boost) {
+    this.setState({ sys, eng, wep, boost });
   }
 
   /**
@@ -108,7 +110,7 @@ export default class BattleCentre extends TranslatedComponent {
   render() {
     const { language, onWindowResize, sizeRatio, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
-    const { sys, eng, wep, cargo, fuel, engagementRange, opponent } = this.state;
+    const { sys, eng, wep, cargo, fuel, boost, engagementRange, opponent } = this.state;
     const { ship } = this.props;
 
     // Markers are used to propagate state changes
@@ -131,7 +133,7 @@ export default class BattleCentre extends TranslatedComponent {
           <Shields marker={shieldMarker} ship={ship} opponent={opponent} sys={sys}/>
         </div>
         <div className='group third'>
-          <Movement marker={movementMarker} ship={ship} eng={eng} cargo={cargo} fuel={fuel}/>
+          <Movement marker={movementMarker} ship={ship} boost={boost} eng={eng} cargo={cargo} fuel={fuel}/>
         </div>
       </span>
     );

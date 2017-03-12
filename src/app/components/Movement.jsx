@@ -1,5 +1,4 @@
 import React from 'react';
-import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
 
 /**
@@ -9,6 +8,7 @@ export default class Movement extends TranslatedComponent {
   static propTypes = {
     marker: React.PropTypes.string.isRequired,
     ship: React.PropTypes.object.isRequired,
+    boost: React.PropTypes.bool.isRequired,
     eng: React.PropTypes.number.isRequired,
     fuel: React.PropTypes.number.isRequired,
     cargo: React.PropTypes.number.isRequired
@@ -20,19 +20,6 @@ export default class Movement extends TranslatedComponent {
    */
   constructor(props) {
     super(props);
-
-    this._toggleBoost = this._toggleBoost.bind(this);
-
-    this.state = { boost: false };
-  }
-
-  /**
-   * Toggle the boost feature
-   */
-  _toggleBoost() {
-    let { boost } = this.state;
-    boost = !boost;
-    this.setState({ boost });
   }
 
   /**
@@ -40,10 +27,9 @@ export default class Movement extends TranslatedComponent {
    * @return {React.Component} contents
    */
   render() {
-    const { ship, eng, cargo, fuel } = this.props;
+    const { ship, boost, eng, cargo, fuel } = this.props;
     const { language } = this.context;
     const { formats, translate, units } = language;
-    const { boost } = this.state;
 
     return (
       <span id='movement'>
@@ -79,7 +65,6 @@ export default class Movement extends TranslatedComponent {
           // Yaw
           <text x="160" y="430" strokeWidth='1'>{formats.int(ship.calcYaw(eng, fuel, cargo, boost))}°/s</text>
         </svg>
-      { ship.canBoost() ? <button className={boost ? 'boost' : 'noboost'} onClick={this._toggleBoost}>Boost</button> : null }
       </span>);
   }
 }
