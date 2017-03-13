@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import Measure from 'react-measure';
 import * as d3 from 'd3';
 
-const CORIOLIS_COLOURS = [ '#FF8C0D', '#1FB0FF', '#519032', '#D5420D' ];
+const CORIOLIS_COLOURS = ['#FF8C0D', '#1FB0FF', '#519032', '#D5420D'];
 const LABEL_COLOUR = '#FFFFFF';
 
-var margin = {top: 10, right: 0, bottom: 0, left: 55};
+const margin = { top: 10, right: 0, bottom: 0, left: 55 };
 
 const ASPECT = 1;
 
@@ -36,10 +36,14 @@ export default class VerticalBarChart extends Component {
         width: 300,
         height: 300
       }
-    }
+    };
   }
 
-  _renderGraph(props){ 
+  /**
+   * Render the graph
+   * @param  {Object} props   React Component properties
+   */
+  _renderGraph(props) {
     let { width, height } = this.state.dimensions;
 
     width = width - margin.left - margin.right,
@@ -73,7 +77,7 @@ export default class VerticalBarChart extends Component {
     svg.append('g')
       .attr('class', 'y axis')
       .call(this.yAxis)
-      .attr('fill', CORIOLIS_COLOURS[0])
+      .attr('fill', CORIOLIS_COLOURS[0]);
 
     svg.selectAll('rect.bar')
       .data(props.data)
@@ -99,8 +103,10 @@ export default class VerticalBarChart extends Component {
       .text(d => d.value);
   }
 
-
-
+  /**
+   * Render the component
+   * @returns {object} Markup
+   */
   render() {
     const { width } = this.state.dimensions;
 
@@ -109,7 +115,7 @@ export default class VerticalBarChart extends Component {
     this._renderGraph(this.props);
 
     return (
-      <Measure width='100%' whitelist={[ 'width', 'top' ]} onMeasure={(dimensions) => { this.setState({dimensions}) }}>
+      <Measure width='100%' whitelist={['width', 'top']} onMeasure={ (dimensions) => { this.setState({ dimensions }); }}>
         <div width={width} height={width * ASPECT}>
           { this.x ? 
           <svg ref={ref => this.svg = ref} width={width} height={width * ASPECT} transform={translate}>

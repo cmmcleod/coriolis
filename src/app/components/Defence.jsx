@@ -29,8 +29,8 @@ export default class Defence extends TranslatedComponent {
   constructor(props) {
     super(props);
 
-    const { shield, armour, damagetaken } = this._calcMetrics(props.ship, props.opponent, props.sys);
-    this.state = { shield, armour, damagetaken };
+    const { shield, armour, shielddamage } = this._calcMetrics(props.ship, props.opponent, props.sys);
+    this.state = { shield, armour, shielddamage };
   }
 
   /**
@@ -40,8 +40,8 @@ export default class Defence extends TranslatedComponent {
    */
   componentWillReceiveProps(nextProps) {
     if (this.props.marker != nextProps.marker || this.props.sys != nextProps.sys) {
-      const { shield, armour, damagetaken } = this._calcMetrics(nextProps.ship, nextProps.opponent, nextProps.sys);
-      this.setState({ shield, armour, damagetaken });
+      const { shield, armour, shielddamage } = this._calcMetrics(nextProps.ship, nextProps.opponent, nextProps.sys);
+      this.setState({ shield, armour, shielddamage });
       return true;
     }
   }
@@ -56,6 +56,16 @@ export default class Defence extends TranslatedComponent {
   _calcMetrics(ship, opponent, sys) {
     const sysResistance = this._calcSysResistance(sys);
 
+    // Obtain the opponent's sustained DPS for later damage calculations
+    // const opponentSDps = Calc.sustainedDps(opponent, range);
+    const opponentSDps = {
+      absolute: 62.1,
+      explosive: 0,
+      kinetic: 7.4,
+      thermal: 7.4
+    };
+
+    let shielddamage = {};
     let shield = {};
     const shieldGeneratorSlot = ship.findInternalByGroup('sg');
     if (shieldGeneratorSlot && shieldGeneratorSlot.enabled && shieldGeneratorSlot.m) {
@@ -122,11 +132,17 @@ export default class Defence extends TranslatedComponent {
         sys: (1 - sysResistance),
         total: (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg * (1 - sysResistance)
       };
+
+      shielddamage.absolutesdps = opponentSDps.absolute *= shield.absolute.total;
+      shielddamage.explosivesdps = opponentSDps.explosive *= shield.explosive.total;
+      shielddamage.kineticsdps = opponentSDps.kinetic *= shield.kinetic.total;
+      shielddamage.thermalsdps = opponentSDps.thermal *= shield.thermal.total;
+      shielddamage.totalsdps = shielddamage.absolutesdps + shielddamage.explosivesdps + shielddamage.kineticsdps + shielddamage.thermalsdps;
     }
 
     // Armour from bulkheads
     const armourBulkheads = ship.baseArmour + (ship.baseArmour * ship.bulkheads.m.getHullBoost());
-    let armourReinforcement = 0
+    let armourReinforcement = 0;
 
     let modulearmour = 0;
     let moduleprotection = 1;
@@ -193,31 +209,7 @@ export default class Defence extends TranslatedComponent {
       total: (1 - ship.bulkheads.m.getThermalResistance()) * hullThermDmg
     };
 
-    // Use the SDPS for each weapon type of the opponent to work out how long the shields and armour will last
-    // const opponentSDps = Calc.sustainedDps(opponent, range);
-    const opponentSDps = {
-      absolute: 62.1,
-      explosive: 0,
-      kinetic: 7.4,
-      thermal: 7.4
-    };
-
-    // Modify according to resistances to see how much damage we actually take
-    //opponentSDps.absolute *= shield.absolute.total;
-    //opponentSDps.explosive *= shield.explosive.total;
-    //opponentSDps.kinetic *= shield.kinetic.total;
-    //opponentSDps.thermal *= shield.thermal.total;
-    opponentSDps.total = opponentSDps.absolute + opponentSDps.explosive + opponentSDps.kinetic + opponentSDps.thermal;
-
-    const damagetaken = {
-      absolutesdps: opponentSDps.absolute,
-      explosivesdps: opponentSDps.explosive,
-      kineticsdps: opponentSDps.kinetic,
-      thermalsdps: opponentSDps.thermal,
-      tts: (shield.total + ship.shieldCells) / opponentSDps.total,
-    };
-
-    return { shield, armour, damagetaken };
+    return { shield, armour, shielddamage };
   }
 
   /**
@@ -237,7 +229,7 @@ export default class Defence extends TranslatedComponent {
     const { ship, sys } = this.props;
     const { language, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
-    const { shield, armour, damagetaken } = this.state;
+    const { shield, armour, shielddamage } = this.state;
 
     const shieldSourcesData = [];
     const effectiveShieldData = [];
@@ -321,58 +313,7 @@ export default class Defence extends TranslatedComponent {
         <div className='group half'>
           <div className='group half'>
             <h2 onMouseOver={termtip.bind(null, <div>{shieldTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('shields')}: {formats.int(shield.total)}{units.MJ}</h2>
-            <table>
-              <tbody>
-                <tr>
-                  <td className='le'>{translate('damage type')}</td>
-                  <td className='ce'>
-                    <span className='icon' onMouseOver={termtip.bind(null, 'absolute')} onMouseOut={tooltip.bind(null, null)}><DamageAbsolute /></span>&nbsp;
-                  </td>
-                  <td className='ce'>
-                    <span className='icon' onMouseOver={termtip.bind(null, 'explosive')} onMouseOut={tooltip.bind(null, null)}><DamageExplosive /></span>&nbsp;
-                  </td>
-                  <td className='ce'>
-                    <span className='icon' onMouseOver={termtip.bind(null, 'kinetic')} onMouseOut={tooltip.bind(null, null)}><DamageKinetic /></span>&nbsp;
-                  </td>
-                  <td className='ce'>
-                    <span className='icon' onMouseOver={termtip.bind(null, 'thermal')} onMouseOut={tooltip.bind(null, null)}><DamageThermal /></span>&nbsp;
-                  </td>
-                </tr>
-                <tr>
-                  <td className='le'>{translate('damage taken')}</td>
-                  <td className='ri'>
-                    <span onMouseOver={termtip.bind(null, <div>{shieldAbsoluteTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(shield.absolute.total)}</span>
-                  </td>
-                  <td className='ri'>
-                    <span onMouseOver={termtip.bind(null, <div>{shieldExplosiveTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(shield.explosive.total)}</span>
-                  </td>
-                  <td className='ri'>
-                    <span onMouseOver={termtip.bind(null, <div>{shieldKineticTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(shield.kinetic.total)}</span>
-                  </td>
-                  <td className='ri'>
-                    <span onMouseOver={termtip.bind(null, <div>{shieldThermalTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(shield.thermal.total)}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td className='le'>{translate('effective shield')}</td>
-                  <td className='ri'>
-                    <span>{formats.int(effectiveAbsoluteShield)}{units.MJ}</span>
-                  </td>
-                  <td className='ri'>
-                    <span>{formats.int(effectiveExplosiveShield)}{units.MJ}</span>
-                  </td>
-                  <td className='ri'>
-                    <span>{formats.int(effectiveKineticShield)}{units.MJ}</span>
-                  </td>
-                  <td className='ri'>
-                    <span>{formats.int(effectiveThermalShield)}{units.MJ}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan='5' className='summary'>{translate('shields will hold against opponent for')} {formats.time(damagetaken.tts)}</td>
-                </tr>
-              </tbody>
-            </table>
+            <h2>{translate('PHRASE_TIME_TO_LOSE_SHIELDS')} {formats.time(shield.total / shielddamage.totalsdps)}</h2>
           </div>
           <div className='group half'>
             <h2>{translate('shield sources')}</h2>

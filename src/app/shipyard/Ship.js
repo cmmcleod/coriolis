@@ -1251,7 +1251,6 @@ export default class Ship {
    * @return {this} The ship instance (for chaining operations)
    */
   updateMovement() {
-console.log('updateMovement()');
     this.speeds = Calc.speed(this.unladenMass + this.fuelCapacity, this.speed, this.standard[1].m, this.pipSpeed);
     this.topSpeed = this.speeds[4];
     this.topBoost = this.canBoost() ? this.speeds[4] * this.boost / this.speed : 0;

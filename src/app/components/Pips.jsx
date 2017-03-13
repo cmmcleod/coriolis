@@ -111,7 +111,7 @@ export default class Pips extends TranslatedComponent {
         if (this.props.ship.canBoost()) {
           e.preventDefault();
           this._toggleBoost();
-	}
+        }
         break;
       case 37:     // Left arrow == increase SYS
         e.preventDefault();
@@ -345,7 +345,7 @@ export default class Pips extends TranslatedComponent {
       <div id='pips'>
         <table>
           <tbody>
-	    { ship.canBoost() ?
+            { ship.canBoost() ?
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>

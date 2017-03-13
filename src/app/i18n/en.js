@@ -39,6 +39,7 @@ export const terms = {
   PHRASE_NO_SPECIAL: 'No experimental effect',
   PHRASE_SHOPPING_LIST: 'Stations that sell this build',
   PHRASE_TOTAL_EFFECTIVE_SHIELD: 'Total amount of damage that can be taken from each damage type, if using all shield cells',
+  PHRASE_TIME_TO_LOSE_SHIELDS: 'Shields will hold for',
 
   HELP_MODIFICATIONS_MENU: 'Click on a number to enter a new value, or drag along the bar for small changes',
 
@@ -203,6 +204,21 @@ export const terms = {
   minmul_sg: 'Minimum strength',
   optmul_sg: 'Optimal strength',
   maxmul_sg: 'Minimum strength',
+
+  // Damage types
+  absolute: 'Absolute',
+  explosive: 'Explosive',
+  kinetic: 'Kinetia',
+  thermal: 'Thermal',
+
+  // Shield sources
+  generator: 'Generator',
+  boosters: 'Boosters',
+  cells: 'Cells',
+
+  // Armour sources
+  bulkheads: 'Bulkheads',
+  reinforcement: 'Reinforcement',
 
   // Help text
   HELP_TEXT: `

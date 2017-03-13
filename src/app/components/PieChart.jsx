@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Measure from 'react-measure';
 import * as d3 from 'd3';
 
-const CORIOLIS_COLOURS = [ '#FF8C0D', '#1FB0FF', '#519032', '#D5420D' ];
+const CORIOLIS_COLOURS = ['#FF8C0D', '#1FB0FF', '#519032', '#D5420D'];
 const LABEL_COLOUR = '#FFFFFF';
 
 /**
@@ -28,12 +28,15 @@ export default class PieChart extends Component {
         width: 100,
         height: 100
       }
-    }
+    };
   }
 
 
   /**
    * Generate a slice of the pie chart
+   * @param {Object} d     the data for this slice
+   * @param {number} i     the index of this slice
+   * @returns {Object}     the SVG for the slice
    */
   sliceGenerator(d, i) {
     const { width, height } = this.state.dimensions;
@@ -49,24 +52,28 @@ export default class PieChart extends Component {
 
     return (
       <g key={`group-${i}`}>
-        <path key={`arc-${i}`} d={this.arc(d)} style={{fill: this.colors[i]}} />
+        <path key={`arc-${i}`} d={this.arc(d)} style={{ fill: this.colors[i] }} />
         <text key={`label-${i}`} transform={labelTranslate} stroke={LABEL_COLOUR} strokeWidth='1px' fill='None' textAnchor='middle'>{d.value}</text>
-        <text key={`key-${i}`} transform={keyTranslate} style={{stroke: this.colors[i], strokeWidth:'1px', fill:'None'}} textAnchor='middle'>{d.data.label}</text>
+        <text key={`key-${i}`} transform={keyTranslate} style={{ stroke: this.colors[i], strokeWidth:'1px', fill:'None' }} textAnchor='middle'>{d.data.label}</text>
       </g>
     );
   }
 
+  /**
+   * Render the component
+   * @returns {object} Markup
+   */
   render() {
     const { width, height } = this.state.dimensions;
     const pie = this.pie(this.props.data),
-          translate = `translate(${width / 2}, ${width * 0.4})`; 
+        translate = `translate(${width / 2}, ${width * 0.4})`; 
 
     this.arc.outerRadius(width * 0.4);
 
     return (
-      <Measure width='100%' whitelist={[ 'width', 'top' ]} onMeasure={(dimensions) => { this.setState({dimensions}) }}>
+      <Measure width='100%' whitelist={['width', 'top']} onMeasure={ (dimensions) => { this.setState({ dimensions }); }}>
         <div width={width} height={width}>
-          <svg style={{stroke: 'None' }} width={width} height={width * 0.9}>
+          <svg style={{ stroke: 'None' }} width={width} height={width * 0.9}>
             <g transform={translate}>
               {pie.map((d, i) => this.sliceGenerator(d, i))}
             </g>
