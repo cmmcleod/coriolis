@@ -15,6 +15,7 @@ import Module from '../shipyard/Module';
  */
 export default class Pips extends TranslatedComponent {
   static propTypes = {
+    marker: React.PropTypes.string.isRequired,
     ship: React.PropTypes.object.isRequired,
     onChange: React.PropTypes.func.isRequired
   };
@@ -68,9 +69,9 @@ export default class Pips extends TranslatedComponent {
    * @returns {boolean}            Returns true if the component should be rerendered
    */
   componentWillReceiveProps(nextProps) {
-    const { sysCap, engCap, wepCap, sysRate, engRate, wepRate } = this.state;
-    const ship = nextProps.ship;
-    const pd = ship.standard[4].m;
+    const { sysCap, engCap, wepCap, sysRate, engRate, wepRate, boost } = this.state;
+    const nextShip = nextProps.ship;
+    const pd = nextShip.standard[4].m;
 
     const nextSysCap = pd.getSystemsCapacity();
     const nextEngCap = pd.getEnginesCapacity();
@@ -78,19 +79,22 @@ export default class Pips extends TranslatedComponent {
     const nextSysRate = pd.getSystemsRechargeRate();
     const nextEngRate = pd.getEnginesRechargeRate();
     const nextWepRate = pd.getWeaponsRechargeRate();
+    const nextBoost = nextShip.canBoost() ? boost : false;
     if (nextSysCap != sysCap ||
         nextEngCap != engCap ||
         nextWepCap != wepCap ||
         nextSysRate != sysRate ||
         nextEngRate != engRate ||
-        nextWepRate != wepRate) {
+        nextWepRate != wepRate ||
+        nextBoost != boost) {
       this.setState({
         sysCap: nextSysCap,
         engCap: nextEngCap,
         wepCap: nextWepCap,
         sysRate: nextSysRate,
         engRate: nextEngRate,
-        wepRate: nextWepRate
+        wepRate: nextWepRate,
+        boost: nextBoost
       });
     }
 
@@ -104,8 +108,10 @@ export default class Pips extends TranslatedComponent {
   _keyDown(e) {
     switch (e.keyCode) {
       case 9:     // Tab == boost
-        e.preventDefault();
-        this._toggleBoost();
+        if (this.props.ship.canBoost()) {
+          e.preventDefault();
+          this._toggleBoost();
+	}
         break;
       case 37:     // Left arrow == increase SYS
         e.preventDefault();
@@ -364,21 +370,21 @@ export default class Pips extends TranslatedComponent {
               <td className='clickable' onClick={onRstClicked}>{translate('RST')}</td>
               <td className='clickable' onClick={onWepClicked}>{translate('WEP')}</td>
             </tr>
-            <tr>
-              <td>{translate('capacity')} ({units.MJ})</td>
-              <td>{formats.f1(sysCap)}</td>
-              <td>{formats.f1(engCap)}</td>
-              <td>{formats.f1(wepCap)}</td>
-            </tr>
-            <tr>
-              <td>{translate('recharge')} ({units.MW})</td>
-              <td>{formats.f1(sysRate * (sys / 4))}</td>
-              <td>{formats.f1(engRate * (eng / 4))}</td>
-              <td>{formats.f1(wepRate * (wep / 4))}</td>
-            </tr>
           </tbody>
         </table>
       </div>
     );
   }
 }
+//            <tr>
+//              <td>{translate('capacity')} ({units.MJ})</td>
+//              <td>{formats.f1(sysCap)}</td>
+//              <td>{formats.f1(engCap)}</td>
+//              <td>{formats.f1(wepCap)}</td>
+//            </tr>
+//            <tr>
+//              <td>{translate('recharge')} ({units.MW})</td>
+//              <td>{formats.f1(sysRate * (sys / 4))}</td>
+//              <td>{formats.f1(engRate * (eng / 4))}</td>
+//              <td>{formats.f1(wepRate * (wep / 4))}</td>
+//            </tr>

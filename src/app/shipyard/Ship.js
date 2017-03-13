@@ -1348,13 +1348,13 @@ export default class Ship {
     let moduleprotection = 1;
     let hullExplRes = 1 - bulkhead.getExplosiveResistance();
     const hullExplResDRStart = hullExplRes * 0.7;
-    const hullExplResDREnd = hullExplRes * 0; // Currently don't know where this is
+    const hullExplResDREnd = hullExplRes * 0;
     let hullKinRes = 1 - bulkhead.getKineticResistance();
     const hullKinResDRStart = hullKinRes * 0.7;
-    const hullKinResDREnd = hullKinRes * 0; // Currently don't know where this is
+    const hullKinResDREnd = hullKinRes * 0;
     let hullThermRes = 1 - bulkhead.getThermalResistance();
     const hullThermResDRStart = hullThermRes * 0.7;
-    const hullThermResDREnd = hullThermRes * 0; // Currently don't know where this is
+    const hullThermResDREnd = hullThermRes * 0;
 
     // Armour from HRPs and module armour from MRPs
     for (let slot of this.internal) {

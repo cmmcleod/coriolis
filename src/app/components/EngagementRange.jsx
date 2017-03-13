@@ -27,8 +27,16 @@ export default class Range extends TranslatedComponent {
 
     this.state = {
       maxRange,
-      rangeLevel: 1,
+      rangeLevel: 0.5,
     };
+  }
+
+  /**
+   * 
+   */
+  componentWillMount() {
+    // Pass initial state
+    this.props.onChange(this.state.maxRange * this.state.rangeLevel);
   }
 
   /**

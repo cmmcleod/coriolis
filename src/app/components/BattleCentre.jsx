@@ -9,7 +9,7 @@ import Cargo from './Cargo';
 import Movement from './Movement';
 import EngagementRange from './EngagementRange';
 import ShipPicker from './ShipPicker';
-import Shields from './Shields';
+import Defence from './Defence';
 
 /**
  * Battle centre allows you to pit your current build against another ship,
@@ -113,27 +113,30 @@ export default class BattleCentre extends TranslatedComponent {
     const { sys, eng, wep, cargo, fuel, boost, engagementRange, opponent } = this.state;
     const { ship } = this.props;
 
-    // Markers are used to propagate state changes
-    const movementMarker = '' + ship.topSpeed + ':' + ship.pitch + ':' + ship.roll + ':' + ship.yaw;
-    const shieldMarker = '' + ship.shield + ':' + ship.cells + ':' + ship.shieldExplRes + ':' + ship.shieldKinRes + ':' + ship.shieldThermRes;
+    // Markers are used to propagate state changes without requiring a deep comparison of the ship
+    const pipsMarker = '' + ship.canBoost();
+    const movementMarker = '' + ship.topSpeed + ':' + ship.pitch + ':' + ship.roll + ':' + ship.yaw + ':' + ship.canBoost();
+    const shieldMarker = '' + ship.shield + ':' + ship.shieldCells + ':' + ship.shieldExplRes + ':' + ship.shieldKinRes + ':' + ship.shieldThermRes + ':' + ship.armour;
 
     return (
       <span>
         <h1>{translate('battle centre')}</h1>
-        <ShipPicker onChange={this._opponentUpdated}/>
         <div className='group third'>
-          <Pips ship={ship} onChange={this._pipsUpdated}/>
-        </div>
-        <div className='group twothirds'>
+          <h1>{translate('ship management')}</h1>
+          <Pips marker={pipsMarker} ship={ship} onChange={this._pipsUpdated}/>
           <Fuel ship={ship} onChange={this._fuelUpdated}/>
-          <Cargo ship={ship} onChange={this._cargoUpdated}/>
+          { ship.cargoCapacity > 0 ? <Cargo ship={ship} onChange={this._cargoUpdated}/> : null }
+          <h1>{translate('opponent')}</h1>
+          <ShipPicker onChange={this._opponentUpdated}/>
           <EngagementRange ship={ship} onChange={this._engagementRangeUpdated}/>
         </div>
         <div className='group third'>
-          <Shields marker={shieldMarker} ship={ship} opponent={opponent} sys={sys}/>
-        </div>
-        <div className='group third'>
+          <h1>{translate('movement')}</h1>
           <Movement marker={movementMarker} ship={ship} boost={boost} eng={eng} cargo={cargo} fuel={fuel}/>
+        </div>
+        <div className='group full'>
+          <h1>{translate('defence')}</h1>
+          <Defence marker={shieldMarker} ship={ship} opponent={opponent} sys={sys}/>
         </div>
       </span>
     );
