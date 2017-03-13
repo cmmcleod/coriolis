@@ -25,7 +25,7 @@ export const terms = {
   PHRASE_NO_RETROCH: 'No Retrofitting changes',
   PHRASE_SELECT_BUILDS: 'Select builds to compare',
   PHRASE_SG_RECHARGE: 'Time from 50% to 100% charge',
-  PHRASE_SG_RECOVER: 'Recovery (to 50%) after collapse',
+  PHRASE_SG_RECOVER: 'Time from 0% to 50% charge',
   PHRASE_UNLADEN: 'Ship mass excluding fuel and cargo',
   PHRASE_UPDATE_RDY: 'Update Available! Click to refresh',
   PHRASE_ENGAGEMENT_RANGE: 'The distance between your ship and its target',
@@ -40,6 +40,13 @@ export const terms = {
   PHRASE_SHOPPING_LIST: 'Stations that sell this build',
   PHRASE_TOTAL_EFFECTIVE_SHIELD: 'Total amount of damage that can be taken from each damage type, if using all shield cells',
   PHRASE_TIME_TO_LOSE_SHIELDS: 'Shields will hold for',
+  PHRASE_TIME_TO_RECOVER_SHIELDS: 'Shields will recover in',
+  PHRASE_TIME_TO_RECHARGE_SHIELDS: 'Shields will recharge in',
+  PHRASE_SHIELD_SOURCES: 'Breakdown of the supply of shield energy',
+  PHRASE_EFFECTIVE_SHIELD: 'Effective shield strength against different damage types',
+  PHRASE_DAMAGE_TAKEN: '% of raw damage taken for different damage types',
+
+  TT_TIME_TO_LOSE_SHIELDS: 'Against sustained fire from all opponent\'s weapons',
 
   HELP_MODIFICATIONS_MENU: 'Click on a number to enter a new value, or drag along the bar for small changes',
 
@@ -208,7 +215,7 @@ export const terms = {
   // Damage types
   absolute: 'Absolute',
   explosive: 'Explosive',
-  kinetic: 'Kinetia',
+  kinetic: 'Kinetic',
   thermal: 'Thermal',
 
   // Shield sources

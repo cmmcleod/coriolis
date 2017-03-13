@@ -233,16 +233,12 @@ export default class Defence extends TranslatedComponent {
 
     const shieldSourcesData = [];
     const effectiveShieldData = [];
-    const damageTakenData = [];
+    const shieldDamageTakenData = [];
     const shieldTooltipDetails = [];
     const shieldAbsoluteTooltipDetails = [];
     const shieldExplosiveTooltipDetails = [];
     const shieldKineticTooltipDetails = [];
     const shieldThermalTooltipDetails = [];
-    let effectiveAbsoluteShield = 0;
-    let effectiveExplosiveShield = 0;
-    let effectiveKineticShield = 0;
-    let effectiveThermalShield = 0;
     if (shield.total) {
       if (Math.round(shield.generator) > 0) shieldSourcesData.push({ value: Math.round(shield.generator), label: translate('generator') });
       if (Math.round(shield.boosters) > 0) shieldSourcesData.push({ value: Math.round(shield.boosters), label: translate('boosters') });
@@ -268,24 +264,24 @@ export default class Defence extends TranslatedComponent {
       shieldThermalTooltipDetails.push(<div key='boosters'>{translate('boosters') + ' ' + formats.pct1(shield.thermal.boosters)}</div>);
       shieldThermalTooltipDetails.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.pct1(shield.thermal.sys)}</div>);
 
-      effectiveAbsoluteShield = shield.total / shield.absolute.total;
+      const effectiveAbsoluteShield = shield.total / shield.absolute.total;
       effectiveShieldData.push({ value: Math.round(effectiveAbsoluteShield), label: translate('absolute') });
-      effectiveExplosiveShield = shield.total / shield.explosive.total;
+      const effectiveExplosiveShield = shield.total / shield.explosive.total;
       effectiveShieldData.push({ value: Math.round(effectiveExplosiveShield), label: translate('explosive') });
-      effectiveKineticShield = shield.total / shield.kinetic.total;
+      const effectiveKineticShield = shield.total / shield.kinetic.total;
       effectiveShieldData.push({ value: Math.round(effectiveKineticShield), label: translate('kinetic') });
-      effectiveThermalShield = shield.total / shield.thermal.total;
+      const effectiveThermalShield = shield.total / shield.thermal.total;
       effectiveShieldData.push({ value: Math.round(effectiveThermalShield), label: translate('thermal') });
 
-      damageTakenData.push({ value: Math.round(shield.absolute.total * 100), label: translate('absolute') });
-      damageTakenData.push({ value: Math.round(shield.explosive.total * 100), label: translate('explosive') });
-      damageTakenData.push({ value: Math.round(shield.kinetic.total * 100), label: translate('kinetic') });
-      damageTakenData.push({ value: Math.round(shield.thermal.total * 100), label: translate('thermal') });
+      shieldDamageTakenData.push({ value: Math.round(shield.absolute.total * 100), label: translate('absolute') });
+      shieldDamageTakenData.push({ value: Math.round(shield.explosive.total * 100), label: translate('explosive') });
+      shieldDamageTakenData.push({ value: Math.round(shield.kinetic.total * 100), label: translate('kinetic') });
+      shieldDamageTakenData.push({ value: Math.round(shield.thermal.total * 100), label: translate('thermal') });
     }
 
-    const armourData = [];
-    if (Math.round(armour.bulkheads) > 0) armourData.push({ value: Math.round(armour.bulkheads), label: translate('bulkheads') });
-    if (Math.round(armour.reinforcement) > 0) armourData.push({ value: Math.round(armour.reinforcement), label: translate('reinforcement') });
+    const armourSourcesData = [];
+    if (Math.round(armour.bulkheads) > 0) armourSourcesData.push({ value: Math.round(armour.bulkheads), label: translate('bulkheads') });
+    if (Math.round(armour.reinforcement) > 0) armourSourcesData.push({ value: Math.round(armour.reinforcement), label: translate('reinforcement') });
 
     const armourTooltipDetails = [];
     if (armour.bulkheads > 0) armourTooltipDetails.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.int(armour.bulkheads)}</div>);
@@ -307,55 +303,64 @@ export default class Defence extends TranslatedComponent {
     armourThermalTooltipDetails.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.pct1(armour.thermal.bulkheads)}</div>);
     armourThermalTooltipDetails.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.pct1(armour.thermal.reinforcement)}</div>);
 
+    const effectiveArmourData = [];
+    const effectiveAbsoluteArmour = armour.total / armour.absolute.total;
+    effectiveArmourData.push({ value: Math.round(effectiveAbsoluteArmour), label: translate('absolute') });
+    const effectiveExplosiveArmour = armour.total / armour.explosive.total;
+    effectiveArmourData.push({ value: Math.round(effectiveExplosiveArmour), label: translate('explosive') });
+    const effectiveKineticArmour = armour.total / armour.kinetic.total;
+    effectiveArmourData.push({ value: Math.round(effectiveKineticArmour), label: translate('kinetic') });
+    const effectiveThermalArmour = armour.total / armour.thermal.total;
+    effectiveArmourData.push({ value: Math.round(effectiveThermalArmour), label: translate('thermal') });
+
+    // TODO these aren't updating when HRP metrics are altered (maybe - need to confirm)
+    const armourDamageTakenData = [];
+    armourDamageTakenData.push({ value: Math.round(armour.absolute.total * 100), label: translate('absolute') });
+    armourDamageTakenData.push({ value: Math.round(armour.explosive.total * 100), label: translate('explosive') });
+    armourDamageTakenData.push({ value: Math.round(armour.kinetic.total * 100), label: translate('kinetic') });
+    armourDamageTakenData.push({ value: Math.round(armour.thermal.total * 100), label: translate('thermal') });
+
+    // TODO versions of ship.calcShieldRecovery() and ship.calcShieldRecharge() that take account of SYS pips
     return (
       <span id='defence'>
         {shield.total ? <span>
-        <div className='group half'>
-          <div className='group half'>
-            <h2 onMouseOver={termtip.bind(null, <div>{shieldTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('shields')}: {formats.int(shield.total)}{units.MJ}</h2>
-            <h2>{translate('PHRASE_TIME_TO_LOSE_SHIELDS')} {formats.time(shield.total / shielddamage.totalsdps)}</h2>
-          </div>
-          <div className='group half'>
-            <h2>{translate('shield sources')}</h2>
-            <PieChart data={shieldSourcesData} />
-          </div>
+        <div className='group quarter'>
+          <h2>{translate('shield metrics')}</h2>
+          <br/>
+          <h2 onMouseOver={termtip.bind(null, <div>{shieldTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('raw shield strength')}: {formats.int(shield.total)}{units.MJ}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_SHIELDS')} {formats.time(shield.total / shielddamage.totalsdps)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECOVER'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECOVER_SHIELDS')} {formats.time(ship.calcShieldRecovery())}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECHARGE'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECHARGE_SHIELDS')} {formats.time(ship.calcShieldRecharge())}</h2>
         </div>
-        <div className='group half'>
-          <div className='group half'>
-            <h2>{translate('effective shield')}(MJ)</h2>
-            <VerticalBarChart data={effectiveShieldData} />
-          </div>
-          <div className='group half'>
-            <h2>{translate('damage taken')}(%)</h2>
-            <VerticalBarChart data={damageTakenData} />
-          </div>
-        </div></span> : null }
+        <div className='group quarter'>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SHIELD_SOURCES'))} onMouseOut={tooltip.bind(null, null)}>{translate('shield sources')}</h2>
+          <PieChart data={shieldSourcesData} />
+        </div>
+        <div className='group quarter'>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_EFFECTIVE_SHIELD'))} onMouseOut={tooltip.bind(null, null)}>{translate('effective shield')}(MJ)</h2>
+          <VerticalBarChart data={effectiveShieldData} />
+        </div>
+        <div className='group quarter'>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_DAMAGE_TAKEN'))} onMouseOut={tooltip.bind(null, null)}>{translate('damage taken')}(%)</h2>
+          <VerticalBarChart data={shieldDamageTakenData} yMax={100} />
+        </div>
+        </span> : null }
 
-        <div className='group twothirds'>
-        <h2 onMouseOver={termtip.bind(null, <div>{armourTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('armour')}: {formats.int(armour.total)}</h2>
-        <table>
-          <tbody>
-            <tr>
-              <td className='le'>{translate('damage taken')}</td>
-              <td className='ri'>
-                <span onMouseOver={termtip.bind(null, <div>{armourAbsoluteTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(armour.absolute.total)}</span>
-              </td>
-              <td className='ri'>
-                <span onMouseOver={termtip.bind(null, <div>{armourExplosiveTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(armour.explosive.total)}</span>
-              </td>
-              <td className='ri'>
-                <span onMouseOver={termtip.bind(null, <div>{armourKineticTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(armour.kinetic.total)}</span>
-              </td>
-              <td className='ri'>
-                <span onMouseOver={termtip.bind(null, <div>{armourThermalTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(armour.thermal.total)}</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className='group quarter'>
+          <h2>{translate('armour metrics')}</h2>
+          <br/>
         </div>
-        <div className='group third'>
-          <h2>{translate('armour sources')}</h2>
-          <PieChart data={armourData} />
+        <div className='group quarter'>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_ARMOUR_SOURCES'))} onMouseOut={tooltip.bind(null, null)}>{translate('armour sources')}</h2>
+          <PieChart data={armourSourcesData} />
+        </div>
+        <div className='group quarter'>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_EFFECTIVE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('effective armour')}</h2>
+          <VerticalBarChart data={effectiveArmourData} />
+        </div>
+        <div className='group quarter'>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_DAMAGE_TAKEN'))} onMouseOut={tooltip.bind(null, null)}>{translate('damage taken')}(%)</h2>
+          <VerticalBarChart data={armourDamageTakenData} yMax={100} />
         </div>
       </span>);
   }

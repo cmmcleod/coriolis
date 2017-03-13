@@ -20,7 +20,7 @@ export default class VerticalBarChart extends Component {
 
   static propTypes = {
     data : React.PropTypes.array.isRequired,
-    ylabel : React.PropTypes.string
+    yMax : React.PropTypes.number
   };
 
   /**
@@ -57,7 +57,13 @@ export default class VerticalBarChart extends Component {
 
     // Y axis is a numeric scale with values being 'value'
     this.y = d3.scaleLinear();
-    this.y.domain([0, d3.max(this.props.data, d => d.value)]);
+    if (props.yMax) {
+      // Fixed maximum value (unless we go off the scale)
+      const localMax = d3.max(this.props.data, d => d.value);
+      this.y.domain([0, localMax > props.yMax ? localMax : props.yMax]);
+    } else {
+      this.y.domain([0, d3.max(this.props.data, d => d.value)]);
+    }
     this.yAxis = d3.axisLeft(this.y);
     this.y.range([height, 0]);
 
