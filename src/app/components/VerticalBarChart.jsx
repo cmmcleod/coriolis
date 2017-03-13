@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 const CORIOLIS_COLOURS = [ '#FF8C0D', '#1FB0FF', '#519032', '#D5420D' ];
 const LABEL_COLOUR = '#FFFFFF';
 
-var margin = {top: 10, right: 0, bottom: 0, left: 50};
+var margin = {top: 10, right: 0, bottom: 0, left: 55};
 
 const ASPECT = 1;
 

@@ -553,6 +553,10 @@ export default class Ship {
     } else if (name === 'wepcap' || name === 'weprate') {
       m.setModValue(name, value, sentfromui);
       this.recalculateTtd();
+    } else if (name === 'engcap') {
+      m.setModValue(name, value, sentfromui);
+      // Might have resulted in a change in boostability
+      this.updateMovement();
     } else {
       // Generic
       m.setModValue(name, value, sentfromui);
@@ -1247,6 +1251,7 @@ export default class Ship {
    * @return {this} The ship instance (for chaining operations)
    */
   updateMovement() {
+console.log('updateMovement()');
     this.speeds = Calc.speed(this.unladenMass + this.fuelCapacity, this.speed, this.standard[1].m, this.pipSpeed);
     this.topSpeed = this.speeds[4];
     this.topBoost = this.canBoost() ? this.speeds[4] * this.boost / this.speed : 0;
