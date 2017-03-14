@@ -55,6 +55,7 @@ export default class Defence extends TranslatedComponent {
    */
   _calcMetrics(ship, opponent, sys) {
     const sysResistance = this._calcSysResistance(sys);
+    const maxSysResistance = this._calcSysResistance(4);
 
     // Obtain the opponent's sustained DPS for later damage calculations
     // const opponentSDps = Calc.sustainedDps(opponent, range);
@@ -109,28 +110,32 @@ export default class Defence extends TranslatedComponent {
         generator: 1,
         boosters: 1,
         sys: 1 - sysResistance,
-        total: 1 - sysResistance
+        total: 1 - sysResistance,
+        max: 1 - maxSysResistance
       };
 
       shield.explosive = {
         generator: 1 - shieldGenerator.getExplosiveResistance(),
         boosters: boosterExplDmg,
         sys: (1 - sysResistance),
-        total: (1 - shieldGenerator.getExplosiveResistance()) * boosterExplDmg * (1 - sysResistance)
+        total: (1 - shieldGenerator.getExplosiveResistance()) * boosterExplDmg * (1 - sysResistance),
+        max: (1 - shieldGenerator.getExplosiveResistance()) * boosterExplDmg * (1 - maxSysResistance)
       };
 
       shield.kinetic = {
         generator: 1 - shieldGenerator.getKineticResistance(),
         boosters: boosterKinDmg,
         sys: (1 - sysResistance),
-        total: (1 - shieldGenerator.getKineticResistance()) * boosterKinDmg * (1 - sysResistance)
+        total: (1 - shieldGenerator.getKineticResistance()) * boosterKinDmg * (1 - sysResistance),
+        max: (1 - shieldGenerator.getKineticResistance()) * boosterKinDmg * (1 - maxSysResistance)
       };
 
       shield.thermal = {
         generator: 1 - shieldGenerator.getThermalResistance(),
         boosters: boosterThermDmg,
         sys: (1 - sysResistance),
-        total: (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg * (1 - sysResistance)
+        total: (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg * (1 - sysResistance),
+        max: (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg * (1 - maxSysResistance)
       };
 
       shielddamage.absolutesdps = opponentSDps.absolute *= shield.absolute.total;
@@ -239,6 +244,7 @@ export default class Defence extends TranslatedComponent {
     const shieldExplosiveTooltipDetails = [];
     const shieldKineticTooltipDetails = [];
     const shieldThermalTooltipDetails = [];
+    let maxEffectiveShield = 0;
     if (shield.total) {
       if (Math.round(shield.generator) > 0) shieldSourcesData.push({ value: Math.round(shield.generator), label: translate('generator') });
       if (Math.round(shield.boosters) > 0) shieldSourcesData.push({ value: Math.round(shield.boosters), label: translate('boosters') });
@@ -277,6 +283,9 @@ export default class Defence extends TranslatedComponent {
       shieldDamageTakenData.push({ value: Math.round(shield.explosive.total * 100), label: translate('explosive') });
       shieldDamageTakenData.push({ value: Math.round(shield.kinetic.total * 100), label: translate('kinetic') });
       shieldDamageTakenData.push({ value: Math.round(shield.thermal.total * 100), label: translate('thermal') });
+
+console.log(`max effective shields are ${shield.absolute.max}/${shield.explosive.max}/${shield.kinetic.max}/${shield.thermal.max}`);
+      maxEffectiveShield = Math.max(shield.total / shield.absolute.max, shield.total / shield.explosive.max, shield.total / shield.kinetic.max, shield.total / shield.thermal.max);
     }
 
     const armourSourcesData = [];
@@ -337,12 +346,12 @@ export default class Defence extends TranslatedComponent {
           <PieChart data={shieldSourcesData} />
         </div>
         <div className='group quarter'>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_EFFECTIVE_SHIELD'))} onMouseOut={tooltip.bind(null, null)}>{translate('effective shield')}(MJ)</h2>
-          <VerticalBarChart data={effectiveShieldData} />
-        </div>
-        <div className='group quarter'>
           <h2 onMouseOver={termtip.bind(null, translate('PHRASE_DAMAGE_TAKEN'))} onMouseOut={tooltip.bind(null, null)}>{translate('damage taken')}(%)</h2>
           <VerticalBarChart data={shieldDamageTakenData} yMax={100} />
+        </div>
+        <div className='group quarter'>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_EFFECTIVE_SHIELD'))} onMouseOut={tooltip.bind(null, null)}>{translate('effective shield')}(MJ)</h2>
+          <VerticalBarChart data={effectiveShieldData} yMax={maxEffectiveShield}/>
         </div>
         </span> : null }
 
@@ -355,12 +364,12 @@ export default class Defence extends TranslatedComponent {
           <PieChart data={armourSourcesData} />
         </div>
         <div className='group quarter'>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_EFFECTIVE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('effective armour')}</h2>
-          <VerticalBarChart data={effectiveArmourData} />
-        </div>
-        <div className='group quarter'>
           <h2 onMouseOver={termtip.bind(null, translate('PHRASE_DAMAGE_TAKEN'))} onMouseOut={tooltip.bind(null, null)}>{translate('damage taken')}(%)</h2>
           <VerticalBarChart data={armourDamageTakenData} yMax={100} />
+        </div>
+        <div className='group quarter'>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_EFFECTIVE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('effective armour')}</h2>
+          <VerticalBarChart data={effectiveArmourData} />
         </div>
       </span>);
   }
