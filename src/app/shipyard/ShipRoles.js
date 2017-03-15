@@ -208,14 +208,14 @@ export function miner(ship, shielded) {
   // Cargo hatch should be enabled
   ship.setSlotEnabled(ship.cargoHatch, true);
 
-  // 4A or largest possible refinery
+  // Largest possible refinery
   const refineryOrder = [4, 5, 6, 7, 8, 3, 2, 1];
   const refineryInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
                                          .filter(a => (!a.eligible) || a.eligible.rf)
                                          .sort((a,b) => refineryOrder.indexOf(a.maxClass) - refineryOrder.indexOf(b.maxClass));
   for (let i = 0; i < refineryInternals.length; i++) {
     if (canMount(ship, refineryInternals[i], 'rf')) {
-      ship.use(refineryInternals[i], ModuleUtils.findInternal('rf', refineryInternals[i].maxClass, 'A'));
+      ship.use(refineryInternals[i], ModuleUtils.findInternal('rf', Math.min(refineryInternals[i].maxClass, 4), 'A'));
       usedSlots.push(refineryInternals[i]);
       break;
     }

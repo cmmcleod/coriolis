@@ -7,6 +7,7 @@
   * Fix issue where new module added to a slot did not reset its enabled status
   * Show integrity value for relevant modules
   * Reset old modification values when a new roll is applied
+  * Fix issue with miner role where refinery would not be present in ships with class 5 slots but no class 4
 
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
