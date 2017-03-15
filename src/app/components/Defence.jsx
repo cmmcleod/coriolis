@@ -29,8 +29,8 @@ export default class Defence extends TranslatedComponent {
   constructor(props) {
     super(props);
 
-    const { shield, armour, shielddamage } = this._calcMetrics(props.ship, props.opponent, props.sys);
-    this.state = { shield, armour, shielddamage };
+    const { shield, armour, shielddamage, armourdamage } = this._calcMetrics(props.ship, props.opponent, props.sys);
+    this.state = { shield, armour, shielddamage, armourdamage };
   }
 
   /**
@@ -40,8 +40,8 @@ export default class Defence extends TranslatedComponent {
    */
   componentWillReceiveProps(nextProps) {
     if (this.props.marker != nextProps.marker || this.props.sys != nextProps.sys) {
-      const { shield, armour, shielddamage } = this._calcMetrics(nextProps.ship, nextProps.opponent, nextProps.sys);
-      this.setState({ shield, armour, shielddamage });
+      const { shield, armour, shielddamage, armourdamage } = this._calcMetrics(nextProps.ship, nextProps.opponent, nextProps.sys);
+      this.setState({ shield, armour, shielddamage, armourdamage });
       return true;
     }
   }
@@ -97,11 +97,49 @@ export default class Defence extends TranslatedComponent {
 
       const generatorStrength = Calc.shieldStrength(ship.hullMass, ship.baseShieldStrength, shieldGenerator, 1);
       const boostersStrength = generatorStrength * boost;
+
+      // Recover time is the time taken to go from 0 to 50%.  It includes a 15-second wait before shields start to recover
+      // Note that the shields use the broken regeneration rate to define how much energy goes in to the shields, and the normal
+      // regeneration rate to define how much energy is taken from the SYS capacitor
+      const shieldToRecover = (generatorStrength + boostersStrength) / 2;
+      const powerDistributor = ship.standard[4].m;
+      // Our initial regeneration comes from the SYS capacitor store, which is replenished as it goes
+      const capacitorDrain = shieldGenerator.getRegenerationRate() - powerDistributor.getSystemsRechargeRate() * (sys / 4);
+console.log(`shieldToRecover is ${shieldToRecover}`);
+console.log(`Regeneration rate is ${shieldGenerator.getRegenerationRate()}`);
+console.log(`Power distributor recharge is ${powerDistributor.getSystemsRechargeRate() * sys / 4}`);
+console.log(`capacitor drain is ${capacitorDrain}`);
+      const capacitorLifetime = powerDistributor.getSystemsCapacity() / capacitorDrain;
+
+console.log(`Need to recover ${shieldToRecover}`);
+console.log(`SYS contains ${powerDistributor.getSystemsCapacity()} and recharges at ${powerDistributor.getSystemsRechargeRate() * (sys / 4)}`);
+      let recover = 15;
+      if (capacitorDrain <= 0 || shieldToRecover < capacitorLifetime * shieldGenerator.getBrokenRegenerationRate()) {
+        // We can recover the entire shield from the capacitor store
+        recover += shieldToRecover / shieldGenerator.getBrokenRegenerationRate();
+console.log(`We can recover the entire shield before the capacitor drains - takes ${recover}`);
+      } else {
+        // We can recover some of the shield from the capacitor store
+        recover += capacitorLifetime;
+console.log(`We can recover ${capacitorLifetime * shieldGenerator.getBrokenRegenerationRate()} before capacitor is empty`);
+console.log(`Sys is ${sys}`);
+        const remainingShieldToRecover = shieldToRecover - capacitorLifetime * shieldGenerator.getBrokenRegenerationRate();
+        if (sys === 0) {
+          // No system pips so will never recover shields
+console.log(`Cannot recover shields`);
+          recover = Math.Inf;
+	} else {
+	  // Recover remaining shields at the rate of the power distributor's recharge
+          recover += remainingShieldToRecover / (powerDistributor.getSystemsRechargeRate() * sys / 4);
+	}
+      }
+
       shield = {
         generator: generatorStrength,
         boosters: boostersStrength,
         cells: ship.shieldCells,
-        total: generatorStrength + boostersStrength + ship.shieldCells
+        total: generatorStrength + boostersStrength + ship.shieldCells,
+        recover
       };
 
       // Shield resistances have three components: the shield generator, the shield boosters and the SYS pips.
@@ -149,8 +187,8 @@ export default class Defence extends TranslatedComponent {
     const armourBulkheads = ship.baseArmour + (ship.baseArmour * ship.bulkheads.m.getHullBoost());
     let armourReinforcement = 0;
 
-    let modulearmour = 0;
-    let moduleprotection = 1;
+    let moduleArmour = 0;
+    let moduleProtection = 1;
 
     let hullExplDmg = 1;
     let hullKinDmg = 1;
@@ -168,11 +206,11 @@ export default class Defence extends TranslatedComponent {
         hullThermDmg = hullThermDmg * (1 - slot.m.getThermalResistance());
       }
       if (slot.m && slot.m.grp == 'mrp') {
-        modulearmour += slot.m.getIntegrity();
-        moduleprotection = moduleprotection * (1 - slot.m.getProtection());
+        moduleArmour += slot.m.getIntegrity();
+        moduleProtection = moduleProtection * (1 - slot.m.getProtection());
       }
     }
-    moduleprotection = 1 - moduleprotection;
+    moduleProtection = 1 - moduleProtection;
 
     // Apply diminishing returns
     hullExplDmg = hullExplDmg > 0.7 ? hullExplDmg : 0.7 - (0.7 - hullExplDmg) / 2;
@@ -182,11 +220,10 @@ export default class Defence extends TranslatedComponent {
     const armour = {
       bulkheads: armourBulkheads,
       reinforcement: armourReinforcement,
-      modulearmour: modulearmour,
-      moduleprotection: moduleprotection,
+      modulearmour: moduleArmour,
+      moduleprotection: moduleProtection,
       total: armourBulkheads + armourReinforcement
     };
-
 
     // Armour resistances have two components: bulkheads and HRPs
     // We re-cast these as damage percentages
@@ -214,7 +251,15 @@ export default class Defence extends TranslatedComponent {
       total: (1 - ship.bulkheads.m.getThermalResistance()) * hullThermDmg
     };
 
-    return { shield, armour, shielddamage };
+    const armourdamage = {
+      absolutesdps: opponentSDps.absolute *= armour.absolute.total,
+      explosivesdps: opponentSDps.explosive *= armour.explosive.total,
+      kineticsdps: opponentSDps.kinetic *= armour.kinetic.total,
+      thermalsdps: opponentSDps.thermal *= armour.thermal.total
+    };
+    armourdamage.totalsdps = armourdamage.absolutesdps + armourdamage.explosivesdps + armourdamage.kineticsdps + armourdamage.thermalsdps;
+
+    return { shield, armour, shielddamage, armourdamage };
   }
 
   /**
@@ -234,7 +279,7 @@ export default class Defence extends TranslatedComponent {
     const { ship, sys } = this.props;
     const { language, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
-    const { shield, armour, shielddamage } = this.state;
+    const { shield, armour, shielddamage, armourdamage } = this.state;
 
     const shieldSourcesData = [];
     const effectiveShieldData = [];
@@ -284,7 +329,6 @@ export default class Defence extends TranslatedComponent {
       shieldDamageTakenData.push({ value: Math.round(shield.kinetic.total * 100), label: translate('kinetic') });
       shieldDamageTakenData.push({ value: Math.round(shield.thermal.total * 100), label: translate('thermal') });
 
-console.log(`max effective shields are ${shield.absolute.max}/${shield.explosive.max}/${shield.kinetic.max}/${shield.thermal.max}`);
       maxEffectiveShield = Math.max(shield.total / shield.absolute.max, shield.total / shield.explosive.max, shield.total / shield.kinetic.max, shield.total / shield.thermal.max);
     }
 
@@ -329,17 +373,16 @@ console.log(`max effective shields are ${shield.absolute.max}/${shield.explosive
     armourDamageTakenData.push({ value: Math.round(armour.kinetic.total * 100), label: translate('kinetic') });
     armourDamageTakenData.push({ value: Math.round(armour.thermal.total * 100), label: translate('thermal') });
 
-    // TODO versions of ship.calcShieldRecovery() and ship.calcShieldRecharge() that take account of SYS pips
     return (
       <span id='defence'>
         {shield.total ? <span>
         <div className='group quarter'>
           <h2>{translate('shield metrics')}</h2>
           <br/>
-          <h2 onMouseOver={termtip.bind(null, <div>{shieldTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('raw shield strength')}: {formats.int(shield.total)}{units.MJ}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_SHIELDS')} {formats.time(shield.total / shielddamage.totalsdps)}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECOVER'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECOVER_SHIELDS')} {formats.time(ship.calcShieldRecovery())}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECHARGE'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECHARGE_SHIELDS')} {formats.time(ship.calcShieldRecharge())}</h2>
+          <h2 onMouseOver={termtip.bind(null, <div>{shieldTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('raw shield strength')}<br/>{formats.int(shield.total)}{units.MJ}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_SHIELDS')}<br/>{formats.time(shield.total / shielddamage.totalsdps)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECOVER'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECOVER_SHIELDS')}<br/>{formats.time(shield.recover)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECHARGE'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECHARGE_SHIELDS')}<br/>{formats.time(ship.calcShieldRecharge())}</h2>
         </div>
         <div className='group quarter'>
           <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SHIELD_SOURCES'))} onMouseOut={tooltip.bind(null, null)}>{translate('shield sources')}</h2>
@@ -357,6 +400,11 @@ console.log(`max effective shields are ${shield.absolute.max}/${shield.explosive
 
         <div className='group quarter'>
           <h2>{translate('armour metrics')}</h2>
+          <h2 onMouseOver={termtip.bind(null, <div>{armourTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('raw armour strength')}<br/>{formats.int(armour.total)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_ARMOUR')}<br/>{formats.time(armour.total / armourdamage.totalsdps)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_MODULE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('raw module armour')}<br/>{formats.int(armour.modulearmour)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_MODULE_PROTECTION_EXTERNAL'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_MODULE_PROTECTION_EXTERNAL')}<br/>{formats.pct1(armour.moduleprotection / 2)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_MODULE_PROTECTION_INTERNAL'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_MODULE_PROTECTION_INTERNAL')}<br/>{formats.pct1(armour.moduleprotection)}</h2>
           <br/>
         </div>
         <div className='group quarter'>

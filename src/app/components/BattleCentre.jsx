@@ -113,10 +113,10 @@ export default class BattleCentre extends TranslatedComponent {
     const { sys, eng, wep, cargo, fuel, boost, engagementRange, opponent } = this.state;
     const { ship } = this.props;
 
-    // Markers are used to propagate state changes without requiring a deep comparison of the ship
+    // Markers are used to propagate state changes without requiring a deep comparison of the ship, as that takes a long time
     const pipsMarker = '' + ship.canBoost();
     const movementMarker = '' + ship.topSpeed + ':' + ship.pitch + ':' + ship.roll + ':' + ship.yaw + ':' + ship.canBoost();
-    const shieldMarker = '' + ship.shield + ':' + ship.shieldCells + ':' + ship.shieldExplRes + ':' + ship.shieldKinRes + ':' + ship.shieldThermRes + ':' + ship.armour;
+    const shieldMarker = '' + ship.shield + ':' + ship.shieldCells + ':' + ship.shieldExplRes + ':' + ship.shieldKinRes + ':' + ship.shieldThermRes + ':' + ship.armour + ship.standard[4].m.getSystemsCapacity() + ':' + ship.standard[4].m.getSystemsRechargeRate();
 
     return (
       <span>

@@ -45,8 +45,15 @@ export const terms = {
   PHRASE_SHIELD_SOURCES: 'Breakdown of the supply of shield energy',
   PHRASE_EFFECTIVE_SHIELD: 'Effective shield strength against different damage types',
   PHRASE_DAMAGE_TAKEN: '% of raw damage taken for different damage types',
+  PHRASE_TIME_TO_LOSE_ARMOUR: 'Armour will hold for',
+  PHRASE_MODULE_PROTECTION_EXTERNAL: 'Protection for hardpoints',
+  PHRASE_MODULE_PROTECTION_INTERNAL: 'Protection for all other modules',
 
   TT_TIME_TO_LOSE_SHIELDS: 'Against sustained fire from all opponent\'s weapons',
+  TT_TIME_TO_LOSE_ARMOUR: 'Against sustained fire from all opponent\'s weapons',
+  TT_MODULE_ARMOUR: 'Armour protecting against module damage',
+  TT_MODULE_PROTECTION_EXTERNAL: 'Percentage of damage diverted from hardpoints to module reinforcement packages',
+  TT_MODULE_PROTECTION_INTERNAL: 'Percentage of damage diverted from non-hardpoint modules to module reinforcement packages',
 
   HELP_MODIFICATIONS_MENU: 'Click on a number to enter a new value, or drag along the bar for small changes',
 
