@@ -19,6 +19,7 @@ export default class Defence extends TranslatedComponent {
     marker: React.PropTypes.string.isRequired,
     ship: React.PropTypes.object.isRequired,
     opponent: React.PropTypes.object.isRequired,
+    engagementrange: React.PropTypes.number.isRequired,
     sys: React.PropTypes.number.isRequired
   };
 
@@ -29,7 +30,7 @@ export default class Defence extends TranslatedComponent {
   constructor(props) {
     super(props);
 
-    const { shield, armour, shielddamage, armourdamage } = this._calcMetrics(props.ship, props.opponent, props.sys);
+    const { shield, armour, shielddamage, armourdamage } = this._calcMetrics(props.ship, props.opponent, props.sys, props.engagementrange);
     this.state = { shield, armour, shielddamage, armourdamage };
   }
 
@@ -40,31 +41,83 @@ export default class Defence extends TranslatedComponent {
    */
   componentWillReceiveProps(nextProps) {
     if (this.props.marker != nextProps.marker || this.props.sys != nextProps.sys) {
-      const { shield, armour, shielddamage, armourdamage } = this._calcMetrics(nextProps.ship, nextProps.opponent, nextProps.sys);
+      const { shield, armour, shielddamage, armourdamage } = this._calcMetrics(nextProps.ship, nextProps.opponent, nextProps.sys, nextProps.engagementrange);
       this.setState({ shield, armour, shielddamage, armourdamage });
       return true;
     }
   }
 
   /**
-   * Calculate shield metrics
-   * @param   {Object}  ship       The ship
-   * @param   {Object}  opponent   The opponent ship
-   * @param   {int}     sys        The opponent ship
-   * @returns {Object}             Shield metrics
+   * Calculate the sustained DPS for a ship at a given range, excluding resistances
+   * @param   {Object}  ship            The ship
+   * @param   {Object}  opponent        The opponent ship
+   * @param   {int}     engagementrange The range between the ship and opponent
+   * @returns {Object}                  Sustained DPS for shield and armour
    */
-  _calcMetrics(ship, opponent, sys) {
+  _calcSustainedDps(ship, opponent, engagementrange) {
+    const shieldsdps = {
+      absolute: 0,
+      explosive: 0,
+      kinetic: 0,
+      thermal: 0
+    };
+
+    const armoursdps = {
+      absolute: 0,
+      explosive: 0,
+      kinetic: 0,
+      thermal: 0
+    };
+
+    for (let i = 0; i < ship.hardpoints.length; i++) {
+      if (ship.hardpoints[i].m && ship.hardpoints[i].enabled && ship.hardpoints[i].maxClass > 0) {
+        const m = ship.hardpoints[i].m;
+        // Initial sustained DPS
+        let sDps = m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) : m.getDps();
+        // Take fall-off in to account
+        const falloff = m.getFalloff();
+        if (falloff && engagementrange > falloff) {
+          const dropoffRange = m.getRange() - falloff;
+          sDps *= 1 - Math.min((engagementrange - falloff) / dropoffRange, 1);
+        }
+        // Piercing/hardness modifier (for armour only)
+        const armourMultiple = m.getPiercing() >= opponent.hardness ? 1 : m.getPiercing() / opponent.hardness;
+        // Break out the damage according to type
+        if (m.getDamageDist().A) {
+          shieldsdps.absolute += sDps * m.getDamageDist().A;
+          armoursdps.absolute += sDps * m.getDamageDist().A * armourMultiple;
+        }
+        if (m.getDamageDist().E) {
+          shieldsdps.explosive += sDps * m.getDamageDist().E;
+          armoursdps.explosive += sDps * m.getDamageDist().E * armourMultiple;
+        }
+        if (m.getDamageDist().K) {
+          shieldsdps.kinetic += sDps * m.getDamageDist().K;
+          armoursdps.kinetic += sDps * m.getDamageDist().K * armourMultiple;
+        }
+        if (m.getDamageDist().T) {
+          shieldsdps.thermal += sDps * m.getDamageDist().T;
+          armoursdps.thermal += sDps * m.getDamageDist().T * armourMultiple;
+        }
+      }
+    }
+    return { shieldsdps, armoursdps };
+  }
+
+  /**
+   * Calculate shield metrics
+   * @param   {Object}  ship            The ship
+   * @param   {Object}  opponent        The opponent ship
+   * @param   {int}     sys             The opponent ship
+   * @param   {int}     engagementrange The range between the ship and opponent
+   * @returns {Object}                  Shield metrics
+   */
+  _calcMetrics(ship, opponent, sys, engagementrange) {
     const sysResistance = this._calcSysResistance(sys);
     const maxSysResistance = this._calcSysResistance(4);
 
-    // Obtain the opponent's sustained DPS for later damage calculations
-    // const opponentSDps = Calc.sustainedDps(opponent, range);
-    const opponentSDps = {
-      absolute: 62.1,
-      explosive: 0,
-      kinetic: 7.4,
-      thermal: 7.4
-    };
+    // Obtain the opponent's sustained DPS on us for later damage calculations
+    const { shieldsdps, armoursdps } = this._calcSustainedDps(opponent, ship, engagementrange);
 
     let shielddamage = {};
     let shield = {};
@@ -176,10 +229,10 @@ console.log(`Cannot recover shields`);
         max: (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg * (1 - maxSysResistance)
       };
 
-      shielddamage.absolutesdps = opponentSDps.absolute *= shield.absolute.total;
-      shielddamage.explosivesdps = opponentSDps.explosive *= shield.explosive.total;
-      shielddamage.kineticsdps = opponentSDps.kinetic *= shield.kinetic.total;
-      shielddamage.thermalsdps = opponentSDps.thermal *= shield.thermal.total;
+      shielddamage.absolutesdps = shieldsdps.absolute *= shield.absolute.total;
+      shielddamage.explosivesdps = shieldsdps.explosive *= shield.explosive.total;
+      shielddamage.kineticsdps = shieldsdps.kinetic *= shield.kinetic.total;
+      shielddamage.thermalsdps = shieldsdps.thermal *= shield.thermal.total;
       shielddamage.totalsdps = shielddamage.absolutesdps + shielddamage.explosivesdps + shielddamage.kineticsdps + shielddamage.thermalsdps;
     }
 
@@ -252,10 +305,10 @@ console.log(`Cannot recover shields`);
     };
 
     const armourdamage = {
-      absolutesdps: opponentSDps.absolute *= armour.absolute.total,
-      explosivesdps: opponentSDps.explosive *= armour.explosive.total,
-      kineticsdps: opponentSDps.kinetic *= armour.kinetic.total,
-      thermalsdps: opponentSDps.thermal *= armour.thermal.total
+      absolutesdps: armoursdps.absolute *= armour.absolute.total,
+      explosivesdps: armoursdps.explosive *= armour.explosive.total,
+      kineticsdps: armoursdps.kinetic *= armour.kinetic.total,
+      thermalsdps: armoursdps.thermal *= armour.thermal.total
     };
     armourdamage.totalsdps = armourdamage.absolutesdps + armourdamage.explosivesdps + armourdamage.kineticsdps + armourdamage.thermalsdps;
 
@@ -380,7 +433,7 @@ console.log(`Cannot recover shields`);
           <h2>{translate('shield metrics')}</h2>
           <br/>
           <h2 onMouseOver={termtip.bind(null, <div>{shieldTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('raw shield strength')}<br/>{formats.int(shield.total)}{units.MJ}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_SHIELDS')}<br/>{formats.time(shield.total / shielddamage.totalsdps)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_SHIELDS')}<br/>{shielddamage.totalsdps == 0 ? translate('infinity') : formats.time(shield.total / shielddamage.totalsdps)}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECOVER'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECOVER_SHIELDS')}<br/>{formats.time(shield.recover)}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECHARGE'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECHARGE_SHIELDS')}<br/>{formats.time(ship.calcShieldRecharge())}</h2>
         </div>
@@ -401,7 +454,7 @@ console.log(`Cannot recover shields`);
         <div className='group quarter'>
           <h2>{translate('armour metrics')}</h2>
           <h2 onMouseOver={termtip.bind(null, <div>{armourTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('raw armour strength')}<br/>{formats.int(armour.total)}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_ARMOUR')}<br/>{formats.time(armour.total / armourdamage.totalsdps)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_ARMOUR')}<br/>{armourdamage.totalsdps == 0 ? translate('infinity') : formats.time(armour.total / armourdamage.totalsdps)}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('TT_MODULE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('raw module armour')}<br/>{formats.int(armour.modulearmour)}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('TT_MODULE_PROTECTION_EXTERNAL'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_MODULE_PROTECTION_EXTERNAL')}<br/>{formats.pct1(armour.moduleprotection / 2)}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('TT_MODULE_PROTECTION_INTERNAL'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_MODULE_PROTECTION_INTERNAL')}<br/>{formats.pct1(armour.moduleprotection)}</h2>

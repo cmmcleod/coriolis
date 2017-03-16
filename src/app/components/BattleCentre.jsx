@@ -44,7 +44,7 @@ export default class BattleCentre extends TranslatedComponent {
       cargo: ship.cargoCapacity,
       boost: false,
       engagementRange: 1500,
-      opponent: new Ship('anaconda', Ships['anaconda'].properties, Ships['anaconda'].slots)
+      opponent: new Ship('anaconda', Ships['anaconda'].properties, Ships['anaconda'].slots).buildWith(Ships['anaconda'].defaults)
     };
   }
 
@@ -110,13 +110,13 @@ export default class BattleCentre extends TranslatedComponent {
   render() {
     const { language, onWindowResize, sizeRatio, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
-    const { sys, eng, wep, cargo, fuel, boost, engagementRange, opponent } = this.state;
+    const { sys, eng, wep, cargo, fuel, boost, engagementRange, opponent, opponentBuild } = this.state;
     const { ship } = this.props;
 
     // Markers are used to propagate state changes without requiring a deep comparison of the ship, as that takes a long time
     const pipsMarker = '' + ship.canBoost();
     const movementMarker = '' + ship.topSpeed + ':' + ship.pitch + ':' + ship.roll + ':' + ship.yaw + ':' + ship.canBoost();
-    const shieldMarker = '' + ship.shield + ':' + ship.shieldCells + ':' + ship.shieldExplRes + ':' + ship.shieldKinRes + ':' + ship.shieldThermRes + ':' + ship.armour + ship.standard[4].m.getSystemsCapacity() + ':' + ship.standard[4].m.getSystemsRechargeRate();
+    const shieldMarker = '' + ship.shield + ':' + ship.shieldCells + ':' + ship.shieldExplRes + ':' + ship.shieldKinRes + ':' + ship.shieldThermRes + ':' + ship.armour + ship.standard[4].m.getSystemsCapacity() + ':' + ship.standard[4].m.getSystemsRechargeRate() + ':' + opponent.name + ':' + opponentBuild + ':' + engagementRange;
 
     return (
       <span>
@@ -136,7 +136,7 @@ export default class BattleCentre extends TranslatedComponent {
         </div>
         <div className='group full'>
           <h1>{translate('defence')}</h1>
-          <Defence marker={shieldMarker} ship={ship} opponent={opponent} sys={sys}/>
+          <Defence marker={shieldMarker} ship={ship} opponent={opponent} sys={sys} engagementrange={engagementRange}/>
         </div>
       </span>
     );

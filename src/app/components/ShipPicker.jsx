@@ -18,7 +18,7 @@ export default class ShipPicker extends TranslatedComponent {
   };
 
   static defaultProps = {
-    ship: new Ship('anaconda', Ships['anaconda'].properties, Ships['anaconda'].slots)
+    ship: new Ship('anaconda', Ships['anaconda'].properties, Ships['anaconda'].slots).buildWith(Ships['anaconda'].defaults)
   }
 
   /**
@@ -64,6 +64,9 @@ export default class ShipPicker extends TranslatedComponent {
     if (build) {
       // Ship is a particular build
       ship.buildFrom(Persist.getBuild(shipId, build));
+    } else {
+      // Ship is a stock build
+      ship.buildWith(Ships[shipId].defaults);
     }
     this._closeMenu();
     this.setState({ ship, build });
