@@ -106,29 +106,31 @@ export default class Pips extends TranslatedComponent {
    * @param  {Event} e  Keyboard Event
    */
   _keyDown(e) {
-    switch (e.keyCode) {
-      case 9:     // Tab == boost
-        if (this.props.ship.canBoost()) {
+    if (e.ctrlKey || e.metaKey) { // CTRL/CMD
+      switch (e.keyCode) {
+        case 66:     // b == boost
+          if (this.props.ship.canBoost()) {
+            e.preventDefault();
+            this._toggleBoost();
+          }
+          break;
+        case 37:     // Left arrow == increase SYS
           e.preventDefault();
-          this._toggleBoost();
-        }
-        break;
-      case 37:     // Left arrow == increase SYS
-        e.preventDefault();
-        this._incSys();
-        break;
-      case 38:     // Up arrow == increase ENG
-        e.preventDefault();
-        this._incEng();
-        break;
-      case 39:     // Right arrow == increase WEP
-        e.preventDefault();
-        this._incWep();
-        break;
-      case 40:     // Down arrow == reset
-        e.preventDefault();
-        this._reset();
-        break;
+          this._incSys();
+          break;
+        case 38:     // Up arrow == increase ENG
+          e.preventDefault();
+          this._incEng();
+          break;
+        case 39:     // Right arrow == increase WEP
+          e.preventDefault();
+          this._incWep();
+          break;
+        case 40:     // Down arrow == reset
+          e.preventDefault();
+          this._reset();
+          break;
+      }
     }
   }
 

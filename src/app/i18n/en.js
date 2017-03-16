@@ -349,10 +349,15 @@ The damage received panel provides information about the effectiveness of your b
 
 <h1>Keyboard Shortcuts</h1>
 <dl>
+<dt>Ctrl-b</dt><dd>toggle boost</dd>
 <dt>Ctrl-e</dt><dd>open export dialogue (outfitting page only)</dd>
 <dt>Ctrl-h</dt><dd>open help dialogue</dd>
 <dt>Ctrl-i</dt><dd>open import dialogue</dd>
 <dt>Ctrl-o</dt><dd>open shortlink dialogue</dd>
+<dt>Ctrl-left-arrow</dt><dd>increase SYS capacitor</dd>
+<dt>Ctrl-up-arrow</dt><dd>increase ENG capacitor</dd>
+<dt>Ctrl-right-arrow</dt><dd>increase WEP capacitor</dd>
+<dt>Ctrl-down-arrow</dt><dd>reset power distributor</dd>
 <dt>Esc</dt><dd>close any open dialogue</dd>
 </dl>
 <h1>Glossary</h1>
