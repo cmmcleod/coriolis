@@ -105,6 +105,16 @@ export default class Defence extends TranslatedComponent {
   }
 
   /**
+   * Obtain the recharge rate of the SYS capacitor of a power distributor given pips
+   * @param {Object}   pd   The power distributor
+   * @param {number}   sys  The number of pips to SYS
+   * @returns {number}      The recharge rate in MJ/s
+   */
+  _calcSysRechargeRate(pd, sys) {
+    return pd.getSystemsRechargeRate() * Math.pow(sys, 1.1) / Math.pow(4, 1.1);
+  }
+
+  /**
    * Calculate shield metrics
    * @param   {Object}  ship            The ship
    * @param   {Object}  opponent        The opponent ship
@@ -151,39 +161,55 @@ export default class Defence extends TranslatedComponent {
       const generatorStrength = Calc.shieldStrength(ship.hullMass, ship.baseShieldStrength, shieldGenerator, 1);
       const boostersStrength = generatorStrength * boost;
 
-      // Recover time is the time taken to go from 0 to 50%.  It includes a 15-second wait before shields start to recover
-      // Note that the shields use the broken regeneration rate to define how much energy goes in to the shields, and the normal
-      // regeneration rate to define how much energy is taken from the SYS capacitor
+      // Recover time is the time taken to go from 0 to 50%.  It includes a 16-second wait before shields start to recover
       const shieldToRecover = (generatorStrength + boostersStrength) / 2;
       const powerDistributor = ship.standard[4].m;
-      // Our initial regeneration comes from the SYS capacitor store, which is replenished as it goes
-      const capacitorDrain = shieldGenerator.getRegenerationRate() - powerDistributor.getSystemsRechargeRate() * (sys / 4);
-console.log(`shieldToRecover is ${shieldToRecover}`);
-console.log(`Regeneration rate is ${shieldGenerator.getRegenerationRate()}`);
-console.log(`Power distributor recharge is ${powerDistributor.getSystemsRechargeRate() * sys / 4}`);
-console.log(`capacitor drain is ${capacitorDrain}`);
-      const capacitorLifetime = powerDistributor.getSystemsCapacity() / capacitorDrain;
+      const sysRechargeRate = this._calcSysRechargeRate(powerDistributor, sys);
 
-console.log(`Need to recover ${shieldToRecover}`);
-console.log(`SYS contains ${powerDistributor.getSystemsCapacity()} and recharges at ${powerDistributor.getSystemsRechargeRate() * (sys / 4)}`);
-      let recover = 15;
+      // Our initial regeneration comes from the SYS capacitor store, which is replenished as it goes
+      // 0.6 is a magic number from FD: each 0.6 MW of energy from the power distributor recharges 1 MJ/s of regeneration
+      let capacitorDrain = (shieldGenerator.getBrokenRegenerationRate() * 0.6) - sysRechargeRate;
+      let capacitorLifetime = powerDistributor.getSystemsCapacity() / capacitorDrain;
+
+      let recover = 16;
       if (capacitorDrain <= 0 || shieldToRecover < capacitorLifetime * shieldGenerator.getBrokenRegenerationRate()) {
         // We can recover the entire shield from the capacitor store
         recover += shieldToRecover / shieldGenerator.getBrokenRegenerationRate();
-console.log(`We can recover the entire shield before the capacitor drains - takes ${recover}`);
       } else {
         // We can recover some of the shield from the capacitor store
         recover += capacitorLifetime;
-console.log(`We can recover ${capacitorLifetime * shieldGenerator.getBrokenRegenerationRate()} before capacitor is empty`);
-console.log(`Sys is ${sys}`);
         const remainingShieldToRecover = shieldToRecover - capacitorLifetime * shieldGenerator.getBrokenRegenerationRate();
         if (sys === 0) {
           // No system pips so will never recover shields
-console.log(`Cannot recover shields`);
           recover = Math.Inf;
 	} else {
 	  // Recover remaining shields at the rate of the power distributor's recharge
-          recover += remainingShieldToRecover / (powerDistributor.getSystemsRechargeRate() * sys / 4);
+          recover += remainingShieldToRecover / (sysRechargeRate / 0.6);
+	}
+      }
+
+      // Recharge time is the time taken to go from 50% to 100%
+      const shieldToRecharge = (generatorStrength + boostersStrength) / 2;
+
+      // Our initial regeneration comes from the SYS capacitor store, which is replenished as it goes
+      // 0.6 is a magic number from FD: each 0.6 MW of energy from the power distributor recharges 1 MJ/s of regeneration
+      capacitorDrain = (shieldGenerator.getRegenerationRate() * 0.6) - sysRechargeRate;
+      capacitorLifetime = powerDistributor.getSystemsCapacity() / capacitorDrain;
+
+      let recharge = 0;
+      if (capacitorDrain <= 0 || shieldToRecharge < capacitorLifetime * shieldGenerator.getRegenerationRate()) {
+        // We can recharge the entire shield from the capacitor store
+        recharge += shieldToRecharge / shieldGenerator.getRegenerationRate();
+      } else {
+        // We can recharge some of the shield from the capacitor store
+        recharge += capacitorLifetime;
+        const remainingShieldToRecharge = shieldToRecharge - capacitorLifetime * shieldGenerator.getRegenerationRate();
+        if (sys === 0) {
+          // No system pips so will never recharge shields
+          recharge = Math.Inf;
+	} else {
+	  // Recharge remaining shields at the rate of the power distributor's recharge
+          recharge += remainingShieldToRecharge / (sysRechargeRate / 0.6);
 	}
       }
 
@@ -192,7 +218,8 @@ console.log(`Cannot recover shields`);
         boosters: boostersStrength,
         cells: ship.shieldCells,
         total: generatorStrength + boostersStrength + ship.shieldCells,
-        recover
+        recover,
+        recharge,
       };
 
       // Shield resistances have three components: the shield generator, the shield boosters and the SYS pips.
@@ -419,7 +446,6 @@ console.log(`Cannot recover shields`);
     const effectiveThermalArmour = armour.total / armour.thermal.total;
     effectiveArmourData.push({ value: Math.round(effectiveThermalArmour), label: translate('thermal') });
 
-    // TODO these aren't updating when HRP metrics are altered (maybe - need to confirm)
     const armourDamageTakenData = [];
     armourDamageTakenData.push({ value: Math.round(armour.absolute.total * 100), label: translate('absolute') });
     armourDamageTakenData.push({ value: Math.round(armour.explosive.total * 100), label: translate('explosive') });
@@ -433,9 +459,9 @@ console.log(`Cannot recover shields`);
           <h2>{translate('shield metrics')}</h2>
           <br/>
           <h2 onMouseOver={termtip.bind(null, <div>{shieldTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('raw shield strength')}<br/>{formats.int(shield.total)}{units.MJ}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_SHIELDS')}<br/>{shielddamage.totalsdps == 0 ? translate('infinity') : formats.time(shield.total / shielddamage.totalsdps)}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECOVER'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECOVER_SHIELDS')}<br/>{formats.time(shield.recover)}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECHARGE'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECHARGE_SHIELDS')}<br/>{formats.time(ship.calcShieldRecharge())}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_SHIELDS')}<br/>{shielddamage.totalsdps == 0 ? translate('ever') : formats.time(shield.total / shielddamage.totalsdps)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECOVER'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECOVER_SHIELDS')}<br/>{shield.recover === Math.Inf ? translate('never') : formats.time(shield.recover)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECHARGE'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECHARGE_SHIELDS')}<br/>{shield.recharge === Math.Inf ? translate('never') : formats.time(shield.recharge)}</h2>
         </div>
         <div className='group quarter'>
           <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SHIELD_SOURCES'))} onMouseOut={tooltip.bind(null, null)}>{translate('shield sources')}</h2>
