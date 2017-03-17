@@ -1,12 +1,11 @@
 .shippicker {
   background-color: @bgBlack;
   margin: 0;
-  padding: 0 0 0 1em;
   height: 3em;
-  line-height: 3em;
   font-family: @fTitle;
   vertical-align: middle;
   position: relative;
+  display: block;
 
   .user-select-none();
 
@@ -34,7 +33,6 @@
     cursor: pointer;
     color: @warning;
     text-transform: uppercase;
-    // Less than 600px screen width: hide text
 
     &.disabled {
       color: @warning-disabled;
@@ -47,7 +45,6 @@
 
     .menu-item-label {
       margin-left: 1em;
-      display: inline-block;
 
       .smallTablet({
         display: none;

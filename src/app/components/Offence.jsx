@@ -7,20 +7,15 @@ import PieChart from './PieChart';
 import VerticalBarChart from './VerticalBarChart';
 
 /**
- * Defence information
- * Shield information consists of four panels:
- *   - textual information (time to lose shields etc.)
- *   - breakdown of shield sources (pie chart)
- *   - comparison of shield resistances (bar chart)
- *   - effective shield (bar chart)
+ * Offence information
  */
-export default class Defence extends TranslatedComponent {
+export default class Offence extends TranslatedComponent {
   static propTypes = {
     marker: React.PropTypes.string.isRequired,
     ship: React.PropTypes.object.isRequired,
     opponent: React.PropTypes.object.isRequired,
     engagementrange: React.PropTypes.number.isRequired,
-    sys: React.PropTypes.number.isRequired
+    wep: React.PropTypes.number.isRequired
   };
 
   /**

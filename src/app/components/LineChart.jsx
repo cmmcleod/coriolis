@@ -116,7 +116,7 @@ export default class LineChart extends TranslatedComponent {
   _updateDimensions(props, scale) {
     let { width, xMax, xMin, yMin, yMax } = props;
     let innerWidth = width - MARGIN.left - MARGIN.right;
-    let outerHeight = Math.round(width * 0.5 * scale);
+    let outerHeight = Math.round(width * 0.8 * scale);
     let innerHeight = outerHeight - MARGIN.top - MARGIN.bottom;
 
     this.state.xScale.range([0, innerWidth]).domain([xMin, xMax || 1]).clamp(true);

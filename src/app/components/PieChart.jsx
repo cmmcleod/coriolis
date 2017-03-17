@@ -10,6 +10,10 @@ const LABEL_COLOUR = '#FFFFFF';
  */
 export default class PieChart extends Component {
 
+  static propTypes = {
+    data : React.PropTypes.array.isRequired
+  };
+
   /**
    * Constructor
    * @param  {Object} props   React Component properties

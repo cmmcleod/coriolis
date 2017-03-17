@@ -128,12 +128,13 @@ export default class ShipPicker extends TranslatedComponent {
     const { formats, translate, units } = language;
     const { menuOpen, ship, build } = this.state;
 
-    const shipString = ship.name + ': ' + (build ? build : 'stock');
+    const shipString = ship.name + ': ' + (build ? build : translate('stock'));
     return (
       <div className='shippicker' onClick={ (e) => e.stopPropagation() }>
         <div className='menu'>
           <div className={cn('menu-header', { selected: menuOpen })} onClick={this._toggleMenu}>
-            <Rocket className='warning' /><span className='menu-item-label'>{shipString}</span>
+            <span><Rocket className='warning' /></span>
+            <span className='menu-item-label'>{shipString}</span>
           </div>
           { menuOpen ?
           <div className='menu-list' onClick={ (e) => e.stopPropagation() }>

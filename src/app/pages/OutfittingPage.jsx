@@ -17,12 +17,13 @@ import UtilitySlotSection from '../components/UtilitySlotSection';
 import OffenceSummary from '../components/OffenceSummary';
 import DefenceSummary from '../components/DefenceSummary';
 import MovementSummary from '../components/MovementSummary';
-import EngineProfile from '../components/EngineProfile';
-import FSDProfile from '../components/FSDProfile';
-import JumpRange from '../components/JumpRange';
-import BattleCentre from '../components/BattleCentre';
-import PowerManagement from '../components/PowerManagement';
-import CostSection from '../components/CostSection';
+import Pips from '../components/Pips';
+import Boost from '../components/Boost';
+import Fuel from '../components/Fuel';
+import Cargo from '../components/Cargo';
+import ShipPicker from '../components/ShipPicker';
+import EngagementRange from '../components/EngagementRange';
+import OutfittingSubpages from '../components/OutfittingSubpages';
 import ModalExport from '../components/ModalExport';
 import ModalPermalink from '../components/ModalPermalink';
 
@@ -51,6 +52,12 @@ export default class OutfittingPage extends Page {
     this.state = this._initState(context);
     this._keyDown = this._keyDown.bind(this);
     this._exportBuild = this._exportBuild.bind(this);
+    this._pipsUpdated = this._pipsUpdated.bind(this);
+    this._boostUpdated = this._boostUpdated.bind(this);
+    this._cargoUpdated = this._cargoUpdated.bind(this);
+    this._fuelUpdated = this._fuelUpdated.bind(this);
+    this._opponentUpdated = this._opponentUpdated.bind(this);
+    this._engagementRangeUpdated = this._engagementRangeUpdated.bind(this);
   }
 
   /**
@@ -90,7 +97,15 @@ export default class OutfittingPage extends Page {
       shipId,
       ship,
       code,
-      savedCode
+      savedCode,
+      sys: 2,
+      eng: 2,
+      wep: 2,
+      fuel: ship.fuelCapacity,
+      cargo: 0,
+      boost: false,
+      engagementRange: 1500,
+      opponent: new Ship('anaconda', Ships['anaconda'].properties, Ships['anaconda'].slots).buildWith(Ships['anaconda'].defaults)
     };
   }
 
@@ -110,6 +125,57 @@ export default class OutfittingPage extends Page {
     }
 
     this.setState(stateChanges);
+  }
+
+  /**
+   * Triggered when pips have been updated
+   * @param {number} sys    SYS pips
+   * @param {number} eng    ENG pips
+   * @param {number} wep    WEP pips
+   */
+  _pipsUpdated(sys, eng, wep) {
+    this.setState({ sys, eng, wep });
+  }
+
+  /**
+   * Triggered when boost has been updated
+   * @param {boolean} boost true if boosting
+   */
+  _boostUpdated(boost) {
+    this.setState({ boost });
+  }
+
+  /**
+   * Triggered when fuel has been updated
+   * @param {number} fuel the amount of fuel, in T
+   */
+  _fuelUpdated(fuel) {
+    this.setState({ fuel });
+  }
+
+  /**
+   * Triggered when cargo has been updated
+   * @param {number} cargo the amount of cargo, in T
+   */
+  _cargoUpdated(cargo) {
+    this.setState({ cargo });
+  }
+
+  /**
+   * Triggered when engagement range has been updated
+   * @param {number} engagementRange the engagement range, in m
+   */
+  _engagementRangeUpdated(engagementRange) {
+    this.setState({ engagementRange });
+  }
+
+  /**
+   * Triggered when target ship has been updated
+   * @param {object} opponent the opponent's ship
+   * @param {string} opponentBuild the name of the opponent's build
+   */
+  _opponentUpdated(opponent, opponentBuild) {
+    this.setState({ opponent, opponentBuild });
   }
 
   /**
@@ -294,7 +360,7 @@ export default class OutfittingPage extends Page {
     let state = this.state,
         { language, termtip, tooltip, sizeRatio, onWindowResize } = this.context,
         { translate, units, formats } = language,
-        { ship, code, savedCode, buildName, newBuildName, halfChartWidth, thirdChartWidth } = state,
+        { ship, code, savedCode, buildName, newBuildName, halfChartWidth, thirdChartWidth, sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, engagementRange } = state,
         hide = tooltip.bind(null, null),
         menu = this.props.currentMenu,
         shipUpdated = this._shipUpdated,
@@ -306,6 +372,9 @@ export default class OutfittingPage extends Page {
 
     // Code can be blank for a default loadout.  Prefix it with the ship name to ensure that changes in default ships is picked up
     code = ship.name + (code || '');
+
+    // Markers are used to propagate state changes without requiring a deep comparison of the ship, as that takes a long time
+    const boostMarker = `${ship.canBoost()}`;
 
     return (
       <div id='outfit' className={'page'} style={{ fontSize: (sizeRatio * 0.9) + 'em' }}>
@@ -340,40 +409,59 @@ export default class OutfittingPage extends Page {
           </div>
         </div>
 
+        {/* Main tables */}
         <ShipSummaryTable ship={ship} code={code} />
         <StandardSlotSection ship={ship} code={code} onChange={shipUpdated} currentMenu={menu} />
         <InternalSlotSection ship={ship} code={iStr} onChange={shipUpdated} currentMenu={menu} />
         <HardpointsSlotSection ship={ship} code={hStr || ''} onChange={shipUpdated} currentMenu={menu} />
         <UtilitySlotSection ship={ship} code={hStr || ''} onChange={shipUpdated} currentMenu={menu} />
 
-        <div ref='chartThird' className='group third'>
-          <OffenceSummary ship={ship} code={code}/>
+        {/* Control of ship and opponent */}
+        <div className='group quarter'>
+          <div className='group half'>
+            <h2 style={{ verticalAlign: 'middle', textAlign: 'left' }}>{translate('ship control')}</h2>
+          </div>
+          <div className='group half'>
+            <Boost marker={boostMarker} ship={ship} onChange={this._boostUpdated} />
+          </div>
         </div>
-        <div className='group third'>
-          <DefenceSummary ship={ship} code={code}/>
+        <div className='group quarter'>
+          <Pips ship={ship} onChange={this._pipsUpdated} />
         </div>
-        <div className='group third'>
-          <MovementSummary ship={ship} code={code}/>
+        <div className='group quarter'>
+          <Fuel ship={ship} onChange={this._fuelUpdated}/>
         </div>
-
-        <PowerManagement ship={ship} code={code} onChange={shipUpdated} />
-        <CostSection ship={ship} buildName={buildName} code={code} />
-
-        <div className='group third'>
-          <EngineProfile ship={ship} code={code} chartWidth={thirdChartWidth} />
+        <div className='group quarter'>
+          { ship.cargoCapacity > 0 ? <Cargo ship={ship} onChange={this._cargoUpdated}/> : null }
         </div>
-
-        <div className='group third'>
-          <FSDProfile ship={ship} code={code} chartWidth={thirdChartWidth} />
+        <div className='group half'>
+          <div className='group quarter'>
+            <h2 style={{ verticalAlign: 'middle', textAlign: 'left' }}>{translate('opponent')}</h2>
+          </div>
+          <div className='group threequarters'>
+            <ShipPicker onChange={this._opponentUpdated}/>
+          </div>
         </div>
-
-        <div className='group third'>
-          <JumpRange ship={ship} code={code} chartWidth={thirdChartWidth} />
+        <div className='group half'>
+          <EngagementRange ship={ship} onChange={this._engagementRangeUpdated}/>
         </div>
-
-        <div>
-          <BattleCentre ship={ship} />
-        </div>
+        {/* Tabbed subpages */}
+        <OutfittingSubpages
+          ship={ship}
+          code={code}
+          buildName={buildName}
+          onChange={shipUpdated}
+          sys={sys}
+          eng={eng}
+          wep={wep}
+          boost={boost}
+          cargo={cargo}
+          fuel={fuel}
+          engagementRange={engagementRange}
+          opponent={opponent}
+          opponentBuild={opponentBuild}
+          chartWidth={thirdChartWidth}
+        />
       </div>
 
     );
