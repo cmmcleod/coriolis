@@ -375,6 +375,7 @@ export default class OutfittingPage extends Page {
 
     // Markers are used to propagate state changes without requiring a deep comparison of the ship, as that takes a long time
     const boostMarker = `${ship.canBoost()}`;
+    const shipSummaryMarker = `${ship.toString()}:${eng}:${fuel}:${cargo}`;
 
     return (
       <div id='outfit' className={'page'} style={{ fontSize: (sizeRatio * 0.9) + 'em' }}>
@@ -410,7 +411,7 @@ export default class OutfittingPage extends Page {
         </div>
 
         {/* Main tables */}
-        <ShipSummaryTable ship={ship} code={code} />
+        <ShipSummaryTable ship={ship} marker={shipSummaryMarker} eng={eng} sys={sys} wep={wep} cargo={cargo} fuel={fuel}/>
         <StandardSlotSection ship={ship} code={code} onChange={shipUpdated} currentMenu={menu} />
         <InternalSlotSection ship={ship} code={iStr} onChange={shipUpdated} currentMenu={menu} />
         <HardpointsSlotSection ship={ship} code={hStr || ''} onChange={shipUpdated} currentMenu={menu} />

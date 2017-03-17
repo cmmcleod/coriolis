@@ -9,33 +9,33 @@ import Module from './Module';
  * @return {number}      Distance in Light Years
  */
 export function jumpRange(mass, fsd, fuel) {
-  let fsdMaxFuelPerJump = fsd instanceof Module ? fsd.getMaxFuelPerJump() : fsd.maxfuel;
-  let fsdOptimalMass = fsd instanceof Module ? fsd.getOptMass() : fsd.optmass;
+  const fsdMaxFuelPerJump = fsd instanceof Module ? fsd.getMaxFuelPerJump() : fsd.maxfuel;
+  const fsdOptimalMass = fsd instanceof Module ? fsd.getOptMass() : fsd.optmass;
   return Math.pow(Math.min(fuel === undefined ? fsdMaxFuelPerJump : fuel, fsdMaxFuelPerJump) / fsd.fuelmul, 1 / fsd.fuelpower) * fsdOptimalMass / mass;
 }
 
 /**
- * Calculate the fastest (total) range based on mass and a specific FSD, and all fuel available
+ * Calculate the total jump range based on mass and a specific FSD, and all fuel available
  *
  * @param  {number} mass Mass of a ship: laden, unlanden, partially laden, etc
  * @param  {object} fsd  The FDS object/component with maxfuel, fuelmul, fuelpower, optmass
  * @param  {number} fuel The total fuel available
  * @return {number}      Distance in Light Years
  */
-export function fastestRange(mass, fsd, fuel) {
-  let fsdMaxFuelPerJump = fsd instanceof Module ? fsd.getMaxFuelPerJump() : fsd.maxfuel;
-  let fsdOptimalMass = fsd instanceof Module ? fsd.getOptMass() : fsd.optmass;
-  let fuelRemaining = fuel % fsdMaxFuelPerJump;  // Fuel left after making N max jumps
-  let jumps = Math.floor(fuel / fsdMaxFuelPerJump);
-  mass += fuelRemaining;
-  // Going backwards, start with the last jump using the remaining fuel
-  let fastestRange = fuelRemaining > 0 ? Math.pow(fuelRemaining / fsd.fuelmul, 1 / fsd.fuelpower) * fsdOptimalMass / mass : 0;
-  // For each max fuel jump, calculate the max jump range based on fuel mass left in the tank
-  for (let j = 0; j < jumps; j++) {
-    mass += fsd.maxfuel;
-    fastestRange += Math.pow(fsdMaxFuelPerJump / fsd.fuelmul, 1 / fsd.fuelpower) * fsdOptimalMass / mass;
+export function totalJumpRange(mass, fsd, fuel) {
+  const fsdMaxFuelPerJump = fsd instanceof Module ? fsd.getMaxFuelPerJump() : fsd.maxfuel;
+  const fsdOptimalMass = fsd instanceof Module ? fsd.getOptMass() : fsd.optmass;
+
+  let fuelRemaining = fuel;
+  let totalRange = 0;
+  while (fuelRemaining > 0) {
+    const fuelForThisJump = Math.min(fuelRemaining, fsdMaxFuelPerJump);
+    totalRange += this.jumpRange(mass, fsd, fuelForThisJump);
+    // Mass is reduced
+    mass -= fuelForThisJump;
+    fuelRemaining -= fuelForThisJump;
   }
-  return fastestRange;
+  return totalRange;
 };
 
 /**

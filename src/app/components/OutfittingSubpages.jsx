@@ -138,7 +138,7 @@ export default class OutfittingSubpages extends TranslatedComponent {
     }
 
     return (
-      <div className='group full' style={{ minHeight: '900px' }}>
+      <div className='group full' style={{ minHeight: '1000px' }}>
         <table className='tabs'>
           <thead>
             <tr>

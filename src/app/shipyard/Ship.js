@@ -138,17 +138,6 @@ export default class Ship {
         this.standard[4].m.getEnginesCapacity() > this.boostEnergy; // PD capacitor is sufficient for boost
   }
 
-    /**
-   * Calculate hypothetical jump range using the installed FSD and the
-   * specified mass which can be more or less than ships actual mass
-   * @param  {Number} fuel  Fuel available in tons
-   * @param  {Number} cargo Cargo in tons
-   * @return {Number}       Jump range in Light Years
-   */
-  calcJumpRangeWith(fuel, cargo) {
-    return Calc.jumpRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
-  }
-
   /**
    * Calculate the hypothetical laden jump range based on a potential change in mass, fuel, or FSD
    * @param  {Number} massDelta Optional - Change in laden mass (mass + cargo + fuel)
@@ -171,17 +160,6 @@ export default class Ship {
     fsd = fsd || this.standard[2].m;
     let fsdMaxFuelPerJump = fsd instanceof Module ? fsd.getMaxFuelPerJump() : fsd.maxfuel;
     return Calc.jumpRange(this.unladenMass + (massDelta || 0) +  Math.min(fsdMaxFuelPerJump, fuel || this.fuelCapacity), fsd || this.standard[2].m, fuel);
-  }
-
-  /**
-   * Calculate cumulative (total) jump range when making longest jumps using the installed FSD and the
-   * specified mass which can be more or less than ships actual mass
-   * @param  {Number} fuel  Fuel available in tons
-   * @param  {Number} cargo Cargo in tons
-   * @return {Number}       Total/Cumulative Jump range in Light Years
-   */
-  calcFastestRangeWith(fuel, cargo) {
-    return Calc.fastestRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
   }
 
   /**
@@ -1398,9 +1376,9 @@ export default class Ship {
     this.unladenRange = this.calcUnladenRange(); // Includes fuel weight for jump
     this.fullTankRange = Calc.jumpRange(unladenMass + fuelCapacity, fsd); // Full Tank
     this.ladenRange = this.calcLadenRange(); // Includes full tank and caro
-    this.unladenFastestRange = Calc.fastestRange(unladenMass, fsd, fuelCapacity);
-    this.ladenFastestRange = Calc.fastestRange(unladenMass + this.cargoCapacity, fsd, fuelCapacity);
-    this.maxJumpCount = Math.ceil(fuelCapacity / fsd.maxfuel);
+    this.unladenFastestRange = Calc.totalJumpRange(unladenMass + this.fuelCapacity, fsd, fuelCapacity);
+    this.ladenFastestRange = Calc.totalJumpRange(unladenMass + this.fuelCapacity + this.cargoCapacity, fsd, fuelCapacity);
+    this.maxJumpCount = Math.ceil(fuelCapacity / fsd.getMaxFuelPerJump());
     return this;
   }
 
