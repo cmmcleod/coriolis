@@ -102,8 +102,8 @@ export default class VerticalBarChart extends Component {
         .attr('text-anchor', 'middle')
         .attr('x', 100)
         .attr('y', 100)
-        .attr('stroke', '#ffffff')
-        .attr('stroke-width', '1px')
+        .attr('stroke-width', '0px')
+        .attr('fill', '#ffffff')
       .attr('x', d => this.x(d.label) + this.x.bandwidth() / 2)
       .attr('y', d => this.y(d.value) + 15)
       .text(d => d.value);
@@ -115,16 +115,17 @@ export default class VerticalBarChart extends Component {
    */
   render() {
     const { width } = this.state.dimensions;
-
     const translate = `translate(${margin.left}, ${margin.top})`;
+
+    const height = width * ASPECT;
 
     this._renderGraph(this.props);
 
     return (
       <Measure width='100%' whitelist={['width', 'top']} onMeasure={ (dimensions) => { this.setState({ dimensions }); }}>
-        <div width={width} height={width * ASPECT}>
+        <div width={width} height={height}>
           { this.x ? 
-          <svg ref={ref => this.svg = ref} width={width} height={width * ASPECT} transform={translate}>
+          <svg ref={ref => this.svg = ref} width={width} height={height} transform={translate}>
             <g transform={translate}></g>
           </svg> : null }
         </div>

@@ -57,8 +57,8 @@ export default class PieChart extends Component {
     return (
       <g key={`group-${i}`}>
         <path key={`arc-${i}`} d={this.arc(d)} style={{ fill: this.colors[i] }} />
-        <text key={`label-${i}`} transform={labelTranslate} stroke={LABEL_COLOUR} strokeWidth='1px' fill='None' textAnchor='middle'>{d.value}</text>
-        <text key={`key-${i}`} transform={keyTranslate} style={{ stroke: this.colors[i], strokeWidth:'1px', fill:'None' }} textAnchor='middle'>{d.data.label}</text>
+        <text key={`label-${i}`} transform={labelTranslate} style={{ strokeWidth: '0px', fill: LABEL_COLOUR }} textAnchor='middle'>{d.value}</text>
+        <text key={`key-${i}`} transform={keyTranslate} style={{ strokeWidth:'0px', fill: this.colors[i] }} textAnchor='middle'>{d.data.label}</text>
       </g>
     );
   }
