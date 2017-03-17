@@ -33,7 +33,6 @@ export default class Movement extends TranslatedComponent {
 
     return (
       <span id='movement'>
-        <h1>{translate('movement profile')}</h1>
         <svg viewBox='0 0 600 600' fillRule="evenodd" clipRule="evenodd">
           // Axes
           <path d="M150 250v300" strokeWidth='1'/>

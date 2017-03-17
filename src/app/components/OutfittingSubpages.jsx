@@ -11,6 +11,7 @@ import EngineProfile from './EngineProfile';
 import FSDProfile from './FSDProfile';
 import Movement from './Movement';
 import Defence from './Defence';
+import WeaponDamageChart from './WeaponDamageChart';
 
 /**
  * Outfitting subpages
@@ -21,7 +22,6 @@ export default class OutfittingSubpages extends TranslatedComponent {
     ship: React.PropTypes.object.isRequired,
     code: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func.isRequired,
-    chartWidth: React.PropTypes.number.isRequired,
     buildName: React.PropTypes.string,
     sys: React.PropTypes.number.isRequired,
     eng: React.PropTypes.number.isRequired,
@@ -73,24 +73,39 @@ export default class OutfittingSubpages extends TranslatedComponent {
    * @return {React.Component} Tab contents
    */
   _profilesTab() {
-    const { ship, code, chartWidth, cargo, fuel, eng, boost } = this.props;
+    const { ship, opponent, cargo, fuel, eng, boost, engagementRange } = this.props;
+    const { translate } = this.context.language;
     let realBoost = boost && ship.canBoost();
 
     const engineProfileMarker = `${ship.toString()}:${cargo}:${fuel}:${eng}:${realBoost}`;
     const fsdProfileMarker = `${ship.toString()}:${cargo}:${fuel}`;
     const movementMarker = `${ship.topSpeed}:${ship.pitch}:${ship.roll}:${ship.yaw}:${ship.canBoost()}`;
+    const damageMarker = `${ship.toString()}:${opponent.toString()}:${engagementRange}`;
 
     return <div>
       <div className='group third'>
-        <EngineProfile ship={ship} marker={engineProfileMarker} chartWidth={chartWidth} fuel={fuel} cargo={cargo} eng={eng} boost={realBoost} />
+        <h1>{translate('engine profile')}</h1>
+        <EngineProfile ship={ship} marker={engineProfileMarker} fuel={fuel} cargo={cargo} eng={eng} boost={realBoost} />
       </div>
 
       <div className='group third'>
-        <FSDProfile ship={ship} marker={fsdProfileMarker} fuel={fuel} cargo={cargo} chartWidth={chartWidth} />
+        <h1>{translate('fsd profile')}</h1>
+        <FSDProfile ship={ship} marker={fsdProfileMarker} fuel={fuel} cargo={cargo} />
       </div>
 
       <div className='group third'>
+        <h1>{translate('movement profile')}</h1>
         <Movement marker={movementMarker} ship={ship} boost={boost} eng={eng} cargo={cargo} fuel={fuel}/>
+      </div>
+
+      <div className='group half'>
+        <h1>{translate('damage to opponent\'s shields')}</h1>
+        <WeaponDamageChart marker={damageMarker} ship={ship} opponent={opponent} hull={false} engagementRange={engagementRange} />
+      </div>
+
+      <div className='group half'>
+        <h1>{translate('damage to opponent\'s hull')}</h1>
+        <WeaponDamageChart marker={damageMarker} ship={ship} opponent={opponent} hull={true} engagementRange={engagementRange} />
       </div>
     </div>;
   }
@@ -114,7 +129,7 @@ export default class OutfittingSubpages extends TranslatedComponent {
   _defenceTab() {
     const { ship, sys, eng, wep, cargo, fuel, boost, engagementRange, opponent, opponentBuild } = this.props;
 
-    const marker = `${ship.shield}:${ship.shieldCells}:${ship.shieldExplRes}:${ship.shieldKinRes}:${ship.shieldThermRes}:${ship.armour}:${ship.standard[4].m.getSystemsCapacity()}:${ship.standard[4].m.getSystemsRechargeRate()}:${opponent.name}:${opponentBuild}:${engagementRange}`;
+    const marker = `${ship.toString()}:${opponent.name}:${opponentBuild}:${engagementRange}`;
 
     return <div>
       <Defence marker={marker} ship={ship} opponent={opponent} sys={sys} engagementrange={engagementRange}/>

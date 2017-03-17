@@ -14,9 +14,6 @@ import StandardSlotSection from '../components/StandardSlotSection';
 import HardpointsSlotSection from '../components/HardpointsSlotSection';
 import InternalSlotSection from '../components/InternalSlotSection';
 import UtilitySlotSection from '../components/UtilitySlotSection';
-import OffenceSummary from '../components/OffenceSummary';
-import DefenceSummary from '../components/DefenceSummary';
-import MovementSummary from '../components/MovementSummary';
 import Pips from '../components/Pips';
 import Boost from '../components/Boost';
 import Fuel from '../components/Fuel';
@@ -92,7 +89,6 @@ export default class OutfittingPage extends Page {
       title: this._getTitle(buildName),
       costTab: Persist.getCostTab() || 'costs',
       buildName,
-      thirdChartWidth: 400,
       newBuildName: buildName,
       shipId,
       ship,
@@ -269,20 +265,6 @@ export default class OutfittingPage extends Page {
   }
 
   /**
-   * Update dimenions from rendered DOM
-   */
-  _updateDimensions() {
-    let elem = findDOMNode(this.refs.chartThird);
-
-    if (elem) {
-      this.setState({
-        thirdChartWidth: findDOMNode(this.refs.chartThird).offsetWidth,
-        halfChartWidth: findDOMNode(this.refs.chartThird).offsetWidth * 3 / 2
-      });
-    }
-  }
-
-  /**
    * Update state based on context changes
    * @param  {Object} nextProps   Incoming/Next properties
    * @param  {Object} nextContext Incoming/Next conext
@@ -297,22 +279,14 @@ export default class OutfittingPage extends Page {
    * Add listeners when about to mount
    */
   componentWillMount() {
-    this.resizeListener = this.context.onWindowResize(this._updateDimensions);
     document.addEventListener('keydown', this._keyDown);
-  }
-
-  /**
-   * Trigger DOM updates on mount
-   */
-  componentDidMount() {
-    this._updateDimensions();
   }
 
   /**
    * Remove listeners on unmount
    */
   componentWillUnmount() {
-    this.resizeListener.remove();
+    document.removeEventListener('keydown', this._keyDown);
   }
 
   /**
@@ -360,7 +334,7 @@ export default class OutfittingPage extends Page {
     let state = this.state,
         { language, termtip, tooltip, sizeRatio, onWindowResize } = this.context,
         { translate, units, formats } = language,
-        { ship, code, savedCode, buildName, newBuildName, halfChartWidth, thirdChartWidth, sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, engagementRange } = state,
+        { ship, code, savedCode, buildName, newBuildName, sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, engagementRange } = state,
         hide = tooltip.bind(null, null),
         menu = this.props.currentMenu,
         shipUpdated = this._shipUpdated,
@@ -446,6 +420,7 @@ export default class OutfittingPage extends Page {
         <div className='group half'>
           <EngagementRange ship={ship} onChange={this._engagementRangeUpdated}/>
         </div>
+
         {/* Tabbed subpages */}
         <OutfittingSubpages
           ship={ship}
@@ -461,10 +436,8 @@ export default class OutfittingPage extends Page {
           engagementRange={engagementRange}
           opponent={opponent}
           opponentBuild={opponentBuild}
-          chartWidth={thirdChartWidth}
         />
       </div>
-
     );
   }
 }

@@ -43,6 +43,11 @@ export default class PieChart extends Component {
    * @returns {Object}     the SVG for the slice
    */
   sliceGenerator(d, i) {
+    if (!d || d.value == 0) {
+      // Ignore 0 values
+      return null;
+    }
+
     const { width, height } = this.state.dimensions;
     const { data } = this.props;
 

@@ -15,7 +15,6 @@ import * as Calc from '../shipyard/Calculations';
 export default class EngineProfile extends TranslatedComponent {
   static propTypes = {
     ship: React.PropTypes.object.isRequired,
-    chartWidth: React.PropTypes.number.isRequired,
     cargo: React.PropTypes.number.isRequired,
     fuel: React.PropTypes.number.isRequired,
     eng: React.PropTypes.number.isRequired,
@@ -87,24 +86,20 @@ export default class EngineProfile extends TranslatedComponent {
 
     // This graph can have a precipitous fall-off so we use lots of points to make it look a little smoother
     return (
-      <span>
-        <h1>{translate('engine profile')}</h1>
-        <LineChart
-          width={this.props.chartWidth}
-          xMin={minMass}
-          xMax={maxMass}
-          yMin={minSpeed}
-          yMax={maxSpeed}
-          xMark={mark}
-          xLabel={translate('mass')}
-          xUnit={translate('T')}
-          yLabel={translate('maximum speed')}
-          yUnit={translate('m/s')}
-          func={this.state.calcMaxSpeedFunc}
-          points={1000}
-          code={code}
-        />
-      </span>
+      <LineChart
+        xMin={minMass}
+        xMax={maxMass}
+        yMin={minSpeed}
+        yMax={maxSpeed}
+        xMark={mark}
+        xLabel={translate('mass')}
+        xUnit={translate('T')}
+        yLabel={translate('maximum speed')}
+        yUnit={translate('m/s')}
+        func={this.state.calcMaxSpeedFunc}
+        points={1000}
+        code={code}
+      />
     );
   }
 }

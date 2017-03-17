@@ -15,7 +15,6 @@ import * as Calc from '../shipyard/Calculations';
 export default class FSDProfile extends TranslatedComponent {
   static propTypes = {
     ship: React.PropTypes.object.isRequired,
-    chartWidth: React.PropTypes.number.isRequired,
     cargo: React.PropTypes.number.isRequired,
     fuel: React.PropTypes.number.isRequired,
     marker: React.PropTypes.string.isRequired
@@ -85,24 +84,20 @@ export default class FSDProfile extends TranslatedComponent {
     const code = ship.name + ship.toString() + '.' + fuel;
 
     return (
-      <span>
-        <h1>{translate('fsd profile')}</h1>
-        <LineChart
-          width={this.props.chartWidth}
-          xMin={minMass}
-          xMax={maxMass}
-          yMin={minRange}
-          yMax={maxRange}
-          xMark={mark}
-          xLabel={translate('mass')}
-          xUnit={translate('T')}
-          yLabel={translate('maximum range')}
-          yUnit={translate('LY')}
-          func={this.state.calcMaxRangeFunc}
-          points={200}
-          code={code}
-        />
-      </span>
+      <LineChart
+        xMin={minMass}
+        xMax={maxMass}
+        yMin={minRange}
+        yMax={maxRange}
+        xMark={mark}
+        xLabel={translate('mass')}
+        xUnit={translate('T')}
+        yLabel={translate('maximum range')}
+        yUnit={translate('LY')}
+        func={this.state.calcMaxRangeFunc}
+        points={200}
+        code={code}
+      />
     );
   }
 }

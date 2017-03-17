@@ -15,7 +15,6 @@ import * as Calc from '../shipyard/Calculations';
 export default class JumpRange extends TranslatedComponent {
   static propTypes = {
     ship: React.PropTypes.object.isRequired,
-    chartWidth: React.PropTypes.number.isRequired,
     code: React.PropTypes.string.isRequired
   };
 
@@ -91,7 +90,6 @@ export default class JumpRange extends TranslatedComponent {
       <span>
         <h1>{translate('jump range')}</h1>
         <LineChart
-          width={this.props.chartWidth}
           xMax={ship.cargoCapacity}
           yMax={ship.unladenRange}
           xLabel={translate('cargo')}
