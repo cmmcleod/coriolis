@@ -2,7 +2,44 @@ import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
 import * as Calc from '../shipyard/Calculations';
 import PieChart from './PieChart';
+import { nameComparator } from '../utils/SlotFunctions';
+import { MountFixed, MountGimballed, MountTurret } from './SvgIcons';
 import VerticalBarChart from './VerticalBarChart';
+
+/**
+ * Generates an internationalization friendly weapon comparator that will
+ * sort by specified property (if provided) then by name/group, class, rating
+ * @param  {function} translate       Translation function
+ * @param  {function} propComparator  Optional property comparator
+ * @param  {boolean} desc             Use descending order
+ * @return {function}                 Comparator function for names
+ */
+export function weaponComparator(translate, propComparator, desc) {
+  return (a, b) => {
+    if (!desc) {  // Flip A and B if ascending order
+      let t = a;
+      a = b;
+      b = t;
+    }
+
+    // If a property comparator is provided use it first
+    let diff = propComparator ? propComparator(a, b) : nameComparator(translate, a, b);
+
+    if (diff) {
+      return diff;
+    }
+
+    // Property matches so sort by name / group, then class, rating
+    if (a.name === b.name && a.grp === b.grp) {
+      if(a.class == b.class) {
+        return a.rating > b.rating ? 1 : -1;
+      }
+      return a.class - b.class;
+    }
+
+    return nameComparator(translate, a, b);
+  };
+}
 
 /**
  * Offence information
@@ -28,8 +65,14 @@ export default class Offence extends TranslatedComponent {
   constructor(props) {
     super(props);
 
-    const { shield, armour, shielddamage, armourdamage } = Calc.offenceMetrics(props.ship, props.opponent, props.eng, props.engagementrange);
-    this.state = { shield, armour, shielddamage, armourdamage };
+    this._sort = this._sort.bind(this);
+
+    const damage = Calc.offenceMetrics(props.ship, props.opponent, props.eng, props.engagementrange);
+    this.state = { 
+      predicate: 'n',
+      desc: true,
+      damage
+    };
   }
 
   /**
@@ -39,10 +82,49 @@ export default class Offence extends TranslatedComponent {
    */
   componentWillReceiveProps(nextProps) {
     if (this.props.marker != nextProps.marker || this.props.sys != nextProps.sys) {
-      const { shield, armour, shielddamage, armourdamage } = Calc.offenceMetrics(nextProps.ship, nextProps.opponent, nextProps.wep, nextProps.engagementrange);
-      this.setState({ shield, armour, shielddamage, armourdamage });
+      const damage = Calc.offenceMetrics(nextProps.ship, nextProps.opponent, nextProps.wep, nextProps.engagementrange);
+      this.setState({ damage });
     }
     return true;
+  }
+
+  /**
+   * Set the sort order and sort
+   * @param  {string} predicate Sort predicate
+   */
+  _sortOrder(predicate) {
+    let desc = this.state.desc;
+
+    if (predicate == this.state.predicate) {
+      desc = !desc;
+    } else {
+      desc = true;
+    }
+
+    this._sort(this.props.ship, predicate, desc);
+    this.setState({ predicate, desc });
+  }
+
+  /**
+   * Sorts the weapon list
+   * @param  {Ship} ship          Ship instance
+   * @param  {string} predicate   Sort predicate
+   * @param  {Boolean} desc       Sort order descending
+   */
+  _sort(ship, predicate, desc) {
+    let comp = weaponComparator.bind(null, this.context.language.translate);
+
+    switch (predicate) {
+      case 'n': comp = comp(null, desc); break;
+      case 'edpss': comp = comp((a, b) => a.effectiveDpsShields - b.effectiveDpsShields, desc); break;
+      case 'esdpss': comp = comp((a, b) => a.effectiveSDpsShields - b.effectiveSDpsShields, desc); break;
+      case 'es': comp = comp((a, b) => a.effectivenessShields - b.effectivenessShields, desc); break;
+      case 'edpsh': comp = comp((a, b) => a.effectiveDpsHull - b.effectiveDpsHull, desc); break;
+      case 'esdpsh': comp = comp((a, b) => a.effectiveSDpsHull - b.effectiveSDpsHull, desc); break;
+      case 'eh': comp = comp((a, b) => a.effectivenessHull - b.effectivenessHull, desc); break;
+    }
+
+    this.state.damage.sort(comp);
   }
 
   /**
@@ -53,8 +135,26 @@ export default class Offence extends TranslatedComponent {
     const { ship, wep } = this.props;
     const { language, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
-//    const { shield, armour, shielddamage, armourdamage } = this.state;
+    const { damage } = this.state;
+    const sortOrder = this._sortOrder;
 
+    const rows = [];
+    for (let i = 0; i < damage.length; i++) {
+      const weapon = damage[i];
+      rows.push(<tr key={weapon.id}>
+                  <td className='ri'>
+                    {weapon.mount == 'F' ? <span onMouseOver={termtip.bind(null, 'fixed')} onMouseOut={tooltip.bind(null, null)}><MountFixed className='icon'/></span> : null}
+                    {weapon.mount == 'G' ? <span onMouseOver={termtip.bind(null, 'gimballed')} onMouseOut={tooltip.bind(null, null)}><MountGimballed /></span> : null}
+                    {weapon.mount == 'T' ? <span onMouseOver={termtip.bind(null, 'turreted')} onMouseOut={tooltip.bind(null, null)}><MountTurret /></span> : null}
+                    {weapon.classRating} {translate(weapon.name)}
+                    {weapon.engineering ? ' (' + weapon.engineering + ')' : null }
+                  </td>
+                  <td className='ri'>{formats.f1(weapon.sdpsShields)}</td>
+                  <td className='ri'>{formats.pct1(weapon.effectivenessShields)}</td>
+                  <td className='ri'>{formats.f1(weapon.sdpsArmour)}</td>
+                  <td className='ri'>{formats.pct1(weapon.effectivenessArmour)}</td>
+                </tr>);
+    }    
 //    const shieldSourcesData = [];
 //    const effectiveShieldData = [];
 //    const shieldDamageTakenData = [];
@@ -148,52 +248,24 @@ export default class Offence extends TranslatedComponent {
 
     return (
       <span id='offence'>
-	    {/*
-        {shield.total ? <span>
-        <div className='group quarter'>
-          <h2>{translate('shield metrics')}</h2>
-          <br/>
-          <h2 onMouseOver={termtip.bind(null, <div>{shieldTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('raw shield strength')}<br/>{formats.int(shield.total)}{units.MJ}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_SHIELDS')}<br/>{shielddamage.totalsdps == 0 ? translate('ever') : formats.time(shield.total / shielddamage.totalsdps)}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECOVER'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECOVER_SHIELDS')}<br/>{shield.recover === Math.Inf ? translate('never') : formats.time(shield.recover)}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECHARGE'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECHARGE_SHIELDS')}<br/>{shield.recharge === Math.Inf ? translate('never') : formats.time(shield.recharge)}</h2>
-        </div>
-        <div className='group quarter'>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SHIELD_SOURCES'))} onMouseOut={tooltip.bind(null, null)}>{translate('shield sources')}</h2>
-          <PieChart data={shieldSourcesData} />
-        </div>
-        <div className='group quarter'>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_DAMAGE_TAKEN'))} onMouseOut={tooltip.bind(null, null)}>{translate('damage taken')}(%)</h2>
-          <VerticalBarChart data={shieldDamageTakenData} yMax={100} />
-        </div>
-        <div className='group quarter'>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_EFFECTIVE_SHIELD'))} onMouseOut={tooltip.bind(null, null)}>{translate('effective shield')}(MJ)</h2>
-          <VerticalBarChart data={effectiveShieldData} yMax={maxEffectiveShield}/>
-        </div>
-        </span> : null }
-
-        <div className='group quarter'>
-          <h2>{translate('armour metrics')}</h2>
-          <h2 onMouseOver={termtip.bind(null, <div>{armourTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('raw armour strength')}<br/>{formats.int(armour.total)}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_ARMOUR')}<br/>{armourdamage.totalsdps == 0 ? translate('ever') : formats.time(armour.total / armourdamage.totalsdps)}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('TT_MODULE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('raw module armour')}<br/>{formats.int(armour.modulearmour)}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('TT_MODULE_PROTECTION_EXTERNAL'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_MODULE_PROTECTION_EXTERNAL')}<br/>{formats.pct1(armour.moduleprotection / 2)}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('TT_MODULE_PROTECTION_INTERNAL'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_MODULE_PROTECTION_INTERNAL')}<br/>{formats.pct1(armour.moduleprotection)}</h2>
-          <br/>
-        </div>
-        <div className='group quarter'>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_ARMOUR_SOURCES'))} onMouseOut={tooltip.bind(null, null)}>{translate('armour sources')}</h2>
-          <PieChart data={armourSourcesData} />
-        </div>
-        <div className='group quarter'>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_DAMAGE_TAKEN'))} onMouseOut={tooltip.bind(null, null)}>{translate('damage taken')}(%)</h2>
-          <VerticalBarChart data={armourDamageTakenData} yMax={100} />
-        </div>
-        <div className='group quarter'>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_EFFECTIVE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('effective armour')}</h2>
-          <VerticalBarChart data={effectiveArmourData} />
-        </div>
-	*/}
+        <table width='100%'>
+          <thead>
+          <tr className='main'>
+            <th rowSpan='2' className='sortable' onClick={sortOrder.bind(this, 'n')}>{translate('weapon')}</th>
+            <th colSpan='2'>{translate('opponent shields')}</th>
+            <th colSpan='2'>{translate('opponent armour')}</th>
+          </tr>
+          <tr>
+            <th className='lft sortable' onClick={sortOrder.bind(this, 'esdpss')}>{translate('effective sdps')}</th>
+            <th className='sortable' onClick={sortOrder.bind(this, 'es')}>{translate('effectiveness')}</th>
+            <th className='lft sortable' onClick={sortOrder.bind(this, 'esdpsh')}>{translate('effective sdps')}</th>
+            <th className='sortable' onClick={sortOrder.bind(this, 'eh')}>{translate('effectiveness')}</th>
+          </tr>
+          </thead>
+          <tbody>
+            {rows}
+          </tbody>
+        </table>
       </span>);
   }
 }

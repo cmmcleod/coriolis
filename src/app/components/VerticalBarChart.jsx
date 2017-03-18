@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Measure from 'react-measure';
 import * as d3 from 'd3';
+import TranslatedComponent from './TranslatedComponent';
 
 const CORIOLIS_COLOURS = ['#FF8C0D', '#1FB0FF', '#519032', '#D5420D'];
 const LABEL_COLOUR = '#FFFFFF';
@@ -16,7 +17,7 @@ const merge = function(one, two) {
 /**
  * A vertical bar chart
  */
-export default class VerticalBarChart extends Component {
+export default class VerticalBarChart extends TranslatedComponent {
 
   static propTypes = {
     data : React.PropTypes.array.isRequired,
@@ -45,6 +46,7 @@ export default class VerticalBarChart extends Component {
    */
   _renderGraph(props) {
     let { width, height } = this.state.dimensions;
+    const { tooltip, termtip } = this.context;
 
     width = width - margin.left - margin.right,
     height = width * ASPECT - margin.top - margin.bottom;
@@ -104,9 +106,9 @@ export default class VerticalBarChart extends Component {
         .attr('y', 100)
         .attr('stroke-width', '0px')
         .attr('fill', '#ffffff')
-      .attr('x', d => this.x(d.label) + this.x.bandwidth() / 2)
-      .attr('y', d => this.y(d.value) + 15)
-      .text(d => d.value);
+        .attr('x', d => this.x(d.label) + this.x.bandwidth() / 2)
+        .attr('y', d => this.y(d.value) + 15)
+        .text(d => d.value);
   }
 
   /**
@@ -125,7 +127,7 @@ export default class VerticalBarChart extends Component {
       <Measure width='100%' whitelist={['width', 'top']} onMeasure={ (dimensions) => { this.setState({ dimensions }); }}>
         <div width={width} height={height}>
           { this.x ? 
-          <svg ref={ref => this.svg = ref} width={width} height={height} transform={translate}>
+          <svg ref={ref => this.svg = ref} width={width} height={height}>
             <g transform={translate}></g>
           </svg> : null }
         </div>

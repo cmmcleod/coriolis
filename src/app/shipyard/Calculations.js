@@ -544,23 +544,23 @@ export function defenceMetrics(ship, opponent, sys, engagementrange) {
   const armour = this.armourMetrics(ship);
 
   // Obtain the opponent's sustained DPS on us
-  const { shieldsdps, armoursdps } = this._sustainedDps(opponent, ship, engagementrange);
+  const sustainedDps = this.sustainedDps(opponent, ship, sys, engagementrange);
 
-  const shielddamage = shield.generatorStrength ? {
-    absolutesdps: shieldsdps.absolute *= shield.absolute.total,
-    explosivesdps: shieldsdps.explosive *= shield.explosive.total,
-    kineticsdps: shieldsdps.kinetic *= shield.kinetic.total,
-    thermalsdps: shieldsdps.thermal *= shield.thermal.total,
-    totalsdps: shielddamage.absolutesdps + shielddamage.explosivesdps + shielddamage.kineticsdps + shielddamage.thermalsdps
-  } : {} ;
+  const shielddamage = shield.generator ? {
+    absolutesdps: sustainedDps.shieldsdps.absolute,
+    explosivesdps: sustainedDps.shieldsdps.explosive,
+    kineticsdps: sustainedDps.shieldsdps.kinetic,
+    thermalsdps: sustainedDps.shieldsdps.thermal,
+    totalsdps: sustainedDps.shieldsdps.absolute + sustainedDps.shieldsdps.explosive + sustainedDps.shieldsdps.kinetic + sustainedDps.shieldsdps.thermal
+  } : {};
 
   const armourdamage = {
-    absolutesdps: armoursdps.absolute *= armour.absolute.total,
-    explosivesdps: armoursdps.explosive *= armour.explosive.total,
-    kineticsdps: armoursdps.kinetic *= armour.kinetic.total,
-    thermalsdps: armoursdps.thermal *= armour.thermal.total
+    absolutesdps: sustainedDps.armoursdps.absolute,
+    explosivesdps: sustainedDps.armoursdps.explosive,
+    kineticsdps: sustainedDps.armoursdps.kinetic,
+    thermalsdps: sustainedDps.armoursdps.thermal,
+    totalsdps: sustainedDps.armoursdps.absolute + sustainedDps.armoursdps.explosive + sustainedDps.armoursdps.kinetic + sustainedDps.armoursdps.thermal
   };
-  armourdamage.totalsdps = armourdamage.absolutesdps + armourdamage.explosivesdps + armourdamage.kineticsdps + armourdamage.thermalsdps;
 
   return { shield, armour, shielddamage, armourdamage };
 }
@@ -571,19 +571,48 @@ export function defenceMetrics(ship, opponent, sys, engagementrange) {
  * @param   {Object}  opponent        The opponent ship
  * @param   {int}     wep             The pips to WEP
  * @param   {int}     engagementrange The range between the ship and opponent
- * @returns {Object}                  Offence metrics
+ * @returns {array}                   Offence metrics
  */
 export function offenceMetrics(ship, opponent, wep, engagementrange) {
-
-  // Per-weapon and total damage to armour
-  const armourdamage = {};
+  // Per-weapon and total damage
+  const damage = [];
 
   // Obtain the opponent's shield and armour metrics
   const opponentShields = this.shieldMetrics(opponent, 4);
   const opponentArmour = this.armourMetrics(opponent);
 
   // Per-weapon and total damage to shields
-  const shielddamage = opponentShields.generatorStrength ? {
+  for (let i = 0; i < ship.hardpoints.length; i++) {
+    if (ship.hardpoints[i].maxClass > 0 && ship.hardpoints[i].m && ship.hardpoints[i].enabled) {
+      const m = ship.hardpoints[i].m;
+
+      const classRating = `${m.class}${m.rating}${m.missile ? '/' + m.missile : ''}`;
+      let engineering;
+      if (m.blueprint && m.blueprint.name) {
+        engineering = m.blueprint.name + ' ' + 'grade' + ' ' + m.blueprint.grade;
+        if (m.blueprint.special && m.blueprint.special.id >= 0) {
+          engineering += ', ' + m.blueprint.special.name;
+        }
+      }
+
+      const weaponSustainedDps = this._weaponSustainedDps(m, opponent, opponentShields, opponentArmour, engagementrange);
+      damage.push({
+        id: i,
+        mount: m.mount,
+        name: m.name || m.grp,
+        classRating,
+        engineering,
+        sdpsShields: weaponSustainedDps.damage.shields.total,
+        sdpsArmour: weaponSustainedDps.damage.armour.total,
+        effectivenessShields: weaponSustainedDps.effectiveness.shields.total,
+        effectivenessArmour: weaponSustainedDps.effectiveness.armour.total
+      });
+    }
+  }
+
+  return damage;
+
+  const shielddamage = opponentShields.generator ? {
     absolute: {
       weapon1: 10,
       weapon2: 10,
@@ -593,7 +622,7 @@ export function offenceMetrics(ship, opponent, wep, engagementrange) {
     }
   } : {};
 
-  return { shielddamage, armourdamage };
+  return damage;
 }
 
 /**
@@ -616,13 +645,31 @@ export function sysRechargeRate(pd, sys) {
 }
 
 /**
- * Calculate the sustained DPS for a ship at a given range, excluding resistances
+ * Calculate the sustained DPS for a ship against an opponent at a given range
  * @param   {Object}  ship            The ship
  * @param   {Object}  opponent        The opponent ship
+ * @param   {number}  sys             Pips to opponent's SYS
  * @param   {int}     engagementrange The range between the ship and opponent
  * @returns {Object}                  Sustained DPS for shield and armour
  */
-export function _sustainedDps(ship, opponent, engagementrange) {
+export function sustainedDps(ship, opponent, sys, engagementrange) {
+  // Obtain the opponent's shield and armour metrics
+  const opponentShields = this.shieldMetrics(opponent, sys);
+  const opponentArmour = this.armourMetrics(opponent);
+
+  return this._sustainedDps(ship, opponent, opponentShields, opponentArmour, engagementrange);
+}
+
+/**
+ * Calculate the sustained DPS for a ship against an opponent at a given range
+ * @param   {Object}  ship            The ship
+ * @param   {Object}  opponent        The opponent ship
+ * @param   {Object}  opponentShields   The opponent's shield resistances
+ * @param   {Object}  opponentArmour    The opponent's armour resistances
+ * @param   {int}     engagementrange The range between the ship and opponent
+ * @returns {Object}                  Sustained DPS for shield and armour
+ */
+export function _sustainedDps(ship, opponent, opponentShields, opponentArmour, engagementrange) {
   const shieldsdps = {
     absolute: 0,
     explosive: 0,
@@ -640,35 +687,112 @@ export function _sustainedDps(ship, opponent, engagementrange) {
   for (let i = 0; i < ship.hardpoints.length; i++) {
     if (ship.hardpoints[i].m && ship.hardpoints[i].enabled && ship.hardpoints[i].maxClass > 0) {
       const m = ship.hardpoints[i].m;
-      // Initial sustained DPS
-      let sDps = m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) : m.getDps();
-      // Take fall-off in to account
-      const falloff = m.getFalloff();
-      if (falloff && engagementrange > falloff) {
-        const dropoffRange = m.getRange() - falloff;
-        sDps *= 1 - Math.min((engagementrange - falloff) / dropoffRange, 1);
-      }
-      // Piercing/hardness modifier (for armour only)
-      const armourMultiple = m.getPiercing() >= opponent.hardness ? 1 : m.getPiercing() / opponent.hardness;
-      // Break out the damage according to type
-      if (m.getDamageDist().A) {
-        shieldsdps.absolute += sDps * m.getDamageDist().A;
-        armoursdps.absolute += sDps * m.getDamageDist().A * armourMultiple;
-      }
-      if (m.getDamageDist().E) {
-        shieldsdps.explosive += sDps * m.getDamageDist().E;
-        armoursdps.explosive += sDps * m.getDamageDist().E * armourMultiple;
-      }
-      if (m.getDamageDist().K) {
-        shieldsdps.kinetic += sDps * m.getDamageDist().K;
-        armoursdps.kinetic += sDps * m.getDamageDist().K * armourMultiple;
-      }
-      if (m.getDamageDist().T) {
-        shieldsdps.thermal += sDps * m.getDamageDist().T;
-        armoursdps.thermal += sDps * m.getDamageDist().T * armourMultiple;
-      }
+      const sustainedDps = this._weaponSustainedDps(m, opponent, opponentShields, opponentArmour, engagementrange);
+      shieldsdps.absolute += sustainedDps.damage.shields.absolute;
+      shieldsdps.explosive += sustainedDps.damage.shields.explosive;
+      shieldsdps.kinetic += sustainedDps.damage.shields.kinetic;
+      shieldsdps.thermal += sustainedDps.damage.shields.thermal;
+      armoursdps.absolute += sustainedDps.damage.armour.absolute;
+      armoursdps.explosive += sustainedDps.damage.armour.explosive;
+      armoursdps.kinetic += sustainedDps.damage.armour.kinetic;
+      armoursdps.thermal += sustainedDps.damage.armour.thermal;
     }
   }
+
   return { shieldsdps, armoursdps };
 }
 
+/**
+ * Calculate the sustained DPS for a weapon at a given range
+ * @param   {Object}  m                 The weapon
+ * @param   {Object}  opponent        The opponent ship
+ * @param   {Object}  opponentShields   The opponent's shield resistances
+ * @param   {Object}  opponentArmour    The opponent's armour resistances
+ * @param   {int}     engagementrange   The range between the ship and opponent
+ * @returns {Object}                    Sustained DPS for shield and armour
+ */
+export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour, engagementrange) {
+  const weapon = {
+    damage: {
+      shields: {
+        absolute: 0,
+        explosive: 0,
+        kinetic: 0,
+        thermal: 0,
+        total: 0
+      },
+      armour: {
+        absolute: 0,
+        explosive: 0,
+        kinetic: 0,
+        thermal: 0,
+        total: 0
+      },
+    },
+    effectiveness: {
+      shields: {
+        range: 1,
+        sys: opponentShields.absolute.sys,
+        resistance: 1
+      },
+      armour: {
+        range: 1,
+        hardness: 1,
+        resistance: 1
+      }
+    }
+  };
+
+  // Initial sustained DPS
+  let sDps = m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) : m.getDps();
+
+  // Take fall-off in to account
+  const falloff = m.getFalloff();
+  if (falloff && engagementrange > falloff) {
+    const dropoffRange = m.getRange() - falloff;
+    const dropoff = 1 - Math.min((engagementrange - falloff) / dropoffRange, 1);
+    weapon.effectiveness.shields.range = weapon.effectiveness.armour.range = dropoff;
+    sDps *= dropoff;
+  }
+
+  // Piercing/hardness modifier (for armour only)
+  const armourMultiple = m.getPiercing() >= opponent.hardness ? 1 : m.getPiercing() / opponent.hardness;
+  weapon.effectiveness.armour.hardness = armourMultiple;
+
+  // Break out the damage according to type
+  let shieldsResistance = 0;
+  let armourResistance = 0;
+  if (m.getDamageDist().A) {
+    weapon.damage.shields.absolute += sDps * m.getDamageDist().A * opponentShields.absolute.total;
+    weapon.damage.armour.absolute += sDps * m.getDamageDist().A * armourMultiple * opponentArmour.absolute.total;
+    shieldsResistance += m.getDamageDist().A * opponentShields.absolute.generator * opponentShields.absolute.boosters;
+    armourResistance += m.getDamageDist().A * opponentArmour.absolute.bulkheads * opponentArmour.absolute.reinforcement;
+  }
+  if (m.getDamageDist().E) {
+    weapon.damage.shields.explosive += sDps * m.getDamageDist().E * opponentShields.explosive.total;
+    weapon.damage.armour.explosive += sDps * m.getDamageDist().E * armourMultiple * opponentArmour.explosive.total;
+    shieldsResistance += m.getDamageDist().E * opponentShields.explosive.generator * opponentShields.explosive.boosters;
+    armourResistance += m.getDamageDist().E * opponentArmour.explosive.bulkheads * opponentArmour.explosive.reinforcement;
+  }
+  if (m.getDamageDist().K) {
+    weapon.damage.shields.kinetic += sDps * m.getDamageDist().K * opponentShields.kinetic.total;
+    weapon.damage.armour.kinetic += sDps * m.getDamageDist().K * armourMultiple * opponentArmour.kinetic.total;
+    shieldsResistance += m.getDamageDist().K * opponentShields.kinetic.generator * opponentShields.kinetic.boosters;
+    armourResistance += m.getDamageDist().K * opponentArmour.kinetic.bulkheads * opponentArmour.kinetic.reinforcement;
+  }
+  if (m.getDamageDist().T) {
+    weapon.damage.shields.thermal += sDps * m.getDamageDist().T * opponentShields.thermal.total;
+    weapon.damage.armour.thermal += sDps * m.getDamageDist().T * armourMultiple * opponentArmour.thermal.total;
+    shieldsResistance += m.getDamageDist().T * opponentShields.thermal.generator * opponentShields.thermal.boosters;
+    armourResistance += m.getDamageDist().T * opponentArmour.thermal.bulkheads * opponentArmour.thermal.reinforcement;
+  }
+  weapon.damage.shields.total = weapon.damage.shields.absolute + weapon.damage.shields.explosive + weapon.damage.shields.kinetic + weapon.damage.shields.thermal;
+  weapon.damage.armour.total = weapon.damage.armour.absolute + weapon.damage.armour.explosive + weapon.damage.armour.kinetic + weapon.damage.armour.thermal;
+
+  weapon.effectiveness.shields.resistance *= shieldsResistance;
+  weapon.effectiveness.armour.resistance *= armourResistance;
+
+  weapon.effectiveness.shields.total = weapon.effectiveness.shields.range * weapon.effectiveness.shields.sys * weapon.effectiveness.shields.resistance;
+  weapon.effectiveness.armour.total = weapon.effectiveness.armour.range * weapon.effectiveness.armour.resistance * weapon.effectiveness.armour.hardness;
+  return weapon;
+}

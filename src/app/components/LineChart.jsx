@@ -84,7 +84,7 @@ export default class LineChart extends TranslatedComponent {
         y0 = func(x0),
         tips = this.tipContainer,
         yTotal = 0,
-        flip = (xPos / width > 0.60),
+        flip = (xPos / width > 0.50),
         tipWidth = 0,
         tipHeightPx = tips.selectAll('rect').node().getBoundingClientRect().height;
 

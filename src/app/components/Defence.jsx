@@ -69,9 +69,9 @@ export default class Defence extends TranslatedComponent {
       shieldSourcesData.push({ value: Math.round(shield.boosters), label: translate('boosters') });
       shieldSourcesData.push({ value: Math.round(shield.cells), label: translate('cells') });
 
-      shieldTooltipDetails.push(<div key='generator'>{translate('generator') + ' ' + formats.int(shield.generator)}{units.MJ}</div>);
-      shieldTooltipDetails.push(<div key='boosters'>{translate('boosters') + ' ' + formats.int(shield.boosters)}{units.MJ}</div>);
-      shieldTooltipDetails.push(<div key='cells'>{translate('cells') + ' ' + formats.int(shield.cells)}{units.MJ}</div>);
+      if (shield.generator > 0) shieldTooltipDetails.push(<div key='generator'>{translate('generator') + ' ' + formats.int(shield.generator)}{units.MJ}</div>);
+      if (shield.boosters > 0) shieldTooltipDetails.push(<div key='boosters'>{translate('boosters') + ' ' + formats.int(shield.boosters)}{units.MJ}</div>);
+      if (shield.cells > 0) shieldTooltipDetails.push(<div key='cells'>{translate('cells') + ' ' + formats.int(shield.cells)}{units.MJ}</div>);
 
       shieldAbsoluteTooltipDetails.push(<div key='generator'>{translate('generator') + ' ' + formats.pct1(shield.absolute.generator)}</div>);
       shieldAbsoluteTooltipDetails.push(<div key='boosters'>{translate('boosters') + ' ' + formats.pct1(shield.absolute.boosters)}</div>);
@@ -98,10 +98,10 @@ export default class Defence extends TranslatedComponent {
       const effectiveThermalShield = shield.total / shield.thermal.total;
       effectiveShieldData.push({ value: Math.round(effectiveThermalShield), label: translate('thermal') });
 
-      shieldDamageTakenData.push({ value: Math.round(shield.absolute.total * 100), label: translate('absolute') });
-      shieldDamageTakenData.push({ value: Math.round(shield.explosive.total * 100), label: translate('explosive') });
-      shieldDamageTakenData.push({ value: Math.round(shield.kinetic.total * 100), label: translate('kinetic') });
-      shieldDamageTakenData.push({ value: Math.round(shield.thermal.total * 100), label: translate('thermal') });
+      shieldDamageTakenData.push({ value: Math.round(shield.absolute.total * 100), label: translate('absolute'), tooltip: shieldAbsoluteTooltipDetails });
+      shieldDamageTakenData.push({ value: Math.round(shield.explosive.total * 100), label: translate('explosive'), tooltip: shieldExplosiveTooltipDetails });
+      shieldDamageTakenData.push({ value: Math.round(shield.kinetic.total * 100), label: translate('kinetic'), tooltip: shieldKineticTooltipDetails });
+      shieldDamageTakenData.push({ value: Math.round(shield.thermal.total * 100), label: translate('thermal'), tooltip: shieldThermalTooltipDetails });
 
       maxEffectiveShield = Math.max(shield.total / shield.absolute.max, shield.total / shield.explosive.max, shield.total / shield.kinetic.max, shield.total / shield.thermal.max);
     }
@@ -111,8 +111,8 @@ export default class Defence extends TranslatedComponent {
     armourSourcesData.push({ value: Math.round(armour.reinforcement), label: translate('reinforcement') });
 
     const armourTooltipDetails = [];
-    armourTooltipDetails.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.int(armour.bulkheads)}</div>);
-    armourTooltipDetails.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.int(armour.reinforcement)}</div>);
+    if (armour.bulkheads > 0) armourTooltipDetails.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.int(armour.bulkheads)}</div>);
+    if (armour.reinforcement > 0) armourTooltipDetails.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.int(armour.reinforcement)}</div>);
 
     const armourAbsoluteTooltipDetails = [];
     armourAbsoluteTooltipDetails.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.pct1(armour.absolute.bulkheads)}</div>);
@@ -141,10 +141,10 @@ export default class Defence extends TranslatedComponent {
     effectiveArmourData.push({ value: Math.round(effectiveThermalArmour), label: translate('thermal') });
 
     const armourDamageTakenData = [];
-    armourDamageTakenData.push({ value: Math.round(armour.absolute.total * 100), label: translate('absolute') });
-    armourDamageTakenData.push({ value: Math.round(armour.explosive.total * 100), label: translate('explosive') });
-    armourDamageTakenData.push({ value: Math.round(armour.kinetic.total * 100), label: translate('kinetic') });
-    armourDamageTakenData.push({ value: Math.round(armour.thermal.total * 100), label: translate('thermal') });
+    armourDamageTakenData.push({ value: Math.round(armour.absolute.total * 100), label: translate('absolute'), tooltip: armourAbsoluteTooltipDetails });
+    armourDamageTakenData.push({ value: Math.round(armour.explosive.total * 100), label: translate('explosive'), tooltip: armourExplosiveTooltipDetails });
+    armourDamageTakenData.push({ value: Math.round(armour.kinetic.total * 100), label: translate('kinetic'), tooltip: armourKineticTooltipDetails });
+    armourDamageTakenData.push({ value: Math.round(armour.thermal.total * 100), label: translate('thermal'), tooltip: armourThermalTooltipDetails });
 
     return (
       <span id='defence'>
