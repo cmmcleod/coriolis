@@ -1,8 +1,6 @@
 import React from 'react';
-import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
 import * as Calc from '../shipyard/Calculations';
-import { DamageAbsolute, DamageExplosive, DamageKinetic, DamageThermal } from './SvgIcons';
 import PieChart from './PieChart';
 import VerticalBarChart from './VerticalBarChart';
 
@@ -48,64 +46,7 @@ export default class Defence extends TranslatedComponent {
   }
 
   /**
-   * Calculate the sustained DPS for a ship at a given range, excluding resistances
-   * @param   {Object}  ship            The ship
-   * @param   {Object}  opponent        The opponent ship
-   * @param   {int}     engagementrange The range between the ship and opponent
-   * @returns {Object}                  Sustained DPS for shield and armour
-   */
-  _calcSustainedDps(ship, opponent, engagementrange) {
-    const shieldsdps = {
-      absolute: 0,
-      explosive: 0,
-      kinetic: 0,
-      thermal: 0
-    };
-
-    const armoursdps = {
-      absolute: 0,
-      explosive: 0,
-      kinetic: 0,
-      thermal: 0
-    };
-
-    for (let i = 0; i < ship.hardpoints.length; i++) {
-      if (ship.hardpoints[i].m && ship.hardpoints[i].enabled && ship.hardpoints[i].maxClass > 0) {
-        const m = ship.hardpoints[i].m;
-        // Initial sustained DPS
-        let sDps = m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) : m.getDps();
-        // Take fall-off in to account
-        const falloff = m.getFalloff();
-        if (falloff && engagementrange > falloff) {
-          const dropoffRange = m.getRange() - falloff;
-          sDps *= 1 - Math.min((engagementrange - falloff) / dropoffRange, 1);
-        }
-        // Piercing/hardness modifier (for armour only)
-        const armourMultiple = m.getPiercing() >= opponent.hardness ? 1 : m.getPiercing() / opponent.hardness;
-        // Break out the damage according to type
-        if (m.getDamageDist().A) {
-          shieldsdps.absolute += sDps * m.getDamageDist().A;
-          armoursdps.absolute += sDps * m.getDamageDist().A * armourMultiple;
-        }
-        if (m.getDamageDist().E) {
-          shieldsdps.explosive += sDps * m.getDamageDist().E;
-          armoursdps.explosive += sDps * m.getDamageDist().E * armourMultiple;
-        }
-        if (m.getDamageDist().K) {
-          shieldsdps.kinetic += sDps * m.getDamageDist().K;
-          armoursdps.kinetic += sDps * m.getDamageDist().K * armourMultiple;
-        }
-        if (m.getDamageDist().T) {
-          shieldsdps.thermal += sDps * m.getDamageDist().T;
-          armoursdps.thermal += sDps * m.getDamageDist().T * armourMultiple;
-        }
-      }
-    }
-    return { shieldsdps, armoursdps };
-  }
-
-  /**
-   * Render shields
+   * Render defence
    * @return {React.Component} contents
    */
   render() {

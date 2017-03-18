@@ -10,6 +10,7 @@ import CostSection from './CostSection';
 import EngineProfile from './EngineProfile';
 import FSDProfile from './FSDProfile';
 import Movement from './Movement';
+import Offence from './Offence';
 import Defence from './Defence';
 import WeaponDamageChart from './WeaponDamageChart';
 
@@ -117,8 +118,10 @@ export default class OutfittingSubpages extends TranslatedComponent {
   _offenceTab() {
     const { ship, sys, eng, wep, cargo, fuel, boost, engagementRange, opponent, opponentBuild } = this.props;
 
+    const marker = `${ship.toString()}:${opponent.name}:${opponentBuild}:${engagementRange}`;
+
     return <div>
-      <h1>Offence goes here</h1>
+      <Offence marker={marker} ship={ship} opponent={opponent} wep={wep} engagementrange={engagementRange}/>
     </div>;
   }
 

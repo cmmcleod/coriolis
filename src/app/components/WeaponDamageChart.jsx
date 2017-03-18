@@ -100,13 +100,12 @@ export default class WeaponDamageChart extends TranslatedComponent {
    */
   _calcMaxSDps(ship, opponent, hull) {
     // Additional information to allow effectiveness calculations
-    const { shield, armour, shielddamage, armourdamage } = Calc.defenceMetrics(opponent, ship, 4, 0);
-
+    const defence = hull ? Calc.armourMetrics(opponent) : Calc.shieldMetrics(opponent, 4);
     let maxSDps = 0;
     for (let i = 0; i < ship.hardpoints.length; i++) {
       if (ship.hardpoints[i].maxClass > 0 && ship.hardpoints[i].m && ship.hardpoints[i].enabled) {
         const m = ship.hardpoints[i].m;
-        const thisSDps = this._calcWeaponSDps(ship, m, opponent, hull, shield, armour, 0);
+        const thisSDps = this._calcWeaponSDps(ship, m, opponent, defence, 0);
         if (thisSDps > maxSDps) {
           maxSDps = thisSDps;
         }
@@ -156,14 +155,14 @@ export default class WeaponDamageChart extends TranslatedComponent {
    */
   _calcSDps(ship, weaponNames, opponent, hull, engagementRange) {
     // Additional information to allow effectiveness calculations
-    const { shield, armour, shielddamage, armourdamage } = Calc.defenceMetrics(opponent, ship, 4, engagementRange);
+    const defence = hull ? Calc.armourMetrics(opponent) : Calc.shieldMetrics(opponent, 4);
 
     let results = {};
     let weaponNum = 0;
     for (let i = 0; i < ship.hardpoints.length; i++) {
       if (ship.hardpoints[i].maxClass > 0 && ship.hardpoints[i].m && ship.hardpoints[i].enabled) {
         const m = ship.hardpoints[i].m;
-        results[weaponNames[weaponNum++]] = this._calcWeaponSDps(ship, m, opponent, hull, shield, armour, engagementRange);
+        results[weaponNames[weaponNum++]] = this._calcWeaponSDps(ship, m, opponent, defence, engagementRange);
       }
     }
     return results;
@@ -174,13 +173,11 @@ export default class WeaponDamageChart extends TranslatedComponent {
    * @param  {Object} ship             The ship that will deal the damage 
    * @param  {Object} m                The weapon that will deal the damage
    * @param  {Object} opponent         The ship against which damage will be dealt
-   * @param  {boolean} hull            True if hitting hull
-   * @param  {Object} shield           Shield defence metrics
-   * @param  {Object} armour           Armour defence metrics
+   * @param  {Object} defence          defence metrics (either shield or hull)
    * @param  {Object} engagementRange  The engagement range
    * @return {object}                  Returns the sustained DPS for the weapon
    */
-  _calcWeaponSDps(ship, m, opponent, hull, shield, armour, engagementRange) {
+  _calcWeaponSDps(ship, m, opponent, defence, engagementRange) {
     let falloff = 1;
     if (m.getFalloff()) {
       // Calculate the falloff % due to range
@@ -199,16 +196,16 @@ export default class WeaponDamageChart extends TranslatedComponent {
 
     let effectiveness = 0;
     if (m.getDamageDist().E) {
-      effectiveness += m.getDamageDist().E * (hull ? armour.explosive.total : shield.explosive.total);
+      effectiveness += m.getDamageDist().E * defence.explosive.total;
     }
     if (m.getDamageDist().K) {
-      effectiveness += m.getDamageDist().K * (hull ? armour.kinetic.total : shield.kinetic.total);
+      effectiveness += m.getDamageDist().K * defence.kinetic.total;
     }
     if (m.getDamageDist().T) {
-      effectiveness += m.getDamageDist().T * (hull ? armour.thermal.total : shield.thermal.total);
+      effectiveness += m.getDamageDist().T * defence.thermal.total;
     }
     if (m.getDamageDist().A) {
-      effectiveness += m.getDamageDist().A * (hull ? armour.absolute.total : shield.absolute.total);
+      effectiveness += m.getDamageDist().A * defence.absolute.total;
     }
 
     // Return the final effective SDPS

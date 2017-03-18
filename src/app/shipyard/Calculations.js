@@ -310,23 +310,18 @@ export function calcYaw(mass, baseYaw, thrusters, engpip, eng, boostFactor, boos
   return result;
 }
 
-  /**
-   * Calculate defence metrics
-   * @param   {Object}  ship            The ship
-   * @param   {Object}  opponent        The opponent ship
-   * @param   {int}     sys             The pips to SYS
-   * @param   {int}     engagementrange The range between the ship and opponent
-   * @returns {Object}                  Defence metrics
-   */
-export function defenceMetrics(ship, opponent, sys, engagementrange) {
+/**
+ * Calculate shield metrics
+ * @param   {Object}  ship            The ship
+ * @param   {int}     sys             The pips to SYS
+ * @returns {Object}                  Shield metrics
+ */
+export function shieldMetrics(ship, sys) {
   const sysResistance = this.sysResistance(sys);
   const maxSysResistance = this.sysResistance(4);
 
-  // Obtain the opponent's sustained DPS on us for later damage calculations
-  const { shieldsdps, armoursdps } = this._sustainedDps(opponent, ship, engagementrange);
-
-  let shielddamage = {};
   let shield = {};
+
   const shieldGeneratorSlot = ship.findInternalByGroup('sg');
   if (shieldGeneratorSlot && shieldGeneratorSlot.enabled && shieldGeneratorSlot.m) {
     const shieldGenerator = shieldGeneratorSlot.m;
@@ -451,14 +446,17 @@ export function defenceMetrics(ship, opponent, sys, engagementrange) {
       total: (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg * (1 - sysResistance),
       max: (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg * (1 - maxSysResistance)
     };
-
-    shielddamage.absolutesdps = shieldsdps.absolute *= shield.absolute.total;
-    shielddamage.explosivesdps = shieldsdps.explosive *= shield.explosive.total;
-    shielddamage.kineticsdps = shieldsdps.kinetic *= shield.kinetic.total;
-    shielddamage.thermalsdps = shieldsdps.thermal *= shield.thermal.total;
-    shielddamage.totalsdps = shielddamage.absolutesdps + shielddamage.explosivesdps + shielddamage.kineticsdps + shielddamage.thermalsdps;
   }
 
+  return shield;
+}
+
+/**
+ * Calculate armour metrics
+ * @param   {Object}  ship            The ship
+ * @returns {Object}                  Armour metrics
+ */
+export function armourMetrics(ship) {
   // Armour from bulkheads
   const armourBulkheads = ship.baseArmour + (ship.baseArmour * ship.bulkheads.m.getHullBoost());
   let armourReinforcement = 0;
@@ -527,6 +525,35 @@ export function defenceMetrics(ship, opponent, sys, engagementrange) {
     total: (1 - ship.bulkheads.m.getThermalResistance()) * hullThermDmg
   };
 
+  return armour;
+}
+
+/**
+ * Calculate defence metrics for a ship
+ * @param   {Object}  ship            The ship
+ * @param   {Object}  opponent        The opponent ship
+ * @param   {int}     sys             The pips to SYS
+ * @param   {int}     engagementrange The range between the ship and opponent
+ * @returns {Object}                  Defence metrics
+ */
+export function defenceMetrics(ship, opponent, sys, engagementrange) {
+  // Obtain the shield metrics
+  const shield = this.shieldMetrics(ship, sys);
+
+  // Obtain the armour metrics
+  const armour = this.armourMetrics(ship);
+
+  // Obtain the opponent's sustained DPS on us
+  const { shieldsdps, armoursdps } = this._sustainedDps(opponent, ship, engagementrange);
+
+  const shielddamage = shield.generatorStrength ? {
+    absolutesdps: shieldsdps.absolute *= shield.absolute.total,
+    explosivesdps: shieldsdps.explosive *= shield.explosive.total,
+    kineticsdps: shieldsdps.kinetic *= shield.kinetic.total,
+    thermalsdps: shieldsdps.thermal *= shield.thermal.total,
+    totalsdps: shielddamage.absolutesdps + shielddamage.explosivesdps + shielddamage.kineticsdps + shielddamage.thermalsdps
+  } : {} ;
+
   const armourdamage = {
     absolutesdps: armoursdps.absolute *= armour.absolute.total,
     explosivesdps: armoursdps.explosive *= armour.explosive.total,
@@ -536,6 +563,37 @@ export function defenceMetrics(ship, opponent, sys, engagementrange) {
   armourdamage.totalsdps = armourdamage.absolutesdps + armourdamage.explosivesdps + armourdamage.kineticsdps + armourdamage.thermalsdps;
 
   return { shield, armour, shielddamage, armourdamage };
+}
+
+/**
+ * Calculate offence metrics for a ship
+ * @param   {Object}  ship            The ship
+ * @param   {Object}  opponent        The opponent ship
+ * @param   {int}     wep             The pips to WEP
+ * @param   {int}     engagementrange The range between the ship and opponent
+ * @returns {Object}                  Offence metrics
+ */
+export function offenceMetrics(ship, opponent, wep, engagementrange) {
+
+  // Per-weapon and total damage to armour
+  const armourdamage = {};
+
+  // Obtain the opponent's shield and armour metrics
+  const opponentShields = this.shieldMetrics(opponent, 4);
+  const opponentArmour = this.armourMetrics(opponent);
+
+  // Per-weapon and total damage to shields
+  const shielddamage = opponentShields.generatorStrength ? {
+    absolute: {
+      weapon1: 10,
+      weapon2: 10,
+      weapon3: 10,
+      weapon4: 10,
+      total: 40
+    }
+  } : {};
+
+  return { shielddamage, armourdamage };
 }
 
 /**
