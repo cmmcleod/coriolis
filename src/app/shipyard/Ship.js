@@ -181,7 +181,7 @@ export default class Ship {
    * @return {Number}        Speed
    */
   calcSpeed(eng, fuel, cargo, boost) {
-    return Calc.calcSpeed(this.unladenMass + fuel + cargo, this.speed, this.standard[1].m, this.pipSpeed, eng, this.topBoost / this.topSpeed, boost);
+    return Calc.calcSpeed(this.unladenMass + fuel + cargo, this.speed, this.standard[1].m, this.pipSpeed, eng, this.boost / this.speed, boost);
   }
 
   /**
