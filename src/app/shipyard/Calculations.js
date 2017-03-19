@@ -551,7 +551,8 @@ export function defenceMetrics(ship, opponent, sys, engagementrange) {
     explosivesdps: sustainedDps.shieldsdps.explosive,
     kineticsdps: sustainedDps.shieldsdps.kinetic,
     thermalsdps: sustainedDps.shieldsdps.thermal,
-    totalsdps: sustainedDps.shieldsdps.absolute + sustainedDps.shieldsdps.explosive + sustainedDps.shieldsdps.kinetic + sustainedDps.shieldsdps.thermal
+    totalsdps: sustainedDps.shieldsdps.absolute + sustainedDps.shieldsdps.explosive + sustainedDps.shieldsdps.kinetic + sustainedDps.shieldsdps.thermal,
+    totalseps: sustainedDps.eps
   } : {};
 
   const armourdamage = {
@@ -559,7 +560,8 @@ export function defenceMetrics(ship, opponent, sys, engagementrange) {
     explosivesdps: sustainedDps.armoursdps.explosive,
     kineticsdps: sustainedDps.armoursdps.kinetic,
     thermalsdps: sustainedDps.armoursdps.thermal,
-    totalsdps: sustainedDps.armoursdps.absolute + sustainedDps.armoursdps.explosive + sustainedDps.armoursdps.kinetic + sustainedDps.armoursdps.thermal
+    totalsdps: sustainedDps.armoursdps.absolute + sustainedDps.armoursdps.explosive + sustainedDps.armoursdps.kinetic + sustainedDps.armoursdps.thermal,
+    totalseps: sustainedDps.eps
   };
 
   return { shield, armour, shielddamage, armourdamage };
@@ -603,6 +605,7 @@ export function offenceMetrics(ship, opponent, wep, engagementrange) {
         classRating,
         engineering,
         sdps: weaponSustainedDps.damage,
+        seps: weaponSustainedDps.eps,
         effectiveness: weaponSustainedDps.effectiveness
       });
     }
@@ -682,6 +685,8 @@ export function _sustainedDps(ship, opponent, opponentShields, opponentArmour, e
     thermal: 0
   };
 
+  let eps = 0;
+
   for (let i = 0; i < ship.hardpoints.length; i++) {
     if (ship.hardpoints[i].m && ship.hardpoints[i].enabled && ship.hardpoints[i].maxClass > 0) {
       const m = ship.hardpoints[i].m;
@@ -694,10 +699,11 @@ export function _sustainedDps(ship, opponent, opponentShields, opponentArmour, e
       armoursdps.explosive += sustainedDps.damage.armour.explosive;
       armoursdps.kinetic += sustainedDps.damage.armour.kinetic;
       armoursdps.thermal += sustainedDps.damage.armour.thermal;
+      eps += sustainedDps.eps;
     }
   }
 
-  return { shieldsdps, armoursdps };
+  return { shieldsdps, armoursdps, eps };
 }
 
 /**
@@ -712,6 +718,7 @@ export function _sustainedDps(ship, opponent, opponentShields, opponentArmour, e
 export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour, engagementrange) {
   const opponentHasShields = opponentShields.generator ? true : false;
   const weapon = {
+    eps: 0,
     damage: {
       shields: {
         absolute: 0,
@@ -741,6 +748,9 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
       }
     }
   };
+
+  // EPS
+  weapon.eps = m.getClip() ?  (m.getClip() * m.getEps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) : m.getEps();
 
   // Initial sustained DPS
   let sDps = m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) : m.getDps();
@@ -820,5 +830,28 @@ export function timeToDrainWep(ship, wep) {
   } else {
     const initialCharge = ship.standard[4].m.getWeaponsCapacity();
     return initialCharge / drainPerSecond;
+  }
+}
+
+/**
+ * Calculate the time to deplete an amount of shields or armour
+ */
+export function timeToDeplete(amount, dps, eps, capacity, recharge) {
+  const drainPerSecond = eps - recharge;
+  if (drainPerSecond <= 0) {
+    // Simple result
+    return amount / dps;
+  } else {
+    // We are draining the capacitor, but can we deplete before we run out
+    const timeToDrain = capacity / drainPerSecond;
+    const depletedBeforeDrained = dps * timeToDrain;
+    if (depletedBeforeDrained >= amount) {
+      return amount / dps;
+    } else {
+      const restToDeplete = amount - depletedBeforeDrained;
+      // We delete the rest at the reduced rate
+      const reducedDps = dps * (recharge / eps);
+      return timeToDrain + (restToDeplete / reducedDps);
+    }
   }
 }

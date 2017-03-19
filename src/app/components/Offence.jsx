@@ -135,6 +135,8 @@ export default class Offence extends TranslatedComponent {
     const { damage } = this.state;
     const sortOrder = this._sortOrder;
 
+    const pd = ship.standard[4].m;
+
     const opponentShields = Calc.shieldMetrics(opponent, 4);
     const opponentArmour = Calc.armourMetrics(opponent);
 
@@ -147,10 +149,13 @@ export default class Offence extends TranslatedComponent {
     let kineticArmourSDps = 0;
     let thermalArmourSDps = 0;
 
+    let totalSEps = 0;
+
     const rows = [];
     for (let i = 0; i < damage.length; i++) {
       const weapon = damage[i];
 
+      totalSEps += weapon.seps;
       absoluteShieldsSDps += weapon.sdps.shields.absolute;
       explosiveShieldsSDps += weapon.sdps.shields.explosive;
       kineticShieldsSDps += weapon.sdps.shields.kinetic;
@@ -212,6 +217,9 @@ export default class Offence extends TranslatedComponent {
     armourSDpsData.push({ value: Math.round(kineticArmourSDps), label: translate('kinetic') });
     armourSDpsData.push({ value: Math.round(thermalArmourSDps), label: translate('thermal') });
 
+    const timeToDepleteShields = Calc.timeToDeplete(opponentShields.total, totalShieldsSDps, totalSEps, pd.getWeaponsCapacity(), pd.getWeaponsRechargeRate() * (wep / 4));
+    const timeToDepleteArmour = Calc.timeToDeplete(opponentArmour.total, totalArmourSDps, totalSEps, pd.getWeaponsCapacity(), pd.getWeaponsRechargeRate() * (wep / 4));
+
     return (
       <span id='offence'>
         <div className='group full'>
@@ -236,8 +244,8 @@ export default class Offence extends TranslatedComponent {
         </div>
         <div className='group quarter'>
           <h2>{translate('shield damage')}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_REMOVE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_REMOVE_SHIELDS')}<br/>{totalShieldsSDps == 0 ? translate('never') : formats.time(opponentShields.total / totalShieldsSDps)}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_REMOVE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_REMOVE_ARMOUR')}<br/>{totalArmourSDps == 0 ? translate('never') : formats.time(opponentArmour.total / totalArmourSDps)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_REMOVE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_REMOVE_SHIELDS')}<br/>{timeToDepleteShields === Infinity ? translate('never') : formats.time(timeToDepleteShields)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_REMOVE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_REMOVE_ARMOUR')}<br/>{timeToDepleteArmour === Infinity ? translate('never') : formats.time(timeToDepleteArmour)}</h2>
         </div>
         <div className='group quarter'>
           <h2 onMouseOver={termtip.bind(null, translate('armour metrics'))} onMouseOut={tooltip.bind(null, null)}>{translate('shield damage sources')}</h2>
