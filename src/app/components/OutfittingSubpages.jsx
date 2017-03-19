@@ -96,7 +96,7 @@ export default class OutfittingSubpages extends TranslatedComponent {
 
       <div className='group third'>
         <h1>{translate('movement profile')}</h1>
-        <Movement marker={movementMarker} ship={ship} boost={boost} eng={eng} cargo={cargo} fuel={fuel}/>
+        <Movement marker={movementMarker} ship={ship} boost={boost} eng={eng} cargo={cargo} fuel={fuel} />
       </div>
 
       <div className='group half'>
