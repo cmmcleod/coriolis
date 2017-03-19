@@ -56,7 +56,9 @@ export default class PieChart extends Component {
     const labelTranslate = `translate(${labelX * 1.5}, ${labelY * 1.5})`;
 
     // Put the keys in a line with equal spacing
-    const keyX = -width / 2 + (width / data.length) * (i + 0.5);
+    const nonZeroItems = data.filter(d => d.value != 0).length;
+    const thisItemIndex = data.slice(0, i + 1).filter(d => d.value != 0).length - 1;
+    const keyX = -width / 2 + (width / nonZeroItems) * (thisItemIndex + 0.5);
     const keyTranslate = `translate(${keyX}, ${width * 0.45})`;
 
     return (

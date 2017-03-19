@@ -48,6 +48,8 @@ export const terms = {
   PHRASE_TIME_TO_LOSE_ARMOUR: 'Armour will hold for',
   PHRASE_MODULE_PROTECTION_EXTERNAL: 'Protection for hardpoints',
   PHRASE_MODULE_PROTECTION_INTERNAL: 'Protection for all other modules',
+  PHRASE_SHIELD_DAMAGE: 'Breakdown of sources for sustained DPS against shields',
+  PHRASE_ARMOUR_DAMAGE: 'Breakdown of sources for sustained DPS against armour',
 
   TT_TIME_TO_LOSE_SHIELDS: 'Against sustained fire from all opponent\'s weapons',
   TT_TIME_TO_LOSE_ARMOUR: 'Against sustained fire from all opponent\'s weapons',

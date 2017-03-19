@@ -129,15 +129,36 @@ export default class Offence extends TranslatedComponent {
    * @return {React.Component} contents
    */
   render() {
-    const { ship, wep } = this.props;
+    const { ship, opponent, wep, engagementrange } = this.props;
     const { language, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
     const { damage } = this.state;
     const sortOrder = this._sortOrder;
 
+    const opponentShields = Calc.shieldMetrics(opponent, 4);
+    const opponentArmour = Calc.armourMetrics(opponent);
+
+    let absoluteShieldsSDps = 0;
+    let explosiveShieldsSDps = 0;
+    let kineticShieldsSDps = 0;
+    let thermalShieldsSDps = 0;
+    let absoluteArmourSDps = 0;
+    let explosiveArmourSDps = 0;
+    let kineticArmourSDps = 0;
+    let thermalArmourSDps = 0;
+
     const rows = [];
     for (let i = 0; i < damage.length; i++) {
       const weapon = damage[i];
+
+      absoluteShieldsSDps += weapon.sdps.shields.absolute;
+      explosiveShieldsSDps += weapon.sdps.shields.explosive;
+      kineticShieldsSDps += weapon.sdps.shields.kinetic;
+      thermalShieldsSDps += weapon.sdps.shields.thermal;
+      absoluteArmourSDps += weapon.sdps.armour.absolute;
+      explosiveArmourSDps += weapon.sdps.armour.explosive;
+      kineticArmourSDps += weapon.sdps.armour.kinetic;
+      thermalArmourSDps += weapon.sdps.armour.thermal;
 
       const effectivenessShieldsTooltipDetails = [];
       effectivenessShieldsTooltipDetails.push(<div key='range'>{translate('range') + ' ' + formats.pct1(weapon.effectiveness.shields.range)}</div>);
@@ -176,16 +197,25 @@ export default class Offence extends TranslatedComponent {
         </tr>);
     }    
 
-//    const armourDamageTakenData = [];
-//    armourDamageTakenData.push({ value: Math.round(armour.absolute.total * 100), label: translate('absolute') });
-//    armourDamageTakenData.push({ value: Math.round(armour.explosive.total * 100), label: translate('explosive') });
-//    armourDamageTakenData.push({ value: Math.round(armour.kinetic.total * 100), label: translate('kinetic') });
-//    armourDamageTakenData.push({ value: Math.round(armour.thermal.total * 100), label: translate('thermal') });
+    const totalShieldsSDps = absoluteShieldsSDps + explosiveShieldsSDps + kineticShieldsSDps + thermalShieldsSDps;
+    const totalArmourSDps = absoluteArmourSDps + explosiveArmourSDps + kineticArmourSDps + thermalArmourSDps;
+
+    const shieldsSDpsData = [];
+    shieldsSDpsData.push({ value: Math.round(absoluteShieldsSDps), label: translate('absolute') });
+    shieldsSDpsData.push({ value: Math.round(explosiveShieldsSDps), label: translate('explosive') });
+    shieldsSDpsData.push({ value: Math.round(kineticShieldsSDps), label: translate('kinetic') });
+    shieldsSDpsData.push({ value: Math.round(thermalShieldsSDps), label: translate('thermal') });
+
+    const armourSDpsData = [];
+    armourSDpsData.push({ value: Math.round(absoluteArmourSDps), label: translate('absolute') });
+    armourSDpsData.push({ value: Math.round(explosiveArmourSDps), label: translate('explosive') });
+    armourSDpsData.push({ value: Math.round(kineticArmourSDps), label: translate('kinetic') });
+    armourSDpsData.push({ value: Math.round(thermalArmourSDps), label: translate('thermal') });
 
     return (
       <span id='offence'>
-        <div className='group half'>
-        <table width='100%'>
+        <div className='group full'>
+        <table>
           <thead>
           <tr className='main'>
             <th rowSpan='2' className='sortable' onClick={sortOrder.bind(this, 'n')}>{translate('weapon')}</th>
@@ -203,6 +233,19 @@ export default class Offence extends TranslatedComponent {
             {rows}
           </tbody>
         </table>
+        </div>
+        <div className='group quarter'>
+          <h2>{translate('shield damage')}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_REMOVE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_REMOVE_SHIELDS')}<br/>{totalShieldsSDps == 0 ? translate('never') : formats.time(opponentShields.total / totalShieldsSDps)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_REMOVE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_REMOVE_ARMOUR')}<br/>{totalArmourSDps == 0 ? translate('never') : formats.time(opponentArmour.total / totalArmourSDps)}</h2>
+        </div>
+        <div className='group quarter'>
+          <h2 onMouseOver={termtip.bind(null, translate('armour metrics'))} onMouseOut={tooltip.bind(null, null)}>{translate('shield damage sources')}</h2>
+          <PieChart data={shieldsSDpsData} />
+        </div>
+        <div className='group quarter'>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_ARMOUR_DAMAGE'))} onMouseOut={tooltip.bind(null, null)}>{translate('armour damage sources')}</h2>
+          <PieChart data={armourSDpsData} />
         </div>
       </span>);
   }

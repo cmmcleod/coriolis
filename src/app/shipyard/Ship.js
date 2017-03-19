@@ -453,7 +453,6 @@ export default class Ship {
         .recalculateDps()
         .recalculateEps()
         .recalculateHps()
-        .recalculateTtd()
         .updateMovement();
   }
 
@@ -522,15 +521,11 @@ export default class Ship {
       this.recalculateDps();
       this.recalculateHps();
       this.recalculateEps();
-      this.recalculateTtd();
     } else if (name === 'explres' || name === 'kinres' || name === 'thermres') {
       m.setModValue(name, value, sentfromui);
       // Could be for shields or armour
       this.recalculateArmour();
       this.recalculateShield();
-    } else if (name === 'wepcap' || name === 'weprate') {
-      m.setModValue(name, value, sentfromui);
-      this.recalculateTtd();
     } else if (name === 'engcap') {
       m.setModValue(name, value, sentfromui);
       // Might have resulted in a change in boostability
@@ -668,7 +663,6 @@ export default class Ship {
           .recalculateDps()
           .recalculateEps()
           .recalculateHps()
-          .recalculateTtd()
           .updateMovement();
     }
 
@@ -850,7 +844,6 @@ export default class Ship {
 
         if (slot.m.getEps()) {
           this.recalculateEps();
-          this.recalculateTtd();
         }
       }
     }
@@ -926,16 +919,12 @@ export default class Ship {
       }
       if (epsChanged) {
         this.recalculateEps();
-        this.recalculateTtd();
       }
       if (hpsChanged) {
         this.recalculateHps();
       }
       if (powerGeneratedChange) {
         this.updatePowerGenerated();
-      }
-      if (powerDistributorChange) {
-        this.recalculateTtd();
       }
       if (powerUsedChange) {
         this.updatePowerUsed();
@@ -972,33 +961,6 @@ export default class Ship {
       val = drul - (drul - val) / 2;
     }
     return val;
-  }
-
-  /**
-   * Calculate time to drain WEP capacitor
-   * @return {this} The ship instance (for chaining operations)
-   */
-  recalculateTtd() {
-    let totalSEps = 0;
-
-    for (let slotNum in this.hardpoints) {
-      const slot = this.hardpoints[slotNum];
-      if (slot.m && slot.enabled && slot.type === 'WEP' && slot.m.getDps()) {
-        totalSEps += slot.m.getClip() ? (slot.m.getClip() * slot.m.getEps() / slot.m.getRoF()) / ((slot.m.getClip() / slot.m.getRoF()) + slot.m.getReload()) : slot.m.getEps();
-      }
-    }
-
-    // Calculate the drain time
-    const drainPerSecond = totalSEps - this.standard[4].m.getWeaponsRechargeRate();
-    if (drainPerSecond <= 0) {
-      // Can fire forever
-      this.timeToDrain = Infinity;
-    } else {
-      const initialCharge = this.standard[4].m.getWeaponsCapacity();
-      this.timeToDrain = initialCharge / drainPerSecond;
-    }
-
-    return this;
   }
 
   /**

@@ -710,6 +710,7 @@ export function _sustainedDps(ship, opponent, opponentShields, opponentArmour, e
  * @returns {Object}                    Sustained DPS for shield and armour
  */
 export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour, engagementrange) {
+  const opponentHasShields = opponentShields.generator ? true : false;
   const weapon = {
     damage: {
       shields: {
@@ -730,7 +731,7 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
     effectiveness: {
       shields: {
         range: 1,
-        sys: opponentShields.absolute.sys,
+        sys: opponentHasShields ? opponentShields.absolute.sys : 1,
         resistance: 1
       },
       armour: {
@@ -761,27 +762,27 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
   let shieldsResistance = 0;
   let armourResistance = 0;
   if (m.getDamageDist().A) {
-    weapon.damage.shields.absolute += sDps * m.getDamageDist().A * opponentShields.absolute.total;
+    weapon.damage.shields.absolute += sDps * m.getDamageDist().A * (opponentHasShields ? opponentShields.absolute.total : 1);
     weapon.damage.armour.absolute += sDps * m.getDamageDist().A * armourMultiple * opponentArmour.absolute.total;
-    shieldsResistance += m.getDamageDist().A * opponentShields.absolute.generator * opponentShields.absolute.boosters;
+    shieldsResistance += m.getDamageDist().A * (opponentHasShields ? opponentShields.absolute.generator * opponentShields.absolute.boosters : 1);
     armourResistance += m.getDamageDist().A * opponentArmour.absolute.bulkheads * opponentArmour.absolute.reinforcement;
   }
   if (m.getDamageDist().E) {
-    weapon.damage.shields.explosive += sDps * m.getDamageDist().E * opponentShields.explosive.total;
+    weapon.damage.shields.explosive += sDps * m.getDamageDist().E * (opponentHasShields ? opponentShields.explosive.total : 1);
     weapon.damage.armour.explosive += sDps * m.getDamageDist().E * armourMultiple * opponentArmour.explosive.total;
-    shieldsResistance += m.getDamageDist().E * opponentShields.explosive.generator * opponentShields.explosive.boosters;
+    shieldsResistance += m.getDamageDist().E * (opponentHasShields ? opponentShields.explosive.generator * opponentShields.explosive.boosters : 1);
     armourResistance += m.getDamageDist().E * opponentArmour.explosive.bulkheads * opponentArmour.explosive.reinforcement;
   }
   if (m.getDamageDist().K) {
-    weapon.damage.shields.kinetic += sDps * m.getDamageDist().K * opponentShields.kinetic.total;
+    weapon.damage.shields.kinetic += sDps * m.getDamageDist().K * (opponentHasShields ? opponentShields.kinetic.total : 1);
     weapon.damage.armour.kinetic += sDps * m.getDamageDist().K * armourMultiple * opponentArmour.kinetic.total;
-    shieldsResistance += m.getDamageDist().K * opponentShields.kinetic.generator * opponentShields.kinetic.boosters;
+    shieldsResistance += m.getDamageDist().K * (opponentHasShields ? opponentShields.kinetic.generator * opponentShields.kinetic.boosters : 1);
     armourResistance += m.getDamageDist().K * opponentArmour.kinetic.bulkheads * opponentArmour.kinetic.reinforcement;
   }
   if (m.getDamageDist().T) {
-    weapon.damage.shields.thermal += sDps * m.getDamageDist().T * opponentShields.thermal.total;
+    weapon.damage.shields.thermal += sDps * m.getDamageDist().T * (opponentHasShields ? opponentShields.thermal.total : 1);
     weapon.damage.armour.thermal += sDps * m.getDamageDist().T * armourMultiple * opponentArmour.thermal.total;
-    shieldsResistance += m.getDamageDist().T * opponentShields.thermal.generator * opponentShields.thermal.boosters;
+    shieldsResistance += m.getDamageDist().T * (opponentHasShields ? opponentShields.thermal.generator * opponentShields.thermal.boosters : 1);
     armourResistance += m.getDamageDist().T * opponentArmour.thermal.bulkheads * opponentArmour.thermal.reinforcement;
   }
   weapon.damage.shields.total = weapon.damage.shields.absolute + weapon.damage.shields.explosive + weapon.damage.shields.kinetic + weapon.damage.shields.thermal;
@@ -793,4 +794,31 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
   weapon.effectiveness.shields.total = weapon.effectiveness.shields.range * weapon.effectiveness.shields.sys * weapon.effectiveness.shields.resistance;
   weapon.effectiveness.armour.total = weapon.effectiveness.armour.range * weapon.effectiveness.armour.resistance * weapon.effectiveness.armour.hardness;
   return weapon;
+}
+
+/**
+  * Calculate time to drain WEP capacitor
+  * @param {object} ship  The ship
+  * @param {number} wep   Pips to WEP
+  * @return               The time to drain the WEP capacitor, in seconds
+  */
+export function timeToDrainWep(ship, wep) {
+  let totalSEps = 0;
+
+  for (let slotNum in ship.hardpoints) {
+    const slot = ship.hardpoints[slotNum];
+    if (slot.maxClass > 0 && slot.m && slot.enabled && slot.type === 'WEP' && slot.m.getDps()) {
+      totalSEps += slot.m.getClip() ? (slot.m.getClip() * slot.m.getEps() / slot.m.getRoF()) / ((slot.m.getClip() / slot.m.getRoF()) + slot.m.getReload()) : slot.m.getEps();
+    }
+  }
+
+  // Calculate the drain time
+  const drainPerSecond = totalSEps - ship.standard[4].m.getWeaponsRechargeRate() * wep / 4;
+  if (drainPerSecond <= 0) {
+    // Can fire forever
+    return Infinity;
+  } else {
+    const initialCharge = ship.standard[4].m.getWeaponsCapacity();
+    return initialCharge / drainPerSecond;
+  }
 }

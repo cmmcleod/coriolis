@@ -24,7 +24,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
    * @return {React.Component} Summary table
    */
   render() {
-    const { ship, fuel, eng, cargo, boost } = this.props;
+    const { ship, fuel, eng, wep, cargo, boost } = this.props;
     let { language, tooltip, termtip } = this.context;
     let translate = language.translate;
     let u = language.units;
@@ -39,6 +39,8 @@ export default class ShipSummaryTable extends TranslatedComponent {
       sgRecover = time(ship.calcShieldRecovery());
       sgRecharge = time(ship.calcShieldRecharge());
     }
+
+    const timeToDrain = Calc.timeToDrainWep(ship, wep);
 
     return <div id='summary'>
       <table id='summaryTable'>
@@ -74,7 +76,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{ ship.canBoost() ? <span>{int(ship.calcSpeed(eng, fuel, cargo, true))}{u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
             <td>{f1(ship.totalDps)}</td>
             <td>{f1(ship.totalEps)}</td>
-            <td>{ship.timeToDrain === Infinity ? '∞' : time(ship.timeToDrain)}</td>
+            <td>{timeToDrain === Infinity ? '∞' : time(timeToDrain)}</td>
             <td>{f1(ship.totalHps)}</td>
             <td>{int(ship.hardness)}</td>
             <td>{int(ship.armour)}</td>
