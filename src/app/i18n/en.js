@@ -55,6 +55,11 @@ export const terms = {
   TT_MODULE_PROTECTION_EXTERNAL: 'Percentage of damage diverted from hardpoints to module reinforcement packages',
   TT_MODULE_PROTECTION_INTERNAL: 'Percentage of damage diverted from non-hardpoint modules to module reinforcement packages',
 
+  TT_EFFECTIVE_SDPS_SHIELDS: 'Actual sustained DPS whilst WEP capacitor is not empty',
+  TT_EFFECTIVENESS_SHIELDS: 'Effectivness compared to hitting a 0-resistance target with 0 pips to SYS at 0m',
+  TT_EFFECTIVE_SDPS_ARMOUR: 'Actual sustained DPS whilst WEP capacitor is not empty',
+  TT_EFFECTIVENESS_ARMOUR: 'Effectivness compared to hitting a 0-resistance target at 0m',
+
   HELP_MODIFICATIONS_MENU: 'Click on a number to enter a new value, or drag along the bar for small changes',
 
   // Other languages fallback to these  values

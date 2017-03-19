@@ -100,7 +100,7 @@ export default class OutfittingPage extends Page {
       fuel: ship.fuelCapacity,
       cargo: 0,
       boost: false,
-      engagementRange: 1500,
+      engagementRange: 1000,
       opponent: new Ship('anaconda', Ships['anaconda'].properties, Ships['anaconda'].slots).buildWith(Ships['anaconda'].defaults)
     };
   }

@@ -602,10 +602,8 @@ export function offenceMetrics(ship, opponent, wep, engagementrange) {
         name: m.name || m.grp,
         classRating,
         engineering,
-        sdpsShields: weaponSustainedDps.damage.shields.total,
-        sdpsArmour: weaponSustainedDps.damage.armour.total,
-        effectivenessShields: weaponSustainedDps.effectiveness.shields.total,
-        effectivenessArmour: weaponSustainedDps.effectiveness.armour.total
+        sdps: weaponSustainedDps.damage,
+        effectiveness: weaponSustainedDps.effectiveness
       });
     }
   }

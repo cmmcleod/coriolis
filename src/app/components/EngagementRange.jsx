@@ -27,7 +27,7 @@ export default class Range extends TranslatedComponent {
 
     this.state = {
       maxRange,
-      rangeLevel: 0.5,
+      rangeLevel: 1000 / maxRange,
     };
   }
 

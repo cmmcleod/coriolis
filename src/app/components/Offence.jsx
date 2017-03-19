@@ -81,7 +81,7 @@ export default class Offence extends TranslatedComponent {
    * @return {boolean}            Returns true if the component should be rerendered
    */
   componentWillReceiveProps(nextProps) {
-    if (this.props.marker != nextProps.marker || this.props.sys != nextProps.sys) {
+    if (this.props.marker != nextProps.marker || this.props.eng != nextProps.eng) {
       const damage = Calc.offenceMetrics(nextProps.ship, nextProps.opponent, nextProps.wep, nextProps.engagementrange);
       this.setState({ damage });
     }
@@ -101,27 +101,24 @@ export default class Offence extends TranslatedComponent {
       desc = true;
     }
 
-    this._sort(this.props.ship, predicate, desc);
+    this._sort(predicate, desc);
     this.setState({ predicate, desc });
   }
 
   /**
    * Sorts the weapon list
-   * @param  {Ship} ship          Ship instance
    * @param  {string} predicate   Sort predicate
    * @param  {Boolean} desc       Sort order descending
    */
-  _sort(ship, predicate, desc) {
+  _sort(predicate, desc) {
     let comp = weaponComparator.bind(null, this.context.language.translate);
 
     switch (predicate) {
       case 'n': comp = comp(null, desc); break;
-      case 'edpss': comp = comp((a, b) => a.effectiveDpsShields - b.effectiveDpsShields, desc); break;
-      case 'esdpss': comp = comp((a, b) => a.effectiveSDpsShields - b.effectiveSDpsShields, desc); break;
-      case 'es': comp = comp((a, b) => a.effectivenessShields - b.effectivenessShields, desc); break;
-      case 'edpsh': comp = comp((a, b) => a.effectiveDpsHull - b.effectiveDpsHull, desc); break;
-      case 'esdpsh': comp = comp((a, b) => a.effectiveSDpsHull - b.effectiveSDpsHull, desc); break;
-      case 'eh': comp = comp((a, b) => a.effectivenessHull - b.effectivenessHull, desc); break;
+      case 'esdpss': comp = comp((a, b) => a.sdps.shields.total - b.sdps.shields.total, desc); break;
+      case 'es': comp = comp((a, b) => a.effectiveness.shields.total - b.effectiveness.shields.total, desc); break;
+      case 'esdpsh': comp = comp((a, b) => a.sdps.armour.total - b.sdps.armour.total, desc); break;
+      case 'eh': comp = comp((a, b) => a.effectiveness.armour.total - b.effectiveness.armour.total, desc); break;
     }
 
     this.state.damage.sort(comp);
@@ -141,104 +138,43 @@ export default class Offence extends TranslatedComponent {
     const rows = [];
     for (let i = 0; i < damage.length; i++) {
       const weapon = damage[i];
-      rows.push(<tr key={weapon.id}>
-                  <td className='ri'>
-                    {weapon.mount == 'F' ? <span onMouseOver={termtip.bind(null, 'fixed')} onMouseOut={tooltip.bind(null, null)}><MountFixed className='icon'/></span> : null}
-                    {weapon.mount == 'G' ? <span onMouseOver={termtip.bind(null, 'gimballed')} onMouseOut={tooltip.bind(null, null)}><MountGimballed /></span> : null}
-                    {weapon.mount == 'T' ? <span onMouseOver={termtip.bind(null, 'turreted')} onMouseOut={tooltip.bind(null, null)}><MountTurret /></span> : null}
-                    {weapon.classRating} {translate(weapon.name)}
-                    {weapon.engineering ? ' (' + weapon.engineering + ')' : null }
-                  </td>
-                  <td className='ri'>{formats.f1(weapon.sdpsShields)}</td>
-                  <td className='ri'>{formats.pct1(weapon.effectivenessShields)}</td>
-                  <td className='ri'>{formats.f1(weapon.sdpsArmour)}</td>
-                  <td className='ri'>{formats.pct1(weapon.effectivenessArmour)}</td>
-                </tr>);
+
+      const effectivenessShieldsTooltipDetails = [];
+      effectivenessShieldsTooltipDetails.push(<div key='range'>{translate('range') + ' ' + formats.pct1(weapon.effectiveness.shields.range)}</div>);
+      effectivenessShieldsTooltipDetails.push(<div key='resistance'>{translate('resistance') + ' ' + formats.pct1(weapon.effectiveness.shields.resistance)}</div>);
+      effectivenessShieldsTooltipDetails.push(<div key='sys'>{translate('sys') + ' ' + formats.pct1(weapon.effectiveness.shields.sys)}</div>);
+
+      const effectiveShieldsSDpsTooltipDetails = [];
+      if (weapon.sdps.shields.absolute) effectiveShieldsSDpsTooltipDetails.push(<div key='absolute'>{translate('absolute') + ' ' + formats.f1(weapon.sdps.shields.absolute)}</div>);
+      if (weapon.sdps.shields.explosive) effectiveShieldsSDpsTooltipDetails.push(<div key='explosive'>{translate('explosive') + ' ' + formats.f1(weapon.sdps.shields.explosive)}</div>);
+      if (weapon.sdps.shields.kinetic) effectiveShieldsSDpsTooltipDetails.push(<div key='kinetic'>{translate('kinetic') + ' ' + formats.f1(weapon.sdps.shields.kinetic)}</div>);
+      if (weapon.sdps.shields.thermal) effectiveShieldsSDpsTooltipDetails.push(<div key='thermal'>{translate('thermal') + ' ' + formats.f1(weapon.sdps.shields.thermal)}</div>);
+
+      const effectivenessArmourTooltipDetails = [];
+      effectivenessArmourTooltipDetails.push(<div key='range'>{translate('range') + ' ' + formats.pct1(weapon.effectiveness.armour.range)}</div>);
+      effectivenessArmourTooltipDetails.push(<div key='resistance'>{translate('resistance') + ' ' + formats.pct1(weapon.effectiveness.armour.resistance)}</div>);
+      effectivenessArmourTooltipDetails.push(<div key='hardness'>{translate('hardness') + ' ' + formats.pct1(weapon.effectiveness.armour.hardness)}</div>);
+      const effectiveArmourSDpsTooltipDetails = [];
+      if (weapon.sdps.armour.absolute) effectiveArmourSDpsTooltipDetails.push(<div key='absolute'>{translate('absolute') + ' ' + formats.f1(weapon.sdps.armour.absolute)}</div>);
+      if (weapon.sdps.armour.explosive) effectiveArmourSDpsTooltipDetails.push(<div key='explosive'>{translate('explosive') + ' ' + formats.f1(weapon.sdps.armour.explosive)}</div>);
+      if (weapon.sdps.armour.kinetic) effectiveArmourSDpsTooltipDetails.push(<div key='kinetic'>{translate('kinetic') + ' ' + formats.f1(weapon.sdps.armour.kinetic)}</div>);
+      if (weapon.sdps.armour.thermal) effectiveArmourSDpsTooltipDetails.push(<div key='thermal'>{translate('thermal') + ' ' + formats.f1(weapon.sdps.armour.thermal)}</div>);
+
+      rows.push(
+        <tr key={weapon.id}>
+          <td className='ri'>
+            {weapon.mount == 'F' ? <span onMouseOver={termtip.bind(null, 'fixed')} onMouseOut={tooltip.bind(null, null)}><MountFixed className='icon'/></span> : null}
+            {weapon.mount == 'G' ? <span onMouseOver={termtip.bind(null, 'gimballed')} onMouseOut={tooltip.bind(null, null)}><MountGimballed /></span> : null}
+            {weapon.mount == 'T' ? <span onMouseOver={termtip.bind(null, 'turreted')} onMouseOut={tooltip.bind(null, null)}><MountTurret /></span> : null}
+            {weapon.classRating} {translate(weapon.name)}
+            {weapon.engineering ? ' (' + weapon.engineering + ')' : null }
+          </td>
+          <td className='ri'><span onMouseOver={termtip.bind(null, effectiveShieldsSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.f1(weapon.sdps.shields.total)}</span></td>
+          <td className='ri'><span onMouseOver={termtip.bind(null, effectivenessShieldsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(weapon.effectiveness.shields.total)}</span></td>
+          <td className='ri'><span onMouseOver={termtip.bind(null, effectiveArmourSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.f1(weapon.sdps.armour.total)}</span></td>
+          <td className='ri'><span onMouseOver={termtip.bind(null, effectivenessArmourTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(weapon.effectiveness.armour.total)}</span></td>
+        </tr>);
     }    
-//    const shieldSourcesData = [];
-//    const effectiveShieldData = [];
-//    const shieldDamageTakenData = [];
-//    const shieldTooltipDetails = [];
-//    const shieldAbsoluteTooltipDetails = [];
-//    const shieldExplosiveTooltipDetails = [];
-//    const shieldKineticTooltipDetails = [];
-//    const shieldThermalTooltipDetails = [];
-//    let maxEffectiveShield = 0;
-//    if (shield.total) {
-//      shieldSourcesData.push({ value: Math.round(shield.generator), label: translate('generator') });
-//      shieldSourcesData.push({ value: Math.round(shield.boosters), label: translate('boosters') });
-//      shieldSourcesData.push({ value: Math.round(shield.cells), label: translate('cells') });
-
-//      shieldTooltipDetails.push(<div key='generator'>{translate('generator') + ' ' + formats.int(shield.generator)}{units.MJ}</div>);
-//      shieldTooltipDetails.push(<div key='boosters'>{translate('boosters') + ' ' + formats.int(shield.boosters)}{units.MJ}</div>);
-//      shieldTooltipDetails.push(<div key='cells'>{translate('cells') + ' ' + formats.int(shield.cells)}{units.MJ}</div>);
-
-//      shieldAbsoluteTooltipDetails.push(<div key='generator'>{translate('generator') + ' ' + formats.pct1(shield.absolute.generator)}</div>);
-//      shieldAbsoluteTooltipDetails.push(<div key='boosters'>{translate('boosters') + ' ' + formats.pct1(shield.absolute.boosters)}</div>);
-//      shieldAbsoluteTooltipDetails.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.pct1(shield.absolute.sys)}</div>);
-
-//      shieldExplosiveTooltipDetails.push(<div key='generator'>{translate('generator') + ' ' + formats.pct1(shield.explosive.generator)}</div>);
-//      shieldExplosiveTooltipDetails.push(<div key='boosters'>{translate('boosters') + ' ' + formats.pct1(shield.explosive.boosters)}</div>);
-//      shieldExplosiveTooltipDetails.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.pct1(shield.explosive.sys)}</div>);
-
-//      shieldKineticTooltipDetails.push(<div key='generator'>{translate('generator') + ' ' + formats.pct1(shield.kinetic.generator)}</div>);
-//      shieldKineticTooltipDetails.push(<div key='boosters'>{translate('boosters') + ' ' + formats.pct1(shield.kinetic.boosters)}</div>);
-//      shieldKineticTooltipDetails.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.pct1(shield.kinetic.sys)}</div>);
-
-//      shieldThermalTooltipDetails.push(<div key='generator'>{translate('generator') + ' ' + formats.pct1(shield.thermal.generator)}</div>);
-//      shieldThermalTooltipDetails.push(<div key='boosters'>{translate('boosters') + ' ' + formats.pct1(shield.thermal.boosters)}</div>);
-//      shieldThermalTooltipDetails.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.pct1(shield.thermal.sys)}</div>);
-
-//      const effectiveAbsoluteShield = shield.total / shield.absolute.total;
-//      effectiveShieldData.push({ value: Math.round(effectiveAbsoluteShield), label: translate('absolute') });
-//      const effectiveExplosiveShield = shield.total / shield.explosive.total;
-//      effectiveShieldData.push({ value: Math.round(effectiveExplosiveShield), label: translate('explosive') });
-//      const effectiveKineticShield = shield.total / shield.kinetic.total;
-//      effectiveShieldData.push({ value: Math.round(effectiveKineticShield), label: translate('kinetic') });
-//      const effectiveThermalShield = shield.total / shield.thermal.total;
-//      effectiveShieldData.push({ value: Math.round(effectiveThermalShield), label: translate('thermal') });
-
-//      shieldDamageTakenData.push({ value: Math.round(shield.absolute.total * 100), label: translate('absolute') });
-//      shieldDamageTakenData.push({ value: Math.round(shield.explosive.total * 100), label: translate('explosive') });
-//      shieldDamageTakenData.push({ value: Math.round(shield.kinetic.total * 100), label: translate('kinetic') });
-//      shieldDamageTakenData.push({ value: Math.round(shield.thermal.total * 100), label: translate('thermal') });
-
-//      maxEffectiveShield = Math.max(shield.total / shield.absolute.max, shield.total / shield.explosive.max, shield.total / shield.kinetic.max, shield.total / shield.thermal.max);
-//    }
-
-//    const armourSourcesData = [];
-//    armourSourcesData.push({ value: Math.round(armour.bulkheads), label: translate('bulkheads') });
-//    armourSourcesData.push({ value: Math.round(armour.reinforcement), label: translate('reinforcement') });
-
-//    const armourTooltipDetails = [];
-//    armourTooltipDetails.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.int(armour.bulkheads)}</div>);
-//    armourTooltipDetails.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.int(armour.reinforcement)}</div>);
-
-//    const armourAbsoluteTooltipDetails = [];
-//    armourAbsoluteTooltipDetails.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.pct1(armour.absolute.bulkheads)}</div>);
-//    armourAbsoluteTooltipDetails.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.pct1(armour.absolute.reinforcement)}</div>);
-
-//    const armourExplosiveTooltipDetails = [];
-//    armourExplosiveTooltipDetails.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.pct1(armour.explosive.bulkheads)}</div>);
-//    armourExplosiveTooltipDetails.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.pct1(armour.explosive.reinforcement)}</div>);
-
-//    const armourKineticTooltipDetails = [];
-//    armourKineticTooltipDetails.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.pct1(armour.kinetic.bulkheads)}</div>);
-//    armourKineticTooltipDetails.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.pct1(armour.kinetic.reinforcement)}</div>);
-
-//    const armourThermalTooltipDetails = [];
-//    armourThermalTooltipDetails.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.pct1(armour.thermal.bulkheads)}</div>);
-//    armourThermalTooltipDetails.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.pct1(armour.thermal.reinforcement)}</div>);
-
-//    const effectiveArmourData = [];
-//    const effectiveAbsoluteArmour = armour.total / armour.absolute.total;
-//    effectiveArmourData.push({ value: Math.round(effectiveAbsoluteArmour), label: translate('absolute') });
-//    const effectiveExplosiveArmour = armour.total / armour.explosive.total;
-//    effectiveArmourData.push({ value: Math.round(effectiveExplosiveArmour), label: translate('explosive') });
-//    const effectiveKineticArmour = armour.total / armour.kinetic.total;
-//    effectiveArmourData.push({ value: Math.round(effectiveKineticArmour), label: translate('kinetic') });
-//    const effectiveThermalArmour = armour.total / armour.thermal.total;
-//    effectiveArmourData.push({ value: Math.round(effectiveThermalArmour), label: translate('thermal') });
 
 //    const armourDamageTakenData = [];
 //    armourDamageTakenData.push({ value: Math.round(armour.absolute.total * 100), label: translate('absolute') });
@@ -248,24 +184,26 @@ export default class Offence extends TranslatedComponent {
 
     return (
       <span id='offence'>
+        <div className='group half'>
         <table width='100%'>
           <thead>
           <tr className='main'>
             <th rowSpan='2' className='sortable' onClick={sortOrder.bind(this, 'n')}>{translate('weapon')}</th>
-            <th colSpan='2'>{translate('opponent shields')}</th>
-            <th colSpan='2'>{translate('opponent armour')}</th>
+            <th colSpan='2'>{translate('opponent\`s shields')}</th>
+            <th colSpan='2'>{translate('opponent\`s armour')}</th>
           </tr>
           <tr>
-            <th className='lft sortable' onClick={sortOrder.bind(this, 'esdpss')}>{translate('effective sdps')}</th>
-            <th className='sortable' onClick={sortOrder.bind(this, 'es')}>{translate('effectiveness')}</th>
-            <th className='lft sortable' onClick={sortOrder.bind(this, 'esdpsh')}>{translate('effective sdps')}</th>
-            <th className='sortable' onClick={sortOrder.bind(this, 'eh')}>{translate('effectiveness')}</th>
+            <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_SHIELDS')} onMouseOut={tooltip.bind(null, null)} onClick={sortOrder.bind(this, 'esdpss')}>{'sdps'}</th>
+            <th className='sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVENESS_SHIELDS')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'es')}>{'eft'}</th>
+            <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_ARMOUR')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'esdpsh')}>{'sdps'}</th>
+            <th className='sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVENESS_ARMOUR')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'eh')}>{'eft'}</th>
           </tr>
           </thead>
           <tbody>
             {rows}
           </tbody>
         </table>
+        </div>
       </span>);
   }
 }
