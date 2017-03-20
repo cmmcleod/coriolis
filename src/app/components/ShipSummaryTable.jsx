@@ -30,24 +30,20 @@ export default class ShipSummaryTable extends TranslatedComponent {
     let u = language.units;
     let formats = language.formats;
     let { time, int, round, f1, f2 } = formats;
-    let sgClassNames = cn({ warning: ship.findInternalByGroup('sg') && !ship.shield, muted: !ship.findInternalByGroup('sg') });
-    let sgRecover = '-';
-    let sgRecharge = '-';
     let hide = tooltip.bind(null, null);
 
-    if (ship.shield) {
-      sgRecover = time(ship.calcShieldRecovery());
-      sgRecharge = time(ship.calcShieldRecharge());
-    }
-
+    const shieldGenerator = ship.findInternalByGroup('sg');
+    const sgClassNames = cn({ warning: shieldGenerator && !ship.shield, muted: !shieldGenerator });
     const timeToDrain = Calc.timeToDrainWep(ship, wep);
+    const canThrust = ship.canThrust();
+    const canBoost = ship.canBoost();
 
     return <div id='summary'>
       <table id='summaryTable'>
         <thead>
           <tr className='main'>
-            <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !ship.canThrust() }) }>{translate('speed')}</th>
-            <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !ship.canBoost() }) }>{translate('boost')}</th>
+            <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !canThrust }) }>{translate('speed')}</th>
+            <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !canBoost }) }>{translate('boost')}</th>
             <th onMouseEnter={termtip.bind(null, 'damage per second')} onMouseLeave={hide} rowSpan={2}>{translate('DPS')}</th>
             <th onMouseEnter={termtip.bind(null, 'energy per second')} onMouseLeave={hide} rowSpan={2}>{translate('EPS')}</th>
             <th onMouseEnter={termtip.bind(null, 'time to drain WEP capacitor')} onMouseLeave={hide} rowSpan={2}>{translate('TTD')}</th>
@@ -72,8 +68,8 @@ export default class ShipSummaryTable extends TranslatedComponent {
         </thead>
         <tbody>
           <tr>
-            <td>{ ship.canThrust() ? <span>{int(ship.calcSpeed(eng, fuel, cargo, false))}{u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
-            <td>{ ship.canBoost() ? <span>{int(ship.calcSpeed(eng, fuel, cargo, true))}{u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
+            <td>{ canThrust ? <span>{int(ship.calcSpeed(eng, fuel, cargo, false))}{u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
+            <td>{ canBoost ? <span>{int(ship.calcSpeed(eng, fuel, cargo, true))}{u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
             <td>{f1(ship.totalDps)}</td>
             <td>{f1(ship.totalEps)}</td>
             <td>{timeToDrain === Infinity ? '∞' : time(timeToDrain)}</td>

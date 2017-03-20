@@ -17,6 +17,7 @@ export default class Boost extends TranslatedComponent {
   static propTypes = {
     marker: React.PropTypes.string.isRequired,
     ship: React.PropTypes.object.isRequired,
+    boost: React.PropTypes.bool.isRequired,
     onChange: React.PropTypes.func.isRequired
   };
 
@@ -27,14 +28,10 @@ export default class Boost extends TranslatedComponent {
    */
   constructor(props, context) {
     super(props);
-    const ship = props.ship;
+    const { ship, boost } = props;
 
     this._keyDown = this._keyDown.bind(this);
     this._toggleBoost = this._toggleBoost.bind(this);
-
-    this.state = {
-      boost: false
-    };
   }
 
   /**
@@ -49,25 +46,6 @@ export default class Boost extends TranslatedComponent {
    */
   componentWillUnmount() {
     document.removeEventListener('keydown', this._keyDown);
-  }
-
-  /**
-   * Update values if we change ship
-   * @param   {Object} nextProps   Incoming/Next properties
-   * @returns {boolean}            Returns true if the component should be rerendered
-   */
-  componentWillReceiveProps(nextProps) {
-    const { boost } = this.state;
-    const nextShip = nextProps.ship;
-
-    const nextBoost = nextShip.canBoost() ? boost : false;
-    if (nextBoost != boost) {
-      this.setState({
-        boost: nextBoost
-      });
-    }
-
-    return true;
   }
 
   /**
@@ -91,10 +69,7 @@ export default class Boost extends TranslatedComponent {
    * Toggle the boost feature
    */
   _toggleBoost() {
-    let { boost } = this.state;
-    boost = !boost;
-    this.setState({ boost });
-    this.props.onChange(boost);
+    this.props.onChange(!this.props.boost);
   }
 
   /**
@@ -103,8 +78,7 @@ export default class Boost extends TranslatedComponent {
    */
   render() {
     const { formats, translate, units } = this.context.language;
-    const { ship } = this.props;
-    const { boost } = this.state;
+    const { ship, boost } = this.props;
 
     // TODO disable if ship cannot boost
     return (

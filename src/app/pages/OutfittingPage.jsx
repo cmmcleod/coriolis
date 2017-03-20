@@ -1,14 +1,17 @@
 import React from 'react';
+// import Perf from 'react-addons-perf';
 import { findDOMNode } from 'react-dom';
 import { Ships } from 'coriolis-data/dist';
 import cn from 'classnames';
 import Page from './Page';
 import Router from '../Router';
 import Persist from '../stores/Persist';
+import * as Utils from '../utils/UtilityFunctions';
 import Ship from '../shipyard/Ship';
 import { toDetailedBuild } from '../shipyard/Serializer';
 import { outfitURL } from '../utils/UrlGenerators';
 import { FloppyDisk, Bin, Switch, Download, Reload, LinkIcon, ShoppingIcon } from '../components/SvgIcons';
+import LZString from 'lz-string';
 import ShipSummaryTable from '../components/ShipSummaryTable';
 import StandardSlotSection from '../components/StandardSlotSection';
 import HardpointsSlotSection from '../components/HardpointsSlotSection';
@@ -46,7 +49,8 @@ export default class OutfittingPage extends Page {
    */
   constructor(props, context) {
     super(props, context);
-    this.state = this._initState(context);
+    // window.Perf = Perf;
+    this.state = this._initState(props, context);
     this._keyDown = this._keyDown.bind(this);
     this._exportBuild = this._exportBuild.bind(this);
     this._pipsUpdated = this._pipsUpdated.bind(this);
@@ -59,10 +63,11 @@ export default class OutfittingPage extends Page {
 
   /**
    * [Re]Create initial state from context
+   * @param  {Object} props    React component properties
    * @param  {context} context React component context
    * @return {Object}          New state object
    */
-  _initState(context) {
+  _initState(props, context) {
     let params = context.route.params;
     let shipId = params.ship;
     let code = params.code;
@@ -84,6 +89,8 @@ export default class OutfittingPage extends Page {
 
     this._getTitle = getTitle.bind(this, data.properties.name);
 
+    // Obtain ship control from code
+    const { sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, engagementRange } = this._obtainControlFromCode(ship, code);
     return {
       error: null,
       title: this._getTitle(buildName),
@@ -94,14 +101,15 @@ export default class OutfittingPage extends Page {
       ship,
       code,
       savedCode,
-      sys: 2,
-      eng: 2,
-      wep: 2,
-      fuel: ship.fuelCapacity,
-      cargo: 0,
-      boost: false,
-      engagementRange: 1000,
-      opponent: new Ship('anaconda', Ships['anaconda'].properties, Ships['anaconda'].slots).buildWith(Ships['anaconda'].defaults)
+      sys,
+      eng,
+      wep,
+      boost,
+      fuel,
+      cargo,
+      opponent,
+      opponentBuild,
+      engagementRange
     };
   }
 
@@ -124,13 +132,83 @@ export default class OutfittingPage extends Page {
   }
 
   /**
+   * Update the control part of the route
+   */
+  _updateRouteOnControlChange() {
+    const { ship, shipId, buildName } = this.state;
+    const code = this._fullCode(ship);
+    this._updateRoute(shipId, buildName, code);
+    this.setState({ code });
+  }
+
+  /**
+   * Provide a full code for this ship, including any additions due to the outfitting page
+   * @param   {Object}  ship  the ship
+   * @param   {number}  fuel  the fuel carried by the ship (if different from that in state)
+   * @param   {number}  cargo the cargo carried by the ship (if different from that in state)
+   * @returns {string}        the code for this ship
+   */
+  _fullCode(ship, fuel, cargo) {
+    return `${ship.toString()}.${LZString.compressToBase64(this._controlCode(fuel, cargo))}`;
+  }
+
+  /**
+   * Obtain the control information from the build code
+   * @param   {Object} ship    The ship
+   * @param   {string} code    The build code
+   * @returns {Object}         The control information
+   */
+  _obtainControlFromCode(ship, code) {
+    // Defaults
+    let sys = 2;
+    let eng = 2;
+    let wep = 2;
+    let boost = false;
+    let fuel = ship.fuelCapacity;
+    let cargo = ship.cargoCapacity;
+    let opponent = new Ship('eagle', Ships['eagle'].properties, Ships['eagle'].slots).buildWith(Ships['eagle'].defaults);
+    let opponentBuild = undefined;
+    let engagementRange = 1000;
+
+    // Obtain updates from code, if available
+    if (code) {
+      const parts = code.split('.');
+      if (parts.length >= 5) {
+        // We have control information in the code
+        const control = LZString.decompressFromBase64(Utils.fromUrlSafe(parts[4])).split('/');
+        sys = parseFloat(control[0]);
+        eng = parseFloat(control[1]);
+        wep = parseFloat(control[2]);
+        boost = control[3] == 1 ? true : false;
+        fuel = parseFloat(control[4]);
+        cargo = parseInt(control[5]);
+        if (control[6]) {
+          const shipId = control[6];
+          opponent = new Ship(shipId, Ships[shipId].properties, Ships[shipId].slots);
+          if (control[7] && Persist.getBuild(shipId, control[7])) {
+            // Ship is a particular build
+            opponent.buildFrom(Persist.getBuild(shipId, control[7]));
+            opponentBuild = control[7];
+          } else {
+            // Ship is a stock build
+            opponent.buildWith(Ships[shipId].defaults);
+          }
+        }
+        engagementRange = parseInt(control[8]);
+      }
+    }
+
+    return { sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, engagementRange };
+  }
+
+  /**
    * Triggered when pips have been updated
    * @param {number} sys    SYS pips
    * @param {number} eng    ENG pips
    * @param {number} wep    WEP pips
    */
   _pipsUpdated(sys, eng, wep) {
-    this.setState({ sys, eng, wep });
+    this.setState({ sys, eng, wep }, () =>  this._updateRouteOnControlChange());
   }
 
   /**
@@ -138,7 +216,7 @@ export default class OutfittingPage extends Page {
    * @param {boolean} boost true if boosting
    */
   _boostUpdated(boost) {
-    this.setState({ boost });
+    this.setState({ boost }, () =>  this._updateRouteOnControlChange());
   }
 
   /**
@@ -146,7 +224,7 @@ export default class OutfittingPage extends Page {
    * @param {number} fuel the amount of fuel, in T
    */
   _fuelUpdated(fuel) {
-    this.setState({ fuel });
+    this.setState({ fuel }, () =>  this._updateRouteOnControlChange());
   }
 
   /**
@@ -154,7 +232,7 @@ export default class OutfittingPage extends Page {
    * @param {number} cargo the amount of cargo, in T
    */
   _cargoUpdated(cargo) {
-    this.setState({ cargo });
+    this.setState({ cargo }, () =>  this._updateRouteOnControlChange());
   }
 
   /**
@@ -162,24 +240,44 @@ export default class OutfittingPage extends Page {
    * @param {number} engagementRange the engagement range, in m
    */
   _engagementRangeUpdated(engagementRange) {
-    this.setState({ engagementRange });
+    this.setState({ engagementRange }, () =>  this._updateRouteOnControlChange());
   }
 
   /**
    * Triggered when target ship has been updated
-   * @param {object} opponent the opponent's ship
-   * @param {string} opponentBuild the name of the opponent's build
+   * @param {string} opponent       the opponent's ship model
+   * @param {string} opponentBuild  the name of the opponent's build
    */
   _opponentUpdated(opponent, opponentBuild) {
-    this.setState({ opponent, opponentBuild });
+    const opponentShip  = new Ship(opponent, Ships[opponent].properties, Ships[opponent].slots);
+    if (opponentBuild && Persist.getBuild(opponent, opponentBuild)) {
+      // Ship is a particular build
+      opponentShip.buildFrom(Persist.getBuild(opponent, opponentBuild));
+    } else {
+      // Ship is a stock build
+      opponentShip.buildWith(Ships[opponent].defaults);
+    }
+
+    this.setState({ opponent: opponentShip, opponentBuild }, () =>  this._updateRouteOnControlChange());
+  }
+
+  /**
+   * Set the control code for this outfitting page
+   * @param   {number}  fuel  the fuel carried by the ship (if different from that in state)
+   * @param   {number}  cargo the cargo carried by the ship (if different from that in state)
+   * @returns {string}        The control code
+   */
+  _controlCode(fuel, cargo) {
+    const { sys, eng, wep, boost, opponent, opponentBuild, engagementRange } = this.state;
+    const code = `${sys}/${eng}/${wep}/${boost ? 1 : 0}/${fuel || this.state.fuel}/${cargo || this.state.cargo}/${opponent.id}/${opponentBuild ? opponentBuild : ''}/${engagementRange}`;
+    return code;
   }
 
   /**
    * Save the current build
    */
   _saveBuild() {
-    let code = this.state.ship.toString();
-    let { buildName, newBuildName, shipId } = this.state;
+    const { code, buildName, newBuildName, shipId } = this.state;
 
     if (buildName === newBuildName) {
       Persist.saveBuild(shipId, buildName, code);
@@ -196,9 +294,8 @@ export default class OutfittingPage extends Page {
    * Rename the current build
    */
   _renameBuild() {
-    let { buildName, newBuildName, shipId, ship } = this.state;
+    const { code, buildName, newBuildName, shipId, ship } = this.state;
     if (buildName != newBuildName && newBuildName.length) {
-      let code = ship.toString();
       Persist.deleteBuild(shipId, buildName);
       Persist.saveBuild(shipId, newBuildName, code);
       this._updateRoute(shipId, newBuildName, code);
@@ -210,16 +307,31 @@ export default class OutfittingPage extends Page {
    * Reload build from last save
    */
   _reloadBuild() {
-    this.state.ship.buildFrom(this.state.savedCode);
-    this._shipUpdated();
+    this.setState({ code: this.state.savedCode }, () => this._codeUpdated());
   }
 
   /**
    * Reset build to Stock/Factory defaults
    */
   _resetBuild() {
-    this.state.ship.buildWith(Ships[this.state.shipId].defaults);
-    this._shipUpdated();
+    const { ship, shipId, buildName } = this.state;
+    // Rebuild ship
+    ship.buildWith(Ships[shipId].defaults);
+    // Reset controls
+    const code = ship.toString();
+    const { sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, engagementRange } = this._obtainControlFromCode(ship, code);
+    // Update state, and refresh the ship
+    this.setState({
+      sys,
+      eng,
+      wep,
+      boost,
+      fuel,
+      cargo,
+      opponent,
+      opponentBuild,
+      engagementRange
+    }, () => this._updateRoute(shipId, buildName, code));
   }
 
   /**
@@ -244,14 +356,43 @@ export default class OutfittingPage extends Page {
   }
 
   /**
-   * Trigger render on ship model change
+   * Called when the code for the ship has been updated, to synchronise the rest of the data
+   */
+  _codeUpdated() {
+    const { code, ship, shipId, buildName } = this.state;
+
+    // Rebuild ship from the code
+    this.state.ship.buildFrom(code);
+
+    // Obtain controls from the code
+    const { sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, engagementRange } = this._obtainControlFromCode(ship, code);
+    // Update state, and refresh the route when complete
+    this.setState({
+      sys,
+      eng,
+      wep,
+      boost,
+      fuel,
+      cargo,
+      opponent,
+      opponentBuild,
+      engagementRange
+    }, () => this._updateRoute(shipId, buildName, code));
+  }
+
+  /**
+   * Called when the ship has been updated, to set the code and then update accordingly
    */
   _shipUpdated() {
-    let { shipId, buildName, ship } = this.state;
-    let code = ship.toString();
-
-    this._updateRoute(shipId, buildName, code);
-    this.setState({ code });
+    let { ship, shipId, buildName, cargo, fuel } = this.state;
+    if (cargo > ship.cargoCapacity) {
+      cargo = ship.cargoCapacity;
+    }
+    if (fuel > ship.fuelCapacity) {
+      fuel = ship.fuelCapacity;
+    }
+    const code = this._fullCode(ship, fuel, cargo);
+    this.setState({ code, cargo, fuel }, () => this._updateRoute(shipId, buildName, code));
   }
 
   /**
@@ -271,7 +412,7 @@ export default class OutfittingPage extends Page {
    */
   componentWillReceiveProps(nextProps, nextContext) {
     if (this.context.route !== nextContext.route) {  // Only reinit state if the route has changed
-      this.setState(this._initState(nextContext));
+      this.setState(this._initState(nextProps, nextContext));
     }
   }
 
@@ -340,16 +481,23 @@ export default class OutfittingPage extends Page {
         shipUpdated = this._shipUpdated,
         canSave = (newBuildName || buildName) && code !== savedCode,
         canRename = buildName && newBuildName && buildName != newBuildName,
-        canReload = savedCode && canSave,
-        hStr = ship.getHardpointsString() + '.' + ship.getModificationsString(),
-        iStr = ship.getInternalString() + '.' + ship.getModificationsString();
+        canReload = savedCode && canSave;
 
     // Code can be blank for a default loadout.  Prefix it with the ship name to ensure that changes in default ships is picked up
     code = ship.name + (code || '');
 
     // Markers are used to propagate state changes without requiring a deep comparison of the ship, as that takes a long time
+    const _sStr = ship.getStandardString();
+    const _iStr = ship.getInternalString();
+    const _hStr = ship.getHardpointsString();
+    const _pStr = `${ship.getPowerEnabledString()}${ship.getPowerPrioritiesString()}`;
+    const _mStr = ship.getModificationsString();
+
+    const standardSlotMarker = `${ship.name}${_sStr}${_pStr}${_mStr}`;
+    const internalSlotMarker = `${ship.name}${_iStr}${_pStr}${_mStr}`;
+    const hardpointsSlotMarker = `${ship.name}${_hStr}${_pStr}${_mStr}`;
     const boostMarker = `${ship.canBoost()}`;
-    const shipSummaryMarker = `${ship.toString()}:${eng}:${fuel}:${cargo}`;
+    const shipSummaryMarker = `${ship.toString()}${eng}${fuel}${cargo}`;
 
     return (
       <div id='outfit' className={'page'} style={{ fontSize: (sizeRatio * 0.9) + 'em' }}>
@@ -386,10 +534,10 @@ export default class OutfittingPage extends Page {
 
         {/* Main tables */}
         <ShipSummaryTable ship={ship} marker={shipSummaryMarker} eng={eng} sys={sys} wep={wep} cargo={cargo} fuel={fuel}/>
-        <StandardSlotSection ship={ship} code={code} onChange={shipUpdated} currentMenu={menu} />
-        <InternalSlotSection ship={ship} code={iStr} onChange={shipUpdated} currentMenu={menu} />
-        <HardpointsSlotSection ship={ship} code={hStr || ''} onChange={shipUpdated} currentMenu={menu} />
-        <UtilitySlotSection ship={ship} code={hStr || ''} onChange={shipUpdated} currentMenu={menu} />
+        <StandardSlotSection ship={ship} code={standardSlotMarker} onChange={shipUpdated} currentMenu={menu} />
+        <InternalSlotSection ship={ship} code={internalSlotMarker} onChange={shipUpdated} currentMenu={menu} />
+        <HardpointsSlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} currentMenu={menu} />
+        <UtilitySlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} currentMenu={menu} />
 
         {/* Control of ship and opponent */}
         <div className='group quarter'>
@@ -397,28 +545,28 @@ export default class OutfittingPage extends Page {
             <h2 style={{ verticalAlign: 'middle', textAlign: 'left' }}>{translate('ship control')}</h2>
           </div>
           <div className='group half'>
-            <Boost marker={boostMarker} ship={ship} onChange={this._boostUpdated} />
+            <Boost marker={boostMarker} ship={ship} boost={boost} onChange={this._boostUpdated} />
           </div>
         </div>
         <div className='group quarter'>
-          <Pips ship={ship} onChange={this._pipsUpdated} />
+          <Pips sys={sys} eng={eng} wep={wep} onChange={this._pipsUpdated} />
         </div>
         <div className='group quarter'>
-          <Fuel ship={ship} onChange={this._fuelUpdated}/>
+          <Fuel fuelCapacity={ship.fuelCapacity} fuel={fuel} onChange={this._fuelUpdated}/>
         </div>
         <div className='group quarter'>
-          { ship.cargoCapacity > 0 ? <Cargo ship={ship} onChange={this._cargoUpdated}/> : null }
+          { ship.cargoCapacity > 0 ? <Cargo cargoCapacity={ship.cargoCapacity} cargo={cargo} onChange={this._cargoUpdated}/> : null }
         </div>
         <div className='group half'>
           <div className='group quarter'>
             <h2 style={{ verticalAlign: 'middle', textAlign: 'left' }}>{translate('opponent')}</h2>
           </div>
           <div className='group threequarters'>
-            <ShipPicker onChange={this._opponentUpdated}/>
+            <ShipPicker ship={opponent.id} build={opponentBuild} onChange={this._opponentUpdated}/>
           </div>
         </div>
         <div className='group half'>
-          <EngagementRange ship={ship} onChange={this._engagementRangeUpdated}/>
+          <EngagementRange ship={ship} engagementRange={engagementRange} onChange={this._engagementRangeUpdated}/>
         </div>
 
         {/* Tabbed subpages */}

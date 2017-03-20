@@ -66,9 +66,12 @@ export default class OutfittingSubpages extends TranslatedComponent {
     let { ship, buildName, code, onChange } = this.props;
     Persist.setOutfittingTab('power');
 
+    const powerMarker = `${ship.toString()}`;
+    const costMarker = `${ship.toString().split('.')[0]}`;
+
     return <div>
-      <PowerManagement ship={ship} code={code} onChange={onChange} />
-      <CostSection ship={ship} buildName={buildName} code={code} />
+      <PowerManagement ship={ship} code={powerMarker} onChange={onChange} />
+      <CostSection ship={ship} buildName={buildName} code={costMarker} />
     </div>;
   }
 

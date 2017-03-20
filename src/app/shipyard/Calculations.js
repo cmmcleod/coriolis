@@ -808,9 +808,9 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
 
 /**
   * Calculate time to drain WEP capacitor
-  * @param {object} ship  The ship
-  * @param {number} wep   Pips to WEP
-  * @return               The time to drain the WEP capacitor, in seconds
+  * @param   {object} ship  The ship
+  * @param   {number} wep   Pips to WEP
+  * @returns {number}       The time to drain the WEP capacitor, in seconds
   */
 export function timeToDrainWep(ship, wep) {
   let totalSEps = 0;
@@ -835,6 +835,12 @@ export function timeToDrainWep(ship, wep) {
 
 /**
  * Calculate the time to deplete an amount of shields or armour
+ * @param   {number} amount          The amount to be depleted
+ * @param   {number} dps             The depletion per second
+ * @param   {number} eps             The energy drained per second
+ * @param   {number} capacity        The initial energy capacity
+ * @param   {number} recharge        The energy recharged per second
+ * @returns {number}                 The number of seconds to deplete to 0
  */
 export function timeToDeplete(amount, dps, eps, capacity, recharge) {
   const drainPerSecond = eps - recharge;

@@ -13,12 +13,12 @@ import cn from 'classnames';
 export default class ShipPicker extends TranslatedComponent {
   static propTypes = {
     onChange: React.PropTypes.func.isRequired,
-    ship: React.PropTypes.object,
+    ship: React.PropTypes.string.isRequired,
     build: React.PropTypes.string
   };
 
   static defaultProps = {
-    ship: new Ship('anaconda', Ships['anaconda'].properties, Ships['anaconda'].slots).buildWith(Ships['anaconda'].defaults)
+    ship: 'eagle'
   }
 
   /**
@@ -33,44 +33,21 @@ export default class ShipPicker extends TranslatedComponent {
     this._toggleMenu = this._toggleMenu.bind(this);
     this._closeMenu = this._closeMenu.bind(this);
 
-    this.state = {
-      ship: props.ship,
-      build: props.build
-    };
-  }
-
-  /**
-   * Update the state if our ship changes
-   * @param  {Object} nextProps   Incoming/Next properties
-   * @return {boolean}            Returns true if the component should be rerendered
-   */
-  componentWillReceiveProps(nextProps) {
-    const { ship, build } = this.state;
-    const { nextShip, nextBuild } = nextProps;
-
-    if (nextShip != undefined && nextShip != ship && nextBuild != build) {
-      this.setState({ ship: nextShip, build: nextBuild });
-    }
-    return true;
+    this.state = { menuOpen: false };
   }
 
   /**
    * Update ship
-   * @param  {object} shipId  the ship
+   * @param  {object} ship  the ship
    * @param  {string} build   the build, if present
    */
-  _shipChange(shipId, build) {
-    const ship = new Ship(shipId, Ships[shipId].properties, Ships[shipId].slots);
-    if (build) {
-      // Ship is a particular build
-      ship.buildFrom(Persist.getBuild(shipId, build));
-    } else {
-      // Ship is a stock build
-      ship.buildWith(Ships[shipId].defaults);
-    }
+  _shipChange(ship, build) {
     this._closeMenu();
-    this.setState({ ship, build });
-    this.props.onChange(ship, build);
+
+    // Ensure that the ship has changed
+    if (ship !== this.props.ship || this.build !== this.props.build) {
+      this.props.onChange(ship, build);
+    }
   }
 
   /**
@@ -78,7 +55,7 @@ export default class ShipPicker extends TranslatedComponent {
    * @returns {object}    the picker menu
    */
   _renderPickerMenu() {
-    const { ship, build } = this.state;
+    const { ship, build } = this.props;
     const _shipChange = this._shipChange;
 
     const builds = Persist.getBuilds();
@@ -86,7 +63,7 @@ export default class ShipPicker extends TranslatedComponent {
     for (let shipId of this.shipOrder) {
       const shipBuilds = [];
       // Add stock build
-      const stockSelected = (ship.id == shipId && !build);
+      const stockSelected = (ship == shipId && !build);
       shipBuilds.push(<li key={shipId} className={ cn({ 'selected': stockSelected })} onClick={_shipChange.bind(this, shipId, null)}>Stock</li>);
       if (builds[shipId]) {
         let buildNameOrder = Object.keys(builds[shipId]).sort();
@@ -126,9 +103,10 @@ export default class ShipPicker extends TranslatedComponent {
   render() {
     const { language, onWindowResize, sizeRatio, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
-    const { menuOpen, ship, build } = this.state;
+    const { ship, build } = this.props;
+    const { menuOpen } = this.state;
 
-    const shipString = ship.name + ': ' + (build ? build : translate('stock'));
+    const shipString = ship + ': ' + (build ? build : translate('stock'));
     return (
       <div className='shippicker' onClick={ (e) => e.stopPropagation() }>
         <div className='menu'>

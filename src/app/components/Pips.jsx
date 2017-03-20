@@ -15,7 +15,9 @@ import Module from '../shipyard/Module';
  */
 export default class Pips extends TranslatedComponent {
   static propTypes = {
-    ship: React.PropTypes.object.isRequired,
+    sys: React.PropTypes.number.isRequired,
+    eng: React.PropTypes.number.isRequired,
+    wep: React.PropTypes.number.isRequired,
     onChange: React.PropTypes.func.isRequired
   };
 
@@ -26,24 +28,9 @@ export default class Pips extends TranslatedComponent {
    */
   constructor(props, context) {
     super(props);
-    const ship = props.ship;
-    const pd = ship.standard[4].m;
+    const { sys, eng, wep } = props;
 
     this._keyDown = this._keyDown.bind(this);
-
-    let pipsSvg = this._renderPips(2, 2, 2);
-    this.state = {
-      sys: 2,
-      eng: 2,
-      wep: 2,
-      sysCap: pd.getSystemsCapacity(),
-      engCap: pd.getEnginesCapacity(),
-      wepCap: pd.getWeaponsCapacity(),
-      sysRate: pd.getSystemsRechargeRate(),
-      engRate: pd.getEnginesRechargeRate(),
-      wepRate: pd.getWeaponsRechargeRate(),
-      pipsSvg
-    };
   }
 
   /**
@@ -58,41 +45,6 @@ export default class Pips extends TranslatedComponent {
    */
   componentWillUnmount() {
     document.removeEventListener('keydown', this._keyDown);
-  }
-
-  /**
-   * Update values if we change ship
-   * @param   {Object} nextProps   Incoming/Next properties
-   * @returns {boolean}            Returns true if the component should be rerendered
-   */
-  componentWillReceiveProps(nextProps) {
-    const { sysCap, engCap, wepCap, sysRate, engRate, wepRate } = this.state;
-    const nextShip = nextProps.ship;
-    const pd = nextShip.standard[4].m;
-
-    const nextSysCap = pd.getSystemsCapacity();
-    const nextEngCap = pd.getEnginesCapacity();
-    const nextWepCap = pd.getWeaponsCapacity();
-    const nextSysRate = pd.getSystemsRechargeRate();
-    const nextEngRate = pd.getEnginesRechargeRate();
-    const nextWepRate = pd.getWeaponsRechargeRate();
-    if (nextSysCap != sysCap ||
-        nextEngCap != engCap ||
-        nextWepCap != wepCap ||
-        nextSysRate != sysRate ||
-        nextEngRate != engRate ||
-        nextWepRate != wepRate) {
-      this.setState({
-        sysCap: nextSysCap,
-        engCap: nextEngCap,
-        wepCap: nextWepCap,
-        sysRate: nextSysRate,
-        engRate: nextEngRate,
-        wepRate: nextWepRate
-      });
-    }
-
-    return true;
   }
 
   /**
@@ -142,10 +94,9 @@ export default class Pips extends TranslatedComponent {
    * Reset the capacitor
    */
   _reset() {
-    let { sys, eng, wep } = this.state;
+    let { sys, eng, wep } = this.props;
     if (sys != 2 || eng != 2 || wep != 2) {
       sys = eng = wep = 2;
-      this.setState({ sys, eng, wep, pipsSvg: this._renderPips(sys, eng, wep) });
       this.props.onChange(sys, eng, wep);
     }
   }
@@ -154,7 +105,7 @@ export default class Pips extends TranslatedComponent {
    * Increment the SYS capacitor
    */
   _incSys() {
-    let { sys, eng, wep } = this.state;
+    let { sys, eng, wep } = this.props;
 
     const required = Math.min(1, 4 - sys);
     if (required > 0) {
@@ -181,7 +132,6 @@ export default class Pips extends TranslatedComponent {
           sys += 1;
         }
       }
-      this.setState({ sys, eng, wep, pipsSvg: this._renderPips(sys, eng, wep) });
       this.props.onChange(sys, eng, wep);
     }
   }
@@ -190,7 +140,7 @@ export default class Pips extends TranslatedComponent {
    * Increment the ENG capacitor
    */
   _incEng() {
-    let { sys, eng, wep } = this.state;
+    let { sys, eng, wep } = this.props;
 
     const required = Math.min(1, 4 - eng);
     if (required > 0) {
@@ -217,7 +167,6 @@ export default class Pips extends TranslatedComponent {
           eng += 1;
         }
       }
-      this.setState({ sys, eng, wep, pipsSvg: this._renderPips(sys, eng, wep) });
       this.props.onChange(sys, eng, wep);
     }
   }
@@ -226,7 +175,7 @@ export default class Pips extends TranslatedComponent {
    * Increment the WEP capacitor
    */
   _incWep() {
-    let { sys, eng, wep } = this.state;
+    let { sys, eng, wep } = this.props;
 
     const required = Math.min(1, 4 - wep);
     if (required > 0) {
@@ -253,7 +202,6 @@ export default class Pips extends TranslatedComponent {
           wep += 1;
         }
       }
-      this.setState({ sys, eng, wep, pipsSvg: this._renderPips(sys, eng, wep) });
       this.props.onChange(sys, eng, wep);
     }
   }
@@ -313,14 +261,14 @@ export default class Pips extends TranslatedComponent {
    */
   render() {
     const { formats, translate, units } = this.context.language;
-    const { ship } = this.props;
-    const { sys, eng, wep, sysCap, engCap, wepCap, sysRate, engRate, wepRate, pipsSvg } = this.state;
+    const { sys, eng, wep } = this.props;
 
     const onSysClicked = this.onClick.bind(this, 'SYS');
     const onEngClicked = this.onClick.bind(this, 'ENG');
     const onWepClicked = this.onClick.bind(this, 'WEP');
     const onRstClicked = this.onClick.bind(this, 'RST');
 
+    const pipsSvg = this._renderPips(sys, eng, wep);
     return (
       <span id='pips'>
         <table>
@@ -349,15 +297,3 @@ export default class Pips extends TranslatedComponent {
     );
   }
 }
-//            <tr>
-//              <td>{translate('capacity')} ({units.MJ})</td>
-//              <td>{formats.f1(sysCap)}</td>
-//              <td>{formats.f1(engCap)}</td>
-//              <td>{formats.f1(wepCap)}</td>
-//            </tr>
-//            <tr>
-//              <td>{translate('recharge')} ({units.MW})</td>
-//              <td>{formats.f1(sysRate * (sys / 4))}</td>
-//              <td>{formats.f1(engRate * (eng / 4))}</td>
-//              <td>{formats.f1(wepRate * (wep / 4))}</td>
-//            </tr>

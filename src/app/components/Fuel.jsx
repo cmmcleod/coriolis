@@ -9,7 +9,8 @@ import Slider from '../components/Slider';
  */
 export default class Fuel extends TranslatedComponent {
   static propTypes = {
-    ship: React.PropTypes.object.isRequired,
+    fuel: React.PropTypes.number.isRequired,
+    fuelCapacity: React.PropTypes.number.isRequired,
     onChange: React.PropTypes.func.isRequired
   };
 
@@ -21,35 +22,7 @@ export default class Fuel extends TranslatedComponent {
   constructor(props, context) {
     super(props);
 
-    const ship = this.props.ship;
-
-    this.state = {
-      fuelCapacity: ship.fuelCapacity,
-      fuelLevel: 1,
-    };
-  }
-
-  /**
-   * Update the state if our ship changes
-   * @param  {Object} nextProps   Incoming/Next properties
-   * @return {boolean}            Returns true if the component should be rerendered
-   */
-  componentWillReceiveProps(nextProps) {
-    const { fuelLevel, fuelCapacity } = this.state;
-    const nextFuelCapacity = nextProps.ship.fuelCapacity;
-
-    if (nextFuelCapacity != fuelCapacity) {
-      // We keep the absolute fuel amount the same if possible so recalculate the relative level
-      const nextFuelLevel = Math.min((fuelLevel * fuelCapacity) / nextFuelCapacity, 1);
-
-      this.setState({ fuelLevel: nextFuelLevel, fuelCapacity: nextFuelCapacity });
-
-      // Notify if appropriate
-      if (nextFuelLevel * nextFuelCapacity != fuelLevel * fuelCapacity) {
-        this.props.onChange(nextFuelLevel * nextFuelCapacity);
-      }
-    }
-    return true;
+    this._fuelChange = this._fuelChange.bind(this);
   }
 
   /**
@@ -57,8 +30,13 @@ export default class Fuel extends TranslatedComponent {
    * @param  {number} fuelLevel percentage level from 0 to 1
    */
   _fuelChange(fuelLevel) {
-    this.setState({ fuelLevel });
-    this.props.onChange(fuelLevel * this.state.fuelCapacity);
+    const { fuel, fuelCapacity } = this.props;
+
+    const newFuel = fuelLevel * fuelCapacity;
+    // Only send an update if the fuel has changed significantly
+    if (Math.round(fuel * 10) != Math.round(newFuel * 10)) {
+      this.props.onChange(Math.round(newFuel * 10) / 10);
+    }
   }
 
   /**
@@ -68,20 +46,20 @@ export default class Fuel extends TranslatedComponent {
   render() {
     const { language, onWindowResize, sizeRatio, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
-    const { fuelLevel, fuelCapacity } = this.state;
+    const { fuel, fuelCapacity } = this.props;
 
     return (
       <span>
-        <h3>{translate('fuel carried')}: {formats.f2(fuelLevel * fuelCapacity)}{units.T}</h3>
+        <h3>{translate('fuel carried')}: {formats.f1(fuel)}{units.T}</h3>
         <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
           <tbody >
             <tr>
               <td>
                 <Slider
                   axis={true}
-                  onChange={this._fuelChange.bind(this)}
+                  onChange={this._fuelChange}
                   axisUnit={translate('T')}
-                  percent={fuelLevel}
+                  percent={fuel / fuelCapacity}
                   max={fuelCapacity}
                   scale={sizeRatio}
                   onResize={onWindowResize}

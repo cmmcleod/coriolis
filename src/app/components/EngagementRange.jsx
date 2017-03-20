@@ -7,9 +7,10 @@ import Slider from '../components/Slider';
  * Engagement range slider
  * Requires an onChange() function of the form onChange(range), providing the range in metres, which is triggered on range change
  */
-export default class Range extends TranslatedComponent {
+export default class EngagementRange extends TranslatedComponent {
   static propTypes = {
     ship: React.PropTypes.object.isRequired,
+    engagementRange: React.PropTypes.number.isRequired,
     onChange: React.PropTypes.func.isRequired
   };
 
@@ -21,45 +22,13 @@ export default class Range extends TranslatedComponent {
   constructor(props, context) {
     super(props);
 
-    const ship = this.props.ship;
+    const { ship } = props;
 
     const maxRange = this._calcMaxRange(ship);
 
     this.state = {
-      maxRange,
-      rangeLevel: 1000 / maxRange,
+      maxRange
     };
-  }
-
-  /**
-   * 
-   */
-  componentWillMount() {
-    // Pass initial state
-    this.props.onChange(this.state.maxRange * this.state.rangeLevel);
-  }
-
-  /**
-   * Update the state if our ship changes
-   * @param  {Object} nextProps   Incoming/Next properties
-   * @return {boolean}            Returns true if the component should be rerendered
-   */
-  componentWillReceiveProps(nextProps) {
-    const { rangeLevel, maxRange } = this.state;
-    const nextMaxRange = this._calcMaxRange(nextProps.ship);
-
-    if (nextMaxRange != maxRange) {
-      // We keep the absolute range amount the same if possible so recalculate the relative level
-      const nextRangeLevel = Math.min((rangeLevel * maxRange) / nextMaxRange, 1);
-
-      this.setState({ rangeLevel: nextRangeLevel, maxRange: nextMaxRange });
-
-      // Notify if appropriate
-      if (nextRangeLevel * nextMaxRange != rangeLevel * maxRange) {
-        this.props.onChange(Math.round(nextRangeLevel * nextMaxRange));
-      }
-    }
-    return true;
   }
 
   /**
@@ -87,12 +56,12 @@ export default class Range extends TranslatedComponent {
    */
   _rangeChange(rangeLevel) {
     const { maxRange } = this.state;
-    // We round the range to an integer value
-    rangeLevel = Math.round(rangeLevel * maxRange) / maxRange;
 
-    if (rangeLevel != this.state.rangeLevel) {
-      this.setState({ rangeLevel });
-      this.props.onChange(Math.round(rangeLevel * maxRange));
+    // We round the range to an integer value
+    const range = Math.round(rangeLevel * maxRange);
+
+    if (range !== this.props.engagementRange) {
+      this.props.onChange(range);
     }
   }
 
@@ -103,11 +72,12 @@ export default class Range extends TranslatedComponent {
   render() {
     const { language, onWindowResize, sizeRatio, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
-    const { rangeLevel, maxRange } = this.state;
+    const { engagementRange } = this.props;
+    const { maxRange } = this.state;
 
     return (
       <span>
-        <h3>{translate('engagement range')}: {formats.int(rangeLevel * maxRange)}{translate('m')}</h3>
+        <h3>{translate('engagement range')}: {formats.int(engagementRange)}{translate('m')}</h3>
         <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
           <tbody >
             <tr>
@@ -116,7 +86,7 @@ export default class Range extends TranslatedComponent {
                   axis={true}
                   onChange={this._rangeChange.bind(this)}
                   axisUnit={translate('m')}
-                  percent={rangeLevel}
+                  percent={engagementRange / maxRange}
                   max={maxRange}
                   scale={sizeRatio}
                   onResize={onWindowResize}
