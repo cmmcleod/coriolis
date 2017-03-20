@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Measure from 'react-measure';
 import * as d3 from 'd3';
 
-const CORIOLIS_COLOURS = ['#FF8C0D', '#1FB0FF', '#519032', '#D5420D'];
-const LABEL_COLOUR = '#FFFFFF';
+const CORIOLIS_COLOURS = ['#FF8C0D', '#1FB0FF', '#71A052', '#D5D54D'];
+const LABEL_COLOUR = '#000000';
 
 /**
  * A pie chart

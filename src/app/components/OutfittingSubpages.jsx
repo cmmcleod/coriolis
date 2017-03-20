@@ -2,8 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import { Ships } from 'coriolis-data/dist';
 import Ship from '../shipyard/Ship';
-import { Insurance } from '../shipyard/Constants';
-import { slotName, slotComparator } from '../utils/SlotFunctions';
+import Persist from '../stores/Persist';
 import TranslatedComponent from './TranslatedComponent';
 import PowerManagement from './PowerManagement';
 import CostSection from './CostSection';
@@ -42,9 +41,12 @@ export default class OutfittingSubpages extends TranslatedComponent {
   constructor(props) {
     super(props);
     this._powerTab = this._powerTab.bind(this);
+    this._profilesTab = this._profilesTab.bind(this);
+    this._offenceTab = this._offenceTab.bind(this);
+    this._defenceTab = this._defenceTab.bind(this);
 
     this.state = {
-      tab: 'power'
+      tab: Persist.getOutfittingTab() || 'power',
     };
   }
 
@@ -62,6 +64,7 @@ export default class OutfittingSubpages extends TranslatedComponent {
    */
   _powerTab() {
     let { ship, buildName, code, onChange } = this.props;
+    Persist.setOutfittingTab('power');
 
     return <div>
       <PowerManagement ship={ship} code={code} onChange={onChange} />
@@ -77,6 +80,7 @@ export default class OutfittingSubpages extends TranslatedComponent {
     const { ship, opponent, cargo, fuel, eng, boost, engagementRange } = this.props;
     const { translate } = this.context.language;
     let realBoost = boost && ship.canBoost();
+    Persist.setOutfittingTab('profiles');
 
     const engineProfileMarker = `${ship.toString()}:${cargo}:${fuel}:${eng}:${realBoost}`;
     const fsdProfileMarker = `${ship.toString()}:${cargo}:${fuel}`;
@@ -117,6 +121,7 @@ export default class OutfittingSubpages extends TranslatedComponent {
    */
   _offenceTab() {
     const { ship, sys, eng, wep, cargo, fuel, boost, engagementRange, opponent, opponentBuild } = this.props;
+    Persist.setOutfittingTab('offence');
 
     const marker = `${ship.toString()}:${opponent.name}:${opponentBuild}:${engagementRange}`;
 
@@ -131,6 +136,7 @@ export default class OutfittingSubpages extends TranslatedComponent {
    */
   _defenceTab() {
     const { ship, sys, eng, wep, cargo, fuel, boost, engagementRange, opponent, opponentBuild } = this.props;
+    Persist.setOutfittingTab('defence');
 
     const marker = `${ship.toString()}:${opponent.name}:${opponentBuild}:${engagementRange}`;
 
@@ -144,7 +150,7 @@ export default class OutfittingSubpages extends TranslatedComponent {
    * @return {React.Component} Contents
    */
   render() {
-    const tab = this.state.tab || 'power';
+    const tab = this.state.tab;
     const translate = this.context.language.translate;
     let tabSection;
 

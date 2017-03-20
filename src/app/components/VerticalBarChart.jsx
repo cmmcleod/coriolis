@@ -3,8 +3,8 @@ import Measure from 'react-measure';
 import * as d3 from 'd3';
 import TranslatedComponent from './TranslatedComponent';
 
-const CORIOLIS_COLOURS = ['#FF8C0D', '#1FB0FF', '#519032', '#D5420D'];
-const LABEL_COLOUR = '#FFFFFF';
+const CORIOLIS_COLOURS = ['#FF8C0D', '#1FB0FF', '#71A052', '#D5D54D'];
+const LABEL_COLOUR = '#000000';
 
 const margin = { top: 10, right: 0, bottom: 0, left: 55 };
 
@@ -105,7 +105,7 @@ export default class VerticalBarChart extends TranslatedComponent {
         .attr('x', 100)
         .attr('y', 100)
         .attr('stroke-width', '0px')
-        .attr('fill', '#ffffff')
+        .attr('fill', LABEL_COLOUR)
         .attr('x', d => this.x(d.label) + this.x.bandwidth() / 2)
         .attr('y', d => this.y(d.value) + 15)
         .text(d => d.value);
