@@ -497,7 +497,7 @@ export default class OutfittingPage extends Page {
     const internalSlotMarker = `${ship.name}${_iStr}${_pStr}${_mStr}`;
     const hardpointsSlotMarker = `${ship.name}${_hStr}${_pStr}${_mStr}`;
     const boostMarker = `${ship.canBoost()}`;
-    const shipSummaryMarker = `${ship.toString()}${eng}${fuel}${cargo}`;
+    const shipSummaryMarker = `${ship.name}${_sStr}${_iStr}${_hStr}${_pStr}${_mStr}`;
 
     return (
       <div id='outfit' className={'page'} style={{ fontSize: (sizeRatio * 0.9) + 'em' }}>
@@ -533,7 +533,7 @@ export default class OutfittingPage extends Page {
         </div>
 
         {/* Main tables */}
-        <ShipSummaryTable ship={ship} marker={shipSummaryMarker} eng={eng} sys={sys} wep={wep} cargo={cargo} fuel={fuel}/>
+        <ShipSummaryTable ship={ship} marker={shipSummaryMarker} />
         <StandardSlotSection ship={ship} code={standardSlotMarker} onChange={shipUpdated} currentMenu={menu} />
         <InternalSlotSection ship={ship} code={internalSlotMarker} onChange={shipUpdated} currentMenu={menu} />
         <HardpointsSlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} currentMenu={menu} />

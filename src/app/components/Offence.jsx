@@ -140,6 +140,8 @@ export default class Offence extends TranslatedComponent {
     const opponentShields = Calc.shieldMetrics(opponent, 4);
     const opponentArmour = Calc.armourMetrics(opponent);
 
+    const timeToDrain = Calc.timeToDrainWep(ship, wep);
+
     let absoluteShieldsSDps = 0;
     let explosiveShieldsSDps = 0;
     let kineticShieldsSDps = 0;
@@ -243,7 +245,8 @@ export default class Offence extends TranslatedComponent {
         </table>
         </div>
         <div className='group quarter'>
-          <h2>{translate('damage to opponent')}</h2>
+          <h2>{translate('offence metrics')}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_DRAIN_WEP'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_DRAIN_WEP')}<br/>{timeToDrain === Infinity ? translate('never') : formats.time(timeToDrain)}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_REMOVE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_REMOVE_SHIELDS')}<br/>{timeToDepleteShields === Infinity ? translate('never') : formats.time(timeToDepleteShields)}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_REMOVE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_REMOVE_ARMOUR')}<br/>{timeToDepleteArmour === Infinity ? translate('never') : formats.time(timeToDepleteArmour)}</h2>
         </div>
