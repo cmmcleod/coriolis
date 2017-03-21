@@ -57,7 +57,6 @@ export default class ShipPicker extends TranslatedComponent {
   _renderPickerMenu() {
     const { ship, build } = this.props;
     const _shipChange = this._shipChange;
-
     const builds = Persist.getBuilds();
     const buildList = [];
     for (let shipId of this.shipOrder) {
@@ -68,7 +67,7 @@ export default class ShipPicker extends TranslatedComponent {
       if (builds[shipId]) {
         let buildNameOrder = Object.keys(builds[shipId]).sort();
         for (let buildName of buildNameOrder) {
-          const buildSelected = ship.id == shipId && build == buildName;
+          const buildSelected = ship === shipId && build === buildName;
           shipBuilds.push(<li key={shipId + '-' + buildName} className={ cn({ 'selected': buildSelected })} onClick={_shipChange.bind(this, shipId, buildName)}>{buildName}</li>);
         }
       }

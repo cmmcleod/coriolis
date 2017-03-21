@@ -279,15 +279,19 @@ export default class OutfittingPage extends Page {
   _saveBuild() {
     const { code, buildName, newBuildName, shipId } = this.state;
 
-    if (buildName === newBuildName) {
-      Persist.saveBuild(shipId, buildName, code);
-      this._updateRoute(shipId, buildName, code);
-    } else {
-      Persist.saveBuild(shipId, newBuildName, code);
-      this._updateRoute(shipId, newBuildName, code);
-    }
+    Persist.saveBuild(shipId, newBuildName, code);
+    this._updateRoute(shipId, newBuildName, code);
 
-    this.setState({ buildName: newBuildName, code, savedCode: code, title: this._getTitle(newBuildName) });
+    let opponent, opponentBuild;
+    if (shipId === this.state.opponent.id && buildName === this.state.opponentBuild) {
+      // This is a save of our current opponent build; update it
+      opponentBuild = newBuildName;
+      opponent  = new Ship(shipId, Ships[shipId].properties, Ships[shipId].slots).buildFrom(code);
+    } else {
+      opponentBuild = this.state.opponentBuild;
+      opponent  = this.state.opponent;
+    }
+    this.setState({ buildName: newBuildName, code, savedCode: code, opponent, opponentBuild, title: this._getTitle(newBuildName) });
   }
 
   /**
@@ -299,7 +303,7 @@ export default class OutfittingPage extends Page {
       Persist.deleteBuild(shipId, buildName);
       Persist.saveBuild(shipId, newBuildName, code);
       this._updateRoute(shipId, newBuildName, code);
-      this.setState({ buildName: newBuildName, code, savedCode: code });
+      this.setState({ buildName: newBuildName, code, savedCode: code, opponentBuild: newBuildName });
     }
   }
 
@@ -338,8 +342,19 @@ export default class OutfittingPage extends Page {
    * Delete the build
    */
   _deleteBuild() {
-    Persist.deleteBuild(this.state.shipId, this.state.buildName);
+    const { shipId, buildName } = this.state;
+    Persist.deleteBuild(shipId, buildName);
+
+    let opponentBuild;
+    if (shipId === this.state.opponent.id && buildName === this.state.opponentBuild) {
+      // Our current opponent has been deleted; revert to stock
+      opponentBuild = null;
+    } else {
+      opponentBuild = this.state.opponentBuild;
+    }
     Router.go(outfitURL(this.state.shipId));
+
+    this.setState({ opponentBuild });
   }
 
   /**
