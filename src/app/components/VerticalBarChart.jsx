@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import Measure from 'react-measure';
-import * as d3 from 'd3';
 import TranslatedComponent from './TranslatedComponent';
+import React, { PropTypes } from 'react';
+import Measure from 'react-measure';
+import { BarChart, Bar, XAxis, YAxis } from 'recharts';
 
 const CORIOLIS_COLOURS = ['#FF8C0D', '#1FB0FF', '#71A052', '#D5D54D'];
 const LABEL_COLOUR = '#000000';
-
-const margin = { top: 10, right: 0, bottom: 0, left: 55 };
+const AXIS_COLOUR = '#C06400';
 
 const ASPECT = 1;
 
@@ -20,8 +19,8 @@ const merge = function(one, two) {
 export default class VerticalBarChart extends TranslatedComponent {
 
   static propTypes = {
-    data : React.PropTypes.array.isRequired,
-    yMax : React.PropTypes.number
+    data : PropTypes.array.isRequired,
+    yMax : PropTypes.number
   };
 
   /**
@@ -32,6 +31,8 @@ export default class VerticalBarChart extends TranslatedComponent {
   constructor(props, context) {
     super(props);
 
+    this._termtip = this._termtip.bind(this);
+
     this.state = {
       dimensions: {
         width: 300,
@@ -41,97 +42,64 @@ export default class VerticalBarChart extends TranslatedComponent {
   }
 
   /**
-   * Render the graph
-   * @param  {Object} props   React Component properties
-   */
-  _renderGraph(props) {
-    let { width, height } = this.state.dimensions;
-    const { tooltip, termtip } = this.context;
-
-    width = width - margin.left - margin.right,
-    height = width * ASPECT - margin.top - margin.bottom;
-
-    // X axis is a band scale with values being 'label'
-    this.x = d3.scaleBand();
-    this.x.domain(this.props.data.map(d => d.label)).padding(0.2);
-    this.xAxis = d3.axisBottom(this.x).tickValues(this.props.data.map(d => d.label));
-    this.x.range([0, width]);
-
-    // Y axis is a numeric scale with values being 'value'
-    this.y = d3.scaleLinear();
-    if (props.yMax) {
-      // Fixed maximum value (unless we go off the scale)
-      const localMax = d3.max(this.props.data, d => d.value);
-      this.y.domain([0, localMax > props.yMax ? localMax : props.yMax]);
-    } else {
-      this.y.domain([0, d3.max(this.props.data, d => d.value)]);
-    }
-    this.yAxis = d3.axisLeft(this.y);
-    this.y.range([height, 0]);
-
-    let svg = d3.select(this.svg).select('g');
-
-    svg.selectAll('rect').remove();
-    svg.selectAll('text').remove();
-      
-    svg.select('.x.axis').remove();
-    svg.select('.y.axis').remove();
-    
-    svg.append('g')
-      .attr('class', 'x axis')
-      .attr('transform', `translate(0, ${height})`)
-      .call(this.xAxis);
-
-    svg.append('g')
-      .attr('class', 'y axis')
-      .call(this.yAxis)
-      .attr('fill', CORIOLIS_COLOURS[0]);
-
-    svg.selectAll('rect.bar')
-      .data(props.data)
-      .enter().append('rect')
-        .attr('class', 'bar')
-        .attr('x', d => this.x(d.label))
-        .attr('width', this.x.bandwidth())
-        .attr('y', d => this.y(d.value))
-        .attr('height', d => height - this.y(d.value))
-        .attr('fill', CORIOLIS_COLOURS[0]);
-
-    svg.selectAll('text.bar')
-      .data(props.data)
-      .enter().append('text')
-        .attr('class', 'bar')
-        .attr('text-anchor', 'middle')
-        .attr('x', 100)
-        .attr('y', 100)
-        .attr('stroke-width', '0px')
-        .attr('fill', LABEL_COLOUR)
-        .attr('x', d => this.x(d.label) + this.x.bandwidth() / 2)
-        .attr('y', d => this.y(d.value) + 15)
-        .text(d => d.value);
-  }
-
-  /**
-   * Render the component
-   * @returns {object} Markup
+   * Render the bar chart
+   * @returns {Object} the markup
    */
   render() {
-    const { width } = this.state.dimensions;
-    const translate = `translate(${margin.left}, ${margin.top})`;
+    const { width, height } = this.state.dimensions;
+    const { tooltip, termtip } = this.context;
 
-    const height = width * ASPECT;
-
-    this._renderGraph(this.props);
+    // Calculate maximum for Y
+    let dataMax = Math.max(...this.props.data.map(d => d.value));
+    if (dataMax == -Infinity) dataMax = 0;
+    let yMax = this.props.yMax ? Math.round(this.props.yMax) : 0;
+    const localMax = Math.max(dataMax, yMax);
 
     return (
-      <Measure width='100%' whitelist={['width', 'top']} onMeasure={ (dimensions) => { this.setState({ dimensions }); }}>
-        <div width={width} height={height}>
-          { this.x ? 
-          <svg ref={ref => this.svg = ref} width={width} height={height}>
-            <g transform={translate}></g>
-          </svg> : null }
+      <Measure whitelist={['width', 'top']} onMeasure={ (dimensions) => this.setState({ dimensions }) }>
+        <div width='100%'>
+          <BarChart width={width} height={width * ASPECT} data={this.props.data} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+            <XAxis interval={0} fontSize='0.8em' stroke={AXIS_COLOUR} dataKey='label' />
+            <YAxis interval={'preserveStart'} tickCount={11} fontSize='0.8em' stroke={AXIS_COLOUR} type='number' domain={[0, localMax]}/>
+            <Bar dataKey='value' label={<ValueLabel />} fill={CORIOLIS_COLOURS[0]} isAnimationActive={false} onMouseOver={this._termtip} onMouseOut={tooltip.bind(null, null)}/>
+          </BarChart>
         </div>
       </Measure>
     );
   }
+
+  /**
+   * Generate a term tip
+   * @param {Object} d the data
+   * @param {number} i the index
+   * @param {Object} e the event
+   * @returns {Object} termtip markup
+   */
+  _termtip(d, i, e) {
+    if (this.props.data[i].tooltip) {
+      return this.context.termtip(this.props.data[i].tooltip, e);
+    } else {
+      return null;
+    }
+  }
 }
+
+/**
+ * A label that displays the value within the bar of the chart
+ */
+const ValueLabel  = React.createClass({
+  propTypes: {
+    x: PropTypes.number,
+    y: PropTypes.number,
+    payload: PropTypes.object,
+    value: PropTypes.number
+  },
+
+  render() {
+    const { x, y, payload, value } = this.props;
+
+    return (
+      <text x={x} y={y} fill="#000000" textAnchor="middle" dy={20}>{value}</text>
+    );
+  }
+});

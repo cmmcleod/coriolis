@@ -241,14 +241,19 @@ export default class Coriolis extends React.Component {
   /**
    * Show the term tip
    * @param  {string} term            Term or Phrase
-   * @param  {Object} opts            Options - dontCap, orientation (n,e,s,w)
+   * @param  {Object} opts            Options - dontCap, orientation (n,e,s,w) (can also be the event if no options supplied)
    * @param  {SyntheticEvent} event   Event
+   * @param  {SyntheticEvent} e2      Alternative location for synthetic event from charts (where 'Event' is actually a chart index)
    */
-  _termtip(term, opts, event) {
-    if (opts && opts.nativeEvent) { // Opts is a SyntheticEvent
+  _termtip(term, opts, event, e2) {
+    if (opts && opts.nativeEvent) { // Opts is the SyntheticEvent
       event = opts;
       opts = { cap: true };
     }
+    if (e2 instanceof Object && e2.nativeEvent) { // E2 is the SyntheticEvent
+      event = e2;
+    }
+
     this._tooltip(
       <div className={'cen' + (opts.cap ? ' cap' : '')}>{this.state.language.translate(term)}</div>,
       event.currentTarget.getBoundingClientRect(),

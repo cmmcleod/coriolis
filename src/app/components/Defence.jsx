@@ -165,7 +165,7 @@ export default class Defence extends TranslatedComponent {
         </div>
         <div className='group quarter'>
           <h2 onMouseOver={termtip.bind(null, translate('PHRASE_DAMAGE_TAKEN'))} onMouseOut={tooltip.bind(null, null)}>{translate('damage taken')}(%)</h2>
-          <VerticalBarChart data={shieldDamageTakenData} yMax={100} />
+          <VerticalBarChart data={shieldDamageTakenData} yMax={140} />
         </div>
         <div className='group quarter'>
           <h2 onMouseOver={termtip.bind(null, translate('PHRASE_EFFECTIVE_SHIELD'))} onMouseOut={tooltip.bind(null, null)}>{translate('effective shield')}(MJ)</h2>
