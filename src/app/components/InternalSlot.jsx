@@ -4,6 +4,7 @@ import Persist from '../stores/Persist';
 import { ListModifications, Modified } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
+import { blueprintTooltip } from '../utils/BlueprintFunctions';
 
 /**
  * Internal Slot
@@ -30,6 +31,12 @@ export default class InternalSlot extends Slot {
       let modTT = translate('modified');
       if (m && m.blueprint && m.blueprint.name) {
         modTT = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
+        modTT = (
+          <div>
+            <div>{modTT}</div>
+            {blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade].features, m)}
+          </div>
+        );
       }
 
       let mass = m.getMass() || m.cargo || m.fuel || 0;

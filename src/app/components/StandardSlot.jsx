@@ -8,6 +8,7 @@ import ModificationsMenu from './ModificationsMenu';
 import { ListModifications, Modified } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
+import { blueprintTooltip } from '../utils/BlueprintFunctions';
 
 /**
  * Standard Slot
@@ -53,6 +54,12 @@ export default class StandardSlot extends TranslatedComponent {
     let modTT = translate('modified');
     if (m && m.blueprint && m.blueprint.name) {
       modTT = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
+      modTT = (
+          <div>
+            <div>{modTT}</div>
+            {blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade].features, m)}
+          </div>
+        );
     }
 
     if (!selected) {

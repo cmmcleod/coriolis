@@ -5,6 +5,7 @@ import { isEmpty, stopCtxPropagation } from '../utils/UtilityFunctions';
 import cn from 'classnames';
 import { Modifications } from 'coriolis-data/dist';
 import Modification from './Modification';
+import { blueprintTooltip } from '../utils/BlueprintFunctions';
 
 /**
  * Modifications menu
@@ -52,7 +53,7 @@ export default class ModificationsMenu extends TranslatedComponent {
       for (const grade of Modifications.modules[m.grp].blueprints[blueprintName]) {
         const close = this._blueprintSelected.bind(this, Modifications.blueprints[blueprintName].id, grade);
         const key = blueprintName + ':' + grade;
-        const tooltipContent = this._blueprintTooltip(translate, Modifications.blueprints[blueprintName].grades[grade].features);
+        const tooltipContent = blueprintTooltip(translate, Modifications.blueprints[blueprintName].grades[grade].features);
         blueprints.push(<div style={{ cursor: 'pointer' }} key={ key } onMouseOver={termtip.bind(null, tooltipContent)} onMouseOut={tooltip.bind(null, null)} onClick={ close }>{translate(Modifications.blueprints[blueprintName].name + ' grade ' + grade)}</div>);
       }
     }
@@ -75,51 +76,6 @@ export default class ModificationsMenu extends TranslatedComponent {
     const specialMenuOpened = false;
 
     return { blueprintMenuOpened, blueprints, modifications, specialMenuOpened, specials };
-  }
-
-  /**
-   * Generate a tooltip with details of a blueprint's effects
-   * @param   {Object}  features    The features of the blueprint
-   * @returns {Object}              The react components
-   */
-  _blueprintTooltip(translate, features)
-  {
-    const results = [];
-    for (const feature in features) {
-      const featureIsBeneficial = this._isBeneficial(feature, features[feature]);
-      const featureDef = Modifications.modifications[feature];
-      if (!featureDef.hidden) {
-        let symbol = '';
-        if (feature === 'jitter') {
-          symbol = '°';
-	} else if (featureDef.type === 'percentage') {
-          symbol = '%';
-	}
-        let lowerBound = features[feature][0];
-        let upperBound = features[feature][1];
-        if (featureDef.type === 'percentage') {
-          lowerBound = Math.round(lowerBound * 1000) / 10;
-          upperBound = Math.round(upperBound * 1000) / 10;
-	}
-        const range = `${lowerBound}${symbol} - ${upperBound}${symbol}`;
-        results.push(<tr key={feature} className={featureIsBeneficial ? 'secondary' : 'warning'}><td style={{ textAlign: 'left' }}>{translate(feature)}</td><td style={{ textAlign: 'right' }}>{lowerBound}{symbol}</td><td style={{ textAlign: 'right' }}>{upperBound}{symbol}</td></tr>);
-      }
-    }
-
-    return (
-      <table>
-        <thead>
-         <tr>
-           <td>{translate('effect')}</td>
-           <td>{translate('worst')}</td>
-           <td>{translate('best')}</td>
-         </tr>
-        </thead>
-        <tbody>
-          {results}
-        </tbody>
-      </table>
-    );
   }
 
   /**
@@ -291,19 +247,6 @@ export default class ModificationsMenu extends TranslatedComponent {
   }
 
   /**
-   * Is this feature beneficial?
-   * 
-   */
-  _isBeneficial(feature, values) {
-    const fact = (values[0] < 0 || (values[0] === 0 && values[1] < 0));
-    if (Modifications.modifications[feature].higherbetter) {
-      return !fact;
-    } else {
-      return fact;
-    }
-  }
-
-  /**
    * Reset modification information
    */
   _reset() {
@@ -335,11 +278,11 @@ export default class ModificationsMenu extends TranslatedComponent {
 
     let blueprintLabel;
     let haveBlueprint = false;
-    let blueprintTooltip;
+    let blueprintTt;
     if (m.blueprint && !isEmpty(m.blueprint)) {
       blueprintLabel = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
       haveBlueprint = true;
-      blueprintTooltip  = this._blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade].features);
+      blueprintTt  = blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade].features);
     }
 
     let specialLabel;
@@ -363,7 +306,7 @@ export default class ModificationsMenu extends TranslatedComponent {
           onContextMenu={stopCtxPropagation}
       >
         { haveBlueprint ? 
-          <div className={ cn('section-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onMouseOver={termtip.bind(null, blueprintTooltip)} onMouseOut={tooltip.bind(null, null)} onClick={_toggleBlueprintsMenu}>{blueprintLabel}</div>
+          <div className={ cn('section-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onMouseOver={termtip.bind(null, blueprintTt)} onMouseOut={tooltip.bind(null, null)} onClick={_toggleBlueprintsMenu}>{blueprintLabel}</div>
         : 
           <div className={ cn('section-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleBlueprintsMenu}>{translate('PHRASE_SELECT_BLUEPRINT')}</div> }
         { showBlueprintsMenu ? this.state.blueprints : null }

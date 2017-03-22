@@ -4,6 +4,7 @@ import Persist from '../stores/Persist';
 import { DamageAbsolute, DamageKinetic, DamageThermal, DamageExplosive, MountFixed, MountGimballed, MountTurret, ListModifications, Modified } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
+import { blueprintTooltip } from '../utils/BlueprintFunctions';
 
 
 /**
@@ -51,6 +52,12 @@ export default class HardpointSlot extends Slot {
         if (m.blueprint.special && m.blueprint.special.id >= 0) {
           modTT += ', ' + translate(m.blueprint.special.name);
         }
+        modTT = (
+          <div>
+            <div>{modTT}</div>
+            {blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade].features, m)}
+          </div>
+        );
       }
 
       return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
