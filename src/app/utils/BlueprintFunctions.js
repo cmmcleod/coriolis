@@ -30,7 +30,7 @@ export function blueprintTooltip(translate, features, m)
       if (m) {
         // We have a module - add in the current value
         let current = m.getModValue(feature);
-        if (featureDef.type === 'percentage') {
+        if (featureDef.type === 'percentage' || featureDef.name === 'burst' || featureDef.name === 'burstrof') {
           current = Math.round(current / 10) / 10;
         }
         results.push(<tr key={feature} className={featureIsBeneficial ? 'secondary' : 'warning'}><td style={{ textAlign: 'left' }}>{translate(feature)}</td><td style={{ textAlign: 'right' }}>{lowerBound}{symbol}</td><td style={{ textAlign: 'right' }}>{current}{symbol}</td><td style={{ textAlign: 'right' }}>{upperBound}{symbol}</td></tr>);
