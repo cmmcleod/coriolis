@@ -18,7 +18,8 @@ export default class Defence extends TranslatedComponent {
     ship: React.PropTypes.object.isRequired,
     opponent: React.PropTypes.object.isRequired,
     engagementrange: React.PropTypes.number.isRequired,
-    sys: React.PropTypes.number.isRequired
+    sys: React.PropTypes.number.isRequired,
+    opponentWep: React.PropTypes.number.isRequired
   };
 
   /**
@@ -28,7 +29,7 @@ export default class Defence extends TranslatedComponent {
   constructor(props) {
     super(props);
 
-    const { shield, armour, shielddamage, armourdamage } = Calc.defenceMetrics(props.ship, props.opponent, props.sys, props.engagementrange);
+    const { shield, armour, shielddamage, armourdamage } = Calc.defenceMetrics(props.ship, props.opponent, props.sys, props.opponentWep, props.engagementrange);
     this.state = { shield, armour, shielddamage, armourdamage };
   }
 
@@ -39,7 +40,7 @@ export default class Defence extends TranslatedComponent {
    */
   componentWillReceiveProps(nextProps) {
     if (this.props.marker != nextProps.marker || this.props.sys != nextProps.sys) {
-      const { shield, armour, shielddamage, armourdamage } = Calc.defenceMetrics(nextProps.ship, nextProps.opponent, nextProps.sys, nextProps.engagementrange);
+      const { shield, armour, shielddamage, armourdamage } = Calc.defenceMetrics(nextProps.ship, nextProps.opponent, nextProps.sys, nextProps.opponentWep, nextProps.engagementrange);
       this.setState({ shield, armour, shielddamage, armourdamage });
     }
     return true;
@@ -50,7 +51,7 @@ export default class Defence extends TranslatedComponent {
    * @return {React.Component} contents
    */
   render() {
-    const { ship, sys } = this.props;
+    const { ship, sys, opponentWep } = this.props;
     const { language, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
     const { shield, armour, shielddamage, armourdamage } = this.state;
@@ -155,7 +156,7 @@ export default class Defence extends TranslatedComponent {
           <h2>{translate('shield metrics')}</h2>
           <br/>
           <h2 onMouseOver={termtip.bind(null, <div>{shieldTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('raw shield strength')}<br/>{formats.int(shield.total)}{units.MJ}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_SHIELDS')}<br/>{shielddamage.totalsdps == 0 ? translate('ever') : formats.time(Calc.timeToDeplete(shield.total, shielddamage.totalsdps, shielddamage.totalseps, pd.getWeaponsCapacity(), pd.getWeaponsRechargeRate()))}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_SHIELDS')}<br/>{shielddamage.totalsdps == 0 ? translate('ever') : formats.time(Calc.timeToDeplete(shield.total, shielddamage.totalsdps, shielddamage.totalseps, pd.getWeaponsCapacity(), pd.getWeaponsRechargeRate() * opponentWep / 4))}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECOVER'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECOVER_SHIELDS')}<br/>{shield.recover === Math.Inf ? translate('never') : formats.time(shield.recover)}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECHARGE'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECHARGE_SHIELDS')}<br/>{shield.recharge === Math.Inf ? translate('never') : formats.time(shield.recharge)}</h2>
         </div>
@@ -176,7 +177,7 @@ export default class Defence extends TranslatedComponent {
         <div className='group quarter'>
           <h2>{translate('armour metrics')}</h2>
           <h2 onMouseOver={termtip.bind(null, <div>{armourTooltipDetails}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('raw armour strength')}<br/>{formats.int(armour.total)}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_ARMOUR')}<br/>{armourdamage.totalsdps == 0 ? translate('ever') : formats.time(Calc.timeToDeplete(armour.total, armourdamage.totalsdps, armourdamage.totalseps, pd.getWeaponsCapacity(), pd.getWeaponsRechargeRate()))}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_ARMOUR')}<br/>{armourdamage.totalsdps == 0 ? translate('ever') : formats.time(Calc.timeToDeplete(armour.total, armourdamage.totalsdps, armourdamage.totalseps, pd.getWeaponsCapacity(), pd.getWeaponsRechargeRate() * opponentWep / 4))}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('TT_MODULE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('raw module armour')}<br/>{formats.int(armour.modulearmour)}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('TT_MODULE_PROTECTION_EXTERNAL'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_MODULE_PROTECTION_EXTERNAL')}<br/>{formats.pct1(armour.moduleprotection / 2)}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('TT_MODULE_PROTECTION_INTERNAL'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_MODULE_PROTECTION_INTERNAL')}<br/>{formats.pct1(armour.moduleprotection)}</h2>

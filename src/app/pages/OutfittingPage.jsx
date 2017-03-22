@@ -299,16 +299,22 @@ export default class OutfittingPage extends Page {
     Persist.saveBuild(shipId, newBuildName, code);
     this._updateRoute(shipId, newBuildName, code);
 
-    let opponent, opponentBuild;
+    let opponent, opponentBuild, opponentSys, opponentEng, opponentWep;
     if (shipId === this.state.opponent.id && buildName === this.state.opponentBuild) {
       // This is a save of our current opponent build; update it
       opponentBuild = newBuildName;
       opponent  = new Ship(shipId, Ships[shipId].properties, Ships[shipId].slots).buildFrom(code);
+      opponentSys = this.state.sys;
+      opponentEng = this.state.eng;
+      opponentWep = this.state.wep;
     } else {
       opponentBuild = this.state.opponentBuild;
       opponent  = this.state.opponent;
+      opponentSys = this.state.opponentSys;
+      opponentEng = this.state.opponentEng;
+      opponentWep = this.state.opponentWep;
     }
-    this.setState({ buildName: newBuildName, code, savedCode: code, opponent, opponentBuild, title: this._getTitle(newBuildName) });
+    this.setState({ buildName: newBuildName, code, savedCode: code, opponent, opponentBuild, opponentSys, opponentEng, opponentWep, title: this._getTitle(newBuildName) });
   }
 
   /**
@@ -507,7 +513,7 @@ export default class OutfittingPage extends Page {
     let state = this.state,
         { language, termtip, tooltip, sizeRatio, onWindowResize } = this.context,
         { translate, units, formats } = language,
-        { ship, code, savedCode, buildName, newBuildName, sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, engagementRange } = state,
+        { ship, code, savedCode, buildName, newBuildName, sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, opponentSys, opponentEng, opponentWep, engagementRange } = state,
         hide = tooltip.bind(null, null),
         menu = this.props.currentMenu,
         shipUpdated = this._shipUpdated,
@@ -616,6 +622,9 @@ export default class OutfittingPage extends Page {
           engagementRange={engagementRange}
           opponent={opponent}
           opponentBuild={opponentBuild}
+          opponentSys={opponentSys}
+          opponentEng={opponentEng}
+          opponentWep={opponentWep}
         />
       </div>
     );

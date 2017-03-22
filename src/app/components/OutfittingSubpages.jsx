@@ -31,7 +31,10 @@ export default class OutfittingSubpages extends TranslatedComponent {
     boost: React.PropTypes.bool.isRequired,
     engagementRange: React.PropTypes.number.isRequired,
     opponent: React.PropTypes.object.isRequired,
-    opponentBuild: React.PropTypes.string
+    opponentBuild: React.PropTypes.string,
+    opponentSys: React.PropTypes.number.isRequired,
+    opponentEng: React.PropTypes.number.isRequired,
+    opponentWep: React.PropTypes.number.isRequired,
   };
 
   /**
@@ -80,7 +83,7 @@ export default class OutfittingSubpages extends TranslatedComponent {
    * @return {React.Component} Tab contents
    */
   _profilesTab() {
-    const { ship, opponent, cargo, fuel, eng, boost, engagementRange } = this.props;
+    const { ship, opponent, cargo, fuel, eng, boost, engagementRange, opponentSys } = this.props;
     const { translate } = this.context.language;
     let realBoost = boost && ship.canBoost();
     Persist.setOutfittingTab('profiles');
@@ -88,7 +91,7 @@ export default class OutfittingSubpages extends TranslatedComponent {
     const engineProfileMarker = `${ship.toString()}:${cargo}:${fuel}:${eng}:${realBoost}`;
     const fsdProfileMarker = `${ship.toString()}:${cargo}:${fuel}`;
     const movementMarker = `${ship.topSpeed}:${ship.pitch}:${ship.roll}:${ship.yaw}:${ship.canBoost()}`;
-    const damageMarker = `${ship.toString()}:${opponent.toString()}:${engagementRange}`;
+    const damageMarker = `${ship.toString()}:${opponent.toString()}:${engagementRange}:${opponentSys}`;
 
     return <div>
       <div className='group third'>
@@ -123,13 +126,13 @@ export default class OutfittingSubpages extends TranslatedComponent {
    * @return {React.Component} Tab contents
    */
   _offenceTab() {
-    const { ship, sys, eng, wep, cargo, fuel, boost, engagementRange, opponent, opponentBuild } = this.props;
+    const { ship, sys, eng, wep, cargo, fuel, boost, engagementRange, opponent, opponentBuild, opponentSys } = this.props;
     Persist.setOutfittingTab('offence');
 
-    const marker = `${ship.toString()}:${opponent.toString()}:${opponentBuild}:${engagementRange}`;
+    const marker = `${ship.toString()}${opponent.toString()}${opponentBuild}${engagementRange}${opponentSys}`;
 
     return <div>
-      <Offence marker={marker} ship={ship} opponent={opponent} wep={wep} engagementrange={engagementRange}/>
+      <Offence marker={marker} ship={ship} opponent={opponent} wep={wep} opponentSys={opponentSys} engagementrange={engagementRange}/>
     </div>;
   }
 
@@ -138,13 +141,13 @@ export default class OutfittingSubpages extends TranslatedComponent {
    * @return {React.Component} Tab contents
    */
   _defenceTab() {
-    const { ship, sys, eng, wep, cargo, fuel, boost, engagementRange, opponent, opponentBuild } = this.props;
+    const { ship, sys, eng, wep, cargo, fuel, boost, engagementRange, opponent, opponentBuild, opponentWep } = this.props;
     Persist.setOutfittingTab('defence');
 
-    const marker = `${ship.toString()}:${opponent.toString()}:${opponentBuild}:${engagementRange}`;
+    const marker = `${ship.toString()}${opponent.toString()}{opponentBuild}${engagementRange}${opponentWep}`;
 
     return <div>
-      <Defence marker={marker} ship={ship} opponent={opponent} sys={sys} engagementrange={engagementRange}/>
+      <Defence marker={marker} ship={ship} opponent={opponent} sys={sys} opponentWep={opponentWep} engagementrange={engagementRange}/>
     </div>;
   }
 

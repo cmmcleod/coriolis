@@ -45,7 +45,7 @@ export default class ShipPicker extends TranslatedComponent {
     this._closeMenu();
 
     // Ensure that the ship has changed
-    if (ship !== this.props.ship || this.build !== this.props.build) {
+    if (ship !== this.props.ship || build !== this.props.build) {
       this.props.onChange(ship, build);
     }
   }

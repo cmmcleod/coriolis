@@ -533,10 +533,11 @@ export function armourMetrics(ship) {
  * @param   {Object}  ship            The ship
  * @param   {Object}  opponent        The opponent ship
  * @param   {int}     sys             The pips to SYS
+ * @param   {int}     opponentWep     The pips to pponent's WEP
  * @param   {int}     engagementrange The range between the ship and opponent
  * @returns {Object}                  Defence metrics
  */
-export function defenceMetrics(ship, opponent, sys, engagementrange) {
+export function defenceMetrics(ship, opponent, sys, opponentWep, engagementrange) {
   // Obtain the shield metrics
   const shield = this.shieldMetrics(ship, sys);
 
@@ -572,15 +573,16 @@ export function defenceMetrics(ship, opponent, sys, engagementrange) {
  * @param   {Object}  ship            The ship
  * @param   {Object}  opponent        The opponent ship
  * @param   {int}     wep             The pips to WEP
+ * @param   {int}     opponentSys     The pips to opponent's SYS
  * @param   {int}     engagementrange The range between the ship and opponent
  * @returns {array}                   Offence metrics
  */
-export function offenceMetrics(ship, opponent, wep, engagementrange) {
+export function offenceMetrics(ship, opponent, wep, opponentSys, engagementrange) {
   // Per-weapon and total damage
   const damage = [];
 
   // Obtain the opponent's shield and armour metrics
-  const opponentShields = this.shieldMetrics(opponent, 4);
+  const opponentShields = this.shieldMetrics(opponent, opponentSys);
   const opponentArmour = this.armourMetrics(opponent);
 
   // Per-weapon and total damage to shields
@@ -612,18 +614,6 @@ export function offenceMetrics(ship, opponent, wep, engagementrange) {
   }
 
   return damage;
-
-  const shielddamage = opponentShields.generator ? {
-    absolute: {
-      weapon1: 10,
-      weapon2: 10,
-      weapon3: 10,
-      weapon4: 10,
-      total: 40
-    }
-  } : {};
-
-  return damage;
 }
 
 /**
@@ -632,7 +622,7 @@ export function offenceMetrics(ship, opponent, wep, engagementrange) {
  * @returns {integer}    the resistance for the given pips
  */
 export function sysResistance(sys) {
-  return Math.pow(sys,0.85) * 0.6 / Math.pow(4,0.85);
+  return Math.pow(sys, 0.85) * 0.6 / Math.pow(4, 0.85);
 }
 
 /**

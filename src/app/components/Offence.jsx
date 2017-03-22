@@ -55,7 +55,8 @@ export default class Offence extends TranslatedComponent {
     ship: React.PropTypes.object.isRequired,
     opponent: React.PropTypes.object.isRequired,
     engagementrange: React.PropTypes.number.isRequired,
-    wep: React.PropTypes.number.isRequired
+    wep: React.PropTypes.number.isRequired,
+    opponentSys: React.PropTypes.number.isRequired
   };
 
   /**
@@ -67,7 +68,7 @@ export default class Offence extends TranslatedComponent {
 
     this._sort = this._sort.bind(this);
 
-    const damage = Calc.offenceMetrics(props.ship, props.opponent, props.eng, props.engagementrange);
+    const damage = Calc.offenceMetrics(props.ship, props.opponent, props.wep, props.opponentSys, props.engagementrange);
     this.state = { 
       predicate: 'n',
       desc: true,
@@ -82,7 +83,7 @@ export default class Offence extends TranslatedComponent {
    */
   componentWillReceiveProps(nextProps) {
     if (this.props.marker != nextProps.marker || this.props.eng != nextProps.eng) {
-      const damage = Calc.offenceMetrics(nextProps.ship, nextProps.opponent, nextProps.wep, nextProps.engagementrange);
+      const damage = Calc.offenceMetrics(nextProps.ship, nextProps.opponent, nextProps.wep, nextProps.opponentSys, nextProps.engagementrange);
       this.setState({ damage });
     }
     return true;
