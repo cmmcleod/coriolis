@@ -384,15 +384,16 @@ function _addModifications(module, modifiers, blueprint, grade) {
   }
 
   // Hull reinforcement package resistance is actually a damage modifier, so needs to be inverted.
+  // In addition, the modification is based off the inherent resistance of the module
   if (module.grp === 'hr') {
     if (module.getModValue('explres')) {
-      module.setModValue('explres', ((module.getModValue('explres') / 10000) * -1) * 10000);
+      module.setModValue('explres', ((1 - (1 - module.explres) * (1 + module.getModValue('explres') / 10000)) - module.explres) * 10000);
     }
     if (module.getModValue('kinres')) {
-      module.setModValue('kinres', ((module.getModValue('kinres') / 10000) * -1) * 10000);
+      module.setModValue('kinres', ((1 - (1 - module.kinres) * (1 + module.getModValue('kinres') / 10000)) - module.kinres) * 10000);
     }
     if (module.getModValue('thermres')) {
-      module.setModValue('thermres', ((module.getModValue('thermres') / 10000) * -1) * 10000);
+      module.setModValue('thermres', ((1 - (1 - module.thermres) * (1 + module.getModValue('thermres') / 10000)) - module.thermres) * 10000);
     }
   }
   
