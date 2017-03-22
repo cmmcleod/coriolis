@@ -26,17 +26,32 @@ export function blueprintTooltip(translate, features, m)
         lowerBound = Math.round(lowerBound * 1000) / 10;
         upperBound = Math.round(upperBound * 1000) / 10;
       }
-      const range = `${lowerBound}${symbol} - ${upperBound}${symbol}`;
+      const lowerIsBeneficial  = isValueBeneficial(feature, lowerBound);
+      const upperIsBeneficial  = isValueBeneficial(feature, upperBound);
       if (m) {
         // We have a module - add in the current value
         let current = m.getModValue(feature);
         if (featureDef.type === 'percentage' || featureDef.name === 'burst' || featureDef.name === 'burstrof') {
           current = Math.round(current / 10) / 10;
         }
-        results.push(<tr key={feature} className={featureIsBeneficial ? 'secondary' : 'warning'}><td style={{ textAlign: 'left' }}>{translate(feature)}</td><td style={{ textAlign: 'right' }}>{lowerBound}{symbol}</td><td style={{ textAlign: 'right' }}>{current}{symbol}</td><td style={{ textAlign: 'right' }}>{upperBound}{symbol}</td></tr>);
+        const currentIsBeneficial  = isValueBeneficial(feature, current);
+        results.push(
+          <tr key={feature}>
+            <td style={{ textAlign: 'left' }}>{translate(feature)}</td>
+            <td className={lowerBound === 0 ? '' : lowerIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{lowerBound}{symbol}</td>
+            <td className={current === 0 ? '' : currentIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{current}{symbol}</td>
+            <td className={upperBound === 0 ? '' : upperIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{upperBound}{symbol}</td>
+          </tr>
+        );
       } else {
         // We do not have a module, no value
-        results.push(<tr key={feature} className={featureIsBeneficial ? 'secondary' : 'warning'}><td style={{ textAlign: 'left' }}>{translate(feature)}</td><td style={{ textAlign: 'right' }}>{lowerBound}{symbol}</td><td style={{ textAlign: 'right' }}>{upperBound}{symbol}</td></tr>);
+        results.push(
+          <tr key={feature}>
+            <td style={{ textAlign: 'left' }}>{translate(feature)}</td>
+            <td className={lowerBound === 0 ? '' : lowerIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{lowerBound}{symbol}</td>
+            <td className={upperBound === 0 ? '' : upperIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{upperBound}{symbol}</td>
+          </tr>
+        );
       }
     }
   }
@@ -68,6 +83,18 @@ export function isBeneficial(feature, values) {
     return !fact;
   } else {
     return fact;
+  }
+}
+
+/**
+ * Is this feature value beneficial?
+ *
+ */
+export function isValueBeneficial(feature, value) {
+  if (Modifications.modifications[feature].higherbetter) {
+    return value > 0;
+  } else {
+    return value < 0;
   }
 }
 
