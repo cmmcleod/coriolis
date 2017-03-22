@@ -9,6 +9,7 @@
   * Reset old modification values when a new roll is applied
   * Ensure that boost value is set correctly when modifications to power distributor enable/disable boost
   * Ensure that hull reinforcement modifications take the inherent resistance in to account when calculating modification percentages
+  * Add tooltip for blueprints providing details of the features they alter
 
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
