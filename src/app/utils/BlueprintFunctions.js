@@ -70,3 +70,49 @@ export function isBeneficial(feature, values) {
     return fact;
   }
 }
+
+/**
+ * Get a blueprint with a given name and an optional module
+ * @param   {string} name    The name of the blueprint
+ * @param   {Object} module  The module for which to obtain this blueprint
+ * @returns {Object}         The matching blueprint
+ */
+export function getBlueprint(name, module) {
+  // Start with a copy of the blueprint
+  const blueprint = JSON.parse(JSON.stringify(Modifications.blueprints[name]));
+  if (module) {
+    if (module.grp === 'bh') {
+      // Bulkheads need to have their resistances altered
+      for (const grade in blueprint.grades) {
+        for (const feature in blueprint.grades[grade].features) {
+          if (feature === 'explres') {
+            blueprint.grades[grade].features[feature][0] *= (1 - module.explres);
+            blueprint.grades[grade].features[feature][1] *= (1 - module.explres);
+          }
+          if (feature === 'kinres') {
+            blueprint.grades[grade].features[feature][0] *= (1 - module.kinres);
+            blueprint.grades[grade].features[feature][1] *= (1 - module.kinres);
+          }
+          if (feature === 'thermres') {
+            blueprint.grades[grade].features[feature][0] *= (1 - module.thermres);
+            blueprint.grades[grade].features[feature][1] *= (1 - module.thermres);
+          }
+        }
+      }
+    }
+    if (module.grp === 'sb') {
+      // Shield boosters are treated internally as straight modifiers, so rather than (for example)
+      // being a 4% boost they are a 104% multiplier.  We need to fix the values here so that they look
+      // accurate as per the information in Elite
+      for (const grade in blueprint.grades) {
+        for (const feature in blueprint.grades[grade].features) {
+          if (feature === 'shieldboost') {
+            blueprint.grades[grade].features[feature][0] = ((1 + blueprint.grades[grade].features[feature][0]) * (1 + module.shieldboost) - 1)/ module.shieldboost - 1;
+            blueprint.grades[grade].features[feature][1] = ((1 + blueprint.grades[grade].features[feature][1]) * (1 + module.shieldboost) - 1)/ module.shieldboost - 1;
+          }
+        }
+      }
+    }
+  }
+  return blueprint;
+}

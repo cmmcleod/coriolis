@@ -2,6 +2,7 @@ import React from 'react';
 import { Modifications, Modules, Ships } from 'coriolis-data/dist';
 import Module from '../shipyard/Module';
 import Ship from '../shipyard/Ship';
+import { getBlueprint } from '../utils/BlueprintFunctions';
 
 // mapping from fd's ship model names to coriolis'
 const SHIP_FD_NAME_TO_CORIOLIS_NAME = {
@@ -335,9 +336,9 @@ function _addModifications(module, modifiers, blueprint, grade) {
     }
   }
 
-  // Add the blueprint ID, grade and special
+  // Add the blueprint definition, grade and special
   if (blueprint) {
-    module.blueprint = Object.assign({}, Modifications.blueprints[blueprint]);
+    module.blueprint = getBlueprint(blueprint, module);
     if (grade) {
       module.blueprint.grade = Number(grade);
     }

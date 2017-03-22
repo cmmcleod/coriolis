@@ -554,10 +554,10 @@ export default class Module {
   getEps() {
     // EPS is a synthetic value
     let distdraw = this.getDistDraw();
-    let rpshot = this.roundspershot || 1;
+    // We don't use rpshot here as dist draw is per combined shot
     let rof = this.getRoF() || 1;
 
-    return distdraw * rpshot * rof;
+    return distdraw * rof;
   }
 
   /**
@@ -567,10 +567,10 @@ export default class Module {
   getHps() {
     // HPS is a synthetic value
     let heat = this.getThermalLoad();
-    let rpshot = this.roundspershot || 1;
+    // We don't use rpshot here as dist draw is per combined shot
     let rof = this.getRoF() || 1;
 
-    return heat * rpshot * rof;
+    return heat * rof;
   }
 
   /**

@@ -1,6 +1,7 @@
 import * as Calc from './Calculations';
 import * as ModuleUtils from './ModuleUtils';
 import * as Utils from '../utils/UtilityFunctions';
+import { getBlueprint } from '../utils/BlueprintFunctions';
 import Module from './Module';
 import LZString from 'lz-string';
 import * as _ from 'lodash';
@@ -588,7 +589,13 @@ export default class Ship {
     this.bulkheads.m = null;
     this.useBulkhead(comps && comps.bulkheads ? comps.bulkheads : 0, true);
     this.bulkheads.m.mods = mods && mods[0] ? mods[0] : {};
-    this.bulkheads.m.blueprint = blueprints && blueprints[0] ? blueprints[0] : {};
+    if (blueprints && blueprints[0]) {
+      this.bulkheads.m.blueprint = getBlueprint(blueprints[0].fdname, this.bulkheads.m);
+      this.bulkheads.m.blueprint.grade = blueprints[0].grade;
+      this.bulkheads.m.blueprint.special = blueprints[0].special;
+    } else {
+      this.bulkheads.m.blueprint = {};
+    }
     this.cargoHatch.priority = priorities ? priorities[0] * 1 : 0;
     this.cargoHatch.enabled = enabled ? enabled[0] * 1 : true;
 
@@ -602,7 +609,13 @@ export default class Ship {
         let module = ModuleUtils.standard(i, comps.standard[i]);
         if (module != null) {
           module.mods = mods && mods[i + 1] ? mods[i + 1] : {};
-          module.blueprint = blueprints && blueprints[i + 1] ? blueprints[i + 1] : {};
+          if (blueprints && blueprints[i + 1]) {
+            module.blueprint = getBlueprint(blueprints[i + 1].fdname, module);
+            module.blueprint.grade = blueprints[i + 1].grade;
+            module.blueprint.special = blueprints[i + 1].special;
+	  } else {
+            module.blueprint = {};
+	  }
         }
         this.use(standard[i], module, true);
       }
@@ -624,7 +637,13 @@ export default class Ship {
         let module = ModuleUtils.hardpoints(comps.hardpoints[i]);
         if (module != null) {
           module.mods = mods && mods[cl + i] ? mods[cl + i] : {};
-          module.blueprint = blueprints && blueprints[cl + i] ? blueprints[cl + i] : {};
+          if (blueprints && blueprints[cl + i]) {
+            module.blueprint = getBlueprint(blueprints[cl + i].fdname, module);
+            module.blueprint.grade = blueprints[cl + i].grade;
+            module.blueprint.special = blueprints[cl + i].special;
+	  } else {
+            module.blueprint = {};
+	  }
         }
         this.use(hps[i], module, true);
       }
@@ -644,7 +663,13 @@ export default class Ship {
         let module = ModuleUtils.internal(comps.internal[i]);
         if (module != null) {
           module.mods = mods && mods[cl + i] ? mods[cl + i] : {};
-          module.blueprint = blueprints && blueprints[cl + i] ? blueprints[cl + i] : {};
+          if (blueprints && blueprints[cl + i]) {
+            module.blueprint = getBlueprint(blueprints[cl + i].fdname, module);
+            module.blueprint.grade = blueprints[cl + i].grade;
+            module.blueprint.special = blueprints[cl + i].special;
+	  } else {
+            module.blueprint = {};
+	  }
         }
         this.use(internal[i], module, true);
       }

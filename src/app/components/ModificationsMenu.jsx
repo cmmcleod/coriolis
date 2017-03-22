@@ -5,7 +5,7 @@ import { isEmpty, stopCtxPropagation } from '../utils/UtilityFunctions';
 import cn from 'classnames';
 import { Modifications } from 'coriolis-data/dist';
 import Modification from './Modification';
-import { blueprintTooltip } from '../utils/BlueprintFunctions';
+import { getBlueprint, blueprintTooltip } from '../utils/BlueprintFunctions';
 
 /**
  * Modifications menu
@@ -51,10 +51,11 @@ export default class ModificationsMenu extends TranslatedComponent {
     let blueprints = [];
     for (const blueprintName in Modifications.modules[m.grp].blueprints) {
       for (const grade of Modifications.modules[m.grp].blueprints[blueprintName]) {
-        const close = this._blueprintSelected.bind(this, Modifications.blueprints[blueprintName].id, grade);
+        const close = this._blueprintSelected.bind(this, blueprintName, grade);
         const key = blueprintName + ':' + grade;
-        const tooltipContent = blueprintTooltip(translate, Modifications.blueprints[blueprintName].grades[grade].features);
-        blueprints.push(<div style={{ cursor: 'pointer' }} key={ key } onMouseOver={termtip.bind(null, tooltipContent)} onMouseOut={tooltip.bind(null, null)} onClick={ close }>{translate(Modifications.blueprints[blueprintName].name + ' grade ' + grade)}</div>);
+        const blueprint = getBlueprint(blueprintName, m);
+        const tooltipContent = blueprintTooltip(translate, blueprint.grades[grade].features);
+        blueprints.push(<div style={{ cursor: 'pointer' }} key={ key } onMouseOver={termtip.bind(null, tooltipContent)} onMouseOut={tooltip.bind(null, null)} onClick={ close }>{translate(blueprint.name + ' grade ' + grade)}</div>);
       }
     }
 
@@ -105,12 +106,12 @@ export default class ModificationsMenu extends TranslatedComponent {
 
   /**
    * Activated when a blueprint is selected
-   * @param  {int} blueprintId The ID of the selected blueprint
-   * @param  {int} grade       The grade of the selected blueprint
+   * @param  {int} fdname     The Frontier name of the blueprint
+   * @param  {int} grade      The grade of the selected blueprint
    */
-  _blueprintSelected(blueprintId, grade) {
+  _blueprintSelected(fdname, grade) {
     const { m } = this.props;
-    const blueprint = Object.assign({}, _.find(Modifications.blueprints, function(o) { return o.id === blueprintId; }));
+    const blueprint = getBlueprint(fdname, m);
     blueprint.grade = grade;
     m.blueprint = blueprint;
 
@@ -155,13 +156,6 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @param  {number} value         The value of the roll
    */
   _setRollResult(ship, m, featureName, value) {
-    if (Modifications.modifications[featureName].method !== 'overwrite') {
-      if (m.grp == 'sb' && featureName == 'shieldboost') {
-        // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
-        value = ((1 + m.shieldboost) * (1 + value) - 1) / m.shieldboost - 1;
-      }
-    }
-
     if (Modifications.modifications[featureName].type == 'percentage') {
       ship.setModification(m, featureName, value * 10000);
     } else if (Modifications.modifications[featureName].type == 'numeric') {
