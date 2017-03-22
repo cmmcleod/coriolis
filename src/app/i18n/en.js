@@ -230,8 +230,7 @@ export const terms = {
   regen: 'Regeneration rate',
   reload: 'Reload',
   rof: 'Rate of fire',
-  scanangle: 'Scan angle',
-  scanrange: 'Scan range',
+  angle: 'Scan angle',
   scantime: 'Scan time',
   shield: 'Shield',
   shieldboost: 'Shield boost',
@@ -252,6 +251,8 @@ export const terms = {
   minmul_sg: 'Minimum strength',
   optmul_sg: 'Optimal strength',
   maxmul_sg: 'Minimum strength',
+
+  range_s: 'Typical emission range',
 
   // Damage types
   absolute: 'Absolute',

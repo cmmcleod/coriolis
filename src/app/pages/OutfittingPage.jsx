@@ -90,7 +90,7 @@ export default class OutfittingPage extends Page {
     this._getTitle = getTitle.bind(this, data.properties.name);
 
     // Obtain ship control from code
-    const { sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, engagementRange } = this._obtainControlFromCode(ship, code);
+    const { sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, opponentSys, opponentEng, opponentWep, engagementRange } = this._obtainControlFromCode(ship, code);
     return {
       error: null,
       title: this._getTitle(buildName),
@@ -109,6 +109,9 @@ export default class OutfittingPage extends Page {
       cargo,
       opponent,
       opponentBuild,
+      opponentSys,
+      opponentEng,
+      opponentWep,
       engagementRange
     };
   }
@@ -167,7 +170,10 @@ export default class OutfittingPage extends Page {
     let fuel = ship.fuelCapacity;
     let cargo = ship.cargoCapacity;
     let opponent = new Ship('eagle', Ships['eagle'].properties, Ships['eagle'].slots).buildWith(Ships['eagle'].defaults);
-    let opponentBuild = undefined;
+    let opponentSys = 2;
+    let opponentEng = 2;
+    let opponentWep = 2;
+    let opponentBuild;
     let engagementRange = 1000;
 
     // Obtain updates from code, if available
@@ -187,8 +193,19 @@ export default class OutfittingPage extends Page {
           opponent = new Ship(shipId, Ships[shipId].properties, Ships[shipId].slots);
           if (control[7] && Persist.getBuild(shipId, control[7])) {
             // Ship is a particular build
-            opponent.buildFrom(Persist.getBuild(shipId, control[7]));
+            const opponentCode = Persist.getBuild(shipId, control[7]);
+            opponent.buildFrom(opponentCode);
             opponentBuild = control[7];
+            if (opponentBuild) {
+              // Obtain opponent's sys/eng/wep pips from their code
+              const opponentParts = opponentCode.split('.');
+              if (opponentParts.length >= 5) {
+                const opponentControl = LZString.decompressFromBase64(Utils.fromUrlSafe(opponentParts[4])).split('/');
+                opponentSys = parseFloat(opponentControl[0]);
+                opponentEng = parseFloat(opponentControl[1]);
+                opponentWep = parseFloat(opponentControl[2]);
+	      }
+	    }
           } else {
             // Ship is a stock build
             opponent.buildWith(Ships[shipId].defaults);
@@ -198,7 +215,7 @@ export default class OutfittingPage extends Page {
       }
     }
 
-    return { sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, engagementRange };
+    return { sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, opponentSys, opponentEng, opponentWep, engagementRange };
   }
 
   /**
