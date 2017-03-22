@@ -81,8 +81,8 @@ export function getBlueprint(name, module) {
   // Start with a copy of the blueprint
   const blueprint = JSON.parse(JSON.stringify(Modifications.blueprints[name]));
   if (module) {
-    if (module.grp === 'bh') {
-      // Bulkheads need to have their resistances altered
+    if (module.grp === 'bh' || module.grp === 'hr') {
+      // Bulkheads and hull reinforcements need to have their resistances altered by the base values
       for (const grade in blueprint.grades) {
         for (const feature in blueprint.grades[grade].features) {
           if (feature === 'explres') {
