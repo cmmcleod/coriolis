@@ -613,9 +613,9 @@ export default class Ship {
             module.blueprint = getBlueprint(blueprints[i + 1].fdname, module);
             module.blueprint.grade = blueprints[i + 1].grade;
             module.blueprint.special = blueprints[i + 1].special;
-	  } else {
+          } else {
             module.blueprint = {};
-	  }
+          }
         }
         this.use(standard[i], module, true);
       }
@@ -641,9 +641,9 @@ export default class Ship {
             module.blueprint = getBlueprint(blueprints[cl + i].fdname, module);
             module.blueprint.grade = blueprints[cl + i].grade;
             module.blueprint.special = blueprints[cl + i].special;
-	  } else {
+          } else {
             module.blueprint = {};
-	  }
+          }
         }
         this.use(hps[i], module, true);
       }
@@ -667,9 +667,9 @@ export default class Ship {
             module.blueprint = getBlueprint(blueprints[cl + i].fdname, module);
             module.blueprint.grade = blueprints[cl + i].grade;
             module.blueprint.special = blueprints[cl + i].special;
-	  } else {
+          } else {
             module.blueprint = {};
-	  }
+          }
         }
         this.use(internal[i], module, true);
       }

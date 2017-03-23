@@ -204,8 +204,8 @@ export default class OutfittingPage extends Page {
                 opponentSys = parseFloat(opponentControl[0]);
                 opponentEng = parseFloat(opponentControl[1]);
                 opponentWep = parseFloat(opponentControl[2]);
-	      }
-	    }
+              }
+            }
           } else {
             // Ship is a stock build
             opponent.buildWith(Ships[shipId].defaults);

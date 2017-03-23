@@ -3,12 +3,12 @@ import { Modifications } from 'coriolis-data/dist';
 
 /**
  * Generate a tooltip with details of a blueprint's effects
+ * @param   {Object}  translate   The translate object
  * @param   {Object}  features    The features of the blueprint
  * @param   {Object}  m           The module to compare with
  * @returns {Object}              The react components
  */
-export function blueprintTooltip(translate, features, m)
-{
+export function blueprintTooltip(translate, features, m) {
   const results = [];
   for (const feature in features) {
     const featureIsBeneficial = isBeneficial(feature, features[feature]);
@@ -75,7 +75,9 @@ export function blueprintTooltip(translate, features, m)
 
 /**
  * Is this blueprint feature beneficial?
- *
+ * @param   {string}  feature    The name of the feature
+ * @param   {array}   values     The value of the feature
+ * @returns {boolean}            True if this feature is beneficial
  */
 export function isBeneficial(feature, values) {
   const fact = (values[0] < 0 || (values[0] === 0 && values[1] < 0));
@@ -88,7 +90,9 @@ export function isBeneficial(feature, values) {
 
 /**
  * Is this feature value beneficial?
- *
+ * @param   {string}  feature    The name of the feature
+ * @param   {number}  value      The value of the feature
+ * @returns {boolean}            True if this value is beneficial
  */
 export function isValueBeneficial(feature, value) {
   if (Modifications.modifications[feature].higherbetter) {
@@ -134,8 +138,8 @@ export function getBlueprint(name, module) {
       for (const grade in blueprint.grades) {
         for (const feature in blueprint.grades[grade].features) {
           if (feature === 'shieldboost') {
-            blueprint.grades[grade].features[feature][0] = ((1 + blueprint.grades[grade].features[feature][0]) * (1 + module.shieldboost) - 1)/ module.shieldboost - 1;
-            blueprint.grades[grade].features[feature][1] = ((1 + blueprint.grades[grade].features[feature][1]) * (1 + module.shieldboost) - 1)/ module.shieldboost - 1;
+            blueprint.grades[grade].features[feature][0] = ((1 + blueprint.grades[grade].features[feature][0]) * (1 + module.shieldboost) - 1) / module.shieldboost - 1;
+            blueprint.grades[grade].features[feature][1] = ((1 + blueprint.grades[grade].features[feature][1]) * (1 + module.shieldboost) - 1) / module.shieldboost - 1;
           }
         }
       }
