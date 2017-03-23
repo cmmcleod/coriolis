@@ -50,9 +50,8 @@ export function weaponComparator(translate, propComparator, desc) {
  * Damage against a selected ship
  */
 export default class DamageDealt extends TranslatedComponent {
-  static PropTypes = {
+  static propTypes = {
     ship: React.PropTypes.object.isRequired,
-    chartWidth: React.PropTypes.number.isRequired,
     code: React.PropTypes.string.isRequired
   };
 
@@ -556,7 +555,6 @@ export default class DamageDealt extends TranslatedComponent {
         <div className='group half'>
           <h1>{translate('sustained dps against standard shields')}</h1>
           <LineChart
-            width={this.props.chartWidth}
             xMax={maxRange}
             yMax={this.state.maxDps}
             xLabel={translate('range')}
@@ -572,7 +570,6 @@ export default class DamageDealt extends TranslatedComponent {
         <div className='group half'>
           <h1>{translate('sustained dps against standard armour')}</h1>
           <LineChart
-            width={this.props.chartWidth}
             xMax={maxRange}
             yMax={this.state.maxDps}
             xLabel={translate('range')}

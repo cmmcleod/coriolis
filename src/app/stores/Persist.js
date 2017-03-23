@@ -5,6 +5,7 @@ const LS_KEY_BUILDS = 'builds';
 const LS_KEY_COMPARISONS = 'comparisons';
 const LS_KEY_LANG = 'NG_TRANSLATE_LANG_KEY';
 const LS_KEY_COST_TAB = 'costTab';
+const LS_KEY_OUTFITTING_TAB = 'outfittingTab';
 const LS_KEY_INSURANCE = 'insurance';
 const LS_KEY_SHIP_DISCOUNT = 'shipDiscount';
 const LS_KEY_MOD_DISCOUNT = 'moduleDiscount';
@@ -98,6 +99,7 @@ export class Persist extends EventEmitter {
     this.builds = buildJson && typeof buildJson == 'object' ? buildJson : {};
     this.comparisons = comparisonJson && typeof comparisonJson == 'object' ? comparisonJson : {};
     this.costTab = _getString(LS_KEY_COST_TAB);
+    this.outfittingTab = _getString(LS_KEY_OUTFITTING_TAB);
     this.state =  _get(LS_KEY_STATE);
     this.sizeRatio = _get(LS_KEY_SIZE_RATIO) || 1;
     this.tooltipsEnabled = tips === null ? true : tips;
@@ -470,6 +472,22 @@ export class Persist extends EventEmitter {
    */
   getCostTab() {
     return this.costTab;
+  }
+
+  /**
+   * Persist selected outfitting tab
+   * @param {string} tabName Cost tab name
+   */
+  setOutfittingTab(tabName) {
+    this.outfittingTab = tabName;
+    _put(LS_KEY_OUTFITTING_TAB, tabName);
+  }
+  /**
+   * Get the current outfitting tab
+   * @return {string} the current outfitting tab
+   */
+  getOutfittingTab() {
+    return this.outfittingTab;
   }
 
   /**

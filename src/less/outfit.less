@@ -190,8 +190,46 @@
     });
   }
 
+  &.quarter {
+    width: 25%;
+
+    .tablet({
+      td {
+        line-height: 2em;
+      }
+    });
+
+    .smallTablet({
+      width: 50% !important;
+    });
+  }
+
   &.third {
     width: 33%;
+
+    .smallTablet({
+      width: 50% !important;
+    });
+  }
+
+  &.twothirds {
+    width: 67%;
+
+    .smallTablet({
+      width: 100% !important;
+    });
+  }
+
+  &.threequarters {
+    width: 75%;
+
+    .smallTablet({
+      width: 100% !important;
+    });
+  }
+
+  &.full {
+    width: 100%;
 
     .smallTablet({
       width: 100% !important;

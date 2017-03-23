@@ -47,6 +47,7 @@ export const ModuleGroupToName = {
   pcm: 'First Class Passenger Cabin',
   pcq: 'Luxury Passenger Cabin',
   cc: 'Collector Limpet Controller',
+  ss: 'Surface Scanner',
 
   // Hard Points
   bl: 'Beam Laser',

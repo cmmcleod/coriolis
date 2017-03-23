@@ -1,6 +1,7 @@
 import * as Calc from './Calculations';
 import * as ModuleUtils from './ModuleUtils';
 import * as Utils from '../utils/UtilityFunctions';
+import { getBlueprint } from '../utils/BlueprintFunctions';
 import Module from './Module';
 import LZString from 'lz-string';
 import * as _ from 'lodash';
@@ -138,17 +139,6 @@ export default class Ship {
         this.standard[4].m.getEnginesCapacity() > this.boostEnergy; // PD capacitor is sufficient for boost
   }
 
-    /**
-   * Calculate hypothetical jump range using the installed FSD and the
-   * specified mass which can be more or less than ships actual mass
-   * @param  {Number} fuel  Fuel available in tons
-   * @param  {Number} cargo Cargo in tons
-   * @return {Number}       Jump range in Light Years
-   */
-  calcJumpRangeWith(fuel, cargo) {
-    return Calc.jumpRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
-  }
-
   /**
    * Calculate the hypothetical laden jump range based on a potential change in mass, fuel, or FSD
    * @param  {Number} massDelta Optional - Change in laden mass (mass + cargo + fuel)
@@ -174,17 +164,6 @@ export default class Ship {
   }
 
   /**
-   * Calculate cumulative (total) jump range when making longest jumps using the installed FSD and the
-   * specified mass which can be more or less than ships actual mass
-   * @param  {Number} fuel  Fuel available in tons
-   * @param  {Number} cargo Cargo in tons
-   * @return {Number}       Total/Cumulative Jump range in Light Years
-   */
-  calcFastestRangeWith(fuel, cargo) {
-    return Calc.fastestRange(this.unladenMass + fuel + cargo, this.standard[2].m, fuel);
-  }
-
-  /**
    * Calculate the hypothetical top speeds at cargo and fuel tonnage
    * @param  {Number} fuel  Fuel available in tons
    * @param  {Number} cargo Cargo in tons
@@ -192,6 +171,54 @@ export default class Ship {
    */
   calcSpeedsWith(fuel, cargo) {
     return Calc.speed(this.unladenMass + fuel + cargo, this.speed, this.standard[1].m, this.pipSpeed);
+  }
+
+  /**
+   * Calculate the speed for a given configuration
+   * @param  {Number}  eng   Number of pips in ENG
+   * @param  {Number}  fuel  Amount of fuel carried
+   * @param  {Number}  cargo Amount of cargo carried
+   * @param  {boolean} boost true if boost is applied
+   * @return {Number}        Speed
+   */
+  calcSpeed(eng, fuel, cargo, boost) {
+    return Calc.calcSpeed(this.unladenMass + fuel + cargo, this.speed, this.standard[1].m, this.pipSpeed, eng, this.boost / this.speed, boost);
+  }
+
+  /**
+   * Calculate the pitch for a given configuration
+   * @param  {Number}  eng   Number of pips in ENG
+   * @param  {Number}  fuel  Amount of fuel carried
+   * @param  {Number}  cargo Amount of cargo carried
+   * @param  {boolean} boost true if boost is applied
+   * @return {Number}        Pitch
+   */
+  calcPitch(eng, fuel, cargo, boost) {
+    return Calc.calcPitch(this.unladenMass + fuel + cargo, this.pitch, this.standard[1].m, this.pipSpeed, eng, this.topBoost / this.topSpeed, boost);
+  }
+
+  /**
+   * Calculate the roll for a given configuration
+   * @param  {Number}  eng   Number of pips in ENG
+   * @param  {Number}  fuel  Amount of fuel carried
+   * @param  {Number}  cargo Amount of cargo carried
+   * @param  {boolean} boost true if boost is applied
+   * @return {Number}        Roll
+   */
+  calcRoll(eng, fuel, cargo, boost) {
+    return Calc.calcRoll(this.unladenMass + fuel + cargo, this.roll, this.standard[1].m, this.pipSpeed, eng, this.topBoost / this.topSpeed, boost);
+  }
+
+  /**
+   * Calculate the yaw for a given configuration
+   * @param  {Number}  eng   Number of pips in ENG
+   * @param  {Number}  fuel  Amount of fuel carried
+   * @param  {Number}  cargo Amount of cargo carried
+   * @param  {boolean} boost true if boost is applied
+   * @return {Number}        Yaw
+   */
+  calcYaw(eng, fuel, cargo, boost) {
+    return Calc.calcYaw(this.unladenMass + fuel + cargo, this.yaw, this.standard[1].m, this.pipSpeed, eng, this.topBoost / this.topSpeed, boost);
   }
 
   /**
@@ -427,7 +454,6 @@ export default class Ship {
         .recalculateDps()
         .recalculateEps()
         .recalculateHps()
-        .recalculateTtd()
         .updateMovement();
   }
 
@@ -496,15 +522,15 @@ export default class Ship {
       this.recalculateDps();
       this.recalculateHps();
       this.recalculateEps();
-      this.recalculateTtd();
     } else if (name === 'explres' || name === 'kinres' || name === 'thermres') {
       m.setModValue(name, value, sentfromui);
       // Could be for shields or armour
       this.recalculateArmour();
       this.recalculateShield();
-    } else if (name === 'wepcap' || name === 'weprate') {
+    } else if (name === 'engcap') {
       m.setModValue(name, value, sentfromui);
-      this.recalculateTtd();
+      // Might have resulted in a change in boostability
+      this.updateMovement();
     } else {
       // Generic
       m.setModValue(name, value, sentfromui);
@@ -563,7 +589,13 @@ export default class Ship {
     this.bulkheads.m = null;
     this.useBulkhead(comps && comps.bulkheads ? comps.bulkheads : 0, true);
     this.bulkheads.m.mods = mods && mods[0] ? mods[0] : {};
-    this.bulkheads.m.blueprint = blueprints && blueprints[0] ? blueprints[0] : {};
+    if (blueprints && blueprints[0]) {
+      this.bulkheads.m.blueprint = getBlueprint(blueprints[0].fdname, this.bulkheads.m);
+      this.bulkheads.m.blueprint.grade = blueprints[0].grade;
+      this.bulkheads.m.blueprint.special = blueprints[0].special;
+    } else {
+      this.bulkheads.m.blueprint = {};
+    }
     this.cargoHatch.priority = priorities ? priorities[0] * 1 : 0;
     this.cargoHatch.enabled = enabled ? enabled[0] * 1 : true;
 
@@ -577,7 +609,13 @@ export default class Ship {
         let module = ModuleUtils.standard(i, comps.standard[i]);
         if (module != null) {
           module.mods = mods && mods[i + 1] ? mods[i + 1] : {};
-          module.blueprint = blueprints && blueprints[i + 1] ? blueprints[i + 1] : {};
+          if (blueprints && blueprints[i + 1]) {
+            module.blueprint = getBlueprint(blueprints[i + 1].fdname, module);
+            module.blueprint.grade = blueprints[i + 1].grade;
+            module.blueprint.special = blueprints[i + 1].special;
+	  } else {
+            module.blueprint = {};
+	  }
         }
         this.use(standard[i], module, true);
       }
@@ -599,7 +637,13 @@ export default class Ship {
         let module = ModuleUtils.hardpoints(comps.hardpoints[i]);
         if (module != null) {
           module.mods = mods && mods[cl + i] ? mods[cl + i] : {};
-          module.blueprint = blueprints && blueprints[cl + i] ? blueprints[cl + i] : {};
+          if (blueprints && blueprints[cl + i]) {
+            module.blueprint = getBlueprint(blueprints[cl + i].fdname, module);
+            module.blueprint.grade = blueprints[cl + i].grade;
+            module.blueprint.special = blueprints[cl + i].special;
+	  } else {
+            module.blueprint = {};
+	  }
         }
         this.use(hps[i], module, true);
       }
@@ -619,7 +663,13 @@ export default class Ship {
         let module = ModuleUtils.internal(comps.internal[i]);
         if (module != null) {
           module.mods = mods && mods[cl + i] ? mods[cl + i] : {};
-          module.blueprint = blueprints && blueprints[cl + i] ? blueprints[cl + i] : {};
+          if (blueprints && blueprints[cl + i]) {
+            module.blueprint = getBlueprint(blueprints[cl + i].fdname, module);
+            module.blueprint.grade = blueprints[cl + i].grade;
+            module.blueprint.special = blueprints[cl + i].special;
+	  } else {
+            module.blueprint = {};
+	  }
         }
         this.use(internal[i], module, true);
       }
@@ -638,7 +688,6 @@ export default class Ship {
           .recalculateDps()
           .recalculateEps()
           .recalculateHps()
-          .recalculateTtd()
           .updateMovement();
     }
 
@@ -820,7 +869,6 @@ export default class Ship {
 
         if (slot.m.getEps()) {
           this.recalculateEps();
-          this.recalculateTtd();
         }
       }
     }
@@ -896,16 +944,12 @@ export default class Ship {
       }
       if (epsChanged) {
         this.recalculateEps();
-        this.recalculateTtd();
       }
       if (hpsChanged) {
         this.recalculateHps();
       }
       if (powerGeneratedChange) {
         this.updatePowerGenerated();
-      }
-      if (powerDistributorChange) {
-        this.recalculateTtd();
       }
       if (powerUsedChange) {
         this.updatePowerUsed();
@@ -942,33 +986,6 @@ export default class Ship {
       val = drul - (drul - val) / 2;
     }
     return val;
-  }
-
-  /**
-   * Calculate time to drain WEP capacitor
-   * @return {this} The ship instance (for chaining operations)
-   */
-  recalculateTtd() {
-    let totalSEps = 0;
-
-    for (let slotNum in this.hardpoints) {
-      const slot = this.hardpoints[slotNum];
-      if (slot.m && slot.enabled && slot.type === 'WEP' && slot.m.getDps()) {
-        totalSEps += slot.m.getClip() ? (slot.m.getClip() * slot.m.getEps() / slot.m.getRoF()) / ((slot.m.getClip() / slot.m.getRoF()) + slot.m.getReload()) : slot.m.getEps();
-      }
-    }
-
-    // Calculate the drain time
-    const drainPerSecond = totalSEps - this.standard[4].m.getWeaponsRechargeRate();
-    if (drainPerSecond <= 0) {
-      // Can fire forever
-      this.timeToDrain = Infinity;
-    } else {
-      const initialCharge = this.standard[4].m.getWeaponsCapacity();
-      this.timeToDrain = initialCharge / drainPerSecond;
-    }
-
-    return this;
   }
 
   /**
@@ -1238,13 +1255,13 @@ export default class Ship {
       shield = Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sgSlot.m, 1);
       shieldExplRes = 1 - sgSlot.m.getExplosiveResistance();
       shieldExplDRStart = shieldExplRes * 0.7;
-      shieldExplDREnd = shieldExplRes * 0; // Currently don't know where this is
+      shieldExplDREnd = 0;
       shieldKinRes = 1 - sgSlot.m.getKineticResistance();
       shieldKinDRStart = shieldKinRes * 0.7;
-      shieldKinDREnd = shieldKinRes * 0; // Currently don't know where this is
+      shieldKinDREnd = 0;
       shieldThermRes = 1 - sgSlot.m.getThermalResistance();
       shieldThermDRStart = shieldThermRes * 0.7;
-      shieldThermDREnd = shieldThermRes * 0; // Currently don't know where this is
+      shieldThermDREnd = 0;
 
       // Shield from boosters
       for (let slot of this.hardpoints) {
@@ -1300,13 +1317,13 @@ export default class Ship {
     let moduleprotection = 1;
     let hullExplRes = 1 - bulkhead.getExplosiveResistance();
     const hullExplResDRStart = hullExplRes * 0.7;
-    const hullExplResDREnd = hullExplRes * 0; // Currently don't know where this is
+    const hullExplResDREnd = hullExplRes * 0;
     let hullKinRes = 1 - bulkhead.getKineticResistance();
     const hullKinResDRStart = hullKinRes * 0.7;
-    const hullKinResDREnd = hullKinRes * 0; // Currently don't know where this is
+    const hullKinResDREnd = hullKinRes * 0;
     let hullThermRes = 1 - bulkhead.getThermalResistance();
     const hullThermResDRStart = hullThermRes * 0.7;
-    const hullThermResDREnd = hullThermRes * 0; // Currently don't know where this is
+    const hullThermResDREnd = hullThermRes * 0;
 
     // Armour from HRPs and module armour from MRPs
     for (let slot of this.internal) {
@@ -1346,9 +1363,9 @@ export default class Ship {
     this.unladenRange = this.calcUnladenRange(); // Includes fuel weight for jump
     this.fullTankRange = Calc.jumpRange(unladenMass + fuelCapacity, fsd); // Full Tank
     this.ladenRange = this.calcLadenRange(); // Includes full tank and caro
-    this.unladenFastestRange = Calc.fastestRange(unladenMass, fsd, fuelCapacity);
-    this.ladenFastestRange = Calc.fastestRange(unladenMass + this.cargoCapacity, fsd, fuelCapacity);
-    this.maxJumpCount = Math.ceil(fuelCapacity / fsd.maxfuel);
+    this.unladenFastestRange = Calc.totalJumpRange(unladenMass + this.fuelCapacity, fsd, fuelCapacity);
+    this.ladenFastestRange = Calc.totalJumpRange(unladenMass + this.fuelCapacity + this.cargoCapacity, fsd, fuelCapacity);
+    this.maxJumpCount = Math.ceil(fuelCapacity / fsd.getMaxFuelPerJump());
     return this;
   }
 

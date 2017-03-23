@@ -5,6 +5,7 @@ import { isEmpty, stopCtxPropagation } from '../utils/UtilityFunctions';
 import cn from 'classnames';
 import { Modifications } from 'coriolis-data/dist';
 import Modification from './Modification';
+import { getBlueprint, blueprintTooltip } from '../utils/BlueprintFunctions';
 
 /**
  * Modifications menu
@@ -43,16 +44,18 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _initState(props, context) {
     let { m } = props;
-    const { language } = context;
+    const { language, tooltip, termtip } = context;
     const translate = language.translate;
 
     // Set up the blueprints
     let blueprints = [];
     for (const blueprintName in Modifications.modules[m.grp].blueprints) {
       for (const grade of Modifications.modules[m.grp].blueprints[blueprintName]) {
-        const close = this._blueprintSelected.bind(this, Modifications.blueprints[blueprintName].id, grade);
+        const close = this._blueprintSelected.bind(this, blueprintName, grade);
         const key = blueprintName + ':' + grade;
-        blueprints.push(<div style={{ cursor: 'pointer' }} key={ key } onClick={ close }>{translate(Modifications.blueprints[blueprintName].name + ' grade ' + grade)}</div>);
+        const blueprint = getBlueprint(blueprintName, m);
+        const tooltipContent = blueprintTooltip(translate, blueprint.grades[grade].features);
+        blueprints.push(<div style={{ cursor: 'pointer' }} key={ key } onMouseOver={termtip.bind(null, tooltipContent)} onMouseOut={tooltip.bind(null, null)} onClick={ close }>{translate(blueprint.name + ' grade ' + grade)}</div>);
       }
     }
 
@@ -103,12 +106,12 @@ export default class ModificationsMenu extends TranslatedComponent {
 
   /**
    * Activated when a blueprint is selected
-   * @param  {int} blueprintId The ID of the selected blueprint
-   * @param  {int} grade       The grade of the selected blueprint
+   * @param  {int} fdname     The Frontier name of the blueprint
+   * @param  {int} grade      The grade of the selected blueprint
    */
-  _blueprintSelected(blueprintId, grade) {
+  _blueprintSelected(fdname, grade) {
     const { m } = this.props;
-    const blueprint = Object.assign({}, _.find(Modifications.blueprints, function(o) { return o.id === blueprintId; }));
+    const blueprint = getBlueprint(fdname, m);
     blueprint.grade = grade;
     m.blueprint = blueprint;
 
@@ -153,13 +156,6 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @param  {number} value         The value of the roll
    */
   _setRollResult(ship, m, featureName, value) {
-    if (Modifications.modifications[featureName].method !== 'overwrite') {
-      if (m.grp == 'sb' && featureName == 'shieldboost') {
-        // Shield boosters are a special case.  Their boost is dependent on their base so we need to calculate the value here
-        value = ((1 + m.shieldboost) * (1 + value) - 1) / m.shieldboost - 1;
-      }
-    }
-
     if (Modifications.modifications[featureName].type == 'percentage') {
       ship.setModification(m, featureName, value * 10000);
     } else if (Modifications.modifications[featureName].type == 'numeric') {
@@ -276,11 +272,11 @@ export default class ModificationsMenu extends TranslatedComponent {
 
     let blueprintLabel;
     let haveBlueprint = false;
+    let blueprintTt;
     if (m.blueprint && !isEmpty(m.blueprint)) {
       blueprintLabel = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
       haveBlueprint = true;
-    } else {
-      blueprintLabel = translate('PHRASE_SELECT_BLUEPRINT');
+      blueprintTt  = blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade].features);
     }
 
     let specialLabel;
@@ -291,7 +287,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     }
 
     const showBlueprintsMenu = blueprintMenuOpened;
-    const showSpecial = haveBlueprint && this.state.specials.length > 0;
+    const showSpecial = haveBlueprint && this.state.specials.length > 0 && !blueprintMenuOpened;
     const showSpecialsMenu = specialMenuOpened;
     const showRolls = haveBlueprint && !blueprintMenuOpened && !specialMenuOpened;
     const showReset = !blueprintMenuOpened && !specialMenuOpened;
@@ -303,7 +299,10 @@ export default class ModificationsMenu extends TranslatedComponent {
           onClick={(e) => e.stopPropagation() }
           onContextMenu={stopCtxPropagation}
       >
-        <div className={ cn('section-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleBlueprintsMenu}>{blueprintLabel}</div>
+        { haveBlueprint ? 
+          <div className={ cn('section-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onMouseOver={termtip.bind(null, blueprintTt)} onMouseOut={tooltip.bind(null, null)} onClick={_toggleBlueprintsMenu}>{blueprintLabel}</div>
+        : 
+          <div className={ cn('section-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleBlueprintsMenu}>{translate('PHRASE_SELECT_BLUEPRINT')}</div> }
         { showBlueprintsMenu ? this.state.blueprints : null }
         { showSpecial ? <div className={ cn('section-menu', { selected: specialMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleSpecialsMenu}>{specialLabel}</div> : null }
         { showSpecialsMenu ? this.state.specials : null }

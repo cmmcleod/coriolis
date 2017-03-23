@@ -13,10 +13,11 @@ import * as Calc from '../shipyard/Calculations';
  * FSD profile for a given ship
  */
 export default class FSDProfile extends TranslatedComponent {
-  static PropTypes = {
+  static propTypes = {
     ship: React.PropTypes.object.isRequired,
-    chartWidth: React.PropTypes.number.isRequired,
-    code: React.PropTypes.string.isRequired
+    cargo: React.PropTypes.number.isRequired,
+    fuel: React.PropTypes.number.isRequired,
+    marker: React.PropTypes.string.isRequired
   };
 
   /**
@@ -30,8 +31,7 @@ export default class FSDProfile extends TranslatedComponent {
     const ship = this.props.ship;
 
     this.state = {
-      cargo: ship.cargoCapacity,
-      calcMaxRangeFunc: this._calcMaxRange.bind(this, ship)
+      calcMaxRangeFunc: this._calcMaxRange.bind(this, ship, this.props.fuel)
     };
   }
 
@@ -42,8 +42,8 @@ export default class FSDProfile extends TranslatedComponent {
    * @return {boolean}            Returns true if the component should be rerendered
    */
   componentWillReceiveProps(nextProps, nextContext) {
-    if (nextProps.code != this.props.code) {
-      this.setState({ cargo: nextProps.ship.cargoCapacity, calcMaxRangeFunc: this._calcMaxRange.bind(this, nextProps.ship) });
+    if (nextProps.marker != this.props.marker) {
+      this.setState({ calcMaxRangeFunc: this._calcMaxRange.bind(this, nextProps.ship, nextProps.fuel) });
     }
     return true;
   }
@@ -51,38 +51,23 @@ export default class FSDProfile extends TranslatedComponent {
   /**
    * Calculate the maximum range for this ship across its applicable mass
    * @param  {Object}  ship          The ship
+   * @param  {Object}  fuel          The fuel on the ship
    * @param  {Object}  mass          The mass at which to calculate the maximum range
    * @return {number}                The maximum range
    */
-  _calcMaxRange(ship, mass) {
-    // Obtain the FSD for this ship
-    const fsd = ship.standard[2].m;
-
+  _calcMaxRange(ship, fuel, mass) {
     // Obtain the maximum range
-    return Calc.jumpRange(mass, fsd, fsd.getMaxFuelPerJump());
+    return Calc.jumpRange(mass, ship.standard[2].m, Math.min(fuel, ship.standard[2].m.getMaxFuelPerJump()));
   }
 
   /**
-   * Update cargo level
-   * @param  {number} cargoLevel Cargo level 0 - 1
-   */
-  _cargoChange(cargoLevel) {
-    let ship = this.props.ship;
-    let cargo = Math.round(ship.cargoCapacity * cargoLevel);
-    this.setState({
-      cargo
-    });
-  }
-
-  /**
-   * Render engine profile
+   * Render FSD profile
    * @return {React.Component} contents
    */
   render() {
     const { language, onWindowResize, sizeRatio, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
-    const { ship } = this.props;
-    const { cargo } = this.state;
+    const { ship, cargo, fuel } = this.props;
 
     
     // Calculate bounds for our line chart - use thruster info for X
@@ -90,56 +75,30 @@ export default class FSDProfile extends TranslatedComponent {
     const fsd = ship.standard[2].m;
     const minMass = ship.calcLowestPossibleMass({ th: thrusters });
     const maxMass = thrusters.getMaxMass();
-    let mass = ship.unladenMass + ship.fuelCapacity + cargo;
-    const minRange = Calc.jumpRange(maxMass, fsd, ship.fuelCapacity);
+    const mass = ship.unladenMass + fuel + cargo;
+    const minRange = 0;
     const maxRange = Calc.jumpRange(minMass + fsd.getMaxFuelPerJump(), fsd, fsd.getMaxFuelPerJump());
     // Add a mark at our current mass
     const mark = Math.min(mass, maxMass);
 
-    const cargoPercent = cargo / ship.cargoCapacity;
-
-    const code = ship.name + ship.toString() + '.' + ship.getModificationsString() + '.' + ship.getPowerEnabledString();
+    const code = ship.name + ship.toString() + '.' + fuel;
 
     return (
-      <span>
-        <h1>{translate('fsd profile')}</h1>
-        <LineChart
-          width={this.props.chartWidth}
-          xMin={minMass}
-          xMax={maxMass}
-          yMin={minRange}
-          yMax={maxRange}
-          xMark={mark}
-          xLabel={translate('mass')}
-          xUnit={translate('T')}
-          yLabel={translate('maximum range')}
-          yUnit={translate('LY')}
-          func={this.state.calcMaxRangeFunc}
-          points={200}
-          code={code}
-        />
-        {ship.cargoCapacity ? 
-        <span>
-          <h3>{translate('cargo carried')}: {formats.int(cargo)}{units.T}</h3>
-          <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
-            <tbody >
-              <tr>
-                <td>
-                  <Slider
-                    axis={true}
-                    onChange={this._cargoChange.bind(this)}
-                    axisUnit={translate('T')}
-                    percent={cargoPercent}
-                    max={ship.cargoCapacity}
-                    scale={sizeRatio}
-                    onResize={onWindowResize}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </span> : '' }
-      </span>
+      <LineChart
+        xMin={minMass}
+        xMax={maxMass}
+        yMin={minRange}
+        yMax={maxRange}
+        xMark={mark}
+        xLabel={translate('mass')}
+        xUnit={translate('T')}
+        yLabel={translate('maximum range')}
+        yUnit={translate('LY')}
+        func={this.state.calcMaxRangeFunc}
+        points={200}
+        code={code}
+        aspect={0.7}
+      />
     );
   }
 }

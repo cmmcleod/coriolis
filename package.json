@@ -76,7 +76,9 @@
     "json-loader": "^0.5.3",
     "less": "^2.5.3",
     "less-loader": "^2.2.1",
+    "react-addons-perf": "^15.4.2",
     "react-addons-test-utils": "^15.0.1",
+    "react-measure": "^1.4.6",
     "react-testutils-additions": "^15.1.0",
     "rimraf": "^2.4.3",
     "rollup": "0.36",
@@ -88,16 +90,17 @@
   },
   "dependencies": {
     "babel-polyfill": "*",
-    "classnames": "^2.2.0",
     "browserify-zlib": "ipfs/browserify-zlib",
+    "classnames": "^2.2.0",
     "coriolis-data": "EDCD/coriolis-data",
     "d3": "4.6.0",
     "fbemitter": "^2.0.0",
     "lodash": "^4.15.0",
     "lz-string": "^1.4.4",
-    "react-number-editor": "Athanasius/react-number-editor.git#miggy",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
+    "react-number-editor": "Athanasius/react-number-editor.git#miggy",
+    "recharts": "^0.21.2",
     "superagent": "^1.4.0"
   }
 }

@@ -8,6 +8,11 @@
   * Show integrity value for relevant modules
   * Reset old modification values when a new roll is applied
   * Fix issue with miner role where refinery would not be present in ships with class 5 slots but no class 4
+  * Ensure that boost value is set correctly when modifications to power distributor enable/disable boost
+  * Ensure that hull reinforcement modifications take the inherent resistance in to account when calculating modification percentages
+  * Add tooltip for blueprints providing details of the features they alter
+  * Use opponent's saved pips if available
+  * Ignore rounds per shot for EPS and HPS calculations; it's already factored in to the numbers
 
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default

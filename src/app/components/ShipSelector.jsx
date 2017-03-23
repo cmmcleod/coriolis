@@ -8,7 +8,7 @@ import { Rocket } from './SvgIcons';
  * Selector for ships
  */
 export default class ShipSelector extends TranslatedComponent {
-  static PropTypes = {
+  static propTypes = {
     initial: React.PropTypes.object.isRequired,
     onChange: React.PropTypes.func.isRequired
   };

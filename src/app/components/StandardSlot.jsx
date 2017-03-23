@@ -8,6 +8,7 @@ import ModificationsMenu from './ModificationsMenu';
 import { ListModifications, Modified } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
+import { blueprintTooltip } from '../utils/BlueprintFunctions';
 
 /**
  * Standard Slot
@@ -53,6 +54,12 @@ export default class StandardSlot extends TranslatedComponent {
     let modTT = translate('modified');
     if (m && m.blueprint && m.blueprint.name) {
       modTT = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
+      modTT = (
+          <div>
+            <div>{modTT}</div>
+            {blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade].features, m)}
+          </div>
+        );
     }
 
     if (!selected) {
@@ -93,7 +100,7 @@ export default class StandardSlot extends TranslatedComponent {
                 { m.getMinMass() ? <div className='l'>{translate('minimum mass')}: {formats.int(m.getMinMass())}{units.T}</div> : null }
                 { m.getOptMass() ? <div className='l'>{translate('optimal mass')}: {formats.int(m.getOptMass())}{units.T}</div> : null }
                 { m.getMaxMass() ? <div className='l'>{translate('max mass')}: {formats.int(m.getMaxMass())}{units.T}</div> : null }
-                { m.getRange() ? <div className='l'>{translate('range')}: {formats.f2(m.getRange())}{units.km}</div> : null }
+                { m.getRange() ? <div className='l'>{translate('range', m.grp)}: {formats.f2(m.getRange())}{units.km}</div> : null }
                 { m.time ? <div className='l'>{translate('time')}: {formats.time(m.time)}</div> : null }
                 { m.getThermalEfficiency() ? <div className='l'>{translate('efficiency')}: {formats.f2(m.getThermalEfficiency())}</div> : null }
                 { m.getPowerGeneration() > 0 ? <div className='l'>{translate('pgen')}: {formats.f1(m.getPowerGeneration())}{units.MW}</div> : null }

@@ -45,7 +45,7 @@ export function weaponComparator(translate, propComparator, desc) {
  * Damage received by a selected ship
  */
 export default class DamageReceived extends TranslatedComponent {
-  static PropTypes = {
+  static propTypes = {
     ship: React.PropTypes.object.isRequired,
     code: React.PropTypes.string.isRequired
   };
