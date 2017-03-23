@@ -171,7 +171,7 @@ export default class Offence extends TranslatedComponent {
       const effectivenessShieldsTooltipDetails = [];
       effectivenessShieldsTooltipDetails.push(<div key='range'>{translate('range') + ' ' + formats.pct1(weapon.effectiveness.shields.range)}</div>);
       effectivenessShieldsTooltipDetails.push(<div key='resistance'>{translate('resistance') + ' ' + formats.pct1(weapon.effectiveness.shields.resistance)}</div>);
-      effectivenessShieldsTooltipDetails.push(<div key='sys'>{translate('sys') + ' ' + formats.pct1(weapon.effectiveness.shields.sys)}</div>);
+      effectivenessShieldsTooltipDetails.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.pct1(weapon.effectiveness.shields.sys)}</div>);
 
       const effectiveShieldsSDpsTooltipDetails = [];
       if (weapon.sdps.shields.absolute) effectiveShieldsSDpsTooltipDetails.push(<div key='absolute'>{translate('absolute') + ' ' + formats.f1(weapon.sdps.shields.absolute)}</div>);

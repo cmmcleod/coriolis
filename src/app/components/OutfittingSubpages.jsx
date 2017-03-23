@@ -111,12 +111,12 @@ export default class OutfittingSubpages extends TranslatedComponent {
 
       <div className='group half'>
         <h1>{translate('damage to opponent\'s shields')}</h1>
-        <WeaponDamageChart marker={damageMarker} ship={ship} opponent={opponent} hull={false} engagementRange={engagementRange} />
+        <WeaponDamageChart marker={damageMarker} ship={ship} opponent={opponent} opponentSys={opponentSys} hull={false} engagementRange={engagementRange} />
       </div>
 
       <div className='group half'>
         <h1>{translate('damage to opponent\'s hull')}</h1>
-        <WeaponDamageChart marker={damageMarker} ship={ship} opponent={opponent} hull={true} engagementRange={engagementRange} />
+        <WeaponDamageChart marker={damageMarker} ship={ship} opponent={opponent} opponentSys={opponentSys} hull={true} engagementRange={engagementRange} />
       </div>
     </div>;
   }

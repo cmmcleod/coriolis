@@ -97,6 +97,7 @@ export default class FSDProfile extends TranslatedComponent {
         func={this.state.calcMaxRangeFunc}
         points={200}
         code={code}
+        aspect={0.7}
       />
     );
   }

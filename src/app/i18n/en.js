@@ -299,7 +299,7 @@ Along the top of the screen are some of the key values for your build.  This is 
 
 Here, along with most places in Coriolis, acronyms will have tooltips explaining what they mean.  Hover over the acronym to obtain more detail, or look in the glossary at the end of this help.</p>
 
-All values are the highest possible, assuming that you have maximum pips in the relevant capacitor (ENG for speed, WEP for time to drain, etc.).</p>
+All values are the highest possible, assuming that you an optimal setup for that particular value (maximum pips in ENG for speed, minimum fuel for jump range, etc.).  Details of the specific setup for each value are listed in the associated tootip.</p>
 
 <h2>Modules</h2>
 The next set of panels laid out horizontally across the screen contain the modules you have put in your build.  From left to right these are the core modules, the internal modules, the hardpoints and the utility mounts.  These represent the available slots in your ship and cannot be altered.  Each slot has a class, or size, and in general any module up to a given size can fit in a given slot (exceptions being bulkheads, life support and sensors in core modules and restricted internal slots, which can only take a subset of module depending on their restrictions). </p>
@@ -312,30 +312,39 @@ To move a module from one slot to another drag it.  If you instead want to copy 
 
 Clicking on the headings for each set of modules gives you the ability to either select an overall role for your ship (when clicking the core internal header) or a specific module with which you want to fill all applicable slots (when clicking the other headers). </p>
 
-<h2>Offence Summary</h2>
-The offence summary panel provides information about the damage that you deal with your weapons.</p>
+<h2>Ship Controls</h2>
+The ship controls allow you to set your pips, boost, and amount of fuel and cargo that your build carries.  The changes made here will effect the information supplied in the subsequent panels, giving you a clearer view of what effect different changing these items will have. </p>
 
-The first headline gives an overall damage per second rating: this is the optimum amount of damage the build will do per second according to weapon statistics.  After that is a breakdown of the damage per second the build will do for each type of damage: absolute, explosive, kinetic, and thermal.</p>
+Ship control settings are saved as part of a build. </p>
 
-The next headline gives an overall sustained damage per second rating: this is the optimum amount of damage the build will do per second over a longer period of time, taking in to account ammunition clip capacities and reload times.  After that is a breakdown of the sustained damage per second the build will do for each type of damage: absolute, explosive, kinetic, and thermal.</p>
+<h2>Opponent</h2>
+The opponet selection allows you to choose your opponent.  The opponent can be either a stock build of a ship or one of your own saved builds.  You can also set the engagement range between you and your opponent.  Your selection here will effect the information supplied in the subsequent panels, specifically the Offence and Defence panels. </p>
 
-The final headline gives an overall damage per energy rating: this is the amount of damage the build will do per unit of weapon capacitor energy expended.  After that is a breakdown of the damage per energy the build will do for each type of damage: absolute, explosive, kinetic, and thermal.</p>
+Opponent settings are saved as part of a build. </p>
 
-<h2>Defence Summary</h2>
-The defence summary panel provides information about the strength of your defences and the damage that you receive from opponents.</p>
+<h2>Power and Costs Sub-panels</h2>
+<h3>Power</h3>
+The power management panel provides information about power usage and priorities.  It allows you to enable and disable individual modules, as well as set power priorities for each module.  Disabled modules will not be included in the build&apos;s statistics, with the exception of Shield Cell Banks as they are usually disabled when not in use and only enabled when required. </p>
 
-The first headline gives your total shield strength (if you have shields), taking in to account your base shield plus boosters.  After that are the details of how long it will take for your shields to recover from 0 to 50% (recovery time) and from 50% to 100% (recharge time).  The next line provides a breakdown of the shield damage taken from different damage types.  For example, if you damage from kinetic is 60% then it means that a weapon usually dealing 10 points of damage will only deal 6, the rest being resisted by the shield.  Note that this does not include any resistance alterations due to pips in your SYS capacitor.</p>
+<h3>Costs</h3>
+The costs panel provides information about the costs for each of your modules, and the total cost and insurance for your build.  By default Coriolis uses the standard costs, however discounts for your ship, modules and insurance can be altered in the &apos;Settings&apos; at the top-right of the page.</p>
 
-The second headline gives your total shield cell strength (if you have shield cell banks).  This is the sum of the recharge of all of equipped shield cell banks.</p>
+The retrofit costs provides information about the costs of changing the base build for your ship, or your saved build, to the current build.</p>
 
-The third headline gives your total armour strength, taking in to account your base armour plus hull reinforcement packages.  The next line provides a breakdown of the hull damage taken from different damage types.  For example, if you damage from kinetic is 120% then it means that a weapon usually dealing 10 points of damage will deal 12.</p>
+The reload costs provides information about the costs of reloading your current build.</p>
 
-The fourth headline gives your total module protection strength from module reinforcement packages. The next line provides a breakdown of the protection for both internal and external modules whilst all module reinforcement packages are functioning.  For example, if external module protection is 20% then 10 points of damage will 2 points of damage to the module reinforcement packages and 8 points of damage to the module</p>
+<h2>Profiles</h2>
+Profiles provide graphs that show the general performance of modules in your build
 
-<h2>Movement Summary</h2>
-The movement summary panel provides information about the build&apos;s speed and agility.</p>
+<h3>Engine Profile</h3>
+The engine profile panel provides information about the capabilities of your current thrusters.  The graph shows you how the maximum speed alters with the overall mass of your build. The vertical dashed line on the graph shows your current mass.  Your engine profile can be altered by obtaining different thrusters or engineering your existing thrusters, and you can increase your maximum speed by adding pips to the ENG capacitor as well as reducing the amount of fuel and cargo you are carrying as well as reducing the overall weight of the build.  You can also temporarily increase your speed by hitting the boost button. </p>
 
-Along the top of this panel are the number of pips you put in to your ENG capacitor, from 0 to 4 and also include 4 pips and boost (4b).  Along the side of this panel are the names of the metrics.  These are:
+<h3>FSD Profile</h3>
+The FSD profile panel provides information about the capabilities of your current frame shift drive.  The graph shows you how the maximum jump range alters with the overall mass of your build.  The vertical dashed line on the graph shows your current maximum single jump range. Your FSD profile can be altered by obtaining a different FSD or engineering your existing FSD, and you can increase your maximum jump range by reducing the amount of fuel and cargo you are carrying as well as reducing the overall weight of the build, </p>
+
+<h3>Movement Profile</h3>
+The movement profile panel provides information about the capabilities of your current thrusters with your current overall mass and ENG pips settings.  The diagram shows your ability to move and rotate in the different axes:
+
 <dl>
 <dt>Speed</dt><dd>The fastest the ship can move, in metres per second</dd>
 <dt>Pitch</dt><dd>The fastest the ship can raise or lower its nose, in degrees per second</dd>
@@ -343,44 +352,72 @@ Along the top of this panel are the number of pips you put in to your ENG capaci
 <dt>Yaw</dt><dd>The fastest the ship can turn its nose left or right, in degrees per second</dd>
 </dl>
 
-<h2>Power Management</h2>
-The power management panel provides information about power usage and priorities.  It allows you to enable and disable individual modules, as well as set power priorities for each module.</p>
+Your movement profile can be altered by obtaining different thrusters or engineering your existing thrusters, and you can increase your movement values by adding pips to the ENG capacitor as well as reducing the amount of fuel and cargo you are carrying as well as reducing the overall weight of the build.  You can also temporarily increase your movement profile by hitting the boost button. </p>
 
-<h2>Costs</h2>
-The costs panel provides information about the costs for each of your modules, and the total cost and insurance for your build.  By default Coriolis uses the standard costs, however discounts for your ship, modules and insurance can be altered in the &apos;Settings&apos; at the top-right of the page.</p>
+<h3>Damage Profile</h3>
+The damage profile provides two graphs showing how the the build&apos;s damage to the opponent&apos;s shields and hull change with engagement range. The vertical dashed line on the graph shows your current engagement range.  This combines information about the build&apos;s weapons with the opponent&apos;s shields and hull to provide an accurate picture of sustained damage that can be inflicted on the opponent. </p>
 
-The retrofit costs provides information about the costs of changing the base build for your ship, or your saved build, to the current build.</p>
+<h2>Offence</h2>
+<h3>Summary</h3>
+The offence summary provides per-weapon information about sustained damage per second inflicted to shields and hull, along with a measure of effectiveness of that weapon.  The effectiveness value has a tooltip that provides a breakdown of the effectiveness, and can include reductions or increases due to range, resistance, and either power distributor (for shields) or hardness (for hull).  The final effectiveness value is calculated by multiplying these percentages together. </p>
 
-The reload costs provides information about the costs of reloading your current build.</p>
+<h3>Offence Metrics</h3>
+The offence metrics panel provides information about your offence. </p>
 
-<h2>Engine Profile</h2>
-The engine profile panel provides information about the capabilities of your current thrusters.  The graph shows you how the maximum speed (with a full fuel tank and 4 pips to engines) alters with the overall mass of your build.  The slider can be altered to change the amount of cargo you have on-board.  Your engine profile can be altered by obtaining different thrusters or engineering your existing thrusters.</p>
+Time to drain is a measure of how quickly your WEP capacitor will drain when firing all weapons.  It is affected by the number of pips you have in your WEP capacitor, with more pips resulting in a higher WEP recharge rate and hence a longer time to drain. </p>
 
-<h2>FSD Profile</h2>
-The FSD profile panel provides information about the capabilities of your current frame shift drive.  The graph shows you how the maximum jump range (with a full fuel tank) alters with the overall mass of your build.  The slider can be altered to change the amount of cargo you have on-board.  Your FSD profile can be altered by obtaining a different FSD or engineering your existing FSD.</p>
+The next value is the time it will take you to remove your opponent&apos;s shields.  This assumes that you have 100% time on target and that your engagement range stays constant.  Note that if your time to remove shields is longer than your time to drain this assumes that you continue firing throughout, inflicting lower damage due to the reduced energy in your WEP capacitor. </p>
 
-<h2>Jump Range</h2>
-The jump range panel provides information about the build&apos; jump range.  The graph shows how the build&apos;s jump range changes with the amount of cargo on-board.  The slider can be altered to change the amount of fuel you have on-board.</p>
+The next value is the time it will take you to remove your opponent&apos;s armour.  This follows the same logic as the time to remove shields. </p>
 
-<h2>Damage Dealt</h2>
-The damage dealt panel provides information about the effectiveness of your build&apos;s weapons against opponents&apos; shields and hull at different engagement distances.</p>
+<h3>Shield Damage Sources</h3>
+The shield damage sources provides information about the sources of damage to your opponent by damage type.  For each applicable type of damage (absolute explosive, kinetic, thermal) a sustained damage per second value is provided. </p>
 
-The ship against which you want to check damage dealt can be selected by clicking on the red ship icon or the red ship name at the top of this panel.</p>
+<h3>Hull Damage Sources</h3>
+The hull damage sources provides information about the sources of damage to your opponent by damage type.  For each applicable type of damage (absolute explosive, kinetic, thermal) a sustained damage per second value is provided. </p>
 
-The main section of this panel is a table showing your weapons and their effectiveness.  Effectiveness against shields takes in to account the weapon and its engagement range, and assumes standard shield resistances.  Effectiveness against hull takes in to account the weapon and, its engagement range and the target&apos;s hardness, and assumes military grade armour resistances.</p>
+<h2>Defence</h2>
+<h3>Shield Metrics</h3>
+The shield metrics provides information about your shield defence. </p>
 
-Effective DPS and effective SDPS are the equivalent of DPS and SDPS for the weapon.  Effectiveness is a percentage value that shows how effective the DPS of the weapon is compared in reality against the given target compared to the weapon&apos;s stated DPS.  Effectiveness can never go above 100%.</p>
+Raw shield strength is the sum of the shield from your generator, boosters and shield cell banks. A tooltip provides a breakdown of these values. </p>
 
-Total effective DPS, SDPS and effectiveness against both shields and hull are provided at the bottom of the table.</p>
+The time the shields will hold for is the time it will take your opponent&apos; to remove your shields.  This assumes that they have 100% time on target and that the engagement range stays constant. It also assumes that you fire all of your shield cell banks prior to your shields being lost. </p>
 
-At the bottom of this panel you can change your engagement range.  The engagement range is the distance between your ship and your target.  Many weapons suffer from what is known as damage falloff, where their effectiveness decreases the further the distance between your ship and your target.  This allows you to model the effect of engaging at different ranges.
+The time the shields will recover in is the time it will take your shields to go from collapsed (0%) to recovered (50%). This is affected by the number of pips you have in your SYS capacitor.  </p>
 
-Note that this panel only shows enabled weapons, so if you want to see your overall effectiveness for a subset of your weapons you can disable the undesired weapons in the power management panel.</p>
+The time the shields will recharge in is the time it will take your shields to go from recovered (50%) to full (100%). This is affected by the number of pips you have in your SYS capacitor.  </p>
 
-At the bottom of this panel are two graphs showing how your sustained DPS changes with engagement range.  This shows at a glance how effective each weapon is at different distances.</p>
+</h3>Shield Sources</h3>
+This chart provides information about the sources of your shields.  For each applicable source of shields (generator, boosters, shield cell banks) a value is provided. </p>
 
-<h2>Damage Received</h2>
-The damage received panel provides information about the effectiveness of your build&apos;s defences against opponent&apos;s weapons at different engagement range.  Features and functions are the same as the damage dealt panel, except that it does take in to account your build&apos;s resistances.</p>
+</h3>Damage Taken</h3>
+This graph shows how the initial damage from the weapons of each type are reduced before their damage is applied to the shields.  For each type of damage (absolute, explosive, kinetic, thermal) a percentage of the initial damage is provided.  A tooltip provides a breakdown of these values. </p>
+
+</h3>Effective Shield</h3>
+This graph shows the effective shield for each damage type, found by dividing the raw shield value by the damage taken for that type. </p>
+
+<h3>Amour Metrics</h3>
+The armour metrics provides information about your armour defence. </p>
+
+Raw armour strength is the sum of the armour from your bulkheads and hull reinforcement packages. A tooltip provides a breakdown of these values. </p>
+
+The time the armour will hold for is the time it will take your opponent&apos; to take your armour to 0.  This assumes that they have 100% time on target, the engagement range stays constant, and that all damage is dealt to the armour rather than modules. </p>
+
+Raw module armour is the sum of the protection from your module reinforcement packages. </p>
+
+Protection for hardpoints is the amount of protection that your module reinforcement packages provide to hardpoints.  This percentage of damage to the hardpoints will be diverted to the module reinforcement packages. </p>
+
+Protection for all other modules is the amount of protection that your module reinforcement packages provide to everything other than hardpoints.  This percentage of damage to the modules will be diverted to the module reinforcement packages. </p>
+
+</h3>Armour Sources</h3>
+This chart provides information about the sources of your armour.  For each applicable source of shields (bulkheads, hull reinforcement packages) a value is provided. </p>
+
+</h3>Damage Taken</h3>
+This graph shows how the initial damage from the weapons of each type are reduced before their damage is applied to the armour.  For each type of damage (absolute, explosive, kinetic, thermal) a percentage of the initial damage is provided.  A tooltip provides a breakdown of these values. </p>
+
+</h3>Effective Armour</h3>
+This graph shows the effective armour for each damage type, found by dividing the raw armour value by the damage taken for that type. </p>
 
 <h1>Keyboard Shortcuts</h1>
 <dl>

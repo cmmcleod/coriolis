@@ -20,6 +20,7 @@ export default class WeaponDamageChart extends TranslatedComponent {
     opponent: React.PropTypes.object.isRequired,
     hull: React.PropTypes.bool.isRequired,
     engagementRange: React.PropTypes.number.isRequired,
+    opponentSys: React.PropTypes.number.isRequired,
     marker: React.PropTypes.string.isRequired
   };
 
@@ -37,7 +38,7 @@ export default class WeaponDamageChart extends TranslatedComponent {
    */
   componentWillMount() {
     const weaponNames = this._weaponNames(this.props.ship, this.context);
-    const opponentShields = Calc.shieldMetrics(this.props.opponent, 4);
+    const opponentShields = Calc.shieldMetrics(this.props.opponent, this.props.opponentSys);
     const opponentArmour = Calc.armourMetrics(this.props.opponent);
     const maxRange = this._calcMaxRange(this.props.ship);
     const maxDps = this._calcMaxSDps(this.props.ship, this.props.opponent, opponentShields, opponentArmour);
@@ -54,7 +55,7 @@ export default class WeaponDamageChart extends TranslatedComponent {
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.marker != this.props.marker) {
       const weaponNames = this._weaponNames(nextProps.ship, nextContext);
-      const opponentShields = Calc.shieldMetrics(nextProps.opponent, 4);
+      const opponentShields = Calc.shieldMetrics(nextProps.opponent, nextProps.opponentSys);
       const opponentArmour = Calc.armourMetrics(nextProps.opponent);
       const maxRange = this._calcMaxRange(nextProps.ship);
       const maxDps = this._calcMaxSDps(nextProps.ship, nextProps.opponent, opponentShields, opponentArmour);
@@ -175,7 +176,7 @@ export default class WeaponDamageChart extends TranslatedComponent {
     const { language, onWindowResize, sizeRatio, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
     const { maxRange } = this.state;
-    const { ship, opponent } = this.props;
+    const { ship, opponent, engagementRange } = this.props;
 
     const sortOrder = this._sortOrder;
     const onCollapseExpand = this._onCollapseExpand;
@@ -191,6 +192,7 @@ export default class WeaponDamageChart extends TranslatedComponent {
           xUnit={translate('m')}
           yLabel={translate('sdps')}
           series={this.state.weaponNames}
+          xMark={this.props.engagementRange}
           colors={DAMAGE_DEALT_COLORS}
           func={this.state.calcSDpsFunc}
           points={200}

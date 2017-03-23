@@ -99,6 +99,7 @@ export default class EngineProfile extends TranslatedComponent {
         func={this.state.calcMaxSpeedFunc}
         points={1000}
         code={code}
+        aspect={0.7}
       />
     );
   }

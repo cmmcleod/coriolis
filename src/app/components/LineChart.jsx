@@ -15,7 +15,8 @@ export default class LineChart extends TranslatedComponent {
     xMin: 0,
     yMin: 0,
     points: 20,
-    colors: ['#ff8c0d']
+    colors: ['#ff8c0d'],
+    aspect: 0.5
   };
 
   static propTypes = {
@@ -32,6 +33,7 @@ export default class LineChart extends TranslatedComponent {
     series: React.PropTypes.array,
     colors: React.PropTypes.array,
     points: React.PropTypes.number,
+    aspect: React.PropTypes.number,
     code: React.PropTypes.string,
   };
 
@@ -123,7 +125,7 @@ export default class LineChart extends TranslatedComponent {
     const { xMax, xMin, yMin, yMax } = props;
     const { width, height } = this.state.dimensions;
     const innerWidth = width - MARGIN.left - MARGIN.right;
-    const outerHeight = Math.round(width * 2 / 3); // TODO make this an aspect property
+    const outerHeight = Math.round(width * props.aspect);
     const innerHeight = outerHeight - MARGIN.top - MARGIN.bottom;
 
     this.state.xScale.range([0, innerWidth]).domain([xMin, xMax || 1]).clamp(true);
@@ -232,7 +234,7 @@ export default class LineChart extends TranslatedComponent {
     const lines = seriesLines.map((line, i) => <path key={i} className='line' fill='none' stroke={colors[i]} strokeWidth='1' d={line(seriesData)} />).reverse();
 
     const markX = xMark ? innerWidth * (xMark - xMin) / (xMax - xMin) : 0;
-    const xmark = xMark ? <path key={'mark'} className='line' fill='none' strokeDasharray='5,5' stroke={colors[0]} strokeWidth='1' d={'M ' + markX + ' ' + innerHeight + ' L ' + markX + ' 0'} /> : '';
+    const xmark = xMark ? <path key={'mark'} className='line' fill='none' strokeDasharray='5,5' stroke={'#ff8c0d'} strokeWidth='1' d={'M ' + markX + ' ' + innerHeight + ' L ' + markX + ' 0'} /> : '';
 
     return (
       <Measure width='100%' whitelist={['width', 'top']} onMeasure={ (dimensions) => { this.setState({ dimensions }); }}>
