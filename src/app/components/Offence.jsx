@@ -248,11 +248,13 @@ export default class Offence extends TranslatedComponent {
         <div className='group quarter'>
           <h2>{translate('offence metrics')}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_DRAIN_WEP'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_DRAIN_WEP')}<br/>{timeToDrain === Infinity ? translate('never') : formats.time(timeToDrain)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_EFFECTIVE_SDPS_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_EFFECTIVE_SDPS_SHIELDS')}<br/>{formats.f1(totalShieldsSDps)}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_REMOVE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_REMOVE_SHIELDS')}<br/>{timeToDepleteShields === Infinity ? translate('never') : formats.time(timeToDepleteShields)}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('TT_EFFECTIVE_SDPS_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_EFFECTIVE_SDPS_ARMOUR')}<br/>{formats.f1(totalArmourSDps)}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_REMOVE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_REMOVE_ARMOUR')}<br/>{timeToDepleteArmour === Infinity ? translate('never') : formats.time(timeToDepleteArmour)}</h2>
         </div>
         <div className='group quarter'>
-          <h2 onMouseOver={termtip.bind(null, translate('armour metrics'))} onMouseOut={tooltip.bind(null, null)}>{translate('shield damage sources')}</h2>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SHIELD_DAMAGE'))} onMouseOut={tooltip.bind(null, null)}>{translate('shield damage sources')}</h2>
           <PieChart data={shieldsSDpsData} />
         </div>
         <div className='group quarter'>

@@ -70,6 +70,9 @@ export const terms = {
   TT_EFFECTIVE_SDPS_ARMOUR: 'Actual sustained DPS whilst WEP capacitor is not empty',
   TT_EFFECTIVENESS_ARMOUR: 'Effectivness compared to hitting a 0-resistance target at 0m',
 
+  PHRASE_EFFECTIVE_SDPS_SHIELDS: 'SDPS against shields',
+  PHRASE_EFFECTIVE_SDPS_ARMOUR: 'SDPS against armour',
+
   TT_SUMMARY_SPEED: 'With full fuel tank and 4 pips to ENG',
   TT_SUMMARY_SPEED_NONFUNCTIONAL: 'Thrusters powered off or over maximum mass',
   TT_SUMMARY_BOOST: 'With full fuel tank and 4 pips to ENG',
