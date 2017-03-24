@@ -98,8 +98,10 @@ const ValueLabel  = React.createClass({
   render() {
     const { x, y, payload, value } = this.props;
 
+    const em = value < 1000 ? '1em' : value < 1000 ? '0.8em' : '0.7em';
+
     return (
-      <text x={x} y={y} fill="#000000" textAnchor="middle" dy={20}>{value}</text>
+      <text x={x} y={y} fill="#000000" textAnchor="middle" dy={20} style={{ fontSize: em }}>{value}</text>
     );
   }
 });
