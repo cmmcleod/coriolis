@@ -427,4 +427,10 @@ function _addModifications(module, modifiers, blueprint, grade) {
   if (module.getModValue('rof')) {
     module.setModValue('rof', ((1 / (1 + module.getModValue('rof') / 10000)) - 1) * 10000);
   }
+
+  // Clip size is rounded up so that the result is a whole number
+  if (module.getModValue('clip')) {
+    const individual = 1 / (module.clip || 1);
+    module.setModValue('clip', Math.ceil((module.getModValue('clip') / 10000) / individual) * individual * 10000);
+  }
 }

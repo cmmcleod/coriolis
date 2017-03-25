@@ -1296,7 +1296,9 @@ export default class Ship {
 
     for (let slot of this.internal) {
       if (slot.m && slot.m.grp == 'scb') {
-        shieldCells += slot.m.getShieldReinforcement() * slot.m.getCells();
+        // There is currently a bug with Elite where you can have a clip > 1 thanks to engineering but it doesn't do anything,
+        // so we need to hard-code clip to 1
+        shieldCells += slot.m.getShieldReinforcement() * slot.m.getDuration() * (slot.m.getAmmo() + 1);
       }
     }
 

@@ -681,14 +681,6 @@ export default class Module {
   }
 
   /**
-   * Get the cells for this module, taking in to account modifications
-   * @return {Number} the cells for this module
-   */
-  getCells() {
-    return this._getModifiedValue('cells');
-  }
-
-  /**
    * Get the jitter for this module, taking in to account modifications
    * @return {Number} the jitter for this module
    */

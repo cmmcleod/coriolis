@@ -13,6 +13,8 @@
   * Add tooltip for blueprints providing details of the features they alter
   * Use opponent's saved pips if available
   * Ignore rounds per shot for EPS and HPS calculations; it's already factored in to the numbers
+  * Ensure that clip size modification imports result in whole numbers
+  * Rework of separate offence/defence/movement sections to a unified interface
 
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
