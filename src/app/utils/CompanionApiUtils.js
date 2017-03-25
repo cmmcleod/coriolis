@@ -130,9 +130,15 @@ export function shipFromJson(json) {
   let ship = new Ship(shipModel, shipTemplate.properties, shipTemplate.slots);
   ship.buildWith(null);
 
-  // Set the cargo hatch.  We don't have any information on it so guess it's priority 5 and disabled
-  ship.cargoHatch.enabled = false;
-  ship.cargoHatch.priority = 4;
+  // Set the cargo hatch
+  if (json.modules.CargoHatch) {
+    ship.cargoHatch.enabled = json.modules.CargoHatch.module.on == true;
+    ship.cargoHatch.priority = json.modules.CargoHatch.module.priority;
+  } else {
+    // We don't have any information on it so guess it's priority 5 and disabled
+    ship.cargoHatch.enabled = false;
+    ship.cargoHatch.priority = 4;
+  }
   
   // Add the bulkheads
   const armourJson = json.modules.Armour.module;

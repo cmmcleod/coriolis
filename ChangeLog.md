@@ -15,6 +15,7 @@
   * Ignore rounds per shot for EPS and HPS calculations; it's already factored in to the numbers
   * Ensure that clip size modification imports result in whole numbers
   * Rework of separate offence/defence/movement sections to a unified interface
+  * Use cargo hatch information on import if available
 
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
