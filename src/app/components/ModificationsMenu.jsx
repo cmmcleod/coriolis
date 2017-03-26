@@ -54,7 +54,7 @@ export default class ModificationsMenu extends TranslatedComponent {
         const close = this._blueprintSelected.bind(this, blueprintName, grade);
         const key = blueprintName + ':' + grade;
         const blueprint = getBlueprint(blueprintName, m);
-        const tooltipContent = blueprintTooltip(translate, blueprint.grades[grade].features);
+        const tooltipContent = blueprintTooltip(translate, blueprint.grades[grade]);
         blueprints.push(<div style={{ cursor: 'pointer' }} key={ key } onMouseOver={termtip.bind(null, tooltipContent)} onMouseOut={tooltip.bind(null, null)} onClick={ close }>{translate(blueprint.name + ' grade ' + grade)}</div>);
       }
     }
@@ -279,7 +279,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     if (m.blueprint && !isEmpty(m.blueprint)) {
       blueprintLabel = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
       haveBlueprint = true;
-      blueprintTt  = blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade].features);
+      blueprintTt  = blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade]);
     }
 
     let specialLabel;

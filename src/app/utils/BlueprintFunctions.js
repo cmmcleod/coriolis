@@ -4,14 +4,14 @@ import { Modifications } from 'coriolis-data/dist';
 /**
  * Generate a tooltip with details of a blueprint's effects
  * @param   {Object}  translate   The translate object
- * @param   {Object}  features    The features of the blueprint
+ * @param   {Object}  blueprint   The blueprint at the required grade
  * @param   {Object}  m           The module to compare with
  * @returns {Object}              The react components
  */
-export function blueprintTooltip(translate, features, m) {
-  const results = [];
-  for (const feature in features) {
-    const featureIsBeneficial = isBeneficial(feature, features[feature]);
+export function blueprintTooltip(translate, blueprint, m) {
+  const effects = [];
+  for (const feature in blueprint.features) {
+    const featureIsBeneficial = isBeneficial(feature, blueprint.features[feature]);
     const featureDef = Modifications.modifications[feature];
     if (!featureDef.hidden) {
       let symbol = '';
@@ -20,8 +20,8 @@ export function blueprintTooltip(translate, features, m) {
       } else if (featureDef.type === 'percentage') {
         symbol = '%';
       }
-      let lowerBound = features[feature][0];
-      let upperBound = features[feature][1];
+      let lowerBound = blueprint.features[feature][0];
+      let upperBound = blueprint.features[feature][1];
       if (featureDef.type === 'percentage') {
         lowerBound = Math.round(lowerBound * 1000) / 10;
         upperBound = Math.round(upperBound * 1000) / 10;
@@ -35,7 +35,7 @@ export function blueprintTooltip(translate, features, m) {
           current = Math.round(current / 10) / 10;
         }
         const currentIsBeneficial  = isValueBeneficial(feature, current);
-        results.push(
+        effects.push(
           <tr key={feature}>
             <td style={{ textAlign: 'left' }}>{translate(feature)}</td>
             <td className={lowerBound === 0 ? '' : lowerIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{lowerBound}{symbol}</td>
@@ -45,7 +45,7 @@ export function blueprintTooltip(translate, features, m) {
         );
       } else {
         // We do not have a module, no value
-        results.push(
+        effects.push(
           <tr key={feature}>
             <td style={{ textAlign: 'left' }}>{translate(feature)}</td>
             <td className={lowerBound === 0 ? '' : lowerIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{lowerBound}{symbol}</td>
@@ -56,8 +56,19 @@ export function blueprintTooltip(translate, features, m) {
     }
   }
 
+  const components = [];
+  for (const component in blueprint.components) {
+    components.push(
+      <tr key={component}>
+        <td style={{ textAlign: 'left' }}>{translate(component)}</td>
+        <td style={{ textAlign: 'right' }}>{blueprint.components[component]}</td>
+      </tr>
+    );
+  }
+
   return (
-    <table>
+    <div>
+    <table width='100%'>
       <thead>
        <tr>
          <td>{translate('feature')}</td>
@@ -67,9 +78,21 @@ export function blueprintTooltip(translate, features, m) {
        </tr>
       </thead>
       <tbody>
-        {results}
+        {effects}
       </tbody>
     </table>
+    { m ? null : <table width='100%'>
+      <thead>
+       <tr>
+         <td>{translate('component')}</td>
+         <td>{translate('amount')}</td>
+       </tr>
+      </thead>
+      <tbody>
+        {components}
+      </tbody>
+    </table> }
+    </div>
   );
 }
 
