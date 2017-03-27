@@ -243,7 +243,7 @@ export function diffDetails(language, m, mm) {
     }
   }
 
-  let mIntegrity = m.integrity;
+  let mIntegrity = m.integrity || 0;
   let mmIntegrity = mm ? mm.getIntegrity() || 0 : 0;
   if (mIntegrity != mmIntegrity) {
     propDiffs.push(<div key='integrity'>{translate('integrity')}: <span className={diffClass(mmIntegrity, mIntegrity, true)}>{diff(formats.round, mIntegrity, mmIntegrity)}</span></div>);

@@ -9,7 +9,7 @@
   * Fix issue with miner role where refinery would not be present in ships with class 5 slots but no class 4
   * Ensure that boost value is set correctly when modifications to power distributor enable/disable boost
   * Ensure that hull reinforcement modifications take the inherent resistance in to account when calculating modification percentages
-  * Add tooltip for blueprints providing details of the features they alter
+  * Add tooltip for blueprints providing details of the features they alter, the components required for the blueprint and the engineer(s) who cam craft them
   * Use opponent's saved pips if available
   * Ignore rounds per shot for EPS and HPS calculations; it's already factored in to the numbers
   * Ensure that clip size modification imports result in whole numbers

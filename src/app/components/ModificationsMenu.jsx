@@ -50,11 +50,11 @@ export default class ModificationsMenu extends TranslatedComponent {
     // Set up the blueprints
     let blueprints = [];
     for (const blueprintName in Modifications.modules[m.grp].blueprints) {
-      for (const grade of Modifications.modules[m.grp].blueprints[blueprintName]) {
+      for (const grade in Modifications.modules[m.grp].blueprints[blueprintName].grades) {
         const close = this._blueprintSelected.bind(this, blueprintName, grade);
         const key = blueprintName + ':' + grade;
         const blueprint = getBlueprint(blueprintName, m);
-        const tooltipContent = blueprintTooltip(translate, blueprint.grades[grade]);
+        const tooltipContent = blueprintTooltip(translate, blueprint.grades[grade], Modifications.modules[m.grp].blueprints[blueprintName].grades[grade].engineers);
         blueprints.push(<div style={{ cursor: 'pointer' }} key={ key } onMouseOver={termtip.bind(null, tooltipContent)} onMouseOut={tooltip.bind(null, null)} onClick={ close }>{translate(blueprint.name + ' grade ' + grade)}</div>);
       }
     }
@@ -279,7 +279,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     if (m.blueprint && !isEmpty(m.blueprint)) {
       blueprintLabel = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
       haveBlueprint = true;
-      blueprintTt  = blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade]);
+      blueprintTt  = blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade], Modifications.modules[m.grp].blueprints[m.blueprint.fdname].grades[m.blueprint.grade].engineers);
     }
 
     let specialLabel;

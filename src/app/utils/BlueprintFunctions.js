@@ -5,10 +5,11 @@ import { Modifications } from 'coriolis-data/dist';
  * Generate a tooltip with details of a blueprint's effects
  * @param   {Object}  translate   The translate object
  * @param   {Object}  blueprint   The blueprint at the required grade
+ * @param   {Array}   engineers   The engineers supplying this blueprint
  * @param   {Object}  m           The module to compare with
  * @returns {Object}              The react components
  */
-export function blueprintTooltip(translate, blueprint, m) {
+export function blueprintTooltip(translate, blueprint, engineers, m) {
   const effects = [];
   for (const feature in blueprint.features) {
     const featureIsBeneficial = isBeneficial(feature, blueprint.features[feature]);
@@ -33,7 +34,9 @@ export function blueprintTooltip(translate, blueprint, m) {
         let current = m.getModValue(feature);
         if (featureDef.type === 'percentage' || featureDef.name === 'burst' || featureDef.name === 'burstrof') {
           current = Math.round(current / 10) / 10;
-        }
+        } else if (featureDef.type === 'numeric') {
+          current /= 100;
+	}
         const currentIsBeneficial  = isValueBeneficial(feature, current);
         effects.push(
           <tr key={feature}>
@@ -55,43 +58,96 @@ export function blueprintTooltip(translate, blueprint, m) {
       }
     }
   }
+  if (m) {
+    // Because we have a module add in any benefits that aren't part of the primary blueprint
+    for (const feature in m.mods) {
+      if (!blueprint.features[feature]) {
+        const featureDef = Modifications.modifications[feature];
+        let symbol = '';
+        if (feature === 'jitter') {
+          symbol = '°';
+        } else if (featureDef.type === 'percentage') {
+          symbol = '%';
+        }
+        let current = m.getModValue(feature);
+        if (featureDef.type === 'percentage' || featureDef.name === 'burst' || featureDef.name === 'burstrof') {
+          current = Math.round(current / 10) / 10;
+        } else if (featureDef.type === 'numeric') {
+          current /= 100;
+	}
+        const currentIsBeneficial  = isValueBeneficial(feature, current);
+        effects.push(
+          <tr key={feature}>
+            <td style={{ textAlign: 'left' }}>{translate(feature)}</td>
+            <td>&nbsp;</td>
+            <td className={current === 0 ? '' : currentIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{current}{symbol}</td>
+            <td>&nbsp;</td>
+          </tr>
+        );
+      }
+    }
+  }
+  let components;
+  if (!m) {
+    components = [];
+    for (const component in blueprint.components) {
+      components.push(
+        <tr key={component}>
+          <td style={{ textAlign: 'left' }}>{translate(component)}</td>
+          <td style={{ textAlign: 'right' }}>{blueprint.components[component]}</td>
+        </tr>
+      );
+    }
+  }
 
-  const components = [];
-  for (const component in blueprint.components) {
-    components.push(
-      <tr key={component}>
-        <td style={{ textAlign: 'left' }}>{translate(component)}</td>
-        <td style={{ textAlign: 'right' }}>{blueprint.components[component]}</td>
-      </tr>
-    );
+  let engineersList;
+  if (engineers) {
+    engineersList = [];
+    for (const engineer of engineers) {
+      engineersList.push(
+        <tr key={engineer}>
+          <td style={{ textAlign: 'left' }}>{engineer}</td>
+        </tr>
+      );
+    }
   }
 
   return (
     <div>
-    <table width='100%'>
-      <thead>
-       <tr>
-         <td>{translate('feature')}</td>
-         <td>{translate('worst')}</td>
-          {m ? <td>{translate('current')}</td> : null }
-         <td>{translate('best')}</td>
-       </tr>
-      </thead>
-      <tbody>
-        {effects}
-      </tbody>
-    </table>
-    { m ? null : <table width='100%'>
-      <thead>
-       <tr>
-         <td>{translate('component')}</td>
-         <td>{translate('amount')}</td>
-       </tr>
-      </thead>
-      <tbody>
-        {components}
-      </tbody>
-    </table> }
+      <table width='100%'>
+        <thead>
+         <tr>
+           <td>{translate('feature')}</td>
+           <td>{translate('worst')}</td>
+            {m ? <td>{translate('current')}</td> : null }
+           <td>{translate('best')}</td>
+         </tr>
+        </thead>
+        <tbody>
+          {effects}
+        </tbody>
+      </table>
+      { components ?  <table width='100%'>
+        <thead>
+         <tr>
+           <td>{translate('component')}</td>
+           <td>{translate('amount')}</td>
+         </tr>
+        </thead>
+        <tbody>
+          {components}
+        </tbody>
+      </table> : null }
+      { engineersList ? <table width='100%'>
+        <thead>
+         <tr>
+           <td>{translate('engineers')}</td>
+         </tr>
+        </thead>
+        <tbody>
+          {engineersList}
+        </tbody>
+      </table>  : null }
     </div>
   );
 }

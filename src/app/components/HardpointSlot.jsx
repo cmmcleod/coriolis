@@ -55,7 +55,7 @@ export default class HardpointSlot extends Slot {
         modTT = (
           <div>
             <div>{modTT}</div>
-            {blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade], m)}
+            {blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade], null, m)}
           </div>
         );
       }
