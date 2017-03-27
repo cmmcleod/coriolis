@@ -36,7 +36,7 @@ export function blueprintTooltip(translate, blueprint, engineers, m) {
           current = Math.round(current / 10) / 10;
         } else if (featureDef.type === 'numeric') {
           current /= 100;
-	}
+        }
         const currentIsBeneficial  = isValueBeneficial(feature, current);
         effects.push(
           <tr key={feature}>
@@ -74,7 +74,7 @@ export function blueprintTooltip(translate, blueprint, engineers, m) {
           current = Math.round(current / 10) / 10;
         } else if (featureDef.type === 'numeric') {
           current /= 100;
-	}
+        }
         const currentIsBeneficial  = isValueBeneficial(feature, current);
         effects.push(
           <tr key={feature}>
