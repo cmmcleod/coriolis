@@ -222,39 +222,6 @@ export default class Ship {
   }
 
   /**
-   * Calculate the recovery time after losing or turning on shields
-   * Thanks to CMDRs Al Gray, GIF, and Nomad Enigma for providing Shield recharge data and formulas
-   *
-   * @return {Number} Recovery time in seconds
-   */
-  calcShieldRecovery() {
-    const shieldGenerator = this.findShieldGenerator();
-    if (shieldGenerator) {
-      const brokenRegenRate = shieldGenerator.getBrokenRegenerationRate();
-      // 50% of shield strength / broken recharge rate + 15 second delay before recharge starts
-      return ((this.shield / 2) / brokenRegenRate) + 15;
-    }
-    return 0;
-  }
-
-  /**
-   * Calculate the recharge time for a shield going from 50% to 100%
-   * Thanks to CMDRs Al Gray, GIF, and Nomad Enigma for providing Shield recharge data and formulas
-   *
-   * @return {Number} 50 - 100% Recharge time in seconds
-   */
-  calcShieldRecharge() {
-    const shieldGenerator = this.findShieldGenerator();
-    if (shieldGenerator) {
-      const regenRate = shieldGenerator.getRegenerationRate();
-
-      // 50% of shield strength / recharge rate
-      return (this.shield / 2) / regenRate;
-    }
-    return 0;
-  }
-
-  /**
    * Calculate the hypothetical shield strength for the ship using the specified parameters
    * @param  {Object} sg              [optional] Shield Generator to use
    * @param  {Number} multiplierDelta [optional] Change to shield multiplier (+0.2, - 0.12, etc)

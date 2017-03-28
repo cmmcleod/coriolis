@@ -1,7 +1,6 @@
 import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
 import { Ships } from 'coriolis-data/dist';
-import ShipSelector from './ShipSelector';
 import { nameComparator } from '../utils/SlotFunctions';
 import { CollapseSection, ExpandSection, MountFixed, MountGimballed, MountTurret } from './SvgIcons';
 import LineChart from '../components/LineChart';
