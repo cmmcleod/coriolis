@@ -110,6 +110,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @param  {int} grade      The grade of the selected blueprint
    */
   _blueprintSelected(fdname, grade) {
+    this.context.tooltip(null);
     const { m } = this.props;
     const blueprint = getBlueprint(fdname, m);
     blueprint.grade = grade;
@@ -133,6 +134,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @param  {int} special     The name of the selected special
    */
   _specialSelected(special) {
+    this.context.tooltip(null);
     const { m, ship } = this.props;
 
     if (m.blueprint) { 

@@ -48,7 +48,7 @@ export default class Module {
         // this special effect modifies our returned value
         const modification = Modifications.modifications[name];
         if (modification.method === 'additive') {
-          result = result + modifierActions[name];
+          result = result + modifierActions[name] * 100;
         } else if (modification.method === 'overwrite') {
           result = modifierActions[name];
         } else {
