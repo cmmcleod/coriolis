@@ -254,6 +254,18 @@ export const terms = {
   minmul_sg: 'Minimum strength',
   optmul_sg: 'Optimal strength',
   maxmul_sg: 'Minimum strength',
+  minmass_psg: 'Minimum hull mass',
+  optmass_psg: 'Optimal hull mass',
+  maxmass_psg: 'Maximum hull mass',
+  minmul_psg: 'Minimum strength',
+  optmul_psg: 'Optimal strength',
+  maxmul_psg: 'Minimum strength',
+  minmass_bsg: 'Minimum hull mass',
+  optmass_bsg: 'Optimal hull mass',
+  maxmass_bsg: 'Maximum hull mass',
+  minmul_bsg: 'Minimum strength',
+  optmul_bsg: 'Optimal strength',
+  maxmul_bsg: 'Minimum strength',
 
   range_s: 'Typical emission range',
 
