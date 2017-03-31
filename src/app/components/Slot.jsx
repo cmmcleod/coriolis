@@ -79,7 +79,7 @@ export default class Slot extends TranslatedComponent {
     let language = this.context.language;
     let translate = language.translate;
     let { ship, m, dropClass, dragOver, onOpen, onChange, selected, eligible, onSelect, warning, availableModules } = this.props;
-    let slotDetails, menu;
+    let slotDetails, modificationsMarker, menu;
 
     if (!selected) {
       // If not selected then sure that modifications flag is unset
@@ -88,8 +88,10 @@ export default class Slot extends TranslatedComponent {
 
     if (m) {
       slotDetails = this._getSlotDetails(m, translate, language.formats, language.units);  // Must be implemented by sub classes
+      modificationsMarker = JSON.stringify(m);
     } else {
       slotDetails = <div className={'empty'}>{translate(eligible ? 'emptyrestricted' : 'empty')}</div>;
+      modificationsMarker = '';
     }
 
     if (selected) {
@@ -99,6 +101,7 @@ export default class Slot extends TranslatedComponent {
           onChange={onChange}
           ship={ship}
           m={m}
+          marker={modificationsMarker}
         />;
       } else {
         menu = <AvailableModulesMenu

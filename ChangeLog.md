@@ -23,6 +23,7 @@
     * Offence section provides details of your build's damage distribution and per-weapon effectiveness. It also gives summary information for how long it will take for your build to wear down your opponent's shields and armour
     * Defence section provides details of your build's defences against your selected opponent. It provides details of the effectiveness of your resistances of both shields and armour, and effective strength of each as a result. It also provides key metrics around shield longevity and recovery times, as well as module protection
   * Fix power band marker to show safe power limit at 40% rather than 50%
+  * Restyle blueprint list to improve consistency with similar menus
 
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
