@@ -6,10 +6,11 @@ import { Modifications } from 'coriolis-data/dist';
  * @param   {Object}  translate   The translate object
  * @param   {Object}  blueprint   The blueprint at the required grade
  * @param   {Array}   engineers   The engineers supplying this blueprint
+ * @param   {string}  grp         The group of the module
  * @param   {Object}  m           The module to compare with
  * @returns {Object}              The react components
  */
-export function blueprintTooltip(translate, blueprint, engineers, m) {
+export function blueprintTooltip(translate, blueprint, engineers, grp, m) {
   const effects = [];
   for (const feature in blueprint.features) {
     const featureIsBeneficial = isBeneficial(feature, blueprint.features[feature]);
@@ -40,7 +41,7 @@ export function blueprintTooltip(translate, blueprint, engineers, m) {
         const currentIsBeneficial  = isValueBeneficial(feature, current);
         effects.push(
           <tr key={feature}>
-            <td style={{ textAlign: 'left' }}>{translate(feature)}</td>
+            <td style={{ textAlign: 'left' }}>{translate(feature, grp)}</td>
             <td className={lowerBound === 0 ? '' : lowerIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{lowerBound}{symbol}</td>
             <td className={current === 0 ? '' : currentIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{current}{symbol}</td>
             <td className={upperBound === 0 ? '' : upperIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{upperBound}{symbol}</td>
@@ -50,7 +51,7 @@ export function blueprintTooltip(translate, blueprint, engineers, m) {
         // We do not have a module, no value
         effects.push(
           <tr key={feature}>
-            <td style={{ textAlign: 'left' }}>{translate(feature)}</td>
+            <td style={{ textAlign: 'left' }}>{translate(feature, grp)}</td>
             <td className={lowerBound === 0 ? '' : lowerIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{lowerBound}{symbol}</td>
             <td className={upperBound === 0 ? '' : upperIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{upperBound}{symbol}</td>
           </tr>
@@ -78,7 +79,7 @@ export function blueprintTooltip(translate, blueprint, engineers, m) {
         const currentIsBeneficial  = isValueBeneficial(feature, current);
         effects.push(
           <tr key={feature}>
-            <td style={{ textAlign: 'left' }}>{translate(feature)}</td>
+            <td style={{ textAlign: 'left' }}>{translate(feature, grp)}</td>
             <td>&nbsp;</td>
             <td className={current === 0 ? '' : currentIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{current}{symbol}</td>
             <td>&nbsp;</td>
@@ -191,8 +192,8 @@ export function getBlueprint(name, module) {
   // Start with a copy of the blueprint
   const blueprint = JSON.parse(JSON.stringify(Modifications.blueprints[name]));
   if (module) {
-    if (module.grp === 'bh' || module.grp === 'hr') {
-      // Bulkheads and hull reinforcements need to have their resistances altered by the base values
+    if (module.grp === 'bh' || module.grp === 'hr' || module.grp === 'sg' || module.grp === 'psg' || module.grp === 'bsg') {
+      // Bulkheads, hull reinforcements and shield generators need to have their resistances altered by the base values
       for (const grade in blueprint.grades) {
         for (const feature in blueprint.grades[grade].features) {
           if (feature === 'explres') {

@@ -57,7 +57,7 @@ export default class StandardSlot extends TranslatedComponent {
       modTT = (
           <div>
             <div>{modTT}</div>
-            {blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade], null, m)}
+            {blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade], null, m.grp, m)}
           </div>
         );
     }
@@ -67,6 +67,8 @@ export default class StandardSlot extends TranslatedComponent {
       this._modificationsSelected = false;
     }
 
+    const modificationsMarker = JSON.stringify(m);
+
     if (selected) {
       if (this._modificationsSelected) {
         menu = <ModificationsMenu
@@ -74,6 +76,7 @@ export default class StandardSlot extends TranslatedComponent {
           onChange={onChange}
           ship={ship}
           m={m}
+          marker={modificationsMarker}
         />;
       } else {
         menu = <AvailableModulesMenu
