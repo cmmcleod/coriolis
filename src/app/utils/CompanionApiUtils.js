@@ -130,9 +130,15 @@ export function shipFromJson(json) {
   let ship = new Ship(shipModel, shipTemplate.properties, shipTemplate.slots);
   ship.buildWith(null);
 
-  // Set the cargo hatch.  We don't have any information on it so guess it's priority 5 and disabled
-  ship.cargoHatch.enabled = false;
-  ship.cargoHatch.priority = 4;
+  // Set the cargo hatch
+  if (json.modules.CargoHatch) {
+    ship.cargoHatch.enabled = json.modules.CargoHatch.module.on == true;
+    ship.cargoHatch.priority = json.modules.CargoHatch.module.priority;
+  } else {
+    // We don't have any information on it so guess it's priority 5 and disabled
+    ship.cargoHatch.enabled = false;
+    ship.cargoHatch.priority = 4;
+  }
   
   // Add the bulkheads
   const armourJson = json.modules.Armour.module;
@@ -426,5 +432,11 @@ function _addModifications(module, modifiers, blueprint, grade) {
   // FD uses interval between bursts internally, so we need to translate this to a real rate of fire
   if (module.getModValue('rof')) {
     module.setModValue('rof', ((1 / (1 + module.getModValue('rof') / 10000)) - 1) * 10000);
+  }
+
+  // Clip size is rounded up so that the result is a whole number
+  if (module.getModValue('clip')) {
+    const individual = 1 / (module.clip || 1);
+    module.setModValue('clip', Math.ceil((module.getModValue('clip') / 10000) / individual) * individual * 10000);
   }
 }

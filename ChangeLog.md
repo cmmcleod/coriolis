@@ -1,18 +1,28 @@
 #2.3.0
-  * Add 2.3 diminishing returns on shield value
   * Make scan time visible on scanners where available
   * Update power distributor able-to-boost calculation to take fractional MJ values in to account
   * Revert to floating header due to issues on iOS
-  * Add effective total shield value to defence summary
   * Fix issue where new module added to a slot did not reset its enabled status
   * Show integrity value for relevant modules
   * Reset old modification values when a new roll is applied
   * Fix issue with miner role where refinery would not be present in ships with class 5 slots but no class 4
   * Ensure that boost value is set correctly when modifications to power distributor enable/disable boost
   * Ensure that hull reinforcement modifications take the inherent resistance in to account when calculating modification percentages
-  * Add tooltip for blueprints providing details of the features they alter
+  * Add tooltip for blueprints providing details of the features they alter, the components required for the blueprint and the engineer(s) who cam craft them
   * Use opponent's saved pips if available
   * Ignore rounds per shot for EPS and HPS calculations; it's already factored in to the numbers
+  * Ensure that clip size modification imports result in whole numbers
+  * Rework of separate offence/defence/movement sections to a unified interface
+  * Use cargo hatch information on import if available
+  * Additional information of power distributor pips, boost, cargo and fuel loads added to build
+  * Additional information of opponent and engagement range added to build
+  * Reworking of offence, defence and movement information in to separate tabs as part of the outfitting screen:
+    * Power and costs section provides the existing 'Power' and 'Costs' sections
+    * Profiles section provides a number of graphs that show how various components of the build (top speed, sustained DPS against opponent's shields and armour etc) are affected by mass, range, etc.
+    * Offence section provides details of your build's damage distribution and per-weapon effectiveness. It also gives summary information for how long it will take for your build to wear down your opponent's shields and armour
+    * Defence section provides details of your build's defences against your selected opponent. It provides details of the effectiveness of your resistances of both shields and armour, and effective strength of each as a result. It also provides key metrics around shield longevity and recovery times, as well as module protection
+  * Fix power band marker to show safe power limit at 40% rather than 50%
+  * Restyle blueprint list to improve consistency with similar menus
 
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default

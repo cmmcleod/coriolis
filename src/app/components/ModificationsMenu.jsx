@@ -15,6 +15,7 @@ export default class ModificationsMenu extends TranslatedComponent {
   static propTypes = {
     ship: React.PropTypes.object.isRequired,
     m: React.PropTypes.object.isRequired,
+    marker: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func.isRequired
   };
 
@@ -25,7 +26,6 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   constructor(props, context) {
     super(props);
-    this.state = this._initState(props, context);
 
     this._toggleBlueprintsMenu = this._toggleBlueprintsMenu.bind(this);
     this._toggleSpecialsMenu = this._toggleSpecialsMenu.bind(this);
@@ -34,33 +34,59 @@ export default class ModificationsMenu extends TranslatedComponent {
     this._rollBest = this._rollBest.bind(this);
     this._rollExtreme = this._rollExtreme.bind(this);
     this._reset = this._reset.bind(this);
+
+    this.state = {
+      blueprintMenuOpened: false,
+      specialMenuOpened: false
+    };
   }
 
   /**
-   * Initialise state
-   * @param  {Object} props   React Component properties
-   * @param  {Object} context React Component context
+   * Render the blueprints
+   * @param  {Object} props   React component properties
+   * @param  {Object} context React component context
    * @return {Object}         list: Array of React Components
    */
-  _initState(props, context) {
-    let { m } = props;
+  _renderBlueprints(props, context) {
+    const { m } = props;
     const { language, tooltip, termtip } = context;
     const translate = language.translate;
 
-    // Set up the blueprints
-    let blueprints = [];
+    const blueprints = [];
     for (const blueprintName in Modifications.modules[m.grp].blueprints) {
-      for (const grade of Modifications.modules[m.grp].blueprints[blueprintName]) {
+      const blueprint = getBlueprint(blueprintName, m);
+      let blueprintGrades = [];
+      for (let grade in Modifications.modules[m.grp].blueprints[blueprintName].grades) {
+        // Grade is a string in the JSON so make it a number
+        grade = Number(grade);
+        const classes = cn('c', {
+          active: m.blueprint && blueprint.id === m.blueprint.id && grade === m.blueprint.grade 
+        });
         const close = this._blueprintSelected.bind(this, blueprintName, grade);
         const key = blueprintName + ':' + grade;
-        const blueprint = getBlueprint(blueprintName, m);
-        const tooltipContent = blueprintTooltip(translate, blueprint.grades[grade].features);
-        blueprints.push(<div style={{ cursor: 'pointer' }} key={ key } onMouseOver={termtip.bind(null, tooltipContent)} onMouseOut={tooltip.bind(null, null)} onClick={ close }>{translate(blueprint.name + ' grade ' + grade)}</div>);
+        const tooltipContent = blueprintTooltip(translate, blueprint.grades[grade], Modifications.modules[m.grp].blueprints[blueprintName].grades[grade].engineers, m.grp);
+        blueprintGrades.unshift(<li key={key} className={classes} style={{ width: '2em' }} onMouseOver={termtip.bind(null, tooltipContent)} onMouseOut={tooltip.bind(null, null)} onClick={close}>{grade}</li>);
+      }
+      if (blueprintGrades) {
+        blueprints.push(<div key={blueprint.name} className={'select-group cap'}>{translate(blueprint.name)}</div>);
+        blueprints.push(<ul key={blueprintName}>{blueprintGrades}</ul>);
       }
     }
+    return blueprints;
+  }
 
-    // Set up the special effects
-    let specials = [];
+  /**
+   * Render the specials
+   * @param  {Object} props   React component properties
+   * @param  {Object} context React component context
+   * @return {Object}         list: Array of React Components
+   */
+  _renderSpecials(props, context) {
+    const { m } = props;
+    const { language, tooltip, termtip } = context;
+    const translate = language.translate;
+
+    const specials = [];
     if (Modifications.modules[m.grp].specials && Modifications.modules[m.grp].specials.length > 0) {
       const close = this._specialSelected.bind(this, null);
       specials.push(<div style={{ cursor: 'pointer' }} key={ 'none' } onClick={ close }>{translate('PHRASE_NO_SPECIAL')}</div>);
@@ -69,24 +95,17 @@ export default class ModificationsMenu extends TranslatedComponent {
         specials.push(<div style={{ cursor: 'pointer' }} key={ specialName } onClick={ close }>{translate(Modifications.specials[specialName].name)}</div>);
       }
     }
-
-    // Set up the modifications
-    const modifications = this._setModifications(props);
-
-    const blueprintMenuOpened = false;
-    const specialMenuOpened = false;
-
-    return { blueprintMenuOpened, blueprints, modifications, specialMenuOpened, specials };
+    return specials;
   }
 
   /**
-   * Initialise the modifications
+   * Render the modifications
    * @param  {Object} props   React Component properties
    * @return {Object}         list: Array of React Components
    */
-  _setModifications(props) {
+  _renderModifications(props) {
     const { m, onChange, ship } = props;
-    let modifications = [];
+    const modifications = [];
     for (const modName of Modifications.modules[m.grp].modifications) {
       if (!Modifications.modifications[modName].hidden) {
         const key = modName + (m.getModValue(modName) / 100 || 0);
@@ -110,13 +129,13 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @param  {int} grade      The grade of the selected blueprint
    */
   _blueprintSelected(fdname, grade) {
+    this.context.tooltip(null);
     const { m } = this.props;
     const blueprint = getBlueprint(fdname, m);
     blueprint.grade = grade;
     m.blueprint = blueprint;
 
-    const blueprintMenuOpened = false;
-    this.setState({ blueprintMenuOpened });
+    this.setState({ blueprintMenuOpened: false });
     this.props.onChange();
   }
 
@@ -133,6 +152,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @param  {int} special     The name of the selected special
    */
   _specialSelected(special) {
+    this.context.tooltip(null);
     const { m, ship } = this.props;
 
     if (m.blueprint) { 
@@ -146,8 +166,7 @@ export default class ModificationsMenu extends TranslatedComponent {
       ship.recalculateEps();
     }
 
-    const specialMenuOpened = false;
-    this.setState({ specialMenuOpened, modifications: this._setModifications(this.props) });
+    this.setState({ specialMenuOpened: false });
     this.props.onChange();
   }
 
@@ -179,7 +198,7 @@ export default class ModificationsMenu extends TranslatedComponent {
       let value = features[featureName][0];
       this._setRollResult(ship, m, featureName, value);
     }
-    this.setState({ modifications: this._setModifications(this.props) });
+
     this.props.onChange();
   }
 
@@ -194,7 +213,7 @@ export default class ModificationsMenu extends TranslatedComponent {
       let value = features[featureName][0] + (Math.random() * (features[featureName][1] - features[featureName][0]));
       this._setRollResult(ship, m, featureName, value);
     }
-    this.setState({ modifications: this._setModifications(this.props) });
+
     this.props.onChange();
   }
 
@@ -208,7 +227,7 @@ export default class ModificationsMenu extends TranslatedComponent {
       let value = features[featureName][1];
       this._setRollResult(ship, m, featureName, value);
     }
-    this.setState({ modifications: this._setModifications(this.props) });
+
     this.props.onChange();
   }
 
@@ -239,7 +258,7 @@ export default class ModificationsMenu extends TranslatedComponent {
 
       this._setRollResult(ship, m, featureName, value);
     }
-    this.setState({ modifications: this._setModifications(this.props) });
+
     this.props.onChange();
   }
 
@@ -251,7 +270,6 @@ export default class ModificationsMenu extends TranslatedComponent {
     ship.clearModifications(m);
     ship.clearBlueprint(m);
 
-    this.setState({ modifications: this._setModifications(this.props) });
     this.props.onChange();
   }
 
@@ -279,7 +297,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     if (m.blueprint && !isEmpty(m.blueprint)) {
       blueprintLabel = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
       haveBlueprint = true;
-      blueprintTt  = blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade].features);
+      blueprintTt  = blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade], Modifications.modules[m.grp].blueprints[m.blueprint.fdname].grades[m.blueprint.grade].engineers, m.grp);
     }
 
     let specialLabel;
@@ -289,8 +307,10 @@ export default class ModificationsMenu extends TranslatedComponent {
       specialLabel = translate('PHRASE_SELECT_SPECIAL');
     }
 
+    const specials = this._renderSpecials(this.props, this.context);
+
     const showBlueprintsMenu = blueprintMenuOpened;
-    const showSpecial = haveBlueprint && this.state.specials.length > 0 && !blueprintMenuOpened;
+    const showSpecial = haveBlueprint && specials.length && !blueprintMenuOpened;
     const showSpecialsMenu = specialMenuOpened;
     const showRolls = haveBlueprint && !blueprintMenuOpened && !specialMenuOpened;
     const showReset = !blueprintMenuOpened && !specialMenuOpened;
@@ -302,12 +322,12 @@ export default class ModificationsMenu extends TranslatedComponent {
           onClick={(e) => e.stopPropagation() }
           onContextMenu={stopCtxPropagation}
       >
-        { haveBlueprint ? 
+        { showBlueprintsMenu ? '' : haveBlueprint ? 
           <div className={ cn('section-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onMouseOver={termtip.bind(null, blueprintTt)} onMouseOut={tooltip.bind(null, null)} onClick={_toggleBlueprintsMenu}>{blueprintLabel}</div> : 
           <div className={ cn('section-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleBlueprintsMenu}>{translate('PHRASE_SELECT_BLUEPRINT')}</div> }
-        { showBlueprintsMenu ? this.state.blueprints : null }
+        { showBlueprintsMenu ? this._renderBlueprints(this.props, this.context) : null }
         { showSpecial ? <div className={ cn('section-menu', { selected: specialMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleSpecialsMenu}>{specialLabel}</div> : null }
-        { showSpecialsMenu ? this.state.specials : null }
+        { showSpecialsMenu ? specials : null }
         { showRolls || showReset ?
             <table style={{ width: '100%', backgroundColor: 'transparent' }}>
               <tbody>
@@ -327,7 +347,7 @@ export default class ModificationsMenu extends TranslatedComponent {
           </table> : null }
         { showMods ?
           <span onMouseOver={termtip.bind(null, 'HELP_MODIFICATIONS_MENU')} onMouseOut={tooltip.bind(null, null)} >
-            { this.state.modifications }
+            { this._renderModifications(this.props) }
           </span> : null }
       </div>
     );

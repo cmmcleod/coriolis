@@ -37,7 +37,7 @@ export default class Modification extends TranslatedComponent {
     const name = this.props.name;
 
     let scaledValue = Math.round(Number(value) * 100);
-    // Limit to +1000% / -100%
+    // Limit to +1000% / -99.99%
     if (scaledValue > 100000) {
       scaledValue = 100000;
       value = 1000;
@@ -52,6 +52,9 @@ export default class Modification extends TranslatedComponent {
     ship.setModification(m, name, scaledValue, true);
 
     this.setState({ value });
+  }
+
+  _updateFinished() {
     this.props.onChange();
   }
 
@@ -79,7 +82,7 @@ export default class Modification extends TranslatedComponent {
     }
 
     return (
-      <div className={'cb'} key={name}>
+      <div onBlur={this._updateFinished.bind(this)} className={'cb'} key={name}>
         <div className={'cb'}>{translate(name, m.grp)}{symbol}</div>
         <NumberEditor className={'cb'} style={{ width: '90%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={this.state.value} onValueChange={this._updateValue.bind(this)} />
       </div>

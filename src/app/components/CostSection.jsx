@@ -507,7 +507,7 @@ export default class CostSection extends TranslatedComponent {
               scoop = true;
               break;
             case 'scb':
-              q = slotGroup[i].m.getCells();
+              q = slotGroup[i].m.getAmmo() + 1;
               break;
             case 'am':
               q = slotGroup[i].m.getAmmo();

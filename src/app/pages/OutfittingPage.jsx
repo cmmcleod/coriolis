@@ -14,7 +14,7 @@ import { FloppyDisk, Bin, Switch, Download, Reload, LinkIcon, ShoppingIcon } fro
 import LZString from 'lz-string';
 import ShipSummaryTable from '../components/ShipSummaryTable';
 import StandardSlotSection from '../components/StandardSlotSection';
-import HardpointsSlotSection from '../components/HardpointsSlotSection';
+import HardpointSlotSection from '../components/HardpointSlotSection';
 import InternalSlotSection from '../components/InternalSlotSection';
 import UtilitySlotSection from '../components/UtilitySlotSection';
 import Pips from '../components/Pips';
@@ -574,7 +574,7 @@ export default class OutfittingPage extends Page {
         <ShipSummaryTable ship={ship} marker={shipSummaryMarker} />
         <StandardSlotSection ship={ship} code={standardSlotMarker} onChange={shipUpdated} currentMenu={menu} />
         <InternalSlotSection ship={ship} code={internalSlotMarker} onChange={shipUpdated} currentMenu={menu} />
-        <HardpointsSlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} currentMenu={menu} />
+        <HardpointSlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} currentMenu={menu} />
         <UtilitySlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} currentMenu={menu} />
 
         {/* Control of ship and opponent */}

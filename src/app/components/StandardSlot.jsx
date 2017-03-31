@@ -57,7 +57,7 @@ export default class StandardSlot extends TranslatedComponent {
       modTT = (
           <div>
             <div>{modTT}</div>
-            {blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade].features, m)}
+            {blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade], null, m.grp, m)}
           </div>
         );
     }
@@ -67,6 +67,8 @@ export default class StandardSlot extends TranslatedComponent {
       this._modificationsSelected = false;
     }
 
+    const modificationsMarker = JSON.stringify(m);
+
     if (selected) {
       if (this._modificationsSelected) {
         menu = <ModificationsMenu
@@ -74,6 +76,7 @@ export default class StandardSlot extends TranslatedComponent {
           onChange={onChange}
           ship={ship}
           m={m}
+          marker={modificationsMarker}
         />;
       } else {
         menu = <AvailableModulesMenu
@@ -100,6 +103,7 @@ export default class StandardSlot extends TranslatedComponent {
                 { m.getMinMass() ? <div className='l'>{translate('minimum mass')}: {formats.int(m.getMinMass())}{units.T}</div> : null }
                 { m.getOptMass() ? <div className='l'>{translate('optimal mass')}: {formats.int(m.getOptMass())}{units.T}</div> : null }
                 { m.getMaxMass() ? <div className='l'>{translate('max mass')}: {formats.int(m.getMaxMass())}{units.T}</div> : null }
+                { m.getOptMul() ? <div className='l'>{translate('optimal multiplier')}: {formats.rPct(m.getOptMul())}</div> : null }
                 { m.getRange() ? <div className='l'>{translate('range', m.grp)}: {formats.f2(m.getRange())}{units.km}</div> : null }
                 { m.time ? <div className='l'>{translate('time')}: {formats.time(m.time)}</div> : null }
                 { m.getThermalEfficiency() ? <div className='l'>{translate('efficiency')}: {formats.f2(m.getThermalEfficiency())}</div> : null }

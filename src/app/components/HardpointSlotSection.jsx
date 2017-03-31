@@ -8,7 +8,7 @@ import { stopCtxPropagation } from '../utils/UtilityFunctions';
 /**
  * Hardpoint slot section
  */
-export default class HardpointsSlotSection extends SlotSection {
+export default class HardpointSlotSection extends SlotSection {
 
   /**
    * Constructor

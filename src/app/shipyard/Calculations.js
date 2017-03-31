@@ -341,7 +341,9 @@ export function shieldMetrics(ship, sys) {
     }
 
     // Calculate diminishing returns for boosters
-    boost = Math.min(boost, (1 - Math.pow(Math.E, -0.7 * boost)) * 2.5);
+    // Diminishing returns not currently in-game
+    //boost = Math.min(boost, (1 - Math.pow(Math.E, -0.7 * boost)) * 2.5);
+
     // Remove base shield generator strength
     boost -= 1;
     // Apply diminishing returns
