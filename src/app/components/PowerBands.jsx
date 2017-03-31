@@ -189,7 +189,7 @@ export default class PowerBands extends TranslatedComponent {
     let { f2, pct1 } = formats; // wattFmt, pctFmt
     let { available, bands } = props;
     let { innerWidth, ret, dep } = state;
-    let pwrWarningClass = cn('threshold', { exceeded: bands[0].retractedSum * 2 >= available });
+    let pwrWarningClass = cn('threshold', { exceeded: bands[0].retractedSum > available * 0.4 });
     let deployed = [];
     let retracted = [];
     let retSelected = Object.keys(ret).length > 0;
@@ -268,7 +268,7 @@ export default class PowerBands extends TranslatedComponent {
             axis.call(this.pctAxis);
             axis.select('g:nth-child(6)').selectAll('line, text').attr('class', pwrWarningClass);
           }} className='pct axis' transform={`translate(0,${state.innerHeight})`}></g>
-          <line x1={pctScale(0.5)} x2={pctScale(0.5)} y1='0' y2={state.innerHeight} className={pwrWarningClass} />
+          <line x1={pctScale(0.4)} x2={pctScale(0.4)} y1='0' y2={state.innerHeight} className={pwrWarningClass} />
           <text dy='0.5em' x='-3' y={state.retY} className='primary upp' textAnchor='end' onMouseOver={this.context.termtip.bind(null, 'retracted')} onMouseLeave={this._hidetip}>{translate('ret')}</text>
           <text dy='0.5em' x='-3' y={state.depY} className='primary upp' textAnchor='end' onMouseOver={this.context.termtip.bind(null, 'deployed', { orientation: 's', cap: 1 })} onMouseLeave={this._hidetip}>{translate('dep')}</text>
           <text dy='0.5em' x={innerWidth + 5} y={state.retY} className={getClass(retSelected, retSum, available)}>{f2(Math.max(0, retSum))} ({pct1(Math.max(0, retSum / available))})</text>
