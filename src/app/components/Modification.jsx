@@ -54,6 +54,9 @@ export default class Modification extends TranslatedComponent {
     this.setState({ value });
   }
 
+  /**
+   * Triggered when an update to slider value is finished i.e. when losing focus
+   */
   _updateFinished() {
     this.props.onChange();
   }

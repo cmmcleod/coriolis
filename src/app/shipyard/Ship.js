@@ -1204,53 +1204,13 @@ export default class Ship {
    * @return {this} The ship instance (for chaining operations)
    */
   recalculateShield() {
-    let shield = 0;
-    let shieldBoost = 1;
-    let shieldExplRes = null;
-    let shieldKinRes = null;
-    let shieldThermRes = null;
-    let shieldExplDRStart = null;
-    let shieldExplDREnd = null;
-    let shieldKinDRStart = null;
-    let shieldKinDREnd = null;
-    let shieldThermDRStart = null;
-    let shieldThermDREnd = null;
+    // Obtain shield metrics with 0 pips to sys (parts affected by SYS aren't used here)
+    const metrics = Calc.shieldMetrics(this, 0);
 
-    const sgSlot = this.findInternalByGroup('sg');
-    if (sgSlot && sgSlot.enabled) {
-      // Shield from generator
-      shield = Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sgSlot.m, 1);
-      shieldExplRes = 1 - sgSlot.m.getExplosiveResistance();
-      shieldExplDRStart = shieldExplRes * 0.7;
-      shieldExplDREnd = 0;
-      shieldKinRes = 1 - sgSlot.m.getKineticResistance();
-      shieldKinDRStart = shieldKinRes * 0.7;
-      shieldKinDREnd = 0;
-      shieldThermRes = 1 - sgSlot.m.getThermalResistance();
-      shieldThermDRStart = shieldThermRes * 0.7;
-      shieldThermDREnd = 0;
-
-      // Shield from boosters
-      for (let slot of this.hardpoints) {
-        if (slot.enabled && slot.m && slot.m.grp == 'sb') {
-          shieldBoost += slot.m.getShieldBoost();
-          shieldExplRes *= (1 - slot.m.getExplosiveResistance());
-          shieldKinRes *= (1 - slot.m.getKineticResistance());
-          shieldThermRes *= (1 - slot.m.getThermalResistance());
-        }
-      }
-    }
-
-    // We apply diminishing returns to the boosted value
-    shieldBoost = Math.min(shieldBoost, (1 - Math.pow(Math.E, -0.7 * shieldBoost)) * 2.5);
-
-    shield = shield * shieldBoost;
-    
-    this.shield = shield;
-    this.shieldExplRes = shieldExplRes ? 1 - this.diminishingReturns(shieldExplRes, shieldExplDREnd, shieldExplDRStart) : null;
-    this.shieldKinRes = shieldKinRes ? 1 - this.diminishingReturns(shieldKinRes, shieldKinDREnd, shieldKinDRStart) : null;
-    this.shieldThermRes = shieldThermRes ? 1 - this.diminishingReturns(shieldThermRes, shieldThermDREnd, shieldThermDRStart) : null;
-
+    this.shield = metrics.generator + metrics.boosters;
+    this.shieldExplRes = this.shield > 0 ? 1 - metrics.explosive.total : null;
+    this.shieldKinRes = this.shield > 0 ?  1 - metrics.kinetic.total : null;
+    this.shieldThermRes = this.shield > 0 ?  1 - metrics.thermal.total : null;
     return this;
   }
 
