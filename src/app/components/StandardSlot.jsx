@@ -5,6 +5,7 @@ import TranslatedComponent from './TranslatedComponent';
 import { diffDetails } from '../utils/SlotFunctions';
 import AvailableModulesMenu from './AvailableModulesMenu';
 import ModificationsMenu from './ModificationsMenu';
+import * as ModuleUtils from '../shipyard/ModuleUtils';
 import { ListModifications, Modified } from './SvgIcons';
 import { Modifications } from 'coriolis-data/dist';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
@@ -82,7 +83,7 @@ export default class StandardSlot extends TranslatedComponent {
         menu = <AvailableModulesMenu
           className='standard'
           modules={modules}
-          shipMass={ship.ladenMass}
+          shipMass={ModuleUtils.isShieldGenerator(m.grp) ? ship.hullMass : ship.unladenMass}
           m={m}
           onSelect={onSelect}
           warning={warning}

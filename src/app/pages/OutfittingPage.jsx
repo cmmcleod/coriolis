@@ -545,11 +545,11 @@ export default class OutfittingPage extends Page {
     const _pStr = `${ship.getPowerEnabledString()}${ship.getPowerPrioritiesString()}`;
     const _mStr = ship.getModificationsString();
 
-    const standardSlotMarker = `${ship.name}${_sStr}${_pStr}${_mStr}`;
+    const standardSlotMarker = `${ship.name}${_sStr}${_pStr}${_mStr}${ship.ladenMass}${cargo}${fuel}`;
     const internalSlotMarker = `${ship.name}${_iStr}${_pStr}${_mStr}`;
     const hardpointsSlotMarker = `${ship.name}${_hStr}${_pStr}${_mStr}`;
-    const boostMarker = `${ship.canBoost()}`;
-    const shipSummaryMarker = `${ship.name}${_sStr}${_iStr}${_hStr}${_pStr}${_mStr}`;
+    const boostMarker = `${ship.canBoost(cargo, fuel)}`;
+    const shipSummaryMarker = `${ship.name}${_sStr}${_iStr}${_hStr}${_pStr}${_mStr}${ship.ladenMass}${ship.cargo}${ship.fuel}`;
 
     return (
       <div id='outfit' className={'page'} style={{ fontSize: (sizeRatio * 0.9) + 'em' }}>
@@ -585,8 +585,8 @@ export default class OutfittingPage extends Page {
         </div>
 
         {/* Main tables */}
-        <ShipSummaryTable ship={ship} marker={shipSummaryMarker} />
-        <StandardSlotSection ship={ship} code={standardSlotMarker} onChange={shipUpdated} currentMenu={menu} />
+        <ShipSummaryTable ship={ship} fuel={fuel} cargo={cargo} marker={shipSummaryMarker} />
+        <StandardSlotSection ship={ship} fuel={fuel} cargo={cargo} code={standardSlotMarker} onChange={shipUpdated} currentMenu={menu} />
         <InternalSlotSection ship={ship} code={internalSlotMarker} onChange={shipUpdated} currentMenu={menu} />
         <HardpointSlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} currentMenu={menu} />
         <UtilitySlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} currentMenu={menu} />

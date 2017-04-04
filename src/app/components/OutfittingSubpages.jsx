@@ -85,12 +85,12 @@ export default class OutfittingSubpages extends TranslatedComponent {
   _profilesTab() {
     const { ship, opponent, cargo, fuel, eng, boost, engagementRange, opponentSys } = this.props;
     const { translate } = this.context.language;
-    let realBoost = boost && ship.canBoost();
+    let realBoost = boost && ship.canBoost(cargo, fuel);
     Persist.setOutfittingTab('profiles');
 
     const engineProfileMarker = `${ship.toString()}:${cargo}:${fuel}:${eng}:${realBoost}`;
     const fsdProfileMarker = `${ship.toString()}:${cargo}:${fuel}`;
-    const movementMarker = `${ship.topSpeed}:${ship.pitch}:${ship.roll}:${ship.yaw}:${ship.canBoost()}`;
+    const movementMarker = `${ship.topSpeed}:${ship.pitch}:${ship.roll}:${ship.yaw}:${ship.canBoost(cargo, fuel)}`;
     const damageMarker = `${ship.toString()}:${opponent.toString()}:${engagementRange}:${opponentSys}`;
 
     return <div>

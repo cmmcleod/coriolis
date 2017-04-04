@@ -1,9 +1,9 @@
 import React from 'react';
 import cn from 'classnames';
-import { isShieldGenerator } from '../shipyard/ModuleUtils';
 import Module from '../shipyard/Module';
 import { Infinite } from '../components/SvgIcons';
 import Persist from '../stores/Persist';
+import * as ModuleUtils from '../shipyard/ModuleUtils';
 
 /**
  * Determine if a slot on a ship can mount a module of a particular class and group
@@ -159,8 +159,8 @@ export function diffDetails(language, m, mm) {
   let mmDps = mm ? mm.getDps() || 0 : 0;
   if (mDps && mDps != mmDps) propDiffs.push(<div key='dps'>{translate('dps')}: <span className={diffClass(mmDps, mDps, true)}>{diff(formats.round, mDps, mmDps)}</span></div>);
 
-  let mAffectsShield = isShieldGenerator(m.grp)  || m.grp == 'sb';
-  let mmAffectsShield = isShieldGenerator(mm ? mm.grp : null) || mm && mm.grp == 'sb';
+  let mAffectsShield = ModuleUtils.isShieldGenerator(m.grp)  || m.grp == 'sb';
+  let mmAffectsShield = mm ? ModuleUtils.isShieldGenerator(m.grp) || mm.grp == 'sb' : false;
   if (mAffectsShield || mmAffectsShield) {
     let shield = this.calcShieldStrengthWith(); // Get shield strength regardless of slot active / inactive
     let newShield = 0;
