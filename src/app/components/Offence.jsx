@@ -230,8 +230,8 @@ export default class Offence extends TranslatedComponent {
           <thead>
           <tr className='main'>
             <th rowSpan='2' className='sortable' onClick={sortOrder.bind(this, 'n')}>{translate('weapon')}</th>
-            <th colSpan='2'>{translate('opponent\`s shields')}</th>
-            <th colSpan='2'>{translate('opponent\`s armour')}</th>
+            <th colSpan='2'>{translate('opponent\'s shields')}</th>
+            <th colSpan='2'>{translate('opponent\'s armour')}</th>
           </tr>
           <tr>
             <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_SHIELDS')} onMouseOut={tooltip.bind(null, null)} onClick={sortOrder.bind(this, 'esdpss')}>{'sdps'}</th>

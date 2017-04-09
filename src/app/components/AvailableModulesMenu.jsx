@@ -1,4 +1,5 @@
 import React from 'react';
+import * as ModuleUtils from '../shipyard/ModuleUtils';
 import { findDOMNode } from 'react-dom';
 import TranslatedComponent from './TranslatedComponent';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
@@ -213,7 +214,14 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     for (let i = 0; i < sortedModules.length; i++) {
       let m = sortedModules[i];
       let mount = null;
-      let disabled = m.maxmass && (mass + (m.mass ? m.mass : 0)) > m.maxmass;
+      let disabled = false;
+      if (ModuleUtils.isShieldGenerator(m.grp)) {
+        // Shield generators care about maximum hull mass
+        disabled = mass > m.maxmass;
+      } else if (m.maxmass) {
+        // Thrusters care about total mass
+        disabled = mass + m.mass > m.maxmass;
+      }
       let active = mountedModule && mountedModule.id === m.id;
       let classes = cn(m.name ? 'lc' : 'c', {
         warning: !disabled && warningFunc && warningFunc(m),

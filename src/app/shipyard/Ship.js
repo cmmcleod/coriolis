@@ -123,19 +123,23 @@ export default class Ship {
 
   /**
    * Can the ship thrust/move
+   * @param  {Number} cargo     Amount of cargo in the ship
+   * @param  {Number} fuel      Amount of fuel in the ship
    * @return {[type]} True if thrusters operational
    */
-  canThrust() {
+  canThrust(cargo, fuel) {
     return this.getSlotStatus(this.standard[1]) == 3 &&   // Thrusters are powered
-        this.ladenMass < this.standard[1].m.getMaxMass(); // Max mass not exceeded
+        this.unladenMass + cargo + fuel < this.standard[1].m.getMaxMass(); // Max mass not exceeded
   }
 
   /**
    * Can the ship boost
+   * @param  {Number} cargo     Amount of cargo in the ship
+   * @param  {Number} fuel      Amount of fuel in the ship
    * @return {[type]} True if boost capable
    */
-  canBoost() {
-    return this.canThrust() &&                                       // Thrusters operational
+  canBoost(cargo, fuel) {
+    return this.canThrust(cargo, fuel) &&                           // Thrusters operational
         this.standard[4].m.getEnginesCapacity() > this.boostEnergy; // PD capacitor is sufficient for boost
   }
 
@@ -1185,7 +1189,7 @@ export default class Ship {
   updateMovement() {
     this.speeds = Calc.speed(this.unladenMass + this.fuelCapacity, this.speed, this.standard[1].m, this.pipSpeed);
     this.topSpeed = this.speeds[4];
-    this.topBoost = this.canBoost() ? this.speeds[4] * this.boost / this.speed : 0;
+    this.topBoost = this.canBoost(0, 0) ? this.speeds[4] * this.boost / this.speed : 0;
 
     this.pitches = Calc.pitch(this.unladenMass + this.fuelCapacity, this.pitch, this.standard[1].m, this.pipSpeed);
     this.topPitch = this.pitches[4];
@@ -1204,53 +1208,13 @@ export default class Ship {
    * @return {this} The ship instance (for chaining operations)
    */
   recalculateShield() {
-    let shield = 0;
-    let shieldBoost = 1;
-    let shieldExplRes = null;
-    let shieldKinRes = null;
-    let shieldThermRes = null;
-    let shieldExplDRStart = null;
-    let shieldExplDREnd = null;
-    let shieldKinDRStart = null;
-    let shieldKinDREnd = null;
-    let shieldThermDRStart = null;
-    let shieldThermDREnd = null;
+    // Obtain shield metrics with 0 pips to sys (parts affected by SYS aren't used here)
+    const metrics = Calc.shieldMetrics(this, 0);
 
-    const sgSlot = this.findInternalByGroup('sg');
-    if (sgSlot && sgSlot.enabled) {
-      // Shield from generator
-      shield = Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sgSlot.m, 1);
-      shieldExplRes = 1 - sgSlot.m.getExplosiveResistance();
-      shieldExplDRStart = shieldExplRes * 0.7;
-      shieldExplDREnd = 0;
-      shieldKinRes = 1 - sgSlot.m.getKineticResistance();
-      shieldKinDRStart = shieldKinRes * 0.7;
-      shieldKinDREnd = 0;
-      shieldThermRes = 1 - sgSlot.m.getThermalResistance();
-      shieldThermDRStart = shieldThermRes * 0.7;
-      shieldThermDREnd = 0;
-
-      // Shield from boosters
-      for (let slot of this.hardpoints) {
-        if (slot.enabled && slot.m && slot.m.grp == 'sb') {
-          shieldBoost += slot.m.getShieldBoost();
-          shieldExplRes *= (1 - slot.m.getExplosiveResistance());
-          shieldKinRes *= (1 - slot.m.getKineticResistance());
-          shieldThermRes *= (1 - slot.m.getThermalResistance());
-        }
-      }
-    }
-
-    // We apply diminishing returns to the boosted value
-    shieldBoost = Math.min(shieldBoost, (1 - Math.pow(Math.E, -0.7 * shieldBoost)) * 2.5);
-
-    shield = shield * shieldBoost;
-    
-    this.shield = shield;
-    this.shieldExplRes = shieldExplRes ? 1 - this.diminishingReturns(shieldExplRes, shieldExplDREnd, shieldExplDRStart) : null;
-    this.shieldKinRes = shieldKinRes ? 1 - this.diminishingReturns(shieldKinRes, shieldKinDREnd, shieldKinDRStart) : null;
-    this.shieldThermRes = shieldThermRes ? 1 - this.diminishingReturns(shieldThermRes, shieldThermDREnd, shieldThermDRStart) : null;
-
+    this.shield = metrics.generator ? metrics.generator + metrics.boosters : 0;
+    this.shieldExplRes = this.shield > 0 ? 1 - metrics.explosive.total : null;
+    this.shieldKinRes = this.shield > 0 ?  1 - metrics.kinetic.total : null;
+    this.shieldThermRes = this.shield > 0 ?  1 - metrics.thermal.total : null;
     return this;
   }
 
@@ -1679,11 +1643,11 @@ export default class Ship {
     let mass = this.hullMass;
     mass += m.pp ? m.pp.getMass() : ModuleUtils.standard(0, '2D').getMass();
     mass += m.th ? m.th.getMass() : ModuleUtils.standard(1, '2D').getMass();
-    mass += m.fsd ? m.fsd.getMass() : ModuleUtils.standard(2, this.standard[2].maxClass + 'D').getMass();
+    mass += m.fsd ? m.fsd.getMass() : ModuleUtils.standard(2, '2D').getMass();
     mass += m.ls ? m.ls.getMass() : ModuleUtils.standard(3, this.standard[3].maxClass + 'D').getMass() * 0.3; // Lightweight grade 4 mod reduces mass by up to 70%
-    mass += m.pd ? m.pd.getMass() : ModuleUtils.standard(4, '2D').getMass();
-    mass += m.s ? m.s.getMass() : ModuleUtils.standard(5, this.standard[5].maxClass + 'D').getMass();
-    mass += m.ft ? m.ft.getMass() : ModuleUtils.standard(6, '1C').getMass();
+    mass += m.pd ? m.pd.getMass() : ModuleUtils.standard(4, '1D').getMass();
+    mass += m.s ? m.s.getMass() : ModuleUtils.standard(5, this.standard[5].maxClass + 'D').getMass() * 0.2; // Lightweight grade 5 mod reduces mass by up to 80%
+    // Ignore fuel tank as it could be empty
     return mass;
   }
 

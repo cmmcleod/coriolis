@@ -3,6 +3,7 @@ import { Modifications, Modules, Ships } from 'coriolis-data/dist';
 import Module from '../shipyard/Module';
 import Ship from '../shipyard/Ship';
 import { getBlueprint } from '../utils/BlueprintFunctions';
+import * as ModuleUtils from '../shipyard/ModuleUtils';
 
 // mapping from fd's ship model names to coriolis'
 const SHIP_FD_NAME_TO_CORIOLIS_NAME = {
@@ -378,7 +379,7 @@ function _addModifications(module, modifiers, blueprint, grade) {
   
   // Shield generator resistance is actually a damage modifier, so needs to be inverted.
   // In addition, the modification is based off the inherent resistance of the module
-  if (module.isShieldGenerator()) {
+  if (ModuleUtils.isShieldGenerator(module.grp)) {
     if (module.getModValue('explres')) {
       module.setModValue('explres', ((1 - (1 - module.explres) * (1 + module.getModValue('explres') / 10000)) - module.explres) * 10000);
     }

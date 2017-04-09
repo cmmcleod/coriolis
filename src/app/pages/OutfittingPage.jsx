@@ -267,15 +267,29 @@ export default class OutfittingPage extends Page {
    */
   _opponentUpdated(opponent, opponentBuild) {
     const opponentShip  = new Ship(opponent, Ships[opponent].properties, Ships[opponent].slots);
+    let opponentSys = this.state.opponentSys;
+    let opponentEng = this.state.opponentEng;
+    let opponentWep = this.state.opponentWep;
     if (opponentBuild && Persist.getBuild(opponent, opponentBuild)) {
       // Ship is a particular build
       opponentShip.buildFrom(Persist.getBuild(opponent, opponentBuild));
+      // Set pips for opponent
+      const opponentParts = Persist.getBuild(opponent, opponentBuild).split('.');
+      if (opponentParts.length >= 5) {
+        const opponentControl = LZString.decompressFromBase64(Utils.fromUrlSafe(opponentParts[4])).split('/');
+        opponentSys = parseFloat(opponentControl[0]);
+        opponentEng = parseFloat(opponentControl[1]);
+        opponentWep = parseFloat(opponentControl[2]);
+      }
     } else {
       // Ship is a stock build
       opponentShip.buildWith(Ships[opponent].defaults);
+      opponentSys = 2;
+      opponentEng = 2;
+      opponentWep = 2;
     }
 
-    this.setState({ opponent: opponentShip, opponentBuild }, () =>  this._updateRouteOnControlChange());
+    this.setState({ opponent: opponentShip, opponentBuild, opponentSys, opponentEng, opponentWep }, () =>  this._updateRouteOnControlChange());
   }
 
   /**
@@ -531,11 +545,11 @@ export default class OutfittingPage extends Page {
     const _pStr = `${ship.getPowerEnabledString()}${ship.getPowerPrioritiesString()}`;
     const _mStr = ship.getModificationsString();
 
-    const standardSlotMarker = `${ship.name}${_sStr}${_pStr}${_mStr}`;
+    const standardSlotMarker = `${ship.name}${_sStr}${_pStr}${_mStr}${ship.ladenMass}${cargo}${fuel}`;
     const internalSlotMarker = `${ship.name}${_iStr}${_pStr}${_mStr}`;
     const hardpointsSlotMarker = `${ship.name}${_hStr}${_pStr}${_mStr}`;
-    const boostMarker = `${ship.canBoost()}`;
-    const shipSummaryMarker = `${ship.name}${_sStr}${_iStr}${_hStr}${_pStr}${_mStr}`;
+    const boostMarker = `${ship.canBoost(cargo, fuel)}`;
+    const shipSummaryMarker = `${ship.name}${_sStr}${_iStr}${_hStr}${_pStr}${_mStr}${ship.ladenMass}${ship.cargo}${ship.fuel}`;
 
     return (
       <div id='outfit' className={'page'} style={{ fontSize: (sizeRatio * 0.9) + 'em' }}>
@@ -571,8 +585,8 @@ export default class OutfittingPage extends Page {
         </div>
 
         {/* Main tables */}
-        <ShipSummaryTable ship={ship} marker={shipSummaryMarker} />
-        <StandardSlotSection ship={ship} code={standardSlotMarker} onChange={shipUpdated} currentMenu={menu} />
+        <ShipSummaryTable ship={ship} fuel={fuel} cargo={cargo} marker={shipSummaryMarker} />
+        <StandardSlotSection ship={ship} fuel={fuel} cargo={cargo} code={standardSlotMarker} onChange={shipUpdated} currentMenu={menu} />
         <InternalSlotSection ship={ship} code={internalSlotMarker} onChange={shipUpdated} currentMenu={menu} />
         <HardpointSlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} currentMenu={menu} />
         <UtilitySlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} currentMenu={menu} />
