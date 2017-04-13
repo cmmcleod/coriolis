@@ -6,3 +6,4 @@ nginx.pid
 .idea
 /bin
 env
+*.swp

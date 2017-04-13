@@ -2,6 +2,8 @@ import React from 'react';
 import { Modifications, Modules, Ships } from 'coriolis-data/dist';
 import Module from '../shipyard/Module';
 import Ship from '../shipyard/Ship';
+import { getBlueprint } from '../utils/BlueprintFunctions';
+import * as ModuleUtils from '../shipyard/ModuleUtils';
 
 // mapping from fd's ship model names to coriolis'
 const SHIP_FD_NAME_TO_CORIOLIS_NAME = {
@@ -129,9 +131,15 @@ export function shipFromJson(json) {
   let ship = new Ship(shipModel, shipTemplate.properties, shipTemplate.slots);
   ship.buildWith(null);
 
-  // Set the cargo hatch.  We don't have any information on it so guess it's priority 5 and disabled
-  ship.cargoHatch.enabled = false;
-  ship.cargoHatch.priority = 4;
+  // Set the cargo hatch
+  if (json.modules.CargoHatch) {
+    ship.cargoHatch.enabled = json.modules.CargoHatch.module.on == true;
+    ship.cargoHatch.priority = json.modules.CargoHatch.module.priority;
+  } else {
+    // We don't have any information on it so guess it's priority 5 and disabled
+    ship.cargoHatch.enabled = false;
+    ship.cargoHatch.priority = 4;
+  }
   
   // Add the bulkheads
   const armourJson = json.modules.Armour.module;
@@ -335,9 +343,9 @@ function _addModifications(module, modifiers, blueprint, grade) {
     }
   }
 
-  // Add the blueprint ID, grade and special
+  // Add the blueprint definition, grade and special
   if (blueprint) {
-    module.blueprint = Object.assign({}, Modifications.blueprints[blueprint]);
+    module.blueprint = getBlueprint(blueprint, module);
     if (grade) {
       module.blueprint.grade = Number(grade);
     }
@@ -371,7 +379,7 @@ function _addModifications(module, modifiers, blueprint, grade) {
   
   // Shield generator resistance is actually a damage modifier, so needs to be inverted.
   // In addition, the modification is based off the inherent resistance of the module
-  if (module.isShieldGenerator()) {
+  if (ModuleUtils.isShieldGenerator(module.grp)) {
     if (module.getModValue('explres')) {
       module.setModValue('explres', ((1 - (1 - module.explres) * (1 + module.getModValue('explres') / 10000)) - module.explres) * 10000);
     }
@@ -384,15 +392,16 @@ function _addModifications(module, modifiers, blueprint, grade) {
   }
 
   // Hull reinforcement package resistance is actually a damage modifier, so needs to be inverted.
+  // In addition, the modification is based off the inherent resistance of the module
   if (module.grp === 'hr') {
     if (module.getModValue('explres')) {
-      module.setModValue('explres', ((module.getModValue('explres') / 10000) * -1) * 10000);
+      module.setModValue('explres', ((1 - (1 - module.explres) * (1 + module.getModValue('explres') / 10000)) - module.explres) * 10000);
     }
     if (module.getModValue('kinres')) {
-      module.setModValue('kinres', ((module.getModValue('kinres') / 10000) * -1) * 10000);
+      module.setModValue('kinres', ((1 - (1 - module.kinres) * (1 + module.getModValue('kinres') / 10000)) - module.kinres) * 10000);
     }
     if (module.getModValue('thermres')) {
-      module.setModValue('thermres', ((module.getModValue('thermres') / 10000) * -1) * 10000);
+      module.setModValue('thermres', ((1 - (1 - module.thermres) * (1 + module.getModValue('thermres') / 10000)) - module.thermres) * 10000);
     }
   }
   
@@ -424,5 +433,11 @@ function _addModifications(module, modifiers, blueprint, grade) {
   // FD uses interval between bursts internally, so we need to translate this to a real rate of fire
   if (module.getModValue('rof')) {
     module.setModValue('rof', ((1 / (1 + module.getModValue('rof') / 10000)) - 1) * 10000);
+  }
+
+  // Clip size is rounded up so that the result is a whole number
+  if (module.getModValue('clip')) {
+    const individual = 1 / (module.clip || 1);
+    module.setModValue('clip', Math.ceil((module.getModValue('clip') / 10000) / individual) * individual * 10000);
   }
 }

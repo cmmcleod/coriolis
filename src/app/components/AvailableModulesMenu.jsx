@@ -1,4 +1,5 @@
 import React from 'react';
+import * as ModuleUtils from '../shipyard/ModuleUtils';
 import { findDOMNode } from 'react-dom';
 import TranslatedComponent from './TranslatedComponent';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
@@ -41,6 +42,8 @@ const GRPCAT = {
   'mr': 'ordnance',
   'tp': 'ordnance',
   'nl': 'ordnance',
+  'sc': 'scanners',
+  'ss': 'scanners',
   // Utilities
   'cs': 'scanners',
   'kw': 'scanners',
@@ -60,7 +63,6 @@ const CATEGORIES = {
   'limpet controllers': ['cc', 'fx', 'hb', 'pc'],
   'passenger cabins': ['pce', 'pci', 'pcm', 'pcq'],
   'rf': ['rf'],
-  'sc': ['sc'],
   'shields': ['sg', 'bsg', 'psg', 'scb'],
   'structural reinforcement': ['hr', 'mrp'],
   'dc': ['dc'],
@@ -72,7 +74,7 @@ const CATEGORIES = {
   'sb': ['sb'],
   'hs': ['hs'],
   'defence': ['ch', 'po', 'ec'],
-  'scanners': ['cs', 'kw', 'ws'],
+  'scanners': ['sc', 'ss', 'cs', 'kw', 'ws'], // Overloaded with internal scanners
 };
 
 /**
@@ -212,7 +214,14 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     for (let i = 0; i < sortedModules.length; i++) {
       let m = sortedModules[i];
       let mount = null;
-      let disabled = m.maxmass && (mass + (m.mass ? m.mass : 0)) > m.maxmass;
+      let disabled = false;
+      if (ModuleUtils.isShieldGenerator(m.grp)) {
+        // Shield generators care about maximum hull mass
+        disabled = mass > m.maxmass;
+      } else if (m.maxmass) {
+        // Thrusters care about total mass
+        disabled = mass + m.mass > m.maxmass;
+      }
       let active = mountedModule && mountedModule.id === m.id;
       let classes = cn(m.name ? 'lc' : 'c', {
         warning: !disabled && warningFunc && warningFunc(m),

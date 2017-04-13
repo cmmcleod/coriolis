@@ -1,9 +1,9 @@
 import React from 'react';
 import cn from 'classnames';
-import { isShieldGenerator } from '../shipyard/ModuleUtils';
 import Module from '../shipyard/Module';
 import { Infinite } from '../components/SvgIcons';
 import Persist from '../stores/Persist';
+import * as ModuleUtils from '../shipyard/ModuleUtils';
 
 /**
  * Determine if a slot on a ship can mount a module of a particular class and group
@@ -155,12 +155,12 @@ export function diffDetails(language, m, mm) {
     if (mPowerUsage != mmPowerUsage) propDiffs.push(<div key='power'>{translate('power')}: <span className={diffClass(mPowerUsage, mmPowerUsage, true)}>{diff(formats.round, mPowerUsage, mmPowerUsage)}{units.MJ}</span></div>);
   }
 
-  let mDps = m.damage * (m.rpshot || 1) * (m.rof || 1) || 0;
+  let mDps = m.damage * (m.rpshot || 1) * (m.rof || 1);
   let mmDps = mm ? mm.getDps() || 0 : 0;
-  if (mDps != mmDps) propDiffs.push(<div key='dps'>{translate('dps')}: <span className={diffClass(mmDps, mDps, true)}>{diff(formats.round, mDps, mmDps)}</span></div>);
+  if (mDps && mDps != mmDps) propDiffs.push(<div key='dps'>{translate('dps')}: <span className={diffClass(mmDps, mDps, true)}>{diff(formats.round, mDps, mmDps)}</span></div>);
 
-  let mAffectsShield = isShieldGenerator(m.grp)  || m.grp == 'sb';
-  let mmAffectsShield = isShieldGenerator(mm ? mm.grp : null) || mm && mm.grp == 'sb';
+  let mAffectsShield = ModuleUtils.isShieldGenerator(m.grp)  || m.grp == 'sb';
+  let mmAffectsShield = mm ? ModuleUtils.isShieldGenerator(m.grp) || mm.grp == 'sb' : false;
   if (mAffectsShield || mmAffectsShield) {
     let shield = this.calcShieldStrengthWith(); // Get shield strength regardless of slot active / inactive
     let newShield = 0;
@@ -187,12 +187,12 @@ export function diffDetails(language, m, mm) {
     if (mProtection != mmProtection) {
       propDiffs.push(<div key='protection'>{translate('protection')}: <span className={diffClass(mmProtection, mProtection, true)}>{diff(formats.pct, mProtection, mmProtection)}</span></div>);
     }
+  }
 
-    let mIntegrity = m.integrity;
-    let mmIntegrity = mm ? mm.getIntegrity() || 0 : 0;
-    if (mIntegrity != mmIntegrity) {
-      propDiffs.push(<div key='integrity'>{translate('integrity')}: <span className={diffClass(mmIntegrity, mIntegrity, true)}>{diff(formats.round, mIntegrity, mmIntegrity)}</span></div>);
-    }
+  if (m.grp === 'hr') {
+    let mHullReinforcement = m.hullreinforcement;
+    let mmHullReinforcement = mm ? mm.getHullReinforcement() || 0 : 0;
+    if (mHullReinforcement && mHullReinforcement != mmHullReinforcement) propDiffs.push(<div key='hullreinforcement'>{translate('hullreinforcement')}: <span className={diffClass(mmHullReinforcement, mHullReinforcement, true)}>{diff(formats.round, mHullReinforcement, mmHullReinforcement)}</span></div>);
   }
 
   if (m.grp == 'pd') {
@@ -243,5 +243,11 @@ export function diffDetails(language, m, mm) {
     }
   }
 
-  return propDiffs ? <div className='cap' style={{ whiteSpace: 'nowrap' }}>{propDiffs}</div> : null;
+  let mIntegrity = m.integrity || 0;
+  let mmIntegrity = mm ? mm.getIntegrity() || 0 : 0;
+  if (mIntegrity != mmIntegrity) {
+    propDiffs.push(<div key='integrity'>{translate('integrity')}: <span className={diffClass(mmIntegrity, mIntegrity, true)}>{diff(formats.round, mIntegrity, mmIntegrity)}</span></div>);
+  }
+
+  return propDiffs.length > 0 ? <div className='cap' style={{ whiteSpace: 'nowrap' }}>{propDiffs}</div> : null;
 }

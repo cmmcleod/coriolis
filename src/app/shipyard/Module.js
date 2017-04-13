@@ -48,7 +48,7 @@ export default class Module {
         // this special effect modifies our returned value
         const modification = Modifications.modifications[name];
         if (modification.method === 'additive') {
-          result = result + modifierActions[name];
+          result = result + modifierActions[name] * 100;
         } else if (modification.method === 'overwrite') {
           result = modifierActions[name];
         } else {
@@ -160,14 +160,6 @@ export default class Module {
     }
 
     return result;
-  }
-
-  /**
-   * Return true if this is a shield generator
-   * @return {Boolean} if this is a shield generator
-   */
-  isShieldGenerator() {
-    return (this.grp === 'sg' || this.grp === 'psg' || this.grp === 'bsg');
   }
 
   /**
@@ -342,6 +334,14 @@ export default class Module {
    */
   getRangeT() {
     return this._getModifiedValue('ranget');
+  }
+
+  /**
+   * Get the scan time for this module, taking in to account modifications
+   * @return {Number} the scan time of this module
+   */
+  getScanTime() {
+    return this._getModifiedValue('scantime');
   }
 
   /**
@@ -546,10 +546,10 @@ export default class Module {
   getEps() {
     // EPS is a synthetic value
     let distdraw = this.getDistDraw();
-    let rpshot = this.roundspershot || 1;
+    // We don't use rpshot here as dist draw is per combined shot
     let rof = this.getRoF() || 1;
 
-    return distdraw * rpshot * rof;
+    return distdraw * rof;
   }
 
   /**
@@ -559,10 +559,10 @@ export default class Module {
   getHps() {
     // HPS is a synthetic value
     let heat = this.getThermalLoad();
-    let rpshot = this.roundspershot || 1;
+    // We don't use rpshot here as dist draw is per combined shot
     let rof = this.getRoF() || 1;
 
-    return heat * rpshot * rof;
+    return heat * rof;
   }
 
   /**
@@ -670,14 +670,6 @@ export default class Module {
    */
   getRebuildsPerBay() {
     return this._getModifiedValue('rebuildsperbay');
-  }
-
-  /**
-   * Get the cells for this module, taking in to account modifications
-   * @return {Number} the cells for this module
-   */
-  getCells() {
-    return this._getModifiedValue('cells');
   }
 
   /**

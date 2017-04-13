@@ -1,7 +1,6 @@
 import React from 'react';
 import TranslatedComponent from './TranslatedComponent';
 import { Ships } from 'coriolis-data/dist';
-import ShipSelector from './ShipSelector';
 import { nameComparator } from '../utils/SlotFunctions';
 import LineChart from '../components/LineChart';
 import Slider from '../components/Slider';
@@ -13,10 +12,13 @@ import * as Calc from '../shipyard/Calculations';
  * Engine profile for a given ship
  */
 export default class EngineProfile extends TranslatedComponent {
-  static PropTypes = {
+  static propTypes = {
     ship: React.PropTypes.object.isRequired,
-    chartWidth: React.PropTypes.number.isRequired,
-    code: React.PropTypes.string.isRequired
+    cargo: React.PropTypes.number.isRequired,
+    fuel: React.PropTypes.number.isRequired,
+    eng: React.PropTypes.number.isRequired,
+    boost: React.PropTypes.bool.isRequired,
+    marker: React.PropTypes.string.isRequired
   };
 
   /**
@@ -30,8 +32,7 @@ export default class EngineProfile extends TranslatedComponent {
     const ship = this.props.ship;
 
     this.state = {
-      cargo: ship.cargoCapacity,
-      calcMaxSpeedFunc: this._calcMaxSpeed.bind(this, ship)
+      calcMaxSpeedFunc: this.calcMaxSpeed.bind(this, ship, this.props.eng, this.props.boost)
     };
   }
 
@@ -42,36 +43,23 @@ export default class EngineProfile extends TranslatedComponent {
    * @return {boolean}            Returns true if the component should be rerendered
    */
   componentWillReceiveProps(nextProps, nextContext) {
-    if (nextProps.code != this.props.code) {
-      this.setState({ cargo: nextProps.ship.cargoCapacity, calcMaxSpeedFunc: this._calcMaxSpeed.bind(this, nextProps.ship) });
+    if (nextProps.marker != this.props.marker) {
+      this.setState({ calcMaxSpeedFunc: this.calcMaxSpeed.bind(this, nextProps.ship, nextProps.eng, nextProps.boost) });
     }
     return true;
   }
 
   /**
-   * Calculate the maximum speed for this ship across its applicable mass
+   * Calculate the top speed for this ship given thrusters, mass and pips to ENG
    * @param  {Object}  ship          The ship
+   * @param  {Object}  eng           The number of pips to ENG
+   * @param  {Object}  boost         If boost is enabled
    * @param  {Object}  mass          The mass at which to calculate the top speed
    * @return {number}                The maximum speed
    */
-  _calcMaxSpeed(ship, mass) {
-    // Obtain the thrusters for this ship
-    const thrusters = ship.standard[1].m;
-
+  calcMaxSpeed(ship, eng, boost, mass) {
     // Obtain the top speed
-    return Calc.speed(mass, ship.speed, thrusters, ship.engpip)[4];
-  }
-
-  /**
-   * Update cargo level
-   * @param  {number} cargoLevel Cargo level 0 - 1
-   */
-  _cargoChange(cargoLevel) {
-    let ship = this.props.ship;
-    let cargo = Math.round(ship.cargoCapacity * cargoLevel);
-    this.setState({
-      cargo
-    });
+    return Calc.calcSpeed(mass, ship.speed, ship.standard[1].m, ship.pipSpeed, eng, ship.boost / ship.speed, boost);
   }
 
   /**
@@ -81,70 +69,37 @@ export default class EngineProfile extends TranslatedComponent {
   render() {
     const { language, onWindowResize, sizeRatio, tooltip, termtip } = this.context;
     const { formats, translate, units } = language;
-    const { ship } = this.props;
-    const { cargo } = this.state;
+    const { ship, cargo, eng, fuel, boost } = this.props;
 
     // Calculate bounds for our line chart
     const thrusters = ship.standard[1].m;
-    const minMass = thrusters.getMinMass();
+    const minMass = ship.calcLowestPossibleMass({ th: thrusters });
     const maxMass = thrusters.getMaxMass();
-    const minSpeed = Calc.speed(maxMass, ship.speed, thrusters, ship.engpip)[4];
-    const maxSpeed = Calc.speed(minMass, ship.speed, thrusters, ship.engpip)[4];
-    let mass = ship.unladenMass + ship.fuelCapacity + cargo;
-    let mark;
-    if (mass < minMass) {
-      mark = minMass;
-    } else if (mass > maxMass) {
-      mark = maxMass;
-    } else {
-      mark = mass;
-    }
+    const mass = ship.unladenMass + fuel + cargo;
+    const minSpeed = Calc.calcSpeed(maxMass, ship.speed, thrusters, ship.pipSpeed, 0, ship.boost / ship.speed, false);
+    const maxSpeed = Calc.calcSpeed(minMass, ship.speed, thrusters, ship.pipSpeed, 4, ship.boost / ship.speed, true);
+    // Add a mark at our current mass
+    const mark = Math.min(mass, maxMass);
 
-    const cargoPercent = cargo / ship.cargoCapacity;
+    const code = `${ship.toString()}:${cargo}:${fuel}:${eng}:${boost}`;
 
-    const code = ship.toString() + '.' + ship.getModificationsString() + '.' + ship.getPowerEnabledString();
-
-    // This graph has a precipitous fall-off so we use lots of points to make it look a little smoother
+    // This graph can have a precipitous fall-off so we use lots of points to make it look a little smoother
     return (
-      <span>
-        <h1>{translate('engine profile')}</h1>
-        <LineChart
-          width={this.props.chartWidth}
-          xMin={minMass}
-          xMax={maxMass}
-          yMin={minSpeed}
-          yMax={maxSpeed}
-          xMark={mark}
-          xLabel={translate('mass')}
-          xUnit={translate('T')}
-          yLabel={translate('maximum speed')}
-          yUnit={translate('m/s')}
-          func={this.state.calcMaxSpeedFunc}
-          points={1000}
-          code={code}
-        />
-        {ship.cargoCapacity ? 
-        <span>
-          <h3>{translate('cargo carried')}: {formats.int(cargo)}{units.T}</h3>
-          <table style={{ width: '100%', lineHeight: '1em', backgroundColor: 'transparent' }}>
-            <tbody >
-              <tr>
-                <td>
-                  <Slider
-                    axis={true}
-                    onChange={this._cargoChange.bind(this)}
-                    axisUnit={translate('T')}
-                    percent={cargoPercent}
-                    max={ship.cargoCapacity}
-                    scale={sizeRatio}
-                    onResize={onWindowResize}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </span> : '' }
-      </span>
+      <LineChart
+        xMin={minMass}
+        xMax={maxMass}
+        yMin={minSpeed}
+        yMax={maxSpeed}
+        xMark={mark}
+        xLabel={translate('mass')}
+        xUnit={translate('T')}
+        yLabel={translate('maximum speed')}
+        yUnit={translate('m/s')}
+        func={this.state.calcMaxSpeedFunc}
+        points={1000}
+        code={code}
+        aspect={0.7}
+      />
     );
   }
 }

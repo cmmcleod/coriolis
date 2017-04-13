@@ -95,7 +95,7 @@ export default class StandardSlotSection extends SlotSection {
    * @return {Array} Array of Slots
    */
   _getSlots() {
-    let { ship, currentMenu } = this.props;
+    let { ship, currentMenu, cargo, fuel } = this.props;
     let slots = new Array(8);
     let open = this._openMenu;
     let select = this._selectModule;
@@ -135,7 +135,7 @@ export default class StandardSlotSection extends SlotSection {
       selected={currentMenu == st[1]}
       onChange={this.props.onChange}
       ship={ship}
-      warning={m => m instanceof Module ? m.getMaxMass() < (ship.ladenMass - st[1].mass + m.mass) : m.maxmass < (ship.ladenMass - st[1].mass + m.mass)}
+      warning={m => m instanceof Module ? m.getMaxMass() < (ship.unladenMass + cargo + fuel - st[1].m.mass + m.mass) : m.maxmass < (ship.unladenMass + cargo + fuel - st[1].m.mass + m.mass)}
     />;
 
 
@@ -170,7 +170,7 @@ export default class StandardSlotSection extends SlotSection {
       selected={currentMenu == st[4]}
       onChange={this.props.onChange}
       ship={ship}
-      warning={m => m instanceof Module ? m.getEnginesCapacity() < ship.boostEnergy : m.engcap < ship.boostEnergy}
+      warning={m => m instanceof Module ? m.getEnginesCapacity() <= ship.boostEnergy : m.engcap <= ship.boostEnergy}
     />;
 
     slots[6] = <StandardSlot

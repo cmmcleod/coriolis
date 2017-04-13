@@ -230,16 +230,16 @@
         },
         "armour": {
           "description":  "Sum of base armour + any hull reinforcements",
-          "type":         "integer",
+          "type":         "number",
           "minimum":      1
         },
         "armourAdded":{
           "description":  "Armour added through Hull reinforcement",
-          "type":         "integer",
+          "type":         "number",
           "minimum":      0
         },
         "baseShieldStrength": {
-          "type":         "integer",
+          "type":         "number",
           "minimum":      1
         },
         "baseArmour":  {
