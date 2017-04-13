@@ -234,6 +234,7 @@ export const terms = {
   reload: 'Reload',
   rof: 'Rate of fire',
   angle: 'Scan angle',
+  scanrate: 'Scan rate',
   scantime: 'Scan time',
   shield: 'Shield',
   shieldboost: 'Shield boost',

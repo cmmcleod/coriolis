@@ -1,3 +1,7 @@
+#2.3.1
+  * Use scan range for DSS rather than scan time
+  * Fix companion API import of Dolphin
+
 #2.3.0
   * Make scan time visible on scanners where available
   * Update power distributor able-to-boost calculation to take fractional MJ values in to account
