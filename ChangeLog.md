@@ -23,6 +23,25 @@
     * Defence section provides details of your build's defences against your selected opponent. It provides details of the effectiveness of your resistances of both shields and armour, and effective strength of each as a result. It also provides key metrics around shield longevity and recovery times, as well as module protection
   * Fix power band marker to show safe power limit at 40% rather than 50%
   * Restyle blueprint list to improve consistency with similar menus
+  * Use coriolis-data 2.3.0:
+    * Add Dolphin
+    * Add turreted mining lasers
+    * Add long range / wide angle / fast scan scanner blueprints
+    * Fix EDDB IDs for class 5 and 7 fighter hangars for correct shopping list
+    * Fix cost for rocket-propelled FSD disruptor
+    * Add module names for blueprints
+    * Fix erroneous value for grade 5 kinetic shield booster
+    * Add missing integrity values for some modules
+    * Update module reinforcement package integrity
+    * Update specs of Beluga as per 2.3
+    * Update specs of Asp Scout as per 2.3
+    * Update specs of Diamondback Explorer as per 2.3
+    * Add ED ID for Rocket Propelled FSD Disruptor
+    * Fix ED name for target lock breaker special
+    * Update scan range and angle information for sensors
+    * Tidy up shield cell bank information to allow for accurate calculations with modifications
+    * Update mine launcher stats
+    * Add appropriate engineers to per-module blueprint information
 
 #2.2.19
   * Power management panel now displays modules in descending order of power usage by default
