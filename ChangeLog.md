@@ -1,6 +1,11 @@
-#2.3.1
+#2.3.2
   * Use scan range for DSS rather than scan time
   * Fix companion API import of Dolphin
+  * Use coriolis-data 2.3.2:
+    * Separate scan time and scan range
+    * Add Frontier IDs for new items in 2.3
+    * Update ownership of module blueprints for sensors and scanners
+    * Update railgun penetration
 
 #2.3.0
   * Make scan time visible on scanners where available
