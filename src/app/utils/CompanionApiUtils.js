@@ -17,6 +17,7 @@ const SHIP_FD_NAME_TO_CORIOLIS_NAME = {
   'Cutter': 'imperial_cutter',
   'DiamondBackXL': 'diamondback_explorer',
   'DiamondBack': 'diamondback',
+  'Dolphin': 'dolphin',
   'Eagle': 'eagle',
   'Empire_Courier': 'imperial_courier',
   'Empire_Eagle': 'imperial_eagle',
