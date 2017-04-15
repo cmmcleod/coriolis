@@ -1,3 +1,7 @@
+#2.3.3
+  * Remove unused blueprint when hitting reset
+  * Add 'purchase module' external link to EDDB for refit items
+
 #2.3.2
   * Use scan range for DSS rather than scan time
   * Fix companion API import of Dolphin
