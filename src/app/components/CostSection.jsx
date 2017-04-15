@@ -6,6 +6,7 @@ import Ship from '../shipyard/Ship';
 import { Insurance } from '../shipyard/Constants';
 import { slotName, slotComparator } from '../utils/SlotFunctions';
 import TranslatedComponent from './TranslatedComponent';
+import { ShoppingIcon } from '../components/SvgIcons';
 
 /**
  * Cost Section
@@ -31,6 +32,7 @@ export default class CostSection extends TranslatedComponent {
     this._buildRetrofitShip = this._buildRetrofitShip.bind(this);
     this._onBaseRetrofitChange = this._onBaseRetrofitChange.bind(this);
     this._defaultRetrofitName = this._defaultRetrofitName.bind(this);
+    this._eddbShoppingList = this._eddbShoppingList.bind(this);
 
     let data = Ships[props.ship.id];   // Retrieve the basic ship properties, slots and defaults
     let retrofitName = this._defaultRetrofitName(props.ship.id, props.buildName);
@@ -326,11 +328,28 @@ export default class CostSection extends TranslatedComponent {
   }
 
   /**
+   * Open up a window for EDDB with a shopping list of our retrofit components
+   */
+  _eddbShoppingList() {
+    const { retrofitCosts } = this.state;
+    const { ship } = this.props;
+
+console.log(`retrofitCosts is ${JSON.stringify(retrofitCosts, null, 2)}`);
+    // Provide unique list of non-PP module EDDB IDs to buy
+    const modIds = retrofitCosts.filter(item => item.retroItem.incCost && item.buyId && !item.buyPp).map(item => item.buyId).filter((v, i, a) => a.indexOf(v) === i);
+console.log(`modIds is ${JSON.stringify(modIds)}`);
+
+    // Open up the relevant URL
+    window.open('https://eddb.io/station?m=' + modIds.join(','));
+  }
+
+  /**
    * Render the retofit tab
    * @return {React.Component} Tab contents
    */
   _retrofitTab() {
     let { retrofitTotal, retrofitCosts, moduleDiscount, retrofitName } = this.state;
+    const { termtip, tooltip } = this.context;
     let { translate, formats, units } = this.context.language;
     let int = formats.int;
     let rows = [], options = [<option key='stock' value=''>{translate('Stock')}</option>];
@@ -370,7 +389,8 @@ export default class CostSection extends TranslatedComponent {
           <tbody>
             {rows}
             <tr className='ri'>
-              <td colSpan='4' className='lbl' >{translate('cost')}</td>
+              <td className='lbl' ><button onClick={this._eddbShoppingList} onMouseOver={termtip.bind(null, 'PHRASE_REFIT_SHOPPING_LIST')} onMouseOut={tooltip.bind(null, null)}><ShoppingIcon className='lg' style={{ fill: 'black' }}/></button></td>
+              <td colSpan='3' className='lbl' >{translate('cost')}</td>
               <td colSpan='2' className={cn('val', retrofitTotal > 0 ? 'warning' : 'secondary-disabled')} style={{ borderBottom:'none' }}>
                 {int(retrofitTotal)}{units.CR}
               </td>
@@ -403,6 +423,8 @@ export default class CostSection extends TranslatedComponent {
     if (ship.bulkheads.m.index != retrofitShip.bulkheads.m.index) {
       item = {
         buyClassRating: ship.bulkheads.m.class + ship.bulkheads.m.rating,
+        buyId: ship.bulkheads.m.eddbID,
+        buyPp: ship.bulkheads.m.pp,
         buyName: ship.bulkheads.m.name,
         sellClassRating: retrofitShip.bulkheads.m.class + retrofitShip.bulkheads.m.rating,
         sellName: retrofitShip.bulkheads.m.name,
@@ -424,6 +446,8 @@ export default class CostSection extends TranslatedComponent {
         if (modId != retroModId) {
           item = { netCost: 0, retroItem: retroSlotGroup[i] };
           if (slotGroup[i].m) {
+            item.buyId = slotGroup[i].m.eddbID,
+            item.buyPp = slotGroup[i].m.pp,
             item.buyName = slotGroup[i].m.name || slotGroup[i].m.grp;
             item.buyClassRating = slotGroup[i].m.class + slotGroup[i].m.rating;
             item.netCost = slotGroup[i].discountedCost;

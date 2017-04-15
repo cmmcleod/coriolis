@@ -38,6 +38,7 @@ export const terms = {
   PHRASE_SELECT_SPECIAL: 'Click to select an experimental effect',
   PHRASE_NO_SPECIAL: 'No experimental effect',
   PHRASE_SHOPPING_LIST: 'Stations that sell this build',
+  PHRASE_REFIT_SHOPPING_LIST: 'Stations that sell required modules',
   PHRASE_TOTAL_EFFECTIVE_SHIELD: 'Total amount of damage that can be taken from each damage type, if using all shield cells',
   PHRASE_TIME_TO_LOSE_SHIELDS: 'Shields will hold for',
   PHRASE_TIME_TO_RECOVER_SHIELDS: 'Shields will recover in',
