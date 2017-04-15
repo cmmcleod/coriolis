@@ -130,10 +130,10 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _blueprintSelected(fdname, grade) {
     this.context.tooltip(null);
-    const { m } = this.props;
+    const { m, ship } = this.props;
     const blueprint = getBlueprint(fdname, m);
     blueprint.grade = grade;
-    m.blueprint = blueprint;
+    ship.setModuleBlueprint(m, blueprint);
 
     this.setState({ blueprintMenuOpened: false });
     this.props.onChange();
@@ -155,15 +155,10 @@ export default class ModificationsMenu extends TranslatedComponent {
     this.context.tooltip(null);
     const { m, ship } = this.props;
 
-    if (m.blueprint) { 
-      if (special === null) {
-        m.blueprint.special = null;
-      } else {
-        m.blueprint.special = Modifications.specials[special];
-      }
-      ship.recalculateDps();
-      ship.recalculateHps();
-      ship.recalculateEps();
+    if (special === null) {
+      ship.clearModuelSpecial(m);
+    } else {
+      ship.setModuleSpecial(m, Modifications.specials[special]);
     }
 
     this.setState({ specialMenuOpened: false });
@@ -268,7 +263,7 @@ export default class ModificationsMenu extends TranslatedComponent {
   _reset() {
     const { m, ship } = this.props;
     ship.clearModifications(m);
-    ship.clearBlueprint(m);
+    ship.clearModuleBlueprint(m);
 
     this.props.onChange();
   }
@@ -294,7 +289,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     let blueprintLabel;
     let haveBlueprint = false;
     let blueprintTt;
-    if (m.blueprint && !isEmpty(m.blueprint)) {
+    if (m.blueprint && m.blueprint.name) {
       blueprintLabel = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
       haveBlueprint = true;
       blueprintTt  = blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade], Modifications.modules[m.grp].blueprints[m.blueprint.fdname].grades[m.blueprint.grade].engineers, m.grp);

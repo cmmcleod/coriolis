@@ -1,3 +1,6 @@
+#2.3.3
+  * Remove unused blueprint when hitting reset
+
 #2.3.2
   * Use scan range for DSS rather than scan time
   * Fix companion API import of Dolphin
