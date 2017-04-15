@@ -429,11 +429,45 @@ export default class Ship {
   }
 
   /**
-   * Clear blueprint for a module
-   * @param  {Number} m      The module for which to clear the modifications
+   * Set blueprint for a module
+   * @param  {Object} m      The module for which to set the blueprint
+   * @param  {Object} bp     The blueprint
    */
-  clearBlueprint(m) {
+  setModuleBlueprint(m, bp) {
+    m.blueprint = bp;
+    this.updateModificationsString();
+  }
+
+  /**
+   * Clear blueprint for a module
+   * @param  {Object} m      The module for which to clear the blueprint
+   */
+  clearModuleBlueprint(m) {
     m.blueprint = {};
+    this.updateModificationsString();
+  }
+
+  /**
+   * Set special for a module
+   * @param  {Object} m       The module for which to set the blueprint
+   * @param  {Object} special The special
+   */
+  setModuleSpecial(m, special) {
+    if (m.blueprint) {
+      m.blueprint.special = special;
+    }
+    this.recalculateDps().recalculateHps().recalculateEps();
+  }
+
+  /**
+   * Clear special for a module
+   * @param  {Object} m      The module for which to clear the blueprint
+   */
+  clearModuleSpecial(m) {
+    if (m.blueprint) {
+      m.blueprint.special = null;
+    }
+    this.recalculateDps().recalculateHps().recalculateEps();
   }
 
   /**
@@ -1445,16 +1479,20 @@ export default class Ship {
 
     // Now work out the size of the binary buffer from our modifications array
     let bufsize = 0;
-    for (let slot of slots) {
-      if (slot.length > 0) {
-        // Length is 1 for the slot ID, 10 for the blueprint name and grade, 5 for each modification, and 1 for the end marker
-        bufsize = bufsize + 1 + 10 + (5 * slot.length) + 1;
-      }
-    }
-    for (let special of specials) {
-      if (special) {
-        // Length is 5 for each special
-        bufsize += 5;
+    for (let i = 0; i < slots.length; i++) {
+      if (slots[i].length > 0 || (blueprints[i] && blueprints[i].id)) {
+        // Length is 1 for the slot ID, 5 for each modification, and 1 for the end marker
+        bufsize = bufsize + 1 + (5 * slots[i].length) + 1;
+
+        if (blueprints[i] && blueprints[i].id) {
+          // Additional 10 for the blueprint and grade
+          bufsize += 10;
+        }
+
+        if (specials[i]) {
+          // Additional 5 for each special
+          bufsize += 5;
+        }
       }
     }
 
@@ -1465,7 +1503,7 @@ export default class Ship {
       let curpos = 0;
       let i = 0;
       for (let slot of slots) {
-        if (slot.length > 0) {
+        if (slot.length > 0 || (blueprints[i] && blueprints[i].id)) {
           buffer.writeInt8(i, curpos++);
           if (blueprints[i] && blueprints[i].id) {
             buffer.writeInt8(MODIFICATION_ID_BLUEPRINT, curpos++);

@@ -1,3 +1,9 @@
+#2.3.3
+  * Remove unused blueprint when hitting reset
+  * Add 'purchase module' external link to EDDB for refit items
+  * Use coriolis-data 2.3.3:
+    * Add Felicity Farseer to list of engineers that supply sensor and detailed surface scanner modifications
+
 #2.3.2
   * Use scan range for DSS rather than scan time
   * Fix companion API import of Dolphin
