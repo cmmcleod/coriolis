@@ -334,10 +334,8 @@ export default class CostSection extends TranslatedComponent {
     const { retrofitCosts } = this.state;
     const { ship } = this.props;
 
-console.log(`retrofitCosts is ${JSON.stringify(retrofitCosts, null, 2)}`);
     // Provide unique list of non-PP module EDDB IDs to buy
     const modIds = retrofitCosts.filter(item => item.retroItem.incCost && item.buyId && !item.buyPp).map(item => item.buyId).filter((v, i, a) => a.indexOf(v) === i);
-console.log(`modIds is ${JSON.stringify(modIds)}`);
 
     // Open up the relevant URL
     window.open('https://eddb.io/station?m=' + modIds.join(','));

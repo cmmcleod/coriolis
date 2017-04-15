@@ -449,8 +449,8 @@ export default class Ship {
 
   /**
    * Set special for a module
-   * @param  {Object} m      The module for which to set the blueprint
-   * @param  {Object} bp     The blueprint
+   * @param  {Object} m       The module for which to set the blueprint
+   * @param  {Object} special The special
    */
   setModuleSpecial(m, special) {
     if (m.blueprint) {
