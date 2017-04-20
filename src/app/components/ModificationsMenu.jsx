@@ -156,7 +156,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     const { m, ship } = this.props;
 
     if (special === null) {
-      ship.clearModuelSpecial(m);
+      ship.clearModuleSpecial(m);
     } else {
       ship.setModuleSpecial(m, Modifications.specials[special]);
     }
