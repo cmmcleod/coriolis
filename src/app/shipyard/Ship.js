@@ -707,6 +707,11 @@ export default class Ship {
    * @return {this} The current ship instance for chaining
    */
   buildFrom(serializedString) {
+    if (!serializedString) {
+      // Empty serialized string; nothing to do
+      return this;
+    }
+
     let standard = new Array(this.standard.length),
         hardpoints = new Array(this.hardpoints.length),
         internal = new Array(this.internal.length),

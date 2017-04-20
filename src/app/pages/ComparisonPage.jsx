@@ -81,7 +81,9 @@ export default class ComparisonPage extends Page {
         newName = name;
         for (let shipId in allBuilds) {
           for (let buildName in allBuilds[shipId]) {
-            builds.push(this._createBuild(shipId, buildName, allBuilds[shipId][buildName]));
+            if (buildName && allBuilds[shipId][buildName]) {
+              builds.push(this._createBuild(shipId, buildName, allBuilds[shipId][buildName]));
+            }
           }
         }
       } else {
