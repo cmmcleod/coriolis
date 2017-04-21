@@ -227,3 +227,110 @@ export function getBlueprint(name, module) {
   }
   return blueprint;
 }
+
+/**
+ * Provide 'worst' primary modifications
+ * @param {Object}      ship      The ship for which to perform the modifications
+ * @param {Object}      m         The module for which to perform the modifications
+ */
+export function setWorst(ship, m) {
+  ship.clearModifications(m);
+  const features = m.blueprint.grades[m.blueprint.grade].features;
+  for (const featureName in features) {
+    const value = features[featureName][0];
+    _setValue(ship, m, featureName, value);
+  }
+}
+
+/**
+ * Provide 'best' primary modifications
+ * @param {Object}      ship      The ship for which to perform the modifications
+ * @param {Object}      m         The module for which to perform the modifications
+ */
+export function setBest(ship, m) {
+  ship.clearModifications(m);
+  const features = m.blueprint.grades[m.blueprint.grade].features;
+  for (const featureName in features) {
+    const value = features[featureName][1];
+    _setValue(ship, m, featureName, value);
+  }
+}
+
+/**
+ * Provide 'extreme' primary modifications
+ * @param {Object}      ship      The ship for which to perform the modifications
+ * @param {Object}      m         The module for which to perform the modifications
+ */
+export function setExtreme(ship, m) {
+  ship.clearModifications(m);
+  const features = m.blueprint.grades[m.blueprint.grade].features;
+  for (const featureName in features) {
+    let value;
+    if (Modifications.modifications[featureName].higherbetter) {
+      // Higher is better, but is this making it better or worse?
+      if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
+        value = features[featureName][0];
+      } else {
+        value = features[featureName][1];
+      }
+    } else {
+      // Higher is worse, but is this making it better or worse?
+      if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
+        value = features[featureName][1];
+      } else {
+        value = features[featureName][0];
+      }
+    }
+
+    _setValue(ship, m, featureName, value);
+  }
+}
+
+/**
+ * Provide 'random' primary modifications
+ * @param {Object}      ship      The ship for which to perform the modifications
+ * @param {Object}      m         The module for which to perform the modifications
+ */
+export function setRandom(ship, m) {
+  ship.clearModifications(m);
+  // Pick a single value for our randomness
+  const mult = Math.random();
+  const features = m.blueprint.grades[m.blueprint.grade].features;
+  for (const featureName in features) {
+    let value;
+    if (Modifications.modifications[featureName].higherbetter) {
+      // Higher is better, but is this making it better or worse?
+      if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
+        value = features[featureName][1] + ((features[featureName][0] - features[featureName][1]) * mult);
+      } else {
+        value = features[featureName][0] + ((features[featureName][1] - features[featureName][0]) * mult);
+      }
+    } else {
+      // Higher is worse, but is this making it better or worse?
+      if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
+        value = features[featureName][0] + ((features[featureName][1] - features[featureName][0]) * mult);
+      } else {
+        value = features[featureName][1] + ((features[featureName][0] - features[featureName][1]) * mult);
+      }
+    }
+
+    _setValue(ship, m, featureName, value);
+  }
+}
+
+/**
+ * Set a modification feature value
+ * @param {Object}      ship          The ship for which to perform the modifications
+ * @param {Object}      m             The module for which to perform the modifications
+ * @param {string}      featureName   The feature being set
+ * @param {number}      value         The value being set for the feature
+ */
+function _setValue(ship, m, featureName, value) {
+  if (Modifications.modifications[featureName].type == 'percentage') {
+    ship.setModification(m, featureName, value * 10000);
+  } else if (Modifications.modifications[featureName].type == 'numeric') {
+    ship.setModification(m, featureName, value * 100);
+  } else {
+    ship.setModification(m, featureName, value);
+  }
+}

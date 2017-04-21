@@ -1,6 +1,7 @@
 #2.3.4
   * Fix crash when removing the special effect from a module
   * Ensure comparisons with saved stock ships work correctly
+  * Add 'Racer' role
 
 #2.3.3
   * Remove unused blueprint when hitting reset

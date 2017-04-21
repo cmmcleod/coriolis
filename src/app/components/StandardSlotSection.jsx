@@ -73,6 +73,15 @@ export default class StandardSlotSection extends SlotSection {
   }
 
   /**
+   * Racer role
+   */
+  _optimizeRacer() {
+    ShipRoles.racer(this.props.ship);
+    this.props.onChange();
+    this._close();
+  }
+
+  /**
    * Use the specified bulkhead
    * @param  {Object} bulkhead Bulkhead module details
    */
@@ -220,6 +229,7 @@ export default class StandardSlotSection extends SlotSection {
         <li className={cn('lc', { disabled:  planetaryDisabled })} onClick={!planetaryDisabled && this._optimizeExplorer.bind(this, true)}>{translate('Planetary Explorer')}</li>
         <li className='lc' onClick={this._optimizeMiner.bind(this, false)}>{translate('Miner')}</li>
         <li className='lc' onClick={this._optimizeMiner.bind(this, true)}>{translate('Shielded Miner')}</li>
+        <li className='lc' onClick={this._optimizeRacer.bind(this)}>{translate('Racer')}</li>
       </ul>
     </div>;
   }

@@ -5,7 +5,7 @@ import { isEmpty, stopCtxPropagation } from '../utils/UtilityFunctions';
 import cn from 'classnames';
 import { Modifications } from 'coriolis-data/dist';
 import Modification from './Modification';
-import { getBlueprint, blueprintTooltip } from '../utils/BlueprintFunctions';
+import { getBlueprint, blueprintTooltip, setWorst, setBest, setExtreme, setRandom } from '../utils/BlueprintFunctions';
 
 /**
  * Modifications menu
@@ -166,34 +166,11 @@ export default class ModificationsMenu extends TranslatedComponent {
   }
 
   /**
-   * Set the result of a roll
-   * @param  {object} ship          The ship to which the roll applies
-   * @param  {object} m             The module to which the roll applies
-   * @param  {string} featureName   The modification feature to which the roll applies
-   * @param  {number} value         The value of the roll
-   */
-  _setRollResult(ship, m, featureName, value) {
-    if (Modifications.modifications[featureName].type == 'percentage') {
-      ship.setModification(m, featureName, value * 10000);
-    } else if (Modifications.modifications[featureName].type == 'numeric') {
-      ship.setModification(m, featureName, value * 100);
-    } else {
-      ship.setModification(m, featureName, value);
-    }
-  }
-
-  /**
    * Provide a 'worst' roll within the information we have
    */
   _rollWorst() {
     const { m, ship } = this.props;
-    ship.clearModifications(m);
-    const features = m.blueprint.grades[m.blueprint.grade].features;
-    for (const featureName in features) {
-      let value = features[featureName][0];
-      this._setRollResult(ship, m, featureName, value);
-    }
-
+    setWorst(ship, m);
     this.props.onChange();
   }
 
@@ -202,13 +179,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollRandom() {
     const { m, ship } = this.props;
-    ship.clearModifications(m);
-    const features = m.blueprint.grades[m.blueprint.grade].features;
-    for (const featureName in features) {
-      let value = features[featureName][0] + (Math.random() * (features[featureName][1] - features[featureName][0]));
-      this._setRollResult(ship, m, featureName, value);
-    }
-
+    setRandom(ship, m);
     this.props.onChange();
   }
 
@@ -217,12 +188,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollBest() {
     const { m, ship } = this.props;
-    const features = m.blueprint.grades[m.blueprint.grade].features;
-    for (const featureName in features) {
-      let value = features[featureName][1];
-      this._setRollResult(ship, m, featureName, value);
-    }
-
+    setBest(ship, m);
     this.props.onChange();
   }
 
@@ -231,29 +197,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollExtreme() {
     const { m, ship } = this.props;
-    ship.clearModifications(m);
-    const features = m.blueprint.grades[m.blueprint.grade].features;
-    for (const featureName in features) {
-      let value;
-      if (Modifications.modifications[featureName].higherbetter) {
-        // Higher is better, but is this making it better or worse?
-        if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
-          value = features[featureName][0];
-        } else {
-          value = features[featureName][1];
-        }
-      } else {
-        // Higher is worse, but is this making it better or worse?
-        if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
-          value = features[featureName][1];
-        } else {
-          value = features[featureName][0];
-        }
-      }
-
-      this._setRollResult(ship, m, featureName, value);
-    }
-
+    setExtreme(ship, m);
     this.props.onChange();
   }
 

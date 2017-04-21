@@ -1718,6 +1718,11 @@ export default class Ship {
         .use(standard[4], pd)    // Power Distributor
         .use(standard[6], ft);   // Fuel Tank
 
+    // Turn off nearly everything
+    if (m.fsdDisabled) this.setSlotEnabled(this.standard[2], false);
+    if (m.pdDisabled) this.setSlotEnabled(this.standard[4], false);
+    if (m.sDisabled) this.setSlotEnabled(this.standard[5], false);
+
     // Thrusters and Powerplant must be determined after all other ModuleUtils are mounted
     // Loop at least once to determine absolute lightest PD and TH
     do {
