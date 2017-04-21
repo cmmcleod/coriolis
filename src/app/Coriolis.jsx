@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Router from './Router';
 import { EventEmitter } from 'fbemitter';
 import { getLanguage } from './i18n/Language';
@@ -27,18 +28,18 @@ const zlib = require('zlib');
 export default class Coriolis extends React.Component {
 
   static childContextTypes = {
-    closeMenu: React.PropTypes.func.isRequired,
-    hideModal: React.PropTypes.func.isRequired,
-    language: React.PropTypes.object.isRequired,
-    noTouch: React.PropTypes.bool.isRequired,
-    onCommand: React.PropTypes.func.isRequired,
-    onWindowResize: React.PropTypes.func.isRequired,
-    openMenu: React.PropTypes.func.isRequired,
-    route: React.PropTypes.object.isRequired,
-    showModal: React.PropTypes.func.isRequired,
-    sizeRatio: React.PropTypes.number.isRequired,
-    termtip: React.PropTypes.func.isRequired,
-    tooltip: React.PropTypes.func.isRequired
+    closeMenu: PropTypes.func.isRequired,
+    hideModal: PropTypes.func.isRequired,
+    language: PropTypes.object.isRequired,
+    noTouch: PropTypes.bool.isRequired,
+    onCommand: PropTypes.func.isRequired,
+    onWindowResize: PropTypes.func.isRequired,
+    openMenu: PropTypes.func.isRequired,
+    route: PropTypes.object.isRequired,
+    showModal: PropTypes.func.isRequired,
+    sizeRatio: PropTypes.number.isRequired,
+    termtip: PropTypes.func.isRequired,
+    tooltip: PropTypes.func.isRequired
   };
 
   /**

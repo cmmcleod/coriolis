@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import cn from 'classnames';
 import AvailableModulesMenu from './AvailableModulesMenu';
@@ -13,18 +14,18 @@ import { stopCtxPropagation } from '../utils/UtilityFunctions';
 export default class Slot extends TranslatedComponent {
 
   static propTypes = {
-    availableModules: React.PropTypes.func.isRequired,
-    onSelect: React.PropTypes.func.isRequired,
-    onOpen: React.PropTypes.func.isRequired,
-    maxClass: React.PropTypes.number.isRequired,
-    selected: React.PropTypes.bool,
-    m: React.PropTypes.object,
-    ship: React.PropTypes.object.isRequired,
-    eligible: React.PropTypes.object,
-    warning: React.PropTypes.func,
-    drag: React.PropTypes.func,
-    drop: React.PropTypes.func,
-    dropClass: React.PropTypes.string
+    availableModules: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    onOpen: PropTypes.func.isRequired,
+    maxClass: PropTypes.number.isRequired,
+    selected: PropTypes.bool,
+    m: PropTypes.object,
+    ship: PropTypes.object.isRequired,
+    eligible: PropTypes.object,
+    warning: PropTypes.func,
+    drag: PropTypes.func,
+    drop: PropTypes.func,
+    dropClass: PropTypes.string
   };
 
   /**

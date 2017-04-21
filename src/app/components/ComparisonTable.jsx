@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import Link from './Link';
 import cn from 'classnames';
@@ -11,11 +12,11 @@ import { outfitURL } from '../utils/UrlGenerators';
 export default class ComparisonTable extends TranslatedComponent {
 
   static propTypes = {
-    facets: React.PropTypes.array.isRequired,
-    builds: React.PropTypes.array.isRequired,
-    onSort: React.PropTypes.func.isRequired,
-    predicate: React.PropTypes.string.isRequired, // Used only to test again prop changes for shouldRender
-    desc: React.PropTypes.oneOfType([React.PropTypes.bool.isRequired, React.PropTypes.number.isRequired]), // Used only to test again prop changes for shouldRender
+    facets: PropTypes.array.isRequired,
+    builds: PropTypes.array.isRequired,
+    onSort: PropTypes.func.isRequired,
+    predicate: PropTypes.string.isRequired, // Used only to test again prop changes for shouldRender
+    desc: PropTypes.oneOfType([PropTypes.bool.isRequired, PropTypes.number.isRequired]), // Used only to test again prop changes for shouldRender
   };
 
   /**

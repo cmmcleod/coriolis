@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import { Ships } from 'coriolis-data/dist';
 import Slider from '../components/Slider';
@@ -9,9 +10,9 @@ import Slider from '../components/Slider';
  */
 export default class EngagementRange extends TranslatedComponent {
   static propTypes = {
-    ship: React.PropTypes.object.isRequired,
-    engagementRange: React.PropTypes.number.isRequired,
-    onChange: React.PropTypes.func.isRequired
+    ship: PropTypes.object.isRequired,
+    engagementRange: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired
   };
 
   /**

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import { Ships } from 'coriolis-data/dist';
 import Slider from '../components/Slider';
@@ -9,9 +10,9 @@ import Slider from '../components/Slider';
  */
 export default class Cargo extends TranslatedComponent {
   static propTypes = {
-    cargo: React.PropTypes.number.isRequired,
-    cargoCapacity: React.PropTypes.number.isRequired,
-    onChange: React.PropTypes.func.isRequired
+    cargo: PropTypes.number.isRequired,
+    cargoCapacity: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired
   };
 
   /**

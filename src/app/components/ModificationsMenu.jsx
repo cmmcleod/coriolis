@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import TranslatedComponent from './TranslatedComponent';
 import { isEmpty, stopCtxPropagation } from '../utils/UtilityFunctions';
@@ -13,10 +14,10 @@ import { getBlueprint, blueprintTooltip, setWorst, setBest, setExtreme, setRando
 export default class ModificationsMenu extends TranslatedComponent {
 
   static propTypes = {
-    ship: React.PropTypes.object.isRequired,
-    m: React.PropTypes.object.isRequired,
-    marker: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired
+    ship: PropTypes.object.isRequired,
+    m: PropTypes.object.isRequired,
+    marker: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
   };
 
   /**

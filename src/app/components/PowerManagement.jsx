@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
@@ -18,9 +19,9 @@ const POWER = [
  */
 export default class PowerManagement extends TranslatedComponent {
   static propTypes = {
-    ship: React.PropTypes.object.isRequired,
-    code: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired
+    ship: PropTypes.object.isRequired,
+    code: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
   };
 
   /**

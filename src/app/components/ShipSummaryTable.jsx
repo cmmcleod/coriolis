@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import cn from 'classnames';
 import { Warning } from './SvgIcons';
@@ -10,10 +11,10 @@ import * as Calc from '../shipyard/Calculations';
 export default class ShipSummaryTable extends TranslatedComponent {
 
   static propTypes = {
-    ship: React.PropTypes.object.isRequired,
-    cargo: React.PropTypes.number.isRequired,
-    fuel: React.PropTypes.number.isRequired,
-    marker: React.PropTypes.string.isRequired,
+    ship: PropTypes.object.isRequired,
+    cargo: PropTypes.number.isRequired,
+    fuel: PropTypes.number.isRequired,
+    marker: PropTypes.string.isRequired,
   };
 
   /**

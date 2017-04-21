@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import Persist from '../stores/Persist';
 import TranslatedComponent from './TranslatedComponent';
@@ -17,14 +18,14 @@ import { blueprintTooltip } from '../utils/BlueprintFunctions';
 export default class StandardSlot extends TranslatedComponent {
 
   static propTypes = {
-    slot: React.PropTypes.object,
-    modules: React.PropTypes.array.isRequired,
-    onSelect: React.PropTypes.func.isRequired,
-    onOpen: React.PropTypes.func.isRequired,
-    onChange: React.PropTypes.func.isRequired,
-    ship: React.PropTypes.object.isRequired,
-    selected: React.PropTypes.bool,
-    warning: React.PropTypes.func,
+    slot: PropTypes.object,
+    modules: PropTypes.array.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    onOpen: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
+    ship: PropTypes.object.isRequired,
+    selected: PropTypes.bool,
+    warning: PropTypes.func,
   };
 
   /**

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import { Ships } from 'coriolis-data/dist';
 import Persist from '../stores/Persist';
@@ -14,9 +15,9 @@ import { ShoppingIcon } from '../components/SvgIcons';
 export default class CostSection extends TranslatedComponent {
 
   static propTypes = {
-    ship: React.PropTypes.object.isRequired,
-    code: React.PropTypes.string.isRequired,
-    buildName: React.PropTypes.string
+    ship: PropTypes.object.isRequired,
+    code: PropTypes.string.isRequired,
+    buildName: PropTypes.string
   };
 
   /**

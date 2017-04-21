@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 
 const MARGIN_LR = 8; // Left/ Right margin
@@ -16,14 +17,14 @@ export default class Slider extends React.Component {
   };
 
   static propTypes = {
-    axis: React.PropTypes.bool,
-    axisUnit: React.PropTypes.string,
-    max: React.PropTypes.number,
-    min: React.PropTypes.number,
-    onChange: React.PropTypes.func.isRequired,
-    onResize: React.PropTypes.func,
-    percent: React.PropTypes.number.isRequired,
-    scale: React.PropTypes.number
+    axis: PropTypes.bool,
+    axisUnit: PropTypes.string,
+    max: PropTypes.number,
+    min: PropTypes.number,
+    onChange: PropTypes.func.isRequired,
+    onResize: PropTypes.func,
+    percent: PropTypes.number.isRequired,
+    scale: PropTypes.number
   };
 
   /**

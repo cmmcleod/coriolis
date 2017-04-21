@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import TranslatedComponent from './TranslatedComponent';
 
@@ -8,9 +9,9 @@ import TranslatedComponent from './TranslatedComponent';
 export default class ModalExport extends TranslatedComponent {
 
   static propTypes = {
-    title: React.PropTypes.string,
-    generator: React.PropTypes.func,
-    data: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object, React.PropTypes.array])
+    title: PropTypes.string,
+    generator: PropTypes.func,
+    data: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.array])
   };
 
   /**

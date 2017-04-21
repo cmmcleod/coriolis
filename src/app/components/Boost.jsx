@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import { Ships } from 'coriolis-data/dist';
 import { nameComparator } from '../utils/SlotFunctions';
@@ -14,10 +15,10 @@ import Module from '../shipyard/Module';
  */
 export default class Boost extends TranslatedComponent {
   static propTypes = {
-    marker: React.PropTypes.string.isRequired,
-    ship: React.PropTypes.object.isRequired,
-    boost: React.PropTypes.bool.isRequired,
-    onChange: React.PropTypes.func.isRequired
+    marker: PropTypes.string.isRequired,
+    ship: PropTypes.object.isRequired,
+    boost: PropTypes.bool.isRequired,
+    onChange: PropTypes.func.isRequired
   };
 
   /**
