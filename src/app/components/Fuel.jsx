@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import { Ships } from 'coriolis-data/dist';
 import Slider from '../components/Slider';
@@ -9,9 +10,9 @@ import Slider from '../components/Slider';
  */
 export default class Fuel extends TranslatedComponent {
   static propTypes = {
-    fuel: React.PropTypes.number.isRequired,
-    fuelCapacity: React.PropTypes.number.isRequired,
-    onChange: React.PropTypes.func.isRequired
+    fuel: PropTypes.number.isRequired,
+    fuelCapacity: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired
   };
 
   /**

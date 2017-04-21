@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as ModuleUtils from '../shipyard/ModuleUtils';
 import { findDOMNode } from 'react-dom';
 import TranslatedComponent from './TranslatedComponent';
@@ -83,12 +84,12 @@ const CATEGORIES = {
 export default class AvailableModulesMenu extends TranslatedComponent {
 
   static propTypes = {
-    modules: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.array]).isRequired,
-    onSelect: React.PropTypes.func.isRequired,
-    diffDetails: React.PropTypes.func,
-    m: React.PropTypes.object,
-    shipMass: React.PropTypes.number,
-    warning: React.PropTypes.func
+    modules: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
+    onSelect: PropTypes.func.isRequired,
+    diffDetails: PropTypes.func,
+    m: PropTypes.object,
+    shipMass: PropTypes.number,
+    warning: PropTypes.func
   };
 
   static defaultProps = {

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
@@ -33,10 +34,10 @@ function bandText(val, index, wattScale) {
 export default class PowerBands extends TranslatedComponent {
 
   static propTypes = {
-    bands: React.PropTypes.array.isRequired,
-    available: React.PropTypes.number.isRequired,
-    width: React.PropTypes.number.isRequired,
-    code: React.PropTypes.string,
+    bands: PropTypes.array.isRequired,
+    available: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
+    code: PropTypes.string,
   };
 
   /**

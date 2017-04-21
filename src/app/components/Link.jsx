@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Router from '../Router';
 import { shallowEqual } from '../utils/UtilityFunctions';
 
@@ -8,9 +9,9 @@ import { shallowEqual } from '../utils/UtilityFunctions';
 export default class Link extends React.Component {
 
   static propTypes = {
-    children: React.PropTypes.any,
-    href: React.PropTypes.string.isRequired,
-    onClick: React.PropTypes.func
+    children: PropTypes.any,
+    href: PropTypes.string.isRequired,
+    onClick: PropTypes.func
   };
 
   /**

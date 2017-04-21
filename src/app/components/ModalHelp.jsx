@@ -1,4 +1,5 @@
 /* eslint react/no-danger: 0 */
+import PropTypes from 'prop-types';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import TranslatedComponent from './TranslatedComponent';
@@ -9,7 +10,7 @@ import TranslatedComponent from './TranslatedComponent';
 export default class ModalHelp extends TranslatedComponent {
 
   static propTypes = {
-    title: React.PropTypes.string
+    title: PropTypes.string
   };
 
   /**

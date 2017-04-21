@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 
 /**
@@ -6,12 +7,12 @@ import TranslatedComponent from './TranslatedComponent';
  */
 export default class Movement extends TranslatedComponent {
   static propTypes = {
-    marker: React.PropTypes.string.isRequired,
-    ship: React.PropTypes.object.isRequired,
-    boost: React.PropTypes.bool.isRequired,
-    eng: React.PropTypes.number.isRequired,
-    fuel: React.PropTypes.number.isRequired,
-    cargo: React.PropTypes.number.isRequired
+    marker: PropTypes.string.isRequired,
+    ship: PropTypes.object.isRequired,
+    boost: PropTypes.bool.isRequired,
+    eng: PropTypes.number.isRequired,
+    fuel: PropTypes.number.isRequired,
+    cargo: PropTypes.number.isRequired
   };
 
   /**

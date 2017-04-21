@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import { wrapCtxMenu } from '../utils/UtilityFunctions';
 import { canMount } from '../utils/SlotFunctions';
@@ -11,10 +12,10 @@ import cn from 'classnames';
 export default class SlotSection extends TranslatedComponent {
 
   static propTypes = {
-    ship: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func.isRequired,
-    code: React.PropTypes.string.isRequired,
-    togglePwr: React.PropTypes.func
+    ship: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
+    code: PropTypes.string.isRequired,
+    togglePwr: PropTypes.func
   };
 
   /**

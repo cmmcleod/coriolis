@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import Ship from '../shipyard/Ship';
 import { Ships } from 'coriolis-data/dist';
@@ -12,9 +13,9 @@ import cn from 'classnames';
  */
 export default class ShipPicker extends TranslatedComponent {
   static propTypes = {
-    onChange: React.PropTypes.func.isRequired,
-    ship: React.PropTypes.string.isRequired,
-    build: React.PropTypes.string
+    onChange: PropTypes.func.isRequired,
+    ship: PropTypes.string.isRequired,
+    build: PropTypes.string
   };
 
   static defaultProps = {

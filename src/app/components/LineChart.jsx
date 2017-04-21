@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Measure from 'react-measure';
 import * as d3 from 'd3';
 import TranslatedComponent from './TranslatedComponent';
@@ -20,21 +21,21 @@ export default class LineChart extends TranslatedComponent {
   };
 
   static propTypes = {
-    func: React.PropTypes.func.isRequired,
-    xLabel: React.PropTypes.string.isRequired,
-    xMin: React.PropTypes.number,
-    xMax: React.PropTypes.number.isRequired,
-    xUnit: React.PropTypes.string.isRequired,
-    xMark: React.PropTypes.number,
-    yLabel: React.PropTypes.string.isRequired,
-    yMin: React.PropTypes.number,
-    yMax: React.PropTypes.number.isRequired,
-    yUnit: React.PropTypes.string,
-    series: React.PropTypes.array,
-    colors: React.PropTypes.array,
-    points: React.PropTypes.number,
-    aspect: React.PropTypes.number,
-    code: React.PropTypes.string,
+    func: PropTypes.func.isRequired,
+    xLabel: PropTypes.string.isRequired,
+    xMin: PropTypes.number,
+    xMax: PropTypes.number.isRequired,
+    xUnit: PropTypes.string.isRequired,
+    xMark: PropTypes.number,
+    yLabel: PropTypes.string.isRequired,
+    yMin: PropTypes.number,
+    yMax: PropTypes.number.isRequired,
+    yUnit: PropTypes.string,
+    series: PropTypes.array,
+    colors: PropTypes.array,
+    points: PropTypes.number,
+    aspect: PropTypes.number,
+    code: PropTypes.string,
   };
 
   /**

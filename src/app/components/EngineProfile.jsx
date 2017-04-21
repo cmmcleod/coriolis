@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import { Ships } from 'coriolis-data/dist';
 import { nameComparator } from '../utils/SlotFunctions';
@@ -13,12 +14,12 @@ import * as Calc from '../shipyard/Calculations';
  */
 export default class EngineProfile extends TranslatedComponent {
   static propTypes = {
-    ship: React.PropTypes.object.isRequired,
-    cargo: React.PropTypes.number.isRequired,
-    fuel: React.PropTypes.number.isRequired,
-    eng: React.PropTypes.number.isRequired,
-    boost: React.PropTypes.bool.isRequired,
-    marker: React.PropTypes.string.isRequired
+    ship: PropTypes.object.isRequired,
+    cargo: PropTypes.number.isRequired,
+    fuel: PropTypes.number.isRequired,
+    eng: PropTypes.number.isRequired,
+    boost: PropTypes.bool.isRequired,
+    marker: PropTypes.string.isRequired
   };
 
   /**

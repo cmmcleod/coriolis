@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Measure from 'react-measure';
 import * as d3 from 'd3';
 
@@ -11,7 +12,7 @@ const LABEL_COLOUR = '#000000';
 export default class PieChart extends Component {
 
   static propTypes = {
-    data : React.PropTypes.array.isRequired
+    data : PropTypes.array.isRequired
   };
 
   /**

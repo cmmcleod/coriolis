@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import * as Calc from '../shipyard/Calculations';
 import PieChart from './PieChart';
@@ -51,12 +52,12 @@ export function weaponComparator(translate, propComparator, desc) {
  */
 export default class Offence extends TranslatedComponent {
   static propTypes = {
-    marker: React.PropTypes.string.isRequired,
-    ship: React.PropTypes.object.isRequired,
-    opponent: React.PropTypes.object.isRequired,
-    engagementrange: React.PropTypes.number.isRequired,
-    wep: React.PropTypes.number.isRequired,
-    opponentSys: React.PropTypes.number.isRequired
+    marker: PropTypes.string.isRequired,
+    ship: PropTypes.object.isRequired,
+    opponent: PropTypes.object.isRequired,
+    engagementrange: PropTypes.number.isRequired,
+    wep: PropTypes.number.isRequired,
+    opponentSys: PropTypes.number.isRequired
   };
 
   /**

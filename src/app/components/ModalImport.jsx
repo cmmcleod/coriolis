@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
@@ -86,7 +87,7 @@ export default class ModalImport extends TranslatedComponent {
 
 
   static propTypes = {
-    builds: React.PropTypes.object,  // Optional: Import object
+    builds: PropTypes.object,  // Optional: Import object
   };
 
   /**
