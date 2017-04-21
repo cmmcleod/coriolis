@@ -266,8 +266,14 @@ export default class ShipyardPage extends Page {
         <div style={{ whiteSpace: 'nowrap', margin: '0 auto', fontSize: '0.8em', position: 'relative', display: 'inline-block', maxWidth: '100%' }}>
           <table style={{ width: '12em', position: 'absolute', zIndex: 1 }}>
             <thead>
+              <tr>
+                <th className='le rgt'>&nbsp;</th>
+              </tr>
               <tr className='main'>
-                <th style={{ height: '4.1em', padding: '2px 0.4em 1px' }} className='sortable le rgt' onClick={sortShips('name')}>{translate('ship')}</th>
+                <th className='sortable le rgt' onClick={sortShips('name')}>{translate('ship')}</th>
+              </tr>
+              <tr>
+                <th className='le rgt invisible'>{units['m/s']}</th>
               </tr>
             </thead>
             <tbody onMouseLeave={this._highlightShip.bind(this, null)}>
