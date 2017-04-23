@@ -1,6 +1,5 @@
 import React from 'react';
 // import Perf from 'react-addons-perf';
-import { findDOMNode } from 'react-dom';
 import { Ships } from 'coriolis-data/dist';
 import cn from 'classnames';
 import Page from './Page';

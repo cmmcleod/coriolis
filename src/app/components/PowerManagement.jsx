@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
 import PowerBands from './PowerBands';
@@ -149,7 +148,7 @@ export default class PowerManagement extends TranslatedComponent {
    * Update power bands width from DOM
    */
   _updateWidth() {
-    this.setState({ width: findDOMNode(this).offsetWidth });
+    this.setState({ width: this.node.offsetWidth });
   }
 
   /**
@@ -197,7 +196,7 @@ export default class PowerManagement extends TranslatedComponent {
     let sortOrder = this._sortOrder;
 
     return (
-      <div className='group half' id='componentPriority'>
+      <div ref={node => this.node = node} className='group half' id='componentPriority'>
         <table style={{ width: '100%' }}>
           <thead>
             <tr className='main'>

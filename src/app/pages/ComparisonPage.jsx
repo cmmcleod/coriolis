@@ -1,5 +1,4 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
 import Page from './Page';
 import Router from '../Router';
 import cn from 'classnames';
@@ -385,7 +384,7 @@ export default class ComparisonPage extends Page {
    */
   _updateDimensions() {
     this.setState({
-      chartWidth: findDOMNode(this.refs.chartRef).offsetWidth
+      chartWidth: this.chartRef.offsetWidth
     });
   }
 
@@ -500,9 +499,9 @@ export default class ComparisonPage extends Page {
         <ComparisonTable builds={builds} facets={facets} onSort={this._sortShips} predicate={predicate} desc={desc} />
 
         {!builds.length ?
-          <div className='chart' ref={'chartRef'}>{translate('PHRASE_NO_BUILDS')}</div> :
+          <div className='chart' ref={node => this.chartRef = node}>{translate('PHRASE_NO_BUILDS')}</div> :
           facets.filter((f) => f.active).map((f, i) =>
-            <div key={f.title} className='chart' ref={ i == 0 ? 'chartRef' : null}>
+            <div key={f.title} className='chart' ref={ i == 0 ? node => this.chartRef = node : null}>
               <h3 className='ptr' onClick={this._sortShips.bind(this, f.props[0])}>{translate(f.title)}</h3>
               <BarChart
                 width={chartWidth}
