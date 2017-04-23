@@ -65,7 +65,7 @@ function shipSummary(shipId, shipData) {
     th = ship.standard[1].maxClass + 'A';
   }
 
-  ship.optimizeMass({ th: th, fsd: '2D', ft: '1C' }); // Optmize mass with Max Thrusters
+  ship.optimizeMass({ th, fsd: '2D', ft: '1C' }); // Optmize mass with Max Thrusters
   summary.topSpeed = ship.topSpeed;
   summary.topBoost = ship.topBoost;
   summary.baseArmour = ship.armour;

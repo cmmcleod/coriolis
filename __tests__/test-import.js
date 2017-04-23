@@ -264,6 +264,18 @@ describe('Import Modal', function() {
       expect(MockRouter.go.mock.calls.length).toBe(1);
       expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/type_7_transport?code=A0patfFflidasdf5----0404040005050504044d2402.AwRj4yrI.CwRgDBlVK7EiA%3D%3D%3D.&bn=Imported%20Type-7%20Transporter');
     });
+
+    it('imports a valid companion API build', function() {
+      const importData = require('./fixtures/companion-api-import-4');
+      pasteText(JSON.stringify(importData));
+
+      expect(modal.state.importValid).toBeTruthy();
+      expect(modal.state.errorMsg).toEqual(null);
+      expect(modal.state.singleBuild).toBe(true);
+      clickProceed();
+      expect(MockRouter.go.mock.calls.length).toBe(1);
+      expect(MockRouter.go.mock.calls[0][0]).toBe('outfit/cobra_mk_iii?code=A0p0tdFaldd3sdf4------34---2f2i.AwRj4yKA.CwRgDMYExre1Rcg%3D..EweloBhBGA2EoFMCGBzANokMK6A%3D');
+    });
   });
 
   describe('Import E:D Shipyard Builds', function() {

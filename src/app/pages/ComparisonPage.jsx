@@ -17,7 +17,7 @@ import ModalImport from '../components/ModalImport';
 import { FloppyDisk, Bin, Download, Embed, Rocket, LinkIcon } from '../components/SvgIcons';
 import ShortenUrl from '../utils/ShortenUrl';
 import { comparisonBBCode } from '../utils/BBCode';
-
+const browser = require('detect-browser');
 
 /**
  * Creates a comparator based on the specified predicate
@@ -228,8 +228,10 @@ export default class ComparisonPage extends Page {
     let placeholder = this.placeholder = document.createElement('li');
     placeholder.style.width = Math.round(this.dragged.offsetWidth) + 'px';
     placeholder.className = 'facet-placeholder';
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html', e.currentTarget);
+    if (!browser || (browser.name !== 'edge' && browser.name !== 'ie')) {
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/html', e.currentTarget);
+    }
   }
 
   /**

@@ -168,10 +168,10 @@ function normValues(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, bas
   const res = base * mul;
 
   return [res * (1 - (engpip * 4)),
-          res * (1 - (engpip * 3)),
-	  res * (1 - (engpip * 2)),
-	  res * (1 - (engpip * 1)),
-	  res];
+    res * (1 - (engpip * 3)),
+    res * (1 - (engpip * 2)),
+    res * (1 - (engpip * 1)),
+    res];
 }
 
 /**

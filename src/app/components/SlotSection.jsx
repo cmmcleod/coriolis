@@ -5,6 +5,7 @@ import { wrapCtxMenu } from '../utils/UtilityFunctions';
 import { canMount } from '../utils/SlotFunctions';
 import { Equalizer } from '../components/SvgIcons';
 import cn from 'classnames';
+const browser = require('detect-browser');
 
 /**
  * Abstract Slot Section
@@ -76,8 +77,10 @@ export default class SlotSection extends TranslatedComponent {
    * @param  {Event} e           Drag Event
    */
   _drag(originSlot, e) {
-    e.dataTransfer.setData('text/html', e.currentTarget);
-    e.dataTransfer.effectAllowed = 'all';
+    if (!browser || (browser.name !== 'edge' && browser.name !== 'ie')) {
+      e.dataTransfer.setData('text/html', e.currentTarget);
+    }
+    e.dataTransfer.effectAllowed = 'copyMove';
     this.setState({ originSlot, copy: e.getModifierState('Alt') });
     this._close();
   }
@@ -94,10 +97,14 @@ export default class SlotSection extends TranslatedComponent {
     if (os) {
       // Show correct icon
       const effect = this.state.copy ? 'copy' : 'move';
-      e.dataTransfer.dropEffect = os != targetSlot && canMount(this.props.ship, targetSlot, os.m.grp, os.m.class) ? effect : 'none';
+      if (!browser || (browser.name !== 'edge' && browser.name !== 'ie')) {
+        e.dataTransfer.dropEffect = os != targetSlot && canMount(this.props.ship, targetSlot, os.m.grp, os.m.class) ? effect : 'none';
+      }
       this.setState({ targetSlot });
     } else {
-      e.dataTransfer.dropEffect = 'none';
+      if (!browser || (browser.name !== 'edge' && browser.name !== 'ie')) {
+        e.dataTransfer.dropEffect = 'none';
+      }
     }
   }
 
@@ -107,7 +114,9 @@ export default class SlotSection extends TranslatedComponent {
    */
   _dragOverNone(e) {
     e.preventDefault();
-    e.dataTransfer.dropEffect = 'none';
+    if (!browser || (browser.name !== 'edge' && browser.name !== 'ie')) {
+      e.dataTransfer.dropEffect = 'none';
+    }
     this.setState({ targetSlot: null });
   }
 

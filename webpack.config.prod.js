@@ -18,6 +18,7 @@ CopyDirPlugin.prototype.apply = function(compiler) {
 };
 
 module.exports = {
+  cache: true,
   entry: {
     app: ['babel-polyfill', path.resolve(__dirname, 'src/app/index')],
     lib: ['d3', 'react', 'react-dom', 'classnames', 'fbemitter', 'lz-string']
@@ -76,7 +77,7 @@ module.exports = {
     rules: [
       { test: /\.css$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader'}) },
       { test: /\.less$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader',use: 'css-loader!less-loader'}) },
-      { test: /\.(js|jsx)$/, loaders: [ 'babel-loader' ], include: path.join(__dirname, 'src') },
+      { test: /\.(js|jsx)$/, loader: 'babel-loader?cacheDirectory=true', include: path.join(__dirname, 'src') },
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
       { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },

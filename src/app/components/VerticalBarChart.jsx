@@ -95,6 +95,10 @@ class ValueLabel extends React.Component {
     value: PropTypes.number
   };
 
+  /**
+   * Render offence
+   * @return {React.Component} contents
+   */
   render() {
     const { x, y, payload, value } = this.props;
 
