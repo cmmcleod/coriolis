@@ -1,8 +1,10 @@
-jest.dontMock('../src/app/stores/Persist');
-jest.dontMock('../src/app/components/TranslatedComponent');
-jest.dontMock('../src/app/components/ModalImport');
+jest.unmock('../src/app/stores/Persist');
+jest.unmock('../src/app/components/TranslatedComponent');
+jest.unmock('../src/app/components/ModalImport');
+jest.unmock('prop-types');
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import TU from 'react-testutils-additions';
 import Utils from './testUtils';
