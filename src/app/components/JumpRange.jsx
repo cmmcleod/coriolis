@@ -43,7 +43,7 @@ export default class JumpRange extends TranslatedComponent {
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.code != this.props.code) {
       this.setState({ fuelLevel: 1,
-                      calcJumpRangeFunc: this._calcJumpRange.bind(this, nextProps.ship) });
+        calcJumpRangeFunc: this._calcJumpRange.bind(this, nextProps.ship) });
     }
     return true;
   }

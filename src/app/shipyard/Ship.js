@@ -1486,8 +1486,8 @@ export default class Ship {
     let bufsize = 0;
     for (let i = 0; i < slots.length; i++) {
       if (slots[i].length > 0 || (blueprints[i] && blueprints[i].id)) {
-        // Length is 1 for the slot ID, 5 for each modification, and 1 for the end marker
-        bufsize = bufsize + 1 + (5 * slots[i].length) + 1;
+        // Length is 1 for the slot ID, 5 for each modification, 1 for the end marker of the modifications and 1 for the end marker of the slot
+        bufsize = bufsize + 1 + (5 * slots[i].length) + 1 + 1;
 
         if (blueprints[i] && blueprints[i].id) {
           // Additional 10 for the blueprint and grade

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as ModuleUtils from '../shipyard/ModuleUtils';
-import { findDOMNode } from 'react-dom';
 import TranslatedComponent from './TranslatedComponent';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
 import cn from 'classnames';
@@ -374,7 +373,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    */
   componentDidMount() {
     if (this.groupElem) {  // Scroll to currently selected group
-      findDOMNode(this).scrollTop = this.groupElem.offsetTop;
+      this.node.scrollTop = this.groupElem.offsetTop;
     }
   }
 
@@ -393,7 +392,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    */
   render() {
     return (
-      <div
+      <div ref={node => this.node = node}
           className={cn('select', this.props.className)}
           onScroll={this._hideDiff}
           onClick={(e) => e.stopPropagation() }
