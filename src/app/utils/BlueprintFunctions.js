@@ -11,9 +11,6 @@ import { Modifications } from 'coriolis-data/dist';
  * @returns {Object}              The react components
  */
 export function blueprintTooltip(translate, blueprint, engineers, grp, m) {
-console.log(`blueprint is ${JSON.stringify(blueprint)}`);
-console.log(`engineers is ${JSON.stringify(engineers)}`);
-console.log(`m is ${JSON.stringify(m)}`);
   const effects = [];
   for (const feature in blueprint.features) {
     const featureIsBeneficial = isBeneficial(feature, blueprint.features[feature]);
@@ -42,7 +39,6 @@ console.log(`m is ${JSON.stringify(m)}`);
           current /= 100;
         }
         const currentIsBeneficial  = isValueBeneficial(feature, current);
-console.log(`${feature}`);
         effects.push(
           <tr key={feature}>
             <td style={{ textAlign: 'left' }}>{translate(feature, grp)}</td>
@@ -82,7 +78,6 @@ console.log(`${feature}`);
             current /= 100;
           }
           const currentIsBeneficial  = isValueBeneficial(feature, current);
-console.log(`${feature}`);
           effects.push(
             <tr key={feature}>
               <td style={{ textAlign: 'left' }}>{translate(feature, grp)}</td>
@@ -114,7 +109,6 @@ console.log(`${feature}`);
               current /= 100;
             }
             const currentIsBeneficial  = isValueBeneficial(feature, current);
-console.log(`${feature}`);
             effects.push(
               <tr key={feature}>
                 <td style={{ textAlign: 'left' }}>{translate(feature, grp)}</td>
