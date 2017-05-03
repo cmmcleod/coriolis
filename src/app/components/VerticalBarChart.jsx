@@ -87,14 +87,18 @@ export default class VerticalBarChart extends TranslatedComponent {
 /**
  * A label that displays the value within the bar of the chart
  */
-const ValueLabel  = React.createClass({
-  propTypes: {
+class ValueLabel extends React.Component {
+  static propTypes = {
     x: PropTypes.number,
     y: PropTypes.number,
     payload: PropTypes.object,
     value: PropTypes.number
-  },
+  };
 
+  /**
+   * Render offence
+   * @return {React.Component} contents
+   */
   render() {
     const { x, y, payload, value } = this.props;
 
@@ -104,4 +108,4 @@ const ValueLabel  = React.createClass({
       <text x={x} y={y} fill="#000000" textAnchor="middle" dy={20} style={{ fontSize: em }}>{value}</text>
     );
   }
-});
+};

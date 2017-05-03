@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import { Ships } from 'coriolis-data/dist';
 import { nameComparator } from '../utils/SlotFunctions';
@@ -13,8 +14,8 @@ import * as Calc from '../shipyard/Calculations';
  */
 export default class JumpRange extends TranslatedComponent {
   static propTypes = {
-    ship: React.PropTypes.object.isRequired,
-    code: React.PropTypes.string.isRequired
+    ship: PropTypes.object.isRequired,
+    code: PropTypes.string.isRequired
   };
 
   /**
@@ -42,7 +43,7 @@ export default class JumpRange extends TranslatedComponent {
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.code != this.props.code) {
       this.setState({ fuelLevel: 1,
-                      calcJumpRangeFunc: this._calcJumpRange.bind(this, nextProps.ship) });
+        calcJumpRangeFunc: this._calcJumpRange.bind(this, nextProps.ship) });
     }
     return true;
   }

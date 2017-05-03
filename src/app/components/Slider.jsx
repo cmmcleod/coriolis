@@ -1,5 +1,5 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
+import PropTypes from 'prop-types';
 
 const MARGIN_LR = 8; // Left/ Right margin
 
@@ -16,14 +16,14 @@ export default class Slider extends React.Component {
   };
 
   static propTypes = {
-    axis: React.PropTypes.bool,
-    axisUnit: React.PropTypes.string,
-    max: React.PropTypes.number,
-    min: React.PropTypes.number,
-    onChange: React.PropTypes.func.isRequired,
-    onResize: React.PropTypes.func,
-    percent: React.PropTypes.number.isRequired,
-    scale: React.PropTypes.number
+    axis: PropTypes.bool,
+    axisUnit: PropTypes.string,
+    max: PropTypes.number,
+    min: PropTypes.number,
+    onChange: PropTypes.func.isRequired,
+    onResize: PropTypes.func,
+    percent: PropTypes.number.isRequired,
+    scale: PropTypes.number
   };
 
   /**
@@ -100,7 +100,7 @@ export default class Slider extends React.Component {
    */
   _updateDimensions() {
     this.setState({
-      outerWidth: findDOMNode(this).getBoundingClientRect().width
+      outerWidth: this.node.getBoundingClientRect().width
     });
   }
 
@@ -144,14 +144,14 @@ export default class Slider extends React.Component {
     };
 
     if (!outerWidth) {
-      return <svg style={style} />;
+      return <svg style={style} ref={node => this.node = node} />;
     }
 
     let margin = MARGIN_LR * scale;
     let width = outerWidth - (margin * 2);
     let pctPos = width * this.props.percent;
 
-    return <svg onMouseUp={this._up} onMouseEnter={this._enter.bind(this)} onMouseMove={this._move} onTouchEnd={this._up} style={style}>
+    return <svg onMouseUp={this._up} onMouseEnter={this._enter.bind(this)} onMouseMove={this._move} onTouchEnd={this._up} style={style} ref={node => this.node = node}>
       <rect className='primary' style={{ opacity: 0.3 }} x={margin} y='0.25em' rx='0.3em' ry='0.3em' width={width} height='0.7em' />
       <rect className='primary-disabled' x={margin} y='0.45em' rx='0.15em' ry='0.15em' width={pctPos} height='0.3em' />
       <circle className='primary' r={margin} cy='0.6em' cx={pctPos + margin} />

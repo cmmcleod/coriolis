@@ -294,3 +294,88 @@ export function miner(ship, shielded) {
 
   ship.useLightestStandard(standardOpts);
 }
+
+/**
+ * Racer Role
+ * @param  {Ship} ship         Ship instance
+ */
+export function racer(ship) {
+  let standardOpts = {},
+      usedSlots = [],
+      sgSlot,
+      sg = ship.getAvailableModules().lightestShieldGenerator(ship.hullMass);
+
+  // Cargo hatch can be disabled
+  ship.setSlotEnabled(ship.cargoHatch, false);
+
+  // Shield generator
+  const shieldOrder = [1, 2, 3, 4, 5, 6, 7, 8];
+  const shieldInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
+                                       .filter(a => (!a.eligible) || a.eligible.sg)
+                                       .filter(a => a.maxClass >= sg.class)
+                                       .sort((a,b) => shieldOrder.indexOf(a.maxClass) - shieldOrder.indexOf(b.maxClass));
+  for (let i = 0; i < shieldInternals.length; i++) {
+    if (canMount(ship, shieldInternals[i], 'sg')) {
+      ship.use(shieldInternals[i], sg);
+      usedSlots.push(shieldInternals[i]);
+      sgSlot = shieldInternals[i];
+      break;
+    }
+  }
+
+  // Empty the hardpoints
+  for (let s of ship.hardpoints) {
+    ship.use(s, null);
+  }
+
+  // Empty the internals
+  for (let i = ship.internal.length; i--;) {
+    let slot = ship.internal[i];
+    if (usedSlots.indexOf(slot) == -1) {
+      ship.use(slot, null);
+    }
+  }
+
+  // Best thrusters
+  if (ship.standard[1].maxClass === 3) {
+    standardOpts.th = 'tz';
+  } else if (ship.standard[1].maxClass === 2) {
+    standardOpts.th = 'u0';
+  } else {
+    standardOpts.th = ship.standard[1].maxClass + 'A';
+  }
+
+  // Best power distributor for more boosting
+  standardOpts.pd = ship.standard[4].maxClass + 'A';
+
+  // Smallest possible FSD drive
+  standardOpts.fsd = '2D';
+  // Minimal fuel tank
+  standardOpts.ft = '1C';
+
+  // Disable nearly everything
+  standardOpts.fsdDisabled = true;
+  standardOpts.sDisabled = true;
+  standardOpts.pdDisabled = true;
+  standardOpts.lsDisabled = true;
+
+  ship.useLightestStandard(standardOpts);
+
+  // Apply engineering to each module
+  // ship.standard[1].m.blueprint = getBlueprint('Engine_Dirty', ship.standard[0]);
+  // ship.standard[1].m.blueprint.grade = 5;
+  // setBest(ship, ship.standard[1].m);
+
+  // ship.standard[3].m.blueprint = getBlueprint('LifeSupport_LightWeight', ship.standard[3]);
+  // ship.standard[3].m.blueprint.grade = 4;
+  // setBest(ship, ship.standard[3].m);
+
+  // ship.standard[4].m.blueprint = getBlueprint('PowerDistributor_PriorityEngines', ship.standard[4]);
+  // ship.standard[4].m.blueprint.grade = 3;
+  // setBest(ship, ship.standard[4].m);
+
+  // ship.standard[5].m.blueprint = getBlueprint('Sensor_Sensor_LightWeight', ship.standard[5]);
+  // ship.standard[5].m.blueprint.grade = 5;
+  // setBest(ship, ship.standard[5].m);
+}
+

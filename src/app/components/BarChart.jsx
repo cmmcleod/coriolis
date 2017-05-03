@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import TranslatedComponent from './TranslatedComponent';
 
@@ -45,16 +46,16 @@ export default class BarChart extends TranslatedComponent {
   };
 
   static propTypes = {
-    colors: React.PropTypes.array,
-    data: React.PropTypes.array.isRequired,
-    desc: React.PropTypes.bool,
-    format: React.PropTypes.string.isRequired,
-    labels: React.PropTypes.array,
-    predicate: React.PropTypes.string,
-    properties: React.PropTypes.array,
-    title: React.PropTypes.string.isRequired,
-    unit: React.PropTypes.string.isRequired,
-    width: React.PropTypes.number.isRequired
+    colors: PropTypes.array,
+    data: PropTypes.array.isRequired,
+    desc: PropTypes.bool,
+    format: PropTypes.string.isRequired,
+    labels: PropTypes.array,
+    predicate: PropTypes.string,
+    properties: PropTypes.array,
+    title: PropTypes.string.isRequired,
+    unit: PropTypes.string.isRequired,
+    width: PropTypes.number.isRequired
   };
 
   /**

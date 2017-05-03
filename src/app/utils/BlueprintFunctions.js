@@ -87,6 +87,36 @@ export function blueprintTooltip(translate, blueprint, engineers, grp, m) {
         );
       }
     }
+
+    // We also add in any benefits from specials that aren't covered above
+    if (m.blueprint && m.blueprint.special) {
+      for (const feature in Modifications.modifierActions[m.blueprint.special.edname]) {
+        if (!blueprint.features[feature] && !m.mods.feature) {
+          const featureDef = Modifications.modifications[feature];
+          let symbol = '';
+          if (feature === 'jitter') {
+            symbol = '°';
+          } else if (featureDef.type === 'percentage') {
+            symbol = '%';
+          }
+          let current = m.getModValue(feature);
+          if (featureDef.type === 'percentage' || featureDef.name === 'burst' || featureDef.name === 'burstrof') {
+            current = Math.round(current / 10) / 10;
+          } else if (featureDef.type === 'numeric') {
+            current /= 100;
+          }
+          const currentIsBeneficial  = isValueBeneficial(feature, current);
+          effects.push(
+            <tr key={feature}>
+              <td style={{ textAlign: 'left' }}>{translate(feature, grp)}</td>
+              <td>&nbsp;</td>
+              <td className={current === 0 ? '' : currentIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{current}{symbol}</td>
+              <td>&nbsp;</td>
+            </tr>
+          );
+        }
+      }
+    }
   }
   let components;
   if (!m) {
@@ -226,4 +256,111 @@ export function getBlueprint(name, module) {
     }
   }
   return blueprint;
+}
+
+/**
+ * Provide 'worst' primary modifications
+ * @param {Object}      ship      The ship for which to perform the modifications
+ * @param {Object}      m         The module for which to perform the modifications
+ */
+export function setWorst(ship, m) {
+  ship.clearModifications(m);
+  const features = m.blueprint.grades[m.blueprint.grade].features;
+  for (const featureName in features) {
+    const value = features[featureName][0];
+    _setValue(ship, m, featureName, value);
+  }
+}
+
+/**
+ * Provide 'best' primary modifications
+ * @param {Object}      ship      The ship for which to perform the modifications
+ * @param {Object}      m         The module for which to perform the modifications
+ */
+export function setBest(ship, m) {
+  ship.clearModifications(m);
+  const features = m.blueprint.grades[m.blueprint.grade].features;
+  for (const featureName in features) {
+    const value = features[featureName][1];
+    _setValue(ship, m, featureName, value);
+  }
+}
+
+/**
+ * Provide 'extreme' primary modifications
+ * @param {Object}      ship      The ship for which to perform the modifications
+ * @param {Object}      m         The module for which to perform the modifications
+ */
+export function setExtreme(ship, m) {
+  ship.clearModifications(m);
+  const features = m.blueprint.grades[m.blueprint.grade].features;
+  for (const featureName in features) {
+    let value;
+    if (Modifications.modifications[featureName].higherbetter) {
+      // Higher is better, but is this making it better or worse?
+      if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
+        value = features[featureName][0];
+      } else {
+        value = features[featureName][1];
+      }
+    } else {
+      // Higher is worse, but is this making it better or worse?
+      if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
+        value = features[featureName][1];
+      } else {
+        value = features[featureName][0];
+      }
+    }
+
+    _setValue(ship, m, featureName, value);
+  }
+}
+
+/**
+ * Provide 'random' primary modifications
+ * @param {Object}      ship      The ship for which to perform the modifications
+ * @param {Object}      m         The module for which to perform the modifications
+ */
+export function setRandom(ship, m) {
+  ship.clearModifications(m);
+  // Pick a single value for our randomness
+  const mult = Math.random();
+  const features = m.blueprint.grades[m.blueprint.grade].features;
+  for (const featureName in features) {
+    let value;
+    if (Modifications.modifications[featureName].higherbetter) {
+      // Higher is better, but is this making it better or worse?
+      if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
+        value = features[featureName][1] + ((features[featureName][0] - features[featureName][1]) * mult);
+      } else {
+        value = features[featureName][0] + ((features[featureName][1] - features[featureName][0]) * mult);
+      }
+    } else {
+      // Higher is worse, but is this making it better or worse?
+      if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
+        value = features[featureName][0] + ((features[featureName][1] - features[featureName][0]) * mult);
+      } else {
+        value = features[featureName][1] + ((features[featureName][0] - features[featureName][1]) * mult);
+      }
+    }
+
+    _setValue(ship, m, featureName, value);
+  }
+}
+
+/**
+ * Set a modification feature value
+ * @param {Object}      ship          The ship for which to perform the modifications
+ * @param {Object}      m             The module for which to perform the modifications
+ * @param {string}      featureName   The feature being set
+ * @param {number}      value         The value being set for the feature
+ */
+function _setValue(ship, m, featureName, value) {
+  if (Modifications.modifications[featureName].type == 'percentage') {
+    ship.setModification(m, featureName, value * 10000);
+  } else if (Modifications.modifications[featureName].type == 'numeric') {
+    ship.setModification(m, featureName, value * 100);
+  } else {
+    ship.setModification(m, featureName, value);
+  }
 }

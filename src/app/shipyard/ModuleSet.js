@@ -119,12 +119,11 @@ export default class ModuleSet {
   /**
    * Find the lightest Power Distributor that provides sufficient
    * energy to boost.
-   * @param  {number} boostEnergy [description]
+   * @param  {number} boostEnergy The energy that is required to boost
    * @return {Object}             Power Distributor
    */
   lightestPowerDist(boostEnergy) {
     let pd = this.standard[4][0];
-
     for (let p of this.standard[4]) {
       if (p.mass < pd.mass && p.engcap > boostEnergy) {
         pd = p;

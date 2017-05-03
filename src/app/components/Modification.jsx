@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import cn from 'classnames';
 import NumberEditor from 'react-number-editor';
@@ -9,11 +10,11 @@ import NumberEditor from 'react-number-editor';
 export default class Modification extends TranslatedComponent {
 
   static propTypes = {
-    ship: React.PropTypes.object.isRequired,
-    m: React.PropTypes.object.isRequired,
-    name: React.PropTypes.string.isRequired,
-    value: React.PropTypes.number.isRequired,
-    onChange: React.PropTypes.func.isRequired
+    ship: PropTypes.object.isRequired,
+    m: PropTypes.object.isRequired,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired
   };
 
   /**

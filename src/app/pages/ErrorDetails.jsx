@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * Unexpected Error page / block
@@ -6,12 +7,12 @@ import React from 'react';
 export default class ErrorDetails extends React.Component {
 
   static contextTypes = {
-    route: React.PropTypes.object.isRequired,
-    language: React.PropTypes.object.isRequired
+    route: PropTypes.object.isRequired,
+    language: PropTypes.object.isRequired
   };
 
   static propTypes = {
-    error: React.PropTypes.object.isRequired
+    error: PropTypes.object.isRequired
   };
 
   /**

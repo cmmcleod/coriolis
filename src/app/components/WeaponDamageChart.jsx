@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import { Ships } from 'coriolis-data/dist';
 import { nameComparator } from '../utils/SlotFunctions';
@@ -15,12 +16,12 @@ const DAMAGE_DEALT_COLORS = ['#FFFFFF', '#FF0000', '#00FF00', '#7777FF', '#FFFF0
  */
 export default class WeaponDamageChart extends TranslatedComponent {
   static propTypes = {
-    ship: React.PropTypes.object.isRequired,
-    opponent: React.PropTypes.object.isRequired,
-    hull: React.PropTypes.bool.isRequired,
-    engagementRange: React.PropTypes.number.isRequired,
-    opponentSys: React.PropTypes.number.isRequired,
-    marker: React.PropTypes.string.isRequired
+    ship: PropTypes.object.isRequired,
+    opponent: PropTypes.object.isRequired,
+    hull: PropTypes.bool.isRequired,
+    engagementRange: PropTypes.number.isRequired,
+    opponentSys: PropTypes.number.isRequired,
+    marker: PropTypes.string.isRequired
   };
 
   /**
@@ -59,11 +60,11 @@ export default class WeaponDamageChart extends TranslatedComponent {
       const maxRange = this._calcMaxRange(nextProps.ship);
       const maxDps = this._calcMaxSDps(nextProps.ship, nextProps.opponent, opponentShields, opponentArmour);
       this.setState({ weaponNames,
-                      opponentShields,
-                      opponentArmour,
-                      maxRange,
-                      maxDps,
-                      calcSDpsFunc: this._calcSDps.bind(this, nextProps.ship, weaponNames, nextProps.opponent, opponentShields, opponentArmour, nextProps.hull)
+        opponentShields,
+        opponentArmour,
+        maxRange,
+        maxDps,
+        calcSDpsFunc: this._calcSDps.bind(this, nextProps.ship, weaponNames, nextProps.opponent, opponentShields, opponentArmour, nextProps.hull)
       });
     }
     return true;

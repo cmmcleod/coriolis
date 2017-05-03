@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import TranslatedComponent from './TranslatedComponent';
 import { isEmpty, stopCtxPropagation } from '../utils/UtilityFunctions';
 import cn from 'classnames';
 import { Modifications } from 'coriolis-data/dist';
 import Modification from './Modification';
-import { getBlueprint, blueprintTooltip } from '../utils/BlueprintFunctions';
+import { getBlueprint, blueprintTooltip, setWorst, setBest, setExtreme, setRandom } from '../utils/BlueprintFunctions';
 
 /**
  * Modifications menu
@@ -13,10 +14,10 @@ import { getBlueprint, blueprintTooltip } from '../utils/BlueprintFunctions';
 export default class ModificationsMenu extends TranslatedComponent {
 
   static propTypes = {
-    ship: React.PropTypes.object.isRequired,
-    m: React.PropTypes.object.isRequired,
-    marker: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired
+    ship: PropTypes.object.isRequired,
+    m: PropTypes.object.isRequired,
+    marker: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
   };
 
   /**
@@ -87,10 +88,11 @@ export default class ModificationsMenu extends TranslatedComponent {
     const translate = language.translate;
 
     const specials = [];
-    if (Modifications.modules[m.grp].specials && Modifications.modules[m.grp].specials.length > 0) {
+    const specialsId = m.missile ? 'specials_' + m.missile : 'specials';
+    if (Modifications.modules[m.grp][specialsId] && Modifications.modules[m.grp][specialsId].length > 0) {
       const close = this._specialSelected.bind(this, null);
       specials.push(<div style={{ cursor: 'pointer' }} key={ 'none' } onClick={ close }>{translate('PHRASE_NO_SPECIAL')}</div>);
-      for (const specialName of Modifications.modules[m.grp].specials) {
+      for (const specialName of Modifications.modules[m.grp][specialsId]) {
         const close = this._specialSelected.bind(this, specialName);
         specials.push(<div style={{ cursor: 'pointer' }} key={ specialName } onClick={ close }>{translate(Modifications.specials[specialName].name)}</div>);
       }
@@ -156,7 +158,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     const { m, ship } = this.props;
 
     if (special === null) {
-      ship.clearModuelSpecial(m);
+      ship.clearModuleSpecial(m);
     } else {
       ship.setModuleSpecial(m, Modifications.specials[special]);
     }
@@ -166,34 +168,11 @@ export default class ModificationsMenu extends TranslatedComponent {
   }
 
   /**
-   * Set the result of a roll
-   * @param  {object} ship          The ship to which the roll applies
-   * @param  {object} m             The module to which the roll applies
-   * @param  {string} featureName   The modification feature to which the roll applies
-   * @param  {number} value         The value of the roll
-   */
-  _setRollResult(ship, m, featureName, value) {
-    if (Modifications.modifications[featureName].type == 'percentage') {
-      ship.setModification(m, featureName, value * 10000);
-    } else if (Modifications.modifications[featureName].type == 'numeric') {
-      ship.setModification(m, featureName, value * 100);
-    } else {
-      ship.setModification(m, featureName, value);
-    }
-  }
-
-  /**
    * Provide a 'worst' roll within the information we have
    */
   _rollWorst() {
     const { m, ship } = this.props;
-    ship.clearModifications(m);
-    const features = m.blueprint.grades[m.blueprint.grade].features;
-    for (const featureName in features) {
-      let value = features[featureName][0];
-      this._setRollResult(ship, m, featureName, value);
-    }
-
+    setWorst(ship, m);
     this.props.onChange();
   }
 
@@ -202,13 +181,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollRandom() {
     const { m, ship } = this.props;
-    ship.clearModifications(m);
-    const features = m.blueprint.grades[m.blueprint.grade].features;
-    for (const featureName in features) {
-      let value = features[featureName][0] + (Math.random() * (features[featureName][1] - features[featureName][0]));
-      this._setRollResult(ship, m, featureName, value);
-    }
-
+    setRandom(ship, m);
     this.props.onChange();
   }
 
@@ -217,12 +190,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollBest() {
     const { m, ship } = this.props;
-    const features = m.blueprint.grades[m.blueprint.grade].features;
-    for (const featureName in features) {
-      let value = features[featureName][1];
-      this._setRollResult(ship, m, featureName, value);
-    }
-
+    setBest(ship, m);
     this.props.onChange();
   }
 
@@ -231,29 +199,7 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _rollExtreme() {
     const { m, ship } = this.props;
-    ship.clearModifications(m);
-    const features = m.blueprint.grades[m.blueprint.grade].features;
-    for (const featureName in features) {
-      let value;
-      if (Modifications.modifications[featureName].higherbetter) {
-        // Higher is better, but is this making it better or worse?
-        if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
-          value = features[featureName][0];
-        } else {
-          value = features[featureName][1];
-        }
-      } else {
-        // Higher is worse, but is this making it better or worse?
-        if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
-          value = features[featureName][1];
-        } else {
-          value = features[featureName][0];
-        }
-      }
-
-      this._setRollResult(ship, m, featureName, value);
-    }
-
+    setExtreme(ship, m);
     this.props.onChange();
   }
 

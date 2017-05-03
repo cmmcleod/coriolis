@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 
 /**
@@ -7,8 +8,8 @@ import TranslatedComponent from './TranslatedComponent';
 export default class Tooltip extends TranslatedComponent {
 
   static propTypes = {
-    rect: React.PropTypes.object.isRequired,
-    options: React.PropTypes.object
+    rect: PropTypes.object.isRequired,
+    options: PropTypes.object
   };
 
   static defaultProps = {

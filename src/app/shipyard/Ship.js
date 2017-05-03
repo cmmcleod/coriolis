@@ -707,6 +707,11 @@ export default class Ship {
    * @return {this} The current ship instance for chaining
    */
   buildFrom(serializedString) {
+    if (!serializedString) {
+      // Empty serialized string; nothing to do
+      return this;
+    }
+
     let standard = new Array(this.standard.length),
         hardpoints = new Array(this.hardpoints.length),
         internal = new Array(this.internal.length),
@@ -1481,8 +1486,8 @@ export default class Ship {
     let bufsize = 0;
     for (let i = 0; i < slots.length; i++) {
       if (slots[i].length > 0 || (blueprints[i] && blueprints[i].id)) {
-        // Length is 1 for the slot ID, 5 for each modification, and 1 for the end marker
-        bufsize = bufsize + 1 + (5 * slots[i].length) + 1;
+        // Length is 1 for the slot ID, 5 for each modification, 1 for the end marker of the modifications and 1 for the end marker of the slot
+        bufsize = bufsize + 1 + (5 * slots[i].length) + 1 + 1;
 
         if (blueprints[i] && blueprints[i].id) {
           // Additional 10 for the blueprint and grade
@@ -1712,6 +1717,11 @@ export default class Ship {
         .use(standard[5], s)     // Sensors
         .use(standard[4], pd)    // Power Distributor
         .use(standard[6], ft);   // Fuel Tank
+
+    // Turn off nearly everything
+    if (m.fsdDisabled) this.setSlotEnabled(this.standard[2], false);
+    if (m.pdDisabled) this.setSlotEnabled(this.standard[4], false);
+    if (m.sDisabled) this.setSlotEnabled(this.standard[5], false);
 
     // Thrusters and Powerplant must be determined after all other ModuleUtils are mounted
     // Loop at least once to determine absolute lightest PD and TH

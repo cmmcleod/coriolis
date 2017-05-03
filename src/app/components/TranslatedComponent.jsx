@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { shallowEqual } from '../utils/UtilityFunctions';
 
 /**
@@ -7,15 +8,15 @@ import { shallowEqual } from '../utils/UtilityFunctions';
 export default class TranslatedComponent extends React.Component {
 
   static contextTypes = {
-    language: React.PropTypes.object.isRequired,
-    sizeRatio: React.PropTypes.number.isRequired,
-    openMenu: React.PropTypes.func.isRequired,
-    closeMenu: React.PropTypes.func.isRequired,
-    showModal: React.PropTypes.func.isRequired,
-    hideModal: React.PropTypes.func.isRequired,
-    tooltip: React.PropTypes.func.isRequired,
-    termtip: React.PropTypes.func.isRequired,
-    onWindowResize: React.PropTypes.func.isRequired
+    language: PropTypes.object.isRequired,
+    sizeRatio: PropTypes.number.isRequired,
+    openMenu: PropTypes.func.isRequired,
+    closeMenu: PropTypes.func.isRequired,
+    showModal: PropTypes.func.isRequired,
+    hideModal: PropTypes.func.isRequired,
+    tooltip: PropTypes.func.isRequired,
+    termtip: PropTypes.func.isRequired,
+    onWindowResize: PropTypes.func.isRequired
   };
 
   /**

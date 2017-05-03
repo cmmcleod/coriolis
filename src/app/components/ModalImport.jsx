@@ -1,5 +1,5 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
 import Router from '../Router';
@@ -86,7 +86,7 @@ export default class ModalImport extends TranslatedComponent {
 
 
   static propTypes = {
-    builds: React.PropTypes.object,  // Optional: Import object
+    builds: PropTypes.object,  // Optional: Import object
   };
 
   /**
@@ -459,8 +459,8 @@ export default class ModalImport extends TranslatedComponent {
    * If textarea is shown focus on mount
    */
   componentDidMount() {
-    if (!this.props.builds && findDOMNode(this.refs.importField)) {
-      findDOMNode(this.refs.importField).focus();
+    if (!this.props.builds && this.importField) {
+      this.importField.focus();
     }
   }
 
@@ -476,7 +476,7 @@ export default class ModalImport extends TranslatedComponent {
     if (!state.processed) {
       importStage = (
         <div>
-          <textarea className='cb json' ref='importField' onChange={this._validateImport} defaultValue={this.state.importString} placeholder={translate('PHRASE_IMPORT')} />
+          <textarea className='cb json' ref={node => this.importField = node} onChange={this._validateImport} defaultValue={this.state.importString} placeholder={translate('PHRASE_IMPORT')} />
           <button id='proceed' className='l cap' onClick={this._process} disabled={!state.importValid} >{translate('proceed')}</button>
           <div className='l warning' style={{ marginLeft:'3em' }}>{state.errorMsg}</div>
         </div>

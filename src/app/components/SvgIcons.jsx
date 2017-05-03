@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import { shallowEqual } from '../utils/UtilityFunctions';
 
@@ -8,8 +9,8 @@ import { shallowEqual } from '../utils/UtilityFunctions';
 class SvgIcon extends React.Component {
 
   static propTypes = {
-    className: React.PropTypes.any,
-    style: React.PropTypes.object
+    className: PropTypes.any,
+    style: PropTypes.object
   };
 
   /**

@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const TestUtils = {
   createContextProvider: function(context) {
     var _contextTypes = {};
 
     Object.keys(context).forEach(function(key) {
-      _contextTypes[key] = React.PropTypes.any;
+      _contextTypes[key] = PropTypes.any;
     });
 
     return React.createClass({

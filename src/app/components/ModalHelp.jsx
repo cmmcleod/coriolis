@@ -1,6 +1,6 @@
 /* eslint react/no-danger: 0 */
+import PropTypes from 'prop-types';
 import React from 'react';
-import { findDOMNode } from 'react-dom';
 import TranslatedComponent from './TranslatedComponent';
 
 /**
@@ -9,7 +9,7 @@ import TranslatedComponent from './TranslatedComponent';
 export default class ModalHelp extends TranslatedComponent {
 
   static propTypes = {
-    title: React.PropTypes.string
+    title: PropTypes.string
   };
 
   /**
@@ -18,17 +18,6 @@ export default class ModalHelp extends TranslatedComponent {
    */
   constructor(props) {
     super(props);
-  }
-
-  /**
-   * Focus on textarea and select all
-   */
-  componentDidMount() {
-    const e = findDOMNode(this.refs.exportField);
-    if (e) {
-      e.focus();
-      e.select();
-    }
   }
 
   /**

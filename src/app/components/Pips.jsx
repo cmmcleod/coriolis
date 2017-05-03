@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import { Ships } from 'coriolis-data/dist';
 import { nameComparator } from '../utils/SlotFunctions';
@@ -14,10 +15,10 @@ import Module from '../shipyard/Module';
  */
 export default class Pips extends TranslatedComponent {
   static propTypes = {
-    sys: React.PropTypes.number.isRequired,
-    eng: React.PropTypes.number.isRequired,
-    wep: React.PropTypes.number.isRequired,
-    onChange: React.PropTypes.func.isRequired
+    sys: PropTypes.number.isRequired,
+    eng: PropTypes.number.isRequired,
+    wep: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired
   };
 
   /**

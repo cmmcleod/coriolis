@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import { Ships } from 'coriolis-data/dist';
 import Ship from '../shipyard/Ship';
@@ -19,22 +20,22 @@ import WeaponDamageChart from './WeaponDamageChart';
 export default class OutfittingSubpages extends TranslatedComponent {
 
   static propTypes = {
-    ship: React.PropTypes.object.isRequired,
-    code: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired,
-    buildName: React.PropTypes.string,
-    sys: React.PropTypes.number.isRequired,
-    eng: React.PropTypes.number.isRequired,
-    wep: React.PropTypes.number.isRequired,
-    cargo: React.PropTypes.number.isRequired,
-    fuel: React.PropTypes.number.isRequired,
-    boost: React.PropTypes.bool.isRequired,
-    engagementRange: React.PropTypes.number.isRequired,
-    opponent: React.PropTypes.object.isRequired,
-    opponentBuild: React.PropTypes.string,
-    opponentSys: React.PropTypes.number.isRequired,
-    opponentEng: React.PropTypes.number.isRequired,
-    opponentWep: React.PropTypes.number.isRequired,
+    ship: PropTypes.object.isRequired,
+    code: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    buildName: PropTypes.string,
+    sys: PropTypes.number.isRequired,
+    eng: PropTypes.number.isRequired,
+    wep: PropTypes.number.isRequired,
+    cargo: PropTypes.number.isRequired,
+    fuel: PropTypes.number.isRequired,
+    boost: PropTypes.bool.isRequired,
+    engagementRange: PropTypes.number.isRequired,
+    opponent: PropTypes.object.isRequired,
+    opponentBuild: PropTypes.string,
+    opponentSys: PropTypes.number.isRequired,
+    opponentEng: PropTypes.number.isRequired,
+    opponentWep: PropTypes.number.isRequired,
   };
 
   /**

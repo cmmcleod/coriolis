@@ -1,5 +1,5 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 
 /**
@@ -8,9 +8,9 @@ import TranslatedComponent from './TranslatedComponent';
 export default class ModalExport extends TranslatedComponent {
 
   static propTypes = {
-    title: React.PropTypes.string,
-    generator: React.PropTypes.func,
-    data: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object, React.PropTypes.array])
+    title: PropTypes.string,
+    generator: PropTypes.func,
+    data: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.array])
   };
 
   /**
@@ -45,10 +45,9 @@ export default class ModalExport extends TranslatedComponent {
    * Focus on textarea and select all
    */
   componentDidMount() {
-    let e = findDOMNode(this.refs.exportField);
-    if (e) {
-      e.focus();
-      e.select();
+    if (this.exportField) {
+      this.exportField.focus();
+      this.exportField.select();
     }
   }
 
@@ -68,7 +67,7 @@ export default class ModalExport extends TranslatedComponent {
       <h2>{translate(this.props.title || 'Export')}</h2>
       {description}
       <div>
-        <textarea className='cb json' ref='exportField' readOnly value={this.state.exportJson} />
+        <textarea className='cb json' ref={node => this.exportField = node} readOnly value={this.state.exportJson} />
       </div>
       <button className='r dismiss cap' onClick={this.context.hideModal}>{translate('close')}</button>
     </div>;

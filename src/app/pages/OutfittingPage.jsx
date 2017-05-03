@@ -1,6 +1,5 @@
 import React from 'react';
 // import Perf from 'react-addons-perf';
-import { findDOMNode } from 'react-dom';
 import { Ships } from 'coriolis-data/dist';
 import cn from 'classnames';
 import Page from './Page';
@@ -308,7 +307,10 @@ export default class OutfittingPage extends Page {
    * Save the current build
    */
   _saveBuild() {
-    const { code, buildName, newBuildName, shipId } = this.state;
+    const { ship, buildName, newBuildName, shipId } = this.state;
+
+    // If this is a stock ship the code won't be set, so ensure that we have it
+    const code =  this.state.code || ship.toString();
 
     Persist.saveBuild(shipId, newBuildName, code);
     this._updateRoute(shipId, newBuildName, code);
