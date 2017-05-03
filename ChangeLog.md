@@ -3,6 +3,8 @@
   * Ensure comparisons with saved stock ships work correctly
   * Add 'Racer' role
   * Tidy up shipyard page; remove units from data columns and re-order for legibility
+  * Allow basic drag/drop functionality in Edge/Internet Explorer 11 browser
+  * Provide separate special effects for dumbfire and seeker missiles
 
 #2.3.3
   * Remove unused blueprint when hitting reset

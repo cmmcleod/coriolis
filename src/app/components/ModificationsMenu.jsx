@@ -88,10 +88,11 @@ export default class ModificationsMenu extends TranslatedComponent {
     const translate = language.translate;
 
     const specials = [];
-    if (Modifications.modules[m.grp].specials && Modifications.modules[m.grp].specials.length > 0) {
+    const specialsId = m.missile ? 'specials_' + m.missile : 'specials';
+    if (Modifications.modules[m.grp][specialsId] && Modifications.modules[m.grp][specialsId].length > 0) {
       const close = this._specialSelected.bind(this, null);
       specials.push(<div style={{ cursor: 'pointer' }} key={ 'none' } onClick={ close }>{translate('PHRASE_NO_SPECIAL')}</div>);
-      for (const specialName of Modifications.modules[m.grp].specials) {
+      for (const specialName of Modifications.modules[m.grp][specialsId]) {
         const close = this._specialSelected.bind(this, specialName);
         specials.push(<div style={{ cursor: 'pointer' }} key={ specialName } onClick={ close }>{translate(Modifications.specials[specialName].name)}</div>);
       }
