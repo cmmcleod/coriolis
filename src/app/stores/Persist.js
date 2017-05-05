@@ -5,12 +5,14 @@ const LS_KEY_BUILDS = 'builds';
 const LS_KEY_COMPARISONS = 'comparisons';
 const LS_KEY_LANG = 'NG_TRANSLATE_LANG_KEY';
 const LS_KEY_COST_TAB = 'costTab';
+const LS_KEY_OUTFITTING_TAB = 'outfittingTab';
 const LS_KEY_INSURANCE = 'insurance';
 const LS_KEY_SHIP_DISCOUNT = 'shipDiscount';
 const LS_KEY_MOD_DISCOUNT = 'moduleDiscount';
 const LS_KEY_STATE = 'state';
 const LS_KEY_SIZE_RATIO = 'sizeRatio';
 const LS_KEY_TOOLTIPS = 'tooltips';
+const LS_KEY_MODULE_RESISTANCES = 'moduleResistances';
 
 let LS;
 
@@ -81,6 +83,7 @@ export class Persist extends EventEmitter {
       LS = null;
     }
 
+    let moduleResistances = _get(LS_KEY_MODULE_RESISTANCES);
     let tips = _get(LS_KEY_TOOLTIPS);
     let insurance = _getString(LS_KEY_INSURANCE);
     let shipDiscount = _get(LS_KEY_SHIP_DISCOUNT);
@@ -96,9 +99,11 @@ export class Persist extends EventEmitter {
     this.builds = buildJson && typeof buildJson == 'object' ? buildJson : {};
     this.comparisons = comparisonJson && typeof comparisonJson == 'object' ? comparisonJson : {};
     this.costTab = _getString(LS_KEY_COST_TAB);
+    this.outfittingTab = _getString(LS_KEY_OUTFITTING_TAB);
     this.state =  _get(LS_KEY_STATE);
     this.sizeRatio = _get(LS_KEY_SIZE_RATIO) || 1;
     this.tooltipsEnabled = tips === null ? true : tips;
+    this.moduleResistancesEnabled = moduleResistances === null ? true : moduleResistances;
 
     if (LS) {
       window.addEventListener('storage', this.onStorageChange);
@@ -143,6 +148,10 @@ export class Persist extends EventEmitter {
           this.tooltipsEnabled = !!newValue && newValue.toLowerCase() == 'true';
           this.emit('tooltips', this.tooltipsEnabled);
           break;
+        case LS_KEY_MODULE_RESISTANCES:
+          this.moduleResistancesEnabled = !!newValue && newValue.toLowerCase() == 'true';
+          this.emit('moduleresistances', this.moduleResistancesEnabled);
+          break;
       }
     } catch (e) {
       // On JSON.Parse Error - don't sync or do anything
@@ -181,6 +190,21 @@ export class Persist extends EventEmitter {
     }
 
     return this.tooltipsEnabled;
+  }
+
+  /**
+   * Show module resistances setting
+   * @param  {boolean} show Optional - update setting
+   * @return {boolean} True if module resistances should be shown
+   */
+  showModuleResistances(show) {
+    if (show !== undefined) {
+      this.moduleResistancesEnabled = !!show;
+      _put(LS_KEY_MODULE_RESISTANCES, this.moduleResistancesEnabled);
+      this.emit('moduleresistances', this.moduleResistancesEnabled);
+    }
+
+    return this.moduleResistancesEnabled;
   }
 
   /**
@@ -448,6 +472,22 @@ export class Persist extends EventEmitter {
    */
   getCostTab() {
     return this.costTab;
+  }
+
+  /**
+   * Persist selected outfitting tab
+   * @param {string} tabName Cost tab name
+   */
+  setOutfittingTab(tabName) {
+    this.outfittingTab = tabName;
+    _put(LS_KEY_OUTFITTING_TAB, tabName);
+  }
+  /**
+   * Get the current outfitting tab
+   * @return {string} the current outfitting tab
+   */
+  getOutfittingTab() {
+    return this.outfittingTab;
   }
 
   /**

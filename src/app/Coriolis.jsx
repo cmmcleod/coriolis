@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Router from './Router';
 import { EventEmitter } from 'fbemitter';
 import { getLanguage } from './i18n/Language';
@@ -6,7 +7,11 @@ import Persist from './stores/Persist';
 
 import Header from './components/Header';
 import Tooltip from './components/Tooltip';
+import ModalExport from './components/ModalExport';
+import ModalHelp from './components/ModalHelp';
 import ModalImport from './components/ModalImport';
+import ModalPermalink from './components/ModalPermalink';
+import * as CompanionApiUtils from './utils/CompanionApiUtils';
 
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -15,24 +20,26 @@ import ComparisonPage from './pages/ComparisonPage';
 import ShipyardPage from './pages/ShipyardPage';
 import ErrorDetails from './pages/ErrorDetails';
 
+const zlib = require('zlib');
+
 /**
  * Coriolis App
  */
 export default class Coriolis extends React.Component {
 
   static childContextTypes = {
-    closeMenu: React.PropTypes.func.isRequired,
-    hideModal: React.PropTypes.func.isRequired,
-    language: React.PropTypes.object.isRequired,
-    noTouch: React.PropTypes.bool.isRequired,
-    onCommand: React.PropTypes.func.isRequired,
-    onWindowResize: React.PropTypes.func.isRequired,
-    openMenu: React.PropTypes.func.isRequired,
-    route: React.PropTypes.object.isRequired,
-    showModal: React.PropTypes.func.isRequired,
-    sizeRatio: React.PropTypes.number.isRequired,
-    termtip: React.PropTypes.func.isRequired,
-    tooltip: React.PropTypes.func.isRequired
+    closeMenu: PropTypes.func.isRequired,
+    hideModal: PropTypes.func.isRequired,
+    language: PropTypes.object.isRequired,
+    noTouch: PropTypes.bool.isRequired,
+    onCommand: PropTypes.func.isRequired,
+    onWindowResize: PropTypes.func.isRequired,
+    openMenu: PropTypes.func.isRequired,
+    route: PropTypes.object.isRequired,
+    showModal: PropTypes.func.isRequired,
+    sizeRatio: PropTypes.number.isRequired,
+    termtip: PropTypes.func.isRequired,
+    tooltip: PropTypes.func.isRequired
   };
 
   /**
@@ -52,6 +59,7 @@ export default class Coriolis extends React.Component {
     this._onLanguageChange = this._onLanguageChange.bind(this);
     this._onSizeRatioChange = this._onSizeRatioChange.bind(this);
     this._keyDown = this._keyDown.bind(this);
+    this._importBuild = this._importBuild.bind(this);
 
     this.emitter = new EventEmitter();
     this.state = {
@@ -63,11 +71,34 @@ export default class Coriolis extends React.Component {
     };
 
     Router('', (r) => this._setPage(ShipyardPage, r));
+    Router('/import?', (r) => this._importBuild(r));
+    Router('/import/:data', (r) => this._importBuild(r));
+    Router('/outfit/?', (r) => this._setPage(OutfittingPage, r));
+    Router('/outfit/:ship/?', (r) => this._setPage(OutfittingPage, r));
     Router('/outfit/:ship/:code?', (r) => this._setPage(OutfittingPage, r));
     Router('/compare/:name?', (r) => this._setPage(ComparisonPage, r));
+    Router('/comparison?', (r) => this._setPage(ComparisonPage, r));
     Router('/comparison/:code', (r) => this._setPage(ComparisonPage, r));
     Router('/about', (r) => this._setPage(AboutPage, r));
     Router('*', (r) => this._setPage(null, r));
+  }
+
+  /**
+   * Import a build directly
+   * @param {Object} r The current route
+   */
+  _importBuild(r) {
+    try {
+      // Need to decode and gunzip the data, then build the ship
+      const data = zlib.gunzipSync(new Buffer(r.params.data, 'base64'));
+      const json = JSON.parse(data);
+      const ship = CompanionApiUtils.shipFromJson(json);
+      r.params.ship = ship.id;
+      r.params.code = ship.toString();
+      this._setPage(OutfittingPage, r);
+    } catch (err) {
+      this._onError('Failed to import ship', r.path, 0, 0, err);
+    }
   }
 
   /**
@@ -131,14 +162,26 @@ export default class Coriolis extends React.Component {
         this._hideModal();
         this._closeMenu();
         break;
+      case 72:     // 'h'
+        if (e.ctrlKey || e.metaKey) { // CTRL/CMD + h
+          e.preventDefault();
+          this._showModal(<ModalHelp />);
+        }
+        break;
       case 73:     // 'i'
         if (e.ctrlKey || e.metaKey) { // CTRL/CMD + i
           e.preventDefault();
           this._showModal(<ModalImport />);
         }
         break;
-      case 101010:  // 's'
-        if (e.ctrlKey || e.metaKey) { // CTRL/CMD + i
+      case 79:  // 'o'
+        if (e.ctrlKey || e.metaKey) { // CTRL/CMD + o
+          e.preventDefault();
+          this._showModal(<ModalPermalink url={window.location.href}/>);
+        }
+        break;
+      case 83:  // 's'
+        if (e.ctrlKey || e.metaKey) { // CTRL/CMD + s
           e.preventDefault();
           this.emitter.emit('command', 'save');
         }
@@ -199,14 +242,19 @@ export default class Coriolis extends React.Component {
   /**
    * Show the term tip
    * @param  {string} term            Term or Phrase
-   * @param  {Object} opts            Options - dontCap, orientation (n,e,s,w)
+   * @param  {Object} opts            Options - dontCap, orientation (n,e,s,w) (can also be the event if no options supplied)
    * @param  {SyntheticEvent} event   Event
+   * @param  {SyntheticEvent} e2      Alternative location for synthetic event from charts (where 'Event' is actually a chart index)
    */
-  _termtip(term, opts, event) {
-    if (opts && opts.nativeEvent) { // Opts is a SyntheticEvent
+  _termtip(term, opts, event, e2) {
+    if (opts && opts.nativeEvent) { // Opts is the SyntheticEvent
       event = opts;
       opts = { cap: true };
     }
+    if (e2 instanceof Object && e2.nativeEvent) { // E2 is the SyntheticEvent
+      event = e2;
+    }
+
     this._tooltip(
       <div className={'cen' + (opts.cap ? ' cap' : '')}>{this.state.language.translate(term)}</div>,
       event.currentTarget.getBoundingClientRect(),
@@ -291,7 +339,7 @@ export default class Coriolis extends React.Component {
       { this.state.tooltip }
       <footer>
         <div className="right cap">
-          <a href="https://github.com/cmmcleod/coriolis/releases/" target="_blank" title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
+          <a href="https://github.com/EDCD/coriolis" target="_blank" title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
         </div>
       </footer>
     </div>;

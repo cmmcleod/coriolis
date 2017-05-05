@@ -1,0 +1,225 @@
+{
+  "free": false,
+  "id": 2,
+  "modules": {
+    "Armour": {
+      "module": {
+        "free": false,
+        "id": 128049280,
+        "name": "CobraMkIII_Armour_Grade1",
+        "on": true,
+        "priority": 1,
+        "value": 0
+      }
+    },
+    "FrameShiftDrive": {
+      "module": {
+        "free": false,
+        "id": 128064117,
+        "name": "Int_Hyperdrive_Size4_Class5",
+        "on": true,
+        "priority": 4,
+        "value": 1610080
+      }
+    },
+    "FuelTank": {
+      "module": {
+        "free": false,
+        "id": 128064349,
+        "name": "Int_FuelTank_Size4_Class3",
+        "on": true,
+        "priority": 1,
+        "value": 24734
+      }
+    },
+    "LifeSupport": {
+      "module": {
+        "free": false,
+        "id": 128064149,
+        "name": "Int_LifeSupport_Size3_Class2",
+        "on": true,
+        "priority": 0,
+        "value": 10133
+      }
+    },
+    "MainEngines": {
+      "module": {
+        "free": false,
+        "id": 128064079,
+        "name": "Int_Engine_Size4_Class2",
+        "on": true,
+        "priority": 0,
+        "value": 59633
+      }
+    },
+    "PaintJob": {
+      "module": {
+        "free": false,
+        "id": 128741033,
+        "name": "PaintJob_CobraMKIII_Corrosive_05",
+        "on": true,
+        "priority": 1,
+        "value": 0
+      }
+    },
+    "PlanetaryApproachSuite": {
+      "module": {
+        "free": false,
+        "id": 128672317,
+        "name": "Int_PlanetApproachSuite",
+        "on": true,
+        "priority": 1,
+        "value": 500
+      }
+    },
+    "PowerDistributor": {
+      "module": {
+        "free": false,
+        "id": 128064179,
+        "name": "Int_PowerDistributor_Size1_Class2",
+        "on": true,
+        "priority": 2,
+        "value": 1293
+      }
+    },
+    "PowerPlant": {
+      "module": {
+        "free": false,
+        "id": 128064037,
+        "name": "Int_Powerplant_Size2_Class5",
+        "on": true,
+        "priority": 1,
+        "value": 160224
+      }
+    },
+    "Radar": {
+      "module": {
+        "free": false,
+        "id": 128064229,
+        "name": "Int_Sensors_Size3_Class2",
+        "on": true,
+        "priority": 0,
+        "value": 10133
+      }
+    },
+    "ShipID0": {
+      "module": {
+        "free": false,
+        "id": 128758976,
+        "name": "Nameplate_ShipID_Black",
+        "on": true,
+        "priority": 1,
+        "value": 0
+      }
+    },
+    "ShipID1": {
+      "module": {
+        "free": false,
+        "id": 128758976,
+        "name": "Nameplate_ShipID_Black",
+        "on": true,
+        "priority": 1,
+        "value": 0
+      }
+    },
+    "ShipKitBumper": {
+      "module": {
+        "free": false,
+        "id": 128740698,
+        "name": "CobraMkIII_ShipkitRaider1_Bumper1",
+        "on": true,
+        "priority": 1,
+        "value": 0
+      }
+    },
+    "ShipKitSpoiler": {
+      "module": {
+        "free": false,
+        "id": 128740701,
+        "name": "CobraMkIII_ShipkitRaider1_Spoiler1",
+        "on": true,
+        "priority": 1,
+        "value": 0
+      }
+    },
+    "ShipKitTail": {
+      "module": {
+        "free": false,
+        "id": 128740705,
+        "name": "CobraMkIII_ShipkitRaider1_Tail2",
+        "on": true,
+        "priority": 1,
+        "value": 0
+      }
+    },
+    "ShipKitWings": {
+      "module": {
+        "free": false,
+        "id": 128740707,
+        "name": "CobraMkIII_ShipkitRaider1_Wings1",
+        "on": true,
+        "priority": 1,
+        "value": 0
+      }
+    },
+    "ShipName0": {
+      "module": {
+        "free": false,
+        "id": 128758944,
+        "name": "Nameplate_Explorer01_Black",
+        "on": true,
+        "priority": 1,
+        "value": 0
+      }
+    },
+    "ShipName1": {
+      "module": {
+        "free": false,
+        "id": 128758944,
+        "name": "Nameplate_Explorer01_Black",
+        "on": true,
+        "priority": 1,
+        "value": 0
+      }
+    },
+    "Slot01_Size4": {
+      "module": {
+        "free": false,
+        "id": 128666663,
+        "name": "Int_FuelScoop_Size4_Class3",
+        "on": true,
+        "priority": 2,
+        "value": 178898
+      }
+    },
+    "Slot02_Size4": [],
+    "Slot03_Size4": [],
+    "Slot04_Size2": [],
+    "Slot05_Size2": {
+      "module": {
+        "free": false,
+        "id": 128663561,
+        "name": "Int_StellarBodyDiscoveryScanner_Advanced",
+        "on": true,
+        "priority": 2,
+        "value": 1545000
+      }
+    },
+    "Slot06_Size2": {
+      "module": {
+        "free": false,
+        "id": 128666634,
+        "name": "Int_DetailedSurfaceScanner_Tiny",
+        "on": true,
+        "priority": 2,
+        "value": 250000
+      }
+    }
+  },
+  "name": "CobraMkIII",
+  "value": {
+    "hull": 205287,
+    "modules": 3850628,
+    "unloaned": 1751109
+  }
+}

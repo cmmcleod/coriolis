@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import { Ships } from 'coriolis-data/dist';
 import Persist from '../stores/Persist';
@@ -6,16 +7,17 @@ import Ship from '../shipyard/Ship';
 import { Insurance } from '../shipyard/Constants';
 import { slotName, slotComparator } from '../utils/SlotFunctions';
 import TranslatedComponent from './TranslatedComponent';
+import { ShoppingIcon } from '../components/SvgIcons';
 
 /**
  * Cost Section
  */
 export default class CostSection extends TranslatedComponent {
 
-  static PropTypes = {
-    ship: React.PropTypes.object.isRequired,
-    code: React.PropTypes.string.isRequired,
-    buildName: React.PropTypes.string
+  static propTypes = {
+    ship: PropTypes.object.isRequired,
+    code: PropTypes.string.isRequired,
+    buildName: PropTypes.string
   };
 
   /**
@@ -31,6 +33,7 @@ export default class CostSection extends TranslatedComponent {
     this._buildRetrofitShip = this._buildRetrofitShip.bind(this);
     this._onBaseRetrofitChange = this._onBaseRetrofitChange.bind(this);
     this._defaultRetrofitName = this._defaultRetrofitName.bind(this);
+    this._eddbShoppingList = this._eddbShoppingList.bind(this);
 
     let data = Ships[props.ship.id];   // Retrieve the basic ship properties, slots and defaults
     let retrofitName = this._defaultRetrofitName(props.ship.id, props.buildName);
@@ -326,11 +329,26 @@ export default class CostSection extends TranslatedComponent {
   }
 
   /**
+   * Open up a window for EDDB with a shopping list of our retrofit components
+   */
+  _eddbShoppingList() {
+    const { retrofitCosts } = this.state;
+    const { ship } = this.props;
+
+    // Provide unique list of non-PP module EDDB IDs to buy
+    const modIds = retrofitCosts.filter(item => item.retroItem.incCost && item.buyId && !item.buyPp).map(item => item.buyId).filter((v, i, a) => a.indexOf(v) === i);
+
+    // Open up the relevant URL
+    window.open('https://eddb.io/station?m=' + modIds.join(','));
+  }
+
+  /**
    * Render the retofit tab
    * @return {React.Component} Tab contents
    */
   _retrofitTab() {
     let { retrofitTotal, retrofitCosts, moduleDiscount, retrofitName } = this.state;
+    const { termtip, tooltip } = this.context;
     let { translate, formats, units } = this.context.language;
     let int = formats.int;
     let rows = [], options = [<option key='stock' value=''>{translate('Stock')}</option>];
@@ -370,7 +388,8 @@ export default class CostSection extends TranslatedComponent {
           <tbody>
             {rows}
             <tr className='ri'>
-              <td colSpan='4' className='lbl' >{translate('cost')}</td>
+              <td className='lbl' ><button onClick={this._eddbShoppingList} onMouseOver={termtip.bind(null, 'PHRASE_REFIT_SHOPPING_LIST')} onMouseOut={tooltip.bind(null, null)}><ShoppingIcon className='lg' style={{ fill: 'black' }}/></button></td>
+              <td colSpan='3' className='lbl' >{translate('cost')}</td>
               <td colSpan='2' className={cn('val', retrofitTotal > 0 ? 'warning' : 'secondary-disabled')} style={{ borderBottom:'none' }}>
                 {int(retrofitTotal)}{units.CR}
               </td>
@@ -379,7 +398,7 @@ export default class CostSection extends TranslatedComponent {
               <td colSpan='4' className='lbl cap' >{translate('retrofit from')}</td>
               <td className='val cen' style={{ borderRight: 'none', width: '1em' }}><u className='primary-disabled'>&#9662;</u></td>
               <td className='val' style={{ borderLeft:'none', padding: 0 }}>
-                <select style={{ width: '100%', padding: 0 }} value={retrofitName} onChange={this._onBaseRetrofitChange}>
+                <select style={{ width: '100%', padding: 0 }} value={retrofitName || translate('Stock')} onChange={this._onBaseRetrofitChange}>
                   {options}
                 </select>
               </td>
@@ -403,6 +422,8 @@ export default class CostSection extends TranslatedComponent {
     if (ship.bulkheads.m.index != retrofitShip.bulkheads.m.index) {
       item = {
         buyClassRating: ship.bulkheads.m.class + ship.bulkheads.m.rating,
+        buyId: ship.bulkheads.m.eddbID,
+        buyPp: ship.bulkheads.m.pp,
         buyName: ship.bulkheads.m.name,
         sellClassRating: retrofitShip.bulkheads.m.class + retrofitShip.bulkheads.m.rating,
         sellName: retrofitShip.bulkheads.m.name,
@@ -419,9 +440,13 @@ export default class CostSection extends TranslatedComponent {
       let retroSlotGroup = retrofitShip[g];
       let slotGroup = ship[g];
       for (i = 0, l = slotGroup.length; i < l; i++) {
-        if (slotGroup[i].m != retroSlotGroup[i].m) {
+        const modId = slotGroup[i].m ? slotGroup[i].m.eddbID : null;
+        const retroModId = retroSlotGroup[i].m ? retroSlotGroup[i].m.eddbID : null;
+        if (modId != retroModId) {
           item = { netCost: 0, retroItem: retroSlotGroup[i] };
           if (slotGroup[i].m) {
+            item.buyId = slotGroup[i].m.eddbID,
+            item.buyPp = slotGroup[i].m.pp,
             item.buyName = slotGroup[i].m.name || slotGroup[i].m.grp;
             item.buyClassRating = slotGroup[i].m.class + slotGroup[i].m.rating;
             item.netCost = slotGroup[i].discountedCost;
@@ -505,19 +530,19 @@ export default class CostSection extends TranslatedComponent {
               scoop = true;
               break;
             case 'scb':
-              q = slotGroup[i].m.cells;
+              q = slotGroup[i].m.getAmmo() + 1;
               break;
             case 'am':
-              q = slotGroup[i].m.ammo;
+              q = slotGroup[i].m.getAmmo();
               break;
             case 'pv':
-              srvs += slotGroup[i].m.vehicles;
+              srvs += slotGroup[i].m.getBays();
               break;
             case 'fx': case 'hb': case 'cc': case 'pc':
               limpets = ship.cargoCapacity;
               break;
             default:
-              q = slotGroup[i].m.clip + slotGroup[i].m.ammo;
+              q = slotGroup[i].m.getClip() + slotGroup[i].m.getAmmo();
           }
           // Calculate ammo costs only if a cost is specified
           if (slotGroup[i].m.ammocost > 0) {
@@ -526,6 +551,17 @@ export default class CostSection extends TranslatedComponent {
               max: q,
               cost: slotGroup[i].m.ammocost,
               total: q * slotGroup[i].m.ammocost
+            };
+            ammoCosts.push(item);
+            ammoTotal += item.total;
+          }
+          // Add fighters
+          if (slotGroup[i].m.grp === 'fh') {
+            item = {
+              m: slotGroup[i].m,
+              max: slotGroup[i].m.getRebuildsPerBay() * slotGroup[i].m.getBays(),
+              cost: slotGroup[i].m.fightercost,
+              total: slotGroup[i].m.getRebuildsPerBay() * slotGroup[i].m.getBays() * slotGroup[i].m.fightercost
             };
             ammoCosts.push(item);
             ammoTotal += item.total;
@@ -550,12 +586,13 @@ export default class CostSection extends TranslatedComponent {
       item = {
         m: { name: 'SRVs', class: '', rating: '' },
         max: srvs,
-        cost: 6005,
-        total: srvs * 6005
+        cost: 1030,
+        total: srvs * 1030
       };
       ammoCosts.push(item);
       ammoTotal += item.total;
     }
+
     // Calculate refuel costs if no scoop present
     if (!scoop) {
       item = {
@@ -606,6 +643,7 @@ export default class CostSection extends TranslatedComponent {
     }
 
     if (nextProps.ship != this.props.ship || nextProps.code != this.props.code) {
+      nextProps.ship.applyDiscounts(Persist.getShipDiscount(), Persist.getModuleDiscount());
       this._updateAmmoCosts(nextProps.ship);
       this._updateRetrofit(nextProps.ship, retrofitShip);
       this._sortCost(nextProps.ship);

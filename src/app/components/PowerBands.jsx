@@ -1,5 +1,6 @@
 import React from 'react';
-import d3 from 'd3';
+import PropTypes from 'prop-types';
+import * as d3 from 'd3';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
 import { wrapCtxMenu } from '../utils/UtilityFunctions';
@@ -33,10 +34,10 @@ function bandText(val, index, wattScale) {
 export default class PowerBands extends TranslatedComponent {
 
   static propTypes = {
-    bands: React.PropTypes.array.isRequired,
-    available: React.PropTypes.number.isRequired,
-    width: React.PropTypes.number.isRequired,
-    code: React.PropTypes.string,
+    bands: PropTypes.array.isRequired,
+    available: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
+    code: PropTypes.string,
   };
 
   /**
@@ -46,10 +47,10 @@ export default class PowerBands extends TranslatedComponent {
    */
   constructor(props, context) {
     super(props);
-    this.wattScale = d3.scale.linear();
-    this.pctScale = d3.scale.linear().domain([0, 1]);
-    this.wattAxis = d3.svg.axis().scale(this.wattScale).outerTickSize(0).orient('top').tickFormat(context.language.formats.r2);
-    this.pctAxis = d3.svg.axis().scale(this.pctScale).outerTickSize(0).orient('bottom').tickFormat(context.language.formats.rPct);
+    this.wattScale = d3.scaleLinear();
+    this.pctScale = d3.scaleLinear().domain([0, 1]);
+    this.wattAxis = d3.axisTop(this.wattScale).tickSizeOuter(0).tickFormat(context.language.formats.r2);
+    this.pctAxis = d3.axisBottom(this.pctScale).tickSizeOuter(0).tickFormat(context.language.formats.rPct);
 
     this._updateDimensions = this._updateDimensions.bind(this);
     this._updateScales = this._updateScales.bind(this);
@@ -186,10 +187,10 @@ export default class PowerBands extends TranslatedComponent {
 
     let { wattScale, pctScale, context, props, state } = this;
     let { translate, formats } = context.language;
-    let { f2, pct1, rPct, r2 } = formats; // wattFmt, pctFmt, pctAxis, wattAxis
-    let { available, bands, width } = props;
-    let { innerWidth, maxPwr, ret, dep } = state;
-    let pwrWarningClass = cn('threshold', { exceeded: bands[0].retractedSum * 2 >= available });
+    let { f2, pct1 } = formats; // wattFmt, pctFmt
+    let { available, bands } = props;
+    let { innerWidth, ret, dep } = state;
+    let pwrWarningClass = cn('threshold', { exceeded: bands[0].retractedSum > available * 0.4 });
     let deployed = [];
     let retracted = [];
     let retSelected = Object.keys(ret).length > 0;
@@ -268,7 +269,7 @@ export default class PowerBands extends TranslatedComponent {
             axis.call(this.pctAxis);
             axis.select('g:nth-child(6)').selectAll('line, text').attr('class', pwrWarningClass);
           }} className='pct axis' transform={`translate(0,${state.innerHeight})`}></g>
-          <line x1={pctScale(0.5)} x2={pctScale(0.5)} y1='0' y2={state.innerHeight} className={pwrWarningClass} />
+          <line x1={pctScale(0.4)} x2={pctScale(0.4)} y1='0' y2={state.innerHeight} className={pwrWarningClass} />
           <text dy='0.5em' x='-3' y={state.retY} className='primary upp' textAnchor='end' onMouseOver={this.context.termtip.bind(null, 'retracted')} onMouseLeave={this._hidetip}>{translate('ret')}</text>
           <text dy='0.5em' x='-3' y={state.depY} className='primary upp' textAnchor='end' onMouseOver={this.context.termtip.bind(null, 'deployed', { orientation: 's', cap: 1 })} onMouseLeave={this._hidetip}>{translate('dep')}</text>
           <text dy='0.5em' x={innerWidth + 5} y={state.retY} className={getClass(retSelected, retSum, available)}>{f2(Math.max(0, retSum))} ({pct1(Math.max(0, retSum / available))})</text>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
 import Page from './Page';
 import Router from '../Router';
 import cn from 'classnames';
@@ -17,7 +16,7 @@ import ModalImport from '../components/ModalImport';
 import { FloppyDisk, Bin, Download, Embed, Rocket, LinkIcon } from '../components/SvgIcons';
 import ShortenUrl from '../utils/ShortenUrl';
 import { comparisonBBCode } from '../utils/BBCode';
-
+const browser = require('detect-browser');
 
 /**
  * Creates a comparator based on the specified predicate
@@ -63,7 +62,7 @@ export default class ComparisonPage extends Page {
    * @return {Object}          New state object
    */
   _initState(context) {
-    let defaultFacets = [9, 6, 4, 1, 3, 2]; // Reverse order of Armour, Shields, Speed, Jump Range, Cargo Capacity, Cost
+    let defaultFacets = [13, 12, 11, 9, 6, 4, 1, 3, 2]; // Reverse order of Armour, Shields, Speed, Jump Range, Cargo Capacity, Cost, DPS, EPS, HPS
     let params = context.route.params;
     let code = params.code;
     let name = params.name ? decodeURIComponent(params.name) : null;
@@ -81,7 +80,9 @@ export default class ComparisonPage extends Page {
         newName = name;
         for (let shipId in allBuilds) {
           for (let buildName in allBuilds[shipId]) {
-            builds.push(this._createBuild(shipId, buildName, allBuilds[shipId][buildName]));
+            if (buildName && allBuilds[shipId][buildName]) {
+              builds.push(this._createBuild(shipId, buildName, allBuilds[shipId][buildName]));
+            }
           }
         }
       } else {
@@ -131,7 +132,7 @@ export default class ComparisonPage extends Page {
     builds.sort(sortBy(predicate));
 
     return {
-      title: 'Coriolis - Compare',
+      title: 'Coriolis EDCD Edition - Compare',
       predicate,
       desc,
       facets,
@@ -226,8 +227,10 @@ export default class ComparisonPage extends Page {
     let placeholder = this.placeholder = document.createElement('li');
     placeholder.style.width = Math.round(this.dragged.offsetWidth) + 'px';
     placeholder.className = 'facet-placeholder';
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html', e.currentTarget);
+    if (!browser || (browser.name !== 'edge' && browser.name !== 'ie')) {
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/html', e.currentTarget);
+    }
   }
 
   /**
@@ -345,7 +348,7 @@ export default class ComparisonPage extends Page {
 
     let code = fromComparison(name, builds, selectedFacets, predicate, desc);
     let loc = window.location;
-    return `${loc.protocol}//${loc.host}/comparison/${code}`;
+    return loc.protocol + '//' + loc.host + '/comparison?code=' + encodeURIComponent(code);
   }
 
   /**
@@ -381,7 +384,7 @@ export default class ComparisonPage extends Page {
    */
   _updateDimensions() {
     this.setState({
-      chartWidth: findDOMNode(this.refs.chartRef).offsetWidth
+      chartWidth: this.chartRef.offsetWidth
     });
   }
 
@@ -496,9 +499,9 @@ export default class ComparisonPage extends Page {
         <ComparisonTable builds={builds} facets={facets} onSort={this._sortShips} predicate={predicate} desc={desc} />
 
         {!builds.length ?
-          <div className='chart' ref={'chartRef'}>{translate('PHRASE_NO_BUILDS')}</div> :
+          <div className='chart' ref={node => this.chartRef = node}>{translate('PHRASE_NO_BUILDS')}</div> :
           facets.filter((f) => f.active).map((f, i) =>
-            <div key={f.title} className='chart' ref={ i == 0 ? 'chartRef' : null}>
+            <div key={f.title} className='chart' ref={ i == 0 ? node => this.chartRef = node : null}>
               <h3 className='ptr' onClick={this._sortShips.bind(this, f.props[0])}>{translate(f.title)}</h3>
               <BarChart
                 width={chartWidth}

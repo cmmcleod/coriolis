@@ -1,5 +1,5 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
 import PowerBands from './PowerBands';
@@ -17,10 +17,10 @@ const POWER = [
  * Power Management Section
  */
 export default class PowerManagement extends TranslatedComponent {
-  static PropTypes = {
-    ship: React.PropTypes.object.isRequired,
-    code: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired
+  static propTypes = {
+    ship: PropTypes.object.isRequired,
+    code: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
   };
 
   /**
@@ -34,8 +34,8 @@ export default class PowerManagement extends TranslatedComponent {
     this._sort = this._sort.bind(this);
 
     this.state = {
-      predicate: 'n',
-      desc: true,
+      predicate: 'pwr',
+      desc: false,
       width: 0
     };
   }
@@ -71,7 +71,7 @@ export default class PowerManagement extends TranslatedComponent {
       case 'n': comp = comp(null, desc); break;
       case 't': comp = comp((a, b) => a.type.localeCompare(b.type), desc); break;
       case 'pri': comp = comp((a, b) => a.priority - b.priority, desc); break;
-      case 'pwr': comp = comp((a, b) => a.m.power - b.m.power, desc); break;
+      case 'pwr': comp = comp((a, b) => a.m.getPowerUsage() - b.m.getPowerUsage(), desc); break;
       case 'r': comp = comp((a, b) => ship.getSlotStatus(a) - ship.getSlotStatus(b), desc); break;
       case 'd': comp = comp((a, b) => ship.getSlotStatus(a, true) - ship.getSlotStatus(b, true), desc); break;
     }
@@ -113,7 +113,7 @@ export default class PowerManagement extends TranslatedComponent {
     for (let i = 0, l = ship.powerList.length; i < l; i++) {
       let slot = ship.powerList[i];
 
-      if (slot.m && slot.m.power) {
+      if (slot.m && slot.m.getPowerUsage() > 0) {
         let m = slot.m;
         let toggleEnabled = this._toggleEnabled.bind(this, slot);
         let retractedElem = null, deployedElem = null;
@@ -134,8 +134,8 @@ export default class PowerManagement extends TranslatedComponent {
             {' ' + (slot.priority + 1) + ' '}
             <span className='ptr btn' onClick={this._priority.bind(this, slot, 1)}>&#9658;</span>
           </td>
-          <td className='ri ptr' style={{ width: '3.25em' }} onClick={toggleEnabled}>{pwr(m.power)}</td>
-          <td className='ri ptr' style={{ width: '3em' }} onClick={toggleEnabled}><u>{pct(m.power / ship.powerAvailable)}</u></td>
+          <td className='ri ptr' style={{ width: '3.25em' }} onClick={toggleEnabled}>{pwr(m.getPowerUsage())}</td>
+          <td className='ri ptr' style={{ width: '3em' }} onClick={toggleEnabled}><u>{pct(m.getPowerUsage() / ship.powerAvailable)}</u></td>
           {retractedElem}
           {deployedElem}
         </tr>);
@@ -148,7 +148,7 @@ export default class PowerManagement extends TranslatedComponent {
    * Update power bands width from DOM
    */
   _updateWidth() {
-    this.setState({ width: findDOMNode(this).offsetWidth });
+    this.setState({ width: this.node.offsetWidth });
   }
 
   /**
@@ -196,7 +196,7 @@ export default class PowerManagement extends TranslatedComponent {
     let sortOrder = this._sortOrder;
 
     return (
-      <div className='group half' id='componentPriority'>
+      <div ref={node => this.node = node} className='group half' id='componentPriority'>
         <table style={{ width: '100%' }}>
           <thead>
             <tr className='main'>
@@ -214,7 +214,7 @@ export default class PowerManagement extends TranslatedComponent {
               <td className='le shorten cap' >{translate('pp')}</td>
               <td><u >{translate('SYS')}</u></td>
               <td>1</td>
-              <td className='ri'>{pwr(pp.pGen)}</td>
+              <td className='ri'>{pwr(pp.getPowerGeneration())}</td>
               <td className='ri'><u>100%</u></td>
               <td></td>
               <td></td>
@@ -223,7 +223,7 @@ export default class PowerManagement extends TranslatedComponent {
             {this._renderPowerRows(ship, translate, pwr, formats.pct1)}
           </tbody>
         </table>
-        <PowerBands width={this.state.width} code={code} available={ship.standard[0].m.pGen} bands={ship.priorityBands} />
+        <PowerBands width={this.state.width} code={code} available={pp.getPowerGeneration()} bands={ship.priorityBands} />
       </div>
     );
   }

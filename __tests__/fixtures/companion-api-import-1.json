@@ -1,0 +1,1288 @@
+{
+  "cargo": {
+    "capacity": 128,
+    "items": [
+      {
+        "commodity": "ancientrelic",
+        "marked": 0,
+        "masq": null,
+        "mission": null,
+        "origin": 2,
+        "owner": 822212,
+        "powerplayOrigin": null,
+        "qty": 1,
+        "value": 0,
+        "xyz": null
+      }
+    ],
+    "lock": 359606096,
+    "qty": 1,
+    "ts": {
+      "sec": 1478848090,
+      "usec": 568000
+    }
+  },
+  "cockpitBreached": false,
+  "free": false,
+  "fuel": {
+    "main": {
+      "capacity": 96,
+      "level": 96
+    },
+    "reserve": {
+      "capacity": 1.13,
+      "level": 1.13
+    },
+    "superchargedFSD": 0
+  },
+  "health": {
+    "hull": 1000000,
+    "integrity": 30447,
+    "paintwork": 30448,
+    "shield": 1000000,
+    "shieldup": true
+  },
+  "id": 21,
+  "modules": {
+    "Armour": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128049372,
+        "name": "Federation_Corvette_Armour_Grade3",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 143796630
+      }
+    },
+    "Bobble01": [],
+    "Bobble02": [],
+    "Bobble03": [],
+    "Bobble04": [],
+    "Bobble05": [],
+    "Bobble06": [],
+    "Bobble07": [],
+    "Bobble08": [],
+    "Bobble09": [],
+    "Bobble10": [],
+    "Decal1": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128667742,
+        "name": "Decal_Combat_Deadly",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    },
+    "Decal2": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128667757,
+        "name": "Decal_Explorer_Ranger",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    },
+    "Decal3": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128667750,
+        "name": "Decal_Trade_Tycoon",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    },
+    "EngineColour": [],
+    "FrameShiftDrive": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128064127,
+        "modifiers": {
+          "engineerID": 300100,
+          "id": 3904,
+          "modifiers": [
+            {
+              "name": "mod_mass",
+              "type": 1,
+              "value": 0.42523837089539
+            },
+            {
+              "name": "mod_health",
+              "type": 1,
+              "value": -0.2126482129097
+            },
+            {
+              "name": "mod_passive_power",
+              "type": 1,
+              "value": 0.23241454362869
+            },
+            {
+              "name": "mod_fsd_optimised_mass",
+              "type": 1,
+              "value": 0.46293264627457
+            },
+            {
+              "name": "mod_fsd_optimised_mass",
+              "type": 2,
+              "value": 0.040929391980171
+            },
+            {
+              "name": "trade_mass_health",
+              "type": 2,
+              "value": 0.088846378028393
+            }
+          ],
+          "moduleTags": [
+            16
+          ],
+          "recipeID": 128673694,
+          "slotIndex": 47
+        },
+        "name": "Int_Hyperdrive_Size6_Class5",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 5,
+        "recipeName": "FSD_LongRange",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 13752602
+      }
+    },
+    "FuelTank": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128064350,
+        "name": "Int_FuelTank_Size5_Class3",
+        "on": true,
+        "priority": 1,
+        "unloaned": 83090,
+        "value": 83090
+      }
+    },
+    "HugeHardpoint1": {
+      "module": {
+        "ammo": {
+          "clip": 1,
+          "hopper": 1
+        },
+        "free": false,
+        "health": 1000000,
+        "id": 128681994,
+        "modifiers": {
+          "engineerID": 300180,
+          "id": 3380,
+          "modifiers": [
+            {
+              "name": "mod_weapon_range",
+              "type": 1,
+              "value": 0.19140657782555
+            },
+            {
+              "name": "mod_weapon_damage",
+              "type": 1,
+              "value": -0.043880753219128
+            },
+            {
+              "name": "mod_weapon_active_power",
+              "type": 1,
+              "value": 0.08408235758543
+            },
+            {
+              "name": "mod_mass",
+              "type": 1,
+              "value": 0.042046930640936
+            },
+            {
+              "name": "mod_passive_power",
+              "type": 2,
+              "value": -0.094719000160694
+            },
+            {
+              "name": "special_thermalshock",
+              "type": 3,
+              "value": 1
+            }
+          ],
+          "moduleTags": [
+            1,
+            4
+          ],
+          "recipeID": 128673335,
+          "slotIndex": 26
+        },
+        "name": "Hpt_BeamLaser_Gimbal_Huge",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 1,
+        "recipeName": "Weapon_LongRange",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 7871544
+      }
+    },
+    "HugeHardpoint2": {
+      "module": {
+        "ammo": {
+          "clip": 1,
+          "hopper": 1
+        },
+        "free": false,
+        "health": 1000000,
+        "id": 128681994,
+        "name": "Hpt_BeamLaser_Gimbal_Huge",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 7871544
+      }
+    },
+    "LargeHardpoint1": {
+      "module": {
+        "ammo": {
+          "clip": 90,
+          "hopper": 2100
+        },
+        "free": false,
+        "health": 1000000,
+        "id": 128049461,
+        "modifiers": {
+          "engineerID": 300260,
+          "id": 4699,
+          "modifiers": [
+            {
+              "name": "mod_weapon_damage",
+              "type": 1,
+              "value": 0.24115231633186
+            },
+            {
+              "name": "mod_weapon_active_power",
+              "type": 1,
+              "value": 0.61637383699417
+            },
+            {
+              "name": "mod_weapon_burst_interval",
+              "type": 1,
+              "value": -0.11122596263885
+            },
+            {
+              "name": "mod_weapon_jitter_radius",
+              "type": 1,
+              "value": 0.56468063592911
+            },
+            {
+              "name": "mod_weapon_active_heat",
+              "type": 1,
+              "value": 0.12204115837812
+            },
+            {
+              "name": "mod_weapon_hardness_piercing",
+              "type": 2,
+              "value": 0.033723440021276
+            },
+            {
+              "name": "mod_weapon_hardness_piercing",
+              "type": 2,
+              "value": -0.036045636981726
+            },
+            {
+              "name": "special_incendiary_rounds",
+              "type": 3,
+              "value": 1
+            }
+          ],
+          "moduleTags": [
+            1,
+            8
+          ],
+          "recipeID": 128673502,
+          "slotIndex": 28
+        },
+        "name": "Hpt_MultiCannon_Gimbal_Large",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 3,
+        "recipeName": "Weapon_Overcharged",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 520593
+      }
+    },
+    "LifeSupport": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128064159,
+        "name": "Int_LifeSupport_Size5_Class2",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 67528
+      }
+    },
+    "MainEngines": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128064094,
+        "modifiers": {
+          "engineerID": 300100,
+          "id": 3920,
+          "modifiers": [
+            {
+              "name": "mod_engine_mass_curve_multiplier",
+              "type": 1,
+              "value": 0.16290386021137
+            },
+            {
+              "name": "mod_engine_heat",
+              "type": 1,
+              "value": 0.51375859975815
+            },
+            {
+              "name": "mod_passive_power",
+              "type": 1,
+              "value": 0.068986810743809
+            },
+            {
+              "name": "mod_health",
+              "type": 1,
+              "value": -0.12497692555189
+            },
+            {
+              "name": "mod_engine_mass_curve",
+              "type": 1,
+              "value": -0.046525910496712
+            },
+            {
+              "name": "mod_engine_mass_curve_multiplier",
+              "type": 2,
+              "value": 0.0091453474014997
+            },
+            {
+              "name": "mod_mass",
+              "type": 2,
+              "value": 0.090709120035172
+            }
+          ],
+          "moduleTags": [
+            17
+          ],
+          "recipeID": 128673657,
+          "slotIndex": 46
+        },
+        "name": "Int_Engine_Size7_Class2",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 3,
+        "recipeName": "Engine_Dirty",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 1614658
+      }
+    },
+    "MediumHardpoint1": {
+      "module": {
+        "ammo": {
+          "clip": 90,
+          "hopper": 2100
+        },
+        "free": false,
+        "health": 1000000,
+        "id": 128049463,
+        "modifiers": {
+          "engineerID": 300260,
+          "id": 4729,
+          "modifiers": [
+            {
+              "name": "mod_weapon_damage",
+              "type": 1,
+              "value": 0.24256283044815
+            },
+            {
+              "name": "mod_weapon_active_power",
+              "type": 1,
+              "value": 0.61838209629059
+            },
+            {
+              "name": "mod_weapon_burst_interval",
+              "type": 1,
+              "value": -0.10679690539837
+            },
+            {
+              "name": "mod_weapon_jitter_radius",
+              "type": 1,
+              "value": 0.56370949745178
+            },
+            {
+              "name": "mod_weapon_active_heat",
+              "type": 1,
+              "value": 0.10164558887482
+            },
+            {
+              "name": "trade_weapon_damage_weapon_active_power",
+              "type": 2,
+              "value": 0.052759505808353
+            },
+            {
+              "name": "mod_health",
+              "type": 2,
+              "value": -0.032706737518311
+            }
+          ],
+          "moduleTags": [
+            1,
+            8
+          ],
+          "recipeID": 128673502,
+          "slotIndex": 29
+        },
+        "name": "Hpt_MultiCannon_Turret_Medium",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 3,
+        "recipeName": "Weapon_Overcharged",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 1292800
+      }
+    },
+    "MediumHardpoint2": {
+      "module": {
+        "ammo": {
+          "clip": 90,
+          "hopper": 2100
+        },
+        "free": false,
+        "health": 1000000,
+        "id": 128049463,
+        "modifiers": {
+          "engineerID": 300260,
+          "id": 4731,
+          "modifiers": [
+            {
+              "name": "mod_weapon_damage",
+              "type": 1,
+              "value": 0.2441771030426
+            },
+            {
+              "name": "mod_weapon_active_power",
+              "type": 1,
+              "value": 0.69319069385529
+            },
+            {
+              "name": "mod_weapon_burst_interval",
+              "type": 1,
+              "value": -0.10855937004089
+            },
+            {
+              "name": "mod_weapon_jitter_radius",
+              "type": 1,
+              "value": 0.55067348480225
+            },
+            {
+              "name": "mod_weapon_active_heat",
+              "type": 1,
+              "value": 0.11971006542444
+            },
+            {
+              "name": "trade_mass_health",
+              "type": 2,
+              "value": 0.0050421766936779
+            },
+            {
+              "name": "mod_passive_power",
+              "type": 2,
+              "value": 0.03293726965785
+            }
+          ],
+          "moduleTags": [
+            1,
+            8
+          ],
+          "recipeID": 128673502,
+          "slotIndex": 30
+        },
+        "name": "Hpt_MultiCannon_Turret_Medium",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 3,
+        "recipeName": "Weapon_Overcharged",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 1292800
+      }
+    },
+    "PaintJob": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128732313,
+        "name": "PaintJob_Federation_Corvette_Militaire_Sand",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    },
+    "PlanetaryApproachSuite": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128672317,
+        "name": "Int_PlanetApproachSuite",
+        "on": true,
+        "priority": 1,
+        "unloaned": 425,
+        "value": 425
+      }
+    },
+    "PowerDistributor": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128064217,
+        "modifiers": {
+          "engineerID": 300180,
+          "id": 3376,
+          "modifiers": [
+            {
+              "name": "mod_powerdistributor_weapon_charge",
+              "type": 1,
+              "value": 0.27520388364792
+            },
+            {
+              "name": "mod_powerdistributor_weapon_rate",
+              "type": 1,
+              "value": 0.10803784430027
+            },
+            {
+              "name": "mod_powerdistributor_system_charge",
+              "type": 1,
+              "value": -0.13366678357124
+            },
+            {
+              "name": "mod_powerdistributor_system_rate",
+              "type": 1,
+              "value": -0.029957808554173
+            },
+            {
+              "name": "mod_powerdistributor_engine_charge",
+              "type": 1,
+              "value": -0.085655435919762
+            },
+            {
+              "name": "mod_powerdistributor_engine_rate",
+              "type": 1,
+              "value": -0.12185442447662
+            },
+            {
+              "name": "mod_health",
+              "type": 2,
+              "value": 0.056631729006767
+            },
+            {
+              "name": "mod_powerdistributor_weapon_charge",
+              "type": 2,
+              "value": 0.0055946228094399
+            },
+            {
+              "name": "mod_powerdistributor_global_rate",
+              "type": 2,
+              "value": -0.011308163404465
+            }
+          ],
+          "moduleTags": [
+            19
+          ],
+          "recipeID": 128673752,
+          "slotIndex": 49
+        },
+        "name": "Int_PowerDistributor_Size8_Class5",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 3,
+        "recipeName": "PowerDistributor_PriorityWeapons",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 23161983
+      }
+    },
+    "PowerPlant": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128064067,
+        "modifiers": {
+          "engineerID": 300100,
+          "id": 3942,
+          "modifiers": [
+            {
+              "name": "mod_powerplant_power",
+              "type": 1,
+              "value": 0.081056952476501
+            },
+            {
+              "name": "mod_health",
+              "type": 1,
+              "value": -0.0084498468786478
+            },
+            {
+              "name": "mod_powerplant_heat",
+              "type": 1,
+              "value": 0.010082358494401
+            },
+            {
+              "name": "mod_powerplant_power",
+              "type": 2,
+              "value": 0.043923784047365
+            }
+          ],
+          "moduleTags": [
+            18
+          ],
+          "recipeID": 128673765,
+          "slotIndex": 45
+        },
+        "name": "Int_Powerplant_Size8_Class5",
+        "on": true,
+        "priority": 1,
+        "recipeLevel": 1,
+        "recipeName": "PowerPlant_Boosted",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 138198514
+      }
+    },
+    "Radar": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128064254,
+        "name": "Int_Sensors_Size8_Class2",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 1482367
+      }
+    },
+    "Slot01_Size7": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128064344,
+        "name": "Int_CargoRack_Size7_Class1",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 1001657
+      }
+    },
+    "Slot02_Size7": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128671329,
+        "modifiers": {
+          "engineerID": 300160,
+          "id": 1783,
+          "modifiers": [
+            {
+              "name": "mod_shield_mass_curve_multiplier",
+              "type": 1,
+              "value": 0.11387270689011
+            },
+            {
+              "name": "mod_shield_global_mult",
+              "type": 1,
+              "value": -0.084811583161354
+            },
+            {
+              "name": "mod_shield_broken_regen",
+              "type": 1,
+              "value": -0.14731486141682
+            },
+            {
+              "name": "mod_shield_normal_regen",
+              "type": 1,
+              "value": -0.036414299160242
+            },
+            {
+              "name": "mod_shield_energy_per_regen",
+              "type": 1,
+              "value": 0.022321036085486
+            },
+            {
+              "name": "trade_shield_curve_shield_curve_mult",
+              "type": 2,
+              "value": -0.11246068775654
+            },
+            {
+              "name": "mod_shield_broken_regen",
+              "type": 2,
+              "value": -0.063284143805504
+            }
+          ],
+          "moduleTags": [
+            15
+          ],
+          "recipeID": 128673837,
+          "slotIndex": 53
+        },
+        "name": "Int_ShieldGenerator_Size7_Class5_Strong",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 3,
+        "recipeName": "ShieldGenerator_Reinforced",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 69240302
+      }
+    },
+    "Slot03_Size7": {
+      "module": {
+        "ammo": {
+          "clip": 1,
+          "hopper": 4
+        },
+        "free": false,
+        "health": 1000000,
+        "id": 128064332,
+        "modifiers": {
+          "engineerID": 300160,
+          "id": 1789,
+          "modifiers": [
+            {
+              "name": "mod_shieldcell_spin_up",
+              "type": 1,
+              "value": -0.086017057299614
+            },
+            {
+              "name": "mod_shieldcell_duration",
+              "type": 1,
+              "value": -0.047102440148592
+            },
+            {
+              "name": "mod_shieldcell_shield_units",
+              "type": 1,
+              "value": 0.021292699500918
+            },
+            {
+              "name": "mod_boot_time",
+              "type": 1,
+              "value": 0.071096949279308
+            },
+            {
+              "name": "mod_shieldcell_spin_up",
+              "type": 2,
+              "value": -0.018995799124241
+            }
+          ],
+          "moduleTags": [
+            24
+          ],
+          "recipeID": 128673805,
+          "slotIndex": 54
+        },
+        "name": "Int_ShieldCellBank_Size7_Class5",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 1,
+        "recipeName": "ShieldCellBank_Rapid",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 8272137
+      }
+    },
+    "Slot04_Size6": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128064351,
+        "name": "Int_FuelTank_Size6_Class3",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 290341
+      }
+    },
+    "Slot05_Size6": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128666681,
+        "name": "Int_FuelScoop_Size6_Class5",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 24449069
+      }
+    },
+    "Slot06_Size5": {
+      "module": {
+        "ammo": {
+          "clip": 1,
+          "hopper": 3
+        },
+        "free": false,
+        "health": 1000000,
+        "id": 128064322,
+        "modifiers": {
+          "engineerID": 300160,
+          "id": 1788,
+          "modifiers": [
+            {
+              "name": "mod_shieldcell_spin_up",
+              "type": 1,
+              "value": -0.084282241761684
+            },
+            {
+              "name": "mod_shieldcell_duration",
+              "type": 1,
+              "value": -0.069141998887062
+            },
+            {
+              "name": "mod_shieldcell_shield_units",
+              "type": 1,
+              "value": 0.025862643495202
+            },
+            {
+              "name": "mod_boot_time",
+              "type": 1,
+              "value": 0.081815980374813
+            },
+            {
+              "name": "mod_shieldcell_duration",
+              "type": 2,
+              "value": 0.041702415794134
+            }
+          ],
+          "moduleTags": [
+            24
+          ],
+          "recipeID": 128673805,
+          "slotIndex": 57
+        },
+        "name": "Int_ShieldCellBank_Size5_Class5",
+        "on": false,
+        "priority": 0,
+        "recipeLevel": 1,
+        "recipeName": "ShieldCellBank_Rapid",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 1055120
+      }
+    },
+    "Slot07_Size5": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128727930,
+        "name": "Int_FighterBay_Size5_Class1",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 575643
+      }
+    },
+    "Slot08_Size4": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128672289,
+        "name": "Int_BuggyBay_Size2_Class2",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 18360
+      }
+    },
+    "Slot09_Size4": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128666722,
+        "modifiers": {
+          "engineerID": 300100,
+          "id": 2026,
+          "modifiers": [
+            {
+              "name": "mod_fsdinterdictor_range",
+              "type": 1,
+              "value": 0.086278550326824
+            },
+            {
+              "name": "mod_mass",
+              "type": 1,
+              "value": 0.07684014737606
+            },
+            {
+              "name": "mod_passive_power",
+              "type": 1,
+              "value": 0.13557997345924
+            },
+            {
+              "name": "mod_fsdinterdictor_facing_limit",
+              "type": 1,
+              "value": -0.07848084717989
+            }
+          ],
+          "moduleTags": [
+            23
+          ],
+          "recipeID": 128673680,
+          "slotIndex": 60
+        },
+        "name": "Int_FSDInterdictor_Size3_Class5",
+        "on": true,
+        "priority": 1,
+        "recipeLevel": 1,
+        "recipeName": "FSDinterdictor_LongRange",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 6477408
+      }
+    },
+    "Slot10_Size3": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128663561,
+        "name": "Int_StellarBodyDiscoveryScanner_Advanced",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 1313250
+      }
+    },
+    "SmallHardpoint1": {
+      "module": {
+        "ammo": {
+          "clip": 1,
+          "hopper": 1
+        },
+        "free": false,
+        "health": 1000000,
+        "id": 128049388,
+        "name": "Hpt_PulseLaser_Turret_Small",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 26000
+      }
+    },
+    "SmallHardpoint2": {
+      "module": {
+        "ammo": {
+          "clip": 1,
+          "hopper": 1
+        },
+        "free": false,
+        "health": 1000000,
+        "id": 128049388,
+        "name": "Hpt_PulseLaser_Turret_Small",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 26000
+      }
+    },
+    "TinyHardpoint1": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128668536,
+        "modifiers": {
+          "engineerID": 300100,
+          "id": 3948,
+          "modifiers": [
+            {
+              "name": "mod_passive_power",
+              "type": 1,
+              "value": 0.065562553703785
+            },
+            {
+              "name": "mod_defencemodifier_global_shield_mult",
+              "type": 1,
+              "value": -0.046933718025684
+            },
+            {
+              "name": "mod_health",
+              "type": 1,
+              "value": -0.037372145801783
+            },
+            {
+              "name": "mod_passive_power",
+              "type": 2,
+              "value": -0.054788526147604
+            }
+          ],
+          "moduleTags": [
+            22
+          ],
+          "recipeID": 128673790,
+          "slotIndex": 33
+        },
+        "name": "Hpt_ShieldBooster_Size0_Class5",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 1,
+        "recipeName": "ShieldBooster_Resistive",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 238850
+      }
+    },
+    "TinyHardpoint2": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128668536,
+        "modifiers": {
+          "engineerID": 300100,
+          "id": 3949,
+          "modifiers": [
+            {
+              "name": "mod_passive_power",
+              "type": 1,
+              "value": 0.050724714994431
+            },
+            {
+              "name": "mod_defencemodifier_global_shield_mult",
+              "type": 1,
+              "value": -0.042270515114069
+            },
+            {
+              "name": "mod_health",
+              "type": 1,
+              "value": -0.030213074758649
+            },
+            {
+              "name": "mod_defencemodifier_global_shield_mult",
+              "type": 2,
+              "value": -0.0012421812862158
+            }
+          ],
+          "moduleTags": [
+            22
+          ],
+          "recipeID": 128673790,
+          "slotIndex": 34
+        },
+        "name": "Hpt_ShieldBooster_Size0_Class5",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 1,
+        "recipeName": "ShieldBooster_Resistive",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 238850
+      }
+    },
+    "TinyHardpoint3": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128668536,
+        "modifiers": {
+          "engineerID": 300100,
+          "id": 3950,
+          "modifiers": [
+            {
+              "name": "mod_passive_power",
+              "type": 1,
+              "value": 0.049866359680891
+            },
+            {
+              "name": "mod_defencemodifier_global_shield_mult",
+              "type": 1,
+              "value": -0.046149685978889
+            },
+            {
+              "name": "mod_health",
+              "type": 1,
+              "value": -0.024229854345322
+            },
+            {
+              "name": "mod_defencemodifier_shield_mult",
+              "type": 2,
+              "value": 0.036322306841612
+            }
+          ],
+          "moduleTags": [
+            22
+          ],
+          "recipeID": 128673790,
+          "slotIndex": 35
+        },
+        "name": "Hpt_ShieldBooster_Size0_Class5",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 1,
+        "recipeName": "ShieldBooster_Resistive",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 238850
+      }
+    },
+    "TinyHardpoint4": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128668536,
+        "modifiers": {
+          "engineerID": 300100,
+          "id": 3951,
+          "modifiers": [
+            {
+              "name": "mod_passive_power",
+              "type": 1,
+              "value": 0.073374435305595
+            },
+            {
+              "name": "mod_defencemodifier_global_shield_mult",
+              "type": 1,
+              "value": -0.046808175742626
+            },
+            {
+              "name": "mod_health",
+              "type": 1,
+              "value": -0.037895452231169
+            },
+            {
+              "name": "mod_defencemodifier_shield_kinetic_mult",
+              "type": 2,
+              "value": -0.0045657334849238
+            }
+          ],
+          "moduleTags": [
+            22
+          ],
+          "recipeID": 128673790,
+          "slotIndex": 36
+        },
+        "name": "Hpt_ShieldBooster_Size0_Class5",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 1,
+        "recipeName": "ShieldBooster_Resistive",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 238850
+      }
+    },
+    "TinyHardpoint5": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128668536,
+        "modifiers": {
+          "engineerID": 300100,
+          "id": 3954,
+          "modifiers": [
+            {
+              "name": "mod_passive_power",
+              "type": 1,
+              "value": 0.013932451605797
+            },
+            {
+              "name": "mod_defencemodifier_global_shield_mult",
+              "type": 1,
+              "value": -0.047755606472492
+            },
+            {
+              "name": "mod_health",
+              "type": 1,
+              "value": -0.024494780227542
+            },
+            {
+              "name": "trade_passive_power_booster_global_mult",
+              "type": 2,
+              "value": -0.066611737012863
+            }
+          ],
+          "moduleTags": [
+            22
+          ],
+          "recipeID": 128673790,
+          "slotIndex": 37
+        },
+        "name": "Hpt_ShieldBooster_Size0_Class5",
+        "on": true,
+        "priority": 0,
+        "recipeLevel": 1,
+        "recipeName": "ShieldBooster_Resistive",
+        "recipeValue": 0,
+        "unloaned": 0,
+        "value": 238850
+      }
+    },
+    "TinyHardpoint6": {
+      "module": {
+        "ammo": {
+          "clip": 1,
+          "hopper": 2
+        },
+        "free": false,
+        "health": 1000000,
+        "id": 128049519,
+        "name": "Hpt_HeatSinkLauncher_Turret_Tiny",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 2975
+      }
+    },
+    "TinyHardpoint7": {
+      "module": {
+        "ammo": {
+          "clip": 1,
+          "hopper": 2
+        },
+        "free": false,
+        "health": 1000000,
+        "id": 128049519,
+        "name": "Hpt_HeatSinkLauncher_Turret_Tiny",
+        "on": false,
+        "priority": 2,
+        "unloaned": 0,
+        "value": 3150
+      }
+    },
+    "TinyHardpoint8": {
+      "module": {
+        "free": false,
+        "health": 1000000,
+        "id": 128662532,
+        "name": "Hpt_CrimeScanner_Size0_Class3",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 103615
+      }
+    },
+    "WeaponColour": []
+  },
+  "name": "Federation_Corvette",
+  "oxygenRemaining": 450000,
+  "passengers": [],
+  "refinery": null,
+  "value": {
+    "cargo": 0,
+    "hull": 155200708,
+    "modules": 455056355,
+    "total": 610257063,
+    "unloaned": 83515
+  }
+}

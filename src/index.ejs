@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html <%= htmlWebpackPlugin.options.appCache ? 'manifest=/' + htmlWebpackPlugin.options.appCache : '' %> >
+  <head>
+    <title>Coriolis EDCD Edition</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[0] %>">
+    <!-- Standard headers -->
+    <meta name="description" content="A ship builder, outfitting and comparison tool for Elite Dangerous">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href=/favicon2.ico>
+    <link rel="icon" sizes="152x152 192x192" type="image/png" href="/192x192.png">
+
+    <!-- Apple/iOS headers -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Coriolis">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!-- Microsoft Windows Phone/Tablet headers -->
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    <meta name="theme-color" content="#000000">
+
+    <script>
+      window.CORIOLIS_GAPI_KEY = '<%- htmlWebpackPlugin.options.gapiKey %>';
+      window.CORIOLIS_VERSION = '<%- htmlWebpackPlugin.options.version %>';
+      window.CORIOLIS_DATE = '<%- new Date().toISOString().slice(0, 10)  %>';
+    </script>
+    <% if (htmlWebpackPlugin.options.uaTracking) { %>
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', '<%- htmlWebpackPlugin.options.uaTracking %>', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <% } %>
+  </head>
+  <body style="background-color:#000;">
+    <section id="coriolis"></section>
+    <script src="<%= htmlWebpackPlugin.files.chunks.lib.entry %>" charset="utf-8" crossorigin="anonymous"></script>
+    <script src="<%= htmlWebpackPlugin.files.chunks.app.entry %>" charset="utf-8" crossorigin="anonymous"></script>
+  </body>
+</html>

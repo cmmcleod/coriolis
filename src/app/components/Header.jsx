@@ -5,12 +5,13 @@ import { Insurance } from '../shipyard/Constants';
 import Link from './Link';
 import ActiveLink from './ActiveLink';
 import cn from 'classnames';
-import { Cogs, CoriolisLogo, Hammer, Rocket, StatsBars } from './SvgIcons';
+import { Cogs, CoriolisLogo, Hammer, Help, Rocket, StatsBars } from './SvgIcons';
 import { Ships } from 'coriolis-data/dist';
 import Persist from '../stores/Persist';
 import { toDetailedExport } from '../shipyard/Serializer';
 import ModalDeleteAll from './ModalDeleteAll';
 import ModalExport from './ModalExport';
+import ModalHelp from './ModalHelp';
 import ModalImport from './ModalImport';
 import Slider from './Slider';
 import { outfitURL } from '../utils/UrlGenerators';
@@ -27,7 +28,7 @@ function normalizePercent(val) {
   if (val === '' || isNaN(val)) {
     return 0;
   }
-  val = Math.round(val * 100) / 100;
+  val = Math.round(val * 1000) / 1000;
   return val >= 100 ? 100 : val;
 }
 
@@ -53,11 +54,11 @@ function selectAll(e) {
  */
 export default class Header extends TranslatedComponent {
 
-  /**
-   * Constructor
-   * @param  {Object} props   React Component properties
-   * @param  {Object} context React Component context
-   */
+	/**
+	 * Constructor
+	 * @param  {Object} props   React Component properties
+	 * @param  {Object} context React Component context
+	 */
   constructor(props, context) {
     super(props);
     this.shipOrder = Object.keys(Ships).sort();
@@ -74,6 +75,7 @@ export default class Header extends TranslatedComponent {
     this._openBuilds = this._openMenu.bind(this, 'b');
     this._openComp = this._openMenu.bind(this, 'comp');
     this._openSettings = this._openMenu.bind(this, 'settings');
+    this._showHelp = this._showHelp.bind(this);
     this.languageOptions = [];
     this.insuranceOptions = [];
     this.state = {
@@ -204,6 +206,13 @@ export default class Header extends TranslatedComponent {
   }
 
   /**
+   * Toggle module resistances setting
+   */
+  _toggleModuleResistances() {
+    Persist.showModuleResistances(!Persist.showModuleResistances());
+  }
+
+  /**
    * Show delete all modal
    * @param  {SyntheticEvent} e Event
    */
@@ -239,6 +248,17 @@ export default class Header extends TranslatedComponent {
       description={translate('PHRASE_EXPORT_DESC')}
       data={toDetailedExport(Persist.getBuilds())}
     />);
+  }
+
+  /**
+   * Show help modal
+   * @param  {SyntheticEvent} e Event
+   */
+  _showHelp(e) {
+    let translate = this.context.language.translate;
+    e.preventDefault();
+
+    this.context.showModal(<ModalHelp title={translate('help')} />);
   }
 
   /**
@@ -336,7 +356,7 @@ export default class Header extends TranslatedComponent {
       let comps =  Object.keys(Persist.getComparisons()).sort();
 
       for (let name of comps) {
-        comparisons.push(<ActiveLink key={name} href={'/compare/' + name} className='block name'>{name}</ActiveLink>);
+        comparisons.push(<ActiveLink key={name} href={'/compare/' + encodeURIComponent(name)} className='block name'>{name}</ActiveLink>);
       }
     } else {
       comparisons = <span className='cap'>{translate('none created')}</span>;
@@ -359,6 +379,7 @@ export default class Header extends TranslatedComponent {
   _getSettingsMenu() {
     let translate = this.context.language.translate;
     let tips = Persist.showTooltips();
+    let moduleResistances = Persist.showModuleResistances();
 
     return (
       <div className='menu-list no-wrap cap' onClick={ (e) => e.stopPropagation() }>
@@ -375,6 +396,10 @@ export default class Header extends TranslatedComponent {
             <tr className='cap ptr' onClick={this._toggleTooltips} >
               <td>{translate('tooltips')}</td>
               <td className={cn('ri', { disabled: !tips, 'primary-disabled': tips })}>{(tips ? '✓' : '✗')}</td>
+            </tr>
+            <tr className='cap ptr' onClick={this._toggleModuleResistances} >
+              <td>{translate('module resistances')}</td>
+              <td className={cn('ri', { disabled: !moduleResistances, 'primary-disabled': moduleResistances })}>{(moduleResistances ? '✓' : '✗')}</td>
             </tr>
             <tr>
               <td>{translate('insurance')}</td>
@@ -438,6 +463,7 @@ export default class Header extends TranslatedComponent {
     Persist.addListener('deletedAll', update);
     Persist.addListener('builds', update);
     Persist.addListener('tooltips', update);
+    Persist.addListener('moduleresistances', update);
   }
 
   /**
@@ -507,6 +533,12 @@ export default class Header extends TranslatedComponent {
             <Cogs className='xl warning'/><span className='menu-item-label'>{translate('settings')}</span>
           </div>
           {openedMenu == 'settings' ? this._getSettingsMenu() : null}
+        </div>
+
+        <div className='r menu'>
+          <div className={cn('menu-header')} onClick={this._showHelp}>
+            <Help className='xl warning'/>
+          </div>
         </div>
       </header>
     );

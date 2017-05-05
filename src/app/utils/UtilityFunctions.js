@@ -58,3 +58,28 @@ export function shallowEqual(objA, objB) {
 
   return true;
 }
+
+/**
+ * Turn a URL-safe base-64 encoded string in to a normal version.
+ * Coriolis used to use a different encoding system, and some old
+ * data might be bookmarked or on local storage, so we keep this
+ * around and use it when decoding data from the old-style URLs to
+ * be safe.
+ * @param {string} data the string
+ * @return {string} the converted string
+ */
+export function fromUrlSafe(data) {
+  return data ? data.replace(/-/g, '/').replace(/_/g, '+') : null;
+}
+
+/**
+ * Check if an object is empty
+ * @param {object} obj the object
+ * @return {bool} true if the object is empty, otherwise false
+ */
+export function isEmpty(obj) {
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) return false;
+  }
+  return true;
+};

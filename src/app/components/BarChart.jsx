@@ -1,5 +1,6 @@
 import React from 'react';
-import d3 from 'd3';
+import PropTypes from 'prop-types';
+import * as d3 from 'd3';
 import TranslatedComponent from './TranslatedComponent';
 
 const MARGIN = { top: 15, right: 20, bottom: 40, left: 150 };
@@ -44,17 +45,17 @@ export default class BarChart extends TranslatedComponent {
     unit: ''
   };
 
-  static PropTypes = {
-    colors: React.PropTypes.array,
-    data: React.PropTypes.array.isRequired,
-    desc: React.PropTypes.bool,
-    format: React.PropTypes.string.isRequired,
-    labels: React.PropTypes.array,
-    predicate: React.PropTypes.string,
-    properties: React.PropTypes.array,
-    title: React.PropTypes.string.isRequired,
-    unit: React.PropTypes.string.isRequired,
-    width: React.PropTypes.number.isRequired
+  static propTypes = {
+    colors: PropTypes.array,
+    data: PropTypes.array.isRequired,
+    desc: PropTypes.bool,
+    format: PropTypes.string.isRequired,
+    labels: PropTypes.array,
+    predicate: PropTypes.string,
+    properties: PropTypes.array,
+    title: PropTypes.string.isRequired,
+    unit: PropTypes.string.isRequired,
+    width: PropTypes.number.isRequired
   };
 
   /**
@@ -68,13 +69,13 @@ export default class BarChart extends TranslatedComponent {
     this._updateDimensions = this._updateDimensions.bind(this);
     this._hideTip = this._hideTip.bind(this);
 
-    let scale = d3.scale.linear();
-    let y0 = d3.scale.ordinal();
-    let y1 = d3.scale.ordinal();
+    let scale = d3.scaleLinear();
+    let y0 = d3.scaleBand();
+    let y1 = d3.scaleBand();
 
-    this.xAxis = d3.svg.axis().scale(scale).ticks(5).outerTickSize(0).orient('bottom').tickFormat(context.language.formats.s2);
-    this.yAxis = d3.svg.axis().scale(y0).outerTickSize(0).orient('left');
-    this.state = { scale, y0, y1, color: d3.scale.ordinal().range(props.colors) };
+    this.xAxis = d3.axisBottom(scale).ticks(5).tickSizeOuter(0).tickFormat(context.language.formats.s2);
+    this.yAxis = d3.axisLeft(y0).tickSizeOuter(0);
+    this.state = { scale, y0, y1, color: d3.scaleOrdinal().range(props.colors) };
   }
 
   /**
@@ -131,8 +132,8 @@ export default class BarChart extends TranslatedComponent {
     let max = data.reduce((max, build) => (properties.reduce(((m, p) => (m > build[p] ? m : build[p])), max)), 0);
 
     this.state.scale.range([0, innerWidth]).domain([0, max]);
-    this.state.y0.domain(data.map(bName)).rangeRoundBands([0, innerHeight], 0.3);
-    this.state.y1.domain(properties).rangeRoundBands([0, this.state.y0.rangeBand()]);
+    this.state.y0.domain(data.map(bName)).range([0, innerHeight], 0.3).padding(0.4);
+    this.state.y1.domain(properties).range([0, this.state.y0.bandwidth()]).padding(0.1);
 
     this.setState({
       barHeight,
@@ -192,7 +193,7 @@ export default class BarChart extends TranslatedComponent {
             x={0}
             y={y1(p)}
             width={scale(build[p])}
-            height={y1.rangeBand()}
+            height={y1.bandwidth()}
             fill={color(p)}
             onMouseOver={this._showTip.bind(this, build, p, propIndex)}
             onMouseOut={this._hideTip}

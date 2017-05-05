@@ -1,0 +1,255 @@
+{
+  "$schema": "http://cdn.coriolis.io/schemas/ship-loadout/4.json#",
+  "name": "Multi-purpose Asp Explorer",
+  "ship": "Asp Explorer",
+  "references": [
+    {
+      "name": "Coriolis.io",
+      "url": "https://coriolis.edcd.io/outfit/asp?code=0pftiFflfddsnf5------020202033c044002v62f2i.AwRj4yvI.CwRgDBldHnJA.H4sIAAAAAAAAA2P858DAwPCXEUhwHPvx%2F78YG5AltB7I%2F8%2F0TwImJboDSPJ%2F%2B%2Ff%2Fv%2FKlX%2F%2F%2Fi3AwMTBIfARK%2FGf%2BJwVSxArStVAYqOjvz%2F%2F%2FJVo5GRhE2IBc4SKQSSz%2FDGEmCa398P8%2F%2F2%2BgTf%2F%2FAwDFxwtofAAAAA%3D%3D&bn=Multi-purpose%20Asp%20Explorer",
+      "code": "0pftiFflfddsnf5------020202033c044002v62f2i.AwRj4yvI.CwRgDBldHnJA.H4sIAAAAAAAAA2P858DAwPCXEUhwHPvx/78YG5AltB7I/8/0TwImJboDSPJ/+/f/v/KlX///i3AwMTBIfARK/Gf+JwVSxArStVAYqOjvz///JVo5GRhE2IBc4SKQSSz/DGEmCa398P8//2+gTf//AwDFxwtofAAAAA==",
+      "shipId": "asp"
+    }
+  ],
+  "components": {
+    "standard": {
+      "bulkheads": "Lightweight Alloy",
+      "cargoHatch": {
+        "enabled": false,
+        "priority": 5
+      },
+      "powerPlant": {
+        "class": 5,
+        "rating": "A",
+        "enabled": true,
+        "priority": 2,
+        "modifications": {
+          "eff": -1850,
+          "pgen": 6,
+          "mass": 431
+        },
+        "blueprint": {
+          "id": 64,
+          "name": "Low emissions",
+          "grade": 1
+        }
+      },
+      "thrusters": {
+        "class": 5,
+        "rating": "D",
+        "enabled": true,
+        "priority": 1,
+        "modifications": {
+          "optmul": 440,
+          "integrity": -266,
+          "thermload": -1326,
+          "optmass": 520,
+          "power": 241
+        },
+        "blueprint": {
+          "id": 24,
+          "name": "Clean",
+          "grade": 1
+        }
+      },
+      "frameShiftDrive": {
+        "class": 5,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1,
+        "modifications": {
+          "mass": 5025,
+          "integrity": -1539,
+          "power": 2437,
+          "optmass": 4870,
+          "maxfuel": 370
+        },
+        "blueprint": {
+          "id": 26,
+          "name": "Increased range",
+          "grade": 5
+        }
+      },
+      "lifeSupport": {
+        "class": 4,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1,
+        "modifications": {
+          "mass": -3923,
+          "integrity": -1797
+        },
+        "blueprint": {
+          "id": 49,
+          "name": "Lightweight",
+          "grade": 1
+        }
+      },
+      "powerDistributor": {
+        "class": 3,
+        "rating": "D",
+        "enabled": true,
+        "priority": 1
+      },
+      "sensors": {
+        "class": 5,
+        "rating": "D",
+        "enabled": true,
+        "priority": 1
+      },
+      "fuelTank": {
+        "class": 5,
+        "rating": "C",
+        "enabled": true,
+        "priority": 1
+      }
+    },
+    "hardpoints": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "utility": [
+      {
+        "class": 0,
+        "rating": "I",
+        "enabled": true,
+        "priority": 1,
+        "group": "Heat Sink Launcher",
+        "name": "Heat Sink Launcher"
+      },
+      {
+        "class": 0,
+        "rating": "I",
+        "enabled": true,
+        "priority": 1,
+        "group": "Heat Sink Launcher",
+        "name": "Heat Sink Launcher"
+      },
+      {
+        "class": 0,
+        "rating": "I",
+        "enabled": true,
+        "priority": 1,
+        "group": "Heat Sink Launcher",
+        "name": "Heat Sink Launcher"
+      },
+      {
+        "class": 0,
+        "rating": "I",
+        "enabled": true,
+        "priority": 1,
+        "group": "Point Defence",
+        "name": "Point Defence"
+      }
+    ],
+    "internal": [
+      {
+        "class": 6,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1,
+        "group": "Fuel Scoop"
+      },
+      {
+        "class": 5,
+        "rating": "E",
+        "enabled": true,
+        "priority": 2,
+        "group": "Cargo Rack"
+      },
+      {
+        "class": 3,
+        "rating": "A",
+        "enabled": true,
+        "priority": 1,
+        "group": "Shield Generator"
+      },
+      {
+        "class": 3,
+        "rating": "E",
+        "enabled": true,
+        "priority": 2,
+        "group": "Cargo Rack"
+      },
+      {
+        "class": 2,
+        "rating": "G",
+        "enabled": true,
+        "priority": 1,
+        "group": "Planetary Vehicle Hangar"
+      },
+      {
+        "class": 1,
+        "rating": "C",
+        "enabled": true,
+        "priority": 2,
+        "group": "Scanner",
+        "name": "Advanced Discovery Scanner"
+      },
+      {
+        "class": 1,
+        "rating": "C",
+        "enabled": true,
+        "priority": 2,
+        "group": "Scanner",
+        "name": "Detailed Surface Scanner"
+      }
+    ]
+  },
+  "stats": {
+    "class": 2,
+    "hullCost": 6135660,
+    "speed": 250,
+    "boost": 340,
+    "boostEnergy": 13,
+    "agility": 6,
+    "baseShieldStrength": 140,
+    "baseArmour": 210,
+    "hullMass": 280,
+    "masslock": 11,
+    "pipSpeed": 0.13,
+    "moduleCostMultiplier": 1,
+    "fuelCapacity": 32,
+    "cargoCapacity": 40,
+    "ladenMass": 435.26,
+    "armour": 378,
+    "shield": 113.43,
+    "shieldCells": 0,
+    "totalCost": 48402550,
+    "unladenMass": 363.26,
+    "totalDpe": 0,
+    "totalExplDpe": 0,
+    "totalKinDpe": 0,
+    "totalThermDpe": 0,
+    "totalDps": 0,
+    "totalExplDps": 0,
+    "totalKinDps": 0,
+    "totalThermDps": 0,
+    "totalSDps": 0,
+    "totalExplSDps": 0,
+    "totalKinSDps": 0,
+    "totalThermSDps": 0,
+    "totalEps": 1.2,
+    "totalHps": 1,
+    "shieldExplRes": 0.5,
+    "shieldKinRes": 0.6,
+    "shieldThermRes": 1.2,
+    "hullExplRes": 1.4,
+    "hullKinRes": 1.2,
+    "hullThermRes": 1,
+    "powerAvailable": 20.41,
+    "powerRetracted": 11.91,
+    "powerDeployed": 11.91,
+    "unladenRange": 50.45,
+    "fullTankRange": 47.03,
+    "ladenRange": 42.71,
+    "unladenFastestRange": 317.24,
+    "ladenFastestRange": 287.02,
+    "maxJumpCount": 7,
+    "topSpeed": 274.01,
+    "topBoost": 372.65
+  }
+}

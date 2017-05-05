@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ErrorDetails from './ErrorDetails';
 import { shallowEqual } from '../utils/UtilityFunctions';
 
@@ -8,22 +9,22 @@ import { shallowEqual } from '../utils/UtilityFunctions';
 export default class Page extends React.Component {
 
   static contextTypes = {
-    closeMenu: React.PropTypes.func.isRequired,
-    hideModal: React.PropTypes.func.isRequired,
-    language: React.PropTypes.object.isRequired,
-    noTouch: React.PropTypes.bool.isRequired,
-    onCommand: React.PropTypes.func.isRequired,
-    onWindowResize: React.PropTypes.func.isRequired,
-    openMenu: React.PropTypes.func.isRequired,
-    route: React.PropTypes.object.isRequired,
-    showModal: React.PropTypes.func.isRequired,
-    sizeRatio: React.PropTypes.number.isRequired,
-    termtip: React.PropTypes.func.isRequired,
-    tooltip: React.PropTypes.func.isRequired
+    closeMenu: PropTypes.func.isRequired,
+    hideModal: PropTypes.func.isRequired,
+    language: PropTypes.object.isRequired,
+    noTouch: PropTypes.bool.isRequired,
+    onCommand: PropTypes.func.isRequired,
+    onWindowResize: PropTypes.func.isRequired,
+    openMenu: PropTypes.func.isRequired,
+    route: PropTypes.object.isRequired,
+    showModal: PropTypes.func.isRequired,
+    sizeRatio: PropTypes.number.isRequired,
+    termtip: PropTypes.func.isRequired,
+    tooltip: PropTypes.func.isRequired
   };
 
   static propTypes = {
-    currentMenu: React.PropTypes.any
+    currentMenu: PropTypes.any
   };
 
   /**
@@ -39,6 +40,14 @@ export default class Page extends React.Component {
         this[prop] = this[prop].bind(this);
       }
     });
+
+    let fix = sessionStorage.getItem('__safari_history_fix');
+    sessionStorage.removeItem('__safari_history_fix');
+    if (fix) {
+      fix = JSON.parse(fix);
+      history.replaceState(history.state, document.title, location.href);
+      history.pushState(fix.state, fix.title, fix.path);
+    }
   }
 
   /**
