@@ -1,4 +1,3 @@
-
 /**
  * Generates a URL for the outiffing page
  * @param  {String} shipId    Ship Id
@@ -7,15 +6,18 @@
  * @return {String}           URL
  */
 export function outfitURL(shipId, code, buildName) {
-  let parts = ['/outfit/', shipId];
+  let path = '/outfit/' + shipId;
+
+  let sepChar = '?';
 
   if (code) {
-    parts.push('/', code);
+    path = path + sepChar + 'code=' + encodeURIComponent(code);
+    sepChar = '&';
   }
 
   if (buildName) {
-    parts.push('?bn=', encodeURIComponent(buildName));
+    path = path + sepChar + 'bn=' + encodeURIComponent(buildName);
   }
-  return parts.join('');
-}
 
+  return path;
+}

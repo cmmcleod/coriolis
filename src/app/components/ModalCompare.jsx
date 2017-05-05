@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import { Ships } from 'coriolis-data/dist';
 import Persist from '../stores/Persist';
@@ -22,8 +23,8 @@ function buildComparator(a, b) {
 export default class ModalCompare extends TranslatedComponent {
 
   static propTypes = {
-    onSelect: React.PropTypes.func.isRequired,
-    builds: React.PropTypes.array
+    onSelect: PropTypes.func.isRequired,
+    builds: PropTypes.array
   };
 
   static defaultProps = {

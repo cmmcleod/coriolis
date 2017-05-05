@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import { shallowEqual } from '../utils/UtilityFunctions';
 
@@ -8,8 +9,8 @@ import { shallowEqual } from '../utils/UtilityFunctions';
 class SvgIcon extends React.Component {
 
   static propTypes = {
-    className: React.PropTypes.any,
-    style: React.PropTypes.object
+    className: PropTypes.any,
+    style: PropTypes.object
   };
 
   /**
@@ -64,8 +65,8 @@ export class CoriolisLogo extends SvgIcon {
    */
   svg() {
     return <g transform='translate(1,1)'>
-      <path stroke='#ff3b00' transform='rotate(45 15 15)' d='m4,4 l 11,-4 l 11,4 l 4,11 l -4,11 l -11,4 l -11,-4 l -4,-11 l 4,-11 l 22,0 l 0,22 l -22,0 z' strokeWidth='1' fill='#000000'/>
-      <rect height='3' width='10' y='13.5' x='10' strokeWidth='1' stroke='#ff3b00'/>
+      <path stroke='#0a8bd6' transform='rotate(45 15 15)' d='m4,4 l 11,-4 l 11,4 l 4,11 l -4,11 l -11,4 l -11,-4 l -4,-11 l 4,-11 l 22,0 l 0,22 l -22,0 z' strokeWidth='1' fill='#000000'/>
+      <rect height='3' width='10' y='13.5' x='10' strokeWidth='1' stroke='#0a8bd6'/>
     </g>;
   }
 }
@@ -228,6 +229,26 @@ export class LinkIcon extends SvgIcon {
 }
 
 /**
+ * Shopping icon (dollar sign)
+ */
+export class ShoppingIcon extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <g>
+      <path d='M94 188v-17c-9-1-16-3-21-6-6-3-11-7-15-14-4-6-6-14-6-23l17-3c2 9 4 16 7 21 5 6 11 9 18 10v-56c-7-1-14-4-22-8-6-3-10-8-13-13-3-6-4-12-4-19 0-13 4-23 13-31 6-5 15-8 26-9v-8h11v8c10 1 18 4 24 9 8 6 12 15 14 26l-18 3c-1-7-4-12-7-16s-8-6-13-7v50l17 6c6 2 10 5 13 8 4 4 7 8 8 13 2 4 3 10 3 15 0 12-4 22-11 31-8 8-18 12-30 13v17H94zm0-153c-7 1-12 3-16 8-4 4-6 9-6 15s2 11 5 16c4 4 9 7 17 9V35zm11 121a28 28 0 0 0 24-28c-1-6-2-11-6-15-3-4-9-7-18-10v53z'/>
+    </g>;
+  }
+}
+
+/**
  * No Power - Lightning bolt + no entry
  */
 export class NoPower extends SvgIcon {
@@ -320,6 +341,108 @@ export class Warning extends SvgIcon {
 }
 
 /**
+ * Absolute damage
+ */
+export class DamageAbsolute extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <ellipse cx='100' cy='100' rx='90' ry='90' fillOpacity='0' />;
+  }
+}
+
+/**
+ * Thermal damage
+ */
+export class DamageThermal extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <g>
+      <ellipse cx='100' cy='100' rx='90' ry='90' fillOpacity='0' />
+      <ellipse cx='100' cy='100' rx='30' ry='30' fillOpacity='1' />
+      <path d='M100 20v80' />
+    </g>;
+  }
+}
+
+/**
+ * Kinetic damage
+ */
+export class DamageKinetic extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <g>
+      <ellipse cx='100' cy='100' rx='90' ry='90' fillOpacity='0' />
+      <ellipse cx='62' cy='67' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='62' cy='101' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='62' cy='135' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='100' cy='50' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='100' cy='84' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='100' cy='118' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='100' cy='152' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='138' cy='67' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='138' cy='101' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='138' cy='135' rx='5' ry='5' fillOpacity='1' />
+    </g>;
+  }
+}
+
+/**
+ * Explosive damage
+ */
+export class DamageExplosive extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <g>
+      <ellipse cx='100' cy='100' rx='50' ry='50' fillOpacity='0' />
+      <ellipse cx='100' cy='20' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='156.57' cy='36.57' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='180' cy='100' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='156.57' cy='163.43' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='100' cy='180' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='43.43' cy='163.43' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='20' cy='100' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='43.43' cy='36.57' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='100' cy='75' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='125' cy='100' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='100' cy='125' rx='5' ry='5' fillOpacity='1' />
+      <ellipse cx='75' cy='100' rx='5' ry='5' fillOpacity='1' />
+    </g>;
+  }
+}
+
+/**
  * Fixed mount hardpoint
  */
 export class MountFixed extends SvgIcon {
@@ -334,11 +457,11 @@ export class MountFixed extends SvgIcon {
    */
   svg() {
     return <g>
-      <circle fillOpacity='0'  r='70' cy='100' cx='100' strokeWidth='5' />
-      <line y2='60' x2='101' y1='0' x1='101' strokeWidth='5' />
-      <line y2='101' x2='200' y1='101' x1='140' strokeWidth='5' />
-      <line y2='101' x2='60' y1='101' x1='0' strokeWidth='5' />
-      <line y2='200' x2='101' y1='140' x1='101' strokeWidth='5' />
+      <circle cx='100' cy='100' r='76' fillOpacity='0' />
+      <path d='M0 100h48' />
+      <path d='M152 100h48' />
+      <path d='M100 0v48' />
+      <path d='M100 152v48' />
     </g>;
   }
 }
@@ -358,8 +481,8 @@ export class MountGimballed extends SvgIcon {
    */
   svg() {
     return <g>
-      <ellipse ry='25' rx='95' cy='100' cx='100' fillOpacity='0' strokeWidth='5' />
-      <ellipse ry='95' rx='25' cy='100' cx='100' fillOpacity='0' strokeWidth='5' />
+      <ellipse cx='100' cy='100' rx='90' ry='25' fillOpacity='0' />
+      <ellipse cx='100' cy='100' rx='20' ry='95' fillOpacity='0' />
     </g>;
   }
 }
@@ -379,10 +502,61 @@ export class MountTurret extends SvgIcon {
    */
   svg() {
     return <g>
-      <line y2='170' x2='162' y1='170' x1='8' strokeWidth='6' />
-      <path d='m13,138l144,0l0,-50l-27,-40l-90,0l-27,40l0,50z' id='svg_12' fillOpacity='0' strokeWidth='6' />
-      <line y2='91' x2='200' y1='91' x1='159' strokeWidth='6' />
+      <path d='M40 50 A 40 40 0 0 0 0 90' />
+      <path d='M40 50h40' />
+      <path d='M120 90 A 40 40 0 0 0 80 50' />
+      <path d='M0 90v40' />
+      <path d='M120 90v40' />
+      <path d='M0 120h120' />
+      <path d='M120 90h80' />
+      <path d='M0 160h120' />
     </g>;
+  }
+}
+
+/**
+ * Collapse section
+ */
+export class CollapseSection extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <g>
+	     <path d='m 100,180 0,-140' />
+	     <path d='m 100,40 25,45' />
+	     <path d='m 100,40 -25,45' />
+	     <path d='m 20,20 160,0' />
+	   </g>;
+  }
+}
+
+/**
+ * Expand section
+ */
+export class ExpandSection extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <g>
+	     <path d='m 100,20 0,140' />
+	     <path d='m 100,160 25,-45' />
+	     <path d='m 100,160 -25,-45' />
+	     <path d='m 20,180 160,0' />
+	   </g>;
   }
 }
 
@@ -396,6 +570,90 @@ export class Rocket extends SvgIcon {
    */
   svg() {
     return <path d='M22 2l-10 10h-6l-6 8c0 0 6.357-1.77 10.065-0.94l-10.065 12.94 13.184-10.255c1.839 4.208-1.184 10.255-1.184 10.255l8-6v-6l10-10 2-10-10 2z'/>;
+  }
+}
+
+/**
+ * Help
+ */
+export class Help extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <path d="M90.381 140.644a225.03 225.03 0 0 1-.106-5.706c0-7.47 1.058-13.92 3.172-19.346 1.55-4.087 4.052-8.21 7.505-12.367 2.536-3.031 7.1-7.453 13.688-13.267 6.59-5.815 10.872-10.448 12.844-13.9 1.974-3.453 2.96-7.224 2.96-11.312 0-7.4-2.89-13.9-8.667-19.503-5.779-5.602-12.862-8.403-21.248-8.403-8.104 0-14.87 2.536-20.296 7.61-5.427 5.074-8.986 13.003-10.677 23.784L50 65.91c1.762-14.448 6.995-25.511 15.698-33.194 8.704-7.68 20.208-11.522 34.514-11.522 15.152 0 27.237 4.124 36.258 12.369C145.49 41.807 150 51.779 150 63.477c0 6.766-1.585 13.003-4.756 18.712-3.17 5.708-9.372 12.65-18.605 20.824-6.201 5.496-10.253 9.55-12.156 12.156-1.904 2.609-3.312 5.603-4.23 8.986-.915 3.383-1.443 8.88-1.584 16.49H90.38zm-1.163 38.162v-21.67h21.67v21.67h-21.67z"/>;
+  }
+}
+
+/**
+ * ListModifications (engineers)
+ */
+export class ListModifications extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+
+  /**
+   * Render the Icon
+   * @return {React.Component} SVG Icon
+   */
+  render() {
+    return (
+      <svg className={cn('modicon', this.props.className)} style={this.props.style} viewBox={this.viewBox()}>
+        {this.svg()}
+      </svg>
+    );
+  }
+
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <path d='M20 180l90-100-90 100zM176 40a40 40 0 1 1-27-28'/>;
+  }
+}
+
+/**
+ * Modified (engineers)
+ */
+export class Modified extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+
+  /**
+   * Render the Icon
+   * @return {React.Component} SVG Icon
+   */
+  render() {
+    return (
+      <svg className={cn('modicon', this.props.className)} style={this.props.style} viewBox={this.viewBox()}>
+        {this.svg()}
+      </svg>
+    );
+  }
+
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <g>
+           <path d="M100,5L18,52.5L18,147.5L100,195L182,147.5L182,52.5L100,5Z"/>
+           <path d="M100,70L74,85L74,115L100,130L126,115L126,85L100,70Z"/>
+           </g>;
   }
 }
 
@@ -448,6 +706,24 @@ export class Switch extends SvgIcon {
    */
   svg() {
     return <path d='M20 4.581v4.249c1.131 0.494 2.172 1.2 3.071 2.099 1.889 1.889 2.929 4.4 2.929 7.071s-1.040 5.182-2.929 7.071c-1.889 1.889-4.4 2.929-7.071 2.929s-5.182-1.040-7.071-2.929c-1.889-1.889-2.929-4.4-2.929-7.071s1.040-5.182 2.929-7.071c0.899-0.899 1.94-1.606 3.071-2.099v-4.249c-5.783 1.721-10 7.077-10 13.419 0 7.732 6.268 14 14 14s14-6.268 14-14c0-6.342-4.217-11.698-10-13.419zM14 0h4v16h-4z'/>;
+  }
+}
+
+/**
+ * Pip
+ */
+export class Pip extends SvgIcon {
+  /**
+   * Overriden view box
+   * @return {String} view box
+   */
+  viewBox() { return '0 0 200 200'; }
+  /**
+   * Generate the SVG
+   * @return {React.Component} SVG Contents
+   */
+  svg() {
+    return <rect x='10' y='10' width='180' height='180'/>;
   }
 }
 

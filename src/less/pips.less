@@ -1,0 +1,33 @@
+// The pips table - keep the background black
+#pips {
+
+  table {
+    background-color: @bgBlack;
+    color: @primary;
+    margin: 0 auto;
+  }
+
+  // A clickable entity in the pips table
+  .clickable {
+    cursor: pointer;
+  }
+
+  // A full pip
+  .full {
+    stroke: @primary;
+    fill: @primary;
+  }
+
+  // A half pip
+  .half {
+    stroke: @primary-disabled;
+    fill: @primary-disabled;
+  }
+
+  // An empty pip
+  .empty {
+    stroke: @primary-bg;
+    fill: @primary-bg;
+  }
+}
+

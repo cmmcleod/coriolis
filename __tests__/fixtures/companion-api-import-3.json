@@ -1,0 +1,314 @@
+{
+  "cargo": {
+    "capacity": 264
+  },
+  "free": false,
+  "fuel": {
+    "main": {
+      "capacity": 32
+    },
+    "reserve": {
+      "capacity": 0.52
+    }
+  },
+  "id": 4,
+  "modules": {
+    "Armour": {
+      "module": {
+        "free": false,
+        "id": 128049298,
+        "name": "Type7_Armour_Grade1",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    },
+    "Bobble01": [],
+    "Bobble02": [],
+    "Bobble03": [],
+    "Bobble04": [],
+    "Bobble05": [],
+    "Bobble06": [],
+    "Bobble07": [],
+    "Bobble08": [],
+    "Bobble09": [],
+    "Bobble10": [],
+    "Decal1": {
+      "module": {
+        "free": false,
+        "id": 128667746,
+        "name": "Decal_Trade_Dealer",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    },
+    "Decal2": {
+      "module": {
+        "free": false,
+        "id": 128667738,
+        "name": "Decal_Combat_Competent",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    },
+    "Decal3": {
+      "module": {
+        "free": false,
+        "id": 128667753,
+        "name": "Decal_Explorer_Scout",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    },
+    "EngineColour": [],
+    "FrameShiftDrive": {
+      "module": {
+        "free": false,
+        "id": 128064122,
+        "name": "Int_Hyperdrive_Size5_Class5",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 5103953
+      }
+    },
+    "FuelTank": {
+      "module": {
+        "free": false,
+        "id": 128064350,
+        "name": "Int_FuelTank_Size5_Class3",
+        "on": true,
+        "priority": 1,
+        "unloaned": 97754,
+        "value": 97754
+      }
+    },
+    "LifeSupport": {
+      "module": {
+        "free": false,
+        "id": 128064154,
+        "name": "Int_LifeSupport_Size4_Class2",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 28373
+      }
+    },
+    "MainEngines": {
+      "module": {
+        "free": false,
+        "id": 128064087,
+        "name": "Int_Engine_Size5_Class5",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 5103953
+      }
+    },
+    "PaintJob": {
+      "module": {
+        "free": false,
+        "id": 128671422,
+        "name": "PaintJob_Type7_Tactical_White",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 0
+      }
+    },
+    "PlanetaryApproachSuite": {
+      "module": {
+        "free": false,
+        "id": 128672317,
+        "name": "Int_PlanetApproachSuite",
+        "on": true,
+        "priority": 1,
+        "unloaned": 500,
+        "value": 500
+      }
+    },
+    "PowerDistributor": {
+      "module": {
+        "free": false,
+        "id": 128064192,
+        "name": "Int_PowerDistributor_Size3_Class5",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 158331
+      }
+    },
+    "PowerPlant": {
+      "module": {
+        "free": false,
+        "id": 128064047,
+        "name": "Int_Powerplant_Size4_Class5",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 1610080
+      }
+    },
+    "Radar": {
+      "module": {
+        "free": false,
+        "id": 128064229,
+        "name": "Int_Sensors_Size3_Class2",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 10133
+      }
+    },
+    "Slot01_Size6": {
+      "module": {
+        "free": false,
+        "id": 128064343,
+        "name": "Int_CargoRack_Size6_Class1",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 362591
+      }
+    },
+    "Slot02_Size6": {
+      "module": {
+        "free": false,
+        "id": 128064343,
+        "name": "Int_CargoRack_Size6_Class1",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 362591
+      }
+    },
+    "Slot03_Size5": {
+      "module": {
+        "free": false,
+        "id": 128064343,
+        "name": "Int_CargoRack_Size6_Class1",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 362591
+      }
+    },
+    "Slot04_Size5": {
+      "module": {
+        "free": false,
+        "id": 128064342,
+        "name": "Int_CargoRack_Size5_Class1",
+        "on": true,
+        "priority": 1,
+        "unloaned": 111566,
+        "value": 111566
+      }
+    },
+    "Slot05_Size4": {
+      "module": {
+        "free": false,
+        "id": 128064342,
+        "name": "Int_CargoRack_Size5_Class1",
+        "on": true,
+        "priority": 1,
+        "unloaned": 111566,
+        "value": 111566
+      }
+    },
+    "Slot06_Size4": {
+      "module": {
+        "free": false,
+        "id": 128064279,
+        "name": "Int_ShieldGenerator_Size5_Class2",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 189035
+      }
+    },
+    "Slot07_Size2": {
+      "module": {
+        "free": false,
+        "id": 128049549,
+        "name": "Int_DockingComputer_Standard",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 4500
+      }
+    },
+    "Slot08_Size2": {
+      "module": {
+        "free": false,
+        "id": 128064340,
+        "name": "Int_CargoRack_Size3_Class1",
+        "on": true,
+        "priority": 1,
+        "unloaned": 0,
+        "value": 10563
+      }
+    },
+    "SmallHardpoint1": [],
+    "SmallHardpoint2": [],
+    "SmallHardpoint3": [],
+    "SmallHardpoint4": [],
+    "TinyHardpoint1": {
+      "module": {
+        "free": false,
+        "id": 128668536,
+        "name": "Hpt_ShieldBooster_Size0_Class5",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 281000
+      }
+    },
+    "TinyHardpoint2": {
+      "module": {
+        "free": false,
+        "id": 128668536,
+        "name": "Hpt_ShieldBooster_Size0_Class5",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 281000
+      }
+    },
+    "TinyHardpoint3": {
+      "module": {
+        "free": false,
+        "id": 128668536,
+        "name": "Hpt_ShieldBooster_Size0_Class5",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 281000
+      }
+    },
+    "TinyHardpoint4": {
+      "module": {
+        "free": false,
+        "id": 128049513,
+        "name": "Hpt_ChaffLauncher_Tiny",
+        "on": true,
+        "priority": 0,
+        "unloaned": 0,
+        "value": 8500
+      }
+    },
+    "WeaponColour": []
+  },
+  "name": "Type7",
+  "value": {
+    "hull": 16780009,
+    "modules": 14479580,
+    "unloaned": 321386
+  }
+}

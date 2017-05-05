@@ -1,4 +1,4 @@
-jest.dontMock('../src/app/stores/Persist');
+jest.unmock('../src/app/stores/Persist');
 
 import React from 'react';
 import ReactDOM from 'react-dom';

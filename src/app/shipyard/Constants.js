@@ -1,12 +1,4 @@
 
-export const ArmourMultiplier = [
-  1,      // Lightweight
-  1.4,    // Reinforced
-  1.945,  // Military
-  1.945,  // Mirrored
-  1.945   // Reactive
-];
-
 export const SizeMap = ['', 'small', 'medium', 'large', 'capital'];
 
 export const StandardArray = [
@@ -37,9 +29,11 @@ export const ModuleGroupToName = {
   am: 'Auto Field-Maintenance Unit',
   bsg: 'Bi-Weave Shield Generator',
   cr: 'Cargo Rack',
+  fh: 'Fighter Hangar',
   fi: 'Frame Shift Drive Interdictor',
   hb: 'Hatch Breaker Limpet Controller',
   hr: 'Hull Reinforcement Package',
+  mrp: 'Module Reinforcement Package',
   rf: 'Refinery',
   scb: 'Shield Cell Bank',
   sg: 'Shield Generator',
@@ -48,21 +42,30 @@ export const ModuleGroupToName = {
   dc: 'Docking Computer',
   fx: 'Fuel Transfer Limpet Controller',
   pc: 'Prospector Limpet Controller',
+  pce: 'Economy Class Passenger Cabin',
+  pci: 'Business Class Passenger Cabin',
+  pcm: 'First Class Passenger Cabin',
+  pcq: 'Luxury Passenger Cabin',
   cc: 'Collector Limpet Controller',
+  ss: 'Surface Scanner',
 
   // Hard Points
   bl: 'Beam Laser',
   ul: 'Burst Laser',
   c: 'Cannon',
+  ch: 'Chaff Launcher',
   cs: 'Cargo Scanner',
   cm: 'Countermeasure',
+  ec: 'Electronic Countermeasure',
   fc: 'Fragment Cannon',
+  hs: 'Heat Sink Launcher',
   ws: 'Frame Shift Wake Scanner',
   kw: 'Kill Warrant Scanner',
   nl: 'Mine Launcher',
   ml: 'Mining Laser',
   mr: 'Missile Rack',
   pa: 'Plasma Accelerator',
+  po: 'Point Defence',
   mc: 'Multi-cannon',
   pl: 'Pulse Laser',
   rg: 'Rail Gun',
@@ -102,93 +105,115 @@ export const BulkheadNames = [
  * @type {Array}
  */
 export const ShipFacets = [
-    {                   // 0
-      title: 'agility',
-      props: ['agility'],
-      fmt: 'int',
-      i: 0
-    },
-    {                   // 1
-      title: 'speed',
-      props: ['topSpeed', 'topBoost'],
-      lbls: ['thrusters', 'boost'],
-      unit: 'm/s',
-      fmt: 'int',
-      i: 1
-    },
-    {                   // 2
-      title: 'armour',
-      props: ['armour'],
-      fmt: 'int',
-      i: 2
-    },
-    {                   // 3
-      title: 'shields',
-      props: ['shieldStrength'],
-      unit: 'MJ',
-      fmt: 'int',
-      i: 3
-    },
-    {                   // 4
-      title: 'jump range',
-      props: ['unladenRange', 'fullTankRange', 'ladenRange'],
-      lbls: ['max', 'full tank', 'laden'],
-      unit: 'LY',
-      fmt: 'round',
-      i: 4
-    },
-    {                   // 5
-      title: 'mass',
-      props: ['unladenMass', 'ladenMass'],
-      lbls: ['unladen', 'laden'],
-      unit: 'T',
-      fmt: 'round',
-      i: 5
-    },
-    {                   // 6
-      title: 'cargo',
-      props: ['cargoCapacity'],
-      unit: 'T',
-      fmt: 'int',
-      i: 6
-    },
-    {                   // 7
-      title: 'fuel',
-      props: ['fuelCapacity'],
-      unit: 'T',
-      fmt: 'int',
-      i: 7
-    },
-    {                   // 8
-      title: 'power',
-      props: ['powerRetracted', 'powerDeployed', 'powerAvailable'],
-      lbls: ['retracted', 'deployed', 'available'],
-      unit: 'MW',
-      fmt: 'f2',
-      i: 8
-    },
-    {                   // 9
-      title: 'cost',
-      props: ['totalCost'],
-      unit: 'CR',
-      fmt: 'int',
-      i: 9
-    },
-    {                   // 10
-      title: 'fastest range',
-      props: ['unladenFastestRange', 'ladenFastestRange'],
-      lbls: ['unladen', 'laden'],
-      unit: 'LY',
-      fmt: 'round',
-      i: 10
-    },
-    {                   // 11
-      title: 'DPS',
-      props: ['totalDps'],
-      lbls: ['DPS'],
-      fmt: 'round',
-      i: 11
-    }
+  {                   // 0
+    title: 'agility',
+    props: ['topPitch', 'topRoll', 'topYaw'],
+    lbls: ['pitch', 'roll', 'yaw'],
+    fmt: 'f1',
+    i: 0
+  },
+  {                   // 1
+    title: 'speed',
+    props: ['topSpeed', 'topBoost'],
+    lbls: ['thrusters', 'boost'],
+    unit: 'm/s',
+    fmt: 'int',
+    i: 1
+  },
+  {                   // 2
+    title: 'armour',
+    props: ['armour'],
+    fmt: 'int',
+    i: 2
+  },
+  {                   // 3
+    title: 'shields',
+    props: ['shield'],
+    unit: 'MJ',
+    fmt: 'int',
+    i: 3
+  },
+  {                   // 4
+    title: 'jump range',
+    props: ['unladenRange', 'fullTankRange', 'ladenRange'],
+    lbls: ['max', 'full tank', 'laden'],
+    unit: 'LY',
+    fmt: 'round',
+    i: 4
+  },
+  {                   // 5
+    title: 'mass',
+    props: ['unladenMass', 'ladenMass'],
+    lbls: ['unladen', 'laden'],
+    unit: 'T',
+    fmt: 'round',
+    i: 5
+  },
+  {                   // 6
+    title: 'cargo',
+    props: ['cargoCapacity'],
+    unit: 'T',
+    fmt: 'int',
+    i: 6
+  },
+  {                   // 7
+    title: 'fuel',
+    props: ['fuelCapacity'],
+    unit: 'T',
+    fmt: 'int',
+    i: 7
+  },
+  {                   // 8
+    title: 'power',
+    props: ['powerRetracted', 'powerDeployed', 'powerAvailable'],
+    lbls: ['retracted', 'deployed', 'available'],
+    unit: 'MW',
+    fmt: 'f2',
+    i: 8
+  },
+  {                   // 9
+    title: 'cost',
+    props: ['totalCost'],
+    unit: 'CR',
+    fmt: 'int',
+    i: 9
+  },
+  {                   // 10
+    title: 'fastest range',
+    props: ['unladenFastestRange', 'ladenFastestRange'],
+    lbls: ['unladen', 'laden'],
+    unit: 'LY',
+    fmt: 'round',
+    i: 10
+  },
+  {                   // 11
+    title: 'DPS',
+    props: ['totalDps', 'totalExplDps', 'totalKinDps', 'totalThermDps'],
+    lbls: ['total', 'explosive', 'kinetic', 'thermal'],
+    fmt: 'round',
+    i: 11
+  },
+  {                   // 14
+    title: 'Sustained DPS',
+    props: ['totalSDps', 'totalExplSDps', 'totalKinSDps', 'totalThermSDps'],
+    lbls: ['total', 'explosive', 'kinetic', 'thermal'],
+    fmt: 'round',
+    i: 14
+  },
+  {                   // 12
+    title: 'EPS',
+    props: ['totalEps'],
+    lbls: ['EPS'],
+    fmt: 'round',
+    i: 12
+  },
+  {                   // 13
+    title: 'HPS',
+    props: ['totalHps'],
+    lbls: ['HPS'],
+    fmt: 'round',
+    i: 13
+  }
 ];
 
 /**

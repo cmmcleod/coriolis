@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import ShortenUrl from '../utils/ShortenUrl';
 
@@ -8,7 +9,7 @@ import ShortenUrl from '../utils/ShortenUrl';
 export default class ModalPermalink extends TranslatedComponent {
 
   static propTypes = {
-    url: React.PropTypes.string.isRequired
+    url: PropTypes.string.isRequired
   };
 
   /**

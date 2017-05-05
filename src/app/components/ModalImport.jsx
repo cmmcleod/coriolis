@@ -1,5 +1,5 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import TranslatedComponent from './TranslatedComponent';
 import Router from '../Router';
@@ -11,6 +11,7 @@ import * as ModuleUtils from '../shipyard/ModuleUtils';
 import { fromDetailedBuild } from '../shipyard/Serializer';
 import { Download } from './SvgIcons';
 import { outfitURL } from '../utils/UrlGenerators';
+import * as CompanionApiUtils from '../utils/CompanionApiUtils';
 
 const textBuildRegex = new RegExp('^\\[([\\w \\-]+)\\]\n');
 const lineRegex = new RegExp('^([\\dA-Z]{1,2}): (\\d)([A-I])[/]?([FGT])?([SD])? ([\\w\\- ]+)');
@@ -85,7 +86,7 @@ export default class ModalImport extends TranslatedComponent {
 
 
   static propTypes = {
-    builds: React.PropTypes.object,  // Optional: Import object
+    builds: PropTypes.object,  // Optional: Import object
   };
 
   /**
@@ -112,6 +113,7 @@ export default class ModalImport extends TranslatedComponent {
     this._importBackup = this._importBackup.bind(this);
     this._importDetailedArray = this._importDetailedArray.bind(this);
     this._importTextBuild = this._importTextBuild.bind(this);
+    this._importCompanionApiBuild = this._importCompanionApiBuild.bind(this);
     this._validateImport = this._validateImport.bind(this);
   }
 
@@ -181,6 +183,21 @@ export default class ModalImport extends TranslatedComponent {
       builds[build.shipId][build.name] = build.code;
     }
     this.setState({ builds });
+  }
+
+  /**
+   * Import a build direct from the companion API
+   * @param  {string} build JSON from the companion API information
+   * @throws {string} if parse/import fails
+   */
+  _importCompanionApiBuild(build) {
+    const shipModel = CompanionApiUtils.shipModelFromJson(build);
+    const ship = CompanionApiUtils.shipFromJson(build);
+
+    let builds = {};
+    builds[shipModel] = {};
+    builds[shipModel]['Imported ' + Ships[shipModel].properties.name] = ship.toString();
+    this.setState({ builds, singleBuild: true });
   }
 
   /**
@@ -315,7 +332,11 @@ export default class ModalImport extends TranslatedComponent {
           throw 'Must be an object or array!';
         }
 
-        if (importData instanceof Array) {   // Must be detailed export json
+        if (importData.modules != null && importData.modules.Armour != null) { // Only the companion API has this information
+          this._importCompanionApiBuild(importData); // Single sihp definition
+        } else if (importData.ship != null && importData.ship.modules != null && importData.ship.modules.Armour != null) { // Only the companion API has this information
+          this._importCompanionApiBuild(importData.ship); // Complete API dump
+        } else if (importData instanceof Array) {   // Must be detailed export json
           this._importDetailedArray(importData);
         } else if (importData.ship && typeof importData.name !== undefined) { // Using JSON from a single ship build export
           this._importDetailedArray([importData]); // Convert to array with singleobject
@@ -325,6 +346,7 @@ export default class ModalImport extends TranslatedComponent {
         }
       }
     } catch (e) {
+      // console.log(e.stack);
       this.setState({ errorMsg: (typeof e == 'string') ? e : 'Cannot Parse the data!' });
       return;
     }
@@ -437,8 +459,8 @@ export default class ModalImport extends TranslatedComponent {
    * If textarea is shown focus on mount
    */
   componentDidMount() {
-    if (!this.props.builds && findDOMNode(this.refs.importField)) {
-      findDOMNode(this.refs.importField).focus();
+    if (!this.props.builds && this.importField) {
+      this.importField.focus();
     }
   }
 
@@ -454,7 +476,7 @@ export default class ModalImport extends TranslatedComponent {
     if (!state.processed) {
       importStage = (
         <div>
-          <textarea className='cb json' ref='importField' onChange={this._validateImport} defaultValue={this.state.importString} placeholder={translate('PHRASE_IMPORT')} />
+          <textarea className='cb json' ref={node => this.importField = node} onChange={this._validateImport} defaultValue={this.state.importString} placeholder={translate('PHRASE_IMPORT')} />
           <button id='proceed' className='l cap' onClick={this._process} disabled={!state.importValid} >{translate('proceed')}</button>
           <div className='l warning' style={{ marginLeft:'3em' }}>{state.errorMsg}</div>
         </div>
