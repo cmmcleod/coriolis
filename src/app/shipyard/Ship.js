@@ -198,7 +198,7 @@ export default class Ship {
    * @return {Number}        Pitch
    */
   calcPitch(eng, fuel, cargo, boost) {
-    return Calc.calcPitch(this.unladenMass + fuel + cargo, this.pitch, this.standard[1].m, this.pipSpeed, eng, this.topBoost / this.topSpeed, boost);
+    return Calc.calcPitch(this.unladenMass + fuel + cargo, this.pitch, this.standard[1].m, this.pipSpeed, eng, this.boost / this.speed, boost);
   }
 
   /**
@@ -210,7 +210,7 @@ export default class Ship {
    * @return {Number}        Roll
    */
   calcRoll(eng, fuel, cargo, boost) {
-    return Calc.calcRoll(this.unladenMass + fuel + cargo, this.roll, this.standard[1].m, this.pipSpeed, eng, this.topBoost / this.topSpeed, boost);
+    return Calc.calcRoll(this.unladenMass + fuel + cargo, this.roll, this.standard[1].m, this.pipSpeed, eng, this.boost / this.speed, boost);
   }
 
   /**
@@ -222,7 +222,7 @@ export default class Ship {
    * @return {Number}        Yaw
    */
   calcYaw(eng, fuel, cargo, boost) {
-    return Calc.calcYaw(this.unladenMass + fuel + cargo, this.yaw, this.standard[1].m, this.pipSpeed, eng, this.topBoost / this.topSpeed, boost);
+    return Calc.calcYaw(this.unladenMass + fuel + cargo, this.yaw, this.standard[1].m, this.pipSpeed, eng, this.boost / this.speed, boost);
   }
 
   /**
@@ -435,6 +435,14 @@ export default class Ship {
    */
   setModuleBlueprint(m, bp) {
     m.blueprint = bp;
+    this.clearModifications(m);
+    // Set any hidden items for the blueprint now
+    const features = m.blueprint.grades[m.blueprint.grade].features;
+    for (const featureName in features) {
+      if (Modifications.modifications[featureName].hidden) {
+        this.setModification(m, featureName, bp.grades[bp.grade].features[featureName][0]);
+      }
+    }
     this.updateModificationsString();
   }
 

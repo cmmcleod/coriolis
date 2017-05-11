@@ -75,7 +75,7 @@ export const terms = {
   PHRASE_EFFECTIVE_SDPS_ARMOUR: 'SDPS against armour',
 
   TT_SUMMARY_SPEED: 'With full fuel tank and 4 pips to ENG',
-  TT_SUMMARY_SPEED_NONFUNCTIONAL: 'Thrusters powered off or over maximum mass',
+  TT_SUMMARY_SPEED_NONFUNCTIONAL: 'Thrusters powered off or over maximum mass with full fuel and cargo loads',
   TT_SUMMARY_BOOST: 'With full fuel tank and 4 pips to ENG',
   TT_SUMMARY_BOOST_NONFUNCTIONAL: 'Power distributor not able to supply enough power to boost',
   TT_SUMMARY_SHIELDS: 'Raw shield strength, including boosters',
