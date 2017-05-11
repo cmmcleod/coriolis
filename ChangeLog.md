@@ -1,3 +1,6 @@
+#2.3.5
+  * Ensure that hidden blueprint effects are applied when a blueprint is selected
+
 #2.3.4
   * Fix crash when removing the special effect from a module
   * Ensure comparisons with saved stock ships work correctly
