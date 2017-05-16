@@ -3,6 +3,7 @@
   * Handle display when summary values show thrusters disabled but current mass keeps them enabled
   * Added updated German translations (thanks to @sweisgerber-dev)
   * Power state (enabled and priority) now follows modules when they are swapped or copied
+  * Grey out modules that are powered off to provide a clearer visual indication
 
 #2.3.4
   * Fix crash when removing the special effect from a module

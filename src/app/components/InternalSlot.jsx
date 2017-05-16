@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 import Slot from './Slot';
 import Persist from '../stores/Persist';
 import { ListModifications, Modified } from './SvgIcons';
@@ -14,12 +15,13 @@ export default class InternalSlot extends Slot {
   /**
    * Generate the slot contents
    * @param  {Object} m             Mounted Module
+   * @param  {Boolean} enabled      Slot enabled
    * @param  {Function} translate   Translate function
    * @param  {Object} formats       Localized Formats map
    * @param  {Object} u             Localized Units Map
    * @return {React.Component}      Slot contents
    */
-  _getSlotDetails(m, translate, formats, u) {
+  _getSlotDetails(m, enabled, translate, formats, u) {
     if (m) {
       let classRating = m.class + m.rating;
       let { drag, drop, ship } = this.props;
@@ -40,7 +42,9 @@ export default class InternalSlot extends Slot {
       }
 
       let mass = m.getMass() || m.cargo || m.fuel || 0;
-      return <div className='details' draggable='true' onDragStart={drag} onDragEnd={drop}>
+
+      const className = cn('details', enabled ? '' : 'disabled')
+      return <div className={className} draggable='true' onDragStart={drag} onDragEnd={drop}>
         <div className={'cb'}>
           <div className={'l'}>{classRating} {translate(m.name || m.grp)}{m.mods && Object.keys(m.mods).length > 0 ? <span onMouseOver={termtip.bind(null, modTT)} onMouseOut={tooltip.bind(null, null)}><Modified /></span> : ''}</div>
           <div className={'r'}>{formats.round(mass)}{u.T}</div>

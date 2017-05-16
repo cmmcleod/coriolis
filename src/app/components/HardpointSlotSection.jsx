@@ -77,6 +77,7 @@ export default class HardpointSlotSection extends SlotSection {
           dropClass={this._dropClass(h, originSlot, targetSlot)}
           ship={ship}
           m={h.m}
+          enabled={h.enabled ? true : false}
         />);
       }
     }

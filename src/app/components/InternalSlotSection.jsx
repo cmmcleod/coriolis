@@ -225,6 +225,7 @@ export default class InternalSlotSection extends SlotSection {
         dropClass={this._dropClass(s, originSlot, targetSlot)}
         fuel={fuelCapacity}
         ship={ship}
+        enabled={s.enabled ? true : false}
       />);
     }
 

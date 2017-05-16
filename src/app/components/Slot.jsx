@@ -20,6 +20,7 @@ export default class Slot extends TranslatedComponent {
     maxClass: PropTypes.number.isRequired,
     selected: PropTypes.bool,
     m: PropTypes.object,
+    enabled: PropTypes.bool.isRequired,
     ship: PropTypes.object.isRequired,
     eligible: PropTypes.object,
     warning: PropTypes.func,
@@ -79,7 +80,7 @@ export default class Slot extends TranslatedComponent {
   render() {
     let language = this.context.language;
     let translate = language.translate;
-    let { ship, m, dropClass, dragOver, onOpen, onChange, selected, eligible, onSelect, warning, availableModules } = this.props;
+    let { ship, m, enabled, dropClass, dragOver, onOpen, onChange, selected, eligible, onSelect, warning, availableModules } = this.props;
     let slotDetails, modificationsMarker, menu;
 
     if (!selected) {
@@ -88,7 +89,7 @@ export default class Slot extends TranslatedComponent {
     }
 
     if (m) {
-      slotDetails = this._getSlotDetails(m, translate, language.formats, language.units);  // Must be implemented by sub classes
+      slotDetails = this._getSlotDetails(m, enabled, translate, language.formats, language.units);  // Must be implemented by sub classes
       modificationsMarker = JSON.stringify(m);
     } else {
       slotDetails = <div className={'empty'}>{translate(eligible ? 'emptyrestricted' : 'empty')}</div>;
