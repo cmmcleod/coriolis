@@ -77,6 +77,7 @@ export default class UtilitySlotSection extends SlotSection {
           enabled={h.enabled}
           ship={ship}
           m={h.m}
+          enabled={h.enabled ? true : false}
         />);
       }
     }

@@ -1,3 +1,16 @@
+#2.3.5
+  * Ensure that hidden blueprint effects are applied when a blueprint is selected
+  * Handle display when summary values show thrusters disabled but current mass keeps them enabled
+  * Added updated German translations (thanks to @sweisgerber-dev)
+  * Power state (enabled and priority) now follows modules when they are swapped or copied
+  * Grey out modules that are powered off to provide a clearer visual indication
+  * Use coriolis-data 2.3.5:
+    * Fix list of available blueprints for Point Defence
+    * Fix integrity values for class 6 power plants
+    * Add shot speed for long range weapon
+    * Fix components for dirty drive grade 3
+    * Update values for Cytoscrambler
+
 #2.3.4
   * Fix crash when removing the special effect from a module
   * Ensure comparisons with saved stock ships work correctly

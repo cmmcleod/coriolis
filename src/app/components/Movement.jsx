@@ -58,13 +58,13 @@ export default class Movement extends TranslatedComponent {
           <path d="M342 450l.4 1.5-16.2 10.7-.4-.2-3.5-13 .3-.3L342 450zm-14.3 7.6l7.7-5-9.2-.6 1.5 5.6z"/>
 
           // Speed
-          <text x="470" y="30" strokeWidth='0'>{formats.int(ship.calcSpeed(eng, fuel, cargo, boost))}m/s</text>
+          <text x="470" y="30" strokeWidth='0'>{ship.canThrust(cargo, fuel) ? formats.int(ship.calcSpeed(eng, fuel, cargo, boost)) + 'm/s' : '-'}</text>
           // Pitch
-          <text x="355" y="410" strokeWidth='0'>{formats.int(ship.calcPitch(eng, fuel, cargo, boost))}°/s</text>
+          <text x="355" y="410" strokeWidth='0'>{ship.canThrust(cargo, fuel) ? formats.int(ship.calcPitch(eng, fuel, cargo, boost)) + '°/s' : '-'}</text>
           // Roll
-          <text x="450" y="110" strokeWidth='0'>{formats.int(ship.calcRoll(eng, fuel, cargo, boost))}°/s</text>
+          <text x="450" y="110" strokeWidth='0'>{ship.canThrust(cargo, fuel) ? formats.int(ship.calcRoll(eng, fuel, cargo, boost)) + '°/s' : '-'}</text>
           // Yaw
-          <text x="160" y="430" strokeWidth='0'>{formats.int(ship.calcYaw(eng, fuel, cargo, boost))}°/s</text>
+          <text x="160" y="430" strokeWidth='0'>{ship.canThrust(cargo, fuel) ? formats.int(ship.calcYaw(eng, fuel, cargo, boost)) + '°/s' : '-'}</text>
         </svg>
       </span>);
   }

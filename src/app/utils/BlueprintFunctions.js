@@ -64,35 +64,7 @@ export function blueprintTooltip(translate, blueprint, engineers, grp, m) {
     for (const feature in m.mods) {
       if (!blueprint.features[feature]) {
         const featureDef = Modifications.modifications[feature];
-        let symbol = '';
-        if (feature === 'jitter') {
-          symbol = '°';
-        } else if (featureDef.type === 'percentage') {
-          symbol = '%';
-        }
-        let current = m.getModValue(feature);
-        if (featureDef.type === 'percentage' || featureDef.name === 'burst' || featureDef.name === 'burstrof') {
-          current = Math.round(current / 10) / 10;
-        } else if (featureDef.type === 'numeric') {
-          current /= 100;
-        }
-        const currentIsBeneficial  = isValueBeneficial(feature, current);
-        effects.push(
-          <tr key={feature}>
-            <td style={{ textAlign: 'left' }}>{translate(feature, grp)}</td>
-            <td>&nbsp;</td>
-            <td className={current === 0 ? '' : currentIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{current}{symbol}</td>
-            <td>&nbsp;</td>
-          </tr>
-        );
-      }
-    }
-
-    // We also add in any benefits from specials that aren't covered above
-    if (m.blueprint && m.blueprint.special) {
-      for (const feature in Modifications.modifierActions[m.blueprint.special.edname]) {
-        if (!blueprint.features[feature] && !m.mods.feature) {
-          const featureDef = Modifications.modifications[feature];
+        if (featureDef && !featureDef.hidden) {
           let symbol = '';
           if (feature === 'jitter') {
             symbol = '°';
@@ -117,7 +89,40 @@ export function blueprintTooltip(translate, blueprint, engineers, grp, m) {
         }
       }
     }
+
+    // We also add in any benefits from specials that aren't covered above
+    if (m.blueprint && m.blueprint.special) {
+      for (const feature in Modifications.modifierActions[m.blueprint.special.edname]) {
+        if (!blueprint.features[feature] && !m.mods.feature) {
+          const featureDef = Modifications.modifications[feature];
+          if (featureDef && !featureDef.hidden) {
+            let symbol = '';
+            if (feature === 'jitter') {
+              symbol = '°';
+            } else if (featureDef.type === 'percentage') {
+              symbol = '%';
+            }
+            let current = m.getModValue(feature);
+            if (featureDef.type === 'percentage' || featureDef.name === 'burst' || featureDef.name === 'burstrof') {
+              current = Math.round(current / 10) / 10;
+            } else if (featureDef.type === 'numeric') {
+              current /= 100;
+            }
+            const currentIsBeneficial  = isValueBeneficial(feature, current);
+            effects.push(
+              <tr key={feature}>
+                <td style={{ textAlign: 'left' }}>{translate(feature, grp)}</td>
+                <td>&nbsp;</td>
+                <td className={current === 0 ? '' : currentIsBeneficial ? 'secondary' : 'warning'} style={{ textAlign: 'right' }}>{current}{symbol}</td>
+                <td>&nbsp;</td>
+              </tr>
+            );
+          }
+        }
+      }
+    }
   }
+
   let components;
   if (!m) {
     components = [];

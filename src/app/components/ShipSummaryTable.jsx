@@ -34,9 +34,9 @@ export default class ShipSummaryTable extends TranslatedComponent {
     const sgClassNames = cn({ warning: shieldGenerator && !ship.shield, muted: !shieldGenerator });
     const sgTooltip = shieldGenerator ? 'TT_SUMMARY_SHIELDS' : 'TT_SUMMARY_SHIELDS_NONFUNCTIONAL';
     const timeToDrain = Calc.timeToDrainWep(ship, 4);
-    const canThrust = ship.canThrust(cargo, fuel);
+    const canThrust = ship.canThrust(cargo, ship.fuelCapacity);
     const speedTooltip = canThrust ? 'TT_SUMMARY_SPEED' : 'TT_SUMMARY_SPEED_NONFUNCTIONAL';
-    const canBoost = ship.canBoost(cargo, fuel);
+    const canBoost = ship.canBoost(cargo, ship.fuelCapacity);
     const boostTooltip = canBoost ? 'TT_SUMMARY_BOOST' : canThrust ? 'TT_SUMMARY_BOOST_NONFUNCTIONAL' : 'TT_SUMMARY_SPEED_NONFUNCTIONAL';
 
     return <div id='summary'>

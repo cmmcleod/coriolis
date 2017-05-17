@@ -75,7 +75,7 @@ export const terms = {
   PHRASE_EFFECTIVE_SDPS_ARMOUR: 'SDPS against armour',
 
   TT_SUMMARY_SPEED: 'With full fuel tank and 4 pips to ENG',
-  TT_SUMMARY_SPEED_NONFUNCTIONAL: 'Thrusters powered off or over maximum mass',
+  TT_SUMMARY_SPEED_NONFUNCTIONAL: 'Thrusters powered off or over maximum mass with full fuel and cargo loads',
   TT_SUMMARY_BOOST: 'With full fuel tank and 4 pips to ENG',
   TT_SUMMARY_BOOST_NONFUNCTIONAL: 'Power distributor not able to supply enough power to boost',
   TT_SUMMARY_SHIELDS: 'Raw shield strength, including boosters',
@@ -285,6 +285,44 @@ export const terms = {
   // Armour sources
   bulkheads: 'Bulkheads',
   reinforcement: 'Reinforcement',
+
+  // Panel headings and subheadings
+  'power and costs': 'power and costs',
+  'costs': 'costs',
+  'retrofit costs': 'retrofit costs',
+  'reload costs': 'reload costs',
+  'profiles': 'profiles',
+  'engine profile': 'engine profile',
+  'fsd profile': 'fsd profile',
+  'movement profile': 'movement profile',
+  'damage to opponent\'s shields': 'damage to opponent\'s shields',
+  'damage to opponent\'s hull': 'damage to opponent\'s hull',
+  'offence': 'offence',
+  'defence': 'defence',
+  'shield metrics': 'shield metrics',
+  'raw shield strength': 'raw shield strength',
+  'shield sources': 'shield sources',
+  'damage taken': 'damage taken',
+  'effective shield': 'effective shield',
+  'armour metrics': 'armour metrics',
+  'raw armour strength': 'raw armour strength',
+  'armour sources': 'armour sources',
+  'raw module armour': 'raw module armour',
+  'effective armour': 'effective armour',
+  'offence metrics': 'offence metrics',
+  'defence metrics': 'defence metrics',
+  // Misc items
+  'fuel carried': 'fuel carried',
+  'cargo carried': 'cargo carried',
+  'ship control': 'ship control',
+  'opponent': 'opponent',
+  'opponent\'s shields': 'opponent\'s shields',
+  'opponent\'s armour': 'opponent\'s armour',
+  'shield damage sources': 'shield damage sources',
+  'armour damage sources': 'armour damage sources',
+  'never': 'never',
+  'stock': 'stock',
+  'boost': 'boost',
 
   // Help text
   HELP_TEXT: `

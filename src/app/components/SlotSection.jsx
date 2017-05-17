@@ -134,18 +134,38 @@ export default class SlotSection extends TranslatedComponent {
       if (targetSlot && canMount(this.props.ship, targetSlot, m.grp, m.class)) {
         const mCopy = m.clone();
         this.props.ship.use(targetSlot, mCopy, false);
+        // Copy power info
+        targetSlot.enabled = originSlot.enabled;
+        targetSlot.priority = originSlot.priority;
         this.props.onChange();
       }
     } else {
+      // Store power info
+      const originEnabled = targetSlot.enabled;
+      const originPriority = targetSlot.priority;
+      const targetEnabled = originSlot.enabled;
+      const targetPriority = originSlot.priority;
       // We want to move the module in to the target slot, and swap back any module that was originally in the target slot
       if (targetSlot && m && canMount(this.props.ship, targetSlot, m.grp, m.class)) {
         // Swap modules if possible
         if (targetSlot.m && canMount(this.props.ship, originSlot, targetSlot.m.grp, targetSlot.m.class)) {
           this.props.ship.use(originSlot, targetSlot.m, true);
-        } else { // Otherwise empty the  origin slot
+          this.props.ship.use(targetSlot, m);
+          // Swap power
+          originSlot.enabled = originEnabled;
+          originSlot.priority = originPriority;
+          targetSlot.enabled = targetEnabled;
+          targetSlot.priority = targetPriority;
+        } else { // Otherwise empty the origin slot
+          // Store power
+          const targetEnabled = originSlot.enabled;
           this.props.ship.use(originSlot, null, true);  // Empty but prevent summary update
+          this.props.ship.use(targetSlot, m);
+          originSlot.enabled = 0;
+          originSlot.priority = 0;
+          targetSlot.enabled = targetEnabled;
+          targetSlot.priority = targetPriority;
         }
-        this.props.ship.use(targetSlot, m); // update target slot
         this.props.onChange();
       }
     }
