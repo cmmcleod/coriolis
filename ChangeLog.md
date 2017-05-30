@@ -1,5 +1,6 @@
 #2.3.6
   * Update miner role to provide better defaults
+  * Fix issue where torpedo special effects were not showing
 
 #2.3.5
   * Ensure that hidden blueprint effects are applied when a blueprint is selected
