@@ -446,7 +446,10 @@ export default class OutfittingPage extends Page {
       fuel = ship.fuelCapacity;
     }
     const code = this._fullCode(ship, fuel, cargo);
-    this.setState({ code, cargo, fuel }, () => this._updateRoute(shipId, buildName, code));
+    // Only update the state if this really has been updated
+    if (this.state.code != code || this.state.cargo != cargo || this.state.fuel != fuel) {
+      this.setState({ code, cargo, fuel }, () => this._updateRoute(shipId, buildName, code));
+    }
   }
 
   /**
@@ -551,7 +554,7 @@ export default class OutfittingPage extends Page {
     const internalSlotMarker = `${ship.name}${_iStr}${_pStr}${_mStr}`;
     const hardpointsSlotMarker = `${ship.name}${_hStr}${_pStr}${_mStr}`;
     const boostMarker = `${ship.canBoost(cargo, fuel)}`;
-    const shipSummaryMarker = `${ship.name}${_sStr}${_iStr}${_hStr}${_pStr}${_mStr}${ship.ladenMass}${ship.cargo}${ship.fuel}`;
+    const shipSummaryMarker = `${ship.name}${_sStr}${_iStr}${_hStr}${_pStr}${_mStr}${ship.ladenMass}${cargo}${fuel}`;
 
     return (
       <div id='outfit' className={'page'} style={{ fontSize: (sizeRatio * 0.9) + 'em' }}>
@@ -588,10 +591,10 @@ export default class OutfittingPage extends Page {
 
         {/* Main tables */}
         <ShipSummaryTable ship={ship} fuel={fuel} cargo={cargo} marker={shipSummaryMarker} />
-        <StandardSlotSection ship={ship} fuel={fuel} cargo={cargo} code={standardSlotMarker} onChange={shipUpdated} currentMenu={menu} />
-        <InternalSlotSection ship={ship} code={internalSlotMarker} onChange={shipUpdated} currentMenu={menu} />
-        <HardpointSlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} currentMenu={menu} />
-        <UtilitySlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} currentMenu={menu} />
+        <StandardSlotSection ship={ship} fuel={fuel} cargo={cargo} code={standardSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} />
+        <InternalSlotSection ship={ship} code={internalSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} />
+        <HardpointSlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} />
+        <UtilitySlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} />
 
         {/* Control of ship and opponent */}
         <div className='group quarter'>

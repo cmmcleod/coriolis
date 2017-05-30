@@ -1,3 +1,6 @@
+#2.3.6
+  * Update miner role to provide better defaults
+
 #2.3.5
   * Ensure that hidden blueprint effects are applied when a blueprint is selected
   * Handle display when summary values show thrusters disabled but current mass keeps them enabled

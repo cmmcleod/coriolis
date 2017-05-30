@@ -15,6 +15,8 @@ export default class SlotSection extends TranslatedComponent {
   static propTypes = {
     ship: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
+    onCargoChange: PropTypes.func.isRequired,
+    onFuelChange: PropTypes.func.isRequired,
     code: PropTypes.string.isRequired,
     togglePwr: PropTypes.func
   };
