@@ -2,6 +2,8 @@
   * Update miner role to provide better defaults
   * Fix issue where torpedo special effects were not showing
   * Fix typo causing long range blueprint to not modify shot speed in some circumstances
+  * Fix for Spanish translation of Chaff Launcher (thanks to DamonFstr)
+  * Update for Russian translation (thanks to LeeNTien)
 
 #2.3.5
   * Ensure that hidden blueprint effects are applied when a blueprint is selected
