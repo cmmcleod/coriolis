@@ -252,24 +252,6 @@ export function miner(ship, shielded) {
     }
   }
 
-  // Collector limpet controller if there are enough internals left
-  let collectorLimpetsRequired = Math.max(ship.internal.filter(a => (!a.eligible) || a.eligible.cr).length - 6, 0);
-  if (collectorLimpetsRequired > 0) {
-    const collectorOrder = [1, 2, 3, 4, 5, 6, 7, 8];
-    const collectorInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
-                                            .filter(a => (!a.eligible) || a.eligible.cc)
-                                            .sort((a,b) => collectorOrder.indexOf(a.maxClass) - collectorOrder.indexOf(b.maxClass));
-    for (let i = 0; i < collectorInternals.length && collectorLimpetsRequired > 0; i++) {
-      if (canMount(ship, collectorInternals[i], 'cc')) {
-        // Collector only has odd classes
-        const collectorClass = collectorInternals[i].maxClass % 2 === 0 ? collectorInternals[i].maxClass - 1 : collectorInternals[i].maxClass;
-        ship.use(collectorInternals[i], ModuleUtils.findInternal('cc', collectorClass, 'A'));
-        usedSlots.push(collectorInternals[i]);
-        collectorLimpetsRequired -= collectorInternals[i].m.maximum;
-      }
-    }
-  }
-
   // Dual mining lasers of highest possible class; remove anything else
   const miningLaserOrder = [2, 3, 4, 1, 0];
   const miningLaserHardpoints = ship.hardpoints.concat().sort(function(a,b) {
@@ -283,6 +265,45 @@ export function miner(ship, shielded) {
       ship.use(s, null);
     }
   }
+
+  // Number of collector limpets required to be active is a function of the size of the ship and the power of the lasers
+  const miningLaserDps = ship.hardpoints.filter(h => h.m != null)
+                                        .reduce(function(a, b) {
+                                          return a + b.m.getDps();
+                                        }, 0);
+  // Find out how many internal slots we have, and their potential cargo size
+  const potentialCargo = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
+                                      .filter(a => (!a.eligible) || a.eligible.cr)
+                                      .map(b => Math.pow(2, b.maxClass));
+  // One collector for each 1.25 DPS, multiply by 1.25 for medium ships and 1.5 for large ships as they have further to travel
+  // 0 if we only have 1 cargo slot, otherwise minium of 1 and maximum of 6 (excluding size modifier)
+  const sizeModifier = ship.class == 2 ? 1.2 : ship.class == 3 ? 1.5 : 1;
+  let collectorLimpetsRequired = potentialCargo.length == 1 ? 0 : Math.ceil(sizeModifier * Math.min(6, Math.floor(miningLaserDps / 1.25)));
+  console.log(`${collectorLimpetsRequired}`);
+
+  if (collectorLimpetsRequired > 0) {
+    const collectorOrder = [1, 2, 3, 4, 5, 6, 7, 8];
+    const collectorInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
+                                            .filter(a => (!a.eligible) || a.eligible.cc)
+                                            .sort((a,b) => collectorOrder.indexOf(a.maxClass) - collectorOrder.indexOf(b.maxClass));
+    // Always keep at least 2 slots free for cargo racks (1 for shielded)
+    for (let i = 0; i < collectorInternals.length - (shielded ? 1 : 2) && collectorLimpetsRequired > 0; i++) {
+      if (canMount(ship, collectorInternals[i], 'cc')) {
+        // Collector only has odd classes
+        const collectorClass = collectorInternals[i].maxClass % 2 === 0 ? collectorInternals[i].maxClass - 1 : collectorInternals[i].maxClass;
+        ship.use(collectorInternals[i], ModuleUtils.findInternal('cc', collectorClass, 'D'));
+        usedSlots.push(collectorInternals[i]);
+        collectorLimpetsRequired -= collectorInternals[i].m.maximum;
+      }
+    }
+  }
+
+  // Power distributor to power the mining lasers indefinitely
+  const wepRateRequired = ship.hardpoints.filter(h => h.m != null)
+                                          .reduce(function(a, b) {
+                                            return a + b.m.getEps();
+                                          }, 0);
+  standardOpts.pd = ship.getAvailableModules().matchingPowerDist({weprate: wepRateRequired}).id;
 
   // Fill the empty internals with cargo racks
   for (let i = ship.internal.length; i--;) {

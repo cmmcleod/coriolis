@@ -88,7 +88,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     const translate = language.translate;
 
     const specials = [];
-    const specialsId = m.missile ? 'specials_' + m.missile : 'specials';
+    const specialsId = m.missile && Modifications.modules[m.grp]['specials_' + m.missile] ? 'specials_' + m.missile : 'specials';
     if (Modifications.modules[m.grp][specialsId] && Modifications.modules[m.grp][specialsId].length > 0) {
       const close = this._specialSelected.bind(this, null);
       specials.push(<div style={{ cursor: 'pointer' }} key={ 'none' } onClick={ close }>{translate('PHRASE_NO_SPECIAL')}</div>);

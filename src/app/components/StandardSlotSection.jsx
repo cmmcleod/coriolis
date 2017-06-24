@@ -28,6 +28,8 @@ export default class StandardSlotSection extends SlotSection {
   _optimizeStandard() {
     this.props.ship.useLightestStandard();
     this.props.onChange();
+    this.props.onCargoChange(this.props.ship.cargoCapacity);
+    this.props.onFuelChange(this.props.ship.fuelCapacity);
     this._close();
   }
 
@@ -39,6 +41,8 @@ export default class StandardSlotSection extends SlotSection {
   _multiPurpose(shielded, bulkheadIndex) {
     ShipRoles.multiPurpose(this.props.ship, shielded, bulkheadIndex);
     this.props.onChange();
+    this.props.onCargoChange(this.props.ship.cargoCapacity);
+    this.props.onFuelChange(this.props.ship.fuelCapacity);
     this._close();
   }
 
@@ -49,6 +53,8 @@ export default class StandardSlotSection extends SlotSection {
   _optimizeCargo(shielded) {
     ShipRoles.trader(this.props.ship, shielded);
     this.props.onChange();
+    this.props.onCargoChange(this.props.ship.cargoCapacity);
+    this.props.onFuelChange(this.props.ship.fuelCapacity);
     this._close();
   }
 
@@ -59,6 +65,8 @@ export default class StandardSlotSection extends SlotSection {
   _optimizeMiner(shielded) {
     ShipRoles.miner(this.props.ship, shielded);
     this.props.onChange();
+    this.props.onCargoChange(this.props.ship.cargoCapacity);
+    this.props.onFuelChange(this.props.ship.fuelCapacity);
     this._close();
   }
 
@@ -69,6 +77,8 @@ export default class StandardSlotSection extends SlotSection {
   _optimizeExplorer(planetary) {
     ShipRoles.explorer(this.props.ship, planetary);
     this.props.onChange();
+    this.props.onCargoChange(this.props.ship.cargoCapacity);
+    this.props.onFuelChange(this.props.ship.fuelCapacity);
     this._close();
   }
 
@@ -78,6 +88,8 @@ export default class StandardSlotSection extends SlotSection {
   _optimizeRacer() {
     ShipRoles.racer(this.props.ship);
     this.props.onChange();
+    this.props.onCargoChange(this.props.ship.cargoCapacity);
+    this.props.onFuelChange(this.props.ship.fuelCapacity);
     this._close();
   }
 

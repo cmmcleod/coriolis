@@ -132,6 +132,20 @@ export default class ModuleSet {
     return new Module({ template: pd });
   };
 
+  /** Find the power distributor that matches the requirements
+   * @param  {Object} requirements The requirements to be met (currently only support 'weprate')
+   * @return {Object}              Power distributor
+   */
+  matchingPowerDist(requirements) {
+    let pd = this.standard[4][0];
+    for (let p of this.standard[4]) {
+      if (p.weprate >= requirements.weprate || p.weprate >= pd.weprate) {
+        pd = p;
+      }
+    }
+    return new Module({ template: pd });
+  }
+
   /**
    * Finds the lightest Thruster that can handle the specified tonnage
    * @param  {number} ladenMass Ship laden mass (mass + cargo + fuel)
