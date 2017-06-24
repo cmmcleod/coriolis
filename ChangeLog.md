@@ -4,6 +4,8 @@
   * Fix typo causing long range blueprint to not modify shot speed in some circumstances
   * Fix for Spanish translation of Chaff Launcher (thanks to DamonFstr)
   * Update for Russian translation (thanks to LeeNTien)
+  * Use coriolis-data 2.3.6:
+    * Add shotspeed modifier to cannon/multi-cannon/fragment cannon
 
 #2.3.5
   * Ensure that hidden blueprint effects are applied when a blueprint is selected
