@@ -27,7 +27,7 @@ export default class ShipPicker extends TranslatedComponent {
    * @param {object} props  Properties react
    * @param {object} context   react context
    */
-  constructor(props, context) {
+  constructor(props, context) { // eslint-disable-line
     super(props);
 
     this.shipOrder = Object.keys(Ships).sort();
