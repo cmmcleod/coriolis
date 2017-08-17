@@ -84,7 +84,8 @@
     "style-loader": "^0.16.1",
     "url-loader": "^0.5.8",
     "webpack": "^2.4.1",
-    "webpack-dev-server": "^2.4.4"
+    "webpack-dev-server": "^2.4.4",
+    "uglifyjs": "^2.4.11"
   },
   "dependencies": {
     "babel-polyfill": "*",
