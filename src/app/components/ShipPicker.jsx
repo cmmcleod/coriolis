@@ -24,8 +24,8 @@ export default class ShipPicker extends TranslatedComponent {
 
   /**
    * Constructor
-   * @param  {Object} props   React Component properties
-   * @param  {Object} context   React Component context
+   * @param {Object} props React Component properties
+   * @param {Object} context React Component context
    */
   constructor(props, context) {
     super(props);
@@ -39,8 +39,8 @@ export default class ShipPicker extends TranslatedComponent {
 
   /**
    * Update ship
-   * @param  {object} ship  the ship
-   * @param  {string} build   the build, if present
+   * @param {object} ship  the ship
+   * @param {string} build   the build, if present
    */
   _shipChange(ship, build) {
     this._closeMenu();
