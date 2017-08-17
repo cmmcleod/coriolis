@@ -93,7 +93,7 @@ export const terms = {
   TT_SUMMARY_UNLADEN_TOTAL_JUMP: 'Самая дальняя общая дистанция без груза, с полным топливным баком и при прыжках на максимальное расстояние',
   TT_SUMMARY_LADEN_TOTAL_JUMP: 'Самая дальняя общая дистанция с полным грузовым отсеком, с полным топливным баком и при прыжках на максимальное расстояние',
 
-HELP_MODIFICATIONS_MENU: 'Ткните на номер чтобы ввести новое значение, или потяните вдоль полосы для малых изменений',
+  HELP_MODIFICATIONS_MENU: 'Ткните на номер чтобы ввести новое значение, или потяните вдоль полосы для малых изменений',
   
   // Other languages fallback to these  values
   // Only Translate to other languages if the name is different in-game
