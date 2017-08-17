@@ -23,9 +23,9 @@ export default class ShipPicker extends TranslatedComponent {
   }
 
   /**
-   * Constructor
-   * @param {Object} props React Component properties
-   * @param {Object} context React Component context
+   * constructor
+   * @param {object} props  Properties react
+   * @param {object} context   react context
    */
   constructor(props, context) {
     super(props);
