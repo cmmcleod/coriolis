@@ -1,3 +1,8 @@
+#2.4.0
+  * Changed compression library to Pako
+  * Use coriolis-data 2.4.0
+    * Repair Limpets added
+
 #2.3.7
   * Fixed Travis test issues
   * Bumped NodeJS version to provide better compatability and support
