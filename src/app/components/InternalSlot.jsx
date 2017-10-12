@@ -26,7 +26,7 @@ export default class InternalSlot extends Slot {
       let classRating = m.class + m.rating;
       let { drag, drop, ship } = this.props;
       let { termtip, tooltip } = this.context;
-      let validMods = Modifications.modules[m.grp].modifications || [];
+      let validMods = (Modifications.modules[m.grp] ? Modifications.modules[m.grp].modifications : []);
       let showModuleResistances = Persist.showModuleResistances();
 
       // Modifications tooltip shows blueprint and grade, if available
