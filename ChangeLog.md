@@ -1,3 +1,6 @@
+#2.4.1
+  * Small patches and changes  
+
 #2.4.0
   * Changed compression library to Pako
   * Use coriolis-data 2.4.0
