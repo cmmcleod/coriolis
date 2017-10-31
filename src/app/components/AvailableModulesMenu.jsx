@@ -20,6 +20,7 @@ const GRPCAT = {
   'fx': 'limpet controllers',
   'hb': 'limpet controllers',
   'pc': 'limpet controllers',
+  'rpl': 'limpet controllers',
   'pce': 'passenger cabins',
   'pci': 'passenger cabins',
   'pcm': 'passenger cabins',
@@ -60,7 +61,7 @@ const CATEGORIES = {
   'fi': ['fi'],
   'fuel': ['ft', 'fs'],
   'hangars': ['fh', 'pv'],
-  'limpet controllers': ['cc', 'fx', 'hb', 'pc'],
+  'limpet controllers': ['cc', 'fx', 'hb', 'pc', 'rpl'],
   'passenger cabins': ['pce', 'pci', 'pcm', 'pcq'],
   'rf': ['rf'],
   'shields': ['sg', 'bsg', 'psg', 'scb'],
@@ -148,7 +149,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         const existing = catmodules[moduleCategory] || [];
         catmodules[moduleCategory] = existing.concat(modules[g]);
       }
-      
+
       for (let category in catmodules) {
         let categoryHeader = false;
         // Order through CATEGORIES if present
