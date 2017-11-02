@@ -62,6 +62,7 @@
     "babel-preset-env": "*",
     "babel-preset-react": "*",
     "babel-preset-stage-0": "*",
+    "create-react-class": "^15.6.2",
     "css-loader": "^0.28.0",
     "d3-selection": "1",
     "eslint": "3.19.0",
