@@ -1,6 +1,6 @@
 {
   "name": "coriolis_shipyard",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/EDCD/coriolis"
@@ -24,7 +24,9 @@
     "deploy": "npm run lint && npm test && npm run build && npm run rsync"
   },
   "jest": {
-    "transform": {".*": "<rootDir>/node_modules/babel-jest"},
+    "transform": {
+      ".*": "<rootDir>/node_modules/babel-jest"
+    },
     "testRegex": "(/__tests__/test-.*|\\.(test|spec))\\.js$",
     "moduleFileExtensions": [
       "js",
@@ -37,6 +39,7 @@
       "<rootDir>/node_modules/lodash",
       "<rootDir>/node_modules/react",
       "<rootDir>/node_modules/react-dom",
+      "<rootDir>/node_modules/react-transition-group",
       "<rootDir>/node_modules/react-testutils-additions",
       "<rootDir>/node_modules/fbjs",
       "<rootDir>/node_modules/fbemitter",
@@ -58,9 +61,10 @@
     "babel-eslint": "*",
     "babel-jest": "*",
     "babel-loader": "*",
-    "babel-preset-es2015": "*",
+    "babel-preset-env": "*",
     "babel-preset-react": "*",
     "babel-preset-stage-0": "*",
+    "create-react-class": "^15.6.2",
     "css-loader": "^0.28.0",
     "d3-selection": "1",
     "eslint": "3.19.0",
@@ -70,7 +74,7 @@
     "extract-text-webpack-plugin": "2.1.0",
     "file-loader": "^0.11.1",
     "html-webpack-plugin": "^2.28.0",
-    "jest-cli": "^19.0.2",
+    "jest-cli": "^21.2.1",
     "jsen": "^0.6.4",
     "json-loader": "^0.5.4",
     "less": "^2.7.2",
@@ -78,6 +82,7 @@
     "react-addons-perf": "^15.4.2",
     "react-measure": "^1.4.7",
     "react-testutils-additions": "^15.2.0",
+    "react-transition-group": "^1.1.2",
     "rimraf": "^2.6.1",
     "rollup": "0.41",
     "rollup-plugin-node-resolve": "3",
@@ -91,7 +96,7 @@
     "babel-polyfill": "*",
     "browserify-zlib-next": "^1.0.1",
     "classnames": "^2.2.5",
-    "coriolis-data": "EDCD/coriolis-data",
+    "coriolis-data": "../coriolis-data",
     "d3": "4.8.0",
     "detect-browser": "^1.7.0",
     "fbemitter": "^2.1.1",

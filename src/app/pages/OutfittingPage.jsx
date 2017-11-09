@@ -556,10 +556,25 @@ export default class OutfittingPage extends Page {
     const boostMarker = `${ship.canBoost(cargo, fuel)}`;
     const shipSummaryMarker = `${ship.name}${_sStr}${_iStr}${_hStr}${_pStr}${_mStr}${ship.ladenMass}${cargo}${fuel}`;
 
+    const requirements = Ships[ship.id].requirements;
+    var requirementElements = [];
+
+    function renderRequirement(className, textKey, tooltipTextKey) {
+      requirementElements.push(<div key={textKey} className={className} onMouseEnter={termtip.bind(null, tooltipTextKey)} onMouseLeave={hide}>{translate(textKey)}</div>);
+    }
+
+    if (requirements) {
+      requirements.federationRank && renderRequirement('federation', 'federation rank ' + requirements.federationRank, 'federation rank required');
+      requirements.empireRank && renderRequirement('empire', 'empire rank ' + requirements.empireRank, 'empire rank required');
+      requirements.horizons && renderRequirement('horizons', 'horizons', 'horizons required');
+      requirements.horizonsEarlyAdoption && renderRequirement('horizons', 'horizons early adoption', 'horizons early adoption required'); 
+    }
+
     return (
       <div id='outfit' className={'page'} style={{ fontSize: (sizeRatio * 0.9) + 'em' }}>
         <div id='overview'>
           <h1>{ship.name}</h1>
+          <div id='requirements'>{requirementElements}</div>
           <div id='build'>
             <input value={newBuildName || ''} onChange={this._buildNameChange} placeholder={translate('Enter Name')} maxLength={50} />
             <button onClick={canSave && this._saveBuild} disabled={!canSave} onMouseOver={termtip.bind(null, 'save')} onMouseOut={hide}>
