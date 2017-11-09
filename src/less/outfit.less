@@ -21,11 +21,45 @@
 
 #overview {
   h1 {
-    margin: 0;
+    margin: 0 1em 0.2em 0;
     float: left;
   }
   overflow: hidden;
   margin: 0.5em;
+}
+
+#requirements {
+  margin: 0;
+  float: left;
+  text-align: left;
+
+  div {
+    display: inline-block;
+    margin: 0 1em 0.5em 0;
+    height: 1.6em;
+    line-height: 1.6em;
+    text-align: left;
+    vertical-align: middle;
+    cursor: default;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: contain;
+  }
+
+  .federation {
+    background-image: url('../images/Federation.svg');
+    padding-left: 1.985em + 0.5em;
+  }
+
+  .empire {
+    background-image: url('../images/Empire.svg');
+    padding-left: 2.750em + 0.5em;
+  }
+
+  .horizons {
+    background-image: url('../images/surface_port_pm.svg');
+    padding-left: 1.415em + 0.5em;
+  }
 }
 
 #summary {
