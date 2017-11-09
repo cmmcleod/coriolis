@@ -24,7 +24,9 @@
     "deploy": "npm run lint && npm test && npm run build && npm run rsync"
   },
   "jest": {
-    "transform": {".*": "<rootDir>/node_modules/babel-jest"},
+    "transform": {
+      ".*": "<rootDir>/node_modules/babel-jest"
+    },
     "testRegex": "(/__tests__/test-.*|\\.(test|spec))\\.js$",
     "moduleFileExtensions": [
       "js",
@@ -91,7 +93,7 @@
     "babel-polyfill": "*",
     "browserify-zlib-next": "^1.0.1",
     "classnames": "^2.2.5",
-    "coriolis-data": "EDCD/coriolis-data",
+    "coriolis-data": "../coriolis-data",
     "d3": "4.8.0",
     "detect-browser": "^1.7.0",
     "fbemitter": "^2.1.1",
