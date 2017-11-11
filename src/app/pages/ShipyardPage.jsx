@@ -316,16 +316,16 @@ export default class ShipyardPage extends Page {
                 <th colSpan={8} className='sortable lft' onClick={sortShips('intCount')}>{translate('internal compartments')}</th>
               </tr>
               <tr>
-	        <th className='sortable lft' onClick={sortShips('retailCost')}>{units.CR}</th>
-	        <th className='sortable lft' onClick={sortShips('hullMass')}>{units.T}</th>
-	        <th className='sortable lft' onClick={sortShips('speed')}>{units['m/s']}</th>
-	        <th className='sortable'  onClick={sortShips('boost')}>{units['m/s']}</th>
-	        <th>&nbsp;</th>
-	        <th className='sortable' onClick={sortShips('baseShieldStrength')}>{units.MJ}</th>
-	        <th className='sortable lft' onClick={sortShips('topSpeed')}>{units['m/s']}</th>
-	        <th className='sortable' onClick={sortShips('topBoost')}>{units['m/s']}</th>
-	        <th className='sortable' onClick={sortShips('maxJumpRange')}>{units.LY}</th>
-	        <th className='sortable' onClick={sortShips('maxCargo')}>{units.T}</th>
+                <th className='sortable lft' onClick={sortShips('retailCost')}>{units.CR}</th>
+                <th className='sortable lft' onClick={sortShips('hullMass')}>{units.T}</th>
+                <th className='sortable lft' onClick={sortShips('speed')}>{units['m/s']}</th>
+                <th className='sortable'  onClick={sortShips('boost')}>{units['m/s']}</th>
+                <th>&nbsp;</th>
+                <th className='sortable' onClick={sortShips('baseShieldStrength')}>{units.MJ}</th>
+                <th className='sortable lft' onClick={sortShips('topSpeed')}>{units['m/s']}</th>
+                <th className='sortable' onClick={sortShips('topBoost')}>{units['m/s']}</th>
+                <th className='sortable' onClick={sortShips('maxJumpRange')}>{units.LY}</th>
+                <th className='sortable' onClick={sortShips('maxCargo')}>{units.T}</th>
                 <th className='sortable lft' onMouseEnter={termtip.bind(null, 'power plant')} onMouseLeave={hide} onClick={sortShips('standard', 0)}>{'pp'}</th>
                 <th className='sortable' onMouseEnter={termtip.bind(null, 'thrusters')} onMouseLeave={hide} onClick={sortShips('standard', 1)}>{'th'}</th>
                 <th className='sortable' onMouseEnter={termtip.bind(null, 'frame shift drive')} onMouseLeave={hide} onClick={sortShips('standard', 2)}>{'fsd'}</th>
