@@ -247,18 +247,18 @@ export default class ShipyardPage extends Page {
     let shipRows = new Array(shipSummaries.length);
     let detailRows = new Array(shipSummaries.length);
 
-    let sortValue = null;
+    let lastShipSortValue = null;
     let backgroundHighlight = false;
 
     for (let s of shipSummaries) {
-      let tmpSortValue = s[shipPredicate];
+      let shipSortValue = s[shipPredicate];
       if( shipPredicateIndex != undefined ) {
-        tmpSortValue = tmpSortValue[shipPredicateIndex];
+        shipSortValue = shipSortValue[shipPredicateIndex];
       }
 
-      if( tmpSortValue != sortValue ) {
+      if( shipSortValue != lastShipSortValue ) {
         backgroundHighlight = !backgroundHighlight;
-        sortValue = tmpSortValue;
+        lastShipSortValue = shipSortValue;
       }
 
       detailRows[i] = this._shipRowElement(s, translate, units, fInt, formats.f1, backgroundHighlight);
