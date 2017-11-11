@@ -139,15 +139,16 @@ export default class ShipyardPage extends Page {
    * @param  {Object} u           Localized unit map
    * @param  {Function} fInt      Localized integer formatter
    * @param  {Function} fRound    Localized round formatter
+   * @param  {Boolean} highlight  Should this row be highlighted
    * @return {React.Component}    Table Row
    */
-  _shipRowElement(s, translate, u, fInt, fRound) {
+  _shipRowElement(s, translate, u, fInt, fRound, highlight) {
     let noTouch = this.context.noTouch;
 
     return <tr
         key={s.id}
         style={{ height: '1.5em' }}
-        className={cn({ highlighted: noTouch && this.state.shipId === s.id })}
+        className={cn({ highlighted: noTouch && this.state.shipId === s.id, alt: highlight })}
         onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
       >
       <td className='ri'>{s.manufacturer}</td>
@@ -246,13 +247,26 @@ export default class ShipyardPage extends Page {
     let shipRows = new Array(shipSummaries.length);
     let detailRows = new Array(shipSummaries.length);
 
+    let sortValue = null;
+    let backgroundHighlight = false;
+
     for (let s of shipSummaries) {
-      detailRows[i] = this._shipRowElement(s, translate, units, fInt, formats.f1);
+      let tmpSortValue = s[shipPredicate];
+      if( shipPredicateIndex != undefined ) {
+        tmpSortValue = tmpSortValue[shipPredicateIndex];
+      }
+
+      if( tmpSortValue != sortValue ) {
+        backgroundHighlight = !backgroundHighlight;
+        sortValue = tmpSortValue;
+      }
+
+      detailRows[i] = this._shipRowElement(s, translate, units, fInt, formats.f1, backgroundHighlight);
       shipRows[i] = (
         <tr
           key={i}
           style={{ height: '1.5em' }}
-          className={cn({ highlighted: noTouch && this.state.shipId === s.id })}
+          className={cn({ highlighted: noTouch && this.state.shipId === s.id, alt: backgroundHighlight })}
           onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
         >
           <td className='le'><Link href={'/outfit/' + s.id}>{s.name}</Link></td>
