@@ -336,10 +336,14 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
       let value;
       if (i === 'OutfittingFieldType_DefenceModifierShieldMultiplier') {
         value = modifiers[i].value - 1;
-     } else if (i === 'OutfittingFieldType_DefenceModifierHealthMultiplier') {
+     } else if (i === 'OutfittingFieldType_DefenceModifierHealthMultiplier' && blueprint === 'Armour_Thermic') {
         //TODO: fix the hull strength. not sure whats wrong with it.
-        value = modifiers[i].value - 1// - module.hullboost;
-	  } else {
+        value = (modifiers[i].value - module.hullboost) / module.hullboost;
+        console.log(value);
+	  } else if (i === 'OutfittingFieldType_DefenceModifierHealthMultiplier') {
+        value = modifiers[i].value / module.hullboost;
+        console.log(value);
+      } else {
         value = modifiers[i].value - 1;
       }
       // Carry out the required changes
