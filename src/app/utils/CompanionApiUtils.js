@@ -303,8 +303,8 @@ export function shipFromJson(json) {
  * @param {Object} specialModifications special modification
  */
 function _addModifications(module, modifiers, blueprint, grade, specialModifications) {
-	console.log(module);
-	console.log(modifiers);
+  console.log(module);
+  console.log(modifiers);
   if (!modifiers) return;
 
   let special;
@@ -334,11 +334,14 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
       // Look up the modifiers to find what we need to do
       const modifierActions = Modifications.modifierActions[i];
       let value;
-      if (i === 'shieldbst') {
+      if (i === 'OutfittingFieldType_DefenceModifierShieldMultiplier') {
         value = modifiers[i].value - 1;
-     } else {
+     } else if (i === 'OutfittingFieldType_DefenceModifierHealthMultiplier') {
+        //TODO: fix the hull strength. not sure whats wrong with it.
+        value = modifiers[i].value - 1// - module.hullboost;
+	  } else {
         value = modifiers[i].value - 1;
-	  }
+      }
       // Carry out the required changes
       for (const action in modifierActions) {
         if (isNaN(modifierActions[action])) {
@@ -405,17 +408,17 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
 
   // Hull reinforcement package resistance is actually a damage modifier, so needs to be inverted.
   // In addition, the modification is based off the inherent resistance of the module
-  // if (module.grp === 'hr') {
-  //   if (module.getModValue('explres')) {
-  //     module.setModValue('explres', ((1 - (1 - module.explres) * (1 + module.getModValue('explres') / 10000)) - module.explres) * 10000);
-  //   }
-  //   if (module.getModValue('kinres')) {
-  //     module.setModValue('kinres', ((1 - (1 - module.kinres) * (1 + module.getModValue('kinres') / 10000)) - module.kinres) * 10000);
-  //   }
-  //   if (module.getModValue('thermres')) {
-  //     module.setModValue('thermres', ((1 - (1 - module.thermres) * (1 + module.getModValue('thermres') / 10000)) - module.thermres) * 10000);
-  //   }
-  // }
+  if (module.grp === 'hr') {
+    if (module.getModValue('explres')) {
+      module.setModValue('explres', ((1 - (1 - module.explres) * (1 + module.getModValue('explres') / 10000)) - module.explres) * 10000);
+    }
+    if (module.getModValue('kinres')) {
+      module.setModValue('kinres', ((1 - (1 - module.kinres) * (1 + module.getModValue('kinres') / 10000)) - module.kinres) * 10000);
+    }
+    if (module.getModValue('thermres')) {
+      module.setModValue('thermres', ((1 - (1 - module.thermres) * (1 + module.getModValue('thermres') / 10000)) - module.thermres) * 10000);
+    }
+  }
 
   // Bulkhead resistance is actually a damage modifier, so needs to be inverted.
   // In addition, the modification is based off the inherent resistance of the module
