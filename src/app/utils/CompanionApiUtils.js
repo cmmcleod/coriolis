@@ -189,7 +189,7 @@ export function shipFromJson(json) {
   // Life support
   const lifesupportJson = json.modules.LifeSupport.module;
   const lifesupport = _moduleFromEdId(lifesupportJson.id);
-	if (json.modules.LifeSupport.WorkInProgress_modifications) _addModifications(lifesupport, json.modules.LifeSupport.WorkInProgress_modifications, json.modules.LifeSupport.engineer.recipeName, json.modules.LifeSupport.engineer.recipeLevel);
+  if (json.modules.LifeSupport.WorkInProgress_modifications) _addModifications(lifesupport, json.modules.LifeSupport.WorkInProgress_modifications, json.modules.LifeSupport.engineer.recipeName, json.modules.LifeSupport.engineer.recipeLevel);
   ship.use(ship.standard[3], lifesupport, true);
   ship.standard[3].enabled = lifesupportJson.on === true;
   ship.standard[3].priority = lifesupportJson.priority;
