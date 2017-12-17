@@ -433,11 +433,11 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
 
   // Bulkhead boost is based off the inherent boost of the module
   if (module.grp == 'bh') {
-      const alteredBoost = (1 + module.hullboost) * (1 + module.getModValue('hullboost') / 10000) - 1;
-      module.setModValue('hullboost', (alteredBoost / module.hullboost - 1) * 1000);
+    const alteredBoost = (1 + module.hullboost) * (1 + module.getModValue('hullboost') / 10000) - 1;
+    module.setModValue('hullboost', (alteredBoost / module.hullboost - 1) * 1000);
   }
 
-	// Jitter is an absolute number, so we need to divide it by 100
+  // Jitter is an absolute number, so we need to divide it by 100
   if (module.getModValue('jitter')) {
     module.setModValue('jitter', module.getModValue('jitter') / 100);
   }
