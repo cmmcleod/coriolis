@@ -197,17 +197,16 @@ export function shipFromJson(json) {
   // Power distributor
   const powerdistributorJson = json.modules.PowerDistributor.module;
   const powerdistributor = _moduleFromEdId(powerdistributorJson.id);
-	if (json.modules.PowerDistributor.WorkInProgress_modifications) _addModifications(powerdistributor, json.modules.PowerDistributor.WorkInProgress_modifications, json.modules.PowerDistributor.engineer.recipeName, json.modules.PowerDistributor.engineer.recipeLevel);
-	ship.use(ship.standard[4], powerdistributor, true);
+  if (json.modules.PowerDistributor.WorkInProgress_modifications) _addModifications(powerdistributor, json.modules.PowerDistributor.WorkInProgress_modifications, json.modules.PowerDistributor.engineer.recipeName, json.modules.PowerDistributor.engineer.recipeLevel);
+  ship.use(ship.standard[4], powerdistributor, true);
   ship.standard[4].enabled = powerdistributorJson.on === true;
   ship.standard[4].priority = powerdistributorJson.priority;
 
   // Sensors
   const sensorsJson = json.modules.Radar.module;
   const sensors = _moduleFromEdId(sensorsJson.id);
-	if (json.modules.Radar.WorkInProgress_modifications) _addModifications(sensors, json.modules.Radar.WorkInProgress_modifications, json.modules.Radar.engineer.recipeName, json.modules.Radar.engineer.recipeLevel);
-
-	ship.use(ship.standard[5], sensors, true);
+  if (json.modules.Radar.WorkInProgress_modifications) _addModifications(sensors, json.modules.Radar.WorkInProgress_modifications, json.modules.Radar.engineer.recipeName, json.modules.Radar.engineer.recipeLevel);
+  ship.use(ship.standard[5], sensors, true);
   ship.standard[5].enabled = sensorsJson.on === true;
   ship.standard[5].priority = sensorsJson.priority;
 
@@ -242,7 +241,7 @@ export function shipFromJson(json) {
     } else {
       const hardpointJson = hardpointSlot.module;
       const hardpoint = _moduleFromEdId(hardpointJson.id);
-		if (hardpointSlot.WorkInProgress_modifications) _addModifications(hardpoint, hardpointSlot.WorkInProgress_modifications, hardpointSlot.engineer.recipeName, hardpointSlot.engineer.recipeLevel, hardpointSlot.specialModifications);
+      if (hardpointSlot.WorkInProgress_modifications) _addModifications(hardpoint, hardpointSlot.WorkInProgress_modifications, hardpointSlot.engineer.recipeName, hardpointSlot.engineer.recipeLevel, hardpointSlot.specialModifications);
       ship.use(ship.hardpoints[hardpointArrayNum], hardpoint, true);
       ship.hardpoints[hardpointArrayNum].enabled = hardpointJson.on === true;
       ship.hardpoints[hardpointArrayNum].priority = hardpointJson.priority;
