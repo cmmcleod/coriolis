@@ -123,6 +123,7 @@ export function shipModelFromJson(json) {
  */
 export function shipFromJson(json) {
   // Start off building a basic ship
+  console.log(json);
   const shipModel = shipModelFromJson(json);
   if (!shipModel) {
     throw 'No such ship found: "' + json.name + '"';
@@ -158,13 +159,13 @@ export function shipFromJson(json) {
     throw 'Unknown bulkheads "' + armourJson.name + '"';
   }
   ship.bulkheads.enabled = true;
-  if (armourJson.modifiers) _addModifications(ship.bulkheads.m, armourJson.modifiers, armourJson.recipeName, armourJson.recipeLevel);
+  if (json.modules.Armour.WorkInProgress_modifications) _addModifications(ship.bulkheads.m, json.modules.Armour.WorkInProgress_modifications, json.modules.Armour.engineer.recipeName, json.modules.Armour.engineer.recipeLevel);
 
   // Add the standard modules
   // Power plant
   const powerplantJson = json.modules.PowerPlant.module;
   const powerplant = _moduleFromEdId(powerplantJson.id);
-  if (powerplantJson.modifiers) _addModifications(powerplant, powerplantJson.modifiers, powerplantJson.recipeName, powerplantJson.recipeLevel);
+  if (json.modules.PowerPlant.WorkInProgress_modifications) _addModifications(powerplant, json.modules.PowerPlant.WorkInProgress_modifications, json.modules.PowerPlant.engineer.recipeName, json.modules.PowerPlant.engineer.recipeLevel);
   ship.use(ship.standard[0], powerplant, true);
   ship.standard[0].enabled = powerplantJson.on === true;
   ship.standard[0].priority = powerplantJson.priority;
@@ -172,7 +173,7 @@ export function shipFromJson(json) {
   // Thrusters
   const thrustersJson = json.modules.MainEngines.module;
   const thrusters = _moduleFromEdId(thrustersJson.id);
-  if (thrustersJson.modifiers) _addModifications(thrusters, thrustersJson.modifiers, thrustersJson.recipeName, thrustersJson.recipeLevel);
+  if (json.modules.MainEngines.WorkInProgress_modifications) _addModifications(thrusters, json.modules.MainEngines.WorkInProgress_modifications, json.modules.MainEngines.engineer.recipeName, json.modules.MainEngines.engineer.recipeLevel);
   ship.use(ship.standard[1], thrusters, true);
   ship.standard[1].enabled = thrustersJson.on === true;
   ship.standard[1].priority = thrustersJson.priority;
@@ -180,7 +181,7 @@ export function shipFromJson(json) {
   // FSD
   const frameshiftdriveJson = json.modules.FrameShiftDrive.module;
   const frameshiftdrive = _moduleFromEdId(frameshiftdriveJson.id);
-  if (frameshiftdriveJson.modifiers) _addModifications(frameshiftdrive, frameshiftdriveJson.modifiers, frameshiftdriveJson.recipeName, frameshiftdriveJson.recipeLevel);
+  if (json.modules.FrameShiftDrive.WorkInProgress_modifications) _addModifications(frameshiftdrive, json.modules.FrameShiftDrive.WorkInProgress_modifications, json.modules.FrameShiftDrive.engineer.recipeName, json.modules.FrameShiftDrive.engineer.recipeLevel);
   ship.use(ship.standard[2], frameshiftdrive, true);
   ship.standard[2].enabled = frameshiftdriveJson.on === true;
   ship.standard[2].priority = frameshiftdriveJson.priority;
@@ -188,7 +189,7 @@ export function shipFromJson(json) {
   // Life support
   const lifesupportJson = json.modules.LifeSupport.module;
   const lifesupport = _moduleFromEdId(lifesupportJson.id);
-  if (lifesupportJson.modifiers)_addModifications(lifesupport, lifesupportJson.modifiers, lifesupportJson.recipeName, lifesupportJson.recipeLevel);
+	if (json.modules.LifeSupport.WorkInProgress_modifications) _addModifications(lifesupport, json.modules.LifeSupport.WorkInProgress_modifications, json.modules.LifeSupport.engineer.recipeName, json.modules.LifeSupport.engineer.recipeLevel);
   ship.use(ship.standard[3], lifesupport, true);
   ship.standard[3].enabled = lifesupportJson.on === true;
   ship.standard[3].priority = lifesupportJson.priority;
@@ -196,16 +197,17 @@ export function shipFromJson(json) {
   // Power distributor
   const powerdistributorJson = json.modules.PowerDistributor.module;
   const powerdistributor = _moduleFromEdId(powerdistributorJson.id);
-  if (powerdistributorJson.modifiers) _addModifications(powerdistributor, powerdistributorJson.modifiers, powerdistributorJson.recipeName, powerdistributorJson.recipeLevel);
-  ship.use(ship.standard[4], powerdistributor, true);
+	if (json.modules.PowerDistributor.WorkInProgress_modifications) _addModifications(powerdistributor, json.modules.PowerDistributor.WorkInProgress_modifications, json.modules.PowerDistributor.engineer.recipeName, json.modules.PowerDistributor.engineer.recipeLevel);
+	ship.use(ship.standard[4], powerdistributor, true);
   ship.standard[4].enabled = powerdistributorJson.on === true;
   ship.standard[4].priority = powerdistributorJson.priority;
 
   // Sensors
   const sensorsJson = json.modules.Radar.module;
   const sensors = _moduleFromEdId(sensorsJson.id);
-  if (sensorsJson.modifiers) _addModifications(sensors, sensorsJson.modifiers, sensorsJson.recipeName, sensorsJson.recipeLevel);
-  ship.use(ship.standard[5], sensors, true);
+	if (json.modules.Radar.WorkInProgress_modifications) _addModifications(sensors, json.modules.Radar.WorkInProgress_modifications, json.modules.Radar.engineer.recipeName, json.modules.Radar.engineer.recipeLevel);
+
+	ship.use(ship.standard[5], sensors, true);
   ship.standard[5].enabled = sensorsJson.on === true;
   ship.standard[5].priority = sensorsJson.priority;
 
@@ -240,7 +242,7 @@ export function shipFromJson(json) {
     } else {
       const hardpointJson = hardpointSlot.module;
       const hardpoint = _moduleFromEdId(hardpointJson.id);
-      if (hardpointJson.modifiers) _addModifications(hardpoint, hardpointJson.modifiers, hardpointJson.recipeName, hardpointJson.recipeLevel);
+		if (hardpointSlot.WorkInProgress_modifications) _addModifications(hardpoint, hardpointSlot.WorkInProgress_modifications, hardpointSlot.engineer.recipeName, hardpointSlot.engineer.recipeLevel, hardpointSlot.specialModifications);
       ship.use(ship.hardpoints[hardpointArrayNum], hardpoint, true);
       ship.hardpoints[hardpointArrayNum].enabled = hardpointJson.on === true;
       ship.hardpoints[hardpointArrayNum].priority = hardpointJson.priority;
@@ -282,7 +284,7 @@ export function shipFromJson(json) {
     } else {
       const internalJson = internalSlot.module;
       const internal = _moduleFromEdId(internalJson.id);
-      if (internalJson.modifiers) _addModifications(internal, internalJson.modifiers, internalJson.recipeName, internalJson.recipeLevel);
+      if (internalSlot.WorkInProgress_modifications) _addModifications(internal, internalSlot.WorkInProgress_modifications, internalSlot.engineer.recipeName, internalSlot.engineer.recipeLevel);
       ship.use(ship.internal[i], internal, true);
       ship.internal[i].enabled = internalJson.on === true;
       ship.internal[i].priority = internalJson.priority;
@@ -299,37 +301,48 @@ export function shipFromJson(json) {
  * @param {Object} modifiers the modifiers
  * @param {Object} blueprint the blueprint of the modification
  * @param {Object} grade the grade of the modification
+ * @param {Object} specialModifications special modification
  */
-function _addModifications(module, modifiers, blueprint, grade) {
-  if (!modifiers || !modifiers.modifiers) return;
-  
+function _addModifications(module, modifiers, blueprint, grade, specialModifications) {
+	console.log(module);
+	console.log(modifiers);
+  if (!modifiers) return;
+
   let special;
-  for (const i in modifiers.modifiers) {
+	if (specialModifications) {
+		special = Modifications.specials[Object.keys(specialModifications)[0]]
+	}
+  for (const i in modifiers) {
     // Some special modifications
-    if (modifiers.modifiers[i].name === 'mod_weapon_clip_size_override') {
+    if (modifiers[i].name === 'mod_weapon_clip_size_override') {
       // This is a numeric addition to the clip size, but we need to work it out in terms of being a percentage so
       // that it works the same as other modifications
       const origClip = module.clip || 1;
-      module.setModValue('clip', ((modifiers.modifiers[i].value  - origClip) / origClip) * 10000);
-    } else if (modifiers.modifiers[i].name === 'mod_weapon_burst_size') {
+      module.setModValue('clip', ((modifiers[i].value  - origClip) / origClip) * 10000);
+    } else if (modifiers[i].name === 'mod_weapon_burst_size') {
       // This is an absolute number that acts as an override
-      module.setModValue('burst', modifiers.modifiers[i].value * 100);
-    } else if (modifiers.modifiers[i].name === 'mod_weapon_burst_rof') {
+      module.setModValue('burst', modifiers[i].value * 100);
+    } else if (modifiers[i].name === 'mod_weapon_burst_rof') {
       // This is an absolute number that acts as an override
-      module.setModValue('burstrof', modifiers.modifiers[i].value * 100);
-    } else if (modifiers.modifiers[i].name === 'mod_weapon_falloffrange_from_range') {
+      module.setModValue('burstrof', modifiers[i].value * 100);
+    } else if (modifiers[i].name === 'mod_weapon_falloffrange_from_range') {
       // Obtain the falloff value directly from the range
       module.setModValue('fallofffromrange', 1);
-    } else if (modifiers.modifiers[i].name && modifiers.modifiers[i].name.startsWith('special_')) {
+    } else if (modifiers[i].name && modifiers[i].name.startsWith('special_')) {
       // We don't add special effects directly, but keep a note of them so they can be added when fetching values
-      special = Modifications.specials[modifiers.modifiers[i].name];
+      special = Modifications.specials[modifiers[i].name];
     } else {
       // Look up the modifiers to find what we need to do
-      const modifierActions = Modifications.modifierActions[modifiers.modifiers[i].name];
-      const value = modifiers.modifiers[i].value;
-
+      const modifierActions = Modifications.modifierActions[i];
+      let value;
+      if (i === 'shieldbst') {
+        value = modifiers[i].value - 1;
+     } else {
+        value = modifiers[i].value - 1;
+	  }
       // Carry out the required changes
       for (const action in modifierActions) {
+      	console.log(action);
         if (isNaN(modifierActions[action])) {
           module.setModValue(action, modifierActions[action]);
         } else {
@@ -339,6 +352,7 @@ function _addModifications(module, modifiers, blueprint, grade) {
             mod = 0;
           }
           module.setModValue(action, ((1 + mod) * (1 + actionValue) - 1) * 10000);
+			// Bulkhead boost is based off the inherent boost of the module
         }
       }
     }
@@ -354,7 +368,7 @@ function _addModifications(module, modifiers, blueprint, grade) {
       module.blueprint.special = special;
     }
   }
-  
+
   // Need to fix up a few items
 
   // Shield boosters are treated internally as straight modifiers, so rather than (for example)
@@ -377,20 +391,20 @@ function _addModifications(module, modifiers, blueprint, grade) {
       module.setModValue('thermres', ((module.getModValue('thermres') / 10000) * -1) * 10000);
     }
   }
-  
+
   // Shield generator resistance is actually a damage modifier, so needs to be inverted.
   // In addition, the modification is based off the inherent resistance of the module
-  if (ModuleUtils.isShieldGenerator(module.grp)) {
-    if (module.getModValue('explres')) {
-      module.setModValue('explres', ((1 - (1 - module.explres) * (1 + module.getModValue('explres') / 10000)) - module.explres) * 10000);
-    }
-    if (module.getModValue('kinres')) {
-      module.setModValue('kinres', ((1 - (1 - module.kinres) * (1 + module.getModValue('kinres') / 10000)) - module.kinres) * 10000);
-    }
-    if (module.getModValue('thermres')) {
-      module.setModValue('thermres', ((1 - (1 - module.thermres) * (1 + module.getModValue('thermres') / 10000)) - module.thermres) * 10000);
-    }
-  }
+  // if (ModuleUtils.isShieldGenerator(module.grp)) {
+  //   if (module.getModValue('explres')) {
+  //     module.setModValue('explres', ((1 - (1 - module.explres) * (1 + module.getModValue('explres') / 10000)) - module.explres) * 10000);
+  //   }
+  //   if (module.getModValue('kinres')) {
+  //     module.setModValue('kinres', ((1 - (1 - module.kinres) * (1 + module.getModValue('kinres') / 10000)) - module.kinres) * 10000);
+  //   }
+  //   if (module.getModValue('thermres')) {
+  //     module.setModValue('thermres', ((1 - (1 - module.thermres) * (1 + module.getModValue('thermres') / 10000)) - module.thermres) * 10000);
+  //   }
+  // }
 
   // Hull reinforcement package resistance is actually a damage modifier, so needs to be inverted.
   // In addition, the modification is based off the inherent resistance of the module
@@ -405,7 +419,7 @@ function _addModifications(module, modifiers, blueprint, grade) {
       module.setModValue('thermres', ((1 - (1 - module.thermres) * (1 + module.getModValue('thermres') / 10000)) - module.thermres) * 10000);
     }
   }
-  
+
   // Bulkhead resistance is actually a damage modifier, so needs to be inverted.
   // In addition, the modification is based off the inherent resistance of the module
   if (module.grp == 'bh') {
@@ -422,11 +436,11 @@ function _addModifications(module, modifiers, blueprint, grade) {
 
   // Bulkhead boost is based off the inherent boost of the module
   if (module.grp == 'bh') {
-    const alteredBoost = (1 + module.hullboost) * (1 + module.getModValue('hullboost') / 10000) - 1;
-    module.setModValue('hullboost', (alteredBoost / module.hullboost - 1) * 10000);
+      const alteredBoost = (1 + module.hullboost) * (1 + module.getModValue('hullboost') / 10000) - 1;
+      module.setModValue('hullboost', (alteredBoost / module.hullboost - 1) * 1000);
   }
 
-  // Jitter is an absolute number, so we need to divide it by 100
+	// Jitter is an absolute number, so we need to divide it by 100
   if (module.getModValue('jitter')) {
     module.setModValue('jitter', module.getModValue('jitter') / 100);
   }
