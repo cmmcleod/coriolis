@@ -123,7 +123,6 @@ export function shipModelFromJson(json) {
  */
 export function shipFromJson(json) {
   // Start off building a basic ship
-  console.log(json);
   const shipModel = shipModelFromJson(json);
   if (!shipModel) {
     throw 'No such ship found: "' + json.name + '"';
@@ -303,8 +302,6 @@ export function shipFromJson(json) {
  * @param {Object} specialModifications special modification
  */
 function _addModifications(module, modifiers, blueprint, grade, specialModifications) {
-  console.log(module);
-  console.log(modifiers);
   if (!modifiers) return;
 
   let special;
@@ -339,10 +336,8 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
      } else if (i === 'OutfittingFieldType_DefenceModifierHealthMultiplier' && blueprint === 'Armour_Thermic') {
         //TODO: fix the hull strength. not sure whats wrong with it.
         value = (modifiers[i].value - module.hullboost) / module.hullboost;
-        console.log(value);
 	  } else if (i === 'OutfittingFieldType_DefenceModifierHealthMultiplier') {
         value = modifiers[i].value / module.hullboost;
-        console.log(value);
       } else {
         value = modifiers[i].value - 1;
       }
