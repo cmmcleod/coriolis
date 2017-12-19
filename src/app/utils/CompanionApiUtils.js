@@ -303,7 +303,8 @@ export function shipFromJson(json) {
  */
 function _addModifications(module, modifiers, blueprint, grade, specialModifications) {
   if (!modifiers) return;
-
+  console.log(module);
+  console.log(modifiers);
   let special;
 	if (specialModifications) {
 		special = Modifications.specials[Object.keys(specialModifications)[0]]
@@ -333,10 +334,9 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
       let value;
       if (i === 'OutfittingFieldType_DefenceModifierShieldMultiplier') {
         value = modifiers[i].value - 1;
-     } else if (i === 'OutfittingFieldType_DefenceModifierHealthMultiplier' && blueprint === 'Armour_Thermic') {
-        //TODO: fix the hull strength. not sure whats wrong with it.
+     } else if (i === 'OutfittingFieldType_DefenceModifierHealthMultiplier' && blueprint.startsWith('Armour_')) {
         value = (modifiers[i].value - module.hullboost) / module.hullboost;
-	  } else if (i === 'OutfittingFieldType_DefenceModifierHealthMultiplier') {
+      } else if (i === 'OutfittingFieldType_DefenceModifierHealthMultiplier') {
         value = modifiers[i].value / module.hullboost;
       } else if (i === 'OutfittingFieldType_RateOfFire') {
         value = (1 / Math.abs(modifiers[i].value));
