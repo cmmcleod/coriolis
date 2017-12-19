@@ -141,6 +141,8 @@ export function shipFromJson(json) {
     ship.cargoHatch.enabled = false;
     ship.cargoHatch.priority = 4;
   }
+
+  let rootModule;
   
   // Add the bulkheads
   const armourJson = json.modules.Armour.module;
@@ -158,13 +160,15 @@ export function shipFromJson(json) {
     throw 'Unknown bulkheads "' + armourJson.name + '"';
   }
   ship.bulkheads.enabled = true;
-  if (json.modules.Armour.WorkInProgress_modifications) _addModifications(ship.bulkheads.m, json.modules.Armour.WorkInProgress_modifications, json.modules.Armour.engineer.recipeName, json.modules.Armour.engineer.recipeLevel);
+  rootModule = json.modules.Armour;
+  if (rootModule.WorkInProgress_modifications) _addModifications(ship.bulkheads.m, rootModule.WorkInProgress_modifications, rootModule.engineer.recipeName, rootModule.engineer.recipeLevel);
 
   // Add the standard modules
   // Power plant
   const powerplantJson = json.modules.PowerPlant.module;
   const powerplant = _moduleFromEdId(powerplantJson.id);
-  if (json.modules.PowerPlant.WorkInProgress_modifications) _addModifications(powerplant, json.modules.PowerPlant.WorkInProgress_modifications, json.modules.PowerPlant.engineer.recipeName, json.modules.PowerPlant.engineer.recipeLevel);
+  rootModule = json.modules.PowerPlant;
+  if (rootModule.WorkInProgress_modifications) _addModifications(powerplant, rootModule.WorkInProgress_modifications, rootModule.engineer.recipeName, rootModule.engineer.recipeLevel);
   ship.use(ship.standard[0], powerplant, true);
   ship.standard[0].enabled = powerplantJson.on === true;
   ship.standard[0].priority = powerplantJson.priority;
@@ -172,7 +176,8 @@ export function shipFromJson(json) {
   // Thrusters
   const thrustersJson = json.modules.MainEngines.module;
   const thrusters = _moduleFromEdId(thrustersJson.id);
-  if (json.modules.MainEngines.WorkInProgress_modifications) _addModifications(thrusters, json.modules.MainEngines.WorkInProgress_modifications, json.modules.MainEngines.engineer.recipeName, json.modules.MainEngines.engineer.recipeLevel);
+  rootModule = json.modules.MainEngines;
+  if (rootModule.WorkInProgress_modifications) _addModifications(thrusters, rootModule.WorkInProgress_modifications, rootModule.engineer.recipeName, rootModule.engineer.recipeLevel);
   ship.use(ship.standard[1], thrusters, true);
   ship.standard[1].enabled = thrustersJson.on === true;
   ship.standard[1].priority = thrustersJson.priority;
@@ -180,7 +185,8 @@ export function shipFromJson(json) {
   // FSD
   const frameshiftdriveJson = json.modules.FrameShiftDrive.module;
   const frameshiftdrive = _moduleFromEdId(frameshiftdriveJson.id);
-  if (json.modules.FrameShiftDrive.WorkInProgress_modifications) _addModifications(frameshiftdrive, json.modules.FrameShiftDrive.WorkInProgress_modifications, json.modules.FrameShiftDrive.engineer.recipeName, json.modules.FrameShiftDrive.engineer.recipeLevel);
+  rootModule = json.modules.FrameShiftDrive;
+  if (rootModule.WorkInProgress_modifications) _addModifications(frameshiftdrive, rootModule.WorkInProgress_modifications, rootModule.engineer.recipeName, rootModule.engineer.recipeLevel);
   ship.use(ship.standard[2], frameshiftdrive, true);
   ship.standard[2].enabled = frameshiftdriveJson.on === true;
   ship.standard[2].priority = frameshiftdriveJson.priority;
@@ -188,7 +194,8 @@ export function shipFromJson(json) {
   // Life support
   const lifesupportJson = json.modules.LifeSupport.module;
   const lifesupport = _moduleFromEdId(lifesupportJson.id);
-  if (json.modules.LifeSupport.WorkInProgress_modifications) _addModifications(lifesupport, json.modules.LifeSupport.WorkInProgress_modifications, json.modules.LifeSupport.engineer.recipeName, json.modules.LifeSupport.engineer.recipeLevel);
+  rootModule = json.modules.LifeSupport;
+  if (rootModule.WorkInProgress_modifications) _addModifications(lifesupport, rootModule.WorkInProgress_modifications, rootModule.engineer.recipeName, rootModule.engineer.recipeLevel);
   ship.use(ship.standard[3], lifesupport, true);
   ship.standard[3].enabled = lifesupportJson.on === true;
   ship.standard[3].priority = lifesupportJson.priority;
@@ -196,7 +203,8 @@ export function shipFromJson(json) {
   // Power distributor
   const powerdistributorJson = json.modules.PowerDistributor.module;
   const powerdistributor = _moduleFromEdId(powerdistributorJson.id);
-  if (json.modules.PowerDistributor.WorkInProgress_modifications) _addModifications(powerdistributor, json.modules.PowerDistributor.WorkInProgress_modifications, json.modules.PowerDistributor.engineer.recipeName, json.modules.PowerDistributor.engineer.recipeLevel);
+  rootModule = json.modules.PowerDistributor;
+  if (rootModule.WorkInProgress_modifications) _addModifications(powerdistributor, rootModule.WorkInProgress_modifications, rootModule.engineer.recipeName, rootModule.engineer.recipeLevel);
   ship.use(ship.standard[4], powerdistributor, true);
   ship.standard[4].enabled = powerdistributorJson.on === true;
   ship.standard[4].priority = powerdistributorJson.priority;
@@ -204,7 +212,8 @@ export function shipFromJson(json) {
   // Sensors
   const sensorsJson = json.modules.Radar.module;
   const sensors = _moduleFromEdId(sensorsJson.id);
-  if (json.modules.Radar.WorkInProgress_modifications) _addModifications(sensors, json.modules.Radar.WorkInProgress_modifications, json.modules.Radar.engineer.recipeName, json.modules.Radar.engineer.recipeLevel);
+  rootModule = json.modules.Radar;
+  if (rootModule.WorkInProgress_modifications) _addModifications(sensors, rootModule.WorkInProgress_modifications, rootModule.engineer.recipeName, rootModule.engineer.recipeLevel);
   ship.use(ship.standard[5], sensors, true);
   ship.standard[5].enabled = sensorsJson.on === true;
   ship.standard[5].priority = sensorsJson.priority;
@@ -240,7 +249,8 @@ export function shipFromJson(json) {
     } else {
       const hardpointJson = hardpointSlot.module;
       const hardpoint = _moduleFromEdId(hardpointJson.id);
-      if (hardpointSlot.WorkInProgress_modifications) _addModifications(hardpoint, hardpointSlot.WorkInProgress_modifications, hardpointSlot.engineer.recipeName, hardpointSlot.engineer.recipeLevel, hardpointSlot.specialModifications);
+      rootModule = hardpointSlot;
+      if (rootModule.WorkInProgress_modifications) _addModifications(hardpoint, rootModule.WorkInProgress_modifications, rootModule.engineer.recipeName, rootModule.engineer.recipeLevel, rootModule.specialModifications);
       ship.use(ship.hardpoints[hardpointArrayNum], hardpoint, true);
       ship.hardpoints[hardpointArrayNum].enabled = hardpointJson.on === true;
       ship.hardpoints[hardpointArrayNum].priority = hardpointJson.priority;
@@ -282,7 +292,8 @@ export function shipFromJson(json) {
     } else {
       const internalJson = internalSlot.module;
       const internal = _moduleFromEdId(internalJson.id);
-      if (internalSlot.WorkInProgress_modifications) _addModifications(internal, internalSlot.WorkInProgress_modifications, internalSlot.engineer.recipeName, internalSlot.engineer.recipeLevel);
+      rootModule = internalSlot;
+      if (rootModule.WorkInProgress_modifications) _addModifications(internal, rootModule.WorkInProgress_modifications, rootModule.engineer.recipeName, rootModule.engineer.recipeLevel);
       ship.use(ship.internal[i], internal, true);
       ship.internal[i].enabled = internalJson.on === true;
       ship.internal[i].priority = internalJson.priority;
