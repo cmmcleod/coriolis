@@ -338,6 +338,8 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
         value = (modifiers[i].value - module.hullboost) / module.hullboost;
 	  } else if (i === 'OutfittingFieldType_DefenceModifierHealthMultiplier') {
         value = modifiers[i].value / module.hullboost;
+      } else if (i === 'OutfittingFieldType_RateOfFire') {
+        value = (1 / Math.abs(modifiers[i].value));
       } else {
         value = modifiers[i].value - 1;
       }
@@ -442,11 +444,6 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
   // Jitter is an absolute number, so we need to divide it by 100
   if (module.getModValue('jitter')) {
     module.setModValue('jitter', module.getModValue('jitter') / 100);
-  }
-
-  // FD uses interval between bursts internally, so we need to translate this to a real rate of fire
-  if (module.getModValue('rof')) {
-    module.setModValue('rof', ((1 / (1 + module.getModValue('rof') / 10000)) - 1) * 10000);
   }
 
   // Clip size is rounded up so that the result is a whole number
