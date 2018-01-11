@@ -1,3 +1,7 @@
+#2.5.0
+  * willyb321 and myself have conquered engineering. Mainly him though...  
+  * Use coriolis-data 2.5.0
+
 #2.4.2  
   Lots of kind people have helped out for this release! Check out the PR history!  
   * Uses coriolis-data update:
