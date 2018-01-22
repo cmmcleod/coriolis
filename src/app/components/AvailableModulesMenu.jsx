@@ -39,6 +39,7 @@ const GRPCAT = {
   'mc': 'projectiles',
   'axmc': 'projectiles',
   'fc': 'projectiles',
+  'rfl':  'projectiles',
   'pa': 'projectiles',
   'rg': 'projectiles',
   'mr': 'ordnance',
@@ -73,7 +74,7 @@ const CATEGORIES = {
   'dc': ['dc'],
   // Hardpoints
   'lasers': ['pl', 'ul', 'bl', 'ml'],
-  'projectiles': ['mc', 'axmc', 'c', 'fc', 'pa', 'rg'],
+  'projectiles': ['mc', 'axmc', 'c', 'fc', 'rfl', 'pa', 'rg'],
   'ordnance': ['mr', 'axmr', 'tp', 'nl'],
   // Utilities
   'sb': ['sb'],

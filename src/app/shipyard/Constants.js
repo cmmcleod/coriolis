@@ -58,6 +58,7 @@ export const ModuleGroupToName = {
   cm: 'Countermeasure',
   ec: 'Electronic Countermeasure',
   fc: 'Fragment Cannon',
+  rfl: 'Remote Release Flak Launcher',
   hs: 'Heat Sink Launcher',
   ws: 'Frame Shift Wake Scanner',
   kw: 'Kill Warrant Scanner',
