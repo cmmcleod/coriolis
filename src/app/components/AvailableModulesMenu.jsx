@@ -37,13 +37,13 @@ const GRPCAT = {
   'ml': 'lasers',
   'c': 'projectiles',
   'mc': 'projectiles',
-  'axmc': 'projectiles',
+  'axmc': 'experimental',
   'fc': 'projectiles',
-  'rfl':  'projectiles',
+  'rfl':  'experimental',
   'pa': 'projectiles',
   'rg': 'projectiles',
   'mr': 'ordnance',
-  'axmr': 'ordnance',
+  'axmr': 'experimental',
   'tp': 'ordnance',
   'nl': 'ordnance',
   'sc': 'scanners',
@@ -74,13 +74,15 @@ const CATEGORIES = {
   'dc': ['dc'],
   // Hardpoints
   'lasers': ['pl', 'ul', 'bl', 'ml'],
-  'projectiles': ['mc', 'axmc', 'c', 'fc', 'rfl', 'pa', 'rg'],
-  'ordnance': ['mr', 'axmr', 'tp', 'nl'],
+  'projectiles': ['mc', 'c', 'fc', 'pa', 'rg'],
+  'ordnance': ['mr', 'tp', 'nl'],
   // Utilities
   'sb': ['sb'],
   'hs': ['hs'],
-  'defence': ['ch', 'po', 'ec', 'sfn'],
-  'scanners': ['sc', 'ss', 'cs', 'kw', 'ws', 'xs'], // Overloaded with internal scanners
+  'defence': ['ch', 'po', 'ec'],
+  'scanners': ['sc', 'ss', 'cs', 'kw', 'ws'], // Overloaded with internal scanners
+  // Experimental
+  'experimental': ['axmc', 'axmr', 'rfl', 'xs', 'sfn']
 };
 
 /**
