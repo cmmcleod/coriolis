@@ -96,7 +96,7 @@
     "babel-polyfill": "*",
     "browserify-zlib-next": "^1.0.1",
     "classnames": "^2.2.5",
-    "coriolis-data": "../coriolis-data",
+    "coriolis-data": "file:../coriolis-data",
     "d3": "4.8.0",
     "detect-browser": "^1.7.0",
     "fbemitter": "^2.1.1",

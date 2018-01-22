@@ -64,13 +64,17 @@ export const ModuleGroupToName = {
   nl: 'Mine Launcher',
   ml: 'Mining Laser',
   mr: 'Missile Rack',
+  axmr: 'AX Missile Rack',
   pa: 'Plasma Accelerator',
   po: 'Point Defence',
   mc: 'Multi-cannon',
+  axmc: 'AX Multi-cannon',
   pl: 'Pulse Laser',
   rg: 'Rail Gun',
   sb: 'Shield Booster',
-  tp: 'Torpedo Pylon'
+  tp: 'Torpedo Pylon',
+  sfn: 'Shutdown Field Neutraliser',
+  xs: 'Xeno Scanner'
 };
 
 let GrpNameToCodeMap = {};
