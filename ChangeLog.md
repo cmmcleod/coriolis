@@ -1,3 +1,9 @@
+#2.5.1  
+  * Passenger count on main page  
+  * AX Modules  
+  * Engineering fixes  
+  * Use coriolis-data 2.5.1  
+
 #2.5.0
   * willyb321 and myself have conquered engineering. Mainly him though...  
   * Use coriolis-data 2.5.0
