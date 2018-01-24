@@ -37,10 +37,13 @@ const GRPCAT = {
   'ml': 'lasers',
   'c': 'projectiles',
   'mc': 'projectiles',
+  'axmc': 'experimental',
   'fc': 'projectiles',
+  'rfl':  'experimental',
   'pa': 'projectiles',
   'rg': 'projectiles',
   'mr': 'ordnance',
+  'axmr': 'experimental',
   'tp': 'ordnance',
   'nl': 'ordnance',
   'sc': 'scanners',
@@ -49,9 +52,11 @@ const GRPCAT = {
   'cs': 'scanners',
   'kw': 'scanners',
   'ws': 'scanners',
+  'xs': 'scanners',
   'ch': 'defence',
   'po': 'defence',
   'ec': 'defence',
+  'sfn': 'defence'
 };
 // Order here is the order in which items will be shown in the modules menu
 const CATEGORIES = {
@@ -76,6 +81,8 @@ const CATEGORIES = {
   'hs': ['hs'],
   'defence': ['ch', 'po', 'ec'],
   'scanners': ['sc', 'ss', 'cs', 'kw', 'ws'], // Overloaded with internal scanners
+  // Experimental
+  'experimental': ['axmc', 'axmr', 'rfl', 'xs', 'sfn']
 };
 
 /**
