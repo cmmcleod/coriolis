@@ -25,6 +25,25 @@ function countInt(slot) {
   this.int[slot.maxClass - 1]++;  // Subtract 1 since there is no Class 0 Internal compartment
   this.intCount++;
   this.maxCargo += crEligible ? ModuleUtils.findInternal('cr', slot.maxClass, 'E').cargo : 0;
+
+  // if no eligiblity, then assume pce
+  let passSlotType = null;
+  let passSlotRating = null;
+  if (!slot.eligible || slot.eligible.pce) {
+    passSlotType = 'pce';
+    passSlotRating = 'E';
+  } else if (slot.eligible.pci) {
+    passSlotType = 'pci';
+    passSlotRating = 'D';
+  } else if (slot.eligible.pcm) {
+    passSlotType = 'pcm';
+    passSlotRating = 'C';
+  } else if (slot.eligible.pcq) {
+    passSlotType = 'pcq';
+    passSlotRating = 'B';
+  }
+  let passengerBay = passSlotType ? ModuleUtils.findInternal(passSlotType, slot.maxClass, passSlotRating) : null;
+  this.maxPassengers += passengerBay ? passengerBay.passengers : 0;
 }
 
 /**
@@ -39,6 +58,7 @@ function shipSummary(shipId, shipData) {
     hpCount: 0,
     intCount: 0,
     maxCargo: 0,
+    maxPassengers: 0,
     hp: [0, 0, 0, 0, 0], // Utility, Small, Medium, Large, Huge
     int: [0, 0, 0, 0, 0, 0, 0, 0], // Sizes 1 - 8
     standard: shipData.slots.standard,
@@ -139,15 +159,16 @@ export default class ShipyardPage extends Page {
    * @param  {Object} u           Localized unit map
    * @param  {Function} fInt      Localized integer formatter
    * @param  {Function} fRound    Localized round formatter
+   * @param  {Boolean} highlight  Should this row be highlighted
    * @return {React.Component}    Table Row
    */
-  _shipRowElement(s, translate, u, fInt, fRound) {
+  _shipRowElement(s, translate, u, fInt, fRound, highlight) {
     let noTouch = this.context.noTouch;
 
     return <tr
         key={s.id}
         style={{ height: '1.5em' }}
-        className={cn({ highlighted: noTouch && this.state.shipId === s.id })}
+        className={cn({ highlighted: noTouch && this.state.shipId === s.id, alt: highlight })}
         onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
       >
       <td className='ri'>{s.manufacturer}</td>
@@ -166,6 +187,7 @@ export default class ShipyardPage extends Page {
       <td className='ri'>{fInt(s.topBoost)}</td>
       <td className='ri'>{fRound(s.maxJumpRange)}</td>
       <td className='ri'>{fInt(s.maxCargo)}</td>
+      <td className='ri'>{fInt(s.maxPassengers)}</td>
       <td className='cn'>{s.standard[0]}</td>
       <td className='cn'>{s.standard[1]}</td>
       <td className='cn'>{s.standard[2]}</td>
@@ -246,13 +268,26 @@ export default class ShipyardPage extends Page {
     let shipRows = new Array(shipSummaries.length);
     let detailRows = new Array(shipSummaries.length);
 
+    let lastShipSortValue = null;
+    let backgroundHighlight = false;
+
     for (let s of shipSummaries) {
-      detailRows[i] = this._shipRowElement(s, translate, units, fInt, formats.f1);
+      let shipSortValue = s[shipPredicate];
+      if( shipPredicateIndex != undefined ) {
+        shipSortValue = shipSortValue[shipPredicateIndex];
+      }
+
+      if( shipSortValue != lastShipSortValue ) {
+        backgroundHighlight = !backgroundHighlight;
+        lastShipSortValue = shipSortValue;
+      }
+
+      detailRows[i] = this._shipRowElement(s, translate, units, fInt, formats.f1, backgroundHighlight);
       shipRows[i] = (
         <tr
           key={i}
           style={{ height: '1.5em' }}
-          className={cn({ highlighted: noTouch && this.state.shipId === s.id })}
+          className={cn({ highlighted: noTouch && this.state.shipId === s.id, alt: backgroundHighlight })}
           onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
         >
           <td className='le'><Link href={'/outfit/' + s.id}>{s.name}</Link></td>
@@ -293,7 +328,7 @@ export default class ShipyardPage extends Page {
                 <th rowSpan={3} className='sortable' onMouseEnter={termtip.bind(null, 'hardness')} onMouseLeave={hide} onClick={sortShips('hardness')}>{translate('hrd')}</th>
                 <th>&nbsp;</th>
                 <th colSpan={4}>{translate('base')}</th>
-                <th colSpan={4}>{translate('max')}</th>
+                <th colSpan={5}>{translate('max')}</th>
                 <th className='lft' colSpan={6}></th>
                 <th className='lft' colSpan={5}></th>
                 <th className='lft' colSpan={8}></th>
@@ -310,22 +345,24 @@ export default class ShipyardPage extends Page {
                 <th className='sortable' onClick={sortShips('topBoost')}>{translate('boost')}</th>
                 <th className='sortable' onClick={sortShips('maxJumpRange')}>{translate('jump')}</th>
                 <th className='sortable' onClick={sortShips('maxCargo')}>{translate('cargo')}</th>
+                <th className='sortable' onClick={sortShips('maxPassengers')}>{translate('passengers')}</th>
 
                 <th className='lft' colSpan={6}>{translate('core module classes')}</th>
                 <th colSpan={5} className='sortable lft' onClick={sortShips('hpCount')}>{translate('hardpoints')}</th>
                 <th colSpan={8} className='sortable lft' onClick={sortShips('intCount')}>{translate('internal compartments')}</th>
               </tr>
               <tr>
-	        <th className='sortable lft' onClick={sortShips('retailCost')}>{units.CR}</th>
-	        <th className='sortable lft' onClick={sortShips('hullMass')}>{units.T}</th>
-	        <th className='sortable lft' onClick={sortShips('speed')}>{units['m/s']}</th>
-	        <th className='sortable'  onClick={sortShips('boost')}>{units['m/s']}</th>
-	        <th>&nbsp;</th>
-	        <th className='sortable' onClick={sortShips('baseShieldStrength')}>{units.MJ}</th>
-	        <th className='sortable lft' onClick={sortShips('topSpeed')}>{units['m/s']}</th>
-	        <th className='sortable' onClick={sortShips('topBoost')}>{units['m/s']}</th>
-	        <th className='sortable' onClick={sortShips('maxJumpRange')}>{units.LY}</th>
-	        <th className='sortable' onClick={sortShips('maxCargo')}>{units.T}</th>
+                <th className='sortable lft' onClick={sortShips('retailCost')}>{units.CR}</th>
+                <th className='sortable lft' onClick={sortShips('hullMass')}>{units.T}</th>
+                <th className='sortable lft' onClick={sortShips('speed')}>{units['m/s']}</th>
+                <th className='sortable'  onClick={sortShips('boost')}>{units['m/s']}</th>
+                <th>&nbsp;</th>
+                <th className='sortable' onClick={sortShips('baseShieldStrength')}>{units.MJ}</th>
+                <th className='sortable lft' onClick={sortShips('topSpeed')}>{units['m/s']}</th>
+                <th className='sortable' onClick={sortShips('topBoost')}>{units['m/s']}</th>
+                <th className='sortable' onClick={sortShips('maxJumpRange')}>{units.LY}</th>
+                <th className='sortable' onClick={sortShips('maxCargo')}>{units.T}</th>
+                <th>&nbsp;</th>
                 <th className='sortable lft' onMouseEnter={termtip.bind(null, 'power plant')} onMouseLeave={hide} onClick={sortShips('standard', 0)}>{'pp'}</th>
                 <th className='sortable' onMouseEnter={termtip.bind(null, 'thrusters')} onMouseLeave={hide} onClick={sortShips('standard', 1)}>{'th'}</th>
                 <th className='sortable' onMouseEnter={termtip.bind(null, 'frame shift drive')} onMouseLeave={hide} onClick={sortShips('standard', 2)}>{'fsd'}</th>

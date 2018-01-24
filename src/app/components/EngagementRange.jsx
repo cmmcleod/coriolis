@@ -25,7 +25,7 @@ export default class EngagementRange extends TranslatedComponent {
 
     const { ship } = props;
 
-    const maxRange = this._calcMaxRange(ship);
+    const maxRange = Math.round(this._calcMaxRange(ship));
 
     this.state = {
       maxRange

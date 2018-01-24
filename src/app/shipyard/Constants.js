@@ -58,19 +58,24 @@ export const ModuleGroupToName = {
   cm: 'Countermeasure',
   ec: 'Electronic Countermeasure',
   fc: 'Fragment Cannon',
+  rfl: 'Remote Release Flak Launcher',
   hs: 'Heat Sink Launcher',
   ws: 'Frame Shift Wake Scanner',
   kw: 'Kill Warrant Scanner',
   nl: 'Mine Launcher',
   ml: 'Mining Laser',
   mr: 'Missile Rack',
+  axmr: 'AX Missile Rack',
   pa: 'Plasma Accelerator',
   po: 'Point Defence',
   mc: 'Multi-cannon',
+  axmc: 'AX Multi-cannon',
   pl: 'Pulse Laser',
   rg: 'Rail Gun',
   sb: 'Shield Booster',
-  tp: 'Torpedo Pylon'
+  tp: 'Torpedo Pylon',
+  sfn: 'Shutdown Field Neutraliser',
+  xs: 'Xeno Scanner'
 };
 
 let GrpNameToCodeMap = {};
