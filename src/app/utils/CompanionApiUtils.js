@@ -323,7 +323,7 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
   }
   for (const i in modifiers) {
     // Some special modifications
-    if (i === 'OutfittingFieldType_AmmoClipSize' || modifiers[i].name === 'mod_weapon_clip_size_override') {
+    if (modifiers[i].name === 'mod_weapon_clip_size_override') {
       // This is a numeric addition to the clip size, but we need to work it out in terms of being a percentage so
       // that it works the same as other modifications
       const origClip = module.clip || 1;
