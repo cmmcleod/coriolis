@@ -43,7 +43,7 @@ const SHIP_FD_NAME_TO_CORIOLIS_NAME = {
 };
 
 // Mapping from hardpoint class to name in companion API
-const HARDPOINT_NUM_TO_CLASS = {
+export const HARDPOINT_NUM_TO_CLASS = {
   0: 'Tiny',
   1: 'Small',
   2: 'Medium',
@@ -115,7 +115,7 @@ function _shipModelFromEDName(edName) {
  * @return {string} the Coriolis model of the ship
  */
 export function shipModelFromJson(json) {
-  return _shipModelFromEDName(json.name);
+  return _shipModelFromEDName(json.name || json.Ship);
 }
 
 /**
@@ -145,7 +145,7 @@ export function shipFromJson(json) {
   }
 
   let rootModule;
-  
+
   // Add the bulkheads
   const armourJson = json.modules.Armour.module;
   if (armourJson.name.endsWith('_Armour_Grade1')) {
