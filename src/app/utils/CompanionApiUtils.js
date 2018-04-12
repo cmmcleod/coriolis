@@ -36,13 +36,14 @@ const SHIP_FD_NAME_TO_CORIOLIS_NAME = {
   'Type7': 'type_7_transport',
   'Type9': 'type_9_heavy',
   'Type9_Military': 'type_10_defender',
+  'TypeX': 'alliance_chieftain',
   'Viper': 'viper',
   'Viper_MkIV': 'viper_mk_iv',
   'Vulture': 'vulture'
 };
 
 // Mapping from hardpoint class to name in companion API
-const HARDPOINT_NUM_TO_CLASS = {
+export const HARDPOINT_NUM_TO_CLASS = {
   0: 'Tiny',
   1: 'Small',
   2: 'Medium',
@@ -114,7 +115,7 @@ function _shipModelFromEDName(edName) {
  * @return {string} the Coriolis model of the ship
  */
 export function shipModelFromJson(json) {
-  return _shipModelFromEDName(json.name);
+  return _shipModelFromEDName(json.name || json.Ship);
 }
 
 /**
@@ -144,7 +145,7 @@ export function shipFromJson(json) {
   }
 
   let rootModule;
-  
+
   // Add the bulkheads
   const armourJson = json.modules.Armour.module;
   if (armourJson.name.endsWith('_Armour_Grade1')) {
@@ -315,8 +316,6 @@ export function shipFromJson(json) {
  */
 function _addModifications(module, modifiers, blueprint, grade, specialModifications) {
   if (!modifiers) return;
-  console.log(module);
-  console.log(modifiers);
   let special;
   if (specialModifications) {
     special = Modifications.specials[Object.keys(specialModifications)[0]]
