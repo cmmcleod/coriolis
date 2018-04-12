@@ -96,7 +96,7 @@ export default class StandardSlot extends TranslatedComponent {
     return (
       <div className={cn('slot', { selected: this.props.selected })} onClick={this.props.onOpen} onContextMenu={stopCtxPropagation}>
         <div className={cn('details-container', { warning: warning && warning(slot.m), disabled: m.grp !== 'bh' && !slot.enabled })}>
-          <div className={'sz'}>{slot.maxClass}</div>
+          <div className={'sz'}>{m.grp == 'bh' ? m.name.charAt(0) : slot.maxClass}</div>
           <div>
             <div className={'l'}>{classRating} {translate(m.name || m.grp)}{m.mods && Object.keys(m.mods).length > 0 ? <span className='r' onMouseOver={termtip.bind(null, modTT)} onMouseOut={tooltip.bind(null, null)}><Modified /></span> : null }</div>
             <div className={'r'}>{formats.round(mass)}{units.T}</div>
