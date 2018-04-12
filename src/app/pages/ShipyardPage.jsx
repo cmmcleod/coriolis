@@ -42,7 +42,7 @@ function countInt(slot) {
     passSlotType = 'pcq';
     passSlotRating = 'B';
   }
-  let passengerBay = passSlotType ? ModuleUtils.findInternal(passSlotType, slot.maxClass, passSlotRating) : null;
+  let passengerBay = passSlotType ? ModuleUtils.findMaxInternal(passSlotType, slot.maxClass, passSlotRating) : null;
   this.maxPassengers += passengerBay ? passengerBay.passengers : 0;
 }
 
