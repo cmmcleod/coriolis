@@ -31,23 +31,23 @@ export function multiPurpose(ship, shielded, bulkheadIndex) {
  * @param  {Object} standardOpts  [Optional] Standard module optional overrides
  */
 export function trader(ship, shielded, standardOpts) {
-  let usedSlots = [],
-      sg = ship.getAvailableModules().lightestShieldGenerator(ship.hullMass);
- 
-  // Shield generator if required
+  shielded = true;
+  let usedSlots = [];
+
+  ship.useStandard('A')
+    .use(ship.standard[3], ModuleUtils.standard(3, ship.standard[3].maxClass + 'D'))  // D Life Support
+    .use(ship.standard[1], ModuleUtils.standard(1, ship.standard[1].maxClass + 'D'))  // D Life Support
+    .use(ship.standard[5], ModuleUtils.standard(5, ship.standard[5].maxClass + 'D'))  // D Sensors
+
   if (shielded) {
-    const shieldOrder = [1, 2, 3, 4, 5, 6, 7, 8];
-    const shieldInternals = ship.internal.filter(a => usedSlots.indexOf(a) == -1)
-                                         .filter(a => (!a.eligible) || a.eligible.sg)
-                                         .filter(a => a.maxClass >= sg.class)
-                                         .sort((a,b) => shieldOrder.indexOf(a.maxClass) - shieldOrder.indexOf(b.maxClass));
-    for (let i = 0; i < shieldInternals.length; i++) {
-      if (canMount(ship, shieldInternals[i], 'sg')) {
-        ship.use(shieldInternals[i], sg);
-        usedSlots.push(shieldInternals[i]);
-        break;
+    ship.internal.some(function(slot) {
+      if (canMount(ship, slot, 'sg')) { // Assuming largest slot can hold an eligible shield
+        ship.use(slot, ModuleUtils.findInternal('sg', slot.maxClass, 'A'));
+        ship.setSlotEnabled(slot, true);
+        usedSlots.push(slot);
+        return true;
       }
-    }
+    });
   }
 
   // Fill the empty internals with cargo racks
@@ -63,7 +63,7 @@ export function trader(ship, shielded, standardOpts) {
     ship.use(s, null);
   }
 
-  ship.useLightestStandard(standardOpts);
+  // ship.useLightestStandard(standardOpts);
 }
 
 /**
@@ -200,6 +200,7 @@ export function explorer(ship, planetary) {
  * @param  {Boolean} shielded  True if shield generator should be included
  */
 export function miner(ship, shielded) {
+  shielded = true;
   let standardOpts = { ppRating: 'A' },
       miningLaserCount = 2,
       usedSlots = [],
