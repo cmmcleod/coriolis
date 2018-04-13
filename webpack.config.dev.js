@@ -18,7 +18,7 @@ CopyDirPlugin.prototype.apply = function(compiler) {
 };
 
 module.exports = {
-  devtool: 'eval',
+  devtool: 'source-map',
   devServer: {
     headers: { "Access-Control-Allow-Origin": "*" }
   },
