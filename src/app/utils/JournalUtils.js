@@ -2,7 +2,9 @@ import Ship from '../shipyard/Ship'
 import { HARDPOINT_NUM_TO_CLASS, shipModelFromJson } from './CompanionApiUtils'
 import { Ships } from 'coriolis-data/dist'
 import Module from '../shipyard/Module'
-import { Modules } from '../../../../coriolis-data/dist'
+import { Modules } from 'coriolis-data/dist'
+import { Modifications } from 'coriolis-data/dist'
+import { getBlueprint } from './BlueprintFunctions'
 
 /**
  * Obtain a module given its FD Name
@@ -97,6 +99,7 @@ export function shipFromLoadoutJSON(json) {
         ship.use(ship.standard[0], powerplant, true);
         ship.standard[0].enabled = module.On;
         ship.standard[0].priority = module.Priority;
+        _addModifications(powerplant, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level);
         break;
       case 'MainEngines':
         const thrusters = _moduleFromFdName(module.Item);
@@ -218,4 +221,79 @@ export function shipFromLoadoutJSON(json) {
 
   // Now update the ship's codes before returning it
   return ship.updatePowerPrioritesString().updatePowerEnabledString().updateModificationsString();
+}
+
+/**
+ * Add the modifications for a module
+ * @param {Module} module the module
+ * @param {Object} modifiers the modifiers
+ * @param {Object} blueprint the blueprint of the modification
+ * @param {Object} grade the grade of the modification
+ * @param {Object} specialModifications special modification
+ */
+function _addModifications(module, modifiers, blueprint, grade, specialModifications) {
+  if (!modifiers) return;
+  console.log(modifiers);
+  let special;
+  if (specialModifications) {
+    special = Modifications.specials[Object.keys(specialModifications)[0]]
+  }
+  for (const i in modifiers) {
+    // Some special modifications
+    if (modifiers[i].name === 'mod_weapon_clip_size_override') {
+      // This is a numeric addition to the clip size, but we need to work it out in terms of being a percentage so
+      // that it works the same as other modifications
+      const origClip = module.clip || 1;
+      module.setModValue('clip', ((modifiers[i].value  - origClip) / origClip) * 10000);
+    } else if (modifiers[i].name === 'mod_weapon_burst_size') {
+      // This is an absolute number that acts as an override
+      module.setModValue('burst', modifiers[i].value * 100);
+    } else if (modifiers[i].name === 'mod_weapon_burst_rof') {
+      // This is an absolute number that acts as an override
+      module.setModValue('burstrof', modifiers[i].value * 100);
+    } else if (modifiers[i].name === 'mod_weapon_falloffrange_from_range') {
+      // Obtain the falloff value directly from the range
+      module.setModValue('fallofffromrange', 1);
+    } else if (modifiers[i].name && modifiers[i].name.startsWith('special_')) {
+      // We don't add special effects directly, but keep a note of them so they can be added when fetching values
+      special = Modifications.specials[modifiers[i].name];
+    } else {
+      // Look up the modifiers to find what we need to do
+      const findMod = val => {
+        return Object.keys(Modifications.modifierActions).find(elem => {
+          return elem.toString().toLowerCase().search(val.toString().toLowerCase().replace(/(OutfittingFieldType_)/igm, '')) >= 0
+        })
+      };
+      console.log(i + ': ' + findMod(modifiers[i].Label))
+      const modifierActions = Modifications.modifierActions[findMod(modifiers[i].Label)];
+      console.log(modifierActions);
+      //TODO: Figure out how to scale this value.
+      let value = modifiers[i].Value;
+      console.log(`${i}: ${value}`)
+      // Carry out the required changes
+      for (const action in modifierActions) {
+        if (isNaN(modifierActions[action])) {
+          module.setModValue(action, modifierActions[action]);
+        } else {
+          const actionValue = modifierActions[action] * value;
+          let mod = module.getModValue(action) / 10000;
+          if (!mod) {
+            mod = 0;
+          }
+          module.setModValue(action, ((1 + mod) * (1 + actionValue) - 1) * 10000);
+        }
+      }
+    }
+  }
+
+  // Add the blueprint definition, grade and special
+  if (blueprint) {
+    module.blueprint = getBlueprint(blueprint, module);
+    if (grade) {
+      module.blueprint.grade = Number(grade);
+    }
+    if (special) {
+      module.blueprint.special = special;
+    }
+  }
 }
