@@ -23,7 +23,6 @@ module.exports = {
     app: ['babel-polyfill', path.resolve(__dirname, 'src/app/index')],
     lib: ['d3', 'react', 'react-dom', 'classnames', 'fbemitter', 'lz-string']
   },
-  devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.less']
   },
