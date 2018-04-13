@@ -53,6 +53,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <th rowSpan={2}>{translate('TTD')}</th>
             {/* <th onMouseEnter={termtip.bind(null, 'heat per second')} onMouseLeave={hide} rowSpan={2}>{translate('HPS')}</th> */}
             <th rowSpan={2}>{translate('cargo')}</th>
+            <th rowSpan={2}>{translate('passengers')}</th>
             <th rowSpan={2}>{translate('fuel')}</th>
             <th colSpan={3}>{translate('mass')}</th>
             <th onMouseEnter={termtip.bind(null, 'hull hardness', { cap: 0 })} onMouseLeave={hide} rowSpan={2}>{translate('hrd')}</th>
@@ -86,6 +87,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_TTD', { cap: 0 })} onMouseLeave={hide}>{timeToDrain === Infinity ? '∞' : time(timeToDrain)}</td>
             {/* <td>{f1(ship.totalHps)}</td> */}
             <td>{round(ship.cargoCapacity)}{u.T}</td>
+            <td>{ship.passengerCapacity}</td>
             <td>{round(ship.fuelCapacity)}{u.T}</td>
             <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_HULL_MASS', { cap: 0 })} onMouseLeave={hide}>{ship.hullMass}{u.T}</td>
             <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_UNLADEN_MASS', { cap: 0 })} onMouseLeave={hide}>{int(ship.unladenMass)}{u.T}</td>
