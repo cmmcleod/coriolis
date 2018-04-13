@@ -196,6 +196,29 @@ export function findInternal(groupName, clss, rating, name) {
 }
 
 /**
+ * Finds an internal module based on Class, Rating, Group and/or name.
+ * At least one of Group name or unique module name must be provided.
+ * will start searching at specified class and proceed lower until a
+ * module is found or 0 is hit
+ * Uses findInternal internally
+ *
+ * @param  {String} groupName [Optional] Full name or abbreviated name for module group
+ * @param  {integer} clss     module Class
+ * @param  {String} rating    module Rating
+ * @param  {String} name      [Optional] Long/unique name for module -e.g. 'Advanced Discover Scanner'
+ * @return {Object}           The module if found, null if not found
+ */
+export function findMaxInternal(groupName, clss, rating, name) {
+  let foundModule = null;
+  let currentClss = clss;
+  while (currentClss > 0 && foundModule == null) {
+    foundModule = findInternal(groupName, currentClss, rating, name);
+    currentClss = currentClss - 1;
+  }
+  return foundModule;
+}
+
+/**
  * Finds an internal Module ID based on Class, Rating, Group and/or name.
  * At least one ofGroup name or unique module name must be provided
  *
