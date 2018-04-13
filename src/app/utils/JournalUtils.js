@@ -2,7 +2,7 @@ import Ship from '../shipyard/Ship'
 import { HARDPOINT_NUM_TO_CLASS, shipModelFromJson } from './CompanionApiUtils'
 import { Ships } from 'coriolis-data/dist'
 import Module from '../shipyard/Module'
-import { Modules } from '../../../../coriolis-data/dist'
+import { Modules } from 'coriolis-data/dist'
 
 /**
  * Obtain a module given its FD Name
