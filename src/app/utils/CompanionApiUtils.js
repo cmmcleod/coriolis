@@ -106,7 +106,7 @@ function _moduleFromEdId(edId) {
  * @return {string} the Coriolis model of the ship
  */
 function _shipModelFromEDName(edName) {
-  return SHIP_FD_NAME_TO_CORIOLIS_NAME[edName];
+  return SHIP_FD_NAME_TO_CORIOLIS_NAME[Object.keys(SHIP_FD_NAME_TO_CORIOLIS_NAME).find(elem => elem.toLowerCase() === edName.toLowerCase())];
 }
 
 /**

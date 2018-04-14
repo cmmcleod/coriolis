@@ -490,7 +490,6 @@ export default class Ship {
       // Value passed is invalid; reset it to 0
       value = 0;
     }
-
     // Handle special cases
     if (name === 'pgen') {
       // Power generation
@@ -771,7 +770,7 @@ export default class Ship {
       // Alter as required due to changes in the (build) code from one version to the next
       this.upgradeInternals(internal, 1 + this.standard.length + this.hardpoints.length, priorities, enabled, modifications, blueprints, version);
     }
-    
+
     return this.buildWith(
       {
         bulkheads: code.charAt(0) * 1,
