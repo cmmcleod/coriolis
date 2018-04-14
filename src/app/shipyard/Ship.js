@@ -569,6 +569,7 @@ export default class Ship {
     // Reset Cumulative stats
     this.fuelCapacity = 0;
     this.cargoCapacity = 0;
+    this.passengerCapacity = 0;
     this.ladenMass = 0;
     this.armour = this.baseArmour;
     this.shield = this.baseShieldStrength;
@@ -1188,6 +1189,7 @@ export default class Ship {
     let unladenMass = this.hullMass;
     let cargoCapacity = 0;
     let fuelCapacity = 0;
+    let passengerCapacity = 0;
 
     unladenMass += this.bulkheads.m.getMass();
 
@@ -1209,6 +1211,8 @@ export default class Ship {
           fuelCapacity += slot.m.fuel;
         } else if (slot.m.grp === 'cr') {
           cargoCapacity += slot.m.cargo;
+        } else if (slot.m.grp.slice(0,2) === 'pc') {
+          passengerCapacity += slot.m.passengers
         }
       }
     }
@@ -1224,6 +1228,7 @@ export default class Ship {
     this.unladenMass = unladenMass;
     this.cargoCapacity = cargoCapacity;
     this.fuelCapacity = fuelCapacity;
+    this.passengerCapacity = passengerCapacity;
     this.ladenMass = unladenMass + fuelCapacity + cargoCapacity;
 
     return this;

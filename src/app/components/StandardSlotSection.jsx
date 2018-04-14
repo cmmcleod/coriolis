@@ -235,12 +235,10 @@ export default class StandardSlotSection extends SlotSection {
       <ul>
         <li className='lc' onClick={this._multiPurpose.bind(this, false, 0)}>{translate('Multi-purpose')}</li>
         <li className='lc' onClick={this._multiPurpose.bind(this, true, 2)}>{translate('Combat')}</li>
-        <li className='lc' onClick={this._optimizeCargo.bind(this, false)}>{translate('Trader')}</li>
-        <li className='lc' onClick={this._optimizeCargo.bind(this, true)}>{translate('Shielded Trader')}</li>
+        <li className='lc' onClick={this._optimizeCargo.bind(this, true)}>{translate('Trader')}</li>
         <li className='lc' onClick={this._optimizeExplorer.bind(this, false)}>{translate('Explorer')}</li>
         <li className={cn('lc', { disabled:  planetaryDisabled })} onClick={!planetaryDisabled && this._optimizeExplorer.bind(this, true)}>{translate('Planetary Explorer')}</li>
-        <li className='lc' onClick={this._optimizeMiner.bind(this, false)}>{translate('Miner')}</li>
-        <li className='lc' onClick={this._optimizeMiner.bind(this, true)}>{translate('Shielded Miner')}</li>
+        <li className='lc' onClick={this._optimizeMiner.bind(this, true)}>{translate('Miner')}</li>
         <li className='lc' onClick={this._optimizeRacer.bind(this)}>{translate('Racer')}</li>
       </ul>
     </div>;
