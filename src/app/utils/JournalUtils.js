@@ -49,7 +49,6 @@ function _moduleFromFdName (fdname) {
       }
     }
   }
-  console.log(fdname)
 
   // Not found
   return null
@@ -71,8 +70,9 @@ export function shipFromLoadoutJSON (json) {
   let ship = new Ship(shipModel, shipTemplate.properties, shipTemplate.slots)
   ship.buildWith(null)
   // Initial Ship building, don't do engineering yet.
+  let opts = [];
+
   for (const module of json.Modules) {
-    if (!module.Engineering) module.Engineering = {};
     switch (module.Slot) {
       // Cargo Hatch.
       case 'CargoHatch':
@@ -95,49 +95,49 @@ export function shipFromLoadoutJSON (json) {
           throw 'Unknown bulkheads "' + module.Item + '"'
         }
         ship.bulkheads.enabled = true
-        _addModifications(ship.bulkheads.m, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+        if (module.Engineering) _addModifications(ship.bulkheads.m, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
         break
       case 'PowerPlant':
         const powerplant = _moduleFromFdName(module.Item)
         ship.use(ship.standard[0], powerplant, true)
         ship.standard[0].enabled = module.On
         ship.standard[0].priority = module.Priority
-        _addModifications(powerplant, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+        if (module.Engineering) _addModifications(powerplant, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
         break
       case 'MainEngines':
         const thrusters = _moduleFromFdName(module.Item)
         ship.use(ship.standard[1], thrusters, true)
         ship.standard[1].enabled = module.On
         ship.standard[1].priority = module.Priority
-        _addModifications(thrusters, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+        if (module.Engineering) _addModifications(thrusters, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
         break
       case 'FrameShiftDrive':
         const frameshiftdrive = _moduleFromFdName(module.Item)
         ship.use(ship.standard[2], frameshiftdrive, true)
         ship.standard[2].enabled = module.On
         ship.standard[2].priority = module.Priority
-       _addModifications(frameshiftdrive, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+        if (module.Engineering)  _addModifications(frameshiftdrive, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
         break
       case 'LifeSupport':
         const lifesupport = _moduleFromFdName(module.Item)
         ship.use(ship.standard[3], lifesupport, true)
         ship.standard[3].enabled = module.On === true
         ship.standard[3].priority = module.Priority
-        _addModifications(lifesupport, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+        if (module.Engineering) _addModifications(lifesupport, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
         break
       case 'PowerDistributor':
         const powerdistributor = _moduleFromFdName(module.Item)
         ship.use(ship.standard[4], powerdistributor, true)
         ship.standard[4].enabled = module.On
         ship.standard[4].priority = module.Priority
-        _addModifications(powerdistributor, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+        if (module.Engineering) _addModifications(powerdistributor, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
         break
       case 'Radar':
         const sensors = _moduleFromFdName(module.Item)
         ship.use(ship.standard[5], sensors, true)
         ship.standard[5].enabled = module.On
         ship.standard[5].priority = module.Priority
-        _addModifications(sensors, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+        if (module.Engineering) _addModifications(sensors, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
         break
       case 'FuelTank':
         const fueltank = _moduleFromFdName(module.Item)
@@ -147,80 +147,86 @@ export function shipFromLoadoutJSON (json) {
         break
       default:
     }
-    if (module.Slot.search(/Hardpoint/) !== -1) {
-      // Add hardpoints
-      let hardpointClassNum = -1
-      let hardpointSlotNum = -1
-      let hardpointArrayNum = 0
-      for (let i in shipTemplate.slots.hardpoints) {
-        if (shipTemplate.slots.hardpoints[i] === hardpointClassNum) {
-          // Another slot of the same class
-          hardpointSlotNum++
-        } else {
-          // The first slot of a new class
-          hardpointClassNum = shipTemplate.slots.hardpoints[i]
-          hardpointSlotNum = 1
-        }
+    for (const module of json.Modules) {
+      if (module.Slot.search(/Hardpoint/) !== -1) {
+        // Add hardpoints
+        let hardpoint;
+        let hardpointClassNum = -1
+        let hardpointSlotNum = -1
+        let hardpointArrayNum = 0
+        for (let i in shipTemplate.slots.hardpoints) {
+          if (shipTemplate.slots.hardpoints[i] === hardpointClassNum) {
+            // Another slot of the same class
+            hardpointSlotNum++
+          } else {
+            // The first slot of a new class
+            hardpointClassNum = shipTemplate.slots.hardpoints[i]
+            hardpointSlotNum = 1
+          }
 
-        // Now that we know what we're looking for, find it
-        const hardpointName = HARDPOINT_NUM_TO_CLASS[hardpointClassNum] + 'Hardpoint' + hardpointSlotNum
-        const hardpointSlot = json.Modules.find(elem => elem.Slot === hardpointName)
-        if (!hardpointSlot) {
-          // This can happen with old imports that don't contain new hardpoints
-        } else if (!hardpointSlot) {
-          // No module
-        } else {
-          const hardpoint = _moduleFromFdName(hardpointSlot.Item)
-          ship.use(ship.hardpoints[hardpointArrayNum], hardpoint, true)
-          ship.hardpoints[hardpointArrayNum].enabled = hardpointSlot.On
-          ship.hardpoints[hardpointArrayNum].priority = hardpointSlot.Priority
-          _addModifications(hardpoint, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+          // Now that we know what we're looking for, find it
+          const hardpointName = HARDPOINT_NUM_TO_CLASS[hardpointClassNum] + 'Hardpoint' + hardpointSlotNum
+          const hardpointSlot = json.Modules.find(elem => elem.Slot === hardpointName)
+          if (!hardpointSlot) {
+            // This can happen with old imports that don't contain new hardpoints
+          } else if (!hardpointSlot) {
+            // No module
+          } else {
+            hardpoint = _moduleFromFdName(hardpointSlot.Item)
+            ship.use(ship.hardpoints[hardpointArrayNum], hardpoint, true)
+            ship.hardpoints[hardpointArrayNum].enabled = hardpointSlot.On
+            ship.hardpoints[hardpointArrayNum].priority = hardpointSlot.Priority
+            opts.push({coriolisMod: hardpoint, json: hardpointSlot});
+          }
+          hardpointArrayNum++
         }
-        hardpointArrayNum++
       }
-    }
-    if (module.Slot.search(/Slot\d/) !== -1) {
-      let internalSlotNum = 1
-      let militarySlotNum = 1
-      for (let i in shipTemplate.slots.internal) {
-        const isMilitary = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].name = 'Military' : false
+      if (module.Slot.search(/Slot\d/) !== -1) {
+        let internalSlotNum = 1
+        let militarySlotNum = 1
+        for (let i in shipTemplate.slots.internal) {
+          const isMilitary = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].name = 'Military' : false
 
-        // The internal slot might be a standard or a military slot.  Military slots have a different naming system
-        let internalSlot = null
-        if (isMilitary) {
-          const internalName = 'Military0' + militarySlotNum
-          internalSlot = json.Modules.find(elem => elem.Slot === internalName)
-          militarySlotNum++
-        } else {
-          // Slot numbers are not contiguous so handle skips.
-          while (internalSlot === null && internalSlotNum < 99) {
-            // Slot sizes have no relationship to the actual size, either, so check all possibilities
-            for (let slotsize = 0; slotsize < 9; slotsize++) {
-              const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '') + internalSlotNum + '_Size' + slotsize
-              if (json.Modules.find(elem => elem.Slot === internalName)) {
-                internalSlot = json.Modules.find(elem => elem.Slot === internalName)
-                break
+          // The internal slot might be a standard or a military slot.  Military slots have a different naming system
+          let internalSlot = null
+          if (isMilitary) {
+            const internalName = 'Military0' + militarySlotNum
+            internalSlot = json.Modules.find(elem => elem.Slot === internalName)
+            militarySlotNum++
+          } else {
+            // Slot numbers are not contiguous so handle skips.
+            while (internalSlot === null && internalSlotNum < 99) {
+              // Slot sizes have no relationship to the actual size, either, so check all possibilities
+              for (let slotsize = 0; slotsize < 9; slotsize++) {
+                const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '') + internalSlotNum + '_Size' + slotsize
+                if (json.Modules.find(elem => elem.Slot === internalName)) {
+                  internalSlot = json.Modules.find(elem => elem.Slot === internalName);
+                  break
+                }
               }
+              internalSlotNum++
             }
-            internalSlotNum++
+          }
+
+          if (!internalSlot) {
+            // This can happen with old imports that don't contain new slots
+          } else if (!internalSlot) {
+            // No module
+          } else {
+            const internalJson = internalSlot
+            const internal = _moduleFromFdName(internalJson.Item)
+            ship.use(ship.internal[i], internal, true)
+            ship.internal[i].enabled = internalJson.On === true
+            ship.internal[i].priority = internalJson.Priority
+            opts.push({coriolisMod: internal, json: internalSlot});
           }
         }
-
-        if (!internalSlot) {
-          // This can happen with old imports that don't contain new slots
-        } else if (!internalSlot) {
-          // No module
-        } else {
-          const internalJson = internalSlot
-          const internal = _moduleFromFdName(internalJson.Item)
-          ship.use(ship.internal[i], internal, true)
-          ship.internal[i].enabled = internalJson.On === true
-          ship.internal[i].priority = internalJson.Priority
-          _addModifications(internal, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
-        }
       }
     }
+  }
 
+  for (const i of opts) {
+    if (i.json.Engineering) _addModifications(i.coriolisMod, i.json.Engineering.Modifiers, i.json.Engineering.BlueprintName, i.json.Engineering.Level, i.json.Engineering.ExperimentalEffect)
   }
   // We don't have any information on it so guess it's priority 5 and disabled
   if (!ship.cargoHatch) {
@@ -252,26 +258,29 @@ function _addModifications (module, modifiers, blueprint, grade, specialModifica
     // Look up the modifiers to find what we need to do
     const findMod = val => Object.keys(Modifications.modifierActions).find(elem => elem.toString().toLowerCase().search(val.toString().toLowerCase().replace(/(OutfittingFieldType_|persecond)/igm, '')) >= 0)
     const modifierActions = Modifications.modifierActions[findMod(modifiers[i].Label)]
-    console.log(`${modifiers[i].Label}: ${findMod(modifiers[i].Label)}`)
     //TODO: Figure out how to scale this value.
     if (!!modifiers[i].LessIsGood) {
 
     }
-    let value = modifiers[i].Value / modifiers[i].OriginalValue * 100 - 100;
+    let value = (modifiers[i].Value / modifiers[i].OriginalValue * 100 - 100)  * 100;
+    if (value === Infinity) {
+      value = modifiers[i].Value * 100;
+    }
+    if (modifiers[i].Label === 'DefenceModifierHealthMultiplier' && blueprint.toLowerCase().startsWith('armour_')) {
+      value = modifiers[i].Value * 100 - modifiers[i].OriginalValue;
+    }
     // Carry out the required changes
     for (const action in modifierActions) {
       if (isNaN(modifierActions[action])) {
         module.setModValue(action, modifierActions[action])
       } else {
-        const actionValue = modifierActions[action] * value
-        module.setModValue(action, value * 100)
+        module.setModValue(action, value)
       }
     }
   }
 
   // Add the blueprint definition, grade and special
   if (blueprint) {
-    console.log(blueprint);
     module.blueprint = getBlueprint(blueprint, module)
     if (grade) {
       module.blueprint.grade = Number(grade)

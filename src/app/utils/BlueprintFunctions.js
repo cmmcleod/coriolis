@@ -231,7 +231,6 @@ export function getBlueprint(name, module) {
     return undefined;
   }
   const blueprint = JSON.parse(JSON.stringify(found));
-  console.log(blueprint)
   if (module) {
     if (module.grp === 'bh' || module.grp === 'hr' || module.grp === 'sg' || module.grp === 'psg' || module.grp === 'bsg') {
       // Bulkheads, hull reinforcements and shield generators need to have their resistances altered by the base values

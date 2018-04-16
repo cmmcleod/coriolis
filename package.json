@@ -1,6 +1,6 @@
 {
   "name": "coriolis_shipyard",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/EDCD/coriolis"
@@ -19,7 +19,7 @@
     "test": "jest",
     "prod-serve": "nginx -p $(pwd) -c nginx.conf",
     "prod-stop": "kill -QUIT $(cat nginx.pid)",
-    "build": "npm run clean && NODE_ENV=production webpack -p --config webpack.config.prod.js",
+    "build": "npm run clean && cross-env NODE_ENV=production webpack -p --config webpack.config.prod.js",
     "rsync": "rsync -ae \"ssh -i $CORIOLIS_PEM\" --delete build/ $CORIOLIS_USER@$CORIOLIS_HOST:~/wwws",
     "deploy": "npm run lint && npm test && npm run build && npm run rsync"
   },
@@ -66,6 +66,7 @@
     "babel-preset-stage-0": "*",
     "create-react-class": "^15.6.2",
     "css-loader": "^0.28.0",
+    "cross-env": "^5.1.4",
     "d3-selection": "1",
     "eslint": "3.19.0",
     "eslint-plugin-react": "^6.10.3",
@@ -91,7 +92,8 @@
     "url-loader": "^0.5.8",
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.4",
-    "webpack-notifier": "^1.6.0"
+    "webpack-notifier": "^1.6.0",
+    "webpack-bugsnag-plugins": "^1.1.1"
   },
   "dependencies": {
     "babel-polyfill": "*",

@@ -67,26 +67,6 @@ export default class Module {
     // Sanitise the resultant value to 4dp equivalent
     return isNaN(result) ? result : Math.round(result);
   }
-  /**
-   * Set a value for a given modification ID
-   * @param {Number} name                 The name of the modification
-   * @param {object} value  The value of the modification. If it is a numeric value then it should be an integer scaled so that -2.34% == -234
-   */
-  setModValueFromJournal(name, value, origVal) {
-    if (!this.mods) {
-      this.mods = {};
-    }
-    if (!this.origVals) {
-      this.origVals = {};
-    }
-
-    if (value == null || value == 0) {
-      delete this.mods[name];
-    } else {
-      this.mods[name] = value;
-      this.origVals[name] = origVal;
-    }
-  }
 
   /**
    * Set a value for a given modification ID
@@ -139,7 +119,6 @@ export default class Module {
   _getModifiedValue(name) {
     const modification = Modifications.modifications[name];
     let result = this[name];
-    // console.log(`${name} = ${this[name]}`)
     if (!result) {
       if (modification && modification.method === 'additive') {
         // Additive modifications start at 0 rather than NULL
