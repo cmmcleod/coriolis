@@ -49,7 +49,6 @@ function _moduleFromFdName (fdname) {
       }
     }
   }
-  console.log(fdname)
 
   // Not found
   return null
@@ -252,7 +251,6 @@ function _addModifications (module, modifiers, blueprint, grade, specialModifica
     // Look up the modifiers to find what we need to do
     const findMod = val => Object.keys(Modifications.modifierActions).find(elem => elem.toString().toLowerCase().search(val.toString().toLowerCase().replace(/(OutfittingFieldType_|persecond)/igm, '')) >= 0)
     const modifierActions = Modifications.modifierActions[findMod(modifiers[i].Label)]
-    console.log(`${modifiers[i].Label}: ${findMod(modifiers[i].Label)}`)
     //TODO: Figure out how to scale this value.
     if (!!modifiers[i].LessIsGood) {
 
@@ -271,7 +269,6 @@ function _addModifications (module, modifiers, blueprint, grade, specialModifica
 
   // Add the blueprint definition, grade and special
   if (blueprint) {
-    console.log(blueprint);
     module.blueprint = getBlueprint(blueprint, module)
     if (grade) {
       module.blueprint.grade = Number(grade)
