@@ -262,14 +262,19 @@ function _addModifications (module, modifiers, blueprint, grade, specialModifica
     if (!!modifiers[i].LessIsGood) {
 
     }
-    let value = modifiers[i].Value / modifiers[i].OriginalValue * 100 - 100;
+    let value = (modifiers[i].Value / modifiers[i].OriginalValue * 100 - 100)  * 100;
+    if (value === Infinity) {
+      value = modifiers[i].Value * 100;
+    }
+    if (modifiers[i].Label === 'DefenceModifierHealthMultiplier' && blueprint.toLowerCase().startsWith('armour_')) {
+      value = modifiers[i].Value * 100 - modifiers[i].OriginalValue;
+    }
     // Carry out the required changes
     for (const action in modifierActions) {
       if (isNaN(modifierActions[action])) {
         module.setModValue(action, modifierActions[action])
       } else {
-        const actionValue = modifierActions[action] * value
-        module.setModValue(action, value * 100)
+        module.setModValue(action, value)
       }
     }
   }
