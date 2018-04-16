@@ -5,6 +5,7 @@ var pkgJson = require('./package');
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var AppCachePlugin = require('appcache-webpack-plugin');
+var { BugsnagSourceMapUploaderPlugin } = require('webpack-bugsnag-plugins');
 
 function CopyDirPlugin(source, destination) {
     this.source = source;
@@ -19,6 +20,7 @@ CopyDirPlugin.prototype.apply = function(compiler) {
 
 module.exports = {
   cache: true,
+  devtool: 'source-map',
   entry: {
     app: ['babel-polyfill', path.resolve(__dirname, 'src/app/index')],
     lib: ['d3', 'react', 'react-dom', 'classnames', 'fbemitter', 'lz-string']
@@ -34,7 +36,8 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
-      'screw-ie8': true
+      'screw-ie8': true,
+      sourceMap: true
     }),
     //new webpack.optimize.CommonsChunkPlugin({
     //  name: 'lib',
@@ -62,6 +65,10 @@ module.exports = {
         filename: '[contenthash:6].css',
         disable: false,
         allChunks: true
+    }),
+    new BugsnagSourceMapUploaderPlugin({
+      apiKey: 'ba9fae819372850fb660755341fa6ef5',
+      appVersion: pkgJson.version
     }),
     new CopyDirPlugin(path.join(__dirname, 'src/schemas'), 'schemas'),
     new CopyDirPlugin(path.join(__dirname, 'src/images/logo/*'), ''),
