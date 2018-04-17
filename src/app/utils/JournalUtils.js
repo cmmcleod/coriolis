@@ -251,7 +251,7 @@ function _addModifications (module, modifiers, blueprint, grade, specialModifica
   if (!modifiers) return
   let special
   if (specialModifications) {
-    special = Modifications.specials[Object.keys(specialModifications)[0]]
+    special = Modifications.specials[specialModifications]
   }
   for (const i in modifiers) {
     // Some special modifications
