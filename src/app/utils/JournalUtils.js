@@ -266,8 +266,8 @@ function _addModifications (module, modifiers, blueprint, grade, specialModifica
     if (value === Infinity) {
       value = modifiers[i].Value * 100;
     }
-    if (modifiers[i].Label === 'DefenceModifierHealthMultiplier' && blueprint.toLowerCase().startsWith('armour_')) {
-      value = modifiers[i].Value * 100 - modifiers[i].OriginalValue;
+    if (modifiers[i].Label.search('Resistance') >= 0) {
+      value = (modifiers[i].Value * 100) - (modifiers[i].OriginalValue * 100)
     }
     // Carry out the required changes
     for (const action in modifierActions) {
