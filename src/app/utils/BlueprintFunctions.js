@@ -228,7 +228,7 @@ export function getBlueprint(name, module) {
   const findMod = val => Object.keys(Modifications.blueprints).find(elem => elem.toString().toLowerCase().search(val.toString().toLowerCase().replace(/(OutfittingFieldType_|persecond)/igm, '')) >= 0)
   const found = Modifications.blueprints[findMod(name)];
   if (!found || !found.fdname) {
-    return undefined;
+    return {};
   }
   const blueprint = JSON.parse(JSON.stringify(found));
   if (module) {

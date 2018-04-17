@@ -1211,7 +1211,9 @@ export default class Ship {
         } else if (slot.m.grp === 'cr') {
           cargoCapacity += slot.m.cargo;
         } else if (slot.m.grp.slice(0,2) === 'pc') {
-          passengerCapacity += slot.m.passengers
+          if (slot.m.passengers) {
+            passengerCapacity += slot.m.passengers;
+          }
         }
       }
     }
