@@ -1,22 +1,23 @@
-var path = require('path');
-var exec = require('child_process').exec;
-var webpack = require('webpack');
-var pkgJson = require('./package');
-var HtmlWebpackPlugin = require("html-webpack-plugin");
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var AppCachePlugin = require('appcache-webpack-plugin');
-var { BugsnagSourceMapUploaderPlugin } = require('webpack-bugsnag-plugins');
+const path = require('path')
+const exec = require('child_process').exec
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const AppCachePlugin = require('appcache-webpack-plugin')
+const {BugsnagSourceMapUploaderPlugin, BugsnagBuildReporterPlugin} = require('webpack-bugsnag-plugins')
+const pkgJson = require('./package')
 
-function CopyDirPlugin(source, destination) {
-    this.source = source;
-    this.destination = destination;
+function CopyDirPlugin (source, destination) {
+  this.source = source
+  this.destination = destination
 }
-CopyDirPlugin.prototype.apply = function(compiler) {
-    compiler.plugin('done', function() {
-      console.log(compiler.outputPath, this.destination);
-      exec('cp -r ' + this.source + ' ' + path.join(compiler.outputPath, this.destination));
-    }.bind(this));
-};
+
+CopyDirPlugin.prototype.apply = function (compiler) {
+  compiler.plugin('done', () => {
+    console.log(compiler.outputPath, this.destination)
+    exec('cp -r ' + this.source + ' ' + path.join(compiler.outputPath, this.destination))
+  })
+}
 
 module.exports = {
   cache: true,
@@ -44,27 +45,27 @@ module.exports = {
     //  filename: 'lib.[chunkhash:6].js'
     //}),
     new HtmlWebpackPlugin({
-        inject: false,
-        appCache: 'coriolis.appcache',
-        minify: {
-          collapseBooleanAttributes: true,
-          collapseWhitespace: true,
-          removeAttributeQuotes: true,
-          removeComments: true,
-          removeEmptyAttributes: true,
-          removeRedundantAttributes: true,
-          removeScriptTypeAttributes: true,
-          removeStyleLinkTypeAttributes: true
-        },
-        template: path.join(__dirname, "src/index.ejs"),
-        uaTracking: process.env.CORIOLIS_UA_TRACKING || '',
-        gapiKey: process.env.CORIOLIS_GAPI_KEY || '',
-        version: pkgJson.version
+      inject: false,
+      appCache: 'coriolis.appcache',
+      minify: {
+        collapseBooleanAttributes: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true,
+        removeComments: true,
+        removeEmptyAttributes: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true
+      },
+      template: path.join(__dirname, 'src/index.ejs'),
+      uaTracking: process.env.CORIOLIS_UA_TRACKING || '',
+      gapiKey: process.env.CORIOLIS_GAPI_KEY || '',
+      version: pkgJson.version
     }),
     new ExtractTextPlugin({
-        filename: '[contenthash:6].css',
-        disable: false,
-        allChunks: true
+      filename: '[contenthash:6].css',
+      disable: false,
+      allChunks: true
     }),
     new BugsnagSourceMapUploaderPlugin({
       apiKey: 'ba9fae819372850fb660755341fa6ef5',
@@ -82,14 +83,14 @@ module.exports = {
   ],
   module: {
     rules: [
-      { test: /\.css$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader'}) },
-      { test: /\.less$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader',use: 'css-loader!less-loader'}) },
-      { test: /\.(js|jsx)$/, loader: 'babel-loader?cacheDirectory=true', include: path.join(__dirname, 'src') },
-      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
-      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml' }
+      {test: /\.css$/, loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})},
+      {test: /\.less$/, loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader!less-loader'})},
+      {test: /\.(js|jsx)$/, loader: 'babel-loader?cacheDirectory=true', include: path.join(__dirname, 'src')},
+      {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
+      {test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
+      {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream'},
+      {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader'},
+      {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml'}
     ]
   }
-};
+}

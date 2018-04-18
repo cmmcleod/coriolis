@@ -232,25 +232,6 @@ export function getBlueprint(name, module) {
   }
   const blueprint = JSON.parse(JSON.stringify(found));
   if (module) {
-    if (module.grp === 'bh' || module.grp === 'hr' || module.grp === 'sg' || module.grp === 'psg' || module.grp === 'bsg') {
-      // Bulkheads, hull reinforcements and shield generators need to have their resistances altered by the base values
-      for (const grade in blueprint.grades) {
-        for (const feature in blueprint.grades[grade].features) {
-          if (feature === 'explres') {
-            blueprint.grades[grade].features[feature][0] *= (1 - module.explres);
-            blueprint.grades[grade].features[feature][1] *= (1 - module.explres);
-          }
-          if (feature === 'kinres') {
-            blueprint.grades[grade].features[feature][0] *= (1 - module.kinres);
-            blueprint.grades[grade].features[feature][1] *= (1 - module.kinres);
-          }
-          if (feature === 'thermres') {
-            blueprint.grades[grade].features[feature][0] *= (1 - module.thermres);
-            blueprint.grades[grade].features[feature][1] *= (1 - module.thermres);
-          }
-        }
-      }
-    }
     if (module.grp === 'sb') {
       // Shield boosters are treated internally as straight modifiers, so rather than (for example)
       // being a 4% boost they are a 104% multiplier.  We need to fix the values here so that they look
