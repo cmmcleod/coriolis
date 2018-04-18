@@ -75,8 +75,6 @@ export const ModuleGroupToName = {
   sb: 'Shield Booster',
   tp: 'Torpedo Pylon',
   sfn: 'Shutdown Field Neutraliser',
-  gpl: 'Plasma Launcher',
-  ggc: 'Gauss Cannon',
   xs: 'Xeno Scanner'
 };
 

@@ -48,8 +48,6 @@ const GRPCAT = {
   'nl': 'ordnance',
   'sc': 'scanners',
   'ss': 'scanners',
-  'gpl': 'guardian',
-  'ggc': 'guardian',
   // Utilities
   'cs': 'scanners',
   'kw': 'scanners',
@@ -84,10 +82,7 @@ const CATEGORIES = {
   'defence': ['ch', 'po', 'ec'],
   'scanners': ['sc', 'ss', 'cs', 'kw', 'ws'], // Overloaded with internal scanners
   // Experimental
-  'experimental': ['axmc', 'axmr', 'rfl', 'xs', 'sfn'],
-
-  // Guardian
-  'guardian': ['gpl', 'ggc']
+  'experimental': ['axmc', 'axmr', 'rfl', 'xs', 'sfn']
 };
 
 /**
