@@ -55,10 +55,12 @@
     <!-- End Piwik Code -->
 
     <!-- Bugsnag -->
-    <script
-    src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-3.min.js"
-    data-apikey="ba9fae819372850fb660755341fa6ef5"></script>
-
+    <script src="//d2wy8f7a9ursnm.cloudfront.net/v4/bugsnag.min.js"></script>
+    <script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-plugins/v1/bugsnag-react.min.js"></script>
+    <script>
+      window.bugsnagClient = bugsnag('ba9fae819372850fb660755341fa6ef5')
+      window.Bugsnag = window.bugsnagClient
+    </script>
   </head>
   <body style="background-color:#000;">
     <section id="coriolis"></section>
