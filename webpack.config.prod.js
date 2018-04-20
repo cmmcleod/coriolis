@@ -4,7 +4,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const AppCachePlugin = require('appcache-webpack-plugin')
-const {BugsnagSourceMapUploaderPlugin, BugsnagBuildReporterPlugin} = require('webpack-bugsnag-plugins')
+const {BugsnagSourceMapUploaderPlugin} = require('webpack-bugsnag-plugins')
 const pkgJson = require('./package')
 
 function CopyDirPlugin (source, destination) {
