@@ -58,7 +58,7 @@
     <script src="//d2wy8f7a9ursnm.cloudfront.net/v4/bugsnag.min.js"></script>
     <script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-plugins/v1/bugsnag-react.min.js"></script>
     <script>
-      window.bugsnagClient = bugsnag('ba9fae819372850fb660755341fa6ef5')
+      window.bugsnagClient = bugsnag('ba9fae819372850fb660755341fa6ef5', {appVersion: window.CORIOLIS_VERSION || undefined})
       window.Bugsnag = window.bugsnagClient
     </script>
   </head>
