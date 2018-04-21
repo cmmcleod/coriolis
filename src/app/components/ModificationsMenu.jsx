@@ -136,6 +136,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     const blueprint = getBlueprint(fdname, m);
     blueprint.grade = grade;
     ship.setModuleBlueprint(m, blueprint);
+    setPercent(ship, m, 100);
 
     this.setState({ blueprintMenuOpened: false });
     this.props.onChange();
