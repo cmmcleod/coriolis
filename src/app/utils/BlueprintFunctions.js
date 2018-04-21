@@ -12,6 +12,9 @@ import { Modifications } from 'coriolis-data/dist';
  */
 export function blueprintTooltip(translate, blueprint, engineers, grp, m) {
   const effects = [];
+  if (!blueprint || !blueprint.features) {
+    return undefined;
+  }
   for (const feature in blueprint.features) {
     const featureIsBeneficial = isBeneficial(feature, blueprint.features[feature]);
     const featureDef = Modifications.modifications[feature];
