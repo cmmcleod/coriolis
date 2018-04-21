@@ -262,7 +262,7 @@ export function setPercent(ship, m, percent) {
   ship.clearModifications(m);
   const features = m.blueprint.grades[m.blueprint.grade].features;
   for (const featureName in features) {
-    const value = features[featureName][0];
+    const value = features[featureName][1];
     const featureIsBeneficial = isBeneficial(featureName, features[featureName]);
     if (featureIsBeneficial === true) {
       _setValue(ship, m, featureName, (percent / 100) * value);
