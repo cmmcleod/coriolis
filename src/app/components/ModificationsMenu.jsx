@@ -258,8 +258,8 @@ export default class ModificationsMenu extends TranslatedComponent {
     const showSpecial = haveBlueprint && specials.length && !blueprintMenuOpened;
     const showSpecialsMenu = specialMenuOpened;
     const showRolls = haveBlueprint && !blueprintMenuOpened && !specialMenuOpened;
-    const showReset = !blueprintMenuOpened && !specialMenuOpened;
-    const showMods = !blueprintMenuOpened && !specialMenuOpened;
+    const showReset = !blueprintMenuOpened && !specialMenuOpened && haveBlueprint;
+    const showMods = !blueprintMenuOpened && !specialMenuOpened && haveBlueprint;
 
     return (
       <div
