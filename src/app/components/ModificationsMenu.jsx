@@ -33,11 +33,11 @@ export default class ModificationsMenu extends TranslatedComponent {
     this._rollFifty = this._rollFifty.bind(this);
     this._rollRandom = this._rollRandom.bind(this);
     this._rollBest = this._rollBest.bind(this);
-    this._rollSevenFive = this._rollSevenFive.bind(this);
+    this._rollWorst = this._rollWorst.bind(this);
     this._reset = this._reset.bind(this);
 
     this.state = {
-      blueprintMenuOpened: false,
+      blueprintMenuOpened: !(props.m.blueprint && props.m.blueprint.name),
       specialMenuOpened: false
     };
   }
@@ -91,10 +91,13 @@ export default class ModificationsMenu extends TranslatedComponent {
     const specialsId = m.missile && Modifications.modules[m.grp]['specials_' + m.missile] ? 'specials_' + m.missile : 'specials';
     if (Modifications.modules[m.grp][specialsId] && Modifications.modules[m.grp][specialsId].length > 0) {
       const close = this._specialSelected.bind(this, null);
-      specials.push(<div style={{ cursor: 'pointer' }} key={ 'none' } onClick={ close }>{translate('PHRASE_NO_SPECIAL')}</div>);
+      specials.push(<div style={{ cursor: 'pointer', fontWeight: 'bold' }} className={ 'button-inline-menu warning' } key={ 'none' } onClick={ close }>{translate('PHRASE_NO_SPECIAL')}</div>);
       for (const specialName of Modifications.modules[m.grp][specialsId]) {
+        const classes = cn('button-inline-menu', {
+          active: m.blueprint && m.blueprint.special && m.blueprint.special.edname == specialName 
+        });
         const close = this._specialSelected.bind(this, specialName);
-        specials.push(<div style={{ cursor: 'pointer' }} key={ specialName } onClick={ close }>{translate(Modifications.specials[specialName].name)}</div>);
+        specials.push(<div style={{ cursor: 'pointer' }} className={classes} key={ specialName } onClick={ close }>{translate(Modifications.specials[specialName].name)}</div>);
       }
     }
     return specials;
@@ -136,8 +139,9 @@ export default class ModificationsMenu extends TranslatedComponent {
     const blueprint = getBlueprint(fdname, m);
     blueprint.grade = grade;
     ship.setModuleBlueprint(m, blueprint);
+    setPercent(ship, m, 100);
 
-    this.setState({ blueprintMenuOpened: false });
+    this.setState({ blueprintMenuOpened: false, specialMenuOpened: true });
     this.props.onChange();
   }
 
@@ -195,11 +199,11 @@ export default class ModificationsMenu extends TranslatedComponent {
   }
 
   /**
-   * Provide an '75%' roll within the information we have
+   * Provide a 'worst' roll within the information we have
    */
-  _rollSevenFive() {
+  _rollWorst() {
     const { m, ship } = this.props;
-    setPercent(ship, m, 75);
+    setPercent(ship, m, 0);
     this.props.onChange();
   }
 
@@ -227,7 +231,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     const _toggleBlueprintsMenu = this._toggleBlueprintsMenu;
     const _toggleSpecialsMenu = this._toggleSpecialsMenu;
     const _rollFull = this._rollBest;
-    const _rollSevenFive = this._rollSevenFive;
+    const _rollWorst = this._rollWorst;
     const _rollFifty = this._rollFifty;
     const _rollRandom = this._rollRandom;
     const _reset = this._reset;
@@ -263,11 +267,11 @@ export default class ModificationsMenu extends TranslatedComponent {
           onClick={(e) => e.stopPropagation() }
           onContextMenu={stopCtxPropagation}
       >
-        { showBlueprintsMenu ? '' : haveBlueprint ? 
-          <div className={ cn('section-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onMouseOver={termtip.bind(null, blueprintTt)} onMouseOut={tooltip.bind(null, null)} onClick={_toggleBlueprintsMenu}>{blueprintLabel}</div> : 
-          <div className={ cn('section-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleBlueprintsMenu}>{translate('PHRASE_SELECT_BLUEPRINT')}</div> }
+        { showBlueprintsMenu | showSpecialsMenu ? '' : haveBlueprint ? 
+          <div className={ cn('section-menu button-inline-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onMouseOver={termtip.bind(null, blueprintTt)} onMouseOut={tooltip.bind(null, null)} onClick={_toggleBlueprintsMenu}>{blueprintLabel}</div> : 
+          <div className={ cn('section-menu button-inline-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleBlueprintsMenu}>{translate('PHRASE_SELECT_BLUEPRINT')}</div> }
         { showBlueprintsMenu ? this._renderBlueprints(this.props, this.context) : null }
-        { showSpecial ? <div className={ cn('section-menu', { selected: specialMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleSpecialsMenu}>{specialLabel}</div> : null }
+        { showSpecial & !showSpecialsMenu ? <div className={ cn('section-menu button-inline-menu', { selected: specialMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleSpecialsMenu}>{specialLabel}</div> : null }
         { showSpecialsMenu ? specials : null }
         { showRolls || showReset ?
             <table style={{ width: '100%', backgroundColor: 'transparent' }}>
@@ -275,8 +279,8 @@ export default class ModificationsMenu extends TranslatedComponent {
           { showRolls ?
                 <tr>
                   <td> { translate('roll') }: </td>
+                  <td style={{ cursor: 'pointer' }} onClick={_rollWorst} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_WORST')} onMouseOut={tooltip.bind(null, null)}> { translate('0%') } </td>
                   <td style={{ cursor: 'pointer' }} onClick={_rollFifty} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_FIFTY')} onMouseOut={tooltip.bind(null, null)}> { translate('50%') } </td>
-                  <td style={{ cursor: 'pointer' }} onClick={_rollSevenFive} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_SEVEN_FIVE')} onMouseOut={tooltip.bind(null, null)}> { translate('75%') } </td>
                   <td style={{ cursor: 'pointer' }} onClick={_rollFull} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_BEST')} onMouseOut={tooltip.bind(null, null)}> { translate('100%') } </td>
                   <td style={{ cursor: 'pointer' }} onClick={_rollRandom} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RANDOM')} onMouseOut={tooltip.bind(null, null)}> { translate('random') } </td>
                 </tr> : null }
