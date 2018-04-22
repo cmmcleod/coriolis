@@ -290,6 +290,7 @@ export default class ModificationsMenu extends TranslatedComponent {
                 </tr> : null }
               </tbody>
           </table> : null }
+        { showMods ? <hr /> : null }
         { showMods ?
           <span onMouseOver={termtip.bind(null, 'HELP_MODIFICATIONS_MENU')} onMouseOut={tooltip.bind(null, null)} >
             { this._renderModifications(this.props) }
