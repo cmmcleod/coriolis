@@ -311,3 +311,60 @@ function _setValue(ship, m, featureName, value) {
     ship.setModification(m, featureName, value);
   }
 }
+
+/**
+ * Provide 'percent' primary query
+ * @param {Object}      m         The module for which to perform the query
+ * @returns {Number} percent The percentage indicator of current applied values.
+ */
+export function getPercent(m) {
+  let result = null;
+  const features = m.blueprint.grades[m.blueprint.grade].features;
+  for (const featureName in features) {
+    
+	if (features[featureName][0] === features[featureName][1]) {
+		continue;
+	}
+	
+	let value = _getValue(m, featureName);
+	let mult;
+    if (Modifications.modifications[featureName].higherbetter) {
+      // Higher is better, but is this making it better or worse?
+      if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
+		mult = Math.round((value - features[featureName][1]) / (features[featureName][0] - features[featureName][1]) * 100);
+      } else {
+		mult = Math.round((value - features[featureName][0]) / (features[featureName][1] - features[featureName][0]) * 100);        
+      }
+    } else {
+      // Higher is worse, but is this making it better or worse?
+      if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
+		mult = Math.round((value - features[featureName][0]) / (features[featureName][1] - features[featureName][0]) * 100);
+      } else {
+		mult = Math.round((value - features[featureName][1]) / (features[featureName][0] - features[featureName][1]) * 100);
+      }
+    }
+	
+	if (result && result != mult) {
+		return null;
+	} else if (result != mult) {
+		result = mult;
+	}
+  }
+  
+  return result;
+}
+
+/**
+ * Query a feature value
+ * @param {Object}      m             The module for which to perform the query
+ * @param {string}      featureName   The feature being queried
+ */
+function _getValue(m, featureName) {
+  if (Modifications.modifications[featureName].type == 'percentage') {
+    return m.getModValue(featureName) / 10000;
+  } else if (Modifications.modifications[featureName].type == 'numeric') {
+    return m.getModValue(featureName) / 100;
+  } else {
+    return m.getModValue(featureName);
+  }
+}
