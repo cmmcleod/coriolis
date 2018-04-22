@@ -6,7 +6,7 @@ import { isEmpty, stopCtxPropagation } from '../utils/UtilityFunctions';
 import cn from 'classnames';
 import { Modifications } from 'coriolis-data/dist';
 import Modification from './Modification';
-import { getBlueprint, blueprintTooltip, setPercent, setRandom } from '../utils/BlueprintFunctions';
+import { getBlueprint, blueprintTooltip, setPercent, getPercent, setRandom } from '../utils/BlueprintFunctions';
 
 /**
  * Modifications menu
@@ -242,10 +242,12 @@ export default class ModificationsMenu extends TranslatedComponent {
     let blueprintLabel;
     let haveBlueprint = false;
     let blueprintTt;
+    let blueprintCv;
     if (m.blueprint && m.blueprint.name) {
       blueprintLabel = translate(m.blueprint.name) + ' ' + translate('grade') + ' ' + m.blueprint.grade;
       haveBlueprint = true;
       blueprintTt  = blueprintTooltip(translate, m.blueprint.grades[m.blueprint.grade], Modifications.modules[m.grp].blueprints[m.blueprint.fdname].grades[m.blueprint.grade].engineers, m.grp);
+      blueprintCv = getPercent(m);
     }
 
     let specialLabel;
@@ -261,8 +263,8 @@ export default class ModificationsMenu extends TranslatedComponent {
     const showSpecial = haveBlueprint && specials.length && !blueprintMenuOpened;
     const showSpecialsMenu = specialMenuOpened;
     const showRolls = haveBlueprint && !blueprintMenuOpened && !specialMenuOpened;
-    const showReset = !blueprintMenuOpened && !specialMenuOpened;
-    const showMods = !blueprintMenuOpened && !specialMenuOpened;
+    const showReset = !blueprintMenuOpened && !specialMenuOpened && haveBlueprint;
+    const showMods = !blueprintMenuOpened && !specialMenuOpened && haveBlueprint;
 
     return (
       <div
@@ -276,23 +278,22 @@ export default class ModificationsMenu extends TranslatedComponent {
         { showBlueprintsMenu ? this._renderBlueprints(this.props, this.context) : null }
         { showSpecial & !showSpecialsMenu ? <div className={ cn('section-menu button-inline-menu', { selected: specialMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleSpecialsMenu}>{specialLabel}</div> : null }
         { showSpecialsMenu ? specials : null }
-        { showRolls || showReset ?
+        { showReset ? <div className={'section-menu button-inline-menu warning'} style={{ cursor: 'pointer' }} onClick={_reset} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RESET')} onMouseOut={tooltip.bind(null, null)}> { translate('reset') } </div> : null }
+		{ showRolls ?
+            
             <table style={{ width: '100%', backgroundColor: 'transparent' }}>
               <tbody>
           { showRolls ?
                 <tr>
                   <td> { translate('roll') }: </td>
-                  <td style={{ cursor: 'pointer' }} onClick={_rollWorst} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_WORST')} onMouseOut={tooltip.bind(null, null)}> { translate('0%') } </td>
-                  <td style={{ cursor: 'pointer' }} onClick={_rollFifty} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_FIFTY')} onMouseOut={tooltip.bind(null, null)}> { translate('50%') } </td>
-                  <td style={{ cursor: 'pointer' }} onClick={_rollFull} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_BEST')} onMouseOut={tooltip.bind(null, null)}> { translate('100%') } </td>
-                  <td style={{ cursor: 'pointer' }} onClick={_rollRandom} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RANDOM')} onMouseOut={tooltip.bind(null, null)}> { translate('random') } </td>
-                </tr> : null }
-          { showReset ?
-                <tr>
-                  <td colSpan={'5'} style={{ cursor: 'pointer' }} onClick={_reset}onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RESET')} onMouseOut={tooltip.bind(null, null)}> { translate('reset') } </td>
+                  <td className={ cn('section-menu button-inline-menu', { active: blueprintCv ===    0 })} style={{ cursor: 'pointer' }} onClick={_rollWorst} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_WORST')} onMouseOut={tooltip.bind(null, null)}> { translate('0%') } </td>
+                  <td className={ cn('section-menu button-inline-menu', { active: blueprintCv ===   50 })} style={{ cursor: 'pointer' }} onClick={_rollFifty} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_FIFTY')} onMouseOut={tooltip.bind(null, null)}> { translate('50%') } </td>
+                  <td className={ cn('section-menu button-inline-menu', { active: blueprintCv ===  100 })} style={{ cursor: 'pointer' }} onClick={_rollFull} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_BEST')} onMouseOut={tooltip.bind(null, null)}> { translate('100%') } </td>
+                  <td className={ cn('section-menu button-inline-menu', { active: blueprintCv === null || blueprintCv % 50 != 0 })} style={{ cursor: 'pointer' }} onClick={_rollRandom} onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RANDOM')} onMouseOut={tooltip.bind(null, null)}> { translate('random') } </td>
                 </tr> : null }
               </tbody>
           </table> : null }
+        { showMods ? <hr /> : null }
         { showMods ?
           <span onMouseOver={termtip.bind(null, 'HELP_MODIFICATIONS_MENU')} onMouseOut={tooltip.bind(null, null)} >
             { this._renderModifications(this.props) }
