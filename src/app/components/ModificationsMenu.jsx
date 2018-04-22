@@ -93,6 +93,9 @@ export default class ModificationsMenu extends TranslatedComponent {
       const close = this._specialSelected.bind(this, null);
       specials.push(<div style={{ cursor: 'pointer', fontWeight: 'bold' }} className={ 'button-inline-menu warning' } key={ 'none' } onClick={ close }>{translate('PHRASE_NO_SPECIAL')}</div>);
       for (const specialName of Modifications.modules[m.grp][specialsId]) {
+        if (Modifications.specials[specialName].name.search('Legacy') >= 0) {
+          continue;
+        }
         const classes = cn('button-inline-menu', {
           active: m.blueprint && m.blueprint.special && m.blueprint.special.edname == specialName 
         });
