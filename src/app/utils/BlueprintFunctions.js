@@ -12,9 +12,7 @@ import { Modifications } from 'coriolis-data/dist';
  */
 export function specialToolTip(translate, blueprint, grp, m, specialName) {
   const effects = [];
-  console.log(blueprint)
   if (!blueprint || !blueprint.features) {
-    console.log('nah')
     return undefined;
   }
   if (m) {
