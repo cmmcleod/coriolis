@@ -28,7 +28,6 @@ export function specialToolTip(translate, blueprint, grp, m, specialName) {
               } else if (featureDef.type === 'percentage') {
                 symbol = '%';
               }
-              const modifierActions = Modifications.modifierActions[specialName];
               let current = m.getModValue(feature) - m.getModValue(feature, true);
               if (featureDef.type === 'percentage') {
                 current = Math.round(current / 10) / 10;
