@@ -199,8 +199,8 @@ export default class AvailableModulesMenu extends TranslatedComponent {
   /**
    * Generate React Components for Module Group
    * @param  {Function} translate   Translate function
-   * @param  {Objecy} mountedModule Mounted Module
-   * @param  {Funciton} warningFunc Warning function
+   * @param  {Object} mountedModule Mounted Module
+   * @param  {Function} warningFunc Warning function
    * @param  {number} mass          Mass
    * @param  {function} onSelect    Select/Mount callback
    * @param  {string} grp           Group name
