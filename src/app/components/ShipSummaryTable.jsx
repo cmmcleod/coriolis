@@ -104,18 +104,17 @@ export default class ShipSummaryTable extends TranslatedComponent {
       <table className={'summaryTable'}>
         <thead>
           <tr className='main'>
-            <th colSpan={3}>{translate('armour metrics')}</th>
-            <th colSpan={3}>{translate('shield metrics')}</th>
+            <th colSpan={7}>{translate('armour metrics')}</th>
           </tr>
           <tr>
             <th className='lft'>{translate('explres')}</th>
             <th className='lft'>{translate('kinres')}</th>
             <th className='lft'>{translate('thermres')}</th>
 
-            <th className='lft'>{translate('explres')}</th>
-            <th className='lft'>{translate('kinres')}</th>
-            <th className='lft'>{translate('thermres')}</th>
-
+            <th className='lft'>{translate('damage from ') + ' ' + translate('absolute')}</th>
+            <th className='lft'>{translate('damage from ') + ' ' + translate('explosive')}</th>
+            <th className='lft'>{translate('damage from ') + ' ' + translate('kinetic')}</th>
+            <th className='lft'>{translate('damage from ') + ' ' + translate('thermal')}</th>
           </tr>
         </thead>
         <tbody>
@@ -123,10 +122,11 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{int(ship.hullExplRes * 100) + '%'}</td>
             <td>{int(ship.hullThermRes * 100) + '%'}</td>
             <td>{int(ship.hullKinRes * 100) + '%'}</td>
+            <td>{int(armourMetrics.total / armourMetrics.absolute.total)}</td>
+            <td>{int(armourMetrics.total / armourMetrics.explosive.total)}</td>
+            <td>{int(armourMetrics.total / armourMetrics.kinetic.total)}</td>
+            <td>{int(armourMetrics.total / armourMetrics.thermal.total)}</td>
 
-            <td>{int(ship.shieldExplRes * 100) + '%'}</td>
-            <td>{int(ship.shieldThermRes * 100) + '%'}</td>
-            <td>{int(ship.shieldKinRes * 100) + '%'}</td>
 
 
           </tr>
@@ -135,35 +135,29 @@ export default class ShipSummaryTable extends TranslatedComponent {
       <table className={'summaryTable'}>
         <thead>
           <tr className='main'>
-            <th colSpan={4}>{translate('effective armour')}</th>
-            <th colSpan={4}>{translate('effective shield')}</th>
+            <th colSpan={7}>{translate('shield metrics')}</th>
           </tr>
           <tr>
-            <th className='lft'>{translate('absolute') + ' ' + translate('armour')}</th>
-            <th className='lft'>{translate('explosive') + ' ' + translate('armour')}</th>
-            <th className='lft'>{translate('kinetic') + ' ' + translate('armour')}</th>
-            <th className='lft'>{translate('thermal') + ' ' + translate('armour')}</th>
+            <th className='lft'>{translate('explres')}</th>
+            <th className='lft'>{translate('kinres')}</th>
+            <th className='lft'>{translate('thermres')}</th>
 
-            <th className='lft'>{translate('absolute') + ' ' + translate('shield')}</th>
-            <th className='lft'>{translate('explosive') + ' ' + translate('shield')}</th>
-            <th className='lft'>{translate('kinetic') + ' ' + translate('shield')}</th>
-            <th className='lft'>{translate('thermal') + ' ' + translate('shield')}</th>
+            <th className='lft'>{translate('damage from ') + ' ' + translate('absolute')}</th>
+            <th className='lft'>{translate('damage from ') + ' ' + translate('explosive')}</th>
+            <th className='lft'>{translate('damage from ') + ' ' + translate('kinetic')}</th>
+            <th className='lft'>{translate('damage from ') + ' ' + translate('thermal')}</th>
 
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>{int(armourMetrics.total / armourMetrics.absolute.total)}</td>
-            <td>{int(armourMetrics.total / armourMetrics.explosive.total)}</td>
-            <td>{int(armourMetrics.total / armourMetrics.kinetic.total)}</td>
-            <td>{int(armourMetrics.total / armourMetrics.thermal.total)}</td>
-
-
+            <td>{int(ship.shieldExplRes * 100) + '%'}</td>
+            <td>{int(ship.shieldThermRes * 100) + '%'}</td>
+            <td>{int(ship.shieldKinRes * 100) + '%'}</td>
             <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.absolute.total : 0)}</td>
             <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.explosive.total : 0)}</td>
             <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.kinetic.total : 0 )}</td>
             <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.thermal.total : 0 )}</td>
-
           </tr>
         </tbody>
       </table>
