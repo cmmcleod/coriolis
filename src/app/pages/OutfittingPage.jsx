@@ -602,7 +602,7 @@ export default class OutfittingPage extends Page {
         </div>
 
         {/* Main tables */}
-        <ShipSummaryTable ship={ship} fuel={fuel} cargo={cargo} marker={shipSummaryMarker} />
+        <ShipSummaryTable ship={ship} fuel={fuel} cargo={cargo} marker={shipSummaryMarker} pips={{sys: this.state.sys, wep: this.state.wep, eng: this.state.eng}} />
         <StandardSlotSection ship={ship} fuel={fuel} cargo={cargo} code={standardSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} />
         <InternalSlotSection ship={ship} code={internalSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} />
         <HardpointSlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} />
