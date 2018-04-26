@@ -101,18 +101,46 @@ export default class ShipSummaryTable extends TranslatedComponent {
       </table>
       <table className={'summaryTable'}>
         <thead>
-          <tr className='main'>
-            <th colSpan={7}>{translate('armour metrics')}</th>
-          </tr>
           <tr>
-            <th className='lft'>{translate('explres')}</th>
-            <th className='lft'>{translate('kinres')}</th>
-            <th className='lft'>{translate('thermres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermres')}</th>
 
-            <th className='lft'>{translate('damage from ') + ' ' + translate('absolute')}</th>
-            <th className='lft'>{translate('damage from ') + ' ' + translate('explosive')}</th>
-            <th className='lft'>{translate('damage from ') + ' ' + translate('kinetic')}</th>
-            <th className='lft'>{translate('damage from ') + ' ' + translate('thermal')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('absolute')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('explosive')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('kinetic')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('thermal')}</th>
+            <th onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECOVER', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('recovery')}</th>
+            <th onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECHARGE', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('recharge')}</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr >
+          <td>{int(ship.shieldExplRes * 100) + '%'}</td>
+          <td>{int(ship.shieldThermRes * 100) + '%'}</td>
+          <td>{int(ship.shieldKinRes * 100) + '%'}</td>
+          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.absolute.total : 0)}</td>
+          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.explosive.total : 0)}</td>
+          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.kinetic.total : 0 )}</td>
+          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.thermal.total : 0 )}</td>
+          <td>{formats.time(sgMetrics.recover)}</td>
+          <td>{formats.time(sgMetrics.recharge)}</td>
+        </tr>
+        </tbody>
+        <thead>
+          <tr>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermres')}</th>
+
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('absolute')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('explosive')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('kinetic')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('thermal')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('raw module armour')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('internal protection')}</th>
+
+
           </tr>
         </thead>
         <tbody>
@@ -124,41 +152,13 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{int(armourMetrics.total / armourMetrics.explosive.total)}</td>
             <td>{int(armourMetrics.total / armourMetrics.kinetic.total)}</td>
             <td>{int(armourMetrics.total / armourMetrics.thermal.total)}</td>
-
-
+            <td>{int(armourMetrics.modulearmour)}</td>
+            <td>{int(armourMetrics.moduleprotection * 100) + '%'}</td>
 
           </tr>
         </tbody>
       </table>
-      <table className={'summaryTable'}>
-        <thead>
-          <tr className='main'>
-            <th colSpan={7}>{translate('shield metrics')}</th>
-          </tr>
-          <tr>
-            <th className='lft'>{translate('explres')}</th>
-            <th className='lft'>{translate('kinres')}</th>
-            <th className='lft'>{translate('thermres')}</th>
 
-            <th className='lft'>{translate('damage from ') + ' ' + translate('absolute')}</th>
-            <th className='lft'>{translate('damage from ') + ' ' + translate('explosive')}</th>
-            <th className='lft'>{translate('damage from ') + ' ' + translate('kinetic')}</th>
-            <th className='lft'>{translate('damage from ') + ' ' + translate('thermal')}</th>
-
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{int(ship.shieldExplRes * 100) + '%'}</td>
-            <td>{int(ship.shieldThermRes * 100) + '%'}</td>
-            <td>{int(ship.shieldKinRes * 100) + '%'}</td>
-            <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.absolute.total : 0)}</td>
-            <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.explosive.total : 0)}</td>
-            <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.kinetic.total : 0 )}</td>
-            <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.thermal.total : 0 )}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>;
   }
 }
