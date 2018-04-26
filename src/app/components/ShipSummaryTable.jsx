@@ -159,10 +159,10 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{int(armourMetrics.total / armourMetrics.thermal.total)}</td>
 
 
-            <td>{int(sgMetrics.total / sgMetrics.absolute.total)}</td>
-            <td>{int(sgMetrics.total / sgMetrics.explosive.total)}</td>
-            <td>{int(sgMetrics.total / sgMetrics.kinetic.total)}</td>
-            <td>{int(sgMetrics.total / sgMetrics.thermal.total)}</td>
+            <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.absolute.total : 0)}</td>
+            <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.explosive.total : 0)}</td>
+            <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.kinetic.total : 0 )}</td>
+            <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.thermal.total : 0 )}</td>
 
           </tr>
         </tbody>
