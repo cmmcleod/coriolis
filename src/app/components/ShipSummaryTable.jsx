@@ -15,6 +15,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
     cargo: PropTypes.number.isRequired,
     fuel: PropTypes.number.isRequired,
     marker: PropTypes.string.isRequired,
+    pips: PropTypes.object.isRequired
   };
 
   /**
@@ -22,7 +23,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
    * @return {React.Component} Summary table
    */
   render() {
-    const { ship, cargo, fuel } = this.props;
+    const { ship, cargo, fuel, pips } = this.props;
     let { language, tooltip, termtip } = this.context;
     let translate = language.translate;
     let u = language.units;
@@ -37,11 +38,8 @@ export default class ShipSummaryTable extends TranslatedComponent {
     const speedTooltip = canThrust ? 'TT_SUMMARY_SPEED' : 'TT_SUMMARY_SPEED_NONFUNCTIONAL';
     const canBoost = ship.canBoost(cargo, ship.fuelCapacity);
     const boostTooltip = canBoost ? 'TT_SUMMARY_BOOST' : canThrust ? 'TT_SUMMARY_BOOST_NONFUNCTIONAL' : 'TT_SUMMARY_SPEED_NONFUNCTIONAL';
-
-    const sgMetrics = Calc.shieldMetrics(ship, 4);
+    const sgMetrics = Calc.shieldMetrics(ship, pips.sys || 2);
     const armourMetrics = Calc.armourMetrics(ship);
-    console.log(sgMetrics);
-    console.log(armourMetrics);
     return <div id='summary'>
       <table className={'summaryTable'}>
         <thead>
