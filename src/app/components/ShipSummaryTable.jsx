@@ -29,7 +29,6 @@ export default class ShipSummaryTable extends TranslatedComponent {
     let formats = language.formats;
     let { time, int, round, f1, f2 } = formats;
     let hide = tooltip.bind(null, null);
-
     const shieldGenerator = ship.findInternalByGroup('sg');
     const sgClassNames = cn({ warning: shieldGenerator && !ship.shield, muted: !shieldGenerator });
     const sgTooltip = shieldGenerator ? 'TT_SUMMARY_SHIELDS' : 'TT_SUMMARY_SHIELDS_NONFUNCTIONAL';
@@ -39,8 +38,12 @@ export default class ShipSummaryTable extends TranslatedComponent {
     const canBoost = ship.canBoost(cargo, ship.fuelCapacity);
     const boostTooltip = canBoost ? 'TT_SUMMARY_BOOST' : canThrust ? 'TT_SUMMARY_BOOST_NONFUNCTIONAL' : 'TT_SUMMARY_SPEED_NONFUNCTIONAL';
 
+    const sgMetrics = Calc.shieldMetrics(ship, 4);
+    const armourMetrics = Calc.armourMetrics(ship);
+    console.log(sgMetrics);
+    console.log(armourMetrics);
     return <div id='summary'>
-      <table id='summaryTable'>
+      <table className={'summaryTable'}>
         <thead>
           <tr className='main'>
             <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !canThrust }) }>{translate('speed')}</th>
@@ -95,6 +98,72 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{int(ship.hardness)}</td>
             <td>{ship.crew}</td>
             <td>{ship.masslock}</td>
+          </tr>
+        </tbody>
+      </table>
+      <table className={'summaryTable'}>
+        <thead>
+          <tr className='main'>
+            <th colSpan={3}>{translate('armour metrics')}</th>
+            <th colSpan={3}>{translate('shield metrics')}</th>
+          </tr>
+          <tr>
+            <th className='lft'>{translate('explres')}</th>
+            <th className='lft'>{translate('kinres')}</th>
+            <th className='lft'>{translate('thermres')}</th>
+
+            <th className='lft'>{translate('explres')}</th>
+            <th className='lft'>{translate('kinres')}</th>
+            <th className='lft'>{translate('thermres')}</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{int(ship.hullExplRes * 100) + '%'}</td>
+            <td>{int(ship.hullThermRes * 100) + '%'}</td>
+            <td>{int(ship.hullKinRes * 100) + '%'}</td>
+
+            <td>{int(ship.shieldExplRes * 100) + '%'}</td>
+            <td>{int(ship.shieldThermRes * 100) + '%'}</td>
+            <td>{int(ship.shieldKinRes * 100) + '%'}</td>
+
+
+          </tr>
+        </tbody>
+      </table>
+      <table className={'summaryTable'}>
+        <thead>
+          <tr className='main'>
+            <th colSpan={4}>{translate('effective armour')}</th>
+            <th colSpan={4}>{translate('effective shield')}</th>
+          </tr>
+          <tr>
+            <th className='lft'>{translate('absolute') + ' ' + translate('armour')}</th>
+            <th className='lft'>{translate('explosive') + ' ' + translate('armour')}</th>
+            <th className='lft'>{translate('kinetic') + ' ' + translate('armour')}</th>
+            <th className='lft'>{translate('thermal') + ' ' + translate('armour')}</th>
+
+            <th className='lft'>{translate('absolute') + ' ' + translate('shield')}</th>
+            <th className='lft'>{translate('explosive') + ' ' + translate('shield')}</th>
+            <th className='lft'>{translate('kinetic') + ' ' + translate('shield')}</th>
+            <th className='lft'>{translate('thermal') + ' ' + translate('shield')}</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{int(armourMetrics.total / armourMetrics.absolute.total)}</td>
+            <td>{int(armourMetrics.total / armourMetrics.explosive.total)}</td>
+            <td>{int(armourMetrics.total / armourMetrics.kinetic.total)}</td>
+            <td>{int(armourMetrics.total / armourMetrics.thermal.total)}</td>
+
+
+            <td>{int(sgMetrics.total / sgMetrics.absolute.total)}</td>
+            <td>{int(sgMetrics.total / sgMetrics.explosive.total)}</td>
+            <td>{int(sgMetrics.total / sgMetrics.kinetic.total)}</td>
+            <td>{int(sgMetrics.total / sgMetrics.thermal.total)}</td>
+
           </tr>
         </tbody>
       </table>
