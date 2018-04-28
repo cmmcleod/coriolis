@@ -18,6 +18,14 @@ export default class ShipSummaryTable extends TranslatedComponent {
     pips: PropTypes.object.isRequired
   };
 
+  constructor(props) {
+    super(props)
+    this.didContextChange = this.didContextChange.bind(this);
+    this.state = {
+      shieldColour: 'blue'
+    }
+  }
+
   /**
    * Render the table
    * @return {React.Component} Summary table
@@ -30,7 +38,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
     let formats = language.formats;
     let { time, int, round, f1, f2 } = formats;
     let hide = tooltip.bind(null, null);
-    const shieldGenerator = ship.findInternalByGroup('sg');
+    const shieldGenerator = ship.findInternalByGroup('sg') || ship.findInternalByGroup('psg');
     const sgClassNames = cn({ warning: shieldGenerator && !ship.shield, muted: !shieldGenerator });
     const sgTooltip = shieldGenerator ? 'TT_SUMMARY_SHIELDS' : 'TT_SUMMARY_SHIELDS_NONFUNCTIONAL';
     const timeToDrain = Calc.timeToDrainWep(ship, 4);
@@ -40,6 +48,9 @@ export default class ShipSummaryTable extends TranslatedComponent {
     const boostTooltip = canBoost ? 'TT_SUMMARY_BOOST' : canThrust ? 'TT_SUMMARY_BOOST_NONFUNCTIONAL' : 'TT_SUMMARY_SPEED_NONFUNCTIONAL';
     const sgMetrics = Calc.shieldMetrics(ship, pips.sys || 2);
     const armourMetrics = Calc.armourMetrics(ship);
+    this.state = {
+      shieldColour: shieldGenerator && shieldGenerator.m.grp === 'psg' ? 'green' : 'blue'
+    }
     return <div id='summary'>
       <table className={'summaryTable'}>
         <thead>
@@ -100,7 +111,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
         </tbody>
       </table>
       <table className={'summaryTable'}>
-        <thead className={'blue'}>
+        <thead className={this.state.shieldColour}>
           <tr>
             <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explres')}</th>
             <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinres')}</th>
