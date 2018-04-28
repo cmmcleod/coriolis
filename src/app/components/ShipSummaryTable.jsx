@@ -48,8 +48,14 @@ export default class ShipSummaryTable extends TranslatedComponent {
     const boostTooltip = canBoost ? 'TT_SUMMARY_BOOST' : canThrust ? 'TT_SUMMARY_BOOST_NONFUNCTIONAL' : 'TT_SUMMARY_SPEED_NONFUNCTIONAL';
     const sgMetrics = Calc.shieldMetrics(ship, pips.sys || 2);
     const armourMetrics = Calc.armourMetrics(ship);
+    let shieldColour = 'blue';
+    if (shieldGenerator && shieldGenerator.m.grp === 'psg') {
+      shieldColour = 'green';
+    } else if (shieldGenerator && shieldGenerator.m.grp === 'bsg') {
+      shieldColour = 'purple';
+    }
     this.state = {
-      shieldColour: shieldGenerator && shieldGenerator.m.grp === 'psg' ? 'green' : 'blue'
+      shieldColour
     }
     return <div id='summary'>
       <table className={'summaryTable'}>
