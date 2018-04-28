@@ -100,16 +100,16 @@ export default class ShipSummaryTable extends TranslatedComponent {
         </tbody>
       </table>
       <table className={'summaryTable'}>
-        <thead>
+        <thead className={'blue'}>
           <tr>
             <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explres')}</th>
             <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinres')}</th>
             <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermres')}</th>
 
-            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('absolute')}</th>
-            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('explosive')}</th>
-            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('kinetic')}</th>
-            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('thermal')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('absolute') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explosive') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinetic') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermal') + ' ' + translate('HP')}</th>
             <th onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECOVER', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('recovery')}</th>
             <th onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECHARGE', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('recharge')}</th>
           </tr>
@@ -133,10 +133,10 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinres')}</th>
             <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermres')}</th>
 
-            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('absolute')}</th>
-            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('explosive')}</th>
-            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('kinetic')}</th>
-            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('damage from ') + ' ' + translate('thermal')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('absolute') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explosive') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinetic') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermal') + ' ' + translate('HP')}</th>
             <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('raw module armour')}</th>
             <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('internal protection')}</th>
 
