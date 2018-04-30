@@ -256,7 +256,7 @@ function _addModifications (module, modifiers, blueprint, grade, specialModifica
   for (const i in modifiers) {
     // Some special modifications
     // Look up the modifiers to find what we need to do
-    const findMod = val => Object.keys(Modifications.modifierActions).find(elem => elem.toString().toLowerCase().search(val.toString().toLowerCase().replace(/(OutfittingFieldType_|persecond)/igm, '')) >= 0)
+    const findMod = val => Object.keys(Modifications.modifierActions).find(elem => elem.toString().toLowerCase().replace(/(outfittingfieldtype_|persecond)/igm, '') === val.toString().toLowerCase().replace(/(outfittingfieldtype_|persecond)/igm, ''))
     const modifierActions = Modifications.modifierActions[findMod(modifiers[i].Label)]
     //TODO: Figure out how to scale this value.
     if (!!modifiers[i].LessIsGood) {
