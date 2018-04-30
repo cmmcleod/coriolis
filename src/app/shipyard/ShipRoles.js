@@ -49,7 +49,6 @@ export function trader (ship, shielded, standardOpts) {
     if (canMount(ship, slot, 'sg')) { // Assuming largest slot can hold an eligible shield
       const shield = ModuleUtils.findInternal('sg', slot.maxClass, 'A')
       if (shield && shield.maxmass > ship.hullMass) {
-        console.log(shield)
         ship.use(slot, shield)
         ship.setSlotEnabled(slot, true)
         usedSlots.push(slot)
@@ -414,4 +413,3 @@ export function racer (ship) {
   // ship.standard[5].m.blueprint.grade = 5;
   // setBest(ship, ship.standard[5].m);
 }
-

@@ -140,8 +140,8 @@ export default class ShipSummaryTable extends TranslatedComponent {
           <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.explosive.total : 0)}</td>
           <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.kinetic.total : 0 )}</td>
           <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.thermal.total : 0 )}</td>
-          <td>{formats.time(sgMetrics.recover)}</td>
-          <td>{formats.time(sgMetrics.recharge)}</td>
+          <td>{sgMetrics && sgMetrics.recover ? formats.time(sgMetrics.recover) : 0}</td>
+          <td>{sgMetrics && sgMetrics.recharge ? formats.time(sgMetrics.recharge) : 0}</td>
         </tr>
         </tbody>
         <thead>
