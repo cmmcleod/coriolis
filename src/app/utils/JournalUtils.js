@@ -95,49 +95,49 @@ export function shipFromLoadoutJSON (json) {
           throw 'Unknown bulkheads "' + module.Item + '"'
         }
         ship.bulkheads.enabled = true
-        if (module.Engineering) _addModifications(ship.bulkheads.m, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+        if (module.Engineering) _addModifications(ship.bulkheads.m, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level, module.Engineering.ExperimentalEffect)
         break
       case 'powerplant':
         const powerplant = _moduleFromFdName(module.Item)
         ship.use(ship.standard[0], powerplant, true)
         ship.standard[0].enabled = module.On
         ship.standard[0].priority = module.Priority
-        if (module.Engineering) _addModifications(powerplant, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+        if (module.Engineering) _addModifications(powerplant, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level, module.Engineering.ExperimentalEffect)
         break
       case 'mainengines':
         const thrusters = _moduleFromFdName(module.Item)
         ship.use(ship.standard[1], thrusters, true)
         ship.standard[1].enabled = module.On
         ship.standard[1].priority = module.Priority
-        if (module.Engineering) _addModifications(thrusters, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+        if (module.Engineering) _addModifications(thrusters, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level, module.Engineering.ExperimentalEffect)
         break
       case 'frameshiftdrive':
         const frameshiftdrive = _moduleFromFdName(module.Item)
         ship.use(ship.standard[2], frameshiftdrive, true)
         ship.standard[2].enabled = module.On
         ship.standard[2].priority = module.Priority
-        if (module.Engineering)  _addModifications(frameshiftdrive, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+        if (module.Engineering)  _addModifications(frameshiftdrive, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level, module.Engineering.ExperimentalEffect)
         break
       case 'lifesupport':
         const lifesupport = _moduleFromFdName(module.Item)
         ship.use(ship.standard[3], lifesupport, true)
         ship.standard[3].enabled = module.On === true
         ship.standard[3].priority = module.Priority
-        if (module.Engineering) _addModifications(lifesupport, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+        if (module.Engineering) _addModifications(lifesupport, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level, module.Engineering.ExperimentalEffect)
         break
       case 'powerdistributor':
         const powerdistributor = _moduleFromFdName(module.Item)
         ship.use(ship.standard[4], powerdistributor, true)
         ship.standard[4].enabled = module.On
         ship.standard[4].priority = module.Priority
-        if (module.Engineering) _addModifications(powerdistributor, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+        if (module.Engineering) _addModifications(powerdistributor, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level, module.Engineering.ExperimentalEffect)
         break
       case 'radar':
         const sensors = _moduleFromFdName(module.Item)
         ship.use(ship.standard[5], sensors, true)
         ship.standard[5].enabled = module.On
         ship.standard[5].priority = module.Priority
-        if (module.Engineering) _addModifications(sensors, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level)
+        if (module.Engineering) _addModifications(sensors, module.Engineering.Modifiers, module.Engineering.BlueprintName, module.Engineering.Level, module.Engineering.ExperimentalEffect)
         break
       case 'fueltank':
         const fueltank = _moduleFromFdName(module.Item)
