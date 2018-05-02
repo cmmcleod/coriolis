@@ -15,22 +15,30 @@ export default class ShipSummaryTable extends TranslatedComponent {
     cargo: PropTypes.number.isRequired,
     fuel: PropTypes.number.isRequired,
     marker: PropTypes.string.isRequired,
+    pips: PropTypes.object.isRequired
   };
+
+  constructor(props) {
+    super(props)
+    this.didContextChange = this.didContextChange.bind(this);
+    this.state = {
+      shieldColour: 'blue'
+    }
+  }
 
   /**
    * Render the table
    * @return {React.Component} Summary table
    */
   render() {
-    const { ship, cargo, fuel } = this.props;
+    const { ship, cargo, fuel, pips } = this.props;
     let { language, tooltip, termtip } = this.context;
     let translate = language.translate;
     let u = language.units;
     let formats = language.formats;
     let { time, int, round, f1, f2 } = formats;
     let hide = tooltip.bind(null, null);
-
-    const shieldGenerator = ship.findInternalByGroup('sg');
+    const shieldGenerator = ship.findInternalByGroup('sg') || ship.findInternalByGroup('psg');
     const sgClassNames = cn({ warning: shieldGenerator && !ship.shield, muted: !shieldGenerator });
     const sgTooltip = shieldGenerator ? 'TT_SUMMARY_SHIELDS' : 'TT_SUMMARY_SHIELDS_NONFUNCTIONAL';
     const timeToDrain = Calc.timeToDrainWep(ship, 4);
@@ -38,9 +46,19 @@ export default class ShipSummaryTable extends TranslatedComponent {
     const speedTooltip = canThrust ? 'TT_SUMMARY_SPEED' : 'TT_SUMMARY_SPEED_NONFUNCTIONAL';
     const canBoost = ship.canBoost(cargo, ship.fuelCapacity);
     const boostTooltip = canBoost ? 'TT_SUMMARY_BOOST' : canThrust ? 'TT_SUMMARY_BOOST_NONFUNCTIONAL' : 'TT_SUMMARY_SPEED_NONFUNCTIONAL';
-
+    const sgMetrics = Calc.shieldMetrics(ship, pips.sys || 2);
+    const armourMetrics = Calc.armourMetrics(ship);
+    let shieldColour = 'blue';
+    if (shieldGenerator && shieldGenerator.m.grp === 'psg') {
+      shieldColour = 'green';
+    } else if (shieldGenerator && shieldGenerator.m.grp === 'bsg') {
+      shieldColour = 'purple';
+    }
+    this.state = {
+      shieldColour
+    }
     return <div id='summary'>
-      <table id='summaryTable'>
+      <table className={'summaryTable'}>
         <thead>
           <tr className='main'>
             <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !canThrust }) }>{translate('speed')}</th>
@@ -98,6 +116,66 @@ export default class ShipSummaryTable extends TranslatedComponent {
           </tr>
         </tbody>
       </table>
+      <table className={'summaryTable'}>
+        <thead className={this.state.shieldColour}>
+          <tr>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermres')}</th>
+
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('absolute') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explosive') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinetic') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermal') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECOVER', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('recovery')}</th>
+            <th onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECHARGE', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('recharge')}</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr >
+          <td>{int(ship.shieldExplRes * 100) + '%'}</td>
+          <td>{int(ship.shieldThermRes * 100) + '%'}</td>
+          <td>{int(ship.shieldKinRes * 100) + '%'}</td>
+          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.absolute.total : 0)}</td>
+          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.explosive.total : 0)}</td>
+          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.kinetic.total : 0 )}</td>
+          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.thermal.total : 0 )}</td>
+          <td>{sgMetrics && sgMetrics.recover ? formats.time(sgMetrics.recover) : 0}</td>
+          <td>{sgMetrics && sgMetrics.recharge ? formats.time(sgMetrics.recharge) : 0}</td>
+        </tr>
+        </tbody>
+        <thead>
+          <tr>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermres')}</th>
+
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('absolute') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explosive') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinetic') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermal') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('raw module armour')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('internal protection')}</th>
+
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{int(ship.hullExplRes * 100) + '%'}</td>
+            <td>{int(ship.hullThermRes * 100) + '%'}</td>
+            <td>{int(ship.hullKinRes * 100) + '%'}</td>
+            <td>{int(armourMetrics.total / armourMetrics.absolute.total)}</td>
+            <td>{int(armourMetrics.total / armourMetrics.explosive.total)}</td>
+            <td>{int(armourMetrics.total / armourMetrics.kinetic.total)}</td>
+            <td>{int(armourMetrics.total / armourMetrics.thermal.total)}</td>
+            <td>{int(armourMetrics.modulearmour)}</td>
+            <td>{int(armourMetrics.moduleprotection * 100) + '%'}</td>
+
+          </tr>
+        </tbody>
+      </table>
+
     </div>;
   }
 }

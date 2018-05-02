@@ -70,10 +70,29 @@
   padding: 0.5em 0.2em;
   font-size: 0.9em;
 
-  #summaryTable {
+  .summaryTable {
     .user-select-none();
     width: 100%;
     border-collapse: collapse;
+
+    & > thead.blue {
+      background-color: @secondary;
+      border-left: 1px solid @primary-bg;
+      color: @primary-bg;
+    }
+
+    & > thead.green {
+      background-color: @success;
+      border-left: 1px solid @primary-bg;
+      color: @primary-bg;
+    }
+
+    & > thead.purple {
+      background-color: @purple;
+      border-left: 1px solid @primary-bg;
+      color: @primary-bg;
+    }
+
   }
 }
 
