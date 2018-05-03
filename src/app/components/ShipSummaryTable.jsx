@@ -119,20 +119,22 @@ export default class ShipSummaryTable extends TranslatedComponent {
       <table className={'summaryTable'}>
         <thead className={this.state.shieldColour}>
           <tr>
-            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explres')}</th>
-            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinres')}</th>
-            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'shield', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('shield')}</th>
+            <th onMouseEnter={termtip.bind(null, 'explres', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'kinres', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'thermres', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermres')}</th>
 
-            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('absolute') + ' ' + translate('HP')}</th>
-            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explosive') + ' ' + translate('HP')}</th>
-            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinetic') + ' ' + translate('HP')}</th>
-            <th onMouseEnter={termtip.bind(null, 'shield ', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermal') + ' ' + translate('HP')}</th>
+            <th onMouseEnter={termtip.bind(null, 'TT_SUMMARY_SHIELDS_SCB', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('absolute')} ${translate('HP')}`}</th>
+            <th onMouseEnter={termtip.bind(null, 'TT_SUMMARY_SHIELDS_SCB', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('explosive')} ${translate('HP')}`}</th>
+            <th onMouseEnter={termtip.bind(null, 'TT_SUMMARY_SHIELDS_SCB', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('kinetic')} ${translate('HP')}`}</th>
+            <th onMouseEnter={termtip.bind(null, 'TT_SUMMARY_SHIELDS_SCB', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('thermal')} ${translate('HP')}`}</th>
             <th onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECOVER', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('recovery')}</th>
             <th onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECHARGE', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('recharge')}</th>
           </tr>
         </thead>
         <tbody>
         <tr>
+          <td>{translate(shieldGenerator && shieldGenerator.m.grp || 'No Shield')}</td>
           <td>{int(ship.shieldExplRes * 100) + '%'}</td>
           <td>{int(ship.shieldKinRes * 100) + '%'}</td>
           <td>{int(ship.shieldThermRes * 100) + '%'}</td>
@@ -146,15 +148,16 @@ export default class ShipSummaryTable extends TranslatedComponent {
         </tbody>
         <thead>
           <tr>
-            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explres')}</th>
-            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinres')}</th>
-            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('armour')}</th>
+            <th onMouseEnter={termtip.bind(null, 'explres', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'kinres', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinres')}</th>
+            <th onMouseEnter={termtip.bind(null, 'thermres', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermres')}</th>
 
-            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('absolute') + ' ' + translate('HP')}</th>
-            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explosive') + ' ' + translate('HP')}</th>
-            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinetic') + ' ' + translate('HP')}</th>
-            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermal') + ' ' + translate('HP')}</th>
-            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('raw module armour')}</th>
+            <th onMouseEnter={termtip.bind(null, 'PHRASE_EFFECTIVE_ARMOUR', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('absolute')} ${translate('HP')}`}</th>
+            <th onMouseEnter={termtip.bind(null, 'PHRASE_EFFECTIVE_ARMOUR', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('explosive')} ${translate('HP')}`}</th>
+            <th onMouseEnter={termtip.bind(null, 'PHRASE_EFFECTIVE_ARMOUR', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('kinetic')} ${translate('HP')}`}</th>
+            <th onMouseEnter={termtip.bind(null, 'PHRASE_EFFECTIVE_ARMOUR', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('thermal')} ${translate('HP')}`}</th>
+            <th onMouseEnter={termtip.bind(null, 'TT_MODULE_ARMOUR', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('raw module armour')}</th>
             <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('internal protection')}</th>
 
 
@@ -162,6 +165,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
         </thead>
         <tbody>
           <tr>
+            <td>{translate(ship && ship.bulkheads && ship.bulkheads.m && ship.bulkheads.m.name || 'No Armour')}</td>
             <td>{int(ship.hullExplRes * 100) + '%'}</td>
             <td>{int(ship.hullKinRes * 100) + '%'}</td>
             <td>{int(ship.hullThermRes * 100) + '%'}</td>
