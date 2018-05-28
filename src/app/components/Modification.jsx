@@ -14,7 +14,10 @@ export default class Modification extends TranslatedComponent {
     m: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
     value: PropTypes.number.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onKeyDown: PropTypes.func.isRequired,
+    modItems: PropTypes.array.isRequired,
+    handleModChange: PropTypes.func.isRequired
   };
 
   /**
@@ -36,7 +39,6 @@ export default class Modification extends TranslatedComponent {
    */
   _updateValue(value) {
     const name = this.props.name;
-
     let scaledValue = Math.round(Number(value) * 100);
     // Limit to +1000% / -99.99%
     if (scaledValue > 100000) {
@@ -57,9 +59,15 @@ export default class Modification extends TranslatedComponent {
 
   /**
    * Triggered when an update to slider value is finished i.e. when losing focus
+   * 
+   * pnellesen (24/05/2018): added value check below - this should prevent experimental effects from being recalculated 
+   * with each onBlur event, even when no change has actually been made to the field. 
    */
   _updateFinished() {
-    this.props.onChange();
+    if (this.props.value != this.state.value) {
+      this.props.handleModChange(true);
+      this.props.onChange();
+    }
   }
 
   /**
@@ -86,9 +94,9 @@ export default class Modification extends TranslatedComponent {
     }
 
     return (
-      <div onBlur={this._updateFinished.bind(this)} className={'cb'} key={name}>
+      <div onBlur={this._updateFinished.bind(this)} className={'cb'} key={name} ref={ modItem => this.props.modItems[name] = modItem }>
         <div className={'cb'}>{translate(name, m.grp)}{symbol}</div>
-        <NumberEditor className={'cb'} style={{ width: '90%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={this.state.value} onValueChange={this._updateValue.bind(this)} />
+        <NumberEditor className={'cb'} style={{ width: '90%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={this.state.value} onValueChange={this._updateValue.bind(this)} onKeyDown={ this.props.onKeyDown } />
       </div>
     );
   }

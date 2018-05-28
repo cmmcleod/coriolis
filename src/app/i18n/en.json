@@ -62,6 +62,7 @@
     "TT_SUMMARY_BOOST": "With full fuel tank and 4 pips to ENG",
     "TT_SUMMARY_BOOST_NONFUNCTIONAL": "Power distributor not able to supply enough power to boost",
     "TT_SUMMARY_SHIELDS": "Raw shield strength, including boosters",
+    "TT_SUMMARY_SHIELDS_SCB": "Raw shield strength, including boosters and SCBs",
     "TT_SUMMARY_SHIELDS_NONFUNCTIONAL": "No shield generator or shield generator powered off",
     "TT_SUMMARY_INTEGRITY": "Ship integrity, including bulkheads and hull reinforcement packages",
     "TT_SUMMARY_HULL_MASS": "Mass of the hull prior to any modules being installed",
