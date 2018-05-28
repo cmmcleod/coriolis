@@ -104,7 +104,10 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     diffDetails: PropTypes.func,
     m: PropTypes.object,
     shipMass: PropTypes.number,
-    warning: PropTypes.func
+    warning: PropTypes.func,
+    firstSlotId: PropTypes.string,
+    lastSlotId: PropTypes.string,
+    slotDiv: PropTypes.object
   };
 
   static defaultProps = {
@@ -120,6 +123,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     super(props);
     this._hideDiff = this._hideDiff.bind(this);
     this.state = this._initState(props, context);
+    this.slotItems = [];// Array to hold <li> refs.
   }
 
   /**
@@ -130,8 +134,9 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    */
   _initState(props, context) {
     let translate = context.language.translate;
-    let { m, warning, shipMass, onSelect, modules } = props;
+    let { m, warning, shipMass, onSelect, modules, firstSlotId, lastSlotId } = props;
     let list, currentGroup;
+    
     let buildGroup = this._buildGroup.bind(
       this,
       translate,
@@ -142,15 +147,18 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         this._hideDiff(event);
         onSelect(m);
       }
-    );
-
+   );
+   
     if (modules instanceof Array) {
       list = buildGroup(modules[0].grp, modules);
     } else {
       list = [];
       // At present time slots with grouped options (Hardpoints and Internal) can be empty
       if (m) {
-        list.push(<div className='empty-c upp' key='empty' onClick={onSelect.bind(null, null)} >{translate('empty')}</div>);
+        let emptyId = 'empty';
+        if(this.firstSlotId == null) this.firstSlotId = emptyId;
+        let keyDown = this._keyDown.bind(this, onSelect);
+        list.push(<div className='empty-c upp' key={emptyId} data-id={emptyId} onClick={onSelect.bind(null, null)} onKeyDown={keyDown} tabIndex="0" ref={slotItem => this.slotItems[emptyId] = slotItem} >{translate('empty')}</div>);
       }
 
       // Need to regroup the modules by our own categorisation
@@ -200,8 +208,8 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         }
       }
     }
-
-    return { list, currentGroup };
+    let trackingFocus = false;
+    return { list, currentGroup, trackingFocus};
   }
 
   /**
@@ -215,18 +223,18 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    * @param  {Array} modules        Available modules
    * @return {React.Component}      Available Module Group contents
    */
-  _buildGroup(translate, mountedModule, warningFunc, mass, onSelect, grp, modules) {
+  _buildGroup(translate, mountedModule, warningFunc, mass, onSelect, grp, modules, firstSlotId, lastSlotId) {
     let prevClass = null, prevRating = null, prevName;
     let elems = [];
-
+    
     const sortedModules = modules.sort(this._moduleOrder);
-
+    
+    
     // Calculate the number of items per class.  Used so we don't have long lists with only a few items in each row
     const tmp = sortedModules.map((v, i) => v['class']).reduce((count, cls) => { count[cls] = ++count[cls] || 1; return count; }, {});
     const itemsPerClass = Math.max.apply(null, Object.keys(tmp).map(key => tmp[key]));
 
     let itemsOnThisRow = 0;
-
     for (let i = 0; i < sortedModules.length; i++) {
       let m = sortedModules[i];
       let mount = null;
@@ -248,8 +256,23 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       let eventHandlers;
 
       if (disabled || active) {
-        eventHandlers = {};
+        /** 
+         * ToDo: possibly create an "activeSlotId" variable to allow 
+         * focus to be set on active slot when slot menu is opened
+         */  
+        eventHandlers = {
+          onKeyDown: this._keyDown.bind(this, null),
+          onKeyUp: this._keyUp.bind(this, null)
+
+        };
       } else {
+        /**
+         * Get the ids of the first and last <li> elements in the <ul> that are focusable (i.e. are not active or disabled)
+         * Will be used to keep focus inside the <ul> on Tab and Shift-Tab while it is visible
+         */
+        if (this.firstSlotId == null) this.firstSlotId = sortedModules[i].id;
+        this.lastSlotId = sortedModules[i].id;
+
         let showDiff = this._showDiff.bind(this, mountedModule, m);
         let select = onSelect.bind(null, m);
 
@@ -258,7 +281,9 @@ export default class AvailableModulesMenu extends TranslatedComponent {
           onTouchStart: this._touchStart.bind(this, showDiff),
           onTouchEnd: this._touchEnd.bind(this, select),
           onMouseLeave: this._hideDiff,
-          onClick: select
+          onClick: select,
+          onKeyDown: this._keyDown.bind(this, select),
+          onKeyUp: this._keyUp.bind(this, select)
         };
       }
 
@@ -275,20 +300,20 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         elems.push(<br key={'b' + m.grp + i} />);
         itemsOnThisRow = 0;
       }
-
-      elems.push(
-        <li key={m.id} className={classes} {...eventHandlers}>
+       let tbIdx = (classes.indexOf('disabled') < 0 && classes.indexOf('active') < 0) ? 0 : undefined;
+       elems.push(
+        <li key={m.id} data-id={m.id} className={classes} {...eventHandlers} tabIndex={tbIdx} ref={slotItem => this.slotItems[m.id] = slotItem}>
           {mount}
           {(mount ? ' ' : '') + m.class + m.rating + (m.missile ? '/' + m.missile : '') + (m.name ? ' ' + translate(m.name) : '')}
         </li>
       );
+      
       itemsOnThisRow++;
       prevClass = m.class;
       prevRating = m.rating;
       prevName = m.name;
     }
-
-    return <ul key={'modules' + grp} >{elems}</ul>;
+    return <ul key={'modules' + grp}>{elems}</ul>;
   }
 
   /**
@@ -337,6 +362,41 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       select();
     }
     this._hideDiff();
+  }
+
+  /**
+   * Key down - select module on Enter key, move to next/previous module on Tab/Shift-Tab, close on Esc
+   * @param  {Function} select Select module callback
+   * @param  {SyntheticEvent} event Event
+   */
+
+  _keyDown(select, event) {
+    var className = event.currentTarget.attributes['class'].value;
+    if (event.key == 'Enter' && className.indexOf('disabled') < 0 && className.indexOf('active') < 0) {
+      select();
+      return
+    }
+    var elemId = event.currentTarget.attributes['data-id'].value;
+    if (className.indexOf('disabled') < 0 && event.key == 'Tab') {
+      if (event.shiftKey && elemId == this.firstSlotId) {
+        event.preventDefault();
+        this.slotItems[this.lastSlotId].focus();
+        return;        
+      }
+      if (!event.shiftKey && elemId == this.lastSlotId) {
+        event.preventDefault();
+        this.slotItems[this.firstSlotId].focus();        
+        return;
+      }
+    }
+  }
+
+  /**
+   * Key Up
+   * 
+   */
+  _keyUp(select,event) {
+    //nothing here yet
   }
 
   /**
@@ -392,9 +452,28 @@ export default class AvailableModulesMenu extends TranslatedComponent {
   /**
    * Scroll to mounted (if it exists) module group on mount
    */
+
   componentDidMount() {
     if (this.groupElem) {  // Scroll to currently selected group
       this.node.scrollTop = this.groupElem.offsetTop;
+    }
+
+    if (this.slotItems) {
+      /**
+       * Set focus on first focusable slot <li> after component mounts. May want to consider
+       * changing this to the Active item instead.
+       */
+      this.slotItems[this.firstSlotId].focus();
+    }
+  }
+
+  componentWillUnmount() {
+    
+    if(this.props.slotDiv) {
+      console.log("AvailableModulesMenu component will unmount. Set focus to slot");
+      this.props.slotDiv.focus();
+    } else {
+      console.log("AvailableModulesMenu component will unmount. No slotDiv prop present.");
     }
   }
 
@@ -412,6 +491,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    * @return {React.Component} List
    */
   render() {
+    console.log("Tracking focus? " + this.state.trackingFocus);
     return (
       <div ref={node => this.node = node}
           className={cn('select', this.props.className)}

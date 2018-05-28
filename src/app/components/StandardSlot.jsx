@@ -35,6 +35,18 @@ export default class StandardSlot extends TranslatedComponent {
   constructor(props) {
     super(props);
     this._modificationsSelected = false;
+    this._keyDown = this._keyDown.bind(this);
+    this.modButton = null;
+    this.slotDiv = null;
+  }
+
+   _keyDown(event) {
+    if (event.key == 'Enter') {
+        if(event.target.className == 'r') {
+            this._toggleModifications();
+        }
+        this.props.onOpen(event); 
+    }
   }
 
   /**
@@ -82,6 +94,7 @@ export default class StandardSlot extends TranslatedComponent {
           ship={ship}
           m={m}
           marker={modificationsMarker}
+          modButton = {this.modButton}
         />;
       } else {
         menu = <AvailableModulesMenu
@@ -92,12 +105,13 @@ export default class StandardSlot extends TranslatedComponent {
           onSelect={onSelect}
           warning={warning}
           diffDetails={diffDetails.bind(ship, this.context.language)}
+          slotDiv = {this.slotDiv}
         />;
       }
     }
 
     return (
-      <div className={cn('slot', { selected: this.props.selected })} onClick={this.props.onOpen} onContextMenu={stopCtxPropagation}>
+      <div className={cn('slot', { selected: this.props.selected })} onClick={this.props.onOpen} onKeyDown={this._keyDown} onContextMenu={stopCtxPropagation} tabIndex="0" ref={ slotDiv => this.slotDiv = slotDiv }>
         <div className={cn('details-container', { warning: warning && warning(slot.m), disabled: m.grp !== 'bh' && !slot.enabled })}>
           <div className={'sz'}>{m.grp == 'bh' ? m.name.charAt(0) : slot.maxClass}</div>
           <div>
@@ -121,7 +135,7 @@ export default class StandardSlot extends TranslatedComponent {
                 { showModuleResistances && m.getKineticResistance() ? <div className='l'>{translate('kinres')}: {formats.pct(m.getKineticResistance())}</div> : null }
                 { showModuleResistances && m.getThermalResistance() ? <div className='l'>{translate('thermres')}: {formats.pct(m.getThermalResistance())}</div> : null }
                 { m.getIntegrity() ? <div className='l'>{translate('integrity')}: {formats.int(m.getIntegrity())}</div> : null }
-	        { validMods.length > 0 ? <div className='r' ><button onClick={this._toggleModifications.bind(this)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
+	        { validMods.length > 0 ? <div className='r' tabIndex="0" ref={ modButton => this.modButton = modButton }><button  tabIndex="-1" onClick={this._toggleModifications.bind(this)} onContextMenu={stopCtxPropagation} onMouseOver={termtip.bind(null, 'modifications')} onMouseOut={tooltip.bind(null, null)}><ListModifications /></button></div> : null }
             </div>
           </div>
         </div>
@@ -134,6 +148,7 @@ export default class StandardSlot extends TranslatedComponent {
    * Toggle the modifications flag when selecting the modifications icon
    */
   _toggleModifications() {
+
     this._modificationsSelected = !this._modificationsSelected;
   }
 }
