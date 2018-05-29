@@ -437,12 +437,15 @@ export default class Ship {
     m.blueprint = bp;
     this.clearModifications(m);
     // Set any hidden items for the blueprint now
-    const features = m.blueprint.grades[m.blueprint.grade].features;
-    for (const featureName in features) {
-      if (Modifications.modifications[featureName].hidden) {
-        this.setModification(m, featureName, bp.grades[bp.grade].features[featureName][0]);
+    if (m.blueprint.grades[m.blueprint.grade] && m.blueprint.grades[m.blueprint.grade].features) {
+      const features = m.blueprint.grades[m.blueprint.grade].features;
+      for (const featureName in features) {
+        if (Modifications.modifications[featureName].hidden) {
+          this.setModification(m, featureName, bp.grades[bp.grade].features[featureName][0]);
+        }
       }
     }
+
     this.updateModificationsString();
   }
 

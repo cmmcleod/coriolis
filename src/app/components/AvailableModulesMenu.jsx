@@ -107,6 +107,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     warning: PropTypes.func,
     firstSlotId: PropTypes.string,
     lastSlotId: PropTypes.string,
+    activeSlotId: PropTypes.string,
     slotDiv: PropTypes.object
   };
 
@@ -255,11 +256,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       });
       let eventHandlers;
 
-      if (disabled || active) {
-        /** 
-         * ToDo: possibly create an "activeSlotId" variable to allow 
-         * focus to be set on active slot when slot menu is opened
-         */  
+      if (disabled) {
         eventHandlers = {
           onKeyDown: this._keyDown.bind(this, null),
           onKeyUp: this._keyUp.bind(this, null)
@@ -271,6 +268,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
          * Will be used to keep focus inside the <ul> on Tab and Shift-Tab while it is visible
          */
         if (this.firstSlotId == null) this.firstSlotId = sortedModules[i].id;
+        if (active) this.activeSlotId = sortedModules[i].id;
         this.lastSlotId = sortedModules[i].id;
 
         let showDiff = this._showDiff.bind(this, mountedModule, m);
@@ -300,8 +298,8 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         elems.push(<br key={'b' + m.grp + i} />);
         itemsOnThisRow = 0;
       }
-       let tbIdx = (classes.indexOf('disabled') < 0 && classes.indexOf('active') < 0) ? 0 : undefined;
-       elems.push(
+      let tbIdx = (classes.indexOf('disabled') < 0) ? 0 : undefined;
+      elems.push(
         <li key={m.id} data-id={m.id} className={classes} {...eventHandlers} tabIndex={tbIdx} ref={slotItem => this.slotItems[m.id] = slotItem}>
           {mount}
           {(mount ? ' ' : '') + m.class + m.rating + (m.missile ? '/' + m.missile : '') + (m.name ? ' ' + translate(m.name) : '')}
@@ -372,7 +370,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
 
   _keyDown(select, event) {
     var className = event.currentTarget.attributes['class'].value;
-    if (event.key == 'Enter' && className.indexOf('disabled') < 0 && className.indexOf('active') < 0) {
+      if (event.key == 'Enter' && className.indexOf('disabled') < 0 && className.indexOf('active') < 0) {
       select();
       return
     }
@@ -452,28 +450,26 @@ export default class AvailableModulesMenu extends TranslatedComponent {
   /**
    * Scroll to mounted (if it exists) module group on mount
    */
-
   componentDidMount() {
     if (this.groupElem) {  // Scroll to currently selected group
       this.node.scrollTop = this.groupElem.offsetTop;
     }
-
-    if (this.slotItems) {
-      /**
-       * Set focus on first focusable slot <li> after component mounts. May want to consider
-       * changing this to the Active item instead.
-       */
+    /**
+     * Set focus on active or first slot element, if applicable.
+     */
+    if (this.slotItems[this.activeSlotId]) {
+      this.slotItems[this.activeSlotId].focus();
+    } else if (this.slotItems[this.firstSlotId]) {
       this.slotItems[this.firstSlotId].focus();
     }
   }
 
   componentWillUnmount() {
-    
+    /**
+     * Set focus to slot element ref (if we have one) after modules component unmounts
+     */
     if(this.props.slotDiv) {
-      console.log("AvailableModulesMenu component will unmount. Set focus to slot");
       this.props.slotDiv.focus();
-    } else {
-      console.log("AvailableModulesMenu component will unmount. No slotDiv prop present.");
     }
   }
 
