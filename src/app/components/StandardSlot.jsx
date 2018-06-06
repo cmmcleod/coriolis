@@ -45,7 +45,7 @@ export default class StandardSlot extends TranslatedComponent {
         if(event.target.className == 'r') {
             this._toggleModifications();
         }
-        this.props.onOpen(event); 
+        this.props.onOpen(event);
     }
   }
 
@@ -61,6 +61,9 @@ export default class StandardSlot extends TranslatedComponent {
     let classRating = m.class + m.rating;
     let menu;
     let validMods = m == null || !Modifications.modules[m.grp] ? [] : (Modifications.modules[m.grp].modifications || []);
+    if (m && m.name && m.name === 'Guardian Hybrid Power Plant') {
+      validMods = [];
+    }
     let showModuleResistances = Persist.showModuleResistances();
     let mass = m.getMass() || m.cargo || m.fuel || 0;
 
