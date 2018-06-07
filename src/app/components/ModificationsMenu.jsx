@@ -13,7 +13,7 @@ import {
   getPercent,
   setRandom,
   specialToolTip
-} from '../utils/BlueprintFunctions'
+} from '../utils/BlueprintFunctions';
 
 /**
  * Modifications menu
@@ -50,8 +50,8 @@ export default class ModificationsMenu extends TranslatedComponent {
     this.firstModId = null;
     this.firstBPLabel = null;// First item in mod menu
     this.lastModId = null;
-    this.lastNeId = null;//Last number editor id. Used to set focus to last number editor when shift-tab pressed on first element in mod menu.
-    this.modValDidChange = false; //used to determine if component update was caused by change in modification value.
+    this.lastNeId = null;// Last number editor id. Used to set focus to last number editor when shift-tab pressed on first element in mod menu.
+    this.modValDidChange = false; // used to determine if component update was caused by change in modification value.
     this._handleModChange = this._handleModChange.bind(this);
 
     this.state = {
@@ -78,19 +78,19 @@ export default class ModificationsMenu extends TranslatedComponent {
         // Grade is a string in the JSON so make it a number
         grade = Number(grade);
         const classes = cn('c', {
-          active: m.blueprint && blueprint.id === m.blueprint.id && grade === m.blueprint.grade 
+          active: m.blueprint && blueprint.id === m.blueprint.id && grade === m.blueprint.grade
         });
         const close = this._blueprintSelected.bind(this, blueprintName, grade);
         const key = blueprintName + ':' + grade;
         const tooltipContent = blueprintTooltip(translate, blueprint.grades[grade], Modifications.modules[m.grp].blueprints[blueprintName].grades[grade].engineers, m.grp);
-        
-        
+
+
         blueprintGrades.unshift(<li key={key} tabIndex="0" data-id={key} className={classes} style={{ width: '2em' }} onMouseOver={termtip.bind(null, tooltipContent)} onMouseOut={tooltip.bind(null, null)} onClick={close} onKeyDown={this._keyDown} ref={modItem => this.modItems[key] = modItem}>{grade}</li>);
       }
       if (blueprintGrades) {
         const thisLen = blueprintGrades.length;
         if (this.firstModId == null) this.firstModId = blueprintGrades[0].key;
-        this.lastModId = blueprintGrades[thisLen-1].key;
+        this.lastModId = blueprintGrades[thisLen - 1].key;
         blueprints.push(<div key={blueprint.name} className={'select-group cap'}>{translate(blueprint.name)}</div>);
         blueprints.push(<ul key={blueprintName}>{blueprintGrades}</ul>);
       }
@@ -104,37 +104,36 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @param  {SyntheticEvent} event Event
    *
    */
-  
+
   _keyDown(event) {
-    var className = null;
-    var elemId = null;
+    let className = null;
+    let elemId = null;
     if (event.currentTarget.attributes['class']) className = event.currentTarget.attributes['class'].value;
     if (event.currentTarget.attributes['data-id']) elemId = event.currentTarget.attributes['data-id'].value;
-    
+
     if (event.key == 'Enter' && className.indexOf('disabled') < 0 && className.indexOf('active') < 0) {
       event.stopPropagation();
       if (elemId != null) {
         this.modItems[elemId].click();
       } else {
-        
         event.currentTarget.click();
       }
-      return
+      return;
     }
     if (event.key == 'Tab') {
-      //Shift-Tab
+      // Shift-Tab
       if(event.shiftKey) {
         if (elemId == this.firstModId && elemId != null) {
           // Initial modification menu
           event.preventDefault();
           this.modItems[this.lastModId].focus();
-          return;        
-        } else  if (event.currentTarget.className.indexOf("button-inline-menu") >= 0 && event.currentTarget.previousElementSibling == null && this.lastNeId != null && this.modItems[this.lastNeId] != null) {
+          return;
+        } else  if (event.currentTarget.className.indexOf('button-inline-menu') >= 0 && event.currentTarget.previousElementSibling == null && this.lastNeId != null && this.modItems[this.lastNeId] != null) {
           // shift-tab on first element in modifications menu. set focus to last number editor field if open
           event.preventDefault();
           this.modItems[this.lastNeId].lastChild.focus();
           return;
-        } else if (event.currentTarget.className.indexOf("button-inline-menu") >= 0 && event.currentTarget.previousElementSibling == null) {
+        } else if (event.currentTarget.className.indexOf('button-inline-menu') >= 0 && event.currentTarget.previousElementSibling == null) {
           // shift-tab on button-inline-menu with no number editor
           event.preventDefault();
           event.currentTarget.parentElement.lastElementChild.focus();
@@ -143,9 +142,9 @@ export default class ModificationsMenu extends TranslatedComponent {
         if (elemId == this.lastModId && elemId != null) {
           // Initial modification menu
           event.preventDefault();
-          this.modItems[this.firstModId].focus();        
+          this.modItems[this.firstModId].focus();
           return;
-        } else if (event.currentTarget.className.indexOf("button-inline-menu") >= 0 && event.currentTarget.nextSibling == null && event.currentTarget.nodeName != "TD") {
+        } else if (event.currentTarget.className.indexOf('button-inline-menu') >= 0 && event.currentTarget.nextSibling == null && event.currentTarget.nodeName != 'TD') {
           // Experimental menu
           event.preventDefault();
           event.currentTarget.parentElement.firstElementChild.focus();
@@ -154,11 +153,10 @@ export default class ModificationsMenu extends TranslatedComponent {
           event.preventDefault();
           this.modItems[this.firstBPLabel].focus();
         }
-
       }
     }
   }
-  
+
 
   /**
    * Render the specials
@@ -167,7 +165,6 @@ export default class ModificationsMenu extends TranslatedComponent {
    * @return {Object}         list: Array of React Components
    */
   _renderSpecials(props, context) {
-    
     const { m } = props;
     const { language, tooltip, termtip } = context;
     const translate = language.translate;
@@ -181,7 +178,7 @@ export default class ModificationsMenu extends TranslatedComponent {
           continue;
         }
         const classes = cn('button-inline-menu', {
-          active: m.blueprint && m.blueprint.special && m.blueprint.special.edname == specialName 
+          active: m.blueprint && m.blueprint.special && m.blueprint.special.edname == specialName
         });
         const close = this._specialSelected.bind(this, specialName);
         if (m.blueprint && m.blueprint.name) {
@@ -200,7 +197,7 @@ export default class ModificationsMenu extends TranslatedComponent {
         }
       }
     }
-    console.log("_renderSpecials. specials: %O", specials);
+    console.log('_renderSpecials. specials: %O', specials);
     return specials;
   }
 
@@ -219,7 +216,7 @@ export default class ModificationsMenu extends TranslatedComponent {
         modifications.push(<Modification key={ key } ship={ ship } m={ m } name={ modName } value={ m.getModValue(modName) / 100 || 0 } onChange={ onChange } onKeyDown={ this._keyDown } modItems={ this.modItems } handleModChange = {this._handleModChange} />);
       }
     }
-    console.log("_renderModifications. modItems: %O", this.modItems);
+    console.log('_renderModifications. modItems: %O', this.modItems);
     return modifications;
   }
 
@@ -280,10 +277,10 @@ export default class ModificationsMenu extends TranslatedComponent {
   _rollFifty() {
     const { m, ship } = this.props;
     setPercent(ship, m, 50);
-    
+
     // this will change the values in the modifications. Set modDidChange to true to prevent focus change when component updates
     this._handleModChange(true);
-    
+
     this.props.onChange();
   }
 
@@ -293,10 +290,10 @@ export default class ModificationsMenu extends TranslatedComponent {
   _rollRandom() {
     const { m, ship } = this.props;
     setRandom(ship, m);
-    
+
     // this will change the values in the modifications. Set modDidChange to true to prevent focus change when component updates
     this._handleModChange(true);
-    
+
     this.props.onChange();
   }
 
@@ -306,10 +303,10 @@ export default class ModificationsMenu extends TranslatedComponent {
   _rollBest() {
     const { m, ship } = this.props;
     setPercent(ship, m, 100);
-    
+
     // this will change the values in the modifications. Set modDidChange to true to prevent focus change when component updates
     this._handleModChange(true);
-    
+
     this.props.onChange();
   }
 
@@ -319,13 +316,11 @@ export default class ModificationsMenu extends TranslatedComponent {
   _rollWorst() {
     const { m, ship } = this.props;
     setPercent(ship, m, 0);
-    
+
     // this will change the values in the modifications. Set modDidChange to true to prevent focus change when component updates
     this._handleModChange(true);
-    
-    this.props.onChange();
-    
 
+    this.props.onChange();
   }
 
   /**
@@ -374,9 +369,8 @@ export default class ModificationsMenu extends TranslatedComponent {
         }
       }
     } else {
-      this._handleModChange(false);//Need to reset if component update due to value change
+      this._handleModChange(false);// Need to reset if component update due to value change
     }
-    
   }
 
   componentWillUnmount() {
@@ -407,7 +401,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     let haveBlueprint = false;
     let blueprintTt;
     let blueprintCv;
-    //TODO: Fix this to actually find the correct blueprint.
+    // TODO: Fix this to actually find the correct blueprint.
     if (!m.blueprint || !m.blueprint.name || !m.blueprint.fdname || !Modifications.modules[m.grp].blueprints || !Modifications.modules[m.grp].blueprints[m.blueprint.fdname]) {
       this.props.ship.clearModuleBlueprint(m);
       this.props.ship.clearModuleSpecial(m);
@@ -440,7 +434,7 @@ export default class ModificationsMenu extends TranslatedComponent {
     const showReset = !blueprintMenuOpened && (!specialMenuOpened || !specials.length) && haveBlueprint;
     const showMods = !blueprintMenuOpened && (!specialMenuOpened || !specials.length) && haveBlueprint;
     if (haveBlueprint) {
-      this.firstBPLabel = blueprintLabel
+      this.firstBPLabel = blueprintLabel;
     } else {
       this.firstBPLabel = 'selectBP';
     }
@@ -451,20 +445,20 @@ export default class ModificationsMenu extends TranslatedComponent {
           onContextMenu={stopCtxPropagation}
           ref={modItem => this.modItems['modMainDiv'] = modItem}
       >
-        { showBlueprintsMenu | showSpecialsMenu ? '' : haveBlueprint ? 
-          <div tabIndex="0" className={ cn('section-menu button-inline-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onMouseOver={termtip.bind(null, blueprintTt)} onMouseOut={tooltip.bind(null, null)} onClick={_toggleBlueprintsMenu} onKeyDown={ this._keyDown } ref={modItems => this.modItems[this.firstBPLabel] = modItems}>{blueprintLabel}</div> : 
+        { showBlueprintsMenu | showSpecialsMenu ? '' : haveBlueprint ?
+          <div tabIndex="0" className={ cn('section-menu button-inline-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onMouseOver={termtip.bind(null, blueprintTt)} onMouseOut={tooltip.bind(null, null)} onClick={_toggleBlueprintsMenu} onKeyDown={ this._keyDown } ref={modItems => this.modItems[this.firstBPLabel] = modItems}>{blueprintLabel}</div> :
           <div tabIndex="0" className={ cn('section-menu button-inline-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onClick={_toggleBlueprintsMenu} onKeyDown={ this._keyDown } ref={modItems => this.modItems[this.firstBPLabel] = modItems}>{translate('PHRASE_SELECT_BLUEPRINT')}</div> }
         { showBlueprintsMenu ? this._renderBlueprints(this.props, this.context) : null }
         { showSpecial & !showSpecialsMenu ? <div tabIndex="0" className={ cn('section-menu button-inline-menu', { selected: specialMenuOpened })} style={{ cursor: 'pointer' }} onMouseOver={specialTt ? termtip.bind(null, specialTt) : null} onMouseOut={specialTt ? tooltip.bind(null, null) : null}  onClick={_toggleSpecialsMenu} onKeyDown={ this._keyDown }>{specialLabel}</div> : null }
         { showSpecialsMenu ? specials : null }
         { showReset ? <div tabIndex="0" className={'section-menu button-inline-menu warning'} style={{ cursor: 'pointer' }} onClick={_reset} onKeyDown={ this._keyDown } onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RESET')} onMouseOut={tooltip.bind(null, null)}> { translate('reset') } </div> : null }
 		{ showRolls ?
-            
+
             <table style={{ width: '100%', backgroundColor: 'transparent' }}>
               <tbody>
           { showRolls ?
                 <tr>
-                  <td tabIndex="0" className={ cn('section-menu button-inline-menu', {active: false})}> { translate('roll') }: </td>
+                  <td tabIndex="0" className={ cn('section-menu button-inline-menu', { active: false })}> { translate('roll') }: </td>
                   <td tabIndex="0" className={ cn('section-menu button-inline-menu', { active: blueprintCv ===    0 })} style={{ cursor: 'pointer' }} onClick={_rollWorst} onKeyDown={ this._keyDown } onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_WORST')} onMouseOut={tooltip.bind(null, null)}> { translate('0%') } </td>
                   <td tabIndex="0" className={ cn('section-menu button-inline-menu', { active: blueprintCv ===   50 })} style={{ cursor: 'pointer' }} onClick={_rollFifty} onKeyDown={ this._keyDown } onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_FIFTY')} onMouseOut={tooltip.bind(null, null)}> { translate('50%') } </td>
                   <td tabIndex="0" className={ cn('section-menu button-inline-menu', { active: blueprintCv ===  100 })} style={{ cursor: 'pointer' }} onClick={_rollFull} onKeyDown={ this._keyDown } onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_BEST')} onMouseOut={tooltip.bind(null, null)}> { translate('100%') } </td>
