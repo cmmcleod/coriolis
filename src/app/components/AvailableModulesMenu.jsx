@@ -222,9 +222,9 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    * @param  {function} onSelect    Select/Mount callback
    * @param  {string} grp           Group name
    * @param  {Array} modules        Available modules
-   * @return {*}      Available Module Group contents
-   * @param {*} firstSlotId ID of the first slot
-   * @param {*} lastSlotId ID of the last slot
+   * @param  {string} firstSlotId   id of first slot item
+   * @param  {string} lastSlotId    id of last slot item
+   * @return {React.Component}      Available Module Group contents
    */
   _buildGroup(translate, mountedModule, warningFunc, mass, onSelect, grp, modules, firstSlotId, lastSlotId) {
     let prevClass = null, prevRating = null, prevName;
@@ -392,8 +392,8 @@ export default class AvailableModulesMenu extends TranslatedComponent {
 
   /**
    * Key Up
-   * @param {Function} select Select function
-   * @param {SyntheticEvent} event Event
+   * @param {Function}  select Select module callback
+   * @param {SytheticEvent} event Event
    */
   _keyUp(select,event) {
     // nothing here yet
@@ -466,7 +466,8 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     }
   }
   /**
-   * Set focus to slot element ref (if we have one) after modules component unmounts
+   * Handle focus if the component updates
+   * 
    */
   componentWillUnmount() {
     if(this.props.slotDiv) {
@@ -488,7 +489,6 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    * @return {React.Component} List
    */
   render() {
-    console.log('Tracking focus? ' + this.state.trackingFocus);
     return (
       <div ref={node => this.node = node}
           className={cn('select', this.props.className)}

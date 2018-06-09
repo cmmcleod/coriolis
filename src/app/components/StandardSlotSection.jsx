@@ -20,12 +20,23 @@ export default class StandardSlotSection extends SlotSection {
     super(props, context, 'standard', 'core internal');
     this._optimizeStandard = this._optimizeStandard.bind(this);
     this._selectBulkhead = this._selectBulkhead.bind(this);
+    this.selectedRefId = null;
+    this.firstRefId = 'maxjump';
+    this.lastRefId = 'racer';
+  }
+  /**
+   * Handle focus if the component updates
+   * @param {Object} prevProps React Component properties
+   */
+  componentDidUpdate(prevProps) {
+    this._handleSectionFocus(prevProps,this.firstRefId, this.lastRefId);
   }
 
   /**
    * Use the lightest/optimal available standard modules
    */
   _optimizeStandard() {
+    this.selectedRefId = 'maxjump';
     this.props.ship.useLightestStandard();
     this.props.onChange();
     this.props.onCargoChange(this.props.ship.cargoCapacity);
@@ -39,6 +50,8 @@ export default class StandardSlotSection extends SlotSection {
    * @param {integer} bulkheadIndex Bulkhead to use see Constants.BulkheadNames
    */
   _multiPurpose(shielded, bulkheadIndex) {
+    this.selectedRefId = 'multipurpose';
+    if (bulkheadIndex === 2) this.selectedRefId = 'combat';
     ShipRoles.multiPurpose(this.props.ship, shielded, bulkheadIndex);
     this.props.onChange();
     this.props.onCargoChange(this.props.ship.cargoCapacity);
@@ -51,6 +64,7 @@ export default class StandardSlotSection extends SlotSection {
    * @param  {Boolean} shielded True if shield generator should be included
    */
   _optimizeCargo(shielded) {
+    this.selectedRefId = 'trader';
     ShipRoles.trader(this.props.ship, shielded);
     this.props.onChange();
     this.props.onCargoChange(this.props.ship.cargoCapacity);
@@ -63,6 +77,7 @@ export default class StandardSlotSection extends SlotSection {
    * @param  {Boolean} shielded True if shield generator should be included
    */
   _optimizeMiner(shielded) {
+    this.selectedRefId = 'miner';
     ShipRoles.miner(this.props.ship, shielded);
     this.props.onChange();
     this.props.onCargoChange(this.props.ship.cargoCapacity);
@@ -75,6 +90,8 @@ export default class StandardSlotSection extends SlotSection {
    * @param  {Boolean} planetary True if Planetary Vehicle Hangar (PVH) should be included
    */
   _optimizeExplorer(planetary) {
+    this.selectedRefId = 'explorer';
+    if (planetary) this.selectedRefId = 'planetary';
     ShipRoles.explorer(this.props.ship, planetary);
     this.props.onChange();
     this.props.onCargoChange(this.props.ship.cargoCapacity);
@@ -86,6 +103,7 @@ export default class StandardSlotSection extends SlotSection {
    * Racer role
    */
   _optimizeRacer() {
+    this.selectedRefId = 'racer';
     ShipRoles.racer(this.props.ship);
     this.props.onChange();
     this.props.onCargoChange(this.props.ship.cargoCapacity);
@@ -229,17 +247,17 @@ export default class StandardSlotSection extends SlotSection {
     let planetaryDisabled = this.props.ship.internal.length < 4;
     return <div className='select' onClick={(e) => e.stopPropagation()} onContextMenu={stopCtxPropagation}>
       <ul>
-        <li className='lc' onClick={this._optimizeStandard}>{translate('Maximize Jump Range')}</li>
+        <li className='lc' tabIndex="0" onClick={this._optimizeStandard} onKeyDown={this._keyDown} ref={smRef => this.sectionRefArr['maxjump'] = smRef}>{translate('Maximize Jump Range')}</li>
       </ul>
       <div className='select-group cap'>{translate('roles')}</div>
       <ul>
-        <li className='lc' onClick={this._multiPurpose.bind(this, false, 0)}>{translate('Multi-purpose')}</li>
-        <li className='lc' onClick={this._multiPurpose.bind(this, true, 2)}>{translate('Combat')}</li>
-        <li className='lc' onClick={this._optimizeCargo.bind(this, true)}>{translate('Trader')}</li>
-        <li className='lc' onClick={this._optimizeExplorer.bind(this, false)}>{translate('Explorer')}</li>
-        <li className={cn('lc', { disabled:  planetaryDisabled })} onClick={!planetaryDisabled && this._optimizeExplorer.bind(this, true)}>{translate('Planetary Explorer')}</li>
-        <li className='lc' onClick={this._optimizeMiner.bind(this, true)}>{translate('Miner')}</li>
-        <li className='lc' onClick={this._optimizeRacer.bind(this)}>{translate('Racer')}</li>
+        <li className='lc' tabIndex="0" onClick={this._multiPurpose.bind(this, false, 0)} onKeyDown={this._keyDown} ref={smRef => this.sectionRefArr['multipurpose'] = smRef}>{translate('Multi-purpose')}</li>
+        <li className='lc' tabIndex="0" onClick={this._multiPurpose.bind(this, true, 2)} onKeyDown={this._keyDown} ref={smRef => this.sectionRefArr['combat'] = smRef}>{translate('Combat')}</li>
+        <li className='lc' tabIndex="0" onClick={this._optimizeCargo.bind(this, true)} onKeyDown={this._keyDown} ref={smRef => this.sectionRefArr['trader'] = smRef}>{translate('Trader')}</li>
+        <li className='lc' tabIndex="0" onClick={this._optimizeExplorer.bind(this, false)} onKeyDown={this._keyDown} ref={smRef => this.sectionRefArr['explorer'] = smRef}>{translate('Explorer')}</li>
+        <li className={cn('lc', { disabled:  planetaryDisabled })} tabIndex={planetaryDisabled ? '' : '0'} onClick={!planetaryDisabled && this._optimizeExplorer.bind(this, true)} onKeyDown={this._keyDown} ref={smRef => this.sectionRefArr['planetary'] = smRef}>{translate('Planetary Explorer')}</li>
+        <li className='lc' tabIndex="0" onClick={this._optimizeMiner.bind(this, true)} onKeyDown={this._keyDown} ref={smRef => this.sectionRefArr['miner'] = smRef}>{translate('Miner')}</li>
+        <li className='lc' tabIndex="0" onClick={this._optimizeRacer.bind(this)} onKeyDown={this._keyDown} ref={smRef => this.sectionRefArr['racer'] = smRef}>{translate('Racer')}</li>
       </ul>
     </div>;
   }

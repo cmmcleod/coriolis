@@ -58,6 +58,7 @@ export default class OutfittingPage extends Page {
     this._fuelUpdated = this._fuelUpdated.bind(this);
     this._opponentUpdated = this._opponentUpdated.bind(this);
     this._engagementRangeUpdated = this._engagementRangeUpdated.bind(this);
+    this._sectionMenuRefs = {};
   }
 
   /**
@@ -555,7 +556,6 @@ export default class OutfittingPage extends Page {
 
     const requirements = Ships[ship.id].requirements;
     let requirementElements = [];
-
     /**
      * Render the requirements for a ship / etc
      * @param {string} className Class names
@@ -608,11 +608,11 @@ export default class OutfittingPage extends Page {
         </div>
 
         {/* Main tables */}
-        <ShipSummaryTable ship={ship} fuel={fuel} cargo={cargo} marker={shipSummaryMarker} pips={{ sys: this.state.sys, wep: this.state.wep, eng: this.state.eng }} />
-        <StandardSlotSection ship={ship} fuel={fuel} cargo={cargo} code={standardSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} />
-        <InternalSlotSection ship={ship} code={internalSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} />
-        <HardpointSlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} />
-        <UtilitySlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} />
+        <ShipSummaryTable ship={ship} fuel={fuel} cargo={cargo} marker={shipSummaryMarker} pips={{sys: this.state.sys, wep: this.state.wep, eng: this.state.eng}} />
+        <StandardSlotSection ship={ship} fuel={fuel} cargo={cargo} code={standardSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} sectionMenuRefs={this._sectionMenuRefs}/>
+        <InternalSlotSection ship={ship} code={internalSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} sectionMenuRefs={this._sectionMenuRefs}/>
+        <HardpointSlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} sectionMenuRefs={this._sectionMenuRefs}/>
+        <UtilitySlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} sectionMenuRefs={this._sectionMenuRefs}/>
 
         {/* Control of ship and opponent */}
         <div className='group quarter'>
