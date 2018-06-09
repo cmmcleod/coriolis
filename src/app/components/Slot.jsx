@@ -81,7 +81,7 @@ export default class Slot extends TranslatedComponent {
    *  we do more or less the same thing
    *  in every section when Enter key is pressed
    *  on a focusable item
-   * 
+   *
    */
   _keyDown(event) {
     if (event.key == 'Enter') {
@@ -154,7 +154,7 @@ export default class Slot extends TranslatedComponent {
     );
   }
 
-  
+
   /**
    * Toggle the modifications flag when selecting the modifications icon
    */
