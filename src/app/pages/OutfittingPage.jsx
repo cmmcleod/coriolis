@@ -554,17 +554,23 @@ export default class OutfittingPage extends Page {
     const shipSummaryMarker = `${ship.name}${_sStr}${_iStr}${_hStr}${_pStr}${_mStr}${ship.ladenMass}${cargo}${fuel}`;
 
     const requirements = Ships[ship.id].requirements;
-    var requirementElements = [];
+    let requirementElements = [];
 
+    /**
+     * Render the requirements for a ship / etc
+     * @param {string} className Class names
+     * @param {string} textKey The key for translating
+     * @param {String} tooltipTextKey  Tooltip key
+     */
     function renderRequirement(className, textKey, tooltipTextKey) {
-      requirementElements.push(<div key={textKey} className={className} onMouseEnter={termtip.bind(null, tooltipTextKey)} onMouseLeave={hide}><a href={textKey.startsWith("empire") ? 'http://elite-dangerous.wikia.com/wiki/Empire/Ranks' : 'http://elite-dangerous.wikia.com/wiki/Federation/Ranks'} target="_blank" rel="noopener">{translate(textKey)}</a></div>);
+      requirementElements.push(<div key={textKey} className={className} onMouseEnter={termtip.bind(null, tooltipTextKey)} onMouseLeave={hide}><a href={textKey.startsWith('empire') ? 'http://elite-dangerous.wikia.com/wiki/Empire/Ranks' : 'http://elite-dangerous.wikia.com/wiki/Federation/Ranks'} target="_blank" rel="noopener">{translate(textKey)}</a></div>);
     }
 
     if (requirements) {
       requirements.federationRank && renderRequirement('federation', 'federation rank ' + requirements.federationRank, 'federation rank required');
       requirements.empireRank && renderRequirement('empire', 'empire rank ' + requirements.empireRank, 'empire rank required');
       requirements.horizons && renderRequirement('horizons', 'horizons', 'horizons required');
-      requirements.horizonsEarlyAdoption && renderRequirement('horizons', 'horizons early adoption', 'horizons early adoption required'); 
+      requirements.horizonsEarlyAdoption && renderRequirement('horizons', 'horizons early adoption', 'horizons early adoption required');
     }
 
     return (
@@ -602,7 +608,7 @@ export default class OutfittingPage extends Page {
         </div>
 
         {/* Main tables */}
-        <ShipSummaryTable ship={ship} fuel={fuel} cargo={cargo} marker={shipSummaryMarker} pips={{sys: this.state.sys, wep: this.state.wep, eng: this.state.eng}} />
+        <ShipSummaryTable ship={ship} fuel={fuel} cargo={cargo} marker={shipSummaryMarker} pips={{ sys: this.state.sys, wep: this.state.wep, eng: this.state.eng }} />
         <StandardSlotSection ship={ship} fuel={fuel} cargo={cargo} code={standardSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} />
         <InternalSlotSection ship={ship} code={internalSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} />
         <HardpointSlotSection ship={ship} code={hardpointsSlotMarker} onChange={shipUpdated} onCargoChange={this._cargoUpdated} onFuelChange={this._fuelUpdated} currentMenu={menu} />

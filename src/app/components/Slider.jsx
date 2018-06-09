@@ -17,12 +17,12 @@ export default class Slider extends React.Component {
 
   static propTypes = {
     axis: PropTypes.bool,
-    axisUnit: PropTypes.string,//units (T, M, etc.)
+    axisUnit: PropTypes.string,// units (T, M, etc.)
     max: PropTypes.number,
     min: PropTypes.number,
     onChange: PropTypes.func.isRequired,// function which determins percent value
     onResize: PropTypes.func,
-    percent: PropTypes.number.isRequired,//value of slider
+    percent: PropTypes.number.isRequired,// value of slider
     scale: PropTypes.number
   };
 
@@ -51,7 +51,6 @@ export default class Slider extends React.Component {
    * @param  {SyntheticEvent} event Event
    */
   _down(event) {
-    
     let rect = event.currentTarget.getBoundingClientRect();
     this.left = rect.left;
     this.width = rect.width;
@@ -95,28 +94,27 @@ export default class Slider extends React.Component {
       case 'Enter':
         event.preventDefault();
         this.sliderInputBox._setDisplay('block');
-        //this.enterTimer = setTimeout(() => this.sliderInputBox.sliderVal.focus(), 10);
+        // this.enterTimer = setTimeout(() => this.sliderInputBox.sliderVal.focus(), 10);
         return;
       default:
         return;
     }
-
   }
   /**
    * Key down handler
    * increment slider position by +/- 1 when right/left arrow key is pressed or held
-   * @param {Event} event 
+   * @param {Event} event The key down event.
    */
   _keydown(event) {
-    
+    let newVal;
     switch (event.key) {
       case 'ArrowRight':
-        var newVal = this.props.percent*this.props.max + 1;
-        if (newVal <= this.props.max) this.props.onChange(newVal/this.props.max);
+        newVal = this.props.percent * this.props.max + 1;
+        if (newVal <= this.props.max) this.props.onChange(newVal / this.props.max);
         return;
       case 'ArrowLeft':
-        var newVal = this.props.percent*this.props.max - 1;
-        if (newVal >= 0) this.props.onChange(newVal/this.props.max);
+        newVal = this.props.percent * this.props.max - 1;
+        if (newVal >= 0) this.props.onChange(newVal / this.props.max);
         return;
       default:
         return;
@@ -126,12 +124,16 @@ export default class Slider extends React.Component {
   /**
    * Touch start handler
    * @param  {Event} event  DOM Event
-   * 
+   *
    */
   _touchstart(event) {
     this.touchStartTimer = setTimeout(() => this.sliderInputBox._setDisplay('block'), 1500);
   }
 
+  /**
+   * Touch end handler
+   * @param {Event} event DOM Event
+   */
   _touchend(event) {
     this.sliderInputBox.sliderVal.focus();
     clearTimeout(this.touchStartTimer);
@@ -181,7 +183,6 @@ export default class Slider extends React.Component {
    */
   componentDidMount() {
     this._updateDimensions();
-    
   }
 
   /**
@@ -215,7 +216,7 @@ export default class Slider extends React.Component {
     let width = outerWidth - (margin * 2);
     let pctPos = width * this.props.percent;
 
-    return <div><svg 
+    return <div><svg
       onMouseUp={this._up} onMouseEnter={this._enter.bind(this)} onMouseMove={this._move} onKeyUp={this._keyup} onKeyDown={this._keydown} style={style} ref={node => this.node = node} tabIndex="0">
       <rect className='primary' style={{ opacity: 0.3 }} x={margin} y='0.25em' rx='0.3em' ry='0.3em' width={width} height='0.7em' />
       <rect className='primary-disabled' x={margin} y='0.45em' rx='0.15em' ry='0.15em' width={pctPos} height='0.3em' />
@@ -233,7 +234,7 @@ export default class Slider extends React.Component {
       axisUnit={this.props.axisUnit}
       scale={this.props.scale}
       max={this.props.max}
-    
+
     />
    </div>;
   }
@@ -242,100 +243,140 @@ export default class Slider extends React.Component {
 /**
  * New component to add keyboard support for sliders - works on all devices (desktop, iOS, Android)
  **/
- class TextInputBox extends React.Component {
+class TextInputBox extends React.Component {
   static propTypes = {
-    axisUnit: PropTypes.string,//units (T, M, etc.)
+    axisUnit: PropTypes.string,// units (T, M, etc.)
     max: PropTypes.number,
     onChange: PropTypes.func.isRequired,// function which determins percent value
-    percent: PropTypes.number.isRequired,//value of slider
+    percent: PropTypes.number.isRequired,// value of slider
     scale: PropTypes.number
   };
+
+  /**
+   * Constructor for TextInputBox
+   * @param {Object} props  The props
+   */
   constructor(props) {
     super(props);
-      this._handleFocus = this._handleFocus.bind(this);
-      this._handleBlur = this._handleBlur.bind(this);
-      this._handleChange = this._handleChange.bind(this);
-      //this._keydown = this._keydown.bind(this);
-      this._keyup = this._keyup.bind(this);
-      this.state = this._getInitialState();
-      this.percent = this.props.percent;
-      this.max = this.props.max;
-      this.state.inputValue = this.percent * this.max;
-    }
+    this._handleFocus = this._handleFocus.bind(this);
+    this._handleBlur = this._handleBlur.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+      // this._keydown = this._keydown.bind(this);
+    this._keyup = this._keyup.bind(this);
+    this.state = this._getInitialState();
+    this.percent = this.props.percent;
+    this.max = this.props.max;
+    this.setState({ inputValue: this.percent * this.max });
+  }
 
-    componentWillReceiveProps(nextProps, nextState) {
-        var nextValue = nextProps.percent * nextProps.max;
+  /**
+   * Slider willrecieveprops
+   * @param {Object} nextProps The next props
+   * @param {Object} nextState The next state
+   */
+  componentWillReceiveProps(nextProps, nextState) {
+    let nextValue = nextProps.percent * nextProps.max;
         // See https://stackoverflow.com/questions/32414308/updating-state-on-props-change-in-react-form
-        if (nextValue !== this.state.inputValue && nextValue <= nextProps.max) {
-            this.setState({ inputValue: nextValue });
-      }
+    if (nextValue !== this.state.inputValue && nextValue <= nextProps.max) {
+      this.setState({ inputValue: nextValue });
     }
-    componentDidUpdate(prevProps, prevState) {
+  }
 
-        if (prevState.divStyle.display == 'none' && this.state.divStyle.display == 'block') {
-            this.enterTimer = setTimeout(() => this.sliderVal.focus(), 10);  
-        }
-        
-      if (prevProps.max !== this.props.max && this.state.inputValue > this.props.max) {
+  /**
+   * Slider Component did update
+   * @param {Object} prevProps The prev props
+   * @param {Object} prevState The prev state
+   */
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.divStyle.display == 'none' && this.state.divStyle.display == 'block') {
+      this.enterTimer = setTimeout(() => this.sliderVal.focus(), 10);
+    }
+
+    if (prevProps.max !== this.props.max && this.state.inputValue > this.props.max) {
           // they chose a different module
-          this.setState({ inputValue: this.props.max });
-      }
-      
-      if (this.state.inputValue != prevState.inputValue && prevProps.max == this.props.max) {
-          this.props.onChange(this.state.inputValue/this.props.max);
-      }
-
+      this.setState({ inputValue: this.props.max });
     }
 
-    _getInitialState() {
-      return {
-        divStyle: {display:'none'}, 
-        inputStyle: {width:'4em'},
-        labelStyle: {marginLeft: '.1em'},
-        maxLength:5,
-        size:5,
-        min:0,
-        tabIndex:-1,
-        type:'number',
-        readOnly: true
-      }
+    if (this.state.inputValue != prevState.inputValue && prevProps.max == this.props.max) {
+      this.props.onChange(this.state.inputValue / this.props.max);
     }
+  }
 
-    _setDisplay(val) {
-      this.setState({
-        divStyle: {display:val}
-      });
-    }
+  /**
+   * Get the initial state.
+   * @returns {{divStyle: {display: string}, inputStyle: {width: string}, labelStyle: {marginLeft: string}, maxLength: number, size: number, min: number, tabIndex: number, type: string, readOnly: boolean}} Initial state.
+   * @private
+   */
+  _getInitialState() {
+    return {
+      divStyle: { display:'none' },
+      inputStyle: { width:'4em' },
+      labelStyle: { marginLeft: '.1em' },
+      maxLength:5,
+      size:5,
+      min:0,
+      tabIndex:-1,
+      type:'number',
+      readOnly: true
+    };
+  }
 
-    _handleFocus() {
-      this.setState({
-        inputValue:this._getValue()
-      });
-    }
+  /**
+   * Set display style
+   * @param {string} val The display CSS code.
+   * @private
+   */
+  _setDisplay(val) {
+    this.setState({
+      divStyle: { display:val }
+    });
+  }
 
-    _handleBlur() {
-      this._setDisplay('none');
-      if (this.state.inputValue !== '') {
-        this.props.onChange(this.state.inputValue/this.props.max);
-      } else {
-        this.state.inputValue = this.props.percent * this.props.max;
-      }
-      
-    }
+  /**
+   * Focus handler
+   * @private
+   */
+  _handleFocus() {
+    this.setState({
+      inputValue:this._getValue()
+    });
+  }
 
-    _getValue() {
-      return this.state.inputValue;
+  /**
+   * Handles blurring
+   */
+  _handleBlur() {
+    this._setDisplay('none');
+    if (this.state.inputValue !== '') {
+      this.props.onChange(this.state.inputValue / this.props.max);
+    } else {
+      this.setState({ inputValue: this.props.percent * this.props.max });
     }
+  }
 
-    _handleChange(event) {
-      if (event.target.value < 0) {
-        this.setState({inputValue: 0});
-      } else if (event.target.value <= this.props.max)  {
-        this.setState({inputValue: event.target.value});
-      } else {
-        this.setState({inputValue: this.props.max});
-      }
+  /**
+   * Get inputValue
+   * @returns {number|Number|*} inputValue
+   * @private
+   */
+  _getValue() {
+    return this.state.inputValue;
+  }
+
+  /**
+   * Handle changes
+   * @param {Event} event DOM Event
+   * @private
+   */
+  _handleChange(event) {
+    if (event.target.value < 0) {
+      this.setState({ inputValue: 0 });
+    } else if (event.target.value <= this.props.max)  {
+      this.setState({ inputValue: event.target.value });
+    } else {
+      this.setState({ inputValue: this.props.max });
     }
+  }
 
   /**
    * Key up handler for input field.
@@ -350,12 +391,15 @@ export default class Slider extends React.Component {
       default:
         return;
     }
-
   }
 
-   render() {
-      let {  axisUnit, onChange, percent, scale } = this.props;
-      return <div style={this.state.divStyle}><input style={this.state.inputStyle} value={this._getValue()} min={this.state.min} max={this.props.max} onChange={this._handleChange} onKeyUp={this._keyup} tabIndex={this.state.tabIndex} maxLength={this.state.maxLength} size={this.state.size} onBlur={() => {this._handleBlur()}} onFocus={() => {this._handleFocus()}} type={this.state.type} ref={(ip) => this.sliderVal = ip}/><text className="primary upp" style={this.state.labelStyle}>{this.props.axisUnit}</text></div>;
-    }
+  /**
+   * JSX Render handler
+   * @returns {*} Slider
+   */
+  render() {
+    let {  axisUnit, onChange, percent, scale } = this.props;
+    return <div style={this.state.divStyle}><input style={this.state.inputStyle} value={this._getValue()} min={this.state.min} max={this.props.max} onChange={this._handleChange} onKeyUp={this._keyup} tabIndex={this.state.tabIndex} maxLength={this.state.maxLength} size={this.state.size} onBlur={() => {this._handleBlur();}} onFocus={() => {this._handleFocus();}} type={this.state.type} ref={(ip) => this.sliderVal = ip}/><text className="primary upp" style={this.state.labelStyle}>{this.props.axisUnit}</text></div>;
+  }
  }
 

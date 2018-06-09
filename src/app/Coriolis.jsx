@@ -93,8 +93,8 @@ export default class Coriolis extends React.Component {
       // Need to decode and gunzip the data, then build the ship
       const data = zlib.inflate(new Buffer(r.params.data, 'base64'), { to: 'string' });
       const json = JSON.parse(data);
-      console.log('Ship import data: ');
-      console.log(json);
+      console.info('Ship import data: ');
+      console.info(json);
       let ship;
       if (json && json.modules) {
         ship = CompanionApiUtils.shipFromJson(json);
@@ -356,7 +356,7 @@ export default class Coriolis extends React.Component {
         <div className="right cap">
           <a href="https://github.com/EDCD/coriolis" target="_blank" title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
           <br/>
-          <a href={"https://github.com/EDCD/coriolis/compare/edcd:develop@{" + window.CORIOLIS_DATE + "}...edcd:develop"} target="_blank" title={"Coriolis Commits since" + window.CORIOLIS_DATE}>Commits since last release ({window.CORIOLIS_DATE})</a>
+          <a href={'https://github.com/EDCD/coriolis/compare/edcd:develop@{' + window.CORIOLIS_DATE + '}...edcd:develop'} target="_blank" title={'Coriolis Commits since' + window.CORIOLIS_DATE}>Commits since last release ({window.CORIOLIS_DATE})</a>
         </div>
       </footer>
     </div>;
