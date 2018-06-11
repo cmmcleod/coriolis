@@ -1,5 +1,6 @@
 import Persist from './stores/Persist';
-
+import ReactGA from 'react-ga';
+ReactGA.initialize('UA-55840909-18');
 let standalone = undefined;
 
 /**
@@ -257,9 +258,7 @@ Route.prototype.match = function(path, params) {
  * @param  {string} path Path to track
  */
 function gaTrack(path) {
-  if (window.ga) {
-    window.ga('send', 'pageview', path);
-  }
+  ReactGA.pageview(path);
 }
 
 /**

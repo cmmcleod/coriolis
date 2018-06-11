@@ -39,13 +39,16 @@ export default class StandardSlot extends TranslatedComponent {
     this.modButton = null;
     this.slotDiv = null;
   }
-
-   _keyDown(event) {
+  /**
+   * Handle Enter key
+   * @param {SyntheticEvent} event KeyDown event
+   */
+  _keyDown(event) {
     if (event.key == 'Enter') {
-        if(event.target.className == 'r') {
-            this._toggleModifications();
-        }
-        this.props.onOpen(event);
+      if(event.target.className == 'r') {
+        this._toggleModifications();
+      }
+      this.props.onOpen(event);
     }
   }
 
@@ -151,7 +154,6 @@ export default class StandardSlot extends TranslatedComponent {
    * Toggle the modifications flag when selecting the modifications icon
    */
   _toggleModifications() {
-
     this._modificationsSelected = !this._modificationsSelected;
   }
 }

@@ -137,7 +137,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     let translate = context.language.translate;
     let { m, warning, shipMass, onSelect, modules, firstSlotId, lastSlotId } = props;
     let list, currentGroup;
-    
+
     let buildGroup = this._buildGroup.bind(
       this,
       translate,
@@ -149,7 +149,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         onSelect(m);
       }
    );
-   
+
     if (modules instanceof Array) {
       list = buildGroup(modules[0].grp, modules);
     } else {
@@ -210,7 +210,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       }
     }
     let trackingFocus = false;
-    return { list, currentGroup, trackingFocus};
+    return { list, currentGroup, trackingFocus };
   }
 
   /**
@@ -222,15 +222,17 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    * @param  {function} onSelect    Select/Mount callback
    * @param  {string} grp           Group name
    * @param  {Array} modules        Available modules
+   * @param  {string} firstSlotId   id of first slot item
+   * @param  {string} lastSlotId    id of last slot item
    * @return {React.Component}      Available Module Group contents
    */
   _buildGroup(translate, mountedModule, warningFunc, mass, onSelect, grp, modules, firstSlotId, lastSlotId) {
     let prevClass = null, prevRating = null, prevName;
     let elems = [];
-    
+
     const sortedModules = modules.sort(this._moduleOrder);
-    
-    
+
+
     // Calculate the number of items per class.  Used so we don't have long lists with only a few items in each row
     const tmp = sortedModules.map((v, i) => v['class']).reduce((count, cls) => { count[cls] = ++count[cls] || 1; return count; }, {});
     const itemsPerClass = Math.max.apply(null, Object.keys(tmp).map(key => tmp[key]));
@@ -240,7 +242,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       let m = sortedModules[i];
       let mount = null;
       let disabled = false;
-      prevName = m.name
+      prevName = m.name;
       if (ModuleUtils.isShieldGenerator(m.grp)) {
         // Shield generators care about maximum hull mass
         disabled = mass > m.maxmass;
@@ -305,7 +307,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
           {(mount ? ' ' : '') + m.class + m.rating + (m.missile ? '/' + m.missile : '') + (m.name ? ' ' + translate(m.name) : '')}
         </li>
       );
-      
+
       itemsOnThisRow++;
       prevClass = m.class;
       prevRating = m.rating;
@@ -367,23 +369,22 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    * @param  {Function} select Select module callback
    * @param  {SyntheticEvent} event Event
    */
-
   _keyDown(select, event) {
-    var className = event.currentTarget.attributes['class'].value;
-      if (event.key == 'Enter' && className.indexOf('disabled') < 0 && className.indexOf('active') < 0) {
+    let className = event.currentTarget.attributes['class'].value;
+    if (event.key == 'Enter' && className.indexOf('disabled') < 0 && className.indexOf('active') < 0) {
       select();
-      return
+      return;
     }
-    var elemId = event.currentTarget.attributes['data-id'].value;
+    let elemId = event.currentTarget.attributes['data-id'].value;
     if (className.indexOf('disabled') < 0 && event.key == 'Tab') {
       if (event.shiftKey && elemId == this.firstSlotId) {
         event.preventDefault();
         this.slotItems[this.lastSlotId].focus();
-        return;        
+        return;
       }
       if (!event.shiftKey && elemId == this.lastSlotId) {
         event.preventDefault();
-        this.slotItems[this.firstSlotId].focus();        
+        this.slotItems[this.firstSlotId].focus();
         return;
       }
     }
@@ -391,10 +392,11 @@ export default class AvailableModulesMenu extends TranslatedComponent {
 
   /**
    * Key Up
-   * 
+   * @param {Function}  select Select module callback
+   * @param {SytheticEvent} event Event
    */
   _keyUp(select,event) {
-    //nothing here yet
+    // nothing here yet
   }
 
   /**
@@ -463,11 +465,11 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       this.slotItems[this.firstSlotId].focus();
     }
   }
-
+  /**
+   * Handle focus if the component updates
+   * 
+   */
   componentWillUnmount() {
-    /**
-     * Set focus to slot element ref (if we have one) after modules component unmounts
-     */
     if(this.props.slotDiv) {
       this.props.slotDiv.focus();
     }
@@ -487,7 +489,6 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    * @return {React.Component} List
    */
   render() {
-    console.log("Tracking focus? " + this.state.trackingFocus);
     return (
       <div ref={node => this.node = node}
           className={cn('select', this.props.className)}

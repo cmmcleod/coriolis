@@ -109,6 +109,7 @@
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-ga": "^2.5.3",
     "react-number-editor": "Athanasius/react-number-editor.git#miggy",
     "recharts": "^0.22.3",
     "superagent": "^3.5.2"
