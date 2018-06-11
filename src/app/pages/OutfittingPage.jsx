@@ -511,31 +511,7 @@ export default class OutfittingPage extends Page {
    * Generates the shopping list
    */
   _genShoppingList() {
-    const ship = this.state.ship;
-    let mats = {};
-    for (const module of ship.costList) {
-      if (module.type === 'SHIP') {
-        continue;
-      }
-      if (module.m && module.m.blueprint) {
-        if (!module.m.blueprint.grade || !module.m.blueprint.grades) {
-          continue;
-        }
-        for (const g in module.m.blueprint.grades) {
-          if (g > module.m.blueprint.grade) {
-            continue;
-          }
-          for (const i in module.m.blueprint.grades[g].components) {
-            if (mats[i]) {
-              mats[i] += module.m.blueprint.grades[g].components[i];
-            } else {
-              mats[i] = module.m.blueprint.grades[g].components[i];
-            }
-          }
-        }
-      }
-    }
-    this.context.showModal(<ModalShoppingList mats={mats}/>);
+    this.context.showModal(<ModalShoppingList ship={this.state.ship}/>);
   }
 
   /**
