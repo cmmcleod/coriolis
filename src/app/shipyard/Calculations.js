@@ -45,10 +45,9 @@ export function totalJumpRange(mass, fsd, fuel) {
  * @param  {number} baseShield  Base Shield strength MJ for ship
  * @param  {object} sg          The shield generator used
  * @param  {number} multiplier  Shield multiplier for ship (1 + shield boosters if any)
- * @param  {Object} ship        The ship object
  * @return {number} Approximate shield strengh in MJ
  */
-export function shieldStrength(mass, baseShield, sg, multiplier, ship) {
+export function shieldStrength(mass, baseShield, sg, multiplier) {
   // sg might be a module or a template; handle either here
   let minMass = sg instanceof Module ? sg.getMinMass() : sg.minmass;
   let optMass = sg instanceof Module ? sg.getOptMass() : sg.optmass;
@@ -56,17 +55,6 @@ export function shieldStrength(mass, baseShield, sg, multiplier, ship) {
   let minMul = sg instanceof Module ? sg.getMinMul() : sg.minmul;
   let optMul = sg instanceof Module ? sg.getOptMul() : sg.optmul;
   let maxMul = sg instanceof Module ? sg.getMaxMul() : sg.maxmul;
-  if (ship) {
-    for (const i of ship.hardpoints) {
-      if (!i.maxClass) {
-        if (i.grp === 'sb' || (i.m && i.m.grp === 'sb')) {
-          if (!isNaN(i.m.getModValue('optmul'))) {
-            optMul += i.m.getModValue('optmul') / 10000;
-          }
-        }
-      }
-    }
-  }
   let xnorm = Math.min(1, (maxMass - mass) / (maxMass - minMass));
   let exponent = Math.log((optMul - minMul) / (maxMul - minMul)) / Math.log(Math.min(1, (maxMass - optMass) / (maxMass - minMass)));
   let ynorm = Math.pow(xnorm, exponent);
@@ -362,7 +350,7 @@ export function shieldMetrics(ship, sys) {
     boosterKinDmg = boosterKinDmg > 0.7 ? boosterKinDmg : 0.7 - (0.7 - boosterKinDmg) / 2;
     boosterThermDmg = boosterThermDmg > 0.7 ? boosterThermDmg : 0.7 - (0.7 - boosterThermDmg) / 2;
 
-    const generatorStrength = this.shieldStrength(ship.hullMass, ship.baseShieldStrength, shieldGenerator, 1, ship);
+    const generatorStrength = this.shieldStrength(ship.hullMass, ship.baseShieldStrength, shieldGenerator, 1);
     const boostersStrength = generatorStrength * boost;
 
     // Recover time is the time taken to go from 0 to 50%.  It includes a 16-second wait before shields start to recover
