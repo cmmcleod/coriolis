@@ -241,7 +241,7 @@ export default class Ship {
     }
 
     // TODO Not accurate if the ship has modified shield boosters
-    return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, 1 + (multiplierDelta || 0), this);
+    return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, 1 + (multiplierDelta || 0));
   }
 
   /**
