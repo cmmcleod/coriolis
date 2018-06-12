@@ -453,6 +453,19 @@ export function shieldMetrics(ship, sys) {
 }
 
 /**
+ * Calculate time from one boost to another
+ * @return {number} Boost frequency in seconds
+ * @param ship
+ */
+export function calcBoost(ship) {
+  if (!ship.boostEnergy || !ship.standard[4] || !ship.standard[4].m) {
+    return undefined;
+  }
+  return ship.boostEnergy / ship.standard[4].m.engrate;
+}
+
+
+/**
  * Calculate armour metrics
  * @param   {Object}  ship            The ship
  * @returns {Object}                  Armour metrics
