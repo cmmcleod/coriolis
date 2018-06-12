@@ -571,7 +571,11 @@ export default class OutfittingPage extends Page {
      * @param {String} tooltipTextKey  Tooltip key
      */
     function renderRequirement(className, textKey, tooltipTextKey) {
-      requirementElements.push(<div key={textKey} className={className} onMouseEnter={termtip.bind(null, tooltipTextKey)} onMouseLeave={hide}><a href={textKey.startsWith('empire') ? 'http://elite-dangerous.wikia.com/wiki/Empire/Ranks' : 'http://elite-dangerous.wikia.com/wiki/Federation/Ranks'} target="_blank" rel="noopener">{translate(textKey)}</a></div>);
+      if (textKey.startsWith('empire') || textKey.startsWith('federation')) {
+        requirementElements.push(<div key={textKey} className={className} onMouseEnter={termtip.bind(null, tooltipTextKey)} onMouseLeave={hide}><a href={textKey.startsWith('empire') ? 'http://elite-dangerous.wikia.com/wiki/Empire/Ranks' : 'http://elite-dangerous.wikia.com/wiki/Federation/Ranks'} target="_blank" rel="noopener">{translate(textKey)}</a></div>);
+      } else {
+        requirementElements.push(<div key={textKey} className={className} onMouseEnter={termtip.bind(null, tooltipTextKey)} onMouseLeave={hide}>{translate(textKey)}</div>);
+      }
     }
 
     if (requirements) {
