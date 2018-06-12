@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import ShortenUrl from '../utils/ShortenUrl';
+import Persist from '../stores/Persist';
 
 /**
  * Permalink modal
@@ -21,13 +22,7 @@ export default class ModalShoppingList extends TranslatedComponent {
     this.state = {
       matsList: '',
       mats: {},
-      matsPerGrade: {
-        1: 2,
-        2: 2,
-        3: 3,
-        4: 4,
-        5: 6
-      }
+      matsPerGrade: Persist.getRolls()
     };
   }
 
@@ -89,6 +84,7 @@ export default class ModalShoppingList extends TranslatedComponent {
     let newState = this.state.matsPerGrade;
     newState[grade] = parseInt(e.target.value);
     this.setState({ matsPerGrade: newState });
+    Persist.setRolls(newState);
     this.renderMats();
   }
 

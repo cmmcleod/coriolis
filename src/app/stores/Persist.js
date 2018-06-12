@@ -13,6 +13,7 @@ const LS_KEY_STATE = 'state';
 const LS_KEY_SIZE_RATIO = 'sizeRatio';
 const LS_KEY_TOOLTIPS = 'tooltips';
 const LS_KEY_MODULE_RESISTANCES = 'moduleResistances';
+const LS_KEY_ROLLS = 'matsPerGrade';
 
 let LS;
 
@@ -84,6 +85,7 @@ export class Persist extends EventEmitter {
     }
 
     let moduleResistances = _get(LS_KEY_MODULE_RESISTANCES);
+    let matsPerGrade = _get(LS_KEY_ROLLS);
     let tips = _get(LS_KEY_TOOLTIPS);
     let insurance = _getString(LS_KEY_INSURANCE);
     let shipDiscount = _get(LS_KEY_SHIP_DISCOUNT);
@@ -102,6 +104,13 @@ export class Persist extends EventEmitter {
     this.outfittingTab = _getString(LS_KEY_OUTFITTING_TAB);
     this.state =  _get(LS_KEY_STATE);
     this.sizeRatio = _get(LS_KEY_SIZE_RATIO) || 1;
+    this.matsPerGrade = matsPerGrade || {
+      1: 2,
+      2: 2,
+      3: 4,
+      4: 4,
+      5: 10
+    };
     this.tooltipsEnabled = tips === null ? true : tips;
     this.moduleResistancesEnabled = moduleResistances === null ? true : moduleResistances;
 
@@ -151,6 +160,10 @@ export class Persist extends EventEmitter {
         case LS_KEY_MODULE_RESISTANCES:
           this.moduleResistancesEnabled = !!newValue && newValue.toLowerCase() == 'true';
           this.emit('moduleresistances', this.moduleResistancesEnabled);
+          break;
+        case LS_KEY_ROLLS:
+          this.matsPerGrade = JSON.parse(newValue);
+          this.emit('matsPerGrade', this.matsPerGrade);
           break;
       }
     } catch (e) {
@@ -455,6 +468,23 @@ export class Persist extends EventEmitter {
    */
   getModuleDiscount() {
     return this.moduleDiscount;
+  }
+
+  /**
+   * Get the saved ship discount
+   * @param {Object} matsPerGrade # of rolls per grade
+   */
+  setRolls(matsPerGrade) {
+    this.matsPerGrade = matsPerGrade;
+    _put(LS_KEY_ROLLS, this.matsPerGrade);
+    this.emit('matsPerGrade');
+  }
+  /**
+   * Get the saved Mats per grade
+   * @return {Object} # of rolls per grade
+   */
+  getRolls() {
+    return this.matsPerGrade;
   }
 
   /**
