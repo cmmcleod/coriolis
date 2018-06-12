@@ -9,7 +9,7 @@ import * as Utils from '../utils/UtilityFunctions';
 import Ship from '../shipyard/Ship';
 import { toDetailedBuild } from '../shipyard/Serializer';
 import { outfitURL } from '../utils/UrlGenerators';
-import { FloppyDisk, Bin, Switch, Download, Reload, LinkIcon, ShoppingIcon } from '../components/SvgIcons';
+import { FloppyDisk, Bin, Switch, Download, Reload, LinkIcon, ShoppingIcon, MatIcon } from '../components/SvgIcons';
 import LZString from 'lz-string';
 import ShipSummaryTable from '../components/ShipSummaryTable';
 import StandardSlotSection from '../components/StandardSlotSection';
@@ -25,6 +25,7 @@ import EngagementRange from '../components/EngagementRange';
 import OutfittingSubpages from '../components/OutfittingSubpages';
 import ModalExport from '../components/ModalExport';
 import ModalPermalink from '../components/ModalPermalink';
+import ModalShoppingList from '../components/ModalShoppingList';
 
 /**
  * Document Title Generator
@@ -507,6 +508,13 @@ export default class OutfittingPage extends Page {
   }
 
   /**
+   * Generates the shopping list
+   */
+  _genShoppingList() {
+    this.context.showModal(<ModalShoppingList ship={this.state.ship}/>);
+  }
+
+  /**
    * Handle Key Down
    * @param  {Event} e  Keyboard Event
    */
@@ -603,6 +611,9 @@ export default class OutfittingPage extends Page {
             </button>
             <button onClick={this._genShortlink} onMouseOver={termtip.bind(null, 'shortlink')} onMouseOut={hide}>
               <LinkIcon className='lg' />
+            </button>
+            <button onClick={this._genShoppingList} onMouseOver={termtip.bind(null, 'PHRASE_SHOPPING_MATS')} onMouseOut={hide}>
+              <MatIcon className='lg' />
             </button>
           </div>
         </div>
