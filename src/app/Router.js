@@ -258,6 +258,13 @@ Route.prototype.match = function(path, params) {
  * @param  {string} path Path to track
  */
 function gaTrack(path) {
+  const match = path.match(/\/outfit\/(.*)(\?code=.*)/);
+  if (match[1]) {
+    ReactGA.ga('set', 'contentGroup1', match[1]);
+  }
+  if (match[2]) {
+    ReactGA.ga('set', 'contentGroup2', match[2]);
+  }
   ReactGA.pageview(path);
 }
 
