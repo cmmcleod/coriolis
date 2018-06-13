@@ -50,6 +50,7 @@ export default class ModalPermalink extends TranslatedComponent {
       <h3 >{translate('shortened')}</h3>
       <input value={this.state.shortenedUrl} readOnly size={25} onFocus={ (e) => e.target.select() }/>
       <br/><br/>
+      <p>s.orbis.zone is the new URL shortener domain, old eddp.co urls are considered end of life and could go down at any moment. Sorry for any inconvenience.</p>
       <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>
     </div>;
   }
