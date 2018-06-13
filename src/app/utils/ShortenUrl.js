@@ -8,7 +8,7 @@ import request from 'superagent';
  * @param  {function} error     Failure/Error callback
  */ 
 export default function shorternUrl(url, success, error) {
-  shortenUrlEddp(url, success, error);
+  shortenUrlOrbis(url, success, error);
 }
 
 const SHORTEN_API_GOOGLE = 'https://www.googleapis.com/urlshortener/v1/url?key=';
@@ -58,6 +58,35 @@ function shortenUrlEddp(url, success, error) {
           }
         });
     } catch (e) {
+      error(e.message ? e.message : e);
+    }
+  } else {
+    error('Not Online');
+  }
+}
+
+const SHORTEN_API_ORBIS = 'https://s.orbis.zone/a';
+/**
+ * Shorten a URL using Orbis's URL shortener API
+ * @param  {string} url        The URL to shorten
+ * @param  {function} success   Success callback
+ * @param  {function} error     Failure/Error callback
+ */
+function shortenUrlOrbis(url, success, error) {
+  if (window.navigator.onLine) {
+    try {
+      request.post(SHORTEN_API_ORBIS)
+        .field('lsturl', url)
+        .field('format', 'json')
+        .end(function(err, response) {
+          if (err) {
+            error('Bad Request');
+          } else {
+            success(response.body.short);
+          }
+        });
+    } catch (e) {
+      console.log(e)
       error(e.message ? e.message : e);
     }
   } else {
