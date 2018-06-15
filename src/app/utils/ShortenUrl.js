@@ -86,7 +86,7 @@ function shortenUrlOrbis(url, success, error) {
           }
         });
     } catch (e) {
-      console.log(e)
+      console.log(e);
       error(e.message ? e.message : e);
     }
   } else {

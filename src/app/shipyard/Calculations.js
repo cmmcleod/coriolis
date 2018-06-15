@@ -229,7 +229,7 @@ export function calcSpeed(mass, baseSpeed, thrusters, engpip, eng, boostFactor, 
  * Calculate pitch for a given setup
  * @param {number}   mass         the mass of the ship
  * @param {number}   basePitch    the base pitch of the ship
- * @param {ojbect}   thrusters    the thrusters of the ship
+ * @param {object}   thrusters    the thrusters of the ship
  * @param {number}   engpip       the multiplier per pip to engines
  * @param {number}   eng          the pips to engines
  * @param {number}   boostFactor  the boost factor for ths ship
@@ -455,7 +455,7 @@ export function shieldMetrics(ship, sys) {
 /**
  * Calculate time from one boost to another
  * @return {number} Boost frequency in seconds
- * @param ship
+ * @param {Ship} ship Ship object
  */
 export function calcBoost(ship) {
   if (!ship.boostEnergy || !ship.standard[4] || !ship.standard[4].m) {
