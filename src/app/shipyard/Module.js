@@ -72,7 +72,7 @@ export default class Module {
    * Set a value for a given modification ID
    * @param {Number} name                 The name of the modification
    * @param {object} value  The value of the modification. If it is a numeric value then it should be an integer scaled so that -2.34% == -234
-   * @param {bool}   valueiswithspecial   true if the value includes the special effect (when coming from a UI component)
+   * @param {Boolean}   valueiswithspecial   true if the value includes the special effect (when coming from a UI component)
    */
   setModValue(name, value, valueiswithspecial) {
     if (!this.mods) {
