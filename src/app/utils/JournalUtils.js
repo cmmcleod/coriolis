@@ -252,6 +252,16 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
   if (specialModifications) {
     special = Modifications.specials[specialModifications];
   }
+  // Add the blueprint definition, grade and special
+  if (blueprint) {
+    module.blueprint = getBlueprint(blueprint, module);
+    if (grade) {
+      module.blueprint.grade = Number(grade);
+    }
+    if (special) {
+      module.blueprint.special = special;
+    }
+  }
   for (const i in modifiers) {
     // Some special modifications
     // Look up the modifiers to find what we need to do
@@ -268,24 +278,14 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
     if (modifiers[i].Label.search('Resistance') >= 0) {
       value = (modifiers[i].Value * 100) - (modifiers[i].OriginalValue * 100);
     }
+
     // Carry out the required changes
     for (const action in modifierActions) {
       if (isNaN(modifierActions[action])) {
         module.setModValue(action, modifierActions[action]);
       } else {
-        module.setModValue(action, value);
+        module.setModValue(action, value, true);
       }
-    }
-  }
-
-  // Add the blueprint definition, grade and special
-  if (blueprint) {
-    module.blueprint = getBlueprint(blueprint, module);
-    if (grade) {
-      module.blueprint.grade = Number(grade);
-    }
-    if (special) {
-      module.blueprint.special = special;
     }
   }
 }
