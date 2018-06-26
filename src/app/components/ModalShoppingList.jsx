@@ -22,6 +22,7 @@ export default class ModalShoppingList extends TranslatedComponent {
     this.state = {
       matsList: '',
       mats: {},
+      failed: false,
       cmdrName: Persist.getCmdr(),
       matsPerGrade: Persist.getRolls(),
       blueprints: []
@@ -80,6 +81,9 @@ export default class ModalShoppingList extends TranslatedComponent {
         .end((err, res) => {
           if (err) {
             console.log(err);
+            if (err.message !== 'Bad Request') {
+              this.setState({ failed: true });
+            }
           }
           countSent++;
           if (countSent === countTotal) {
@@ -188,7 +192,8 @@ export default class ModalShoppingList extends TranslatedComponent {
       <br/>
       <input type={'text'} className={'l cap cb'} defaultValue={this.state.cmdrName} onChange={this.cmdrChangeHandler} />
       <br/>
-      <button className={'l cb dismiss cap'} disabled={!this.state.cmdrName} onClick={this.sendToEDEng}>{translate('Send To EDEngineer')}</button>
+      <p hidden={!this.state.failed} id={'failed'}>Failed to send to EDEngineer (Launch EDEngineer and make sure the API is started then refresh the page.)</p>
+      <button className={'l cb dismiss cap'} disabled={!this.state.cmdrName || !!this.state.failed} onClick={this.sendToEDEng}>{translate('Send To EDEngineer')}</button>
       <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>
     </div>;
   }
