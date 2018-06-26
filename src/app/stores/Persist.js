@@ -5,6 +5,7 @@ const LS_KEY_BUILDS = 'builds';
 const LS_KEY_COMPARISONS = 'comparisons';
 const LS_KEY_LANG = 'NG_TRANSLATE_LANG_KEY';
 const LS_KEY_COST_TAB = 'costTab';
+const LS_KEY_CMDR_NAME = 'cmdrName';
 const LS_KEY_OUTFITTING_TAB = 'outfittingTab';
 const LS_KEY_INSURANCE = 'insurance';
 const LS_KEY_SHIP_DISCOUNT = 'shipDiscount';
@@ -86,6 +87,7 @@ export class Persist extends EventEmitter {
 
     let moduleResistances = _get(LS_KEY_MODULE_RESISTANCES);
     let matsPerGrade = _get(LS_KEY_ROLLS);
+    let cmdrName = _getString(LS_KEY_CMDR_NAME);
     let tips = _get(LS_KEY_TOOLTIPS);
     let insurance = _getString(LS_KEY_INSURANCE);
     let shipDiscount = _get(LS_KEY_SHIP_DISCOUNT);
@@ -111,6 +113,7 @@ export class Persist extends EventEmitter {
       4: 4,
       5: 10
     };
+    this.cmdrName = cmdrName || '';
     this.tooltipsEnabled = tips === null ? true : tips;
     this.moduleResistancesEnabled = moduleResistances === null ? true : moduleResistances;
 
@@ -488,12 +491,30 @@ export class Persist extends EventEmitter {
   }
 
   /**
+   * Get the saved Mats per grade
+   * @return {Object} # of rolls per grade
+   */
+  getCmdr() {
+    return this.cmdrName;
+  }
+
+  /**
    * Persist selected cost tab
    * @param {number} tabName Cost tab name
    */
   setCostTab(tabName) {
     this.costTab = tabName;
     _put(LS_KEY_COST_TAB, tabName);
+  }
+
+  /**
+   * Persist cmdr name
+   * @param {string} cmdrName Commander name for EDEngineer
+   */
+  setCmdr(cmdrName) {
+    this.cmdrName = cmdrName;
+    _put(LS_KEY_CMDR_NAME, cmdrName);
+    this.emit('cmdr');
   }
 
   /**

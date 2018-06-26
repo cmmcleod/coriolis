@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
-import ShortenUrl from '../utils/ShortenUrl';
+import request from 'superagent';
 import Persist from '../stores/Persist';
 
 /**
@@ -22,7 +22,9 @@ export default class ModalShoppingList extends TranslatedComponent {
     this.state = {
       matsList: '',
       mats: {},
-      matsPerGrade: Persist.getRolls()
+      cmdrName: Persist.getCmdr(),
+      matsPerGrade: Persist.getRolls(),
+      blueprints: []
     };
   }
 
@@ -31,6 +33,61 @@ export default class ModalShoppingList extends TranslatedComponent {
    */
   componentDidMount() {
     this.renderMats();
+    this.registerBPs();
+  }
+
+  /**
+   * Convert mats object to string
+   */
+  registerBPs() {
+    const ship = this.props.ship;
+    let blueprints = [];
+    for (const module of ship.costList) {
+      if (module.type === 'SHIP') {
+        continue;
+      }
+      if (module.m && module.m.blueprint) {
+        if (!module.m.blueprint.grade || !module.m.blueprint.grades) {
+          continue;
+        }
+        for (const g in module.m.blueprint.grades) {
+          if (g > module.m.blueprint.grade) {
+            continue;
+          }
+          blueprints.push({ blueprint: module.m.blueprint.grades[g], number: this.state.matsPerGrade[g] });
+        }
+      }
+    }
+    this.setState({ blueprints });
+  }
+
+  /**
+   * Send all blueprints to ED Engineer
+   * @param {SyntheticEvent} event React event
+   */
+  sendToEDEng(event) {
+    event.preventDefault();
+    event.target.disabled = true;
+    event.target.innerText = 'Sending...';
+    let countSent = 0;
+    let countTotal = this.state.blueprints.length;
+    const target = event.target;
+    for (const i of this.state.blueprints) {
+      request
+        .patch(`http://localhost:44405/${this.state.cmdrName}/shopping-list`)
+        .field('uuid', i.blueprint.uuid)
+        .field('size', i.number)
+        .end((err, res) => {
+          if (err) {
+            console.log(err);
+          }
+          countSent++;
+          if (countSent === countTotal) {
+            target.disabled = false;
+            target.innerText = 'Send to EDEngineer';
+          }
+        });
+    }
   }
 
   /**
@@ -86,6 +143,17 @@ export default class ModalShoppingList extends TranslatedComponent {
     this.setState({ matsPerGrade: newState });
     Persist.setRolls(newState);
     this.renderMats();
+    this.registerBPs();
+  }
+
+  /**
+   * Handler for changing roll amounts
+   * @param {SyntheticEvent} e React Event
+   */
+  cmdrChangeHandler(e) {
+    let cmdrName = e.target.value;
+    this.setState({ cmdrName });
+    Persist.setCmdr(cmdrName);
   }
 
   /**
@@ -95,6 +163,8 @@ export default class ModalShoppingList extends TranslatedComponent {
   render() {
     let translate = this.context.language.translate;
     this.changeHandler = this.changeHandler.bind(this);
+    this.cmdrChangeHandler = this.cmdrChangeHandler.bind(this);
+    this.sendToEDEng = this.sendToEDEng.bind(this);
     return <div className='modal' onClick={ (e) => e.stopPropagation() }>
       <h2>{translate('PHRASE_SHOPPING_MATS')}</h2>
       <label>Grade 1 rolls </label>
@@ -114,6 +184,11 @@ export default class ModalShoppingList extends TranslatedComponent {
       <div>
         <textarea className='cb json' readOnly value={this.state.matsList} />
       </div>
+      <label className={'l cap'}>CMDR Name (as displayed on EDEngineer) </label>
+      <br/>
+      <input type={'text'} className={'l cap cb'} defaultValue={this.state.cmdrName} onChange={this.cmdrChangeHandler} />
+      <br/>
+      <button className={'l cb dismiss cap'} disabled={!this.state.cmdrName} onClick={this.sendToEDEng}>{translate('Send To EDEngineer')}</button>
       <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>
     </div>;
   }
