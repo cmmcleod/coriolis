@@ -90,7 +90,7 @@ const CATEGORIES = {
   'experimental': ['axmc', 'axmr', 'rfl', 'xs', 'sfn', 'rcpl'],
 
   // Guardian
-  'guardian': ['gpp', 'gpc', 'ggc']
+  'guardian': ['gpp', 'gpd', 'gpc', 'ggc']
 };
 
 /**

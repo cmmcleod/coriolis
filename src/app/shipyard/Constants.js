@@ -18,7 +18,7 @@ export const ModuleGroupToName = {
   // Standard
   pp: 'Power Plant',
   gpp: 'Guardian Hybrid Power Plant',
-  gpd: 'Guardian Hybrid Power Distributor',
+  gpd: 'Guardian Power Distributor',
   t: 'Thrusters',
   fsd: 'Frame Shift Drive',
   ls: 'Life Support',

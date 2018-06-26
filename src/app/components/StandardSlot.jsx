@@ -67,6 +67,9 @@ export default class StandardSlot extends TranslatedComponent {
     if (m && m.name && m.name === 'Guardian Hybrid Power Plant') {
       validMods = [];
     }
+    if (m && m.name && m.name === 'Guardian Power Distributor') {
+      validMods = [];
+    }
     let showModuleResistances = Persist.showModuleResistances();
     let mass = m.getMass() || m.cargo || m.fuel || 0;
 
