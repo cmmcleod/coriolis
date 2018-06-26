@@ -38,7 +38,7 @@ export default class ModalShoppingList extends TranslatedComponent {
   }
 
   /**
-   * Convert mats object to string
+   * Find all blueprints needed to make a build.
    */
   registerBPs() {
     const ship = this.props.ship;
@@ -52,6 +52,9 @@ export default class ModalShoppingList extends TranslatedComponent {
           continue;
         }
         for (const g in module.m.blueprint.grades) {
+          if (!module.m.blueprint.grades.hasOwnProperty(g)) {
+            continue;
+          }
           if (g > module.m.blueprint.grade) {
             continue;
           }
@@ -64,7 +67,7 @@ export default class ModalShoppingList extends TranslatedComponent {
 
   /**
    * Send all blueprints to ED Engineer
-   * @param {SyntheticEvent} event React event
+   * @param {Event} event React event
    */
   sendToEDEng(event) {
     event.preventDefault();
@@ -78,7 +81,7 @@ export default class ModalShoppingList extends TranslatedComponent {
         .patch(`http://localhost:44405/${this.state.cmdrName}/shopping-list`)
         .field('uuid', i.blueprint.uuid)
         .field('size', i.number)
-        .end((err, res) => {
+        .end(err => {
           if (err) {
             console.log(err);
             if (err.message !== 'Bad Request') {
@@ -109,10 +112,16 @@ export default class ModalShoppingList extends TranslatedComponent {
           continue;
         }
         for (const g in module.m.blueprint.grades) {
+          if (!module.m.blueprint.grades.hasOwnProperty(g)) {
+            continue;
+          }
           if (g > module.m.blueprint.grade) {
             continue;
           }
           for (const i in module.m.blueprint.grades[g].components) {
+            if (!module.m.blueprint.grades[g].components.hasOwnProperty(i)) {
+              continue;
+            }
             if (mats[i]) {
               mats[i] += module.m.blueprint.grades[g].components[i] * this.state.matsPerGrade[g];
             } else {
