@@ -87,6 +87,16 @@ export function speed(mass, baseSpeed, thrusters, engpip) {
 }
 
 /**
+ * Calculate pip multiplier for speed.
+ * @param {number} topSpeed The top speed of ship in data
+ * @param {number} baseSpeed The base speed of ship in data
+ * @return {number} The multiplier that pips affect speed.
+ */
+export function calcPipSpeed(topSpeed, baseSpeed) {
+  return 1 - ((topSpeed - ((topSpeed - baseSpeed) / 4)) / topSpeed);
+}
+
+/**
  * Calculate pitch of a ship based on mass and thrusters
  * @param {number}   mass       the mass of the ship
  * @param {number}   basePitch  base pitch of the ship
