@@ -201,7 +201,7 @@ function calcValue(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, base
  * Calculate speed for a given setup
  * @param {number}   mass         the mass of the ship
  * @param {number}   baseSpeed    the base speed of the ship
- * @param {ojbect}   thrusters    the thrusters of the ship
+ * @param {object}   thrusters    the thrusters of the ship
  * @param {number}   engpip       the multiplier per pip to engines
  * @param {number}   eng          the pips to engines
  * @param {number}   boostFactor  the boost factor for ths ship
