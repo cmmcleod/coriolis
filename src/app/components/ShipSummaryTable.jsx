@@ -142,13 +142,13 @@ export default class ShipSummaryTable extends TranslatedComponent {
         <tbody>
         <tr>
           <td>{translate(shieldGenerator && shieldGenerator.m.grp || 'No Shield')}</td>
-          <td>{int(ship.shieldExplRes * 100) + '%'}</td>
-          <td>{int(ship.shieldKinRes * 100) + '%'}</td>
-          <td>{int(ship.shieldThermRes * 100) + '%'}</td>
-          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.absolute.total : 0)}</td>
-          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.explosive.total : 0)}</td>
-          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.kinetic.total : 0)}</td>
-          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.thermal.total : 0)}</td>
+          <td>{formats.pct1(ship.shieldExplRes)}</td>
+          <td>{formats.pct1(ship.shieldKinRes)}</td>
+          <td>{formats.pct1(ship.shieldThermRes)}</td>
+          <td>{int(ship && ship.shield > 0 ? ship.shield / sgMetrics.absolute.total : 0)}{u.MJ}</td>
+          <td>{int(ship && ship.shield > 0 ? ship.shield / sgMetrics.explosive.total : 0)}{u.MJ}</td>
+          <td>{int(ship && ship.shield > 0 ? ship.shield / sgMetrics.kinetic.total : 0)}{u.MJ}</td>
+          <td>{int(ship && ship.shield > 0 ? ship.shield / sgMetrics.thermal.total : 0)}{u.MJ}</td>
           <td>{sgMetrics && sgMetrics.recover ? formats.time(sgMetrics.recover) : 0}</td>
           <td>{sgMetrics && sgMetrics.recharge ? formats.time(sgMetrics.recharge) : 0}</td>
         </tr>
@@ -173,13 +173,13 @@ export default class ShipSummaryTable extends TranslatedComponent {
         <tbody>
           <tr>
             <td>{translate(ship && ship.bulkheads && ship.bulkheads.m && ship.bulkheads.m.name || 'No Armour')}</td>
-            <td>{int(ship.hullExplRes * 100) + '%'}</td>
-            <td>{int(ship.hullKinRes * 100) + '%'}</td>
-            <td>{int(ship.hullThermRes * 100) + '%'}</td>
-            <td>{int(armourMetrics.total / armourMetrics.absolute.total)}</td>
-            <td>{int(armourMetrics.total / armourMetrics.explosive.total)}</td>
-            <td>{int(armourMetrics.total / armourMetrics.kinetic.total)}</td>
-            <td>{int(armourMetrics.total / armourMetrics.thermal.total)}</td>
+            <td>{formats.pct1(ship.hullExplRes)}</td>
+            <td>{formats.pct1(ship.hullKinRes)}</td>
+            <td>{formats.pct1(ship.hullThermRes)}</td>
+            <td>{int(ship.armour / armourMetrics.absolute.total)}</td>
+            <td>{int(ship.armour / armourMetrics.explosive.total)}</td>
+            <td>{int(ship.armour / armourMetrics.kinetic.total)}</td>
+            <td>{int(ship.armour / armourMetrics.thermal.total)}</td>
             <td>{int(armourMetrics.modulearmour)}</td>
             <td>{int(armourMetrics.moduleprotection * 100) + '%'}</td>
 
