@@ -24,6 +24,7 @@ export default class ModalShoppingList extends TranslatedComponent {
       mats: {},
       failed: false,
       cmdrName: Persist.getCmdr(),
+      cmdrs: [],
       matsPerGrade: Persist.getRolls(),
       blueprints: []
     };
@@ -34,6 +35,7 @@ export default class ModalShoppingList extends TranslatedComponent {
    */
   componentDidMount() {
     this.renderMats();
+    this.getCommanders();
     this.registerBPs();
   }
 
@@ -63,6 +65,21 @@ export default class ModalShoppingList extends TranslatedComponent {
       }
     }
     this.setState({ blueprints });
+  }
+
+  /**
+   * Get a list of commanders from EDEngineer.
+   */
+  getCommanders() {
+    request
+      .get('http://localhost:44405/commanders')
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+          return this.setState({ failed: true });
+        }
+        this.setState({ cmdrs: JSON.parse(res.text) });
+      });
   }
 
   /**
@@ -197,9 +214,11 @@ export default class ModalShoppingList extends TranslatedComponent {
       <div>
         <textarea className='cb json' readOnly value={this.state.matsList} />
       </div>
-      <label className={'l cap'}>CMDR Name (as displayed on EDEngineer) </label>
+      <label className={'l cap'}>CMDR Name </label>
       <br/>
-      <input type={'text'} className={'l cap cb'} defaultValue={this.state.cmdrName} onChange={this.cmdrChangeHandler} />
+      <select className={'cmdr-select l cap'} onChange={this.cmdrChangeHandler} defaultValue={this.state.cmdrName}>
+        {this.state.cmdrs.map(e => <option>{e}</option>)}
+      </select>
       <br/>
       <p hidden={!this.state.failed} id={'failed'}>Failed to send to EDEngineer (Launch EDEngineer and make sure the API is started then refresh the page.)</p>
       <button className={'l cb dismiss cap'} disabled={!this.state.cmdrName || !!this.state.failed} onClick={this.sendToEDEng}>{translate('Send To EDEngineer')}</button>
