@@ -145,10 +145,10 @@ export default class ShipSummaryTable extends TranslatedComponent {
           <td>{formats.pct1(ship.shieldExplRes)}</td>
           <td>{formats.pct1(ship.shieldKinRes)}</td>
           <td>{formats.pct1(ship.shieldThermRes)}</td>
-          <td>{int(ship && ship.shield > 0 ? ship.shield / sgMetrics.absolute.total : 0)}{u.MJ}</td>
-          <td>{int(ship && ship.shield > 0 ? ship.shield / sgMetrics.explosive.total : 0)}{u.MJ}</td>
-          <td>{int(ship && ship.shield > 0 ? ship.shield / sgMetrics.kinetic.total : 0)}{u.MJ}</td>
-          <td>{int(ship && ship.shield > 0 ? ship.shield / sgMetrics.thermal.total : 0)}{u.MJ}</td>
+          <td>{int(ship && ship.shield > 0 ? ship.shield : 0)}{u.MJ}</td>
+          <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldExplRes)))) : 0)}{u.MJ}</td>
+          <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldKinRes)))) : 0)}{u.MJ}</td>
+          <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldThermRes)))) : 0)}{u.MJ}</td>
           <td>{sgMetrics && sgMetrics.recover ? formats.time(sgMetrics.recover) : 0}</td>
           <td>{sgMetrics && sgMetrics.recharge ? formats.time(sgMetrics.recharge) : 0}</td>
         </tr>
@@ -176,10 +176,10 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{formats.pct1(ship.hullExplRes)}</td>
             <td>{formats.pct1(ship.hullKinRes)}</td>
             <td>{formats.pct1(ship.hullThermRes)}</td>
-            <td>{int(ship.armour / armourMetrics.absolute.total)}</td>
-            <td>{int(ship.armour / armourMetrics.explosive.total)}</td>
-            <td>{int(ship.armour / armourMetrics.kinetic.total)}</td>
-            <td>{int(ship.armour / armourMetrics.thermal.total)}</td>
+            <td>{int(ship.armour)}</td>
+            <td>{int(ship.armour * ((1 / (1 - (ship.hullExplRes)))))}</td>
+            <td>{int(ship.armour * ((1 / (1 - (ship.hullKinRes)))))}</td>
+            <td>{int(ship.armour * ((1 / (1 - (ship.hullThermRes)))))}</td>
             <td>{int(armourMetrics.modulearmour)}</td>
             <td>{int(armourMetrics.moduleprotection * 100) + '%'}</td>
 
