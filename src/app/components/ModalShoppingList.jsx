@@ -23,8 +23,8 @@ export default class ModalShoppingList extends TranslatedComponent {
       matsList: '',
       mats: {},
       failed: false,
-      cmdrName: Persist.getCmdr(),
-      cmdrs: [],
+      cmdrName: Persist.getCmdr().selected,
+      cmdrs: Persist.getCmdr().cmdrs,
       matsPerGrade: Persist.getRolls(),
       blueprints: []
     };
@@ -78,7 +78,10 @@ export default class ModalShoppingList extends TranslatedComponent {
           console.log(err);
           return this.setState({ failed: true });
         }
-        this.setState({ cmdrs: JSON.parse(res.text) });
+        const cmdrs = JSON.parse(res.text);
+        this.setState({ cmdrs }, () => {
+          Persist.setCmdr({ selected: this.state.cmdrName, cmdrs });
+        });
       });
   }
 
@@ -88,11 +91,21 @@ export default class ModalShoppingList extends TranslatedComponent {
    */
   sendToEDEng(event) {
     event.preventDefault();
-    event.target.disabled = true;
-    event.target.innerText = 'Sending...';
+    const target = event.target;
+    target.disabled = this.state.blueprints.length > 0;
+    if (this.state.blueprints.length === 0) {
+      target.innerText = 'No modded components.';
+      target.disabled = true;
+      setTimeout(() => {
+        target.innerText = 'Send to EDEngineer';
+        target.disabled = false;
+      }, 3000);
+    } else {
+      target.innerText = 'Sending...';
+    }
     let countSent = 0;
     let countTotal = this.state.blueprints.length;
-    const target = event.target;
+
     for (const i of this.state.blueprints) {
       request
         .patch(`http://localhost:44405/${this.state.cmdrName}/shopping-list`)
@@ -182,8 +195,9 @@ export default class ModalShoppingList extends TranslatedComponent {
    */
   cmdrChangeHandler(e) {
     let cmdrName = e.target.value;
-    this.setState({ cmdrName });
-    Persist.setCmdr(cmdrName);
+    this.setState({ cmdrName }, () => {
+      Persist.setCmdr({ selected: this.state.cmdrName, cmdrs: this.state.cmdrs });
+    });
   }
 
   /**
@@ -217,10 +231,10 @@ export default class ModalShoppingList extends TranslatedComponent {
       <label className={'l cap'}>CMDR Name </label>
       <br/>
       <select className={'cmdr-select l cap'} onChange={this.cmdrChangeHandler} defaultValue={this.state.cmdrName}>
-        {this.state.cmdrs.map(e => <option>{e}</option>)}
+        {this.state.cmdrs.map(e => <option key={e}>{e}</option>)}
       </select>
       <br/>
-      <p hidden={!this.state.failed} id={'failed'}>Failed to send to EDEngineer (Launch EDEngineer and make sure the API is started then refresh the page.)</p>
+      <p hidden={!this.state.failed} id={'failed'} className={'l'}>Failed to send to EDEngineer (Launch EDEngineer and make sure the API is started then refresh the page.)</p>
       <button className={'l cb dismiss cap'} disabled={!this.state.cmdrName || !!this.state.failed} onClick={this.sendToEDEng}>{translate('Send To EDEngineer')}</button>
       <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>
     </div>;
