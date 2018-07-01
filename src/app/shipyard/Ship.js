@@ -942,7 +942,7 @@ export default class Ship {
 
     let armourChange = (slot === this.bulkheads) || (n && n.grp === 'hr') || (old && old.grp === 'hr') || (n && n.grp === 'mrp') || (old && old.grp === 'mrp');
 
-    let shieldChange = (n && n.grp === 'bsg') || (old && old.grp === 'bsg') || (n && n.grp === 'psg') || (old && old.grp === 'psg') || (n && n.grp === 'sg') || (old && old.grp === 'sg') || (n && n.grp === 'sb') || (old && old.grp === 'sb') || (old && old.grp === 'gsrp');
+    let shieldChange = (n && n.grp === 'bsg') || (old && old.grp === 'bsg') || (n && n.grp === 'psg') || (old && old.grp === 'psg') || (n && n.grp === 'sg') || (old && old.grp === 'sg') || (n && n.grp === 'sb') || (old && old.grp === 'sb') || (old && old.grp === 'gsrp') || (n && n.grp === 'gsrp');
 
     let shieldCellsChange = (n && n.grp === 'scb') || (old && old.grp === 'scb');
 
