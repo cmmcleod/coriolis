@@ -70,7 +70,7 @@ export function shipFromLoadoutJSON(json) {
   let ship = new Ship(shipModel, shipTemplate.properties, shipTemplate.slots);
   ship.buildWith(null);
   // Initial Ship building, don't do engineering yet.
-  let opts = [];
+  let modsToAdd = [];
 
   for (const module of json.Modules) {
     switch (module.Slot.toLowerCase()) {
@@ -176,7 +176,7 @@ export function shipFromLoadoutJSON(json) {
             ship.use(ship.hardpoints[hardpointArrayNum], hardpoint, true);
             ship.hardpoints[hardpointArrayNum].enabled = hardpointSlot.On;
             ship.hardpoints[hardpointArrayNum].priority = hardpointSlot.Priority;
-            opts.push({ coriolisMod: hardpoint, json: hardpointSlot });
+            modsToAdd.push({ coriolisMod: hardpoint, json: hardpointSlot });
           }
           hardpointArrayNum++;
         }
@@ -185,6 +185,9 @@ export function shipFromLoadoutJSON(json) {
         let internalSlotNum = 1;
         let militarySlotNum = 1;
         for (let i in shipTemplate.slots.internal) {
+          if (!shipTemplate.slots.internal.hasOwnProperty(i)) {
+            continue;
+          }
           const isMilitary = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].name = 'military' : false;
 
           // The internal slot might be a standard or a military slot.  Military slots have a different naming system
@@ -198,7 +201,7 @@ export function shipFromLoadoutJSON(json) {
             while (internalSlot === null && internalSlotNum < 99) {
               // Slot sizes have no relationship to the actual size, either, so check all possibilities
               for (let slotsize = 0; slotsize < 9; slotsize++) {
-                const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '') + internalSlotNum + '_Size' + slotsize;
+                const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '0') + internalSlotNum + '_Size' + slotsize;
                 if (json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase())) {
                   internalSlot = json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase());
                   break;
@@ -210,23 +213,23 @@ export function shipFromLoadoutJSON(json) {
 
           if (!internalSlot) {
             // This can happen with old imports that don't contain new slots
-          } else if (!internalSlot) {
-            // No module
           } else {
             const internalJson = internalSlot;
             const internal = _moduleFromFdName(internalJson.Item);
             ship.use(ship.internal[i], internal, true);
             ship.internal[i].enabled = internalJson.On === true;
             ship.internal[i].priority = internalJson.Priority;
-            opts.push({ coriolisMod: internal, json: internalSlot });
+            modsToAdd.push({ coriolisMod: internal, json: internalSlot });
           }
         }
       }
     }
   }
 
-  for (const i of opts) {
-    if (i.json.Engineering) _addModifications(i.coriolisMod, i.json.Engineering.Modifiers, i.json.Engineering.BlueprintName, i.json.Engineering.Level, i.json.Engineering.ExperimentalEffect);
+  for (const i of modsToAdd) {
+    if (i.json.Engineering) {
+      _addModifications(i.coriolisMod, i.json.Engineering.Modifiers, i.json.Engineering.BlueprintName, i.json.Engineering.Level, i.json.Engineering.ExperimentalEffect);
+    }
   }
   // We don't have any information on it so guess it's priority 5 and disabled
   if (!ship.cargoHatch) {
