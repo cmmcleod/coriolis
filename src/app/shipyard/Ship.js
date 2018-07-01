@@ -239,7 +239,6 @@ export default class Ship {
       }
       sg = sgSlot.m;
     }
-
     // TODO Not accurate if the ship has modified shield boosters
     return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, 1 + (multiplierDelta || 0));
   }
@@ -943,7 +942,7 @@ export default class Ship {
 
     let armourChange = (slot === this.bulkheads) || (n && n.grp === 'hr') || (old && old.grp === 'hr') || (n && n.grp === 'mrp') || (old && old.grp === 'mrp');
 
-    let shieldChange = (n && n.grp === 'bsg') || (old && old.grp === 'bsg') || (n && n.grp === 'psg') || (old && old.grp === 'psg') || (n && n.grp === 'sg') || (old && old.grp === 'sg') || (n && n.grp === 'sb') || (old && old.grp === 'sb');
+    let shieldChange = (n && n.grp === 'bsg') || (old && old.grp === 'bsg') || (n && n.grp === 'psg') || (old && old.grp === 'psg') || (n && n.grp === 'sg') || (old && old.grp === 'sg') || (n && n.grp === 'sb') || (old && old.grp === 'sb') || (old && old.grp === 'gsrp');
 
     let shieldCellsChange = (n && n.grp === 'scb') || (old && old.grp === 'scb');
 
@@ -1277,7 +1276,7 @@ export default class Ship {
     // Obtain shield metrics with 0 pips to sys (parts affected by SYS aren't used here)
     const metrics = Calc.shieldMetrics(this, 0);
 
-    this.shield = metrics.generator ? metrics.generator + metrics.boosters : 0;
+    this.shield = metrics.generator ? metrics.generator + metrics.boosters + metrics.addition : 0;
     this.shieldExplRes = this.shield > 0 ? 1 - metrics.explosive.total : null;
     this.shieldKinRes = this.shield > 0 ?  1 - metrics.kinetic.total : null;
     this.shieldThermRes = this.shield > 0 ?  1 - metrics.thermal.total : null;

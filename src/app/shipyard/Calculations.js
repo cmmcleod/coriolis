@@ -60,7 +60,7 @@ export function shieldStrength(mass, baseShield, sg, multiplier) {
   let ynorm = Math.pow(xnorm, exponent);
   let mul = minMul + ynorm * (maxMul - minMul);
 
-  return baseShield * mul * multiplier;
+  return (baseShield * mul * multiplier);
 }
 
 /**
@@ -358,6 +358,9 @@ export function shieldMetrics(ship, sys) {
         boosterKinDmg = boosterKinDmg * (1 - slot.m.getKineticResistance());
         boosterThermDmg = boosterThermDmg * (1 - slot.m.getThermalResistance());
       }
+      if (slot.m && slot.m.grp == 'gsrp') {
+
+      }
     }
     // Calculate diminishing returns for boosters
     // Diminishing returns not currently in-game
@@ -389,12 +392,19 @@ export function shieldMetrics(ship, sys) {
     // boosterKinDmg = boosterKinDmg > 0.7 ? boosterKinDmg : 0.7 - (0.7 - boosterKinDmg) / 2;
     // boosterThermDmg = boosterThermDmg > 0.7 ? boosterThermDmg : 0.7 - (0.7 - boosterThermDmg) / 2;
     // res.therm = res.therm > 0.7 ? res.therm : 0.7 - (0.7 - res.therm) / 2;
-
-    const generatorStrength = this.shieldStrength(ship.hullMass, ship.baseShieldStrength, shieldGenerator, 1);
+    let shieldAddition = 0;
+    if (ship) {
+      for (const module of ship.internal) {
+        if (module && module.m && module.m.grp === 'gsrp') {
+          shieldAddition += module.m.getShieldAddition();
+        }
+      }
+    }
+    let generatorStrength = this.shieldStrength(ship.hullMass, ship.baseShieldStrength, shieldGenerator, 1);
     const boostersStrength = generatorStrength * boost;
 
     // Recover time is the time taken to go from 0 to 50%.  It includes a 16-second wait before shields start to recover
-    const shieldToRecover = (generatorStrength + boostersStrength) / 2;
+    const shieldToRecover = (generatorStrength + boostersStrength + shieldAddition) / 2;
     const powerDistributor = ship.standard[4].m;
     const sysRechargeRate = this.sysRechargeRate(powerDistributor, sys);
 
@@ -421,7 +431,7 @@ export function shieldMetrics(ship, sys) {
     }
 
     // Recharge time is the time taken to go from 50% to 100%
-    const shieldToRecharge = (generatorStrength + boostersStrength) / 2;
+    const shieldToRecharge = (generatorStrength + boostersStrength + shieldAddition) / 2;
 
     // Our initial regeneration comes from the SYS capacitor store, which is replenished as it goes
     // 0.6 is a magic number from FD: each 0.6 MW of energy from the power distributor recharges 1 MJ/s of regeneration
@@ -448,8 +458,9 @@ export function shieldMetrics(ship, sys) {
     shield = {
       generator: generatorStrength,
       boosters: boostersStrength,
+      addition: shieldAddition,
       cells: ship.shieldCells,
-      total: generatorStrength + boostersStrength + ship.shieldCells,
+      total: generatorStrength + boostersStrength + ship.shieldCells + shieldAddition,
       recover,
       recharge,
     };

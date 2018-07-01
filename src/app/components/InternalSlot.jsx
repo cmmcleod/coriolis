@@ -63,6 +63,7 @@ export default class InternalSlot extends Slot {
           { m.getSpinup() ? <div className={'l'}>{translate('spinup')}: {formats.f1(m.getSpinup())}{u.s}</div> : null }
           { m.getDuration() ? <div className={'l'}>{translate('duration')}: {formats.f1(m.getDuration())}{u.s}</div> : null }
           { m.grp === 'scb' ? <div className={'l'}>{translate('cells')}: {formats.int(m.getAmmo() + 1)}</div> : null }
+          { m.grp === 'gsrp' ? <div className={'l'}>{translate('shield addition')}: {formats.int(m.getShieldAddition())}{u.MJ}</div> : null }
           { m.getShieldReinforcement() ? <div className={'l'}>{translate('shieldreinforcement')}: {formats.f1(m.getDuration() * m.getShieldReinforcement())}{u.MJ}</div> : null }
           { m.getShieldReinforcement() ? <div className={'l'}>{translate('total')}: {formats.int((m.getAmmo() + 1) * (m.getDuration() * m.getShieldReinforcement()))}{u.MJ}</div> : null }
           { m.repair ? <div className={'l'}>{translate('repair')}: {m.repair}</div> : null }

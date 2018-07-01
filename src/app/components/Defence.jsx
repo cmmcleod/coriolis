@@ -76,6 +76,7 @@ export default class Defence extends TranslatedComponent {
       shieldSourcesData.push({ value: Math.round(shield.generator), label: translate('generator') });
       shieldSourcesData.push({ value: Math.round(shield.boosters), label: translate('boosters') });
       shieldSourcesData.push({ value: Math.round(shield.cells), label: translate('cells') });
+      shieldSourcesData.push({ value: Math.round(shield.addition), label: translate('shield addition') });
 
       if (shield.generator > 0) {
         shieldSourcesTt.push(<div key='generator'>{translate('generator') + ' ' + formats.int(shield.generator)}{units.MJ}</div>);
