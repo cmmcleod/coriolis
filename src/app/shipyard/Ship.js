@@ -9,7 +9,7 @@ import isEqual from 'lodash/lang';
 import { Ships, Modifications } from 'coriolis-data/dist';
 const zlib = require('zlib');
 
-const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs', 'fh'];
+const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs', 'fh', 'gfsb'];
 
 // Constants for modifications struct
 const SLOT_ID_DONE = -1;
