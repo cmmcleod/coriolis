@@ -7,11 +7,20 @@ import Module from './Module';
  * @param  {object} fsd  The FDS object/component with maxfuel, fuelmul, fuelpower, optmass
  * @param  {number} fuel Optional - The fuel consumed during the jump
  * @return {number}      Distance in Light Years
+ * @param {object} ship Ship instance
  */
-export function jumpRange(mass, fsd, fuel) {
+export function jumpRange(mass, fsd, fuel, ship) {
   const fsdMaxFuelPerJump = fsd instanceof Module ? fsd.getMaxFuelPerJump() : fsd.maxfuel;
   const fsdOptimalMass = fsd instanceof Module ? fsd.getOptMass() : fsd.optmass;
-  return Math.pow(Math.min(fuel === undefined ? fsdMaxFuelPerJump : fuel, fsdMaxFuelPerJump) / fsd.fuelmul, 1 / fsd.fuelpower) * fsdOptimalMass / mass;
+  let jumpAddition = 0;
+  if (ship) {
+    for (const module of ship.internal) {
+      if (module && module.m && module.m.grp === 'gfsb') {
+        jumpAddition += module.m.getJumpBoost();
+      }
+    }
+  }
+  return (Math.pow(Math.min(fuel === undefined ? fsdMaxFuelPerJump : fuel, fsdMaxFuelPerJump) / fsd.fuelmul, 1 / fsd.fuelpower) * fsdOptimalMass / mass) + jumpAddition;
 }
 
 /**
@@ -21,8 +30,9 @@ export function jumpRange(mass, fsd, fuel) {
  * @param  {object} fsd  The FDS object/component with maxfuel, fuelmul, fuelpower, optmass
  * @param  {number} fuel The total fuel available
  * @return {number}      Distance in Light Years
+ * @param {object} ship Ship instance
  */
-export function totalJumpRange(mass, fsd, fuel) {
+export function totalJumpRange(mass, fsd, fuel, ship) {
   const fsdMaxFuelPerJump = fsd instanceof Module ? fsd.getMaxFuelPerJump() : fsd.maxfuel;
   const fsdOptimalMass = fsd instanceof Module ? fsd.getOptMass() : fsd.optmass;
 
@@ -30,7 +40,7 @@ export function totalJumpRange(mass, fsd, fuel) {
   let totalRange = 0;
   while (fuelRemaining > 0) {
     const fuelForThisJump = Math.min(fuelRemaining, fsdMaxFuelPerJump);
-    totalRange += this.jumpRange(mass, fsd, fuelForThisJump);
+    totalRange += this.jumpRange(mass, fsd, fuelForThisJump, ship);
     // Mass is reduced
     mass -= fuelForThisJump;
     fuelRemaining -= fuelForThisJump;

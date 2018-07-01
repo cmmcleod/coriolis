@@ -658,6 +658,14 @@ export default class Module {
   }
 
   /**
+   * Get the jump range boost for this module, taking in to account modifications
+   * @return {Number} the jump range boost for this module
+   */
+  getJumpBoost() {
+    return this._getModifiedValue('jumpboost');
+  }
+
+  /**
    * Get the piercing for this module, taking in to account modifications
    * @return {Number} the piercing for this module
    */
