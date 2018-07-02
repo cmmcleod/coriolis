@@ -53,6 +53,10 @@ export default class ModalShoppingList extends TranslatedComponent {
         if (!module.m.blueprint.grade || !module.m.blueprint.grades) {
           continue;
         }
+        if (module.m.blueprint.special) {
+          console.log(module.m.blueprint.special);
+          blueprints.push({ uuid: module.m.blueprint.special.uuid, number: 1 });
+        }
         for (const g in module.m.blueprint.grades) {
           if (!module.m.blueprint.grades.hasOwnProperty(g)) {
             continue;
@@ -60,7 +64,7 @@ export default class ModalShoppingList extends TranslatedComponent {
           if (g > module.m.blueprint.grade) {
             continue;
           }
-          blueprints.push({ blueprint: module.m.blueprint.grades[g], number: this.state.matsPerGrade[g] });
+          blueprints.push({ uuid: module.m.blueprint.grades[g].uuid, number: this.state.matsPerGrade[g] });
         }
       }
     }
@@ -109,7 +113,7 @@ export default class ModalShoppingList extends TranslatedComponent {
     for (const i of this.state.blueprints) {
       request
         .patch(`http://localhost:44405/${this.state.cmdrName}/shopping-list`)
-        .field('uuid', i.blueprint.uuid)
+        .field('uuid', i.uuid)
         .field('size', i.number)
         .end(err => {
           if (err) {
