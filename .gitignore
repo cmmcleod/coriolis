@@ -9,3 +9,4 @@ env
 *.swp
 .project
 .vscode/
+docs/
