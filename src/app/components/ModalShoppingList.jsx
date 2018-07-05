@@ -83,6 +83,9 @@ export default class ModalShoppingList extends TranslatedComponent {
           return this.setState({ failed: true });
         }
         const cmdrs = JSON.parse(res.text);
+        if (!this.state.cmdrName) {
+          this.setState({ cmdrName: cmdrs[0] });
+        }
         this.setState({ cmdrs }, () => {
           Persist.setCmdr({ selected: this.state.cmdrName, cmdrs });
         });
