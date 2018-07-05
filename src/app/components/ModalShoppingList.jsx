@@ -239,7 +239,7 @@ export default class ModalShoppingList extends TranslatedComponent {
       </select>
       <br/>
       <p hidden={!this.state.failed} id={'failed'} className={'l'}>Failed to send to EDEngineer (Launch EDEngineer and make sure the API is started then refresh the page.)</p>
-      <button className={'l cb dismiss cap'} disabled={!this.state.cmdrName || !!this.state.failed} onClick={this.sendToEDEng}>{translate('Send To EDEngineer')}</button>
+      <button className={'l cb dismiss cap'} disabled={!!this.state.failed} onClick={this.sendToEDEng}>{translate('Send To EDEngineer')}</button>
       <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>
     </div>;
   }
