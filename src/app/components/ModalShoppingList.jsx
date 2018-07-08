@@ -35,8 +35,10 @@ export default class ModalShoppingList extends TranslatedComponent {
    */
   componentDidMount() {
     this.renderMats();
-    this.getCommanders();
-    this.registerBPs();
+    if (this.checkBrowserIsCompatible()) {
+      this.getCommanders();
+      this.registerBPs();
+    }
   }
 
   /**
@@ -69,6 +71,15 @@ export default class ModalShoppingList extends TranslatedComponent {
       }
     }
     this.setState({ blueprints });
+  }
+
+  /**
+   * Check browser isn't firefox.
+   * @return {boolean} true if compatible, false if not.
+   */
+  checkBrowserIsCompatible() {
+    // Firefox 1.0+
+    return typeof InstallTrigger === 'undefined';
   }
 
   /**
@@ -214,6 +225,7 @@ export default class ModalShoppingList extends TranslatedComponent {
   render() {
     let translate = this.context.language.translate;
     this.changeHandler = this.changeHandler.bind(this);
+    const compatible = this.checkBrowserIsCompatible();
     this.cmdrChangeHandler = this.cmdrChangeHandler.bind(this);
     this.sendToEDEng = this.sendToEDEng.bind(this);
     return <div className='modal' onClick={ (e) => e.stopPropagation() }>
@@ -242,6 +254,7 @@ export default class ModalShoppingList extends TranslatedComponent {
       </select>
       <br/>
       <p hidden={!this.state.failed} id={'failed'} className={'l'}>Failed to send to EDEngineer (Launch EDEngineer and make sure the API is started then refresh the page.)</p>
+      <p hidden={compatible} id={'browserbad'} className={'l'}>Sending to EDEngineer is not compatible with Firefox's security settings. Please try again with Chrome.</p>
       <button className={'l cb dismiss cap'} disabled={!!this.state.failed} onClick={this.sendToEDEng}>{translate('Send To EDEngineer')}</button>
       <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>
     </div>;
