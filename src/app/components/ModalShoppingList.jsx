@@ -247,15 +247,15 @@ export default class ModalShoppingList extends TranslatedComponent {
       <div>
         <textarea className='cb json' readOnly value={this.state.matsList} />
       </div>
-      <label className={'l cap'}>CMDR Name </label>
+      <label hidden={!compatible} className={'l cap'}>CMDR Name </label>
       <br/>
-      <select className={'cmdr-select l cap'} onChange={this.cmdrChangeHandler} defaultValue={this.state.cmdrName}>
+      <select hidden={!compatible} className={'cmdr-select l cap'} onChange={this.cmdrChangeHandler} defaultValue={this.state.cmdrName}>
         {this.state.cmdrs.map(e => <option key={e}>{e}</option>)}
       </select>
       <br/>
       <p hidden={!this.state.failed} id={'failed'} className={'l'}>Failed to send to EDEngineer (Launch EDEngineer and make sure the API is started then refresh the page.)</p>
       <p hidden={compatible} id={'browserbad'} className={'l'}>Sending to EDEngineer is not compatible with Firefox's security settings. Please try again with Chrome.</p>
-      <button className={'l cb dismiss cap'} disabled={!!this.state.failed} onClick={this.sendToEDEng}>{translate('Send To EDEngineer')}</button>
+      <button className={'l cb dismiss cap'} disabled={!!this.state.failed || !compatible} onClick={this.sendToEDEng}>{translate('Send To EDEngineer')}</button>
       <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>
     </div>;
   }
