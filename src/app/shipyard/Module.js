@@ -650,6 +650,22 @@ export default class Module {
   }
 
   /**
+   * Get the shield addition for this module, taking in to account modifications
+   * @return {Number} the shield addition for this module
+   */
+  getShieldAddition() {
+    return this._getModifiedValue('shieldaddition');
+  }
+
+  /**
+   * Get the jump range boost for this module, taking in to account modifications
+   * @return {Number} the jump range boost for this module
+   */
+  getJumpBoost() {
+    return this._getModifiedValue('jumpboost');
+  }
+
+  /**
    * Get the piercing for this module, taking in to account modifications
    * @return {Number} the piercing for this module
    */

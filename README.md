@@ -23,6 +23,7 @@ Chat to us on [Discord](https://discord.gg/0uwCh6R62aPRjk9w)!
 
 See the [Developer's Guide](https://github.com/EDCD/coriolis/wiki/Developing-for-Coriolis) in the wiki.
 
+Also see [the documentation site.](https://coriolis.willb.info/)
 
 ### Ship and Module Database
 

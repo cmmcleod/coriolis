@@ -52,6 +52,8 @@ export const ModuleGroupToName = {
   pcq: 'Luxury Passenger Cabin',
   cc: 'Collector Limpet Controller',
   ss: 'Surface Scanner',
+  gsrp: 'Guardian Shield Reinforcement Packages',
+  gfsb: 'Guardian Frame Shift Drive Booster',
 
   // Hard Points
   bl: 'Beam Laser',

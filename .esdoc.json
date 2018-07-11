@@ -1,0 +1,103 @@
+{
+  "source": "./src/app",
+  "includes": ["\\.js$", "\\.jsx$"],
+  "destination": "./docs",
+  "index": "./README.md",
+  "plugins": [
+    {
+      "name": "esdoc-standard-plugin",
+      "option": {
+        "lint": {
+          "enable": false
+        },
+        "coverage": {
+          "enable": false
+        },
+        "accessor": {
+          "access": [
+            "public",
+            "protected",
+            "private"
+          ],
+          "autoPrivate": true
+        },
+        "undocumentIdentifier": {
+          "enable": true
+        },
+        "unexportedIdentifier": {
+          "enable": false
+        },
+        "typeInference": {
+          "enable": true
+        },
+        "brand": {
+          "logo": "./src/images/logo/192x192.png",
+          "title": "Coriolis",
+          "description": "Coriolis Shipyard for Elite Dangerous",
+          "repository": "https://github.com/EDCD/coriolis",
+          "site": "https://coriolis.edcd.io",
+          "author": "https://github.com/edcd",
+          "image": "./src/images/logo/192x192.png"
+        }
+      }
+    },
+    {
+      "name": "esdoc-ecmascript-proposal-plugin",
+      "option": {
+        "all": true
+      }
+    },
+    {
+      "name": "esdoc-react-plugin"
+    },
+    {
+      "name": "esdoc-standard-plugin",
+      "option": {
+        "lint": {
+          "enable": false
+        },
+        "coverage": {
+          "enable": false
+        },
+        "accessor": {
+          "access": [
+            "public",
+            "protected",
+            "private"
+          ],
+          "autoPrivate": true
+        },
+        "undocumentIdentifier": {
+          "enable": true
+        },
+        "unexportedIdentifier": {
+          "enable": false
+        },
+        "typeInference": {
+          "enable": true
+        },
+        "brand": {
+          "logo": "./src/images/logo/192x192.png",
+          "title": "Coriolis",
+          "description": "Coriolis Shipyard for Elite Dangerous",
+          "repository": "https://github.com/EDCD/coriolis",
+          "site": "https://coriolis.edcd.io",
+          "author": "https://github.com/edcd",
+          "image": "./src/images/logo/192x192.png"
+        }
+      }
+    },
+    {
+      "name": "esdoc-jsx-plugin",
+      "option": {
+        "enable": true
+      }
+    },
+    {
+      "name": "esdoc-publish-html-plugin",
+      "option": {
+        "template": "./node_modules/esdoc-custom-theme/template"
+      }
+    }
+  ]
+}

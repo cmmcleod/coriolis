@@ -99,11 +99,11 @@ export default class ShipSummaryTable extends TranslatedComponent {
           <tr>
             <td onMouseEnter={termtip.bind(null, speedTooltip, { cap: 0 })} onMouseLeave={hide}>{ canThrust ? <span>{int(ship.calcSpeed(4, ship.fuelCapacity, 0, false))}{u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
             <td onMouseEnter={termtip.bind(null, boostTooltip, { cap: 0 })} onMouseLeave={hide}>{ canBoost ? <span>{int(ship.calcSpeed(4, ship.fuelCapacity, 0, true))}{u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
-            <td><span onMouseEnter={termtip.bind(null, 'TT_SUMMARY_MAX_SINGLE_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.jumpRange(ship.unladenMass + ship.standard[2].m.getMaxFuelPerJump(), ship.standard[2].m, ship.standard[2].m.getMaxFuelPerJump()))}{u.LY}</span></td>
-            <td><span onMouseEnter={termtip.bind(null, 'TT_SUMMARY_UNLADEN_SINGLE_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.jumpRange(ship.unladenMass + ship.fuelCapacity, ship.standard[2].m, ship.fuelCapacity))}{u.LY}</span></td>
-            <td><span onMouseEnter={termtip.bind(null, 'TT_SUMMARY_LADEN_SINGLE_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.jumpRange(ship.unladenMass + ship.fuelCapacity + ship.cargoCapacity, ship.standard[2].m, ship.fuelCapacity))}{u.LY}</span></td>
-            <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_UNLADEN_TOTAL_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.totalJumpRange(ship.unladenMass + ship.fuelCapacity, ship.standard[2].m, ship.fuelCapacity))}{u.LY}</td>
-            <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_LADEN_TOTAL_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.totalJumpRange(ship.unladenMass + ship.fuelCapacity + ship.cargoCapacity, ship.standard[2].m, ship.fuelCapacity))}{u.LY}</td>
+            <td><span onMouseEnter={termtip.bind(null, 'TT_SUMMARY_MAX_SINGLE_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.jumpRange(ship.unladenMass + ship.standard[2].m.getMaxFuelPerJump(), ship.standard[2].m, ship.standard[2].m.getMaxFuelPerJump(), ship))}{u.LY}</span></td>
+            <td><span onMouseEnter={termtip.bind(null, 'TT_SUMMARY_UNLADEN_SINGLE_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.jumpRange(ship.unladenMass + ship.fuelCapacity, ship.standard[2].m, ship.fuelCapacity, ship))}{u.LY}</span></td>
+            <td><span onMouseEnter={termtip.bind(null, 'TT_SUMMARY_LADEN_SINGLE_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.jumpRange(ship.unladenMass + ship.fuelCapacity + ship.cargoCapacity, ship.standard[2].m, ship.fuelCapacity, ship))}{u.LY}</span></td>
+            <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_UNLADEN_TOTAL_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.totalJumpRange(ship.unladenMass + ship.fuelCapacity, ship.standard[2].m, ship.fuelCapacity, ship))}{u.LY}</td>
+            <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_LADEN_TOTAL_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.totalJumpRange(ship.unladenMass + ship.fuelCapacity + ship.cargoCapacity, ship.standard[2].m, ship.fuelCapacity, ship))}{u.LY}</td>
             <td className={sgClassNames} onMouseEnter={termtip.bind(null, sgTooltip, { cap: 0 })} onMouseLeave={hide}>{int(ship.shield)}{u.MJ}</td>
             <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_INTEGRITY', { cap: 0 })} onMouseLeave={hide}>{int(ship.armour)}</td>
             <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_DPS', { cap: 0 })} onMouseLeave={hide}>{f1(ship.totalDps)}</td>
@@ -142,13 +142,13 @@ export default class ShipSummaryTable extends TranslatedComponent {
         <tbody>
         <tr>
           <td>{translate(shieldGenerator && shieldGenerator.m.grp || 'No Shield')}</td>
-          <td>{int(ship.shieldExplRes * 100) + '%'}</td>
-          <td>{int(ship.shieldKinRes * 100) + '%'}</td>
-          <td>{int(ship.shieldThermRes * 100) + '%'}</td>
-          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.absolute.total : 0)}</td>
-          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.explosive.total : 0)}</td>
-          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.kinetic.total : 0)}</td>
-          <td>{int(sgMetrics && sgMetrics.generator ? sgMetrics.total / sgMetrics.thermal.total : 0)}</td>
+          <td>{formats.pct1(ship.shieldExplRes)}</td>
+          <td>{formats.pct1(ship.shieldKinRes)}</td>
+          <td>{formats.pct1(ship.shieldThermRes)}</td>
+          <td>{int(ship && ship.shield > 0 ? ship.shield : 0)}{u.MJ}</td>
+          <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldExplRes)))) : 0)}{u.MJ}</td>
+          <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldKinRes)))) : 0)}{u.MJ}</td>
+          <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldThermRes)))) : 0)}{u.MJ}</td>
           <td>{sgMetrics && sgMetrics.recover ? formats.time(sgMetrics.recover) : 0}</td>
           <td>{sgMetrics && sgMetrics.recharge ? formats.time(sgMetrics.recharge) : 0}</td>
         </tr>
@@ -173,13 +173,13 @@ export default class ShipSummaryTable extends TranslatedComponent {
         <tbody>
           <tr>
             <td>{translate(ship && ship.bulkheads && ship.bulkheads.m && ship.bulkheads.m.name || 'No Armour')}</td>
-            <td>{int(ship.hullExplRes * 100) + '%'}</td>
-            <td>{int(ship.hullKinRes * 100) + '%'}</td>
-            <td>{int(ship.hullThermRes * 100) + '%'}</td>
-            <td>{int(armourMetrics.total / armourMetrics.absolute.total)}</td>
-            <td>{int(armourMetrics.total / armourMetrics.explosive.total)}</td>
-            <td>{int(armourMetrics.total / armourMetrics.kinetic.total)}</td>
-            <td>{int(armourMetrics.total / armourMetrics.thermal.total)}</td>
+            <td>{formats.pct1(ship.hullExplRes)}</td>
+            <td>{formats.pct1(ship.hullKinRes)}</td>
+            <td>{formats.pct1(ship.hullThermRes)}</td>
+            <td>{int(ship.armour)}</td>
+            <td>{int(ship.armour * ((1 / (1 - (ship.hullExplRes)))))}</td>
+            <td>{int(ship.armour * ((1 / (1 - (ship.hullKinRes)))))}</td>
+            <td>{int(ship.armour * ((1 / (1 - (ship.hullThermRes)))))}</td>
             <td>{int(armourMetrics.modulearmour)}</td>
             <td>{int(armourMetrics.moduleprotection * 100) + '%'}</td>
 

@@ -61,7 +61,7 @@ export default class JumpRange extends TranslatedComponent {
     const fuel = this.state.fuelLevel * ship.fuelCapacity;
 
     // Obtain the jump range
-    return Calc.jumpRange(ship.unladenMass + fuel + cargo, fsd, fuel);
+    return Calc.jumpRange(ship.unladenMass + fuel + cargo, fsd, fuel, ship);
   }
 
   /**

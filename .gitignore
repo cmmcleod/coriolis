@@ -8,3 +8,5 @@ nginx.pid
 env
 *.swp
 .project
+.vscode/
+docs/

@@ -9,7 +9,7 @@ import isEqual from 'lodash/lang';
 import { Ships, Modifications } from 'coriolis-data/dist';
 const zlib = require('zlib');
 
-const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs', 'fh'];
+const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs', 'fh', 'gfsb'];
 
 // Constants for modifications struct
 const SLOT_ID_DONE = -1;
@@ -151,7 +151,7 @@ export default class Ship {
    * @return {Number}           Jump range in Light Years
    */
   calcLadenRange(massDelta, fuel, fsd) {
-    return Calc.jumpRange(this.ladenMass + (massDelta || 0), fsd || this.standard[2].m, fuel);
+    return Calc.jumpRange(this.ladenMass + (massDelta || 0), fsd || this.standard[2].m, fuel, this);
   }
 
   /**
@@ -164,7 +164,7 @@ export default class Ship {
   calcUnladenRange(massDelta, fuel, fsd) {
     fsd = fsd || this.standard[2].m;
     let fsdMaxFuelPerJump = fsd instanceof Module ? fsd.getMaxFuelPerJump() : fsd.maxfuel;
-    return Calc.jumpRange(this.unladenMass + (massDelta || 0) +  Math.min(fsdMaxFuelPerJump, fuel || this.fuelCapacity), fsd || this.standard[2].m, fuel);
+    return Calc.jumpRange(this.unladenMass + (massDelta || 0) +  Math.min(fsdMaxFuelPerJump, fuel || this.fuelCapacity), fsd || this.standard[2].m, fuel, this);
   }
 
   /**
@@ -239,7 +239,6 @@ export default class Ship {
       }
       sg = sgSlot.m;
     }
-
     // TODO Not accurate if the ship has modified shield boosters
     return Calc.shieldStrength(this.hullMass, this.baseShieldStrength, sg, 1 + (multiplierDelta || 0));
   }
@@ -943,7 +942,7 @@ export default class Ship {
 
     let armourChange = (slot === this.bulkheads) || (n && n.grp === 'hr') || (old && old.grp === 'hr') || (n && n.grp === 'mrp') || (old && old.grp === 'mrp');
 
-    let shieldChange = (n && n.grp === 'bsg') || (old && old.grp === 'bsg') || (n && n.grp === 'psg') || (old && old.grp === 'psg') || (n && n.grp === 'sg') || (old && old.grp === 'sg') || (n && n.grp === 'sb') || (old && old.grp === 'sb');
+    let shieldChange = (n && n.grp === 'bsg') || (old && old.grp === 'bsg') || (n && n.grp === 'psg') || (old && old.grp === 'psg') || (n && n.grp === 'sg') || (old && old.grp === 'sg') || (n && n.grp === 'sb') || (old && old.grp === 'sb') || (old && old.grp === 'gsrp') || (n && n.grp === 'gsrp');
 
     let shieldCellsChange = (n && n.grp === 'scb') || (old && old.grp === 'scb');
 
@@ -1277,7 +1276,7 @@ export default class Ship {
     // Obtain shield metrics with 0 pips to sys (parts affected by SYS aren't used here)
     const metrics = Calc.shieldMetrics(this, 0);
 
-    this.shield = metrics.generator ? metrics.generator + metrics.boosters : 0;
+    this.shield = metrics.generator ? metrics.generator + metrics.boosters + metrics.addition : 0;
     this.shieldExplRes = this.shield > 0 ? 1 - metrics.explosive.total : null;
     this.shieldKinRes = this.shield > 0 ?  1 - metrics.kinetic.total : null;
     this.shieldThermRes = this.shield > 0 ?  1 - metrics.thermal.total : null;
@@ -1360,10 +1359,10 @@ export default class Ship {
     let fsd = this.standard[2].m;   // Frame Shift Drive;
     let { unladenMass, fuelCapacity } = this;
     this.unladenRange = this.calcUnladenRange(); // Includes fuel weight for jump
-    this.fullTankRange = Calc.jumpRange(unladenMass + fuelCapacity, fsd); // Full Tank
+    this.fullTankRange = Calc.jumpRange(unladenMass + fuelCapacity, fsd, this); // Full Tank
     this.ladenRange = this.calcLadenRange(); // Includes full tank and caro
-    this.unladenFastestRange = Calc.totalJumpRange(unladenMass + this.fuelCapacity, fsd, fuelCapacity);
-    this.ladenFastestRange = Calc.totalJumpRange(unladenMass + this.fuelCapacity + this.cargoCapacity, fsd, fuelCapacity);
+    this.unladenFastestRange = Calc.totalJumpRange(unladenMass + this.fuelCapacity, fsd, fuelCapacity, this);
+    this.ladenFastestRange = Calc.totalJumpRange(unladenMass + this.fuelCapacity + this.cargoCapacity, fsd, fuelCapacity, this);
     this.maxJumpCount = Math.ceil(fuelCapacity / fsd.getMaxFuelPerJump());
     return this;
   }

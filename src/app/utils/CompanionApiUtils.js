@@ -29,6 +29,7 @@ const SHIP_FD_NAME_TO_CORIOLIS_NAME = {
   'FerDeLance': 'fer_de_lance',
   'Hauler': 'hauler',
   'Independant_Trader': 'keelback',
+  'Krait_MkII': 'krait_mkii',
   'Orca': 'orca',
   'Python': 'python',
   'SideWinder': 'sidewinder',
@@ -37,6 +38,7 @@ const SHIP_FD_NAME_TO_CORIOLIS_NAME = {
   'Type9': 'type_9_heavy',
   'Type9_Military': 'type_10_defender',
   'TypeX': 'alliance_chieftain',
+  'TypeX_3': 'alliance_challenger',
   'Viper': 'viper',
   'Viper_MkIV': 'viper_mk_iv',
   'Vulture': 'vulture'

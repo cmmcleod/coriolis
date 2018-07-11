@@ -23,7 +23,8 @@ export default class ModalShoppingList extends TranslatedComponent {
       matsList: '',
       mats: {},
       failed: false,
-      cmdrName: Persist.getCmdr(),
+      cmdrName: Persist.getCmdr().selected,
+      cmdrs: Persist.getCmdr().cmdrs,
       matsPerGrade: Persist.getRolls(),
       blueprints: []
     };
@@ -34,11 +35,14 @@ export default class ModalShoppingList extends TranslatedComponent {
    */
   componentDidMount() {
     this.renderMats();
-    this.registerBPs();
+    if (this.checkBrowserIsCompatible()) {
+      this.getCommanders();
+      this.registerBPs();
+    }
   }
 
   /**
-   * Convert mats object to string
+   * Find all blueprints needed to make a build.
    */
   registerBPs() {
     const ship = this.props.ship;
@@ -51,11 +55,18 @@ export default class ModalShoppingList extends TranslatedComponent {
         if (!module.m.blueprint.grade || !module.m.blueprint.grades) {
           continue;
         }
+        if (module.m.blueprint.special) {
+          console.log(module.m.blueprint.special);
+          blueprints.push({ uuid: module.m.blueprint.special.uuid, number: 1 });
+        }
         for (const g in module.m.blueprint.grades) {
+          if (!module.m.blueprint.grades.hasOwnProperty(g)) {
+            continue;
+          }
           if (g > module.m.blueprint.grade) {
             continue;
           }
-          blueprints.push({ blueprint: module.m.blueprint.grades[g], number: this.state.matsPerGrade[g] });
+          blueprints.push({ uuid: module.m.blueprint.grades[g].uuid, number: this.state.matsPerGrade[g] });
         }
       }
     }
@@ -63,22 +74,62 @@ export default class ModalShoppingList extends TranslatedComponent {
   }
 
   /**
+   * Check browser isn't firefox.
+   * @return {boolean} true if compatible, false if not.
+   */
+  checkBrowserIsCompatible() {
+    // Firefox 1.0+
+    return typeof InstallTrigger === 'undefined';
+  }
+
+  /**
+   * Get a list of commanders from EDEngineer.
+   */
+  getCommanders() {
+    request
+      .get('http://localhost:44405/commanders')
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+          return this.setState({ failed: true });
+        }
+        const cmdrs = JSON.parse(res.text);
+        if (!this.state.cmdrName) {
+          this.setState({ cmdrName: cmdrs[0] });
+        }
+        this.setState({ cmdrs }, () => {
+          Persist.setCmdr({ selected: this.state.cmdrName, cmdrs });
+        });
+      });
+  }
+
+  /**
    * Send all blueprints to ED Engineer
-   * @param {SyntheticEvent} event React event
+   * @param {Event} event React event
    */
   sendToEDEng(event) {
     event.preventDefault();
-    event.target.disabled = true;
-    event.target.innerText = 'Sending...';
+    const target = event.target;
+    target.disabled = this.state.blueprints.length > 0;
+    if (this.state.blueprints.length === 0) {
+      target.innerText = 'No modded components.';
+      target.disabled = true;
+      setTimeout(() => {
+        target.innerText = 'Send to EDEngineer';
+        target.disabled = false;
+      }, 3000);
+    } else {
+      target.innerText = 'Sending...';
+    }
     let countSent = 0;
     let countTotal = this.state.blueprints.length;
-    const target = event.target;
+
     for (const i of this.state.blueprints) {
       request
         .patch(`http://localhost:44405/${this.state.cmdrName}/shopping-list`)
-        .field('uuid', i.blueprint.uuid)
+        .field('uuid', i.uuid)
         .field('size', i.number)
-        .end((err, res) => {
+        .end(err => {
           if (err) {
             console.log(err);
             if (err.message !== 'Bad Request') {
@@ -109,10 +160,16 @@ export default class ModalShoppingList extends TranslatedComponent {
           continue;
         }
         for (const g in module.m.blueprint.grades) {
+          if (!module.m.blueprint.grades.hasOwnProperty(g)) {
+            continue;
+          }
           if (g > module.m.blueprint.grade) {
             continue;
           }
           for (const i in module.m.blueprint.grades[g].components) {
+            if (!module.m.blueprint.grades[g].components.hasOwnProperty(i)) {
+              continue;
+            }
             if (mats[i]) {
               mats[i] += module.m.blueprint.grades[g].components[i] * this.state.matsPerGrade[g];
             } else {
@@ -156,8 +213,9 @@ export default class ModalShoppingList extends TranslatedComponent {
    */
   cmdrChangeHandler(e) {
     let cmdrName = e.target.value;
-    this.setState({ cmdrName });
-    Persist.setCmdr(cmdrName);
+    this.setState({ cmdrName }, () => {
+      Persist.setCmdr({ selected: this.state.cmdrName, cmdrs: this.state.cmdrs });
+    });
   }
 
   /**
@@ -167,6 +225,7 @@ export default class ModalShoppingList extends TranslatedComponent {
   render() {
     let translate = this.context.language.translate;
     this.changeHandler = this.changeHandler.bind(this);
+    const compatible = this.checkBrowserIsCompatible();
     this.cmdrChangeHandler = this.cmdrChangeHandler.bind(this);
     this.sendToEDEng = this.sendToEDEng.bind(this);
     return <div className='modal' onClick={ (e) => e.stopPropagation() }>
@@ -188,12 +247,15 @@ export default class ModalShoppingList extends TranslatedComponent {
       <div>
         <textarea className='cb json' readOnly value={this.state.matsList} />
       </div>
-      <label className={'l cap'}>CMDR Name (as displayed on EDEngineer) </label>
+      <label hidden={!compatible} className={'l cap'}>CMDR Name </label>
       <br/>
-      <input type={'text'} className={'l cap cb'} defaultValue={this.state.cmdrName} onChange={this.cmdrChangeHandler} />
+      <select hidden={!compatible} className={'cmdr-select l cap'} onChange={this.cmdrChangeHandler} defaultValue={this.state.cmdrName}>
+        {this.state.cmdrs.map(e => <option key={e}>{e}</option>)}
+      </select>
       <br/>
-      <p hidden={!this.state.failed} id={'failed'}>Failed to send to EDEngineer (Launch EDEngineer and make sure the API is started then refresh the page.)</p>
-      <button className={'l cb dismiss cap'} disabled={!this.state.cmdrName || !!this.state.failed} onClick={this.sendToEDEng}>{translate('Send To EDEngineer')}</button>
+      <p hidden={!this.state.failed} id={'failed'} className={'l'}>Failed to send to EDEngineer (Launch EDEngineer and make sure the API is started then refresh the page.)</p>
+      <p hidden={compatible} id={'browserbad'} className={'l'}>Sending to EDEngineer is not compatible with Firefox's security settings. Please try again with Chrome.</p>
+      <button className={'l cb dismiss cap'} disabled={!!this.state.failed || !compatible} onClick={this.sendToEDEng}>{translate('Send To EDEngineer')}</button>
       <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>
     </div>;
   }

@@ -57,7 +57,7 @@ export default class FSDProfile extends TranslatedComponent {
    */
   _calcMaxRange(ship, fuel, mass) {
     // Obtain the maximum range
-    return Calc.jumpRange(mass, ship.standard[2].m, Math.min(fuel, ship.standard[2].m.getMaxFuelPerJump()));
+    return Calc.jumpRange(mass, ship.standard[2].m, Math.min(fuel, ship.standard[2].m.getMaxFuelPerJump()), ship);
   }
 
   /**
@@ -77,7 +77,7 @@ export default class FSDProfile extends TranslatedComponent {
     const maxMass = thrusters.getMaxMass();
     const mass = ship.unladenMass + fuel + cargo;
     const minRange = 0;
-    const maxRange = Calc.jumpRange(minMass + fsd.getMaxFuelPerJump(), fsd, fsd.getMaxFuelPerJump());
+    const maxRange = Calc.jumpRange(minMass + fsd.getMaxFuelPerJump(), fsd, fsd.getMaxFuelPerJump(), ship);
     // Add a mark at our current mass
     const mark = Math.min(mass, maxMass);
 

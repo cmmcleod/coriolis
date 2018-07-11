@@ -7,11 +7,20 @@ import Module from './Module';
  * @param  {object} fsd  The FDS object/component with maxfuel, fuelmul, fuelpower, optmass
  * @param  {number} fuel Optional - The fuel consumed during the jump
  * @return {number}      Distance in Light Years
+ * @param {object} ship Ship instance
  */
-export function jumpRange(mass, fsd, fuel) {
+export function jumpRange(mass, fsd, fuel, ship) {
   const fsdMaxFuelPerJump = fsd instanceof Module ? fsd.getMaxFuelPerJump() : fsd.maxfuel;
   const fsdOptimalMass = fsd instanceof Module ? fsd.getOptMass() : fsd.optmass;
-  return Math.pow(Math.min(fuel === undefined ? fsdMaxFuelPerJump : fuel, fsdMaxFuelPerJump) / fsd.fuelmul, 1 / fsd.fuelpower) * fsdOptimalMass / mass;
+  let jumpAddition = 0;
+  if (ship) {
+    for (const module of ship.internal) {
+      if (module && module.m && module.m.grp === 'gfsb') {
+        jumpAddition += module.m.getJumpBoost();
+      }
+    }
+  }
+  return (Math.pow(Math.min(fuel === undefined ? fsdMaxFuelPerJump : fuel, fsdMaxFuelPerJump) / fsd.fuelmul, 1 / fsd.fuelpower) * fsdOptimalMass / mass) + jumpAddition;
 }
 
 /**
@@ -21,8 +30,9 @@ export function jumpRange(mass, fsd, fuel) {
  * @param  {object} fsd  The FDS object/component with maxfuel, fuelmul, fuelpower, optmass
  * @param  {number} fuel The total fuel available
  * @return {number}      Distance in Light Years
+ * @param {object} ship Ship instance
  */
-export function totalJumpRange(mass, fsd, fuel) {
+export function totalJumpRange(mass, fsd, fuel, ship) {
   const fsdMaxFuelPerJump = fsd instanceof Module ? fsd.getMaxFuelPerJump() : fsd.maxfuel;
   const fsdOptimalMass = fsd instanceof Module ? fsd.getOptMass() : fsd.optmass;
 
@@ -30,7 +40,7 @@ export function totalJumpRange(mass, fsd, fuel) {
   let totalRange = 0;
   while (fuelRemaining > 0) {
     const fuelForThisJump = Math.min(fuelRemaining, fsdMaxFuelPerJump);
-    totalRange += this.jumpRange(mass, fsd, fuelForThisJump);
+    totalRange += this.jumpRange(mass, fsd, fuelForThisJump, ship);
     // Mass is reduced
     mass -= fuelForThisJump;
     fuelRemaining -= fuelForThisJump;
@@ -60,7 +70,7 @@ export function shieldStrength(mass, baseShield, sg, multiplier) {
   let ynorm = Math.pow(xnorm, exponent);
   let mul = minMul + ynorm * (maxMul - minMul);
 
-  return baseShield * mul * multiplier;
+  return (baseShield * mul * multiplier);
 }
 
 /**
@@ -84,6 +94,16 @@ export function speed(mass, baseSpeed, thrusters, engpip) {
   let results = normValues(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, baseSpeed, engpip);
 
   return results;
+}
+
+/**
+ * Calculate pip multiplier for speed.
+ * @param {number} baseSpeed The base speed of ship in data
+ * @param {number} topSpeed The top speed of ship in data
+ * @return {number} The multiplier that pips affect speed.
+ */
+export function calcPipSpeed(baseSpeed, topSpeed) {
+  return (topSpeed - baseSpeed) / (4 * topSpeed);
 }
 
 /**
@@ -201,7 +221,7 @@ function calcValue(minMass, optMass, maxMass, minMul, optMul, maxMul, mass, base
  * Calculate speed for a given setup
  * @param {number}   mass         the mass of the ship
  * @param {number}   baseSpeed    the base speed of the ship
- * @param {ojbect}   thrusters    the thrusters of the ship
+ * @param {object}   thrusters    the thrusters of the ship
  * @param {number}   engpip       the multiplier per pip to engines
  * @param {number}   eng          the pips to engines
  * @param {number}   boostFactor  the boost factor for ths ship
@@ -320,41 +340,81 @@ export function shieldMetrics(ship, sys) {
   const maxSysResistance = this.sysResistance(4);
 
   let shield = {};
+  const dimReturnLine = (res) => 1 - (1 - res) * 0.7;
 
   const shieldGeneratorSlot = ship.findInternalByGroup('sg');
   if (shieldGeneratorSlot && shieldGeneratorSlot.enabled && shieldGeneratorSlot.m) {
     const shieldGenerator = shieldGeneratorSlot.m;
-
+    let res = {
+      kin: shieldGenerator.kinres,
+      therm: shieldGenerator.thermres,
+      expl: shieldGenerator.explres
+    };
     // Boosters
     let boost = 1;
     let boosterExplDmg = 1;
     let boosterKinDmg = 1;
     let boosterThermDmg = 1;
+    // const explDim = dimReturnLine(shieldGenerator.explres);
+    // const thermDim = dimReturnLine(shieldGenerator.thermres);
+    // const kinDim = dimReturnLine(shieldGenerator.kinres);
     for (let slot of ship.hardpoints) {
       if (slot.enabled && slot.m && slot.m.grp == 'sb') {
         boost += slot.m.getShieldBoost();
+        res.expl += slot.m.getExplosiveResistance();
+        res.kin += slot.m.getKineticResistance();
+        res.therm += slot.m.getThermalResistance();
         boosterExplDmg = boosterExplDmg * (1 - slot.m.getExplosiveResistance());
         boosterKinDmg = boosterKinDmg * (1 - slot.m.getKineticResistance());
         boosterThermDmg = boosterThermDmg * (1 - slot.m.getThermalResistance());
       }
-    }
+      if (slot.m && slot.m.grp == 'gsrp') {
 
+      }
+    }
     // Calculate diminishing returns for boosters
     // Diminishing returns not currently in-game
     // boost = Math.min(boost, (1 - Math.pow(Math.E, -0.7 * boost)) * 2.5);
 
+
     // Remove base shield generator strength
     boost -= 1;
-    // Apply diminishing returns
-    boosterExplDmg = boosterExplDmg > 0.7 ? boosterExplDmg : 0.7 - (0.7 - boosterExplDmg) / 2;
-    boosterKinDmg = boosterKinDmg > 0.7 ? boosterKinDmg : 0.7 - (0.7 - boosterKinDmg) / 2;
-    boosterThermDmg = boosterThermDmg > 0.7 ? boosterThermDmg : 0.7 - (0.7 - boosterThermDmg) / 2;
 
-    const generatorStrength = this.shieldStrength(ship.hullMass, ship.baseShieldStrength, shieldGenerator, 1);
+    // if (res.expl > explDim) {
+    //   const overage = (res.expl - explDim) * 0.5;
+    //   res.expl = explDim + overage;
+    //   boosterExplDmg = explDim + overage;
+    // }
+    //
+    // if (res.therm > thermDim) {
+    //   const overage = (res.therm - thermDim) * 0.5;
+    //   res.therm = thermDim + overage;
+    //   boosterThermDmg = thermDim + overage;
+    // }
+    //
+    // if (res.kin > kinDim) {
+    //   const overage = (res.kin - kinDim) * 0.5;
+    //   res.kin = kinDim + overage;
+    //   boosterKinDmg = kinDim + overage;
+    // }
+    // Apply diminishing returns
+    // boosterExplDmg = boosterExplDmg > 0.7 ? boosterExplDmg : 0.7 - (0.7 - boosterExplDmg) / 2;
+    // boosterKinDmg = boosterKinDmg > 0.7 ? boosterKinDmg : 0.7 - (0.7 - boosterKinDmg) / 2;
+    // boosterThermDmg = boosterThermDmg > 0.7 ? boosterThermDmg : 0.7 - (0.7 - boosterThermDmg) / 2;
+    // res.therm = res.therm > 0.7 ? res.therm : 0.7 - (0.7 - res.therm) / 2;
+    let shieldAddition = 0;
+    if (ship) {
+      for (const module of ship.internal) {
+        if (module && module.m && module.m.grp === 'gsrp') {
+          shieldAddition += module.m.getShieldAddition();
+        }
+      }
+    }
+    let generatorStrength = this.shieldStrength(ship.hullMass, ship.baseShieldStrength, shieldGenerator, 1);
     const boostersStrength = generatorStrength * boost;
 
     // Recover time is the time taken to go from 0 to 50%.  It includes a 16-second wait before shields start to recover
-    const shieldToRecover = (generatorStrength + boostersStrength) / 2;
+    const shieldToRecover = (generatorStrength + boostersStrength + shieldAddition) / 2;
     const powerDistributor = ship.standard[4].m;
     const sysRechargeRate = this.sysRechargeRate(powerDistributor, sys);
 
@@ -373,7 +433,7 @@ export function shieldMetrics(ship, sys) {
       const remainingShieldToRecover = shieldToRecover - capacitorLifetime * shieldGenerator.getBrokenRegenerationRate();
       if (sys === 0) {
         // No system pips so will never recover shields
-        recover = Math.Inf;
+        recover = Math.Infinity;
       } else {
         // Recover remaining shields at the rate of the power distributor's recharge
         recover += remainingShieldToRecover / (sysRechargeRate / 0.6);
@@ -381,7 +441,7 @@ export function shieldMetrics(ship, sys) {
     }
 
     // Recharge time is the time taken to go from 50% to 100%
-    const shieldToRecharge = (generatorStrength + boostersStrength) / 2;
+    const shieldToRecharge = (generatorStrength + boostersStrength + shieldAddition) / 2;
 
     // Our initial regeneration comes from the SYS capacitor store, which is replenished as it goes
     // 0.6 is a magic number from FD: each 0.6 MW of energy from the power distributor recharges 1 MJ/s of regeneration
@@ -408,8 +468,9 @@ export function shieldMetrics(ship, sys) {
     shield = {
       generator: generatorStrength,
       boosters: boostersStrength,
+      addition: shieldAddition,
       cells: ship.shieldCells,
-      total: generatorStrength + boostersStrength + ship.shieldCells,
+      total: generatorStrength + boostersStrength + ship.shieldCells + shieldAddition,
       recover,
       recharge,
     };
@@ -429,7 +490,8 @@ export function shieldMetrics(ship, sys) {
       boosters: boosterExplDmg,
       sys: (1 - sysResistance),
       total: (1 - shieldGenerator.getExplosiveResistance()) * boosterExplDmg * (1 - sysResistance),
-      max: (1 - shieldGenerator.getExplosiveResistance()) * boosterExplDmg * (1 - maxSysResistance)
+      max: (1 - shieldGenerator.getExplosiveResistance()) * boosterExplDmg * (1 - maxSysResistance),
+      res: 1 - boosterExplDmg
     };
 
     shield.kinetic = {
@@ -437,7 +499,8 @@ export function shieldMetrics(ship, sys) {
       boosters: boosterKinDmg,
       sys: (1 - sysResistance),
       total: (1 - shieldGenerator.getKineticResistance()) * boosterKinDmg * (1 - sysResistance),
-      max: (1 - shieldGenerator.getKineticResistance()) * boosterKinDmg * (1 - maxSysResistance)
+      max: (1 - shieldGenerator.getKineticResistance()) * boosterKinDmg * (1 - maxSysResistance),
+      res: 1 - boosterKinDmg
     };
 
     shield.thermal = {
@@ -445,10 +508,10 @@ export function shieldMetrics(ship, sys) {
       boosters: boosterThermDmg,
       sys: (1 - sysResistance),
       total: (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg * (1 - sysResistance),
-      max: (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg * (1 - maxSysResistance)
+      max: (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg * (1 - maxSysResistance),
+      res: 1 - boosterThermDmg
     };
   }
-
   return shield;
 }
 
@@ -477,19 +540,27 @@ export function armourMetrics(ship) {
 
   let moduleArmour = 0;
   let moduleProtection = 1;
-
+  const bulkheads = ship.bulkheads.m;
   let hullExplDmg = 1;
   let hullKinDmg = 1;
   let hullThermDmg = 1;
-
+  // const dimReturnLine = (res) => 1 - (1 - res) * 0.7;
+  let res = {
+    kin: 0,
+    therm: 0,
+    expl: 0
+  };
   // Armour from HRPs and module armour from MRPs
   for (let slot of ship.internal) {
     if (slot.m && slot.m.grp == 'hr') {
       armourReinforcement += slot.m.getHullReinforcement();
       // Hull boost for HRPs is applied against the ship's base armour
       armourReinforcement += ship.baseArmour * slot.m.getModValue('hullboost') / 10000;
-
+      res.expl += slot.m.getExplosiveResistance();
+      res.kin += slot.m.getKineticResistance();
+      res.therm += slot.m.getThermalResistance();
       hullExplDmg = hullExplDmg * (1 - slot.m.getExplosiveResistance());
+
       hullKinDmg = hullKinDmg * (1 - slot.m.getKineticResistance());
       hullThermDmg = hullThermDmg * (1 - slot.m.getThermalResistance());
     }
@@ -500,10 +571,31 @@ export function armourMetrics(ship) {
   }
   moduleProtection = 1 - moduleProtection;
 
+  // const explDim = dimReturnLine(bulkheads.explres);
+  // const thermDim = dimReturnLine(bulkheads.thermres);
+  // const kinDim = dimReturnLine(bulkheads.kinres);
+  // if (res.expl > explDim) {
+  //   const overage = (res.expl - explDim) * 0.5;
+  //   res.expl = explDim + overage;
+  //   hullExplDmg = explDim + overage;
+  // }
+  //
+  // if (res.therm > thermDim) {
+  //   const overage = (res.therm - thermDim) * 0.5;
+  //   res.therm = thermDim + overage;
+  //   hullThermDmg = thermDim + overage;
+  // }
+  //
+  // if (res.kin > kinDim) {
+  //   const overage = (res.kin - kinDim) * 0.5;
+  //   res.kin = kinDim + overage;
+  //   hullKinDmg = kinDim + overage;
+  // }
+
   // Apply diminishing returns
-  hullExplDmg = hullExplDmg > 0.7 ? hullExplDmg : 0.7 - (0.7 - hullExplDmg) / 2;
-  hullKinDmg = hullKinDmg > 0.7 ? hullKinDmg : 0.7 - (0.7 - hullKinDmg) / 2;
-  hullThermDmg = hullThermDmg > 0.7 ? hullThermDmg : 0.7 - (0.7 - hullThermDmg) / 2;
+  // hullExplDmg = hullExplDmg > 0.7 ? hullExplDmg : 0.7 - (0.7 - hullExplDmg) / 2;
+  // hullKinDmg = hullKinDmg > 0.7 ? hullKinDmg : 0.7 - (0.7 - hullKinDmg) / 2;
+  // hullThermDmg = hullThermDmg > 0.7 ? hullThermDmg : 0.7 - (0.7 - hullThermDmg) / 2;
 
   const armour = {
     bulkheads: armourBulkheads,
@@ -524,21 +616,23 @@ export function armourMetrics(ship) {
   armour.explosive = {
     bulkheads: 1 - ship.bulkheads.m.getExplosiveResistance(),
     reinforcement: hullExplDmg,
-    total: (1 - ship.bulkheads.m.getExplosiveResistance()) * hullExplDmg
+    total: (1 - ship.bulkheads.m.getExplosiveResistance()) * hullExplDmg,
+    res: 1 - hullExplDmg
   };
 
   armour.kinetic = {
     bulkheads: 1 - ship.bulkheads.m.getKineticResistance(),
     reinforcement: hullKinDmg,
-    total: (1 - ship.bulkheads.m.getKineticResistance()) * hullKinDmg
+    total: (1 - ship.bulkheads.m.getKineticResistance()) * hullKinDmg,
+    res: 1 - hullKinDmg
   };
 
   armour.thermal = {
     bulkheads: 1 - ship.bulkheads.m.getThermalResistance(),
     reinforcement: hullThermDmg,
-    total: (1 - ship.bulkheads.m.getThermalResistance()) * hullThermDmg
+    total: (1 - ship.bulkheads.m.getThermalResistance()) * hullThermDmg,
+    res: 1 - hullThermDmg
   };
-
   return armour;
 }
 

@@ -16,6 +16,7 @@
     "clean": "rimraf build",
     "start": "node devServer.js",
     "lint": "eslint --ext .js,.jsx src",
+    "preinstall": "ls ../coriolis-data || git clone https://github.com/edcd/coriolis-data.git ../coriolis-data && (cd ../coriolis-data && npm i)",
     "test": "jest",
     "prod-serve": "nginx -p $(pwd) -c nginx.conf",
     "prod-stop": "kill -QUIT $(cat nginx.pid)",
@@ -93,7 +94,14 @@
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.4",
     "webpack-notifier": "^1.6.0",
-    "webpack-bugsnag-plugins": "^1.1.1"
+    "webpack-bugsnag-plugins": "^1.1.1",
+    "esdoc": "^1.1.0",
+    "esdoc-ecmascript-proposal-plugin": "^1.0.0",
+    "esdoc-jsx-plugin": "^1.0.0",
+    "esdoc-react-plugin": "^1.0.1",
+    "esdoc-standard-plugin": "^1.0.0",
+    "esdoc-publish-html-plugin": "^1.1.2",
+    "esdoc-custom-theme": "^1.4.2"
   },
   "dependencies": {
     "babel-polyfill": "*",

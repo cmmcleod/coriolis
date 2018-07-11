@@ -87,7 +87,7 @@ export class Persist extends EventEmitter {
 
     let moduleResistances = _get(LS_KEY_MODULE_RESISTANCES);
     let matsPerGrade = _get(LS_KEY_ROLLS);
-    let cmdrName = _getString(LS_KEY_CMDR_NAME);
+    let cmdrName = _get(LS_KEY_CMDR_NAME);
     let tips = _get(LS_KEY_TOOLTIPS);
     let insurance = _getString(LS_KEY_INSURANCE);
     let shipDiscount = _get(LS_KEY_SHIP_DISCOUNT);
@@ -113,7 +113,7 @@ export class Persist extends EventEmitter {
       4: 4,
       5: 10
     };
-    this.cmdrName = cmdrName || '';
+    this.cmdrName = cmdrName || { selected: '', cmdrs: [] };
     this.tooltipsEnabled = tips === null ? true : tips;
     this.moduleResistancesEnabled = moduleResistances === null ? true : moduleResistances;
 
@@ -509,7 +509,7 @@ export class Persist extends EventEmitter {
 
   /**
    * Persist cmdr name
-   * @param {string} cmdrName Commander name for EDEngineer
+   * @param {Object} cmdrName Commander name for EDEngineer
    */
   setCmdr(cmdrName) {
     this.cmdrName = cmdrName;
