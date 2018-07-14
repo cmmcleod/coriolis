@@ -45,6 +45,7 @@ const GRPCAT = {
   'mr': 'ordnance',
   'axmr': 'experimental',
   'rcpl': 'experimental',
+  'tbsc': 'experimental',
   'tp': 'ordnance',
   'nl': 'ordnance',
   'sc': 'scanners',
@@ -65,6 +66,7 @@ const GRPCAT = {
   'ggc': 'guardian',
   'gfsb': 'guardian',
   'gmrp': 'guardian',
+  'gsc': 'guardian',
   'ghrp': 'guardian'
 };
 // Order here is the order in which items will be shown in the modules menu
@@ -91,10 +93,10 @@ const CATEGORIES = {
   'defence': ['ch', 'po', 'ec'],
   'scanners': ['sc', 'ss', 'cs', 'kw', 'ws'], // Overloaded with internal scanners
   // Experimental
-  'experimental': ['axmc', 'axmr', 'rfl', 'xs', 'sfn', 'rcpl'],
+  'experimental': ['axmc', 'axmr', 'rfl', 'xs', 'sfn', 'rcpl', 'tbsc'],
 
   // Guardian
-  'guardian': ['gpp', 'gpd', 'gpc', 'ggc', 'gsrp', 'gfsb', 'ghrp', 'gmrp']
+  'guardian': ['gpp', 'gpd', 'gpc', 'ggc', 'gsrp', 'gfsb', 'ghrp', 'gmrp', 'gsc']
 };
 
 /**
