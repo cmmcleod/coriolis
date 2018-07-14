@@ -58,12 +58,14 @@ const GRPCAT = {
   'po': 'defence',
   'ec': 'defence',
   'sfn': 'defence',
-  // Standard
+  // Guardian
   'gpp': 'guardian',
   'gpc': 'guardian',
   'gsrp': 'guardian',
   'ggc': 'guardian',
-  'gfsb': 'guardian'
+  'gfsb': 'guardian',
+  'gmrp': 'guardian',
+  'ghrp': 'guardian'
 };
 // Order here is the order in which items will be shown in the modules menu
 const CATEGORIES = {
@@ -92,7 +94,7 @@ const CATEGORIES = {
   'experimental': ['axmc', 'axmr', 'rfl', 'xs', 'sfn', 'rcpl'],
 
   // Guardian
-  'guardian': ['gpp', 'gpd', 'gpc', 'ggc', 'gsrp', 'gfsb']
+  'guardian': ['gpp', 'gpd', 'gpc', 'ggc', 'gsrp', 'gfsb', 'ghrp', 'gmrp']
 };
 
 /**
