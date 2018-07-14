@@ -54,6 +54,8 @@ export const ModuleGroupToName = {
   ss: 'Surface Scanner',
   gsrp: 'Guardian Shield Reinforcement Packages',
   gfsb: 'Guardian Frame Shift Drive Booster',
+  ghrp: 'Guardian Hull Reinforcement Package',
+  gmrp: 'Guardian Module Reinforcement Package',
 
   // Hard Points
   bl: 'Beam Laser',
