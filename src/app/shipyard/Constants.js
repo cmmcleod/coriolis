@@ -87,6 +87,7 @@ export const ModuleGroupToName = {
   rcpl: 'Recon Limpet Controller',
   gpc: 'Guardian Plasma Charger',
   ggc: 'Guardian Gauss Cannon',
+  tbsc: 'Shock Cannon'
 };
 
 let GrpNameToCodeMap = {};
