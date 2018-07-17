@@ -34,7 +34,7 @@ export default class SlotSection extends TranslatedComponent {
     this.sectionId = sectionId;
     this.sectionName = sectionName;
     this.ssHeadRef = null;
-    
+
     this.sectionRefArr = this.props.sectionMenuRefs[this.sectionId] = [];
     this.sectionRefArr['selectedRef'] = null;
     this._getSlots = this._getSlots.bind(this);
@@ -55,11 +55,11 @@ export default class SlotSection extends TranslatedComponent {
   //  _contextMenu()
   //  componentDidUpdate(prevProps)
 
-  /** 
-   * TODO: May either need to send the function to be triggered when Enter key is pressed, or else 
+  /**
+   * TODO: May either need to send the function to be triggered when Enter key is pressed, or else
    * may need a separate keyDown handler for each subclass (StandardSlotSection, HardpointSlotSection, etc.)
    * ex: _keyDown(_keyDownfn, event)
-   * 
+   *
    * @param {SyntheticEvent} event KeyDown event
    */
   _keyDown(event) {
@@ -85,14 +85,14 @@ export default class SlotSection extends TranslatedComponent {
         }
       }
     }
-  } 
+  }
 
   /**
    * Set focus on appropriate Slot Section Menu element
-   * @param {Object} focusPrevProps prevProps for componentDidUpdate() from ...SlotSection.jsx 
+   * @param {Object} focusPrevProps prevProps for componentDidUpdate() from ...SlotSection.jsx
    * @param {String} firstRef id of the first ref in ...SlotSection.jsx
    * @param {String} lastRef id of the last ref in ...SlotSection.jsx
-   * 
+   *
    */
   _handleSectionFocus(focusPrevProps, firstRef, lastRef) {
     if (this.selectedRefId !== null && this.sectionRefArr[this.selectedRefId]) {
@@ -228,6 +228,18 @@ export default class SlotSection extends TranslatedComponent {
             targetSlot.priority = targetPriority;
           }
           this.props.onChange();
+          this.props.ship
+            .updatePowerGenerated()
+            .updatePowerUsed()
+            .recalculateMass()
+            .updateJumpStats()
+            .recalculateShield()
+            .recalculateShieldCells()
+            .recalculateArmour()
+            .recalculateDps()
+            .recalculateEps()
+            .recalculateHps()
+            .updateMovement();
         }
       }
     }
