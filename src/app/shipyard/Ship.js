@@ -484,10 +484,7 @@ export default class Ship {
    * @param  {Object} m      The module for which to clear the blueprint
    */
   clearModuleSpecial(m) {
-    if (m.blueprint) {
-      m.blueprint.special = null;
-    }
-    this.recalculateDps().recalculateHps().recalculateEps();
+    this.setModuleSpecial(m, null);
   }
 
   /**
