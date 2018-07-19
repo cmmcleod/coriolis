@@ -145,6 +145,8 @@ export default class Module {
             result = result + modValue;
           } else if (modification.method === 'overwrite') {
             result = modValue;
+          } else if (name === 'shieldboost') {
+            result = (1 + result) * (1 + modValue) - 1;
           } else {
             result = result * (1 + modValue);
           }
