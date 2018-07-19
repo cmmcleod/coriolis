@@ -937,7 +937,7 @@ export default class Ship {
     let epsChanged = n && n.getEps() || old && old.getEps();
     let hpsChanged = n && n.getHps() || old && old.getHps();
 
-    let armourChange = (slot === this.bulkheads) || (n && n.grp === 'hr') || (old && old.grp === 'hr') || (n && n.grp === 'mrp') || (old && old.grp === 'mrp');
+    let armourChange = (slot === this.bulkheads) || (n && n.grp === 'hr') || (n && n.grp === 'ghrp') || (old && old.grp === 'hr') || (old && old.grp === 'ghrp') || (n && n.grp === 'mrp') || (old && old.grp === 'mrp');
 
     let shieldChange = (n && n.grp === 'bsg') || (old && old.grp === 'bsg') || (n && n.grp === 'psg') || (old && old.grp === 'psg') || (n && n.grp === 'sg') || (old && old.grp === 'sg') || (n && n.grp === 'sb') || (old && old.grp === 'sb') || (old && old.grp === 'gsrp') || (n && n.grp === 'gsrp');
 
@@ -1322,7 +1322,7 @@ export default class Ship {
 
     // Armour from HRPs and module armour from MRPs
     for (let slot of this.internal) {
-      if (slot.m && slot.m.grp == 'hr') {
+      if (slot.m && (slot.m.grp === 'hr' || slot.m.grp === 'ghrp')) {
         armour += slot.m.getHullReinforcement();
         // Hull boost for HRPs is applied against the ship's base armour
         armour += this.baseArmour * slot.m.getModValue('hullboost') / 10000;
