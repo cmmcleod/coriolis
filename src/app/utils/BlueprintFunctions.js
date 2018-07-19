@@ -294,21 +294,6 @@ export function getBlueprint(name, module) {
     return {};
   }
   const blueprint = JSON.parse(JSON.stringify(found));
-  if (module) {
-    if (module.grp === 'sb') {
-      // Shield boosters are treated internally as straight modifiers, so rather than (for example)
-      // being a 4% boost they are a 104% multiplier.  We need to fix the values here so that they look
-      // accurate as per the information in Elite
-      for (const grade in blueprint.grades) {
-        for (const feature in blueprint.grades[grade].features) {
-          if (feature === 'shieldboost') {
-            blueprint.grades[grade].features[feature][0] = ((1 + blueprint.grades[grade].features[feature][0]) * (1 + module.shieldboost) - 1) / module.shieldboost - 1;
-            blueprint.grades[grade].features[feature][1] = ((1 + blueprint.grades[grade].features[feature][1]) * (1 + module.shieldboost) - 1) / module.shieldboost - 1;
-          }
-        }
-      }
-    }
-  }
   return blueprint;
 }
 
@@ -387,7 +372,9 @@ export function getPercent(m) {
 
     let value = _getValue(m, featureName);
     let mult;
-    if (Modifications.modifications[featureName].higherbetter) {
+    if (featureName == 'shieldboost') {
+      mult = ((1 + value) * (1 + m.shieldboost)) - 1 - m.shieldboost;
+    } else if (Modifications.modifications[featureName].higherbetter) {
       // Higher is better, but is this making it better or worse?
       if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
         mult = Math.round((value - features[featureName][1]) / (features[featureName][0] - features[featureName][1]) * 100);
