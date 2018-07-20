@@ -997,25 +997,6 @@ export default class Ship {
   }
 
   /**
-   * Calculate diminishing returns value, where values below a given limit are returned
-   * as-is, and values between the lower and upper limit of the diminishing returns are
-   * given at half value.
-   * Commonly used for resistances.
-   * @param {Number} val  The value
-   * @param {Number} drll  The lower limit for diminishing returns
-   * @param {Number} drul  The upper limit for diminishing returns
-   * @return {this} The ship instance (for chaining operations)
-   */
-  diminishingReturns(val, drll, drul) {
-    if (val < drll) {
-      val = drll;
-    }  else if (val < drul) {
-      val = drul - (drul - val) / 2;
-    }
-    return val;
-  }
-
-  /**
    * Calculate damage per second and related items for weapons
    * @return {this} The ship instance (for chaining operations)
    */
@@ -1306,45 +1287,14 @@ export default class Ship {
    */
   recalculateArmour() {
     // Armour from bulkheads
-    let bulkhead = this.bulkheads.m;
-    let armour = this.baseArmour + (this.baseArmour * bulkhead.getHullBoost());
-    let modulearmour = 0;
-    let moduleprotection = 1;
-    let hullExplRes = 1 - bulkhead.getExplosiveResistance();
-    const hullExplResDRStart = hullExplRes * 0.7;
-    const hullExplResDREnd = hullExplRes * 0;
-    let hullKinRes = 1 - bulkhead.getKineticResistance();
-    const hullKinResDRStart = hullKinRes * 0.7;
-    const hullKinResDREnd = hullKinRes * 0;
-    let hullThermRes = 1 - bulkhead.getThermalResistance();
-    const hullThermResDRStart = hullThermRes * 0.7;
-    const hullThermResDREnd = hullThermRes * 0;
+    let metrics = Calc.armourMetrics(this);
 
-    // Armour from HRPs and module armour from MRPs
-    for (let slot of this.internal) {
-      if (slot.m && (slot.m.grp === 'hr' || slot.m.grp === 'ghrp')) {
-        armour += slot.m.getHullReinforcement();
-        // Hull boost for HRPs is applied against the ship's base armour
-        armour += this.baseArmour * slot.m.getModValue('hullboost') / 10000;
-
-        hullExplRes *= (1 - slot.m.getExplosiveResistance());
-        hullKinRes *= (1 - slot.m.getKineticResistance());
-        hullThermRes *= (1 - slot.m.getThermalResistance());
-      }
-      if (slot.m && slot.m.grp == 'mrp') {
-        modulearmour += slot.m.getIntegrity();
-        moduleprotection = moduleprotection * (1 - slot.m.getProtection());
-      }
-    }
-    moduleprotection = 1 - moduleprotection;
-
-    this.armour = armour;
-    this.modulearmour = modulearmour;
-    this.moduleprotection = moduleprotection;
-    this.hullExplRes = 1 - this.diminishingReturns(hullExplRes, hullExplResDREnd, hullExplResDRStart);
-    this.hullKinRes = 1 - this.diminishingReturns(hullKinRes, hullKinResDREnd, hullKinResDRStart);
-    this.hullThermRes = 1 - this.diminishingReturns(hullThermRes, hullThermResDREnd, hullThermResDRStart);
-
+    this.armour = metrics.total ? metrics.total : 0;
+    this.modulearmour = metrics.modulearmour;
+    this.moduleprotection = metrics.moduleprotection;
+    this.hullExplRes = 1 - metrics.explosive.total;
+    this.hullKinRes = 1 - metrics.kinetic.total;
+    this.hullThermRes = 1 - metrics.thermal.total;
     return this;
   }
 
