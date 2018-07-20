@@ -184,17 +184,17 @@ export default class Defence extends TranslatedComponent {
     const armourDamageTakenExplosiveTt = [];
     armourDamageTakenExplosiveTt.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.pct1(armour.explosive.bulkheads)}</div>);
     armourDamageTakenExplosiveTt.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.pct1(armour.explosive.reinforcement)}</div>);
-    if (armour.explosive.bulkheads * armour.explosive.reinforcement != 1) effectiveArmourExplosiveTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(rawArmour / (armour.explosive.bulkheads * armour.explosive.reinforcement) - rawArmour)}</div>);
+    if (armour.explosive.total != 1) effectiveArmourExplosiveTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(rawArmour / armour.explosive.total - rawArmour)}</div>);
 
     const armourDamageTakenKineticTt = [];
     armourDamageTakenKineticTt.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.pct1(armour.kinetic.bulkheads)}</div>);
     armourDamageTakenKineticTt.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.pct1(armour.kinetic.reinforcement)}</div>);
-    if (armour.kinetic.bulkheads * armour.kinetic.reinforcement != 1) effectiveArmourKineticTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(rawArmour / (armour.kinetic.bulkheads * armour.kinetic.reinforcement) - rawArmour)}</div>);
+    if (armour.kinetic.total != 1) effectiveArmourKineticTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(rawArmour / armour.kinetic.total - rawArmour)}</div>);
 
     const armourDamageTakenThermalTt = [];
     armourDamageTakenThermalTt.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.pct1(armour.thermal.bulkheads)}</div>);
     armourDamageTakenThermalTt.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.pct1(armour.thermal.reinforcement)}</div>);
-    if (armour.thermal.bulkheads * armour.thermal.reinforcement != 1) effectiveArmourThermalTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(rawArmour / (armour.thermal.bulkheads * armour.thermal.reinforcement) - rawArmour)}</div>);
+    if (armour.thermal.total != 1) effectiveArmourThermalTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(rawArmour / armour.thermal.total - rawArmour)}</div>);
 
     const effectiveArmourData = [];
     const effectiveAbsoluteArmour = armour.total / armour.absolute.total;

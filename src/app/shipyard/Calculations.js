@@ -546,22 +546,21 @@ export function armourMetrics(ship) {
   let hullKinDmg = 1;
   let hullThermDmg = 1;
   // const dimReturnLine = (res) => 1 - (1 - res) * 0.7;
-  let res = {
-    kin: 0,
-    therm: 0,
-    expl: 0
-  };
+  // let res = {
+  //   kin: 0,
+  //   therm: 0,
+  //   expl: 0
+  // };
   // Armour from HRPs and module armour from MRPs
   for (let slot of ship.internal) {
     if (slot.m && (slot.m.grp === 'hr' || slot.m.grp === 'ghrp')) {
       armourReinforcement += slot.m.getHullReinforcement();
       // Hull boost for HRPs is applied against the ship's base armour
       armourReinforcement += ship.baseArmour * slot.m.getModValue('hullboost') / 10000;
-      res.expl += slot.m.getExplosiveResistance();
-      res.kin += slot.m.getKineticResistance();
-      res.therm += slot.m.getThermalResistance();
+      // res.expl += slot.m.getExplosiveResistance();
+      // res.kin += slot.m.getKineticResistance();
+      // res.therm += slot.m.getThermalResistance();
       hullExplDmg = hullExplDmg * (1 - slot.m.getExplosiveResistance());
-
       hullKinDmg = hullKinDmg * (1 - slot.m.getKineticResistance());
       hullThermDmg = hullThermDmg * (1 - slot.m.getThermalResistance());
     }
@@ -593,11 +592,6 @@ export function armourMetrics(ship) {
   //   hullKinDmg = kinDim + overage;
   // }
 
-  // Apply diminishing returns
-  // hullExplDmg = hullExplDmg > 0.7 ? hullExplDmg : 0.7 - (0.7 - hullExplDmg) / 2;
-  // hullKinDmg = hullKinDmg > 0.7 ? hullKinDmg : 0.7 - (0.7 - hullKinDmg) / 2;
-  // hullThermDmg = hullThermDmg > 0.7 ? hullThermDmg : 0.7 - (0.7 - hullThermDmg) / 2;
-
   const armour = {
     bulkheads: armourBulkheads,
     reinforcement: armourReinforcement,
@@ -614,25 +608,31 @@ export function armourMetrics(ship) {
     total: 1
   };
 
+  let armourExplDmg = diminishDamageMult(0.7, 1 - ship.bulkheads.m.getExplosiveResistance());
+  let armourReinforcedExplDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getExplosiveResistance()) * hullExplDmg);
   armour.explosive = {
-    bulkheads: 1 - ship.bulkheads.m.getExplosiveResistance(),
-    reinforcement: hullExplDmg,
-    total: (1 - ship.bulkheads.m.getExplosiveResistance()) * hullExplDmg,
-    res: 1 - hullExplDmg
+    bulkheads: armourExplDmg,
+    reinforcement: armourReinforcedExplDmg - armourExplDmg,
+    total: armourReinforcedExplDmg,
+    res: 1 - armourReinforcedExplDmg
   };
 
+  let armourKinDmg = diminishDamageMult(0.7, 1 - ship.bulkheads.m.getKineticResistance());
+  let armourReinforcedKinDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getKineticResistance()) * hullKinDmg);
   armour.kinetic = {
-    bulkheads: 1 - ship.bulkheads.m.getKineticResistance(),
-    reinforcement: hullKinDmg,
-    total: (1 - ship.bulkheads.m.getKineticResistance()) * hullKinDmg,
-    res: 1 - hullKinDmg
+    bulkheads: armourKinDmg,
+    reinforcement: armourReinforcedKinDmg - armourKinDmg,
+    total: armourReinforcedKinDmg,
+    res: 1 - armourReinforcedKinDmg
   };
 
+  let armourThermDmg = diminishDamageMult(0.7, 1 - ship.bulkheads.m.getThermalResistance());
+  let armourReinforcedThermDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getThermalResistance()) * hullThermDmg);
   armour.thermal = {
-    bulkheads: 1 - ship.bulkheads.m.getThermalResistance(),
-    reinforcement: hullThermDmg,
-    total: (1 - ship.bulkheads.m.getThermalResistance()) * hullThermDmg,
-    res: 1 - hullThermDmg
+    bulkheads: armourThermDmg,
+    reinforcement: armourReinforcedThermDmg - armourThermDmg,
+    total: armourReinforcedThermDmg,
+    res: 1 - armourReinforcedThermDmg
   };
   return armour;
 }
