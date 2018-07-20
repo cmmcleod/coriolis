@@ -397,11 +397,6 @@ export function shieldMetrics(ship, sys) {
     //   res.kin = kinDim + overage;
     //   boosterKinDmg = kinDim + overage;
     // }
-    // Apply diminishing returns
-    // boosterExplDmg = boosterExplDmg > 0.7 ? boosterExplDmg : 0.7 - (0.7 - boosterExplDmg) / 2;
-    // boosterKinDmg = boosterKinDmg > 0.7 ? boosterKinDmg : 0.7 - (0.7 - boosterKinDmg) / 2;
-    // boosterThermDmg = boosterThermDmg > 0.7 ? boosterThermDmg : 0.7 - (0.7 - boosterThermDmg) / 2;
-    // res.therm = res.therm > 0.7 ? res.therm : 0.7 - (0.7 - res.therm) / 2;
     let shieldAddition = 0;
     if (ship) {
       for (const module of ship.internal) {
@@ -485,31 +480,37 @@ export function shieldMetrics(ship, sys) {
       max: 1 - maxSysResistance
     };
 
+    let sgExplosiveDmg = 1 - shieldGenerator.getExplosiveResistance();
+    let sgSbExplosiveDmg = diminishDamageMult(sgExplosiveDmg * 0.7, (1 - shieldGenerator.getExplosiveResistance()) * boosterExplDmg);
     shield.explosive = {
-      generator: 1 - shieldGenerator.getExplosiveResistance(),
-      boosters: boosterExplDmg,
+      generator: sgExplosiveDmg,
+      boosters: sgSbExplosiveDmg - sgExplosiveDmg,
       sys: (1 - sysResistance),
-      total: (1 - shieldGenerator.getExplosiveResistance()) * boosterExplDmg * (1 - sysResistance),
-      max: (1 - shieldGenerator.getExplosiveResistance()) * boosterExplDmg * (1 - maxSysResistance),
-      res: 1 - boosterExplDmg
+      total: sgSbExplosiveDmg * (1 - sysResistance),
+      max: sgSbExplosiveDmg * (1 - maxSysResistance),
+      res: 1 - sgSbExplosiveDmg
     };
 
+    let sgKineticDmg = 1 - shieldGenerator.getKineticResistance();
+    let sgSbKineticDmg = diminishDamageMult(sgKineticDmg * 0.7, (1 - shieldGenerator.getKineticResistance()) * boosterKinDmg);
     shield.kinetic = {
-      generator: 1 - shieldGenerator.getKineticResistance(),
-      boosters: boosterKinDmg,
+      generator: sgKineticDmg,
+      boosters: sgSbKineticDmg - sgKineticDmg,
       sys: (1 - sysResistance),
-      total: (1 - shieldGenerator.getKineticResistance()) * boosterKinDmg * (1 - sysResistance),
-      max: (1 - shieldGenerator.getKineticResistance()) * boosterKinDmg * (1 - maxSysResistance),
-      res: 1 - boosterKinDmg
+      total: sgSbKineticDmg * (1 - sysResistance),
+      max: sgSbKineticDmg * (1 - maxSysResistance),
+      res: 1 - sgSbKineticDmg
     };
 
+    let sgThermalDmg = 1 - shieldGenerator.getThermalResistance();
+    let sgSbThermalDmg = diminishDamageMult(sgThermalDmg * 0.7, (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg);
     shield.thermal = {
-      generator: 1 - shieldGenerator.getThermalResistance(),
-      boosters: boosterThermDmg,
+      generator: sgThermalDmg,
+      boosters: sgSbThermalDmg - sgThermalDmg,
       sys: (1 - sysResistance),
-      total: (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg * (1 - sysResistance),
-      max: (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg * (1 - maxSysResistance),
-      res: 1 - boosterThermDmg
+      total: sgSbThermalDmg * (1 - sysResistance),
+      max: sgSbThermalDmg * (1 - maxSysResistance),
+      res: 1 - sgSbThermalDmg
     };
   }
   return shield;
@@ -957,5 +958,19 @@ export function timeToDeplete(amount, dps, eps, capacity, recharge) {
       const reducedDps = dps * (recharge / eps);
       return timeToDrain + (restToDeplete / reducedDps);
     }
+  }
+}
+
+/**
+ * Applies diminishing returns to resistances.
+ * @param {number} baseDamageMult The base resistance up to which no diminishing returns are applied.
+ * @param {number} damageMult Resistance as damage multiplier
+ * @returns {number} Actual damage multiplier
+ */
+export function diminishDamageMult(diminishFrom, damageMult) {
+  if (damageMult > diminishFrom) {
+    return damageMult;
+  } else {
+    return (diminishFrom / 2) + 0.5 * damageMult;
   }
 }

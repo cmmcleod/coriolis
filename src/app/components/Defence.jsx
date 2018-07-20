@@ -102,11 +102,11 @@ export default class Defence extends TranslatedComponent {
 
         // Add effective shield from resistances
         const rawMj = shield.generator + shield.boosters + shield.cells;
-        const explosiveMj = rawMj / (shield.explosive.generator * shield.explosive.boosters) - rawMj;
+        const explosiveMj = rawMj / shield.explosive.total - rawMj;
         if (explosiveMj != 0) effectiveShieldExplosiveTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(explosiveMj)}{units.MJ}</div>);
-        const kineticMj = rawMj / (shield.kinetic.generator * shield.kinetic.boosters) - rawMj;
+        const kineticMj = rawMj / shield.kinetic.total - rawMj;
         if (kineticMj != 0) effectiveShieldKineticTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(kineticMj)}{units.MJ}</div>);
-        const thermalMj = rawMj / (shield.thermal.generator * shield.thermal.boosters) - rawMj;
+        const thermalMj = rawMj / shield.thermal.total - rawMj;
         if (thermalMj != 0) effectiveShieldThermalTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(thermalMj)}{units.MJ}</div>);
 
         // Add effective shield from power distributor SYS pips
