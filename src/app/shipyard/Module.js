@@ -47,7 +47,16 @@ export default class Module {
       if (modifierActions && modifierActions[name]) {
         // this special effect modifies our returned value
         const modification = Modifications.modifications[name];
-        if (modification.method === 'additive') {
+        const multiplier = modification.type === 'percentage' ? 10000 : 100;
+        if (name === 'explres' || name === 'kinres' || name === 'thermres') {
+          // Resistance modifications in itself are additive, however their
+          // special effects are multiplicative. They affect the overall result
+          // by (special effect resistance) * (damage mult after modification),
+          // i. e. we need to apply the special effect as a multiplier to the
+          // overall result and then calculate the difference.
+          let baseMult = this[name] ? 1 - this[name] : 1;
+          result = (baseMult - (baseMult - result / multiplier) * (1 - modifierActions[name] / 100)) * multiplier;
+        } else if (modification.method === 'additive') {
           result = result + modifierActions[name] * 100;
         } else if (modification.method === 'overwrite') {
           result = modifierActions[name];
@@ -59,7 +68,6 @@ export default class Module {
           } else {
             mod = modifierActions[name];
           }
-          const multiplier = modification.type === 'percentage' ? 10000 : 100;
           result = (((1 + result / multiplier) * (1 + mod)) - 1) * multiplier;
         }
       }
