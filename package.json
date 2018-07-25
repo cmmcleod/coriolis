@@ -16,7 +16,6 @@
     "clean": "rimraf build",
     "start": "node devServer.js",
     "lint": "eslint --ext .js,.jsx src",
-    "preinstall": "ls ../coriolis-data || git clone https://github.com/edcd/coriolis-data.git ../coriolis-data && (cd ../coriolis-data && npm i)",
     "test": "jest",
     "prod-serve": "nginx -p $(pwd) -c nginx.conf",
     "prod-stop": "kill -QUIT $(cat nginx.pid)",
