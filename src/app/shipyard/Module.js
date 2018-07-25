@@ -551,6 +551,27 @@ export default class Module {
   }
 
   /**
+   * Get the SDPS for this module, taking into account modifications and special
+   * effects.
+   * @return {Number} The SDPS of this module
+   */
+  getSDps() {
+    let dps = this.getDps();
+    if (this.getClip()) {
+      let clipSize = this.getClip();
+      // If auto-loader is applied, effective clip size will be nearly doubled
+      // as you get one reload for every two shots fired.
+      if (this.blueprint && this.blueprint.special && this.blueprint.special.edname === 'special_auto_loader') {
+        clipSize += clipSize - 1;
+      }
+      let timeToDeplete = clipSize / this.getRoF();
+      return dps * timeToDeplete / (timeToDeplete + this.getReload());
+    } else {
+      return dps;
+    }
+  }
+
+  /**
    * Get the EPS for this module, taking in to account modifications
    * @return {Number} the EPS of this module
    */

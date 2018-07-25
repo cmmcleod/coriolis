@@ -852,7 +852,7 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
   weapon.eps = m.getClip() ?  (m.getClip() * m.getEps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) : m.getEps();
 
   // Initial sustained DPS
-  let sDps = m.getClip() ?  (m.getClip() * m.getDps() / m.getRoF()) / ((m.getClip() / m.getRoF()) + m.getReload()) : m.getDps();
+  let sDps = m.getSDps();
 
   // Take fall-off in to account
   const falloff = m.getFalloff();
