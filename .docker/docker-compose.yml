@@ -1,0 +1,39 @@
+version: '2.2'
+
+services:
+  coriolis_prod:
+    build:
+      dockerfile: coriolis/.docker/Dockerfile
+      context: ../..
+    environment:
+      BRANCH: master
+    restart: always
+    networks:
+    - coriolis_web
+    - default
+    labels:
+    - "traefik.docker.network=coriolis_coriolis_web"
+    - "traefik.enable=true"
+    - "traefik.basic.frontend.rule=Host:coriolis.io,coriolis.edcd.io"
+    - "traefik.basic.port=80"
+    - "traefik.basic.protocol=http"
+
+  coriolis_dev:
+    build:
+      dockerfile: coriolis/.docker/Dockerfile
+      context: ../..
+    restart: always
+    environment:
+      BRANCH: feature/docker-deployment
+    networks:
+    - coriolis_web
+    - default
+    labels:
+    - "traefik.docker.network=coriolis_coriolis_web"
+    - "traefik.enable=true"
+    - "traefik.basic.frontend.rule=Host:beta.coriolis.io,beta.coriolis.edcd.io"
+    - "traefik.basic.port=80"
+    - "traefik.basic.protocol=http"
+
+networks:
+  coriolis_web:
