@@ -24,7 +24,6 @@ RUN npm start
 WORKDIR /src/app/coriolis
 RUN git fetch --all
 RUN git reset --hard origin/$BRANCH
-RUN rm -rf node_modules/
 RUN npm install --no-package-lock
 RUN npm run build
 
@@ -33,5 +32,6 @@ RUN npm run build
 FROM nginx:1.13.12-alpine as web
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /src/app/coriolis/build /usr/share/nginx/html
+WORKDIR /usr/share/nginx/html
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]
