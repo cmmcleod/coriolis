@@ -30,7 +30,7 @@ RUN npm run build
 
 ### STAGE 2: Production Environment ###
 FROM nginx:1.13.12-alpine as web
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY coriolis/.docker/nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /src/app/coriolis/build /usr/share/nginx/html
 WORKDIR /usr/share/nginx/html
 EXPOSE 80
