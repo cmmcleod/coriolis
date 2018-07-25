@@ -16,14 +16,10 @@ RUN npm i -g npm
 
 # Set up coriolis-data
 WORKDIR /src/app/coriolis-data
-RUN git fetch --all
-RUN git reset --hard origin/$BRANCH
 RUN npm install --no-package-lock
 RUN npm start
 
 WORKDIR /src/app/coriolis
-RUN git fetch --all
-RUN git reset --hard origin/$BRANCH
 RUN rm -rf node_modules/
 RUN npm install --no-package-lock
 RUN npm run build
