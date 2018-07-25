@@ -8,6 +8,8 @@ services:
       args:
         branch: master
     restart: always
+    volumes:
+    - ./nginx.conf:/etc/nginx/nginx.conf
     networks:
     - coriolis_web
     - default
@@ -23,12 +25,10 @@ services:
       dockerfile: coriolis/.docker/Dockerfile
       context: ../..
       args:
-        branch: master
+        branch: develop
     restart: always
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-    ports:
-      - 8090:80
     networks:
     - coriolis_web
     - default
