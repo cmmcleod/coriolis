@@ -47,7 +47,16 @@ export default class Module {
       if (modifierActions && modifierActions[name]) {
         // this special effect modifies our returned value
         const modification = Modifications.modifications[name];
-        if (modification.method === 'additive') {
+        const multiplier = modification.type === 'percentage' ? 10000 : 100;
+        if (name === 'explres' || name === 'kinres' || name === 'thermres') {
+          // Resistance modifications in itself are additive, however their
+          // special effects are multiplicative. They affect the overall result
+          // by (special effect resistance) * (damage mult after modification),
+          // i. e. we need to apply the special effect as a multiplier to the
+          // overall result and then calculate the difference.
+          let baseMult = this[name] ? 1 - this[name] : 1;
+          result = (baseMult - (baseMult - result / multiplier) * (1 - modifierActions[name] / 100)) * multiplier;
+        } else if (modification.method === 'additive') {
           result = result + modifierActions[name] * 100;
         } else if (modification.method === 'overwrite') {
           result = modifierActions[name];
@@ -59,7 +68,6 @@ export default class Module {
           } else {
             mod = modifierActions[name];
           }
-          const multiplier = modification.type === 'percentage' ? 10000 : 100;
           result = (((1 + result / multiplier) * (1 + mod)) - 1) * multiplier;
         }
       }
@@ -540,6 +548,27 @@ export default class Module {
     let rof = this.getRoF() || 1;
 
     return damage * rpshot * rof;
+  }
+
+  /**
+   * Get the SDPS for this module, taking into account modifications and special
+   * effects.
+   * @return {Number} The SDPS of this module
+   */
+  getSDps() {
+    let dps = this.getDps();
+    if (this.getClip()) {
+      let clipSize = this.getClip();
+      // If auto-loader is applied, effective clip size will be nearly doubled
+      // as you get one reload for every two shots fired.
+      if (this.blueprint && this.blueprint.special && this.blueprint.special.edname === 'special_auto_loader') {
+        clipSize += clipSize - 1;
+      }
+      let timeToDeplete = clipSize / this.getRoF();
+      return dps * timeToDeplete / (timeToDeplete + this.getReload());
+    } else {
+      return dps;
+    }
   }
 
   /**

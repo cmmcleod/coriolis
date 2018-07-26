@@ -102,11 +102,11 @@ export default class Defence extends TranslatedComponent {
 
         // Add effective shield from resistances
         const rawMj = shield.generator + shield.boosters + shield.cells;
-        const explosiveMj = rawMj / (shield.explosive.generator * shield.explosive.boosters) - rawMj;
+        const explosiveMj = rawMj / shield.explosive.total - rawMj;
         if (explosiveMj != 0) effectiveShieldExplosiveTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(explosiveMj)}{units.MJ}</div>);
-        const kineticMj = rawMj / (shield.kinetic.generator * shield.kinetic.boosters) - rawMj;
+        const kineticMj = rawMj / shield.kinetic.total - rawMj;
         if (kineticMj != 0) effectiveShieldKineticTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(kineticMj)}{units.MJ}</div>);
-        const thermalMj = rawMj / (shield.thermal.generator * shield.thermal.boosters) - rawMj;
+        const thermalMj = rawMj / shield.thermal.total - rawMj;
         if (thermalMj != 0) effectiveShieldThermalTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(thermalMj)}{units.MJ}</div>);
 
         // Add effective shield from power distributor SYS pips
@@ -184,17 +184,17 @@ export default class Defence extends TranslatedComponent {
     const armourDamageTakenExplosiveTt = [];
     armourDamageTakenExplosiveTt.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.pct1(armour.explosive.bulkheads)}</div>);
     armourDamageTakenExplosiveTt.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.pct1(armour.explosive.reinforcement)}</div>);
-    if (armour.explosive.bulkheads * armour.explosive.reinforcement != 1) effectiveArmourExplosiveTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(rawArmour / (armour.explosive.bulkheads * armour.explosive.reinforcement) - rawArmour)}</div>);
+    if (armour.explosive.total != 1) effectiveArmourExplosiveTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(rawArmour / armour.explosive.total - rawArmour)}</div>);
 
     const armourDamageTakenKineticTt = [];
     armourDamageTakenKineticTt.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.pct1(armour.kinetic.bulkheads)}</div>);
     armourDamageTakenKineticTt.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.pct1(armour.kinetic.reinforcement)}</div>);
-    if (armour.kinetic.bulkheads * armour.kinetic.reinforcement != 1) effectiveArmourKineticTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(rawArmour / (armour.kinetic.bulkheads * armour.kinetic.reinforcement) - rawArmour)}</div>);
+    if (armour.kinetic.total != 1) effectiveArmourKineticTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(rawArmour / armour.kinetic.total - rawArmour)}</div>);
 
     const armourDamageTakenThermalTt = [];
     armourDamageTakenThermalTt.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.pct1(armour.thermal.bulkheads)}</div>);
     armourDamageTakenThermalTt.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.pct1(armour.thermal.reinforcement)}</div>);
-    if (armour.thermal.bulkheads * armour.thermal.reinforcement != 1) effectiveArmourThermalTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(rawArmour / (armour.thermal.bulkheads * armour.thermal.reinforcement) - rawArmour)}</div>);
+    if (armour.thermal.total != 1) effectiveArmourThermalTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(rawArmour / armour.thermal.total - rawArmour)}</div>);
 
     const effectiveArmourData = [];
     const effectiveAbsoluteArmour = armour.total / armour.absolute.total;

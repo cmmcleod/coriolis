@@ -1,0 +1,35 @@
+version: '2.2'
+
+services:
+  coriolis_prod:
+    image: edcd/coriolis:master
+    restart: always
+    volumes:
+    - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+    - coriolis_web
+    - default
+    labels:
+    - "traefik.docker.network=coriolis_coriolis_web"
+    - "traefik.enable=true"
+    - "traefik.basic.frontend.rule=Host:coriolis.io,coriolis.edcd.io"
+    - "traefik.basic.port=80"
+    - "traefik.basic.protocol=http"
+
+  coriolis_dev:
+    image: edcd/coriolis:develop
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+    - coriolis_web
+    - default
+    labels:
+    - "traefik.docker.network=coriolis_coriolis_web"
+    - "traefik.enable=true"
+    - "traefik.basic.frontend.rule=Host:beta.coriolis.io,beta.coriolis.edcd.io"
+    - "traefik.basic.port=80"
+    - "traefik.basic.protocol=http"
+
+networks:
+  coriolis_web:
