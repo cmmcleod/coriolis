@@ -2,11 +2,7 @@ version: '2.2'
 
 services:
   coriolis_prod:
-    build:
-      dockerfile: coriolis/.docker/Dockerfile
-      context: ../..
-      args:
-        branch: master
+    image: edcd/coriolis:master
     restart: always
     volumes:
     - ./nginx.conf:/etc/nginx/nginx.conf
@@ -21,11 +17,7 @@ services:
     - "traefik.basic.protocol=http"
 
   coriolis_dev:
-    build:
-      dockerfile: coriolis/.docker/Dockerfile
-      context: ../..
-      args:
-        branch: develop
+    image: edcd/coriolis:develop
     restart: always
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
