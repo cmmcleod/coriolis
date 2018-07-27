@@ -6,9 +6,9 @@ import request from 'superagent';
  * @param  {string} url        The URL to shorten
  * @param  {function} success   Success callback
  * @param  {function} error     Failure/Error callback
- */ 
+ */
 export default function shorternUrl(url, success, error) {
-  shortenUrlOrbis(url, success, error);
+  orbisUpload(url, success, error);
 }
 
 const SHORTEN_API_GOOGLE = 'https://www.googleapis.com/urlshortener/v1/url?key=';
@@ -72,7 +72,7 @@ const SHORTEN_API_ORBIS = 'https://s.orbis.zone/a';
  * @param  {function} success   Success callback
  * @param  {function} error     Failure/Error callback
  */
-function shortenUrlOrbis(url, success, error) {
+function orbisUpload(url, success, error) {
   if (window.navigator.onLine) {
     try {
       request.post(SHORTEN_API_ORBIS)
@@ -83,6 +83,34 @@ function shortenUrlOrbis(url, success, error) {
             error('Bad Request');
           } else {
             success(response.body.short);
+          }
+        });
+    } catch (e) {
+      console.log(e);
+      error(e.message ? e.message : e);
+    }
+  } else {
+    error('Not Online');
+  }
+}
+
+const API_ORBIS = 'http://localhost:3000/builds/add';
+/**
+ * Upload to Orbis
+ * @param  {object} ship        The URL to shorten
+ * @param  {function} success   Success callback
+ * @param  {function} error     Failure/Error callback
+ */
+export function orbisUpload(ship, success, error) {
+  if (window.navigator.onLine) {
+    try {
+      request.post(API_ORBIS)
+        .send(ship)
+        .end(function(err, response) {
+          if (err) {
+            error('Bad Request');
+          } else {
+            success(response.body.link);
           }
         });
     } catch (e) {
