@@ -8,7 +8,7 @@ import request from 'superagent';
  * @param  {function} error     Failure/Error callback
  */
 export default function shorternUrl(url, success, error) {
-  orbisUpload(url, success, error);
+  orbisShorten(url, success, error);
 }
 
 const SHORTEN_API_GOOGLE = 'https://www.googleapis.com/urlshortener/v1/url?key=';
@@ -72,7 +72,7 @@ const SHORTEN_API_ORBIS = 'https://s.orbis.zone/a';
  * @param  {function} success   Success callback
  * @param  {function} error     Failure/Error callback
  */
-function orbisUpload(url, success, error) {
+function orbisShorten(url, success, error) {
   if (window.navigator.onLine) {
     try {
       request.post(SHORTEN_API_ORBIS)
