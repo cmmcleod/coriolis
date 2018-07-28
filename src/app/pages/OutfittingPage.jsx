@@ -7,9 +7,20 @@ import Router from '../Router';
 import Persist from '../stores/Persist';
 import * as Utils from '../utils/UtilityFunctions';
 import Ship from '../shipyard/Ship';
+import * as _ from 'lodash';
 import { toDetailedBuild } from '../shipyard/Serializer';
 import { outfitURL } from '../utils/UrlGenerators';
-import { FloppyDisk, Bin, Switch, Download, Reload, LinkIcon, ShoppingIcon, MatIcon } from '../components/SvgIcons';
+import {
+  FloppyDisk,
+  Bin,
+  Switch,
+  Download,
+  Reload,
+  LinkIcon,
+  ShoppingIcon,
+  MatIcon,
+  OrbisIcon
+} from '../components/SvgIcons';
 import LZString from 'lz-string';
 import ShipSummaryTable from '../components/ShipSummaryTable';
 import StandardSlotSection from '../components/StandardSlotSection';
@@ -26,6 +37,7 @@ import OutfittingSubpages from '../components/OutfittingSubpages';
 import ModalExport from '../components/ModalExport';
 import ModalPermalink from '../components/ModalPermalink';
 import ModalShoppingList from '../components/ModalShoppingList';
+import ModalOrbis from '../components/ModalOrbis';
 
 /**
  * Document Title Generator
@@ -494,6 +506,22 @@ export default class OutfittingPage extends Page {
   }
 
   /**
+   * Generate Orbis link
+   */
+  _genOrbis() {
+    const data = {};
+    const ship = _.cloneDeep(this.state.ship);
+    console.log(this.state);
+    ship.coriolisId = ship.id;
+    data.coriolisShip = ship;
+    data.title = this.state.buildName;
+    data.description = this.state.buildName;
+    data.ShipName = ship.id;
+    data.Ship = ship.id;
+    this.context.showModal(<ModalOrbis ship={data}/>);
+  }
+
+  /**
    * Open up a window for EDDB with a shopping list of our components
    */
   _eddbShoppingList() {
@@ -615,6 +643,9 @@ export default class OutfittingPage extends Page {
             </button>
             <button onClick={this._genShortlink} onMouseOver={termtip.bind(null, 'shortlink')} onMouseOut={hide}>
               <LinkIcon className='lg' />
+            </button>
+            <button onClick={this._genOrbis} disabled={true} onMouseOver={termtip.bind(null, 'PHASE_UPLOAD_ORBIS')} onMouseOut={hide}>
+              <OrbisIcon className='lg' />
             </button>
             <button onClick={this._genShoppingList} onMouseOver={termtip.bind(null, 'PHRASE_SHOPPING_MATS')} onMouseOut={hide}>
               <MatIcon className='lg' />

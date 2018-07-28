@@ -15,6 +15,7 @@ const LS_KEY_SIZE_RATIO = 'sizeRatio';
 const LS_KEY_TOOLTIPS = 'tooltips';
 const LS_KEY_MODULE_RESISTANCES = 'moduleResistances';
 const LS_KEY_ROLLS = 'matsPerGrade';
+const LS_KEY_ORBIS = 'orbis';
 
 let LS;
 
@@ -95,6 +96,7 @@ export class Persist extends EventEmitter {
     let buildJson = _get(LS_KEY_BUILDS);
     let comparisonJson = _get(LS_KEY_COMPARISONS);
 
+    this.orbisCreds = _get(LS_KEY_ORBIS) || { email: '', password: '' };
     this.onStorageChange = this.onStorageChange.bind(this);
     this.langCode = _getString(LS_KEY_LANG) || 'en';
     this.insurance = insurance && Insurance[insurance.toLowerCase()] !== undefined ? insurance : 'standard';
@@ -168,6 +170,10 @@ export class Persist extends EventEmitter {
           this.matsPerGrade = JSON.parse(newValue);
           this.emit('matsPerGrade', this.matsPerGrade);
           break;
+        case LS_KEY_ORBIS:
+          this.orbisCreds = JSON.parse(newValue);
+          this.emit('orbis', this.orbisCreds);
+          break;
       }
     } catch (e) {
       // On JSON.Parse Error - don't sync or do anything
@@ -191,6 +197,24 @@ export class Persist extends EventEmitter {
     this.langCode = langCode;
     _put(LS_KEY_LANG, langCode);
     this.emit('language', langCode);
+  }
+
+  /**
+   * Get the current orbis.zone credentials
+   * @return {String} language code
+   */
+  getOrbisCreds() {
+    return this.orbisCreds;
+  };
+
+  /**
+   * Update and save the orbis.zone credentials
+   * @param {Object} creds object with username and password properties.
+   */
+  setOrbisCreds(creds) {
+    this.langCode = creds;
+    _put(LS_KEY_ORBIS, creds);
+    this.emit('orbis', creds);
   }
 
   /**
