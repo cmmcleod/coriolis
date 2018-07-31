@@ -514,8 +514,8 @@ export default class OutfittingPage extends Page {
     console.log(this.state);
     ship.coriolisId = ship.id;
     data.coriolisShip = ship;
-    data.title = this.state.buildName;
-    data.description = this.state.buildName;
+    data.title = this.state.buildName || ship.id;
+    data.description = this.state.buildName || ship.id;
     data.ShipName = ship.id;
     data.Ship = ship.id;
     this.context.showModal(<ModalOrbis ship={data}/>);
@@ -644,7 +644,7 @@ export default class OutfittingPage extends Page {
             <button onClick={this._genShortlink} onMouseOver={termtip.bind(null, 'shortlink')} onMouseOut={hide}>
               <LinkIcon className='lg' />
             </button>
-            <button onClick={this._genOrbis} disabled={true} onMouseOver={termtip.bind(null, 'PHASE_UPLOAD_ORBIS')} onMouseOut={hide}>
+            <button onClick={this._genOrbis} onMouseOver={termtip.bind(null, 'PHASE_UPLOAD_ORBIS')} onMouseOut={hide}>
               <OrbisIcon className='lg' />
             </button>
             <button onClick={this._genShoppingList} onMouseOver={termtip.bind(null, 'PHRASE_SHOPPING_MATS')} onMouseOut={hide}>

@@ -34,8 +34,6 @@ export default class ModalOrbis extends TranslatedComponent {
     const target = e.target;
     target.disabled = true;
     this.setState({ orbisUrl: 'Sending...' }, () => {
-      console.log(this.props);
-      console.log(this.state)
       orbisUpload(this.props.ship, this.state.orbisCreds)
         .then(orbisUrl => {
           target.disabled = false;
@@ -92,6 +90,7 @@ export default class ModalOrbis extends TranslatedComponent {
       <h3 >{translate('shortened')}</h3>
       <input value={this.state.orbisUrl} readOnly size={25} onFocus={ (e) => e.target.select() }/>
       <br/><br/>
+      <p>Orbis.zone is currently in a trial period, and may be wiped at any time as development progresses. Some elements are also still placeholders.</p>
       <button className={'l cb dismiss cap'} disabled={!!this.state.failed} onClick={this.sendToOrbis}>{translate('PHASE_UPLOAD_ORBIS')}</button>
       <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>
     </div>;

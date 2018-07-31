@@ -95,8 +95,8 @@ function orbisShorten(url, success, error) {
   }
 }
 
-const API_ORBIS = 'http://localhost:3000/builds/add';
-const API_ORBIS_LOGIN = 'http://localhost:3000/login';
+const API_ORBIS = 'https://orbis.zone/api/builds/add';
+const API_ORBIS_LOGIN = 'https://orbis.zone/api/login';
 
 /**
  * Upload to Orbis
@@ -111,6 +111,7 @@ export function orbisUpload(ship, creds) {
         agent
           .post(API_ORBIS_LOGIN)
           .send(creds)
+          .redirects(0)
           .withCredentials()
           .end(function(err) {
             if (err) {
