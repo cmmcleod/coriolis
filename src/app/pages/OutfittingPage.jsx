@@ -510,14 +510,15 @@ export default class OutfittingPage extends Page {
    */
   _genOrbis() {
     const data = {};
-    const ship = _.cloneDeep(this.state.ship);
-    console.log(this.state);
+    const ship = this.state.ship;
     ship.coriolisId = ship.id;
     data.coriolisShip = ship;
+    data.coriolisShip.url = window.location.href;
     data.title = this.state.buildName || ship.id;
     data.description = this.state.buildName || ship.id;
     data.ShipName = ship.id;
     data.Ship = ship.id;
+    console.log(data);
     this.context.showModal(<ModalOrbis ship={data}/>);
   }
 
