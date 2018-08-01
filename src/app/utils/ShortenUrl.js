@@ -95,9 +95,7 @@ function orbisShorten(url, success, error) {
   }
 }
 
-const API_ORBIS = 'https://orbis.zone/api/builds/add';
-const API_ORBIS_LOGIN = 'https://orbis.zone/api/login';
-
+const API_ORBIS = 'http://localhost:3030/api/builds/add';
 /**
  * Upload to Orbis
  * @param  {object} ship        The URL to shorten
@@ -109,26 +107,16 @@ export function orbisUpload(ship, creds) {
     if (window.navigator.onLine) {
       try {
         agent
-          .post(API_ORBIS_LOGIN)
-          .send(creds)
-          .redirects(0)
+          .post(API_ORBIS)
           .withCredentials()
-          .end(function(err) {
+          .redirects(0)
+          .set('Content-Type', 'application/json')
+          .send(ship)
+          .end(function(err, response) {
             if (err) {
               reject('Bad Request');
             } else {
-              agent
-                .post(API_ORBIS)
-                .withCredentials()
-                .set('Content-Type', 'application/json')
-                .send(ship)
-                .end(function(err, response) {
-                  if (err) {
-                    reject('Bad Request');
-                  } else {
-                    resolve(response.body.link);
-                  }
-                });
+              resolve(response.body.link);
             }
           });
       } catch (e) {

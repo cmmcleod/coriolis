@@ -73,6 +73,7 @@ export default class ModalOrbis extends TranslatedComponent {
    * @return {React.Component} Modal Content
    */
   render() {
+    const API_ORBIS_REGISTER = 'https://login.willb.info/signup?client_id=a555021d-17d2-4b4e-8f16-f831d8add0f5&scope=openid profile email address phone offline_access&response_type=code&passReqToCallback=true&redirect_uri=https%3A%2F%2Forbis.zone%3A3030%2Fapi%2Fauth%2Fcb';
     let translate = this.context.language.translate;
     this.orbisPasswordHandler = this.orbisPasswordHandler.bind(this);
     this.orbisUsername = this.orbisUsername.bind(this);
@@ -81,13 +82,11 @@ export default class ModalOrbis extends TranslatedComponent {
     return <div className='modal' onClick={ (e) => e.stopPropagation() }>
       <h2>{translate('permalink')}</h2>
       <br/>
-      <h3>{translate('orbis email')}</h3>
-      <input defaultValue={this.state.orbisCreds.email} size={40} onChange={this.orbisUsername} onFocus={ (e) => e.target.select() }/>
+      <a className='button' href="https://orbis.zone/api/auth">Log in to Orbis</a>
       <br/><br/>
-      <h3>{translate('orbis password')}</h3>
-      <input defaultValue={this.state.orbisCreds.password} size={40} onChange={this.orbisPasswordHandler} type={'password'} onFocus={ (e) => e.target.select() }/>
+      <a className='button' href={API_ORBIS_REGISTER}>Sign up to Orbis</a>
       <br/><br/>
-      <h3 >{translate('shortened')}</h3>
+      <h3 >{translate('Orbis link')}</h3>
       <input value={this.state.orbisUrl} readOnly size={25} onFocus={ (e) => e.target.select() }/>
       <br/><br/>
       <p>Orbis.zone is currently in a trial period, and may be wiped at any time as development progresses. Some elements are also still placeholders.</p>
