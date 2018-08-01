@@ -95,7 +95,7 @@ function orbisShorten(url, success, error) {
   }
 }
 
-const API_ORBIS = 'http://localhost:3030/api/builds/add';
+const API_ORBIS = 'https://orbis.zone/api/builds/add';
 /**
  * Upload to Orbis
  * @param  {object} ship        The URL to shorten
