@@ -10,7 +10,7 @@ services:
     - coriolis_web
     - default
     labels:
-    - "traefik.docker.network=coriolis_coriolis_web"
+    - "traefik.docker.network=web"
     - "traefik.enable=true"
     - "traefik.basic.frontend.rule=Host:coriolis.io,coriolis.edcd.io"
     - "traefik.basic.port=80"
@@ -25,11 +25,12 @@ services:
     - coriolis_web
     - default
     labels:
-    - "traefik.docker.network=coriolis_coriolis_web"
+    - "traefik.docker.network=web"
     - "traefik.enable=true"
     - "traefik.basic.frontend.rule=Host:beta.coriolis.io,beta.coriolis.edcd.io"
     - "traefik.basic.port=80"
     - "traefik.basic.protocol=http"
 
 networks:
-  coriolis_web:
+  web:
+    external: true
