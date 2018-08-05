@@ -66,7 +66,7 @@ function shortenUrlEddp(url, success, error) {
   }
 }
 
-const SHORTEN_API_ORBIS = 'https://yourls.willb.info/api.php';
+const SHORTEN_API_ORBIS = 'https://s.orbis.zone/api.php';
 /**
  * Shorten a URL using Orbis's URL shortener API
  * @param  {string} url        The URL to shorten
