@@ -65,7 +65,7 @@ function shortenUrlEddp(url, success, error) {
   }
 }
 
-const SHORTEN_API_ORBIS = 'https://s.orbis.zone/a';
+const SHORTEN_API_ORBIS = 'https://yourls.willb.info/api.php';
 /**
  * Shorten a URL using Orbis's URL shortener API
  * @param  {string} url        The URL to shorten
@@ -76,13 +76,15 @@ function shortenUrlOrbis(url, success, error) {
   if (window.navigator.onLine) {
     try {
       request.post(SHORTEN_API_ORBIS)
-        .field('lsturl', url)
+        .field('action', 'shorturl')
+        .field('url', url)
         .field('format', 'json')
         .end(function(err, response) {
           if (err) {
+            console.error(err);
             error('Bad Request');
           } else {
-            success(response.body.short);
+            success(response.body.shorturl);
           }
         });
     } catch (e) {
