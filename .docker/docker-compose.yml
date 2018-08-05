@@ -7,8 +7,7 @@ services:
     volumes:
     - ./nginx.conf:/etc/nginx/nginx.conf
     networks:
-    - coriolis_web
-    - default
+    - web
     labels:
     - "traefik.docker.network=web"
     - "traefik.enable=true"
@@ -22,8 +21,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     networks:
-    - coriolis_web
-    - default
+    - web
     labels:
     - "traefik.docker.network=web"
     - "traefik.enable=true"
