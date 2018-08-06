@@ -1,6 +1,14 @@
 import request from 'superagent';
 
-const agent = request.agent();
+let agent;
+try {
+  agent = request.agent(); // apparently this crashes somehow
+} catch (e) {
+  console.error(e);
+}
+if (!agent) {
+  agent = request;
+}
 
 /**
  * Shorten a URL
