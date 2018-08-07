@@ -41,7 +41,7 @@ export default class ModalBatchOrbis extends TranslatedComponent {
     if (!agent) {
       agent = request;
     }
-    const API_ORBIS = 'http://localhost:3030/api/builds/add/batch';
+    const API_ORBIS = 'https://orbis.zone/api/builds/add/batch';
     return new Promise((resolve, reject) => {
       try {
         agent
