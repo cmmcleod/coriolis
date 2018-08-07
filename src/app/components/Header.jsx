@@ -531,6 +531,16 @@ export default class Header extends TranslatedComponent {
           {openedMenu == 'comp' ? this._getComparisonsMenu() : null}
         </div>
 
+        {window.location.origin.search('.edcd.io') >= 0 ?
+          <div className='l menu'>
+            <a href="https://youtu.be/4SvnLcefhtI" target="_blank">
+              <div className={cn('menu-header')}>
+                <Rocket className='warning'/><span className='menu-item-label'>{translate('please migrate to coriolis.io')}</span>
+              </div>
+            </a>
+          </div> : null
+        }
+
         <div className='r menu'>
           <div className={cn('menu-header', { selected: openedMenu == 'settings' })} onClick={this._openSettings}>
             <Cogs className='xl warning'/><span className='menu-item-label'>{translate('settings')}</span>
