@@ -58,7 +58,11 @@ export default class ModalOrbis extends TranslatedComponent {
     })
     .then(data => data.json())
     .then(res => {
-      this.setState({ authenticatedStatus: res.status })
+      this.setState({ authenticatedStatus: res.status || res.error });
+    })
+    .catch(err => {
+      console.error(err);
+      this.setState({ authenticatedStatus: err.message });
     });
   }
 
