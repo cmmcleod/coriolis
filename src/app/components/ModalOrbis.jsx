@@ -22,7 +22,8 @@ export default class ModalOrbis extends TranslatedComponent {
 
     this.state = {
       orbisCreds: Persist.getOrbisCreds(),
-      orbisUrl: '...'
+      orbisUrl: '...',
+      authenticatedStatus: 'Checking...'
     };
   }
 
@@ -43,6 +44,21 @@ export default class ModalOrbis extends TranslatedComponent {
           target.disabled = false;
           this.setState({ orbisUrl: 'Error - ' + err });
         });
+    });
+  }
+
+  /**
+   * Get Orbis.zone auth status
+   * @returns {Object} auth status
+   */
+  getOrbisAuthStatus() {
+    return fetch('https://orbis.zone/api/checkauth', {
+      credentials: 'include',
+      mode: 'cors'
+    })
+    .then(data => data.json())
+    .then(res => {
+      this.setState({ authenticatedStatus: res.status })
     });
   }
 
@@ -77,10 +93,13 @@ export default class ModalOrbis extends TranslatedComponent {
     this.orbisPasswordHandler = this.orbisPasswordHandler.bind(this);
     this.orbisUsername = this.orbisUsername.bind(this);
     this.sendToOrbis = this.sendToOrbis.bind(this);
-
+    this.getOrbisAuthStatus();
     return <div className='modal' onClick={ (e) => e.stopPropagation() }>
-      <h2>{translate('permalink')}</h2>
+      <h2>{translate('upload to orbis')}</h2>
       <br/>
+      <label>Orbis auth status: </label>
+      <input value={this.state.authenticatedStatus} readOnly size={25} onFocus={ (e) => e.target.select() }/>
+      <br/><br/>
       <a className='button' href="https://orbis.zone/api/auth">Log in / signup to Orbis</a>
       <br/><br/>
       <h3 >{translate('Orbis link')}</h3>
