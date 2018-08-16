@@ -1,23 +1,23 @@
-const path = require('path')
-const exec = require('child_process').exec
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const AppCachePlugin = require('appcache-webpack-plugin')
-const {BugsnagSourceMapUploaderPlugin} = require('webpack-bugsnag-plugins')
-const pkgJson = require('./package')
-
-function CopyDirPlugin (source, destination) {
-  this.source = source
-  this.destination = destination
+const path = require('path');
+const exec = require('child_process').exec;
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const AppCachePlugin = require('appcache-webpack-plugin');
+const { BugsnagSourceMapUploaderPlugin } = require('webpack-bugsnag-plugins');
+const pkgJson = require('./package');
+const buildDate = new Date();
+function CopyDirPlugin(source, destination) {
+  this.source = source;
+  this.destination = destination;
 }
 
-CopyDirPlugin.prototype.apply = function (compiler) {
+CopyDirPlugin.prototype.apply = function(compiler) {
   compiler.plugin('done', () => {
-    console.log(compiler.outputPath, this.destination)
-    exec('cp -r ' + this.source + ' ' + path.join(compiler.outputPath, this.destination))
-  })
-}
+    console.log(compiler.outputPath, this.destination);
+    exec('cp -r ' + this.source + ' ' + path.join(compiler.outputPath, this.destination));
+  });
+};
 
 module.exports = {
   cache: true,
@@ -40,10 +40,10 @@ module.exports = {
       'screw-ie8': true,
       sourceMap: true
     }),
-    //new webpack.optimize.CommonsChunkPlugin({
+    // new webpack.optimize.CommonsChunkPlugin({
     //  name: 'lib',
     //  filename: 'lib.[chunkhash:6].js'
-    //}),
+    // }),
     new HtmlWebpackPlugin({
       inject: false,
       appCache: 'coriolis.appcache',
@@ -60,6 +60,7 @@ module.exports = {
       template: path.join(__dirname, 'src/index.ejs'),
       uaTracking: process.env.CORIOLIS_UA_TRACKING || '',
       gapiKey: process.env.CORIOLIS_GAPI_KEY || '',
+      date: buildDate,
       version: pkgJson.version
     }),
     new ExtractTextPlugin({
@@ -69,7 +70,7 @@ module.exports = {
     }),
     new BugsnagSourceMapUploaderPlugin({
       apiKey: 'ba9fae819372850fb660755341fa6ef5',
-      appVersion: pkgJson.version
+      appVersion: `${pkgJson.version}-${buildDate.toISOString()}`
     }),
     new CopyDirPlugin(path.join(__dirname, 'src/schemas'), 'schemas'),
     new CopyDirPlugin(path.join(__dirname, 'src/images/logo/*'), ''),
@@ -83,14 +84,14 @@ module.exports = {
   ],
   module: {
     rules: [
-      {test: /\.css$/, loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})},
-      {test: /\.less$/, loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader!less-loader'})},
-      {test: /\.(js|jsx)$/, loader: 'babel-loader?cacheDirectory=true', include: path.join(__dirname, 'src')},
-      {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
-      {test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
-      {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream'},
-      {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader'},
-      {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml'}
+      { test: /\.css$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' }) },
+      { test: /\.less$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!less-loader' }) },
+      { test: /\.(js|jsx)$/, loader: 'babel-loader?cacheDirectory=true', include: path.join(__dirname, 'src') },
+      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
+      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
+      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml' }
     ]
   }
-}
+};
