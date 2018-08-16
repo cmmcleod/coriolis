@@ -126,7 +126,11 @@ export default class ModalImport extends TranslatedComponent {
     if (importData.builds && typeof importData.builds == 'object') {
       for (let shipId in importData.builds) {
         for (let buildName in importData.builds[shipId]) {
-          validateBuild(shipId, importData.builds[shipId][buildName], buildName);
+          try {
+            validateBuild(shipId, importData.builds[shipId][buildName], buildName);
+          } catch (err) {
+            delete importData.builds[shipId][buildName];
+          }
         }
       }
       this.setState({ builds: importData.builds });
