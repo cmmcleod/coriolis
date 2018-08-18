@@ -208,7 +208,7 @@ export default class ModalShoppingList extends TranslatedComponent {
   }
 
   /**
-   * Handler for changing roll amounts
+   * Handler for changing cmdr name
    * @param {SyntheticEvent} e React Event
    */
   cmdrChangeHandler(e) {

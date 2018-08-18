@@ -7,10 +7,9 @@ services:
     volumes:
     - ./nginx.conf:/etc/nginx/nginx.conf
     networks:
-    - coriolis_web
-    - default
+    - web
     labels:
-    - "traefik.docker.network=coriolis_coriolis_web"
+    - "traefik.docker.network=web"
     - "traefik.enable=true"
     - "traefik.basic.frontend.rule=Host:coriolis.io,coriolis.edcd.io"
     - "traefik.basic.port=80"
@@ -22,14 +21,14 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     networks:
-    - coriolis_web
-    - default
+    - web
     labels:
-    - "traefik.docker.network=coriolis_coriolis_web"
+    - "traefik.docker.network=web"
     - "traefik.enable=true"
     - "traefik.basic.frontend.rule=Host:beta.coriolis.io,beta.coriolis.edcd.io"
     - "traefik.basic.port=80"
     - "traefik.basic.protocol=http"
 
 networks:
-  coriolis_web:
+  web:
+    external: true

@@ -26,7 +26,8 @@
     <script>
       window.CORIOLIS_GAPI_KEY = '<%- htmlWebpackPlugin.options.gapiKey %>';
       window.CORIOLIS_VERSION = '<%- htmlWebpackPlugin.options.version %>';
-      window.CORIOLIS_DATE = '<%- new Date().toISOString().slice(0, 10)  %>';
+      window.CORIOLIS_DATE = '<%- htmlWebpackPlugin.options.date.toISOString().slice(0, 10)  %>';
+      window.BUGSNAG_VERSION = '<%- htmlWebpackPlugin.options.version + '-' + htmlWebpackPlugin.options.date.toISOString()  %>';
     </script>
     <% if (htmlWebpackPlugin.options.uaTracking) { %>
     <script>
@@ -36,7 +37,7 @@
     </script>
     <script async src='https://www.google-analytics.com/analytics.js'></script>
     <% } %>
-    
+
     <!-- Piwik -->
    <!-- <script type="text/javascript">
       var _paq = _paq || [];
@@ -58,7 +59,7 @@
     <script src="//d2wy8f7a9ursnm.cloudfront.net/v4/bugsnag.min.js"></script>
     <script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-plugins/v1/bugsnag-react.min.js"></script>
     <script>
-      window.bugsnagClient = bugsnag('ba9fae819372850fb660755341fa6ef5', {appVersion: window.CORIOLIS_VERSION || undefined})
+      window.bugsnagClient = bugsnag('ba9fae819372850fb660755341fa6ef5', {appVersion: window.BUGSNAG_VERSION || undefined})
       window.Bugsnag = window.bugsnagClient
     </script>
   </head>
