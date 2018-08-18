@@ -741,16 +741,6 @@ export default class Module {
    * @return {string} the shot speed for this module
    */
   getShotSpeed() {
-    if (this.blueprint && (this.blueprint.name === 'Focused' || this.blueprint.name === 'Long range')) {
-      // If the modification is focused or long range then the shot speed
-      // uses the range modifier
-      const rangemod = this.getModValue('range') / 10000;
-      let result = this['shotspeed'];
-      if (!result) {
-        return null;
-      }
-      return result * (1 + rangemod);
-    }
     return this._getModifiedValue('shotspeed');
   }
 
