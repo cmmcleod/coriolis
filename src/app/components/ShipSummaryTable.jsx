@@ -50,7 +50,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
     const speedTooltip = canThrust ? 'TT_SUMMARY_SPEED' : 'TT_SUMMARY_SPEED_NONFUNCTIONAL';
     const canBoost = ship.canBoost(cargo, ship.fuelCapacity);
     const boostTooltip = canBoost ? 'TT_SUMMARY_BOOST' : canThrust ? 'TT_SUMMARY_BOOST_NONFUNCTIONAL' : 'TT_SUMMARY_SPEED_NONFUNCTIONAL';
-    const sgMetrics = Calc.shieldMetrics(ship, pips.sys || 2);
+    const sgMetrics = Calc.shieldMetrics(ship, pips.sys);
     const shipBoost = canBoost ?  Calc.calcBoost(ship) : 'No Boost';
     const armourMetrics = Calc.armourMetrics(ship);
     let shieldColour = 'blue';
@@ -149,8 +149,8 @@ export default class ShipSummaryTable extends TranslatedComponent {
           <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldExplRes)))) : 0)}{u.MJ}</td>
           <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldKinRes)))) : 0)}{u.MJ}</td>
           <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldThermRes)))) : 0)}{u.MJ}</td>
-          <td>{sgMetrics && sgMetrics.recover ? formats.time(sgMetrics.recover) : 0}</td>
-          <td>{sgMetrics && sgMetrics.recharge ? formats.time(sgMetrics.recharge) : 0}</td>
+          <td>{sgMetrics && sgMetrics.recover === Math.Inf ? translate('Never') : formats.time(sgMetrics.recover)}</td>
+          <td>{sgMetrics && sgMetrics.recharge === Math.Inf ? translate('Never') : formats.time(sgMetrics.recharge)}</td>
         </tr>
         </tbody>
         <thead>
