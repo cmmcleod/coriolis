@@ -30,6 +30,7 @@ export default class ModalBatchOrbis extends TranslatedComponent {
   /**
    * Send ship to Orbis.zone
    * @param {SyntheticEvent} e React Event
+   * @return {Promise} Promise sending post request to orbis
    */
   sendToOrbis(e) {
     let agent;

@@ -963,7 +963,7 @@ export function timeToDeplete(amount, dps, eps, capacity, recharge) {
 
 /**
  * Applies diminishing returns to resistances.
- * @param {number} baseDamageMult The base resistance up to which no diminishing returns are applied.
+ * @param {number} diminishFrom The base resistance up to which no diminishing returns are applied.
  * @param {number} damageMult Resistance as damage multiplier
  * @returns {number} Actual damage multiplier
  */

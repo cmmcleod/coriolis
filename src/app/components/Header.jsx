@@ -237,6 +237,10 @@ export default class Header extends TranslatedComponent {
     />);
   };
 
+  /**
+   * Uploads all ship-builds to orbis
+   * @param {e} e Event
+   */
   _uploadAllBuildsToOrbis(e) {
     e.preventDefault();
     const data = Persist.getBuilds();
