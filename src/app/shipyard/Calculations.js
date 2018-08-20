@@ -488,7 +488,6 @@ export function shieldMetrics(ship, sys) {
       sys: (1 - sysResistance),
       total: sgSbExplosiveDmg * (1 - sysResistance),
       max: sgSbExplosiveDmg * (1 - maxSysResistance),
-      res: 1 - sgSbExplosiveDmg
     };
 
     let sgKineticDmg = 1 - shieldGenerator.getKineticResistance();
@@ -499,7 +498,6 @@ export function shieldMetrics(ship, sys) {
       sys: (1 - sysResistance),
       total: sgSbKineticDmg * (1 - sysResistance),
       max: sgSbKineticDmg * (1 - maxSysResistance),
-      res: 1 - sgSbKineticDmg
     };
 
     let sgThermalDmg = 1 - shieldGenerator.getThermalResistance();
@@ -510,7 +508,6 @@ export function shieldMetrics(ship, sys) {
       sys: (1 - sysResistance),
       total: sgSbThermalDmg * (1 - sysResistance),
       max: sgSbThermalDmg * (1 - maxSysResistance),
-      res: 1 - sgSbThermalDmg
     };
   }
   return shield;
