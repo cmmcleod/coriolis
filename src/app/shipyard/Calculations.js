@@ -819,6 +819,13 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
   const weapon = {
     eps: 0,
     damage: {
+      base: {
+        absolute: 0,
+        explosive: 0,
+        kinetic: 0,
+        thermal: 0,
+        total: 0,
+      },
       shields: {
         absolute: 0,
         explosive: 0,
@@ -862,6 +869,12 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
     weapon.effectiveness.shields.range = weapon.effectiveness.armour.range = dropoff;
     sDps *= dropoff;
   }
+
+  weapon.damage.base.absolute = sDps * m.getDamageDist().A;
+  weapon.damage.base.explosive = sDps * m.getDamageDist().E;
+  weapon.damage.base.kinetic = sDps * m.getDamageDist().K;
+  weapon.damage.base.thermal = sDps * m.getDamageDist().T;
+  weapon.damage.base.total = sDps;
 
   // Piercing/hardness modifier (for armour only)
   const armourMultiple = m.getPiercing() >= opponent.hardness ? 1 : m.getPiercing() / opponent.hardness;

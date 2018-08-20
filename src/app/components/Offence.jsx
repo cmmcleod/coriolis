@@ -154,11 +154,13 @@ export default class Offence extends TranslatedComponent {
     let thermalArmourSDps = 0;
 
     let totalSEps = 0;
+    let totalSDps = 0;
 
     const rows = [];
     for (let i = 0; i < damage.length; i++) {
       const weapon = damage[i];
 
+      totalSDps += weapon.sdps.base.total;
       totalSEps += weapon.seps;
       absoluteShieldsSDps += weapon.sdps.shields.absolute;
       explosiveShieldsSDps += weapon.sdps.shields.explosive;
@@ -173,6 +175,12 @@ export default class Offence extends TranslatedComponent {
       effectivenessShieldsTooltipDetails.push(<div key='range'>{translate('range') + ' ' + formats.pct1(weapon.effectiveness.shields.range)}</div>);
       effectivenessShieldsTooltipDetails.push(<div key='resistance'>{translate('resistance') + ' ' + formats.pct1(weapon.effectiveness.shields.resistance)}</div>);
       effectivenessShieldsTooltipDetails.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.pct1(weapon.effectiveness.shields.sys)}</div>);
+
+      const baseSDpsTooltipDetails = [];
+      if (weapon.sdps.shields.absolute) baseSDpsTooltipDetails.push(<div key='absolute'>{translate('absolute') + ' ' + formats.f1(weapon.sdps.base.absolute)}</div>);
+      if (weapon.sdps.shields.explosive) baseSDpsTooltipDetails.push(<div key='explosive'>{translate('explosive') + ' ' + formats.f1(weapon.sdps.base.explosive)}</div>);
+      if (weapon.sdps.shields.kinetic) baseSDpsTooltipDetails.push(<div key='kinetic'>{translate('kinetic') + ' ' + formats.f1(weapon.sdps.base.kinetic)}</div>);
+      if (weapon.sdps.shields.thermal) baseSDpsTooltipDetails.push(<div key='thermal'>{translate('thermal') + ' ' + formats.f1(weapon.sdps.base.thermal)}</div>);
 
       const effectiveShieldsSDpsTooltipDetails = [];
       if (weapon.sdps.shields.absolute) effectiveShieldsSDpsTooltipDetails.push(<div key='absolute'>{translate('absolute') + ' ' + formats.f1(weapon.sdps.shields.absolute)}</div>);
@@ -199,6 +207,7 @@ export default class Offence extends TranslatedComponent {
             {weapon.classRating} {translate(weapon.name)}
             {weapon.engineering ? ' (' + weapon.engineering + ')' : null }
           </td>
+          <td className='ri'><span onMouseOver={termtip.bind(null, baseSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.f1(weapon.sdps.base.total)}</span></td>
           <td className='ri'><span onMouseOver={termtip.bind(null, effectiveShieldsSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.f1(weapon.sdps.shields.total)}</span></td>
           <td className='ri'><span onMouseOver={termtip.bind(null, effectivenessShieldsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(weapon.effectiveness.shields.total)}</span></td>
           <td className='ri'><span onMouseOver={termtip.bind(null, effectiveArmourSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.f1(weapon.sdps.armour.total)}</span></td>
@@ -231,10 +240,12 @@ export default class Offence extends TranslatedComponent {
           <thead>
           <tr className='main'>
             <th rowSpan='2' className='sortable' onClick={sortOrder.bind(this, 'n')}>{translate('weapon')}</th>
+            <th colSpan='1'>{translate('overall')}</th>
             <th colSpan='2'>{translate('opponent\'s shields')}</th>
             <th colSpan='2'>{translate('opponent\'s armour')}</th>
           </tr>
           <tr>
+            <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_SHIELDS')} onMouseOut={tooltip.bind(null, null)} onClick={sortOrder.bind(this, 'esdpss')}>{'sdps'}</th>
             <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_SHIELDS')} onMouseOut={tooltip.bind(null, null)} onClick={sortOrder.bind(this, 'esdpss')}>{'sdps'}</th>
             <th className='sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVENESS_SHIELDS')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'es')}>{'eft'}</th>
             <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_ARMOUR')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'esdpsh')}>{'sdps'}</th>
@@ -243,6 +254,12 @@ export default class Offence extends TranslatedComponent {
           </thead>
           <tbody>
             {rows}
+            <td></td>
+            <td className='ri'><span>={formats.f1(totalSDps)}</span></td>
+            <td className='ri'><span>={formats.f1(totalShieldsSDps)}</span></td>
+            <td></td>
+            <td className='ri'><span>={formats.f1(totalArmourSDps)}</span></td>
+            <td></td>
           </tbody>
         </table>
         </div>
