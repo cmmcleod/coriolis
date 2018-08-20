@@ -486,6 +486,7 @@ export function shieldMetrics(ship, sys) {
       generator: sgExplosiveDmg,
       boosters: sgSbExplosiveDmg - sgExplosiveDmg,
       sys: (1 - sysResistance),
+      base: sgSbExplosiveDmg,
       total: sgSbExplosiveDmg * (1 - sysResistance),
       max: sgSbExplosiveDmg * (1 - maxSysResistance),
     };
@@ -496,6 +497,7 @@ export function shieldMetrics(ship, sys) {
       generator: sgKineticDmg,
       boosters: sgSbKineticDmg - sgKineticDmg,
       sys: (1 - sysResistance),
+      base: sgSbKineticDmg,
       total: sgSbKineticDmg * (1 - sysResistance),
       max: sgSbKineticDmg * (1 - maxSysResistance),
     };
@@ -506,6 +508,7 @@ export function shieldMetrics(ship, sys) {
       generator: sgThermalDmg,
       boosters: sgSbThermalDmg - sgThermalDmg,
       sys: (1 - sysResistance),
+      base: sgSbThermalDmg,
       total: sgSbThermalDmg * (1 - sysResistance),
       max: sgSbThermalDmg * (1 - maxSysResistance),
     };
