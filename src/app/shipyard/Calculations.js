@@ -484,7 +484,7 @@ export function shieldMetrics(ship, sys) {
     let sgSbExplosiveDmg = diminishDamageMult(sgExplosiveDmg * 0.7, (1 - shieldGenerator.getExplosiveResistance()) * boosterExplDmg);
     shield.explosive = {
       generator: sgExplosiveDmg,
-      boosters: sgSbExplosiveDmg - sgExplosiveDmg,
+      boosters: sgSbExplosiveDmg / sgExplosiveDmg,
       sys: (1 - sysResistance),
       total: sgSbExplosiveDmg * (1 - sysResistance),
       max: sgSbExplosiveDmg * (1 - maxSysResistance),
@@ -495,7 +495,7 @@ export function shieldMetrics(ship, sys) {
     let sgSbKineticDmg = diminishDamageMult(sgKineticDmg * 0.7, (1 - shieldGenerator.getKineticResistance()) * boosterKinDmg);
     shield.kinetic = {
       generator: sgKineticDmg,
-      boosters: sgSbKineticDmg - sgKineticDmg,
+      boosters: sgSbKineticDmg / sgKineticDmg,
       sys: (1 - sysResistance),
       total: sgSbKineticDmg * (1 - sysResistance),
       max: sgSbKineticDmg * (1 - maxSysResistance),
@@ -506,7 +506,7 @@ export function shieldMetrics(ship, sys) {
     let sgSbThermalDmg = diminishDamageMult(sgThermalDmg * 0.7, (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg);
     shield.thermal = {
       generator: sgThermalDmg,
-      boosters: sgSbThermalDmg - sgThermalDmg,
+      boosters: sgSbThermalDmg / sgThermalDmg,
       sys: (1 - sysResistance),
       total: sgSbThermalDmg * (1 - sysResistance),
       max: sgSbThermalDmg * (1 - maxSysResistance),
@@ -612,7 +612,7 @@ export function armourMetrics(ship) {
   let armourReinforcedExplDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getExplosiveResistance()) * hullExplDmg);
   armour.explosive = {
     bulkheads: armourExplDmg,
-    reinforcement: armourReinforcedExplDmg - armourExplDmg,
+    reinforcement: armourReinforcedExplDmg / armourExplDmg,
     total: armourReinforcedExplDmg,
     res: 1 - armourReinforcedExplDmg
   };
@@ -621,7 +621,7 @@ export function armourMetrics(ship) {
   let armourReinforcedKinDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getKineticResistance()) * hullKinDmg);
   armour.kinetic = {
     bulkheads: armourKinDmg,
-    reinforcement: armourReinforcedKinDmg - armourKinDmg,
+    reinforcement: armourReinforcedKinDmg / armourKinDmg,
     total: armourReinforcedKinDmg,
     res: 1 - armourReinforcedKinDmg
   };
@@ -630,7 +630,7 @@ export function armourMetrics(ship) {
   let armourReinforcedThermDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getThermalResistance()) * hullThermDmg);
   armour.thermal = {
     bulkheads: armourThermDmg,
-    reinforcement: armourReinforcedThermDmg - armourThermDmg,
+    reinforcement: armourReinforcedThermDmg / armourThermDmg,
     total: armourReinforcedThermDmg,
     res: 1 - armourReinforcedThermDmg
   };
@@ -819,6 +819,13 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
   const weapon = {
     eps: 0,
     damage: {
+      base: {
+        absolute: 0,
+        explosive: 0,
+        kinetic: 0,
+        thermal: 0,
+        total: 0,
+      },
       shields: {
         absolute: 0,
         explosive: 0,
@@ -862,6 +869,12 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
     weapon.effectiveness.shields.range = weapon.effectiveness.armour.range = dropoff;
     sDps *= dropoff;
   }
+
+  weapon.damage.base.absolute = sDps * m.getDamageDist().A;
+  weapon.damage.base.explosive = sDps * m.getDamageDist().E;
+  weapon.damage.base.kinetic = sDps * m.getDamageDist().K;
+  weapon.damage.base.thermal = sDps * m.getDamageDist().T;
+  weapon.damage.base.total = sDps;
 
   // Piercing/hardness modifier (for armour only)
   const armourMultiple = m.getPiercing() >= opponent.hardness ? 1 : m.getPiercing() / opponent.hardness;
