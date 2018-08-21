@@ -480,37 +480,56 @@ export function shieldMetrics(ship, sys) {
       max: 1 - maxSysResistance
     };
 
+    /**
+     * An object that stores a selection of difference damage multipliers that
+     * deal with a ship's shield strength.
+     * @typedef {Object} ShieldDamageMults
+     * @property {number} generator Base damage multiplier of the shield
+     * contributing it's base resistance.
+     * @property {number} boosters Damage multiplier contributed by all
+     * boosters, i.e. `rawMj / (generator * boosters)` equals shield strength
+     * with 0 pips to sys.
+     * @property {number} sys Damage multiplier contributed by pips to sys.
+     * @property {number} base Damage multiplier with 0 pips to sys; just
+     * boosters and shield generator. Equals `generator * boosters`.
+     * @property {number} total Damage multiplier with current pip settings.
+     * @property {number} max Damage multiplier with 4 pips to sys.
+     */
+
     let sgExplosiveDmg = 1 - shieldGenerator.getExplosiveResistance();
     let sgSbExplosiveDmg = diminishDamageMult(sgExplosiveDmg * 0.7, (1 - shieldGenerator.getExplosiveResistance()) * boosterExplDmg);
+    /** @type {ShieldDamageMults} */
     shield.explosive = {
       generator: sgExplosiveDmg,
       boosters: sgSbExplosiveDmg / sgExplosiveDmg,
       sys: (1 - sysResistance),
+      base: sgSbExplosiveDmg,
       total: sgSbExplosiveDmg * (1 - sysResistance),
       max: sgSbExplosiveDmg * (1 - maxSysResistance),
-      res: 1 - sgSbExplosiveDmg
     };
 
     let sgKineticDmg = 1 - shieldGenerator.getKineticResistance();
     let sgSbKineticDmg = diminishDamageMult(sgKineticDmg * 0.7, (1 - shieldGenerator.getKineticResistance()) * boosterKinDmg);
+    /** @type {ShieldDamageMults} */
     shield.kinetic = {
       generator: sgKineticDmg,
       boosters: sgSbKineticDmg / sgKineticDmg,
       sys: (1 - sysResistance),
+      base: sgSbKineticDmg,
       total: sgSbKineticDmg * (1 - sysResistance),
       max: sgSbKineticDmg * (1 - maxSysResistance),
-      res: 1 - sgSbKineticDmg
     };
 
     let sgThermalDmg = 1 - shieldGenerator.getThermalResistance();
     let sgSbThermalDmg = diminishDamageMult(sgThermalDmg * 0.7, (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg);
+    /** @type {ShieldDamageMults} */
     shield.thermal = {
       generator: sgThermalDmg,
       boosters: sgSbThermalDmg / sgThermalDmg,
       sys: (1 - sysResistance),
+      base: sgSbThermalDmg,
       total: sgSbThermalDmg * (1 - sysResistance),
       max: sgSbThermalDmg * (1 - maxSysResistance),
-      res: 1 - sgSbThermalDmg
     };
   }
   return shield;
