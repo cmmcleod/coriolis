@@ -251,6 +251,7 @@ export default class Offence extends TranslatedComponent {
 
     const totalSDps = sumSDps(totalSDpsObject);
     const totalSDpsTooltipDetails = getSDpsTooltip(translate, formats, totalSDpsObject);
+    const totalSDpsData = getSDpsData(translate, totalSDpsObject);
 
     const totalShieldsSDps = sumSDps(shieldsSDpsObject);
     const totalShieldsSDpsTooltipDetails = getSDpsTooltip(translate, formats, shieldsSDpsObject);
@@ -304,6 +305,10 @@ export default class Offence extends TranslatedComponent {
           <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_REMOVE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_REMOVE_SHIELDS')}<br/>{timeToDepleteShields === Infinity ? translate('never') : formats.time(timeToDepleteShields)}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('TT_EFFECTIVE_SDPS_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_EFFECTIVE_SDPS_ARMOUR')}<br/>{formats.f1(totalArmourSDps)}</h2>
           <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_REMOVE_ARMOUR'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_REMOVE_ARMOUR')}<br/>{timeToDepleteArmour === Infinity ? translate('never') : formats.time(timeToDepleteArmour)}</h2>
+        </div>
+        <div className='group quarter'>
+          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_OVERALL_DAMAGE'))} onMouseOut={tooltip.bind(null, null)}>{translate('overall damage')}</h2>
+          <PieChart data={totalSDpsData} />
         </div>
         <div className='group quarter'>
           <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SHIELD_DAMAGE'))} onMouseOut={tooltip.bind(null, null)}>{translate('shield damage sources')}</h2>
