@@ -44,9 +44,9 @@ export function weaponComparator(translate, propComparator, desc) {
 
 /**
  * Creates a tooltip that shows damage by type.
- * @param {function} translate  Translation function
- * @param {Object} formats      Object that holds format functions
- * @param {Object} sdpsObject   Object that holds sdps split up by type
+ * @param {function} translate    Translation function
+ * @param {Object} formats        Object that holds format functions
+ * @param {Calc.SDps} sdpsObject  Object that holds sdps split up by type
  * @returns {Array} Tooltip
  */
 function getSDpsTooltip(translate, formats, sdpsObject) {
@@ -62,9 +62,9 @@ function getSDpsTooltip(translate, formats, sdpsObject) {
 
 /**
  * Returns a data object used by {@link PieChart} that shows damage by type.
- * @param {function} translate  Translation function
- * @param {Object} sdpsObject   Object that holds sdps split up by type
- * @returns {Object}            Data object
+ * @param {function} translate    Translation function
+ * @param {Calc.SDps} sdpsObject  Object that holds sdps split up by type
+ * @returns {Object}              Data object
  */
 function getSDpsData(translate, sdpsObject) {
   return Object.keys(sdpsObject).map(key => {
@@ -77,8 +77,8 @@ function getSDpsData(translate, sdpsObject) {
 
 /**
  * Adds all damage of `add` onto `addOn`.
- * @param {Object} addOn  Object that holds sdps split up by type (will be mutated)
- * @param {Object} add    Object that holds sdps split up by type
+ * @param {Calc.SDps} addOn Object that holds sdps split up by type (will be mutated)
+ * @param {Calc.SDps} add   Object that holds sdps split up by type
  */
 function addSDps(addOn, add) {
   Object.keys(addOn).map(k => addOn[k] += (add[k] ? add[k] : 0));
@@ -86,7 +86,7 @@ function addSDps(addOn, add) {
 
 /**
  * Calculates the overall sdps of an sdps object.
- * @param {Object} sdpsObject   Object that holds sdps spluit up by type
+ * @param {Calc.SDps} sdpsObject Object that holds sdps spluit up by type
  */
 function sumSDps(sdpsObject) {
   if (sdpsObject.total) {
@@ -127,7 +127,7 @@ export default class Offence extends TranslatedComponent {
     this._sort = this._sort.bind(this);
 
     const damage = Calc.offenceMetrics(props.ship, props.opponent, props.wep, props.opponentSys, props.engagementrange);
-    this.state = { 
+    this.state = {
       predicate: 'n',
       desc: true,
       damage
@@ -247,7 +247,7 @@ export default class Offence extends TranslatedComponent {
           <td className='ri'><span onMouseOver={termtip.bind(null, effectiveArmourSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.f1(weapon.sdps.armour.total)}</span></td>
           <td className='ri'><span onMouseOver={termtip.bind(null, effectivenessArmourTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(weapon.effectiveness.armour.total)}</span></td>
         </tr>);
-    }    
+    }
 
     const totalSDps = sumSDps(totalSDpsObject);
     const totalSDpsTooltipDetails = getSDpsTooltip(translate, formats, totalSDpsObject);
