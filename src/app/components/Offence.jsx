@@ -43,6 +43,63 @@ export function weaponComparator(translate, propComparator, desc) {
 }
 
 /**
+ * Creates a tooltip that shows damage by type.
+ * @param {function} translate  Translation function
+ * @param {Object} formats      Object that holds format functions
+ * @param {Object} sdpsObject   Object that holds sdps split up by type
+ * @returns {Array} Tooltip
+ */
+function getSDpsTooltip(translate, formats, sdpsObject) {
+  return Object.keys(sdpsObject).filter(key => sdpsObject[key])
+    .map(key => {
+      return (
+        <div key={key}>
+          {translate(key) + ' ' + formats.f1(sdpsObject[key])}
+        </div>
+      );
+    });
+}
+
+/**
+ * Returns a data object used by {@link PieChart} that shows damage by type.
+ * @param {function} translate  Translation function
+ * @param {Object} sdpsObject   Object that holds sdps split up by type
+ * @returns {Object}            Data object
+ */
+function getSDpsData(translate, sdpsObject) {
+  return Object.keys(sdpsObject).map(key => {
+    return {
+      value: Math.round(sdpsObject[key]),
+      label: translate(key)
+    };
+  });
+}
+
+/**
+ * Adds all damage of `add` onto `addOn`.
+ * @param {Object} addOn  Object that holds sdps split up by type (will be mutated)
+ * @param {Object} add    Object that holds sdps split up by type
+ */
+function addSDps(addOn, add) {
+  Object.keys(addOn).map(k => addOn[k] += (add[k] ? add[k] : 0));
+}
+
+/**
+ * Calculates the overall sdps of an sdps object.
+ * @param {Object} sdpsObject   Object that holds sdps spluit up by type
+ */
+function sumSDps(sdpsObject) {
+  if (sdpsObject.total) {
+    return sdpsObject.total;
+  }
+
+  return Object.keys(sdpsObject).reduce(
+    (acc, k) => acc + (sdpsObject[k] ? sdpsObject[k] : 0),
+    0
+  );
+}
+
+/**
  * Offence information
  * Offence information consists of four panels:
  *   - textual information (time to drain cap, time to take down shields etc.)
@@ -144,59 +201,36 @@ export default class Offence extends TranslatedComponent {
 
     const timeToDrain = Calc.timeToDrainWep(ship, wep);
 
-    let absoluteShieldsSDps = 0;
-    let explosiveShieldsSDps = 0;
-    let kineticShieldsSDps = 0;
-    let thermalShieldsSDps = 0;
-    let absoluteArmourSDps = 0;
-    let explosiveArmourSDps = 0;
-    let kineticArmourSDps = 0;
-    let thermalArmourSDps = 0;
 
     let totalSEps = 0;
-    let totalSDps = 0;
+    let totalSDpsObject = {'absolute': 0, 'explosive': 0, 'kinetic': 0, 'thermal': 0};
+    let shieldsSDpsObject = {'absolute': 0, 'explosive': 0, 'kinetic': 0, 'thermal': 0};
+    let armourSDpsObject = {'absolute': 0, 'explosive': 0, 'kinetic': 0, 'thermal': 0};
 
     const rows = [];
     for (let i = 0; i < damage.length; i++) {
       const weapon = damage[i];
 
-      totalSDps += weapon.sdps.base.total;
       totalSEps += weapon.seps;
-      absoluteShieldsSDps += weapon.sdps.shields.absolute;
-      explosiveShieldsSDps += weapon.sdps.shields.explosive;
-      kineticShieldsSDps += weapon.sdps.shields.kinetic;
-      thermalShieldsSDps += weapon.sdps.shields.thermal;
-      absoluteArmourSDps += weapon.sdps.armour.absolute;
-      explosiveArmourSDps += weapon.sdps.armour.explosive;
-      kineticArmourSDps += weapon.sdps.armour.kinetic;
-      thermalArmourSDps += weapon.sdps.armour.thermal;
+      addSDps(totalSDpsObject, weapon.sdps.base);
+      addSDps(shieldsSDpsObject, weapon.sdps.shields);
+      addSDps(armourSDpsObject, weapon.sdps.armour);
+
+      const baseSDpsTooltipDetails = getSDpsTooltip(translate, formats, weapon.sdps.base);
 
       const effectivenessShieldsTooltipDetails = [];
       effectivenessShieldsTooltipDetails.push(<div key='range'>{translate('range') + ' ' + formats.pct1(weapon.effectiveness.shields.range)}</div>);
       effectivenessShieldsTooltipDetails.push(<div key='resistance'>{translate('resistance') + ' ' + formats.pct1(weapon.effectiveness.shields.resistance)}</div>);
       effectivenessShieldsTooltipDetails.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.pct1(weapon.effectiveness.shields.sys)}</div>);
 
-      const baseSDpsTooltipDetails = [];
-      if (weapon.sdps.shields.absolute) baseSDpsTooltipDetails.push(<div key='absolute'>{translate('absolute') + ' ' + formats.f1(weapon.sdps.base.absolute)}</div>);
-      if (weapon.sdps.shields.explosive) baseSDpsTooltipDetails.push(<div key='explosive'>{translate('explosive') + ' ' + formats.f1(weapon.sdps.base.explosive)}</div>);
-      if (weapon.sdps.shields.kinetic) baseSDpsTooltipDetails.push(<div key='kinetic'>{translate('kinetic') + ' ' + formats.f1(weapon.sdps.base.kinetic)}</div>);
-      if (weapon.sdps.shields.thermal) baseSDpsTooltipDetails.push(<div key='thermal'>{translate('thermal') + ' ' + formats.f1(weapon.sdps.base.thermal)}</div>);
-
-      const effectiveShieldsSDpsTooltipDetails = [];
-      if (weapon.sdps.shields.absolute) effectiveShieldsSDpsTooltipDetails.push(<div key='absolute'>{translate('absolute') + ' ' + formats.f1(weapon.sdps.shields.absolute)}</div>);
-      if (weapon.sdps.shields.explosive) effectiveShieldsSDpsTooltipDetails.push(<div key='explosive'>{translate('explosive') + ' ' + formats.f1(weapon.sdps.shields.explosive)}</div>);
-      if (weapon.sdps.shields.kinetic) effectiveShieldsSDpsTooltipDetails.push(<div key='kinetic'>{translate('kinetic') + ' ' + formats.f1(weapon.sdps.shields.kinetic)}</div>);
-      if (weapon.sdps.shields.thermal) effectiveShieldsSDpsTooltipDetails.push(<div key='thermal'>{translate('thermal') + ' ' + formats.f1(weapon.sdps.shields.thermal)}</div>);
+      const effectiveShieldsSDpsTooltipDetails = getSDpsTooltip(translate, formats, weapon.sdps.armour);
 
       const effectivenessArmourTooltipDetails = [];
       effectivenessArmourTooltipDetails.push(<div key='range'>{translate('range') + ' ' + formats.pct1(weapon.effectiveness.armour.range)}</div>);
       effectivenessArmourTooltipDetails.push(<div key='resistance'>{translate('resistance') + ' ' + formats.pct1(weapon.effectiveness.armour.resistance)}</div>);
       effectivenessArmourTooltipDetails.push(<div key='hardness'>{translate('hardness') + ' ' + formats.pct1(weapon.effectiveness.armour.hardness)}</div>);
-      const effectiveArmourSDpsTooltipDetails = [];
-      if (weapon.sdps.armour.absolute) effectiveArmourSDpsTooltipDetails.push(<div key='absolute'>{translate('absolute') + ' ' + formats.f1(weapon.sdps.armour.absolute)}</div>);
-      if (weapon.sdps.armour.explosive) effectiveArmourSDpsTooltipDetails.push(<div key='explosive'>{translate('explosive') + ' ' + formats.f1(weapon.sdps.armour.explosive)}</div>);
-      if (weapon.sdps.armour.kinetic) effectiveArmourSDpsTooltipDetails.push(<div key='kinetic'>{translate('kinetic') + ' ' + formats.f1(weapon.sdps.armour.kinetic)}</div>);
-      if (weapon.sdps.armour.thermal) effectiveArmourSDpsTooltipDetails.push(<div key='thermal'>{translate('thermal') + ' ' + formats.f1(weapon.sdps.armour.thermal)}</div>);
+
+      const effectiveArmourSDpsTooltipDetails = getSDpsTooltip(translate, formats, weapon.sdps.armour);
 
       rows.push(
         <tr key={weapon.id}>
@@ -215,20 +249,16 @@ export default class Offence extends TranslatedComponent {
         </tr>);
     }    
 
-    const totalShieldsSDps = absoluteShieldsSDps + explosiveShieldsSDps + kineticShieldsSDps + thermalShieldsSDps;
-    const totalArmourSDps = absoluteArmourSDps + explosiveArmourSDps + kineticArmourSDps + thermalArmourSDps;
+    const totalSDps = sumSDps(totalSDpsObject);
+    const totalSDpsTooltipDetails = getSDpsTooltip(translate, formats, totalSDpsObject);
 
-    const shieldsSDpsData = [];
-    shieldsSDpsData.push({ value: Math.round(absoluteShieldsSDps), label: translate('absolute') });
-    shieldsSDpsData.push({ value: Math.round(explosiveShieldsSDps), label: translate('explosive') });
-    shieldsSDpsData.push({ value: Math.round(kineticShieldsSDps), label: translate('kinetic') });
-    shieldsSDpsData.push({ value: Math.round(thermalShieldsSDps), label: translate('thermal') });
+    const totalShieldsSDps = sumSDps(shieldsSDpsObject);
+    const totalShieldsSDpsTooltipDetails = getSDpsTooltip(translate, formats, shieldsSDpsObject);
+    const shieldsSDpsData = getSDpsData(translate, shieldsSDpsObject);
 
-    const armourSDpsData = [];
-    armourSDpsData.push({ value: Math.round(absoluteArmourSDps), label: translate('absolute') });
-    armourSDpsData.push({ value: Math.round(explosiveArmourSDps), label: translate('explosive') });
-    armourSDpsData.push({ value: Math.round(kineticArmourSDps), label: translate('kinetic') });
-    armourSDpsData.push({ value: Math.round(thermalArmourSDps), label: translate('thermal') });
+    const totalArmourSDps = sumSDps(armourSDpsObject);
+    const totalArmourSDpsTooltipDetails = getSDpsTooltip(translate, formats, armourSDpsObject);
+    const armourSDpsData = getSDpsData(translate, armourSDpsObject);
 
     const timeToDepleteShields = Calc.timeToDeplete(opponentShields.total, totalShieldsSDps, totalSEps, pd.getWeaponsCapacity(), pd.getWeaponsRechargeRate() * (wep / 4));
     const timeToDepleteArmour = Calc.timeToDeplete(opponentArmour.total, totalArmourSDps, totalSEps, pd.getWeaponsCapacity(), pd.getWeaponsRechargeRate() * (wep / 4));
@@ -252,15 +282,19 @@ export default class Offence extends TranslatedComponent {
             <th className='sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVENESS_ARMOUR')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'eh')}>{'eft'}</th>
           </tr>
           </thead>
-          <tbody>
-            {rows}
-            <td></td>
-            <td className='ri'><span>={formats.f1(totalSDps)}</span></td>
-            <td className='ri'><span>={formats.f1(totalShieldsSDps)}</span></td>
-            <td></td>
-            <td className='ri'><span>={formats.f1(totalArmourSDps)}</span></td>
-            <td></td>
-          </tbody>
+            <tbody>
+              {rows}
+              {rows.length > 0 &&
+                <tr>
+                  <td></td>
+                  <td className='ri'><span onMouseOver={termtip.bind(null, totalSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>={formats.f1(totalSDps)}</span></td>
+                  <td className='ri'><span onMouseOver={termtip.bind(null, totalShieldsSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>={formats.f1(totalShieldsSDps)}</span></td>
+                  <td></td>
+                  <td className='ri'><span onMouseOver={termtip.bind(null, totalArmourSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>={formats.f1(totalArmourSDps)}</span></td>
+                  <td></td>
+                </tr>
+              }
+            </tbody>
         </table>
         </div>
         <div className='group quarter'>
