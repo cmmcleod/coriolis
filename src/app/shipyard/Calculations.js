@@ -572,7 +572,7 @@ export function armourMetrics(ship) {
   // };
   // Armour from HRPs and module armour from MRPs
   for (let slot of ship.internal) {
-    if (slot.m && (slot.m.grp === 'hr' || slot.m.grp === 'ghrp')) {
+    if (slot.m && (slot.m.grp === 'hr' || slot.m.grp === 'ghrp' || slot.m.grp == 'mahr')) {
       armourReinforcement += slot.m.getHullReinforcement();
       // Hull boost for HRPs is applied against the ship's base armour
       armourReinforcement += ship.baseArmour * slot.m.getModValue('hullboost') / 10000;
