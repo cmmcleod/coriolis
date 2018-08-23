@@ -825,13 +825,41 @@ export function _sustainedDps(ship, opponent, opponentShields, opponentArmour, e
 }
 
 /**
+ * Stores SDPS split up by type.
+ * @typedef {Object} SDps
+ * @property {number} absolute  Damage of type absolute
+ * @property {number} explosive Damage of type explosive
+ * @property {number} kinetic   Damage of type kinetic
+ * @property {number} thermal   Damage of type thermal
+ * @property {number} [total]   Sum of all damage types
+ */
+
+/**
+ * An object that holds information about SDPS for a given weapon and opponent.
+ * @typedef {Object} WeaponDamage
+ * @property {number} eps           Energy per second
+ * @property {Object} damage        An object that stores damage inflicted by
+ *                                  the weapon.
+ * @property {Object} effectiveness An object that stores the effectiveness of
+ *                                  the weapon against the opponent given.
+ */
+
+/**
+ * Stores overall SDPS and against a given opponent's shields and armour.
+ * @typedef {Object} WeaponDamage~damage
+ * @property {SDps} base    Overall SDPS.
+ * @property {SDps} shields SDPS against the given opponent's shields.
+ * @property {SDps} armour  SDPS against the given opponent's armour.
+ */
+
+/**
  * Calculate the sustained DPS for a weapon at a given range
  * @param   {Object}  m                 The weapon
- * @param   {Object}  opponent        The opponent ship
+ * @param   {Object}  opponent          The opponent ship
  * @param   {Object}  opponentShields   The opponent's shield resistances
  * @param   {Object}  opponentArmour    The opponent's armour resistances
  * @param   {int}     engagementrange   The range between the ship and opponent
- * @returns {Object}                    Sustained DPS for shield and armour
+ * @returns {WeaponDamage}              Sustained DPS for shield and armour
  */
 export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour, engagementrange) {
   const opponentHasShields = opponentShields.generator ? true : false;
