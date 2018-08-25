@@ -513,7 +513,7 @@ export default class OutfittingPage extends Page {
     const ship = this.state.ship;
     ship.coriolisId = ship.id;
     data.coriolisShip = ship;
-    data.coriolisShip.url = window.location.href;
+    data.url = window.location.href;
     data.title = this.state.buildName || ship.id;
     data.description = this.state.buildName || ship.id;
     data.ShipName = ship.id;
