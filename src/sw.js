@@ -34,7 +34,11 @@ if (workbox) {
       cacheName: 'static-resources'
     })
   );
-  workbox.googleAnalytics.initialize();
+  try {
+    workbox.googleAnalytics.initialize();
+  } catch (e) {
+    console.log('Probably an ad-blocker');
+  }
 } else {
   console.log('Boo! Workbox didn\'t load 😬');
 }
