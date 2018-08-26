@@ -86,6 +86,7 @@ export const ModuleGroupToName = {
   sfn: 'Shutdown Field Neutraliser',
   xs: 'Xeno Scanner',
   rcpl: 'Recon Limpet Controller',
+  rsl: 'Research Limpet Controller',
   dtl: 'Decontamination Limpet Controller',
   gpc: 'Guardian Plasma Charger',
   ggc: 'Guardian Gauss Cannon',
