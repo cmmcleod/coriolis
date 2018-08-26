@@ -480,37 +480,56 @@ export function shieldMetrics(ship, sys) {
       max: 1 - maxSysResistance
     };
 
+    /**
+     * An object that stores a selection of difference damage multipliers that
+     * deal with a ship's shield strength.
+     * @typedef {Object} ShieldDamageMults
+     * @property {number} generator Base damage multiplier of the shield
+     * contributing it's base resistance.
+     * @property {number} boosters Damage multiplier contributed by all
+     * boosters, i.e. `rawMj / (generator * boosters)` equals shield strength
+     * with 0 pips to sys.
+     * @property {number} sys Damage multiplier contributed by pips to sys.
+     * @property {number} base Damage multiplier with 0 pips to sys; just
+     * boosters and shield generator. Equals `generator * boosters`.
+     * @property {number} total Damage multiplier with current pip settings.
+     * @property {number} max Damage multiplier with 4 pips to sys.
+     */
+
     let sgExplosiveDmg = 1 - shieldGenerator.getExplosiveResistance();
     let sgSbExplosiveDmg = diminishDamageMult(sgExplosiveDmg * 0.7, (1 - shieldGenerator.getExplosiveResistance()) * boosterExplDmg);
+    /** @type {ShieldDamageMults} */
     shield.explosive = {
       generator: sgExplosiveDmg,
-      boosters: sgSbExplosiveDmg - sgExplosiveDmg,
+      boosters: sgSbExplosiveDmg / sgExplosiveDmg,
       sys: (1 - sysResistance),
+      base: sgSbExplosiveDmg,
       total: sgSbExplosiveDmg * (1 - sysResistance),
       max: sgSbExplosiveDmg * (1 - maxSysResistance),
-      res: 1 - sgSbExplosiveDmg
     };
 
     let sgKineticDmg = 1 - shieldGenerator.getKineticResistance();
     let sgSbKineticDmg = diminishDamageMult(sgKineticDmg * 0.7, (1 - shieldGenerator.getKineticResistance()) * boosterKinDmg);
+    /** @type {ShieldDamageMults} */
     shield.kinetic = {
       generator: sgKineticDmg,
-      boosters: sgSbKineticDmg - sgKineticDmg,
+      boosters: sgSbKineticDmg / sgKineticDmg,
       sys: (1 - sysResistance),
+      base: sgSbKineticDmg,
       total: sgSbKineticDmg * (1 - sysResistance),
       max: sgSbKineticDmg * (1 - maxSysResistance),
-      res: 1 - sgSbKineticDmg
     };
 
     let sgThermalDmg = 1 - shieldGenerator.getThermalResistance();
     let sgSbThermalDmg = diminishDamageMult(sgThermalDmg * 0.7, (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg);
+    /** @type {ShieldDamageMults} */
     shield.thermal = {
       generator: sgThermalDmg,
-      boosters: sgSbThermalDmg - sgThermalDmg,
+      boosters: sgSbThermalDmg / sgThermalDmg,
       sys: (1 - sysResistance),
+      base: sgSbThermalDmg,
       total: sgSbThermalDmg * (1 - sysResistance),
       max: sgSbThermalDmg * (1 - maxSysResistance),
-      res: 1 - sgSbThermalDmg
     };
   }
   return shield;
@@ -553,7 +572,7 @@ export function armourMetrics(ship) {
   // };
   // Armour from HRPs and module armour from MRPs
   for (let slot of ship.internal) {
-    if (slot.m && (slot.m.grp === 'hr' || slot.m.grp === 'ghrp')) {
+    if (slot.m && (slot.m.grp === 'hr' || slot.m.grp === 'ghrp' || slot.m.grp == 'mahr')) {
       armourReinforcement += slot.m.getHullReinforcement();
       // Hull boost for HRPs is applied against the ship's base armour
       armourReinforcement += ship.baseArmour * slot.m.getModValue('hullboost') / 10000;
@@ -612,7 +631,7 @@ export function armourMetrics(ship) {
   let armourReinforcedExplDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getExplosiveResistance()) * hullExplDmg);
   armour.explosive = {
     bulkheads: armourExplDmg,
-    reinforcement: armourReinforcedExplDmg - armourExplDmg,
+    reinforcement: armourReinforcedExplDmg / armourExplDmg,
     total: armourReinforcedExplDmg,
     res: 1 - armourReinforcedExplDmg
   };
@@ -621,7 +640,7 @@ export function armourMetrics(ship) {
   let armourReinforcedKinDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getKineticResistance()) * hullKinDmg);
   armour.kinetic = {
     bulkheads: armourKinDmg,
-    reinforcement: armourReinforcedKinDmg - armourKinDmg,
+    reinforcement: armourReinforcedKinDmg / armourKinDmg,
     total: armourReinforcedKinDmg,
     res: 1 - armourReinforcedKinDmg
   };
@@ -630,7 +649,7 @@ export function armourMetrics(ship) {
   let armourReinforcedThermDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getThermalResistance()) * hullThermDmg);
   armour.thermal = {
     bulkheads: armourThermDmg,
-    reinforcement: armourReinforcedThermDmg - armourThermDmg,
+    reinforcement: armourReinforcedThermDmg / armourThermDmg,
     total: armourReinforcedThermDmg,
     res: 1 - armourReinforcedThermDmg
   };
@@ -806,19 +825,54 @@ export function _sustainedDps(ship, opponent, opponentShields, opponentArmour, e
 }
 
 /**
+ * Stores SDPS split up by type.
+ * @typedef {Object} SDps
+ * @property {number} absolute  Damage of type absolute
+ * @property {number} explosive Damage of type explosive
+ * @property {number} kinetic   Damage of type kinetic
+ * @property {number} thermal   Damage of type thermal
+ * @property {number} [total]   Sum of all damage types
+ */
+
+/**
+ * An object that holds information about SDPS for a given weapon and opponent.
+ * @typedef {Object} WeaponDamage
+ * @property {number} eps           Energy per second
+ * @property {Object} damage        An object that stores damage inflicted by
+ *                                  the weapon.
+ * @property {Object} effectiveness An object that stores the effectiveness of
+ *                                  the weapon against the opponent given.
+ */
+
+/**
+ * Stores overall SDPS and against a given opponent's shields and armour.
+ * @typedef {Object} WeaponDamage~damage
+ * @property {SDps} base    Overall SDPS.
+ * @property {SDps} shields SDPS against the given opponent's shields.
+ * @property {SDps} armour  SDPS against the given opponent's armour.
+ */
+
+/**
  * Calculate the sustained DPS for a weapon at a given range
  * @param   {Object}  m                 The weapon
- * @param   {Object}  opponent        The opponent ship
+ * @param   {Object}  opponent          The opponent ship
  * @param   {Object}  opponentShields   The opponent's shield resistances
  * @param   {Object}  opponentArmour    The opponent's armour resistances
  * @param   {int}     engagementrange   The range between the ship and opponent
- * @returns {Object}                    Sustained DPS for shield and armour
+ * @returns {WeaponDamage}              Sustained DPS for shield and armour
  */
 export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour, engagementrange) {
   const opponentHasShields = opponentShields.generator ? true : false;
   const weapon = {
     eps: 0,
     damage: {
+      base: {
+        absolute: 0,
+        explosive: 0,
+        kinetic: 0,
+        thermal: 0,
+        total: 0,
+      },
       shields: {
         absolute: 0,
         explosive: 0,
@@ -862,6 +916,12 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
     weapon.effectiveness.shields.range = weapon.effectiveness.armour.range = dropoff;
     sDps *= dropoff;
   }
+
+  weapon.damage.base.absolute = sDps * m.getDamageDist().A;
+  weapon.damage.base.explosive = sDps * m.getDamageDist().E;
+  weapon.damage.base.kinetic = sDps * m.getDamageDist().K;
+  weapon.damage.base.thermal = sDps * m.getDamageDist().T;
+  weapon.damage.base.total = sDps;
 
   // Piercing/hardness modifier (for armour only)
   const armourMultiple = m.getPiercing() >= opponent.hardness ? 1 : m.getPiercing() / opponent.hardness;
@@ -963,7 +1023,7 @@ export function timeToDeplete(amount, dps, eps, capacity, recharge) {
 
 /**
  * Applies diminishing returns to resistances.
- * @param {number} baseDamageMult The base resistance up to which no diminishing returns are applied.
+ * @param {number} diminishFrom The base resistance up to which no diminishing returns are applied.
  * @param {number} damageMult Resistance as damage multiplier
  * @returns {number} Actual damage multiplier
  */

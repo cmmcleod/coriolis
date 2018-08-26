@@ -102,19 +102,19 @@ export default class Defence extends TranslatedComponent {
 
         // Add effective shield from resistances
         const rawMj = shield.generator + shield.boosters + shield.cells;
-        const explosiveMj = rawMj / shield.explosive.total - rawMj;
+        const explosiveMj = rawMj / (shield.explosive.base) - rawMj;
         if (explosiveMj != 0) effectiveShieldExplosiveTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(explosiveMj)}{units.MJ}</div>);
-        const kineticMj = rawMj / shield.kinetic.total - rawMj;
+        const kineticMj = rawMj / (shield.kinetic.base) - rawMj;
         if (kineticMj != 0) effectiveShieldKineticTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(kineticMj)}{units.MJ}</div>);
-        const thermalMj = rawMj / shield.thermal.total - rawMj;
+        const thermalMj = rawMj / (shield.thermal.base) - rawMj;
         if (thermalMj != 0) effectiveShieldThermalTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(thermalMj)}{units.MJ}</div>);
 
         // Add effective shield from power distributor SYS pips
         if (shield.absolute.sys != 1) {
-          effectiveShieldAbsoluteTt.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.int(rawMj / shield.absolute.sys - rawMj)}{units.MJ}</div>);
-          effectiveShieldExplosiveTt.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.int(rawMj / shield.explosive.sys - rawMj)}{units.MJ}</div>);
-          effectiveShieldKineticTt.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.int(rawMj / shield.kinetic.sys - rawMj)}{units.MJ}</div>);
-          effectiveShieldThermalTt.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.int(rawMj / shield.thermal.sys - rawMj)}{units.MJ}</div>);
+          effectiveShieldAbsoluteTt.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.int(rawMj / shield.absolute.total - rawMj)}{units.MJ}</div>);
+          effectiveShieldExplosiveTt.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.int(rawMj / shield.explosive.total - rawMj / shield.explosive.base)}{units.MJ}</div>);
+          effectiveShieldKineticTt.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.int(rawMj / shield.kinetic.total - rawMj / shield.kinetic.base)}{units.MJ}</div>);
+          effectiveShieldThermalTt.push(<div key='power distributor'>{translate('power distributor') + ' ' + formats.int(rawMj / shield.thermal.total - rawMj / shield.thermal.base)}{units.MJ}</div>);
         }
       }
 

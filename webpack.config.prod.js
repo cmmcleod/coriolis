@@ -3,7 +3,8 @@ const exec = require('child_process').exec;
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const AppCachePlugin = require('appcache-webpack-plugin');
+const { InjectManifest } = require('workbox-webpack-plugin');
+
 const { BugsnagSourceMapUploaderPlugin } = require('webpack-bugsnag-plugins');
 const pkgJson = require('./package');
 const buildDate = new Date();
@@ -75,12 +76,11 @@ module.exports = {
     new CopyDirPlugin(path.join(__dirname, 'src/schemas'), 'schemas'),
     new CopyDirPlugin(path.join(__dirname, 'src/images/logo/*'), ''),
     new CopyDirPlugin(path.join(__dirname, 'src/.htaccess'), ''),
-    new AppCachePlugin({
-      network: ['*'],
-      settings: ['prefer-online'],
-      exclude: ['index.html', /.*\.map$/],
-      output: 'coriolis.appcache'
-    })
+    new InjectManifest({
+      swSrc: './src/sw.js',
+      importWorkboxFrom: 'cdn',
+      swDest: 'service-worker.js'
+    }),
   ],
   module: {
     rules: [

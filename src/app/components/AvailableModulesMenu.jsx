@@ -45,7 +45,12 @@ const GRPCAT = {
   'mr': 'ordnance',
   'axmr': 'experimental',
   'rcpl': 'experimental',
+  'dtl': 'experimental',
   'tbsc': 'experimental',
+  'tbem': 'experimental',
+  'tbrfl': 'experimental',
+  'mahr': 'experimental',
+  'rsl': 'experimental',
   'tp': 'ordnance',
   'nl': 'ordnance',
   'sc': 'scanners',
@@ -93,7 +98,7 @@ const CATEGORIES = {
   'defence': ['ch', 'po', 'ec'],
   'scanners': ['sc', 'ss', 'cs', 'kw', 'ws'], // Overloaded with internal scanners
   // Experimental
-  'experimental': ['axmc', 'axmr', 'rfl', 'xs', 'sfn', 'rcpl', 'tbsc'],
+  'experimental': ['axmc', 'axmr', 'rfl', 'tbrfl', 'tbsc', 'tbem', 'xs', 'sfn', 'rcpl', 'dtl', 'rsl', 'mahr', ],
 
   // Guardian
   'guardian': ['gpp', 'gpd', 'gpc', 'ggc', 'gsrp', 'gfsb', 'ghrp', 'gmrp', 'gsc']
@@ -473,7 +478,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
   }
   /**
    * Handle focus if the component updates
-   * 
+   *
    */
   componentWillUnmount() {
     if(this.props.slotDiv) {

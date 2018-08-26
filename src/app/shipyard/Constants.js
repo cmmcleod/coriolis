@@ -56,6 +56,7 @@ export const ModuleGroupToName = {
   gfsb: 'Guardian Frame Shift Drive Booster',
   ghrp: 'Guardian Hull Reinforcement Package',
   gmrp: 'Guardian Module Reinforcement Package',
+  mahr: 'Meta Alloy Hull Reinforcement Package',
 
   // Hard Points
   bl: 'Beam Laser',
@@ -85,10 +86,14 @@ export const ModuleGroupToName = {
   sfn: 'Shutdown Field Neutraliser',
   xs: 'Xeno Scanner',
   rcpl: 'Recon Limpet Controller',
+  rsl: 'Research Limpet Controller',
+  dtl: 'Decontamination Limpet Controller',
   gpc: 'Guardian Plasma Charger',
   ggc: 'Guardian Gauss Cannon',
   tbsc: 'Shock Cannon',
   gsc: 'Guardian Shard Cannon',
+  tbem: 'Enzyme Missile Rack',
+  tbrfl: 'Remote Release Flechette Launcher',
 };
 
 let GrpNameToCodeMap = {};
