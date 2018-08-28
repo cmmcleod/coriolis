@@ -48,7 +48,7 @@ export default class Module {
         // this special effect modifies our returned value
         const modification = Modifications.modifications[name];
         const multiplier = modification.type === 'percentage' ? 10000 : 100;
-        if (name === 'explres' || name === 'kinres' || name === 'thermres') {
+        if (name === 'explres' || name === 'kinres' || name === 'thermres' || name === 'causres') {
           // Resistance modifications in itself are additive, however their
           // special effects are multiplicative. They affect the overall result
           // by (special effect resistance) * (damage mult after modification),
@@ -291,6 +291,10 @@ export default class Module {
    */
   getExplosiveResistance() {
     return this._getModifiedValue('explres');
+  }
+
+  getCausticResistance() {
+    return this._getModifiedValue('causres');
   }
 
   /**

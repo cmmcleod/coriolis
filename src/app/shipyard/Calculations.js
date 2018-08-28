@@ -564,6 +564,7 @@ export function armourMetrics(ship) {
   let hullExplDmg = 1;
   let hullKinDmg = 1;
   let hullThermDmg = 1;
+  let hullCausDmg = 1;
   // const dimReturnLine = (res) => 1 - (1 - res) * 0.7;
   // let res = {
   //   kin: 0,
@@ -582,6 +583,7 @@ export function armourMetrics(ship) {
       hullExplDmg = hullExplDmg * (1 - slot.m.getExplosiveResistance());
       hullKinDmg = hullKinDmg * (1 - slot.m.getKineticResistance());
       hullThermDmg = hullThermDmg * (1 - slot.m.getThermalResistance());
+      hullCausDmg = hullCausDmg * (1 - slot.m.getCausticResistance());
     }
     if (slot.m && slot.m.grp == 'mrp') {
       moduleArmour += slot.m.getIntegrity();
@@ -652,6 +654,15 @@ export function armourMetrics(ship) {
     reinforcement: armourReinforcedThermDmg / armourThermDmg,
     total: armourReinforcedThermDmg,
     res: 1 - armourReinforcedThermDmg
+  };
+
+  let armourCausDmg = diminishDamageMult(0.7, 1 - ship.bulkheads.m.getCausticResistance());
+  let armourReinforcedCausDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getCausticResistance()) * hullCausDmg);
+  armour.caustic = {
+    bulkeads: armourCausDmg,
+    reinforcement: armourReinforcedCausDmg / armourCausDmg,
+    total: armourReinforcedCausDmg,
+    res: 1 - armourReinforcedCausDmg,
   };
   return armour;
 }

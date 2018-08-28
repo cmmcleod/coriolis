@@ -63,80 +63,88 @@ export default class ShipSummaryTable extends TranslatedComponent {
       shieldColour
     };
     return <div id='summary'>
-      <table className={'summaryTable'}>
-        <thead>
-          <tr className='main'>
-            <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !canThrust }) }>{translate('speed')}</th>
-            <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !canBoost }) }>{translate('boost')}</th>
-            <th colSpan={5}>{translate('jump range')}</th>
-            <th rowSpan={2}>{translate('shield')}</th>
-            <th rowSpan={2}>{translate('integrity')}</th>
-            <th rowSpan={2}>{translate('DPS')}</th>
-            <th rowSpan={2}>{translate('EPS')}</th>
-            <th rowSpan={2}>{translate('TTD')}</th>
-            {/* <th onMouseEnter={termtip.bind(null, 'heat per second')} onMouseLeave={hide} rowSpan={2}>{translate('HPS')}</th> */}
-            <th rowSpan={2}>{translate('cargo')}</th>
-            <th rowSpan={2}>{translate('pax')}</th>
-            <th rowSpan={2}>{translate('fuel')}</th>
-            <th colSpan={3}>{translate('mass')}</th>
-            <th onMouseEnter={termtip.bind(null, 'hull hardness', { cap: 0 })} onMouseLeave={hide} rowSpan={2}>{translate('hrd')}</th>
-            <th rowSpan={2}>{translate('crew')}</th>
-            <th onMouseEnter={termtip.bind(null, 'mass lock factor', { cap: 0 })} onMouseLeave={hide} rowSpan={2}>{translate('MLF')}</th>
-            <th onMouseEnter={termtip.bind(null, 'TT_SUMMARY_BOOST_TIME', { cap: 0 })} onMouseLeave={hide} rowSpan={2}>{translate('boost time')}</th>
-          </tr>
-          <tr>
-            <th className='lft'>{translate('max')}</th>
-            <th>{translate('unladen')}</th>
-            <th>{translate('laden')}</th>
-            <th>{translate('total unladen')}</th>
-            <th>{translate('total laden')}</th>
-            <th className='lft'>{translate('hull')}</th>
-            <th>{translate('unladen')}</th>
-            <th>{translate('laden')}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td onMouseEnter={termtip.bind(null, speedTooltip, { cap: 0 })} onMouseLeave={hide}>{ canThrust ? <span>{int(ship.calcSpeed(4, ship.fuelCapacity, 0, false))}{u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
-            <td onMouseEnter={termtip.bind(null, boostTooltip, { cap: 0 })} onMouseLeave={hide}>{ canBoost ? <span>{int(ship.calcSpeed(4, ship.fuelCapacity, 0, true))}{u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
-            <td><span onMouseEnter={termtip.bind(null, 'TT_SUMMARY_MAX_SINGLE_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.jumpRange(ship.unladenMass + ship.standard[2].m.getMaxFuelPerJump(), ship.standard[2].m, ship.standard[2].m.getMaxFuelPerJump(), ship))}{u.LY}</span></td>
-            <td><span onMouseEnter={termtip.bind(null, 'TT_SUMMARY_UNLADEN_SINGLE_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.jumpRange(ship.unladenMass + ship.fuelCapacity, ship.standard[2].m, ship.fuelCapacity, ship))}{u.LY}</span></td>
-            <td><span onMouseEnter={termtip.bind(null, 'TT_SUMMARY_LADEN_SINGLE_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.jumpRange(ship.unladenMass + ship.fuelCapacity + ship.cargoCapacity, ship.standard[2].m, ship.fuelCapacity, ship))}{u.LY}</span></td>
-            <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_UNLADEN_TOTAL_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.totalJumpRange(ship.unladenMass + ship.fuelCapacity, ship.standard[2].m, ship.fuelCapacity, ship))}{u.LY}</td>
-            <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_LADEN_TOTAL_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.totalJumpRange(ship.unladenMass + ship.fuelCapacity + ship.cargoCapacity, ship.standard[2].m, ship.fuelCapacity, ship))}{u.LY}</td>
-            <td className={sgClassNames} onMouseEnter={termtip.bind(null, sgTooltip, { cap: 0 })} onMouseLeave={hide}>{int(ship.shield)}{u.MJ}</td>
-            <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_INTEGRITY', { cap: 0 })} onMouseLeave={hide}>{int(ship.armour)}</td>
-            <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_DPS', { cap: 0 })} onMouseLeave={hide}>{f1(ship.totalDps)}</td>
-            <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_EPS', { cap: 0 })} onMouseLeave={hide}>{f1(ship.totalEps)}</td>
-            <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_TTD', { cap: 0 })} onMouseLeave={hide}>{timeToDrain === Infinity ? '∞' : time(timeToDrain)}</td>
-            {/* <td>{f1(ship.totalHps)}</td> */}
-            <td>{round(ship.cargoCapacity)}{u.T}</td>
-            <td>{ship.passengerCapacity}</td>
-            <td>{round(ship.fuelCapacity)}{u.T}</td>
-            <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_HULL_MASS', { cap: 0 })} onMouseLeave={hide}>{ship.hullMass}{u.T}</td>
-            <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_UNLADEN_MASS', { cap: 0 })} onMouseLeave={hide}>{int(ship.unladenMass)}{u.T}</td>
-            <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_LADEN_MASS', { cap: 0 })} onMouseLeave={hide}>{int(ship.ladenMass)}{u.T}</td>
-            <td>{int(ship.hardness)}</td>
-            <td>{ship.crew}</td>
-            <td>{ship.masslock}</td>
-            <td>{shipBoost !== 'No Boost' ? formats.time(shipBoost) : 'No Boost'}</td>
-          </tr>
-        </tbody>
-      </table>
-      <table className={'summaryTable'}>
+      <div style={{display: "table-row"}}>
+        <table className={'summaryTable'}>
+          <thead>
+            <tr className='main'>
+              <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !canThrust }) }>{translate('speed')}</th>
+              <th rowSpan={2} className={ cn({ 'bg-warning-disabled': !canBoost }) }>{translate('boost')}</th>
+              <th colSpan={5}>{translate('jump range')}</th>
+              <th rowSpan={2}>{translate('shield')}</th>
+              <th rowSpan={2}>{translate('integrity')}</th>
+              <th rowSpan={2}>{translate('DPS')}</th>
+              <th rowSpan={2}>{translate('EPS')}</th>
+              <th rowSpan={2}>{translate('TTD')}</th>
+              {/* <th onMouseEnter={termtip.bind(null, 'heat per second')} onMouseLeave={hide} rowSpan={2}>{translate('HPS')}</th> */}
+              <th rowSpan={2}>{translate('cargo')}</th>
+              <th rowSpan={2}>{translate('pax')}</th>
+              <th rowSpan={2}>{translate('fuel')}</th>
+              <th colSpan={3}>{translate('mass')}</th>
+              <th onMouseEnter={termtip.bind(null, 'hull hardness', { cap: 0 })} onMouseLeave={hide} rowSpan={2}>{translate('hrd')}</th>
+              <th rowSpan={2}>{translate('crew')}</th>
+              <th onMouseEnter={termtip.bind(null, 'mass lock factor', { cap: 0 })} onMouseLeave={hide} rowSpan={2}>{translate('MLF')}</th>
+              <th onMouseEnter={termtip.bind(null, 'TT_SUMMARY_BOOST_TIME', { cap: 0 })} onMouseLeave={hide} rowSpan={2}>{translate('boost time')}</th>
+            </tr>
+            <tr>
+              <th className='lft'>{translate('max')}</th>
+              <th>{translate('unladen')}</th>
+              <th>{translate('laden')}</th>
+              <th>{translate('total unladen')}</th>
+              <th>{translate('total laden')}</th>
+              <th className='lft'>{translate('hull')}</th>
+              <th>{translate('unladen')}</th>
+              <th>{translate('laden')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td onMouseEnter={termtip.bind(null, speedTooltip, { cap: 0 })} onMouseLeave={hide}>{ canThrust ? <span>{int(ship.calcSpeed(4, ship.fuelCapacity, 0, false))}{u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
+              <td onMouseEnter={termtip.bind(null, boostTooltip, { cap: 0 })} onMouseLeave={hide}>{ canBoost ? <span>{int(ship.calcSpeed(4, ship.fuelCapacity, 0, true))}{u['m/s']}</span> : <span className='warning'>0 <Warning/></span> }</td>
+              <td><span onMouseEnter={termtip.bind(null, 'TT_SUMMARY_MAX_SINGLE_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.jumpRange(ship.unladenMass + ship.standard[2].m.getMaxFuelPerJump(), ship.standard[2].m, ship.standard[2].m.getMaxFuelPerJump(), ship))}{u.LY}</span></td>
+              <td><span onMouseEnter={termtip.bind(null, 'TT_SUMMARY_UNLADEN_SINGLE_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.jumpRange(ship.unladenMass + ship.fuelCapacity, ship.standard[2].m, ship.fuelCapacity, ship))}{u.LY}</span></td>
+              <td><span onMouseEnter={termtip.bind(null, 'TT_SUMMARY_LADEN_SINGLE_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.jumpRange(ship.unladenMass + ship.fuelCapacity + ship.cargoCapacity, ship.standard[2].m, ship.fuelCapacity, ship))}{u.LY}</span></td>
+              <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_UNLADEN_TOTAL_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.totalJumpRange(ship.unladenMass + ship.fuelCapacity, ship.standard[2].m, ship.fuelCapacity, ship))}{u.LY}</td>
+              <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_LADEN_TOTAL_JUMP', { cap: 0 })} onMouseLeave={hide}>{f2(Calc.totalJumpRange(ship.unladenMass + ship.fuelCapacity + ship.cargoCapacity, ship.standard[2].m, ship.fuelCapacity, ship))}{u.LY}</td>
+              <td className={sgClassNames} onMouseEnter={termtip.bind(null, sgTooltip, { cap: 0 })} onMouseLeave={hide}>{int(ship.shield)}{u.MJ}</td>
+              <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_INTEGRITY', { cap: 0 })} onMouseLeave={hide}>{int(ship.armour)}</td>
+              <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_DPS', { cap: 0 })} onMouseLeave={hide}>{f1(ship.totalDps)}</td>
+              <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_EPS', { cap: 0 })} onMouseLeave={hide}>{f1(ship.totalEps)}</td>
+              <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_TTD', { cap: 0 })} onMouseLeave={hide}>{timeToDrain === Infinity ? '∞' : time(timeToDrain)}</td>
+              {/* <td>{f1(ship.totalHps)}</td> */}
+              <td>{round(ship.cargoCapacity)}{u.T}</td>
+              <td>{ship.passengerCapacity}</td>
+              <td>{round(ship.fuelCapacity)}{u.T}</td>
+              <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_HULL_MASS', { cap: 0 })} onMouseLeave={hide}>{ship.hullMass}{u.T}</td>
+              <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_UNLADEN_MASS', { cap: 0 })} onMouseLeave={hide}>{int(ship.unladenMass)}{u.T}</td>
+              <td onMouseEnter={termtip.bind(null, 'TT_SUMMARY_LADEN_MASS', { cap: 0 })} onMouseLeave={hide}>{int(ship.ladenMass)}{u.T}</td>
+              <td>{int(ship.hardness)}</td>
+              <td>{ship.crew}</td>
+              <td>{ship.masslock}</td>
+              <td>{shipBoost !== 'No Boost' ? formats.time(shipBoost) : 'No Boost'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <table className={'summaryTable'}>
         <thead className={this.state.shieldColour}>
           <tr>
-            <th onMouseEnter={termtip.bind(null, 'shield', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('shield')}</th>
-            <th onMouseEnter={termtip.bind(null, 'explres', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explres')}</th>
-            <th onMouseEnter={termtip.bind(null, 'kinres', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinres')}</th>
-            <th onMouseEnter={termtip.bind(null, 'thermres', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermres')}</th>
+            <th rowSpan={2} onMouseEnter={termtip.bind(null, 'shield', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('shield')}</th>
+            <th colSpan={4} className='lft'>{translate('resistance')}</th>
 
-            <th onMouseEnter={termtip.bind(null, 'TT_SUMMARY_SHIELDS_SCB', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('absolute')} ${translate('HP')}`}</th>
-            <th onMouseEnter={termtip.bind(null, 'TT_SUMMARY_SHIELDS_SCB', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('explosive')} ${translate('HP')}`}</th>
-            <th onMouseEnter={termtip.bind(null, 'TT_SUMMARY_SHIELDS_SCB', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('kinetic')} ${translate('HP')}`}</th>
-            <th onMouseEnter={termtip.bind(null, 'TT_SUMMARY_SHIELDS_SCB', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('thermal')} ${translate('HP')}`}</th>
-            <th onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECOVER', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('recovery')}</th>
-            <th onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECHARGE', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('recharge')}</th>
+            <th colSpan={5} onMouseEnter={termtip.bind(null, 'TT_SUMMARY_SHIELDS_SCB', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('HP')}`}</th>
+            <th rowSpan={2} onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECOVER', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('recovery')}</th>
+            <th rowSpan={2} onMouseEnter={termtip.bind(null, 'PHRASE_SG_RECHARGE', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('recharge')}</th>
+          </tr>
+          <tr>
+            <th>{`${translate('explosive')}`}</th>
+            <th>{`${translate('kinetic')}`}</th>
+            <th>{`${translate('thermal')}`}</th>
+            <th></th>
+
+            <th className={'bordered'}>{`${translate('absolute')}`}</th>
+            <th>{`${translate('explosive')}`}</th>
+            <th>{`${translate('kinetic')}`}</th>
+            <th>{`${translate('explosive')}`}</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -145,29 +153,37 @@ export default class ShipSummaryTable extends TranslatedComponent {
           <td>{formats.pct1(ship.shieldExplRes)}</td>
           <td>{formats.pct1(ship.shieldKinRes)}</td>
           <td>{formats.pct1(ship.shieldThermRes)}</td>
+          <td></td>
+
           <td>{int(ship && ship.shield > 0 ? ship.shield : 0)}{u.MJ}</td>
           <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldExplRes)))) : 0)}{u.MJ}</td>
           <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldKinRes)))) : 0)}{u.MJ}</td>
           <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldThermRes)))) : 0)}{u.MJ}</td>
+          <td></td>
           <td>{sgMetrics && sgMetrics.recover === Math.Inf ? translate('Never') : formats.time(sgMetrics.recover)}</td>
           <td>{sgMetrics && sgMetrics.recharge === Math.Inf ? translate('Never') : formats.time(sgMetrics.recharge)}</td>
         </tr>
         </tbody>
         <thead>
           <tr>
-            <th onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('armour')}</th>
-            <th onMouseEnter={termtip.bind(null, 'explres', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('explres')}</th>
-            <th onMouseEnter={termtip.bind(null, 'kinres', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('kinres')}</th>
-            <th onMouseEnter={termtip.bind(null, 'thermres', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('thermres')}</th>
+            <th rowSpan={2} onMouseEnter={termtip.bind(null, 'armour', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('armour')}</th>
+            <th colSpan={4} className='lft'>{translate('resistance')}</th>
 
-            <th onMouseEnter={termtip.bind(null, 'PHRASE_EFFECTIVE_ARMOUR', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('absolute')} ${translate('HP')}`}</th>
-            <th onMouseEnter={termtip.bind(null, 'PHRASE_EFFECTIVE_ARMOUR', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('explosive')} ${translate('HP')}`}</th>
-            <th onMouseEnter={termtip.bind(null, 'PHRASE_EFFECTIVE_ARMOUR', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('kinetic')} ${translate('HP')}`}</th>
-            <th onMouseEnter={termtip.bind(null, 'PHRASE_EFFECTIVE_ARMOUR', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('thermal')} ${translate('HP')}`}</th>
-            <th onMouseEnter={termtip.bind(null, 'TT_MODULE_ARMOUR', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('raw module armour')}</th>
-            <th onMouseEnter={termtip.bind(null, 'TT_MODULE_PROTECTION_INTERNAL', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('internal protection')}</th>
+            <th colSpan={5} onMouseEnter={termtip.bind(null, 'PHRASE_EFFECTIVE_ARMOUR', { cap: 0 })} onMouseLeave={hide} className='lft'>{`${translate('HP')}`}</th>
+            <th rowSpan={2} onMouseEnter={termtip.bind(null, 'TT_MODULE_ARMOUR', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('raw module armour')}</th>
+            <th rowSpan={2} onMouseEnter={termtip.bind(null, 'TT_MODULE_PROTECTION_INTERNAL', { cap: 0 })} onMouseLeave={hide} className='lft'>{translate('internal protection')}</th>
+          </tr>
+          <tr>
+          <th>{`${translate('explosive')}`}</th>
+            <th>{`${translate('kinetic')}`}</th>
+            <th>{`${translate('thermal')}`}</th>
+            <th>{`${translate('caustic')}`}</th>
 
-
+            <th className={'bordered'}>{`${translate('absolute')}`}</th>
+            <th>{`${translate('explosive')}`}</th>
+            <th>{`${translate('kinetic')}`}</th>
+            <th>{`${translate('thermal')}`}</th>
+            <th>{`${translate('caustic')}`}</th>
           </tr>
         </thead>
         <tbody>
@@ -176,16 +192,19 @@ export default class ShipSummaryTable extends TranslatedComponent {
             <td>{formats.pct1(ship.hullExplRes)}</td>
             <td>{formats.pct1(ship.hullKinRes)}</td>
             <td>{formats.pct1(ship.hullThermRes)}</td>
+            <td>{formats.pct1(ship.hullCausRes)}</td>
             <td>{int(ship.armour)}</td>
             <td>{int(ship.armour * ((1 / (1 - (ship.hullExplRes)))))}</td>
             <td>{int(ship.armour * ((1 / (1 - (ship.hullKinRes)))))}</td>
             <td>{int(ship.armour * ((1 / (1 - (ship.hullThermRes)))))}</td>
+            <td>{int(ship.armour * ((1 / (1 - (ship.hullCausRes)))))}</td>
             <td>{int(armourMetrics.modulearmour)}</td>
             <td>{int(armourMetrics.moduleprotection * 100) + '%'}</td>
 
           </tr>
         </tbody>
       </table>
+      </div>
 
     </div>;
   }

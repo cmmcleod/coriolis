@@ -160,18 +160,21 @@ export default class Defence extends TranslatedComponent {
     const effectiveArmourExplosiveTt = [];
     const effectiveArmourKineticTt = [];
     const effectiveArmourThermalTt = [];
+    const effectiveArmourCausticTt = [];
     if (armour.bulkheads > 0) {
       armourSourcesTt.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.int(armour.bulkheads)}</div>);
       effectiveArmourAbsoluteTt.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.int(armour.bulkheads)}</div>);
       effectiveArmourExplosiveTt.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.int(armour.bulkheads)}</div>);
       effectiveArmourKineticTt.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.int(armour.bulkheads)}</div>);
       effectiveArmourThermalTt.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.int(armour.bulkheads)}</div>);
+      effectiveArmourCausticTt.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.int(armour.bulkheads)}</div>);
       if (armour.reinforcement > 0) {
         armourSourcesTt.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.int(armour.reinforcement)}</div>);
         effectiveArmourAbsoluteTt.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.int(armour.reinforcement)}</div>);
         effectiveArmourExplosiveTt.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.int(armour.reinforcement)}</div>);
         effectiveArmourKineticTt.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.int(armour.reinforcement)}</div>);
         effectiveArmourThermalTt.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.int(armour.reinforcement)}</div>);
+        effectiveArmourCausticTt.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.int(armour.reinforcement)}</div>);
       }
     }
 
@@ -196,6 +199,11 @@ export default class Defence extends TranslatedComponent {
     armourDamageTakenThermalTt.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.pct1(armour.thermal.reinforcement)}</div>);
     if (armour.thermal.total != 1) effectiveArmourThermalTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(rawArmour / armour.thermal.total - rawArmour)}</div>);
 
+    const armourDamageTakenCausticTt = [];
+    armourDamageTakenCausticTt.push(<div key='bulkheads'>{translate('bulkheads') + ' ' + formats.pct1(armour.caustic.bulkheads)}</div>);
+    armourDamageTakenCausticTt.push(<div key='reinforcement'>{translate('reinforcement') + ' ' + formats.pct1(armour.caustic.reinforcement)}</div>);
+    if (armour.thermal.total != 1) effectiveArmourCausticTt.push(<div key='resistance'>{translate('resistance') + ' ' + formats.int(rawArmour / armour.caustic.total - rawArmour)}</div>);
+
     const effectiveArmourData = [];
     const effectiveAbsoluteArmour = armour.total / armour.absolute.total;
     effectiveArmourData.push({ value: Math.round(effectiveAbsoluteArmour), label: translate('absolute'), tooltip: effectiveArmourAbsoluteTt });
@@ -205,12 +213,15 @@ export default class Defence extends TranslatedComponent {
     effectiveArmourData.push({ value: Math.round(effectiveKineticArmour), label: translate('kinetic'), tooltip: effectiveArmourKineticTt });
     const effectiveThermalArmour = armour.total / armour.thermal.total;
     effectiveArmourData.push({ value: Math.round(effectiveThermalArmour), label: translate('thermal'), tooltip: effectiveArmourThermalTt });
+    const effectiveCausticArmour = armour.total / armour.caustic.total;
+    effectiveArmourData.push({ value: Math.round(effectiveCausticArmour), label: translate('caustic'), tooltip: effectiveArmourCausticTt });
 
     const armourDamageTakenData = [];
     armourDamageTakenData.push({ value: Math.round(armour.absolute.total * 100), label: translate('absolute'), tooltip: armourDamageTakenTt });
     armourDamageTakenData.push({ value: Math.round(armour.explosive.total * 100), label: translate('explosive'), tooltip: armourDamageTakenExplosiveTt });
     armourDamageTakenData.push({ value: Math.round(armour.kinetic.total * 100), label: translate('kinetic'), tooltip: armourDamageTakenKineticTt });
     armourDamageTakenData.push({ value: Math.round(armour.thermal.total * 100), label: translate('thermal'), tooltip: armourDamageTakenThermalTt });
+    armourDamageTakenData.push({ value: Math.round(armour.caustic.total * 100), label: translate('caustic'), tooltip: armourDamageTakenCausticTt });
 
     return (
       <span id='defence'>
