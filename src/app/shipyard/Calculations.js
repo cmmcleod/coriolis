@@ -659,7 +659,7 @@ export function armourMetrics(ship) {
   let armourCausDmg = diminishDamageMult(0.7, 1 - ship.bulkheads.m.getCausticResistance());
   let armourReinforcedCausDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getCausticResistance()) * hullCausDmg);
   armour.caustic = {
-    bulkeads: armourCausDmg,
+    bulkheads: armourCausDmg,
     reinforcement: armourReinforcedCausDmg / armourCausDmg,
     total: armourReinforcedCausDmg,
     res: 1 - armourReinforcedCausDmg,
