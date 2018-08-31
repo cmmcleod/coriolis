@@ -74,7 +74,7 @@ export default class WeaponDamageChart extends TranslatedComponent {
    * Calculate the maximum range of a ship's weapons
    * @param   {Object}  ship     The ship
    * @returns {int}              The maximum range, in metres
-   */ 
+   */
   _calcMaxRange(ship) {
     let maxRange = 1000; // Minimum
     for (let i = 0; i < ship.hardpoints.length; i++) {
@@ -184,7 +184,7 @@ export default class WeaponDamageChart extends TranslatedComponent {
     const code = `${ship.toString()}:${opponent.toString()}`;
 
     return (
-      <span>
+      <div>
         <LineChart
           xMax={maxRange}
           yMax={this.state.maxDps}
@@ -198,7 +198,7 @@ export default class WeaponDamageChart extends TranslatedComponent {
           points={200}
           code={code}
         />
-      </span>
+      </div>
     );
   }
 }

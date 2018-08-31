@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Measure from 'react-measure';
+import ContainerDimensions from 'react-container-dimensions';
 import * as d3 from 'd3';
 
 const CORIOLIS_COLOURS = ['#FF8C0D', '#1FB0FF', '#71A052', '#D5D54D'];
@@ -27,13 +27,6 @@ export default class PieChart extends Component {
     this.colors = CORIOLIS_COLOURS;
     this.arc = d3.arc();
     this.arc.innerRadius(0);
-
-    this.state = {
-      dimensions: {
-        width: 100,
-        height: 100
-      }
-    };
   }
 
 
@@ -41,15 +34,15 @@ export default class PieChart extends Component {
    * Generate a slice of the pie chart
    * @param {Object} d     the data for this slice
    * @param {number} i     the index of this slice
+   * @param {number} width the current width of the parent container
    * @returns {Object}     the SVG for the slice
    */
-  sliceGenerator(d, i) {
+  sliceGenerator(d, i, width) {
     if (!d || d.value == 0) {
       // Ignore 0 values
       return null;
     }
 
-    const { width, height } = this.state.dimensions;
     const { data } = this.props;
 
     // Push the labels further out from the centre of the slice
@@ -76,22 +69,24 @@ export default class PieChart extends Component {
    * @returns {object} Markup
    */
   render() {
-    const { width, height } = this.state.dimensions;
-    const pie = this.pie(this.props.data),
-        translate = `translate(${width / 2}, ${width * 0.4})`; 
-
-    this.arc.outerRadius(width * 0.4);
-
     return (
-      <Measure width='100%' whitelist={['width', 'top']} onMeasure={ (dimensions) => { this.setState({ dimensions }); }}>
-        <div width={width} height={width}>
-          <svg style={{ stroke: 'None' }} width={width} height={width * 0.9}>
-            <g transform={translate}>
-              {pie.map((d, i) => this.sliceGenerator(d, i))}
-            </g>
-          </svg>
-        </div>
-      </Measure>
+      <ContainerDimensions>
+        { ({ width }) => {
+          const pie = this.pie(this.props.data),
+              translate = `translate(${width / 2}, ${width * 0.4})`;
+
+          this.arc.outerRadius(width * 0.4);
+          return (
+            <div width={width} height={width}>
+              <svg style={{ stroke: 'None' }} width={width} height={width * 0.9}>
+                <g transform={translate}>
+                  {pie.map((d, i) => this.sliceGenerator(d, i, width))}
+                </g>
+              </svg>
+            </div>
+          );
+        }}
+      </ContainerDimensions>
     );
   }
 }

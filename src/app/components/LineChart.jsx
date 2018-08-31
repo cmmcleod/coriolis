@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Measure from 'react-measure';
+import ContainerDimensions from 'react-container-dimensions';
 import * as d3 from 'd3';
 import TranslatedComponent from './TranslatedComponent';
 
@@ -67,21 +67,17 @@ export default class LineChart extends TranslatedComponent {
       xAxisScale,
       yScale,
       tipHeight: 2 + (1.2 * (series ? series.length : 0.8)),
-      dimensions: {
-        width: 100,
-        height: 100
-      }
     };
   }
 
   /**
    * Update tooltip content
    * @param  {number} xPos x coordinate
+   * @param {number} width current container width
    */
-  _tooltip(xPos) {
+  _tooltip(xPos, width) {
     let { xLabel, yLabel, xUnit, yUnit, func, series } = this.props;
     let { xScale, yScale } = this.state;
-    let { width } = this.state.dimensions;
     let { formats, translate } = this.context.language;
     let x0 = xScale.invert(xPos),
         y0 = func(x0),
@@ -120,11 +116,11 @@ export default class LineChart extends TranslatedComponent {
    * Update dimensions based on properties and scale
    * @param  {Object} props  React Component properties
    * @param  {number} scale  size ratio / scale
+   * @param {number} width   current width of the container
    * @returns {Object}       calculated dimensions
    */
-  _updateDimensions(props, scale) {
+  _updateDimensions(props, scale, width) {
     const { xMax, xMin, yMin, yMax } = props;
-    const { width, height } = this.state.dimensions;
     const innerWidth = width - MARGIN.left - MARGIN.right;
     const outerHeight = Math.round(width * props.aspect);
     const innerHeight = outerHeight - MARGIN.top - MARGIN.bottom;
@@ -149,10 +145,11 @@ export default class LineChart extends TranslatedComponent {
   /**
    * Move and update tooltip
    * @param  {SyntheticEvent} e Event
+   * @param {number} width current container width
    */
-  _moveTip(e) {
+  _moveTip(e, width) {
     let clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    this._tooltip(Math.round(clientX - e.currentTarget.getBoundingClientRect().left));
+    this._tooltip(Math.round(clientX - e.currentTarget.getBoundingClientRect().left), width);
   }
 
   /**
@@ -227,57 +224,58 @@ export default class LineChart extends TranslatedComponent {
    * @return {React.Component} Chart SVG
    */
   render() {
-    const { innerWidth, outerHeight, innerHeight } = this._updateDimensions(this.props, this.context.sizeRatio);
-    const { width, height } = this.state.dimensions;
-    const { xMin, xMax, xLabel, yLabel, xUnit, yUnit, xMark, colors } = this.props;
-    const { tipHeight, detailElems, markerElems, seriesData, seriesLines } = this.state;
-    const line = this.line;
-    const lines = seriesLines.map((line, i) => <path key={i} className='line' fill='none' stroke={colors[i]} strokeWidth='1' d={line(seriesData)} />).reverse();
-
-    const markX = xMark ? innerWidth * (xMark - xMin) / (xMax - xMin) : 0;
-    const xmark = xMark ? <path key={'mark'} className='line' fill='none' strokeDasharray='5,5' stroke={'#ff8c0d'} strokeWidth='1' d={'M ' + markX + ' ' + innerHeight + ' L ' + markX + ' 0'} /> : '';
-
     return (
-      <Measure width='100%' whitelist={['width', 'top']} onMeasure={ (dimensions) => { this.setState({ dimensions }); }}>
-        <div width={width} height={height}>
-          <svg style={{ width: '100%', height: outerHeight }}>
-            <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
-              <g>{xmark}</g>
-              <g>{lines}</g>
-              <g className='x axis' ref={(elem) => d3.select(elem).call(this.xAxis)} transform={`translate(0,${innerHeight})`}>
-                <text className='cap' y='30' dy='.1em' x={innerWidth / 2} style={{ textAnchor: 'middle' }}>
-                  <tspan>{xLabel}</tspan>
-                  <tspan className='metric'> ({xUnit})</tspan>
-                </text>
-              </g>
-              <g className='y axis' ref={(elem) => d3.select(elem).call(this.yAxis)}>
-                <text className='cap' transform='rotate(-90)' y='-50' dy='.1em' x={innerHeight / -2} style={{ textAnchor: 'middle' }}>
-                  <tspan>{yLabel}</tspan>
-                  { yUnit && <tspan className='metric'> ({yUnit})</tspan> }
-                </text>
-              </g>
-              <g ref={(g) => this.tipContainer = d3.select(g)} style={{ display: 'none' }}>
-                <rect className='tooltip' height={tipHeight + 'em'}></rect>
-                {detailElems}
-              </g>
-              <g ref={(g) => this.markersContainer = d3.select(g)} style={{ display: 'none' }}>
-                {markerElems}
-              </g>
-              <rect
-                fillOpacity='0'
-                height={innerHeight}
-                width={innerWidth + 1}
-                onMouseEnter={this._showTip}
-                onTouchStart={this._showTip}
-                onMouseLeave={this._hideTip}
-                onTouchEnd={this._hideTip}
-                onMouseMove={this._moveTip}
-                onTouchMove={this._moveTip}
-              />
-            </g>
-          </svg>
-        </div>
-      </Measure>
+      <ContainerDimensions>
+        { ({ width, height }) => {
+          const { innerWidth, outerHeight, innerHeight } = this._updateDimensions(this.props, this.context.sizeRatio, width, height);
+          const { xMin, xMax, xLabel, yLabel, xUnit, yUnit, xMark, colors } = this.props;
+          const { tipHeight, detailElems, markerElems, seriesData, seriesLines } = this.state;
+          const lines = seriesLines.map((line, i) => <path key={i} className='line' fill='none' stroke={colors[i]} strokeWidth='1' d={line(seriesData)} />).reverse();
+
+          const markX = xMark ? innerWidth * (xMark - xMin) / (xMax - xMin) : 0;
+          const xmark = xMark ? <path key={'mark'} className='line' fill='none' strokeDasharray='5,5' stroke={'#ff8c0d'} strokeWidth='1' d={'M ' + markX + ' ' + innerHeight + ' L ' + markX + ' 0'} /> : '';
+          return (
+            <div width={width} height={height}>
+              <svg style={{ width: '100%', height: outerHeight }}>
+                <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
+                  <g>{xmark}</g>
+                  <g>{lines}</g>
+                  <g className='x axis' ref={(elem) => d3.select(elem).call(this.xAxis)} transform={`translate(0,${innerHeight})`}>
+                    <text className='cap' y='30' dy='.1em' x={innerWidth / 2} style={{ textAnchor: 'middle' }}>
+                      <tspan>{xLabel}</tspan>
+                      <tspan className='metric'> ({xUnit})</tspan>
+                    </text>
+                  </g>
+                  <g className='y axis' ref={(elem) => d3.select(elem).call(this.yAxis)}>
+                    <text className='cap' transform='rotate(-90)' y='-50' dy='.1em' x={innerHeight / -2} style={{ textAnchor: 'middle' }}>
+                      <tspan>{yLabel}</tspan>
+                      { yUnit && <tspan className='metric'> ({yUnit})</tspan> }
+                    </text>
+                  </g>
+                  <g ref={(g) => this.tipContainer = d3.select(g)} style={{ display: 'none' }}>
+                    <rect className='tooltip' height={tipHeight + 'em'}></rect>
+                    {detailElems}
+                  </g>
+                  <g ref={(g) => this.markersContainer = d3.select(g)} style={{ display: 'none' }}>
+                    {markerElems}
+                  </g>
+                  <rect
+                    fillOpacity='0'
+                    height={innerHeight}
+                    width={innerWidth + 1}
+                    onMouseEnter={this._showTip}
+                    onTouchStart={this._showTip}
+                    onMouseLeave={this._hideTip}
+                    onTouchEnd={this._hideTip}
+                    onMouseMove={e => this._moveTip(e, width)}
+                    onTouchMove={e => this._moveTip(e, width)}
+                  />
+                </g>
+              </svg>
+            </div>
+          );
+        }}
+      </ContainerDimensions>
     );
   }
 }
