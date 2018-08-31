@@ -144,7 +144,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
                 <th className={'bordered'}>{`${translate('absolute')}`}</th>
                 <th>{`${translate('explosive')}`}</th>
                 <th>{`${translate('kinetic')}`}</th>
-                <th>{`${translate('explosive')}`}</th>
+                <th>{`${translate('thermal')}`}</th>
                 <th></th>
               </tr>
             </thead>
