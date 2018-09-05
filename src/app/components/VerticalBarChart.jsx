@@ -1,6 +1,6 @@
 import TranslatedComponent from './TranslatedComponent';
 import React, { PropTypes } from 'react';
-import Measure from 'react-measure';
+import ContainerDimensions from 'react-container-dimensions';
 import { BarChart, Bar, XAxis, YAxis } from 'recharts';
 
 const CORIOLIS_COLOURS = ['#FF8C0D', '#1FB0FF', '#71A052', '#D5D54D'];
@@ -32,13 +32,6 @@ export default class VerticalBarChart extends TranslatedComponent {
     super(props);
 
     this._termtip = this._termtip.bind(this);
-
-    this.state = {
-      dimensions: {
-        width: 300,
-        height: 300
-      }
-    };
   }
 
   /**
@@ -46,7 +39,6 @@ export default class VerticalBarChart extends TranslatedComponent {
    * @returns {Object} the markup
    */
   render() {
-    const { width, height } = this.state.dimensions;
     const { tooltip, termtip } = this.context;
 
     // Calculate maximum for Y
@@ -56,15 +48,17 @@ export default class VerticalBarChart extends TranslatedComponent {
     const localMax = Math.max(dataMax, yMax);
 
     return (
-      <Measure whitelist={['width', 'top']} onMeasure={ (dimensions) => this.setState({ dimensions }) }>
-        <div width='100%'>
-          <BarChart width={width} height={width * ASPECT} data={this.props.data} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
-            <XAxis interval={0} fontSize='0.8em' stroke={AXIS_COLOUR} dataKey='label' />
-            <YAxis interval={'preserveStart'} tickCount={11} fontSize='0.8em' stroke={AXIS_COLOUR} type='number' domain={[0, localMax]}/>
-            <Bar dataKey='value' label={<ValueLabel />} fill={CORIOLIS_COLOURS[0]} isAnimationActive={false} onMouseOver={this._termtip} onMouseOut={tooltip.bind(null, null)}/>
-          </BarChart>
-        </div>
-      </Measure>
+      <ContainerDimensions>
+        { ({ width }) => (
+          <div width='100%'>
+            <BarChart width={width} height={width * ASPECT} data={this.props.data} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+              <XAxis interval={0} fontSize='0.8em' stroke={AXIS_COLOUR} dataKey='label' />
+              <YAxis interval={'preserveStart'} tickCount={11} fontSize='0.8em' stroke={AXIS_COLOUR} type='number' domain={[0, localMax]}/>
+              <Bar dataKey='value' label={<ValueLabel />} fill={CORIOLIS_COLOURS[0]} isAnimationActive={false} onMouseOver={this._termtip} onMouseOut={tooltip.bind(null, null)}/>
+            </BarChart>
+          </div>
+        )}
+      </ContainerDimensions>
     );
   }
 

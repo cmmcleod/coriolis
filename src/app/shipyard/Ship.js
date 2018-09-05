@@ -1295,6 +1295,7 @@ export default class Ship {
     this.hullExplRes = 1 - metrics.explosive.total;
     this.hullKinRes = 1 - metrics.kinetic.total;
     this.hullThermRes = 1 - metrics.thermal.total;
+    this.hullCausRes = 1 - metrics.caustic.total;
     return this;
   }
 

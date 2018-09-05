@@ -88,7 +88,7 @@
     "less": "^2.7.2",
     "less-loader": "^4.0.3",
     "react-addons-perf": "^15.4.2",
-    "react-measure": "^1.4.7",
+    "react-container-dimensions": "^1.4.1",
     "react-testutils-additions": "^15.2.0",
     "react-transition-group": "^1.1.2",
     "rimraf": "^2.6.1",

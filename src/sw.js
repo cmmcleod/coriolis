@@ -1,6 +1,8 @@
 console.log('Hello from sw.js');
 
 if (workbox) {
+  workbox.skipWaiting();
+  workbox.clientsClaim();
   console.log('Yay! Workbox is loaded 🎉');
   workbox.routing.registerRoute(
     new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
