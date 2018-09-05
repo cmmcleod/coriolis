@@ -120,6 +120,20 @@ export default class Module {
   }
 
   /**
+   * Helper to obtain a module's value.
+   * @param {String} name     The name of the modifier to obtain
+   * @param {Number} modified Whether to return the raw or modified value
+   * @return {Number} The value queried
+   */
+  _getValue(name, modified) {
+    if (modified) {
+      return this._getModifiedValue(name);
+    } else {
+      return this[name];
+    }
+  }
+
+  /**
    * Helper to obtain a modified value using standard multipliers
    * @param {String}  name     the name of the modifier to obtain
    * @return {Number}          the mass of this module
@@ -174,160 +188,190 @@ export default class Module {
   }
 
   /**
-   * Get the power generation of this module, taking in to account modifications
+   * Get the power generation of this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the power generation of this module
    */
-  getPowerGeneration() {
-    return this._getModifiedValue('pgen');
+  getPowerGeneration(modified = true) {
+    return this._getValue('pgen', modified);
   }
 
   /**
-   * Get the power usage of this module, taking in to account modifications
+   * Get the power usage of this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the power usage of this module
    */
-  getPowerUsage() {
-    return this._getModifiedValue('power');
+  getPowerUsage(modified = true) {
+    return this._getValue('power', modified);
   }
 
   /**
-   * Get the integrity of this module, taking in to account modifications
+   * Get the integrity of this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the integrity of this module
    */
-  getIntegrity() {
-    return this._getModifiedValue('integrity');
+  getIntegrity(modified = true) {
+    return this._getValue('integrity', modified);
   }
 
   /**
-   * Get the mass of this module, taking in to account modifications
+   * Get the mass of this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the mass of this module
    */
-  getMass() {
-    return this._getModifiedValue('mass');
+  getMass(modified = true) {
+    return this._getValue('mass', modified);
   }
 
   /**
-   * Get the thermal efficiency of this module, taking in to account modifications
+   * Get the thermal efficiency of this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the thermal efficiency of this module
    */
-  getThermalEfficiency() {
-    return this._getModifiedValue('eff');
+  getThermalEfficiency(modified = true) {
+    return this._getValue('eff', modified);
   }
 
   /**
-   * Get the maximum fuel per jump for this module, taking in to account modifications
+   * Get the maximum fuel per jump for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the maximum fuel per jump of this module
    */
-  getMaxFuelPerJump() {
-    return this._getModifiedValue('maxfuel');
+  getMaxFuelPerJump(modified = true) {
+    return this._getValue('maxfuel', modified);
   }
 
   /**
-   * Get the systems capacity for this module, taking in to account modifications
+   * Get the systems capacity for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the systems capacity of this module
    */
-  getSystemsCapacity() {
-    return this._getModifiedValue('syscap');
+  getSystemsCapacity(modified = true) {
+    return this._getValue('syscap', modified);
   }
 
   /**
-   * Get the engines capacity for this module, taking in to account modifications
+   * Get the engines capacity for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the engines capacity of this module
    */
-  getEnginesCapacity() {
-    return this._getModifiedValue('engcap');
+  getEnginesCapacity(modified = true) {
+    return this._getValue('engcap', modified);
   }
 
   /**
-   * Get the weapons capacity for this module, taking in to account modifications
+   * Get the weapons capacity for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the weapons capacity of this module
    */
-  getWeaponsCapacity() {
-    return this._getModifiedValue('wepcap');
+  getWeaponsCapacity(modified = true) {
+    return this._getValue('wepcap', modified);
   }
 
   /**
-   * Get the systems recharge rate for this module, taking in to account modifications
+   * Get the systems recharge rate for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the systems recharge rate of this module
    */
-  getSystemsRechargeRate() {
-    return this._getModifiedValue('sysrate');
+  getSystemsRechargeRate(modified = true) {
+    return this._getValue('sysrate', modified);
   }
 
   /**
-   * Get the engines recharge rate for this module, taking in to account modifications
+   * Get the engines recharge rate for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the engines recharge rate of this module
    */
-  getEnginesRechargeRate() {
-    return this._getModifiedValue('engrate');
+  getEnginesRechargeRate(modified = true) {
+    return this._getValue('engrate', modified);
   }
 
   /**
-   * Get the weapons recharge rate for this module, taking in to account modifications
+   * Get the weapons recharge rate for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the weapons recharge rate of this module
    */
-  getWeaponsRechargeRate() {
-    return this._getModifiedValue('weprate');
+  getWeaponsRechargeRate(modified = true) {
+    return this._getValue('weprate', modified);
   }
 
   /**
-   * Get the kinetic resistance for this module, taking in to account modifications
+   * Get the kinetic resistance for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the kinetic resistance of this module
    */
-  getKineticResistance() {
-    return this._getModifiedValue('kinres');
+  getKineticResistance(modified = true) {
+    return this._getValue('kinres', modified);
   }
 
   /**
-   * Get the thermal resistance for this module, taking in to account modifications
+   * Get the thermal resistance for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the thermal resistance of this module
    */
-  getThermalResistance() {
-    return this._getModifiedValue('thermres');
+  getThermalResistance(modified = true) {
+    return this._getValue('thermres', modified);
   }
 
   /**
-   * Get the explosive resistance for this module, taking in to account modifications
+   * Get the explosive resistance for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the explosive resistance of this module
    */
-  getExplosiveResistance() {
-    return this._getModifiedValue('explres');
-  }
-
-  getCausticResistance() {
-    return this._getModifiedValue('causres');
+  getExplosiveResistance(modified = true) {
+    return this._getValue('explres', modified);
   }
 
   /**
-   * Get the regeneration rate for this module, taking in to account modifications
+   * Get the caustic resistance for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
+   * @return {Number} the caustic resistance of this module
+   */
+  getCausticResistance(modified = true) {
+    return this._getValue('causres', modified);
+  }
+
+  /**
+   * Get the regeneration rate for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the regeneration rate of this module
    */
-  getRegenerationRate() {
-    return this._getModifiedValue('regen');
+  getRegenerationRate(modified = true) {
+    return this._getValue('regen', modified);
   }
 
   /**
-   * Get the broken regeneration rate for this module, taking in to account modifications
+   * Get the broken regeneration rate for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the broken regeneration rate of this module
    */
-  getBrokenRegenerationRate() {
-    return this._getModifiedValue('brokenregen');
+  getBrokenRegenerationRate(modified = true) {
+    return this._getValue('brokenregen', modified);
   }
 
   /**
-   * Get the range for this module, taking in to account modifications
+   * Get the range for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the range rate of this module
    */
-  getRange() {
-    return this._getModifiedValue('range');
+  getRange(modified = true) {
+    return this._getValue('range', modified);
   }
 
   /**
-   * Get the falloff for this module, taking in to account modifications
+   * Get the falloff for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the falloff of this module
    */
-  getFalloff() {
-    if (this.getModValue('fallofffromrange')) {
-      // Falloff from range means what it says, so use range instead of falloff
+  getFalloff(modified = true) {
+    if (!modified) {
+      const range = this.getRange(false);
+      const falloff = this._getValue('falloff', false);
+      return (falloff > range ? range : falloff);
+    }
+
+    // Falloff from range is mapped to range
+    if (this.mods['fallofffromrange']) {
       return this.getRange();
     } else {
       // Need to find out if we have a focused modification, in which case our falloff is scaled to range
@@ -344,79 +388,88 @@ export default class Module {
   }
 
   /**
-   * Get the range (in terms of seconds, for FSDI) for this module, taking in to account modifications
+   * Get the range (in terms of seconds, for FSDI) for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the range of this module
    */
-  getRangeT() {
-    return this._getModifiedValue('ranget');
+  getRangeT(modified = true) {
+    return this._getValue('ranget', modified);
   }
 
   /**
-   * Get the scan time for this module, taking in to account modifications
+   * Get the scan time for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the scan time of this module
    */
-  getScanTime() {
-    return this._getModifiedValue('scantime');
+  getScanTime(modified = true) {
+    return this._getValue('scantime', modified);
   }
 
   /**
-   * Get the capture arc for this module, taking in to account modifications
+   * Get the capture arc for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the capture arc of this module
    */
-  getCaptureArc() {
-    return this._getModifiedValue('arc');
+  getCaptureArc(modified = true) {
+    return this._getValue('arc', modified);
   }
 
   /**
-   * Get the hull reinforcement for this module, taking in to account modifications
+   * Get the hull reinforcement for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the hull reinforcement of this module
    */
-  getHullReinforcement() {
-    return this._getModifiedValue('hullreinforcement');
+  getHullReinforcement(modified = true) {
+    return this._getValue('hullreinforcement', modified);
   }
 
   /**
-   * Get the protection for this module, taking in to account modifications
+   * Get the protection for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the protection of this module
    */
-  getProtection() {
-    return this._getModifiedValue('protection');
+  getProtection(modified = true) {
+    return this._getValue('protection', modified);
   }
 
   /**
-   * Get the delay for this module, taking in to account modifications
+   * Get the delay for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the delay of this module
    */
-  getDelay() {
-    return this._getModifiedValue('delay');
+  getDelay(modified = true) {
+    return this._getValue('delay', modified);
   }
 
   /**
-   * Get the duration for this module, taking in to account modifications
+   * Get the duration for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the duration of this module
    */
-  getDuration() {
-    return this._getModifiedValue('duration');
+  getDuration(modified = true) {
+    return this._getValue('duration', modified);
   }
 
   /**
-   * Get the shield boost for this module, taking in to account modifications
+   * Get the shield boost for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the shield boost of this module
    */
-  getShieldBoost() {
-    return this._getModifiedValue('shieldboost');
+  getShieldBoost(modified = true) {
+    return this._getValue('shieldboost', modified);
   }
 
   /**
-   * Get the minimum mass for this module, taking in to account modifications
+   * Get the minimum mass for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the minimum mass of this module
    */
-  getMinMass() {
+  getMinMass(modified = true) {
     // Modifier is optmass
     let result = 0;
     if (this['minmass']) {
       result = this['minmass'];
-      if (result) {
+      if (result && modified) {
         let mult = this.getModValue('optmass') / 10000;
         if (mult) { result = result * (1 + mult); }
       }
@@ -425,23 +478,25 @@ export default class Module {
   }
 
   /**
-   * Get the optimum mass for this module, taking in to account modifications
+   * Get the optimum mass for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the optimum mass of this module
    */
-  getOptMass() {
-    return this._getModifiedValue('optmass');
+  getOptMass(modified = true) {
+    return this._getValue('optmass', modified);
   }
 
   /**
-   * Get the maximum mass for this module, taking in to account modifications
+   * Get the maximum mass for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the maximum mass of this module
    */
-  getMaxMass() {
+  getMaxMass(modified = true) {
     // Modifier is optmass
     let result = 0;
     if (this['maxmass']) {
       result = this['maxmass'];
-      if (result) {
+      if (result && modified) {
         let mult = this.getModValue('optmass') / 10000;
         if (mult) { result = result * (1 + mult); }
       }
@@ -450,11 +505,12 @@ export default class Module {
   }
 
   /**
-   * Get the minimum multiplier for this module, taking in to account modifications
+   * Get the minimum multiplier for this module
    * @param {string} type the type for which we are obtaining the multiplier.  Can be 'speed', 'rotation', 'acceleration', or null
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the minimum multiplier of this module
    */
-  getMinMul(type = null) {
+  getMinMul(type = null, modified = true) {
     // Modifier is optmul
     let result = 0;
     if (this['minmul' + type]) {
@@ -462,7 +518,7 @@ export default class Module {
     } else if (this['minmul']) {
       result = this['minmul'];
     }
-    if (result) {
+    if (result && modified) {
       let mult = this.getModValue('optmul') / 10000;
       if (mult) { result = result * (1 + mult); }
     }
@@ -470,11 +526,12 @@ export default class Module {
   }
 
   /**
-   * Get the optimum multiplier for this module, taking in to account modifications
+   * Get the optimum multiplier for this module
    * @param {string} type the type for which we are obtaining the multiplier.  Can be 'speed', 'rotation', 'acceleration', or null
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the optimum multiplier of this module
    */
-  getOptMul(type = null) {
+  getOptMul(type = null, modified = true) {
     // Modifier is optmul
     let result = 0;
     if (this['optmul' + type]) {
@@ -482,7 +539,7 @@ export default class Module {
     } else if (this['optmul']) {
       result = this['optmul'];
     }
-    if (result) {
+    if (result && modified) {
       let mult = this.getModValue('optmul') / 10000;
       if (mult) { result = result * (1 + mult); }
     }
@@ -490,11 +547,12 @@ export default class Module {
   }
 
   /**
-   * Get the maximum multiplier for this module, taking in to account modifications
+   * Get the maximum multiplier for this module
    * @param {string} type the type for which we are obtaining the multiplier.  Can be 'speed', 'rotation', 'acceleration', or null
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the maximum multiplier of this module
    */
-  getMaxMul(type = null) {
+  getMaxMul(type = null, modified = true) {
     // Modifier is optmul
     let result = 0;
     if (this['maxmul' + type]) {
@@ -502,7 +560,7 @@ export default class Module {
     } else if (this['maxmul']) {
       result = this['maxmul'];
     }
-    if (result) {
+    if (result && modified) {
       let mult = this.getModValue('optmul') / 10000;
       if (mult) { result = result * (1 + mult); }
     }
@@ -510,266 +568,294 @@ export default class Module {
   }
 
   /**
-   * Get the damage for this module, taking in to account modifications
+   * Get the damage for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the damage of this module
    */
-  getDamage() {
-    return this._getModifiedValue('damage');
+  getDamage(modified = true) {
+    return this._getValue('damage', modified);
   }
 
   /**
-   * Get the distributor draw for this module, taking in to account modifications
+   * Get the distributor draw for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the distributor draw of this module
    */
-  getDistDraw() {
-    return this._getModifiedValue('distdraw');
+  getDistDraw(modified = true) {
+    return this._getValue('distdraw', modified);
   }
 
   /**
-   * Get the thermal load for this module, taking in to account modifications
+   * Get the thermal load for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the thermal load of this module
    */
-  getThermalLoad() {
-    return this._getModifiedValue('thermload');
+  getThermalLoad(modified = true) {
+    return this._getValue('thermload', modified);
   }
 
   /**
-   * Get the rounds per shot for this module, taking in to account modifications
+   * Get the rounds per shot for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the rounds per shot of this module
    */
-  getRoundsPerShot() {
-    return this._getModifiedValue('roundspershot');
+  getRoundsPerShot(modified = true) {
+    return this._getValue('roundspershot', modified);
   }
 
   /**
-   * Get the DPS for this module, taking in to account modifications
+   * Get the DPS for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the DPS of this module
    */
-  getDps() {
+  getDps(modified = true) {
     // DPS is a synthetic value
-    let damage = this.getDamage();
+    let damage = this.getDamage(modified);
     let rpshot = this.roundspershot || 1;
-    let rof = this.getRoF() || 1;
+    let rof = this.getRoF(modified) || 1;
 
     return damage * rpshot * rof;
   }
 
   /**
-   * Get the SDPS for this module, taking into account modifications and special
-   * effects.
+  /**
+   * Get the SDPS for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} The SDPS of this module
    */
-  getSDps() {
-    let dps = this.getDps();
-    if (this.getClip()) {
-      let clipSize = this.getClip();
+  getSDps(modified = true) {
+    let dps = this.getDps(modified);
+    if (this.getClip(modified)) {
+      let clipSize = this.getClip(modified);
       // If auto-loader is applied, effective clip size will be nearly doubled
       // as you get one reload for every two shots fired.
-      if (this.blueprint && this.blueprint.special && this.blueprint.special.edname === 'special_auto_loader') {
+      if (this.blueprint && this.blueprint.special && this.blueprint.special.edname === 'special_auto_loader' && modified) {
         clipSize += clipSize - 1;
       }
-      let timeToDeplete = clipSize / this.getRoF();
-      return dps * timeToDeplete / (timeToDeplete + this.getReload());
+      let timeToDeplete = clipSize / this.getRoF(modified);
+      return dps * timeToDeplete / (timeToDeplete + this.getReload(modified));
     } else {
       return dps;
     }
   }
 
   /**
-   * Get the EPS for this module, taking in to account modifications
+   * Get the EPS for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the EPS of this module
    */
-  getEps() {
+  getEps(modified = true) {
     // EPS is a synthetic value
-    let distdraw = this.getDistDraw();
+    let distdraw = this.getDistDraw(modified);
     // We don't use rpshot here as dist draw is per combined shot
-    let rof = this.getRoF() || 1;
+    let rof = this.getRoF(modified) || 1;
 
     return distdraw * rof;
   }
 
   /**
-   * Get the HPS for this module, taking in to account modifications
+   * Get the HPS for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the HPS of this module
    */
-  getHps() {
+  getHps(modified = true) {
     // HPS is a synthetic value
-    let heat = this.getThermalLoad();
+    let heat = this.getThermalLoad(modified);
     // We don't use rpshot here as dist draw is per combined shot
-    let rof = this.getRoF() || 1;
+    let rof = this.getRoF(modified) || 1;
 
     return heat * rof;
   }
 
   /**
-   * Get the clip size for this module, taking in to account modifications
+   * Get the clip size for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the clip size of this module
    */
-  getClip() {
+  getClip(modified = true) {
     // Clip size is always rounded up
-    let result = this._getModifiedValue('clip');
+    let result = this._getValue('clip', modified);
     if (result) { result = Math.ceil(result); }
     return result;
   }
 
   /**
-   * Get the ammo size for this module, taking in to account modifications
+   * Get the ammo size for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the ammo size of this module
    */
-  getAmmo() {
-    return this._getModifiedValue('ammo');
+  getAmmo(modified = true) {
+    return this._getValue('ammo', modified);
   }
 
   /**
-   * Get the reload time for this module, taking in to account modifications
+   * Get the reload time for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the reload time of this module
    */
-  getReload() {
-    return this._getModifiedValue('reload');
+  getReload(modified = true) {
+    return this._getValue('reload', modified);
   }
 
   /**
-   * Get the burst size for this module, taking in to account modifications
+   * Get the burst size for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the burst size of this module
    */
-  getBurst() {
-    return this._getModifiedValue('burst');
+  getBurst(modified = true) {
+    return this._getValue('burst', modified);
   }
 
   /**
-   * Get the burst rate of fire for this module, taking in to account modifications
+   * Get the burst rate of fire for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the burst rate of fire of this module
    */
-  getBurstRoF() {
-    return this._getModifiedValue('burstrof');
+  getBurstRoF(modified = true) {
+    return this._getValue('burstrof', modified);
   }
 
   /**
-   * Get the rate of fire for this module, taking in to account modifications.
+   * Get the rate of fire for this module.
    * The rate of fire is a combination value, and needs to take in to account
    * bursts of fire.
    * Firing goes [burst 1] [burst interval] [burst 2] [burst interval] ... [burst n] [interval]
    * where 'n' is 'burst', 'burst interval' is '1/burstrof' and 'interval' is '1/rof'
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the rate of fire for this module
    */
-  getRoF() {
-    const burst = this.getBurst() || 1;
-    const burstRoF = this.getBurstRoF() || 1;
-    const intRoF = this._getModifiedValue('rof');
+  getRoF(modified = true) {
+    const burst = this.getBurst(modified) || 1;
+    const burstRoF = this.getBurstRoF(modified) || 1;
+    const intRoF = this._getValue('rof', modified);
 
     return burst / (((burst - 1) / burstRoF) + 1 / intRoF);
   }
 
   /**
-   * Get the facing limit for this module, taking in to account modifications
+   * Get the facing limit for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the facing limit for this module
    */
-  getFacingLimit() {
-    return this._getModifiedValue('facinglimit');
+  getFacingLimit(modified = true) {
+    return this._getValue('facinglimit', modified);
   }
 
   /**
-   * Get the hull boost for this module, taking in to account modifications
+   * Get the hull boost for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the hull boost for this module
    */
-  getHullBoost() {
-    return this._getModifiedValue('hullboost');
+  getHullBoost(modified = true) {
+    return this._getValue('hullboost', modified);
   }
 
   /**
-   * Get the shield reinforcement for this module, taking in to account modifications
+   * Get the shield reinforcement for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the shield reinforcement for this module
    */
-  getShieldReinforcement() {
-    return this._getModifiedValue('shieldreinforcement');
+  getShieldReinforcement(modified = true) {
+    return this._getValue('shieldreinforcement', modified);
   }
 
   /**
-   * Get the shield addition for this module, taking in to account modifications
+   * Get the shield addition for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the shield addition for this module
    */
-  getShieldAddition() {
-    return this._getModifiedValue('shieldaddition');
+  getShieldAddition(modified = true) {
+    return this._getValue('shieldaddition', modified);
   }
 
   /**
-   * Get the jump range boost for this module, taking in to account modifications
+   * Get the jump range boost for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the jump range boost for this module
    */
-  getJumpBoost() {
-    return this._getModifiedValue('jumpboost');
+  getJumpBoost(modified = true) {
+    return this._getValue('jumpboost', modified);
   }
 
   /**
-   * Get the piercing for this module, taking in to account modifications
+   * Get the piercing for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the piercing for this module
    */
-  getPiercing() {
-    return this._getModifiedValue('piercing');
+  getPiercing(modified = true) {
+    return this._getValue('piercing', modified);
   }
 
   /**
-   * Get the bays for this module, taking in to account modifications
+   * Get the bays for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the bays for this module
    */
-  getBays() {
-    return this._getModifiedValue('bays');
+  getBays(modified) {
+    return this._getValue('bays', modified);
   }
 
   /**
-   * Get the rebuilds per bay for this module, taking in to account modifications
+   * Get the rebuilds per bay for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the rebuilds per bay for this module
    */
-  getRebuildsPerBay() {
-    return this._getModifiedValue('rebuildsperbay');
+  getRebuildsPerBay(modified = true) {
+    return this._getValue('rebuildsperbay', modified);
   }
 
   /**
-   * Get the jitter for this module, taking in to account modifications
+   * Get the jitter for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {Number} the jitter for this module
    */
-  getJitter() {
-    return this._getModifiedValue('jitter', true);
+  getJitter(modified = true) {
+    return this._getValue('jitter', modified);
   }
 
   /**
-   * Get the damage distribution for this module, taking in to account modifications
+   * Get the damage distribution for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {string} the damage distribution for this module
    */
-  getDamageDist() {
-    return this.getModValue('damagedist') || this.damagedist;
+  getDamageDist(modified = true) {
+    return (modified && this.getModValue('damagedist')) || this.damagedist;
   }
 
   /**
-   * Get the shot speed for this module, taking in to account modifications
+   * Get the shot speed for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {string} the shot speed for this module
    */
-  getShotSpeed() {
-    return this._getModifiedValue('shotspeed');
+  getShotSpeed(modified = true) {
+    return this._getValue('shotspeed', modified);
   }
 
   /**
-   * Get the spinup for this module, taking in to account modifications
+   * Get the spinup for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {string} the spinup for this module
    */
-  getSpinup() {
-    return this._getModifiedValue('spinup');
+  getSpinup(modified = true) {
+    return this._getValue('spinup', modified);
   }
 
   /**
-   * Get the time for this module, taking in to account modifications
+   * Get the time for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {string} the time for this module
    */
-  getTime() {
-    return this._getModifiedValue('time');
+  getTime(modified = true) {
+    return this._getValue('time', modified);
   }
 
   /**
-   * Get the hack time for this module, taking in to account modifications
+   * Get the hack time for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
    * @return {string} the time for this module
    */
-  getHackTime() {
-    return this._getModifiedValue('hacktime');
+  getHackTime(modified = true) {
+    return this._getValue('hacktime', modified);
   }
 
 }
