@@ -1,7 +1,7 @@
 import * as ModuleUtils from './ModuleUtils';
 import { Modifications } from 'coriolis-data/dist';
 import React from 'react';
-import StatsFormating from './StatsFormating';
+import { STATS_FORMATING, SI_PREFIXES } from './StatsFormating';
 
 /**
  * Module - active module in a ship's buildout
@@ -45,8 +45,8 @@ export default class Module {
     let result = this.mods  && this.mods[name] ? this.mods[name] : null;
 
     // Calculate the percentage change for a synthetic value
-    if (StatsFormating[name] && StatsFormating[name].synthetic) {
-      const statGetter = this[StatsFormating[name].synthetic];
+    if (STATS_FORMATING[name] && STATS_FORMATING[name].synthetic) {
+      const statGetter = this[STATS_FORMATING[name].synthetic];
       let unmodifiedStat = statGetter.call(this, false);
       let modifiedStat = statGetter.call(this, true);
       result = (modifiedStat / unmodifiedStat - 1)  * 10000;
@@ -201,12 +201,15 @@ export default class Module {
    * Creates a react element that pretty-prints the queried module value
    * @param {String} name     The name of the value
    * @param {object} language Language object holding formats and util functions
+   * @param {String} [unit]   If unit is given not the stat's default formating
+   *                          unit will be applied but the given one taking into
+   *                          account SI-prefixes such as kilo, milli, etc.
    * @param {Number} [val]    If val is given, not the modules value but given
    *                          one will be formated
    * @returns {React.Component} The formated value as component
    */
-  formatModifiedValue(name, language, val) {
-    const formatingOptions = StatsFormating[name];
+  formatModifiedValue(name, language, unit, val) {
+    const formatingOptions = STATS_FORMATING[name];
     if (val === undefined) {
       if (formatingOptions && formatingOptions.synthetic) {
         val = (this[formatingOptions.synthetic]).call(this, true);
@@ -223,8 +226,27 @@ export default class Module {
       );
     }
 
-    if (formatingOptions.format && language.formats[formatingOptions.format]) {
-      val = (language.formats[formatingOptions.format])(val);
+    let { format } = formatingOptions;
+    unit = unit || formatingOptions.unit;
+    let storedUnit = formatingOptions.storedUnit || formatingOptions.unit;
+    let factor = 1;
+    if (storedUnit && storedUnit !== unit) {
+      // Find out si prefix of storedUnit and unit as si prefixes can only take
+      // on charactere it suffices to compare the first character of each string
+      let prefixUnit = unit[0];
+      let prefixStored = unit[0];
+      if (unit.length > storedUnit.length) {
+        factor /= SI_PREFIXES[prefixUnit];
+      } else if (storedUnit.length > unit.length) {
+        factor *= SI_PREFIXES[prefixStored];
+      } else if (prefixUnit !== prefixStored) {
+        factor *= SI_PREFIXES[prefixStored];
+        factor /= SI_PREFIXES[prefixUnit];
+      }
+    }
+
+    if (format && language.formats[format]) {
+      val = (language.formats[format])(val * factor);
     }
 
     return (

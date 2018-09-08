@@ -1,4 +1,28 @@
-export default {
+export const SI_PREFIXES = {
+  'Y': 1e+24, // Yotta
+  'Z': 1e+21, // Zetta
+  'E': 1e+18, // Peta
+  'P': 1e+15, // Peta
+  'T': 1e+12, // Tera
+  'G': 1e+9,  // Giga
+  'M': 1e+6,  // Mega
+  'k': 1e+3,  // Kilo
+  'h': 1e+2,  // Hekto
+  'da': 1e+1, // Deka
+  '': 1,
+  'd': 1e-1,  // Dezi
+  'c': 1e-2,  // Zenti
+  'm': 1e-3,  // Milli
+  'μ': 1e-6, // mikro not supported due to charset
+  'n': 10e-9, // Nano
+  'p': 1e-12, // Nano
+  'f': 1e-15, // Femto
+  'a': 1e-18, // Atto
+  'z': 1e-21, // Zepto
+  'y': 1e-24  // Yokto
+};
+
+export const STATS_FORMATING = {
   'ammo': { 'format': 'int', },
   'boot': { 'format': 'int', 'unit': 'secs' },
   'brokenregen': { 'format': 'round1', 'unit': 'ps' },
@@ -17,8 +41,8 @@ export default {
   'eps': { 'format': 'round', 'units': 'ps', 'synthetic': 'getEps' },
   'explres': { 'format': 'pct' },
   'facinglimit': { 'format': 'round1', 'unit': 'ang' },
-  'falloff': { 'format': 'round1', 'unit': 'm' },
-  'fallofffromrange': { 'format': 'round1', 'unit': 'm', 'synthetic': 'getFalloff' },
+  'falloff': { 'format': 'round1', 'unit': 'km', 'storedUnit': 'm' },
+  'fallofffromrange': { 'format': 'round1', 'unit': 'km', 'storedUnit': 'm', 'synthetic': 'getFalloff' },
   'hps': { 'format': 'round', 'units': 'ps', 'synthetic': 'getHps' },
   'hullboost': { 'format': 'pct1' },
   'hullreinforcement': { 'format': 'int' },
@@ -33,7 +57,7 @@ export default {
   'piercing': { 'format': 'int' },
   'power': { 'format': 'round', 'unit': 'MW' },
   'protection': { 'format': 'pct' },
-  'range': { 'format': 'round1', 'unit': 'm' },
+  'range': { 'format': 'round1', 'unit': 'km', 'storedUnit': 'm' },
   'ranget': { 'format': 'round1', 'unit': 's' },
   'regen': { 'format': 'round1', 'unit': 'ps' },
   'reload': { 'format': 'int', 'unit': 's' },
