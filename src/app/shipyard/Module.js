@@ -1,5 +1,7 @@
 import * as ModuleUtils from './ModuleUtils';
 import { Modifications } from 'coriolis-data/dist';
+import React from 'react';
+import StatsFormating from './StatsFormating';
 
 /**
  * Module - active module in a ship's buildout
@@ -41,7 +43,14 @@ export default class Module {
    */
   getModValue(name, raw) {
     let result = this.mods  && this.mods[name] ? this.mods[name] : null;
-    if ((!raw) && this.blueprint && this.blueprint.special) {
+
+    // Calculate the percentage change for a synthetic value
+    if (StatsFormating[name] && StatsFormating[name].synthetic) {
+      const statGetter = this[StatsFormating[name].synthetic];
+      let unmodifiedStat = statGetter.call(this, false);
+      let modifiedStat = statGetter.call(this, true);
+      result = (modifiedStat / unmodifiedStat - 1)  * 10000;
+    } else if ((!raw) && this.blueprint && this.blueprint.special) {
       // This module has a special effect, see if we need to alter our returned value
       const modifierActions = Modifications.modifierActions[this.blueprint.special.edname];
       if (modifierActions && modifierActions[name]) {
@@ -72,6 +81,7 @@ export default class Module {
         }
       }
     }
+
     // Sanitise the resultant value to 4dp equivalent
     return isNaN(result) ? result : Math.round(result);
   }
@@ -136,7 +146,7 @@ export default class Module {
   /**
    * Helper to obtain a modified value using standard multipliers
    * @param {String}  name     the name of the modifier to obtain
-   * @return {Number}          the mass of this module
+   * @return {Number}          the value queried
    */
   _getModifiedValue(name) {
     const modification = Modifications.modifications[name];
@@ -185,6 +195,44 @@ export default class Module {
     }
 
     return result;
+  }
+
+  /**
+   * Creates a react element that pretty-prints the queried module value
+   * @param {String} name     The name of the value
+   * @param {object} language Language object holding formats and util functions
+   * @param {Number} [val]    If val is given, not the modules value but given
+   *                          one will be formated
+   * @returns {React.Component} The formated value as component
+   */
+  formatModifiedValue(name, language, val) {
+    const formatingOptions = StatsFormating[name];
+    if (val === undefined) {
+      if (formatingOptions && formatingOptions.synthetic) {
+        val = (this[formatingOptions.synthetic]).call(this, true);
+      } else {
+        val = this._getModifiedValue(name);
+      }
+    }
+
+    if (!formatingOptions) {
+      return (
+        <span>
+          {val}
+        </span>
+      );
+    }
+
+    if (formatingOptions.format && language.formats[formatingOptions.format]) {
+      val = (language.formats[formatingOptions.format])(val);
+    }
+
+    return (
+      <span>
+        {val}
+        {formatingOptions.unit && language.units[formatingOptions.unit]}
+      </span>
+    );
   }
 
   /**
@@ -373,17 +421,15 @@ export default class Module {
     // Falloff from range is mapped to range
     if (this.mods['fallofffromrange']) {
       return this.getRange();
+    // If range is modified but not falloff, increase the falloff to keep ratio
+    } else if (this.getModValue('range')) {
+      const rangeMod = this.getModValue('range') / 10000;
+      return this.falloff * (1 + rangeMod);
+    // Standard falloff calculation
     } else {
-      // Need to find out if we have a focused modification, in which case our falloff is scaled to range
-      if (this.blueprint && this.blueprint.name === 'Focused') {
-        const rangeMod = this.getModValue('range') / 10000;
-        return this.falloff * (1 + rangeMod);
-      } else {
-        // Standard falloff calculation
-        const range = this.getRange();
-        const falloff = this._getModifiedValue('falloff');
-        return (falloff > range ? range : falloff);
-      }
+      const range = this.getRange();
+      const falloff = this._getModifiedValue('falloff');
+      return (falloff > range ? range : falloff);
     }
   }
 
@@ -618,6 +664,14 @@ export default class Module {
   }
 
   /**
+   * Get the DPE for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
+   * @return {Number} the DPE of this module
+   */
+  getDpe(modified = true) {
+    return this.getDps(modified) / this.getEps(modified);
+  }
+
   /**
    * Get the SDPS for this module
    * @param {Boolean} [modified=true] Whether to take modifications into account
