@@ -124,7 +124,7 @@ export default class ModificationsMenu extends TranslatedComponent {
           // Initial modification menu
           event.preventDefault();
           this.modItems[this.lastModId].focus();
-          return;        
+          return;
         } else  if (event.currentTarget.className.indexOf('button-inline-menu') >= 0 && event.currentTarget.previousElementSibling == null && this.lastNeId != null && this.modItems[this.lastNeId] != null) {
           // shift-tab on first element in modifications menu. set focus to last number editor field if open
           event.preventDefault();
@@ -210,10 +210,30 @@ export default class ModificationsMenu extends TranslatedComponent {
       if (!Modifications.modifications[modName].hidden) {
         const key = modName + (m.getModValue(modName) / 100 || 0);
         this.lastNeId = modName;
-        modifications.push(<Modification key={ key } ship={ ship } m={ m } name={ modName } value={ m.getModValue(modName) / 100 || 0 } onChange={ onChange } onKeyDown={ this._keyDown } modItems={ this.modItems } handleModChange = {this._handleModChange} />);
+        modifications.push(<Modification key={ key } ship={ ship } m={ m }
+          value={ m.getModValue(modName) / 100 || 0 } modItems={ this.modItems }
+          onChange={ onChange } onKeyDown={ this._keyDown }
+          editable={modName !== 'fallofffromrange' &&
+            m.blueprint.grades[m.blueprint.grade].features[modName]
+          } name={ modName } handleModChange = {this._handleModChange} />);
       }
     }
-    return modifications;
+
+    // If the module can inflict damage we can show damage related stats
+    const hardPointStats = ['dps', 'dpe', 'eps', 'hps', 'sdps'];
+    if (m.getDamage()) {
+      for (const stat of hardPointStats) {
+        modifications.push(<Modification key={stat} ship={ship} name={stat}
+          m={m} onChange={() => { }} onKeyDown={() => { }} editable={false}
+          handleModChange={() => { }} modItems={this.modItems}
+          value={ m.getModValue(stat) / 100 || 0 } />);
+      }
+    }
+
+    this.modifications = modifications.sort(
+      (mod1, mod2) => mod1.props.name.localeCompare(mod2.props.name)
+    );
+    return this.modifications;
   }
 
   /**
