@@ -178,6 +178,7 @@
     "dpssdps": "Damage per second (sustained damage per second)",
     "eps": "Energy per second",
     "epsseps": "Energy per second (sustained energy per second)",
+    "fallofffromrange": "Falloff",
     "hps": "Heat per second",
     "hpsshps": "Heat per second (sustained heat per second)",
     "damage by": "Damage by",
