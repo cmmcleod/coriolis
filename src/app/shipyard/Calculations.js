@@ -544,7 +544,7 @@ export function calcBoost(ship) {
   if (!ship.boostEnergy || !ship.standard[4] || !ship.standard[4].m) {
     return undefined;
   }
-  return ship.boostEnergy / ship.standard[4].m.engrate;
+  return ship.boostEnergy / ship.standard[4].m.getEnginesRechargeRate();
 }
 
 
