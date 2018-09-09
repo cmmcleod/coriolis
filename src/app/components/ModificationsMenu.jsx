@@ -226,17 +226,6 @@ export default class ModificationsMenu extends TranslatedComponent {
       }
     }
 
-    // If the module can inflict damage we can show damage related stats
-    const hardPointStats = ['dps', 'dpe', 'eps', 'hps', 'sdps'];
-    if (m.getDamage()) {
-      for (const stat of hardPointStats) {
-        modifications.push(<Modification key={stat} ship={ship} name={stat}
-          m={m} onChange={() => { }} onKeyDown={() => { }} editable={false}
-          handleModChange={() => { }} modItems={this.modItems}
-          value={ m.getModValue(stat) / 100 || 0 } />);
-      }
-    }
-
     modifiableModifications.sort(MODIFICATIONS_COMPARATOR);
     modifications.sort(MODIFICATIONS_COMPARATOR);
     return modifiableModifications.concat(modifications);
