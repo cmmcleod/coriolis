@@ -435,7 +435,7 @@ export default class Module {
     }
 
     // Falloff from range is mapped to range
-    if (this.mods['fallofffromrange']) {
+    if (this.mods && this.mods['fallofffromrange']) {
       return this.getRange();
     // If range is modified but not falloff, increase the falloff to keep ratio
     } else if (this.getModValue('range')) {
