@@ -15,6 +15,10 @@ import {
   specialToolTip
 } from '../utils/BlueprintFunctions';
 
+const MODIFICATIONS_COMPARATOR = (mod1, mod2) => {
+  return mod1.props.name.localeCompare(mod2.props.name);
+};
+
 /**
  * Modifications menu
  */
@@ -205,17 +209,20 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _renderModifications(props) {
     const { m, onChange, ship } = props;
+    const modifiableModifications = [];
     const modifications = [];
     for (const modName of Modifications.modules[m.grp].modifications) {
       if (!Modifications.modifications[modName].hidden) {
         const key = modName + (m.getModValue(modName) / 100 || 0);
+        const editable = modName !== 'fallofffromrange' &&
+          m.blueprint.grades[m.blueprint.grade].features[modName];
         this.lastNeId = modName;
-        modifications.push(<Modification key={ key } ship={ ship } m={ m }
-          value={ m.getModValue(modName) / 100 || 0 } modItems={ this.modItems }
-          onChange={ onChange } onKeyDown={ this._keyDown }
-          editable={modName !== 'fallofffromrange' &&
-            m.blueprint.grades[m.blueprint.grade].features[modName]
-          } name={ modName } handleModChange = {this._handleModChange} />);
+        (editable ? modifiableModifications : modifications).push(
+          <Modification key={ key } ship={ ship } m={ m }
+            value={m.getModValue(modName) / 100 || 0} modItems={this.modItems}
+            onChange={onChange} onKeyDown={this._keyDown} name={modName}
+            editable={editable} handleModChange = {this._handleModChange} />
+        );
       }
     }
 
@@ -230,10 +237,9 @@ export default class ModificationsMenu extends TranslatedComponent {
       }
     }
 
-    this.modifications = modifications.sort(
-      (mod1, mod2) => mod1.props.name.localeCompare(mod2.props.name)
-    );
-    return this.modifications;
+    modifiableModifications.sort(MODIFICATIONS_COMPARATOR);
+    modifications.sort(MODIFICATIONS_COMPARATOR);
+    return modifiableModifications.concat(modifications);
   }
 
   /**
