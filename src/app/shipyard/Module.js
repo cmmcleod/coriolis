@@ -212,6 +212,8 @@ export default class Module {
       }
     }
 
+    val = val || 0;
+
     if (!formatingOptions) {
       return (
         <span>
