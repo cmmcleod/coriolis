@@ -151,16 +151,7 @@ export default class Module {
   _getModifiedValue(name) {
     const modification = Modifications.modifications[name];
     let result = this[name];
-    if (!result) {
-      if (modification && modification.method === 'additive') {
-        // Additive modifications start at 0 rather than NULL
-        result = 0;
-      } else {
-        result = null;
-      }
-    }
 
-    if (result != null) {
       if (modification) {
         // We store percentages as decimals, so to get them back we need to divide by 10000.  Otherwise
         // we divide by 100.  Both ways we end up with a value with two decimal places
@@ -173,6 +164,13 @@ export default class Module {
           modValue = this.getModValue(name);
         }
         if (modValue) {
+        if (!result && modification.method === 'additive') {
+          // If the modification is additive and no value is given by default we
+          // start at zero
+          result = 0;
+        }
+
+        if (result !== undefined) {
           if (modification.method === 'additive') {
             result = result + modValue;
           } else if (modification.method === 'overwrite') {
@@ -182,15 +180,11 @@ export default class Module {
           } else {
             result = result * (1 + modValue);
           }
-        }
+        } else if (name === 'burst' || name === 'burstrof') {
+          // Burst and burst rate of fire are special, as it can not exist but
+          // have a modification
+          result = modValue / 100;
       }
-    } else {
-      if (name === 'burst') {
-        // Burst is special, as if it can not exist but have a modification
-        result = this.getModValue(name) / 100;
-      } else if (name === 'burstrof') {
-        // Burst rate of fire is special, as if it can not exist but have a modification
-        result = this.getModValue(name) / 100;
       }
     }
 
