@@ -585,7 +585,7 @@ export function armourMetrics(ship) {
       hullThermDmg = hullThermDmg * (1 - slot.m.getThermalResistance());
       hullCausDmg = hullCausDmg * (1 - slot.m.getCausticResistance());
     }
-    if (slot.m && slot.m.grp == 'mrp') {
+    if (slot.m && (slot.m.grp == 'mrp' || slot.m.grp == 'gmrp')) {
       moduleArmour += slot.m.getIntegrity();
       moduleProtection = moduleProtection * (1 - slot.m.getProtection());
     }
