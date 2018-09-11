@@ -150,6 +150,13 @@ export default class Module {
         }
         if (modValue) {
           if (modification.method === 'additive') {
+            // Resistance modding for hull reinforcement packages has additional
+            // diminishing returns implemented. The mod value gets lowered by
+            // the amount of base resistance the hrp has.
+            if (this.grp === 'hr' &&
+              (name === 'kinres' || name === 'thermres' || name === 'explres')) {
+                modValue = modValue * (1 - result);
+            }
             result = result + modValue;
           } else if (modification.method === 'overwrite') {
             result = modValue;
