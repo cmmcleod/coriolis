@@ -448,7 +448,8 @@ export default class Module {
     let result = 0;
     if (this['maxmass']) {
       result = this['maxmass'];
-      if (result) {
+      // max mass is only modified for non-shield boosters
+      if (result && this.grp !== 'sg') {
         let mult = this.getModValue('optmass') / 10000;
         if (mult) { result = result * (1 + mult); }
       }
