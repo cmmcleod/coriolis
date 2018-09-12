@@ -172,10 +172,17 @@ export default class Module {
 
         if (result !== undefined) {
           if (modification.method === 'additive') {
+            // Resistance modding for hull reinforcement packages has additional
+            // diminishing returns implemented. The mod value gets lowered by
+            // the amount of base resistance the hrp has.
+            if (this.grp === 'hr' &&
+              (name === 'kinres' || name === 'thermres' || name === 'explres')) {
+                modValue = modValue * (1 - result);
+            }
             result = result + modValue;
           } else if (modification.method === 'overwrite') {
             result = modValue;
-          } else if (name === 'shieldboost') {
+          } else if (name === 'shieldboost' || name === 'hullboost') {
             result = (1 + result) * (1 + modValue) - 1;
           } else {
             result = result * (1 + modValue);
@@ -561,7 +568,8 @@ export default class Module {
     let result = 0;
     if (this['maxmass']) {
       result = this['maxmass'];
-      if (result && modified) {
+      // max mass is only modified for non-shield boosters
+      if (result && modified && this.grp !== 'sg') {
         let mult = this.getModValue('optmass') / 10000;
         if (mult) { result = result * (1 + mult); }
       }

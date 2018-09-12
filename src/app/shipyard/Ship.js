@@ -937,7 +937,12 @@ export default class Ship {
     let epsChanged = n && n.getEps() || old && old.getEps();
     let hpsChanged = n && n.getHps() || old && old.getHps();
 
-    let armourChange = (slot === this.bulkheads) || (n && n.grp === 'hr') || (n && n.grp === 'ghrp') || (old && old.grp === 'hr') || (old && old.grp === 'ghrp') || (n && n.grp === 'mrp') || (old && old.grp === 'mrp') || (n && n.grp == 'mahr') || (old && old.grp == 'mahr');
+    let armourChange = (slot === this.bulkheads) ||
+      (n && n.grp === 'hr') || (old && old.grp === 'hr') ||
+      (n && n.grp === 'ghrp') || (old && old.grp === 'ghrp') ||
+      (n && n.grp == 'mahr') || (old && old.grp == 'mahr') ||
+      (n && n.grp === 'mrp') || (old && old.grp === 'mrp') ||
+      (n && n.grp === 'gmrp') || (old && old.grp == 'gmrp');
 
     let shieldChange = (n && n.grp === 'bsg') || (old && old.grp === 'bsg') || (n && n.grp === 'psg') || (old && old.grp === 'psg') || (n && n.grp === 'sg') || (old && old.grp === 'sg') || (n && n.grp === 'sb') || (old && old.grp === 'sb') || (old && old.grp === 'gsrp') || (n && n.grp === 'gsrp');
 
