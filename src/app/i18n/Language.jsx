@@ -60,12 +60,14 @@ export function getLanguage(langCode) {
     },
     translate,
     units: {
+      ang: '°',                         // Angle
       CR: <u>{translate('CR')}</u>,     // Credits
       kg: <u>{translate('kg')}</u>,     // Kilograms
       kgs: <u>{translate('kg/s')}</u>,  // Kilograms per second
       km: <u>{translate('km')}</u>,     // Kilometers
       Ls: <u>{translate('Ls')}</u>,     // Light Seconds
       LY: <u>{translate('LY')}</u>,     // Light Years
+      m: <u>{translate('m')}</u>,      // Meters
       MJ: <u>{translate('MJ')}</u>,     // Mega Joules
       'm/s': <u>{translate('m/s')}</u>, // Meters per second
       '°/s': <u>{translate('°/s')}</u>, // Degrees per second

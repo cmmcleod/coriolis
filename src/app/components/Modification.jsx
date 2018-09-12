@@ -59,9 +59,9 @@ export default class Modification extends TranslatedComponent {
 
   /**
    * Triggered when an update to slider value is finished i.e. when losing focus
-   * 
-   * pnellesen (24/05/2018): added value check below - this should prevent experimental effects from being recalculated 
-   * with each onBlur event, even when no change has actually been made to the field. 
+   *
+   * pnellesen (24/05/2018): added value check below - this should prevent experimental effects from being recalculated
+   * with each onBlur event, even when no change has actually been made to the field.
    */
   _updateFinished() {
     if (this.props.value != this.state.value) {
@@ -76,6 +76,7 @@ export default class Modification extends TranslatedComponent {
    */
   render() {
     let translate = this.context.language.translate;
+    let formats = this.context.language.formats;
     let { m, name } = this.props;
 
     if (name === 'damagedist') {
@@ -96,7 +97,34 @@ export default class Modification extends TranslatedComponent {
     return (
       <div onBlur={this._updateFinished.bind(this)} className={'cb'} key={name} ref={ modItem => this.props.modItems[name] = modItem }>
         <div className={'cb'}>{translate(name, m.grp)}{symbol}</div>
-        <NumberEditor className={'cb'} style={{ width: '90%', textAlign: 'center' }} step={0.01} stepModifier={1} decimals={2} value={this.state.value} onValueChange={this._updateValue.bind(this)} onKeyDown={ this.props.onKeyDown } />
+        <table style={{ width: '100%' }}>
+          <tbody>
+            <tr>
+              <td style={{ width: '50%' }}>
+                {/* thermload doesn't have any values set therefore we ignore it */}
+                <div>{this.props.name !== 'thermload' &&
+                  this.props.m.formatModifiedValue(
+                    this.props.name,
+                    this.context.language
+                  )
+                }</div>
+              </td>
+              <td style={{ width: '50%' }}>
+                {this.props.editable ?
+                  <NumberEditor className={'cb'} value={this.state.value}
+                    style={{ textAlign: 'center' }}
+                    step={0.01} stepModifier={1} decimals={2}
+                    onValueChange={this._updateValue.bind(this)}
+                    onKeyDown={ this.props.onKeyDown } /> :
+                  <div>
+                    <input type="text" value={formats.f2(this.state.value)}
+                      disabled style={{ textAlign: 'center', cursor: 'inherit' }}/>
+                  </div>
+                }
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     );
   }
