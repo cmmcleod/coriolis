@@ -136,11 +136,13 @@ export default class Module {
    * @return {Number} The value queried
    */
   _getValue(name, modified) {
+    let val;
     if (modified) {
-      return this._getModifiedValue(name);
+      val = this._getModifiedValue(name);
     } else {
-      return this[name];
+      val = this[name];
     }
+    return isNaN(val) ? null : val;
   }
 
   /**
@@ -195,7 +197,7 @@ export default class Module {
       }
     }
 
-    return result;
+    return isNaN(result) ? null : result;
   }
 
   /**

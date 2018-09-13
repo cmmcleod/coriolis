@@ -281,7 +281,7 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
     if (modifiers[i].Label.search('Resistance') >= 0) {
       value = (modifiers[i].Value * 100) - (modifiers[i].OriginalValue * 100);
     }
-    if (modifiers[i].Label.search('ShieldMultiplier') >= 0) {
+    if (modifiers[i].Label.search('ShieldMultiplier') >= 0 || modifiers[i].Label.search('DefenceModifierHealthMultiplier') >= 0) {
       value = ((100 + modifiers[i].Value) / (100 + modifiers[i].OriginalValue) * 100 - 100)  * 100;
     }
 
