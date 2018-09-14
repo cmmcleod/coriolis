@@ -52,7 +52,7 @@ export const STATS_FORMATING = {
   'mass': { 'format': 'round1', 'unit': 'T' },
   'maxfuel': { 'format': 'round1', 'unit': 'T' },
   'optmass': { 'format': 'int', 'unit': 'T' },
-  'optmul': { 'format': 'pct' },
+  'optmul': { 'format': 'pct', 'change': 'additive' },
   'pgen': { 'format': 'round1', 'unit': 'MW' },
   'piercing': { 'format': 'int' },
   'power': { 'format': 'round', 'unit': 'MW' },
