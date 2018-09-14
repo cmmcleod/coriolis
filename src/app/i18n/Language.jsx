@@ -73,6 +73,7 @@ export function getLanguage(langCode) {
       '°/s': <u>{translate('°/s')}</u>, // Degrees per second
       MW: <u>{translate('MW')}</u>,     // Mega Watts (same as Mega Joules per second)
       mps: <u>{translate('m/s')}</u>,    // Metres per second
+      pct: '%',                         // Percent
       ps: <u>{translate('/s')}</u>,           // per second
       pm: <u>{translate('/min')}</u>,         // per minute
       s: <u>{translate('secs')}</u>,         // Seconds
