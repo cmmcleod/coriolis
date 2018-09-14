@@ -7,6 +7,7 @@ import LZString from 'lz-string';
 import * as _ from 'lodash';
 import isEqual from 'lodash/lang';
 import { Ships, Modifications } from 'coriolis-data/dist';
+import { chain } from 'lodash';
 const zlib = require('zlib');
 
 const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs', 'fh', 'gfsb'];
@@ -1181,38 +1182,35 @@ export default class Ship {
 
     unladenMass += this.bulkheads.m.getMass();
 
-    for (let slotNum in this.standard) {
-      const slot = this.standard[slotNum];
-      if (slot.m) {
-        unladenMass += slot.m.getMass();
-        if (slot.m.grp === 'ft') {
-          fuelCapacity += slot.m.fuel;
-        }
-      }
-    }
+    let slots = this.standard.concat(this.internal, this.hardpoints);
+    // TODO: create class for slot and also add slot.get
+    // handle unladen mass
+    unladenMass += chain(slots)
+      .map(slot => slot.m ? slot.m.get('mass') : null)
+      .filter()
+      .reduce((sum, mass) => sum + mass)
+      .value();
 
-    for (let slotNum in this.internal) {
-      const slot = this.internal[slotNum];
-      if (slot.m) {
-        unladenMass += slot.m.getMass();
-        if (slot.m.grp === 'ft') {
-          fuelCapacity += slot.m.fuel;
-        } else if (slot.m.grp === 'cr') {
-          cargoCapacity += slot.m.cargo;
-        } else if (slot.m.grp.slice(0,2) === 'pc') {
-          if (slot.m.passengers) {
-            passengerCapacity += slot.m.passengers;
-          }
-        }
-      }
-    }
+    // handle fuel capacuty
+    fuelCapacity += chain(slots)
+      .map(slot => slot.m ? slot.m.get('fuel') : null)
+      .filter()
+      .reduce((sum, fuel) => sum + fuel)
+      .value();
 
-    for (let slotNum in this.hardpoints) {
-      const slot = this.hardpoints[slotNum];
-      if (slot.m) {
-        unladenMass += slot.m.getMass();
-      }
-    }
+    // handle cargo capacity
+    cargoCapacity += chain(slots)
+      .map(slot => slot.m ? slot.m.get('cargo') : null)
+      .filter()
+      .reduce((sum, cargo) => sum + cargo)
+      .value();
+
+      // handle passenger capacity
+    passengerCapacity += chain(slots)
+      .map(slot => slot.m ? slot.m.get('passengers') : null)
+      .filter()
+      .reduce((sum, passengers) => sum + passengers)
+      .value();
 
     // Update global stats
     this.unladenMass = unladenMass;
