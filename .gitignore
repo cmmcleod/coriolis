@@ -10,3 +10,4 @@ env
 .project
 .vscode/
 docs/
+package-lock.json
