@@ -76,6 +76,15 @@ export default class Module {
       }
     }
 
+    // Resistance modding for hull reinforcement packages has additional
+    // diminishing returns implemented. The mod value gets lowered by
+    // the amount of base resistance the hrp has.
+    if (!isNaN(result) && this.grp === 'hr' &&
+      (name === 'kinres' || name === 'thermres' || name === 'explres')) {
+        let baseRes = this[name];
+        result = result * (1 - baseRes);
+    }
+
     // Sanitise the resultant value to 4dp equivalent
     return isNaN(result) ? result : Math.round(result);
   }
@@ -245,13 +254,6 @@ export default class Module {
 
           if (result !== undefined) {
             if (modification.method === 'additive') {
-              // Resistance modding for hull reinforcement packages has additional
-              // diminishing returns implemented. The mod value gets lowered by
-              // the amount of base resistance the hrp has.
-              if (this.grp === 'hr' &&
-                (name === 'kinres' || name === 'thermres' || name === 'explres')) {
-                  modValue = modValue * (1 - result);
-              }
               result = result + modValue;
             } else if (modification.method === 'overwrite') {
               result = modValue;
