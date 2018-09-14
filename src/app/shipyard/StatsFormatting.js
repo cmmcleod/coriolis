@@ -22,7 +22,7 @@ export const SI_PREFIXES = {
   'y': 1e-24  // Yokto
 };
 
-export const STATS_FORMATING = {
+export const STATS_FORMATTING = {
   'ammo': { 'format': 'int', },
   'boot': { 'format': 'int', 'unit': 'secs' },
   'brokenregen': { 'format': 'round1', 'unit': 'ps' },

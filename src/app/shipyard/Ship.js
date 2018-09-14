@@ -1191,7 +1191,7 @@ export default class Ship {
       .reduce((sum, mass) => sum + mass)
       .value();
 
-    // handle fuel capacuty
+    // handle fuel capacity
     fuelCapacity += chain(slots)
       .map(slot => slot.m ? slot.m.get('fuel') : null)
       .filter()

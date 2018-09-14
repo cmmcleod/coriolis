@@ -1,7 +1,7 @@
 import * as ModuleUtils from './ModuleUtils';
 import { Modifications } from 'coriolis-data/dist';
 import React from 'react';
-import { STATS_FORMATING, SI_PREFIXES } from './StatsFormating';
+import { STATS_FORMATTING, SI_PREFIXES } from './StatsFormatting';
 
 /**
  * Module - active module in a ship's buildout
@@ -191,9 +191,9 @@ export default class Module {
    * @return {Number} Value for given stat
    */
   getPretty(name, modified = true, places = 2) {
-    const formatingOptions = STATS_FORMATING[name];
+    const formattingOptions = STATS_FORMATTING[name];
     let val = this.get(name, modified) || 0;
-    if (formatingOptions && formatingOptions.format.startsWith('pct')) {
+    if (formattingOptions && formattingOptions.format.startsWith('pct')) {
       return 100 * val;
     }
     // Round to two decimal places
@@ -209,8 +209,8 @@ export default class Module {
    * @param {Boolean} valueIsWithSpecial True when value includes an special
    */
   setPretty(name, value, valueIsWithSpecial) {
-    const formatingOptions = STATS_FORMATING[name];
-    if (formatingOptions && formatingOptions.format.startsWith('pct')) {
+    const formattingOptions = STATS_FORMATTING[name];
+    if (formattingOptions && formattingOptions.format.startsWith('pct')) {
       value = value / 100;
     }
     this.set(name, value, valueIsWithSpecial);
@@ -275,7 +275,7 @@ export default class Module {
    * Creates a react element that pretty-prints the queried module value
    * @param {String} name     The name of the value
    * @param {object} language Language object holding formats and util functions
-   * @param {String} [unit]   If unit is given not the stat's default formating
+   * @param {String} [unit]   If unit is given not the stat's default formatting
    *                          unit will be applied but the given one taking into
    *                          account SI-prefixes such as kilo, milli, etc.
    * @param {Number} [val]    If val is given, not the modules value but given
@@ -283,10 +283,10 @@ export default class Module {
    * @returns {React.Component} The formated value as component
    */
   formatModifiedValue(name, language, unit, val) {
-    const formatingOptions = STATS_FORMATING[name];
+    const formattingOptions = STATS_FORMATTING[name];
     if (val === undefined) {
-      if (formatingOptions && formatingOptions.synthetic) {
-        val = (this[formatingOptions.synthetic]).call(this, true);
+      if (formattingOptions && formattingOptions.synthetic) {
+        val = (this[formattingOptions.synthetic]).call(this, true);
       } else {
         val = this._getModifiedValue(name);
       }
@@ -294,7 +294,7 @@ export default class Module {
 
     val = val || 0;
 
-    if (!formatingOptions) {
+    if (!formattingOptions) {
       return (
         <span>
           {val}
@@ -302,9 +302,9 @@ export default class Module {
       );
     }
 
-    let { format } = formatingOptions;
-    unit = unit || formatingOptions.unit;
-    let storedUnit = formatingOptions.storedUnit || formatingOptions.unit;
+    let { format } = formattingOptions;
+    unit = unit || formattingOptions.unit;
+    let storedUnit = formattingOptions.storedUnit || formattingOptions.unit;
     let factor = 1;
     if (storedUnit && storedUnit !== unit) {
       // Find out si prefix of storedUnit and unit as si prefixes can only take
@@ -328,7 +328,7 @@ export default class Module {
     return (
       <span>
         {val}
-        {formatingOptions.unit && language.units[formatingOptions.unit]}
+        {formattingOptions.unit && language.units[formattingOptions.unit]}
       </span>
     );
   }
@@ -343,12 +343,12 @@ export default class Module {
    * @return {Number} Change rate of the stat according to formatting options
    */
   getChange(name, val) {
-    const formatingOptions = STATS_FORMATING[name];
+    const formattingOptions = STATS_FORMATTING[name];
 
     if (isNaN(val)) {
       // Calculate the percentage change for an abstract value
-      if (formatingOptions && formatingOptions.synthetic) {
-        const statGetter = this[formatingOptions.synthetic];
+      if (formattingOptions && formattingOptions.synthetic) {
+        const statGetter = this[formattingOptions.synthetic];
         let unmodifiedStat = statGetter.call(this, false);
         let modifiedStat = statGetter.call(this, true);
         result = (modifiedStat / unmodifiedStat - 1)  * 10000;
@@ -357,13 +357,13 @@ export default class Module {
       }
     }
 
-    if (formatingOptions && formatingOptions.change) {
-      let changeFormating = formatingOptions.change;
+    if (formattingOptions && formattingOptions.change) {
+      let changeFormatting = formattingOptions.change;
       let baseVal = this[name];
       let absVal = this._getModifiedValue(name);
-      if (changeFormating === 'additive') {
+      if (changeFormatting === 'additive') {
         val = absVal - baseVal;
-      } else if (changeFormating === 'multiplicative') {
+      } else if (changeFormatting === 'multiplicative') {
         val = absVal / baseVal - 1;
       }
       val *= 10000;
@@ -377,15 +377,15 @@ export default class Module {
    * @return {String} Unit key
    */
   getUnitFor(name) {
-    const formatingOptions = STATS_FORMATING[name];
-    if (!formatingOptions || !formatingOptions.unit) {
-      if (formatingOptions.format && formatingOptions.format.startsWith('pct')) {
+    const formattingOptions = STATS_FORMATTING[name];
+    if (!formattingOptions || !formattingOptions.unit) {
+      if (formattingOptions.format && formattingOptions.format.startsWith('pct')) {
         return 'pct';
       }
       return '';
     }
 
-    return formatingOptions.unit;
+    return formattingOptions.unit;
   }
 
   /**
@@ -396,11 +396,11 @@ export default class Module {
    * @return {String} Unit key
    */
   getStoredUnitFor(name) {
-    const formatingOptions = STATS_FORMATING[name];
-    if (!formatingOptions || !formatingOptions.storedUnit) {
+    const formattingOptions = STATS_FORMATTING[name];
+    if (!formattingOptions || !formattingOptions.storedUnit) {
       return this.getUnitFor(name);
     }
-    return formatingOptions.storedUnit;
+    return formattingOptions.storedUnit;
   }
 
   /**
