@@ -73,11 +73,14 @@ export default class Modification extends TranslatedComponent {
     }
 
     return (
-      <div onBlur={this._updateFinished.bind(this)} className={'cb'} key={name} ref={ modItem => this.props.modItems[name] = modItem }>
-        <div className={'cb'}>{translate(name, m.grp)}</div>
+      <div onBlur={this._updateFinished.bind(this)} key={name}
+        className={cn('cb', 'modification-container')}
+        ref={ modItem => this.props.modItems[name] = modItem }>
+        <span className={'cb'}>{translate(name, m.grp)}</span>
+        <span className={'header-adjuster'}></span>
         <table style={{ width: '100%' }}>
           <tbody>
-            <tr className={'modification-container'}>
+            <tr>
               <td className={'input-container'}>
                 <span>
                   {this.props.editable ?
