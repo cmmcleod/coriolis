@@ -40,6 +40,7 @@ export default class Modification extends TranslatedComponent {
    */
   _updateValue(value) {
     let { m, name, ship } = this.props;
+    value = Math.max(Math.min(value, 50000), -50000);
     ship.setModification(m, name, value, true, true);
     this.setState({ value });
   }
