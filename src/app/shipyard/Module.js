@@ -95,7 +95,13 @@ export default class Module {
       if (modifierActions && modifierActions[name]) {
         // This special effect modifies the value being set, so we need to revert it prior to storing the value
         const modification = Modifications.modifications[name];
-        if (modification.method === 'additive') {
+        if (name === 'explres' || name === 'kinres' || name === 'thermres' || name === 'causres') {
+          // Resistance modifications in itself are additive but their
+          // experimentals are applied multiplicatively therefor we must handle
+          // them differently here (cf. documentation in getModValue).
+          let baseMult = (this[name] ? 1 - this[name] : 1);
+          value = ((baseMult - value / 10000) / (1 - modifierActions[name] / 100) - baseMult) * -10000;
+        } else if (modification.method === 'additive') {
           value = value - modifierActions[name];
         } else if (modification.method === 'overwrite') {
           value = null;
