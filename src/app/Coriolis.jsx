@@ -331,7 +331,7 @@ export default class Coriolis extends React.Component {
           else
             console.log('Storage may be cleared by the UA under storage pressure.');
         });
-      }
+      })
     }
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
