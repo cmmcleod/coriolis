@@ -219,7 +219,7 @@ export default class ModificationsMenu extends TranslatedComponent {
         this.lastNeId = modName;
         (editable ? modifiableModifications : modifications).push(
           <Modification key={ key } ship={ ship } m={ m }
-            value={m.getModValue(modName) / 100 || 0} modItems={this.modItems}
+            value={m.getPretty(modName) || 0} modItems={this.modItems}
             onChange={onChange} onKeyDown={this._keyDown} name={modName}
             editable={editable} handleModChange = {this._handleModChange} />
         );

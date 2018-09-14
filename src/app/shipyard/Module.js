@@ -44,13 +44,7 @@ export default class Module {
   getModValue(name, raw) {
     let result = this.mods  && this.mods[name] ? this.mods[name] : null;
 
-    // Calculate the percentage change for a synthetic value
-    if (STATS_FORMATING[name] && STATS_FORMATING[name].synthetic) {
-      const statGetter = this[STATS_FORMATING[name].synthetic];
-      let unmodifiedStat = statGetter.call(this, false);
-      let modifiedStat = statGetter.call(this, true);
-      result = (modifiedStat / unmodifiedStat - 1)  * 10000;
-    } else if ((!raw) && this.blueprint && this.blueprint.special) {
+    if ((!raw) && this.blueprint && this.blueprint.special) {
       // This module has a special effect, see if we need to alter our returned value
       const modifierActions = Modifications.modifierActions[this.blueprint.special.edname];
       if (modifierActions && modifierActions[name]) {
@@ -337,6 +331,76 @@ export default class Module {
         {formatingOptions.unit && language.units[formatingOptions.unit]}
       </span>
     );
+  }
+
+  /**
+   * Returns the change rate in percentage of a given stat. Change rate can
+   * differ from return value of {@see Module#getModValue} when formatting
+   * options are given.
+   * @param {String} name Name of the value to get the change for
+   * @param {Number} [val] If given not the modules value but this one will be
+   *                       taken as new value
+   * @return {Number} Change rate of the stat according to formatting options
+   */
+  getChange(name, val) {
+    const formatingOptions = STATS_FORMATING[name];
+
+    if (isNaN(val)) {
+      // Calculate the percentage change for an abstract value
+      if (formatingOptions && formatingOptions.synthetic) {
+        const statGetter = this[formatingOptions.synthetic];
+        let unmodifiedStat = statGetter.call(this, false);
+        let modifiedStat = statGetter.call(this, true);
+        result = (modifiedStat / unmodifiedStat - 1)  * 10000;
+      } else {
+        val = this.getModValue(name);
+      }
+    }
+
+    if (formatingOptions && formatingOptions.change) {
+      let changeFormating = formatingOptions.change;
+      let baseVal = this[name];
+      let absVal = this._getModifiedValue(name);
+      if (changeFormating === 'additive') {
+        val = absVal - baseVal;
+      } else if (changeFormating === 'multiplicative') {
+        val = absVal / baseVal - 1;
+      }
+      val *= 10000;
+    }
+    return val;
+  }
+
+  /**
+   * Returns the the unit key for a given stat. For example '%' for 'kinres'.
+   * @param {String} name Name of the stat
+   * @return {String} Unit key
+   */
+  getUnitFor(name) {
+    const formatingOptions = STATS_FORMATING[name];
+    if (!formatingOptions || !formatingOptions.unit) {
+      if (formatingOptions.format && formatingOptions.format.startsWith('pct')) {
+        return 'pct';
+      }
+      return '';
+    }
+
+    return formatingOptions.unit;
+  }
+
+  /**
+   * Same as {@see Module#getUnitFor} but returns the unit in which the stat is
+   * stored. For example 'm' for 'range' as opposed to 'km' which is the unit
+   * 'range' is usually displayed.
+   * @param {String} name Name of the stat
+   * @return {String} Unit key
+   */
+  getStoredUnitFor(name) {
+    const formatingOptions = STATS_FORMATING[name];
+    if (!formatingOptions || !formatingOptions.storedUnit) {
+      return this.getUnitFor(name);
+    }
+    return formatingOptions.storedUnit;
   }
 
   /**
