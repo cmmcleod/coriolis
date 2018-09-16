@@ -361,7 +361,7 @@ export default class Module {
         const statGetter = this[formattingOptions.synthetic];
         let unmodifiedStat = statGetter.call(this, false);
         let modifiedStat = statGetter.call(this, true);
-        result = (modifiedStat / unmodifiedStat - 1)  * 10000;
+        val = (modifiedStat / unmodifiedStat - 1)  * 10000;
       } else {
         val = this.getModValue(name);
       }
