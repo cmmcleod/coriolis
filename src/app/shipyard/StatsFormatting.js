@@ -22,7 +22,7 @@ export const SI_PREFIXES = {
   'y': 1e-24  // Yokto
 };
 
-export const STATS_FORMATING = {
+export const STATS_FORMATTING = {
   'ammo': { 'format': 'int', },
   'boot': { 'format': 'int', 'unit': 'secs' },
   'brokenregen': { 'format': 'round1', 'unit': 'ps' },
@@ -44,7 +44,7 @@ export const STATS_FORMATING = {
   'falloff': { 'format': 'round', 'unit': 'km', 'storedUnit': 'm' },
   'fallofffromrange': { 'format': 'round', 'unit': 'km', 'storedUnit': 'm', 'synthetic': 'getFalloff' },
   'hps': { 'format': 'round', 'units': 'ps', 'synthetic': 'getHps' },
-  'hullboost': { 'format': 'pct1' },
+  'hullboost': { 'format': 'pct1', 'change': 'additive' },
   'hullreinforcement': { 'format': 'int' },
   'integrity': { 'format': 'round1' },
   'jitter': { 'format': 'round', 'unit': 'ang' },
@@ -52,7 +52,7 @@ export const STATS_FORMATING = {
   'mass': { 'format': 'round1', 'unit': 'T' },
   'maxfuel': { 'format': 'round1', 'unit': 'T' },
   'optmass': { 'format': 'int', 'unit': 'T' },
-  'optmul': { 'format': 'pct' },
+  'optmul': { 'format': 'pct', 'change': 'additive' },
   'pgen': { 'format': 'round1', 'unit': 'MW' },
   'piercing': { 'format': 'int' },
   'power': { 'format': 'round', 'unit': 'MW' },
@@ -68,7 +68,7 @@ export const STATS_FORMATING = {
   'sdps': { 'format': 'round1', 'units': 'ps', 'synthetic': 'getSDps' },
   'shield': { 'format': 'int', 'unit': 'MJ' },
   'shieldaddition': { 'format': 'round1', 'unit': 'MJ' },
-  'shieldboost': { 'format': 'pct1' },
+  'shieldboost': { 'format': 'pct1', 'change': 'additive' },
   'shieldreinforcement': { 'format': 'round1', 'unit': 'MJ' },
   'shotspeed': { 'format': 'int', 'unit': 'm/s' },
   'spinup': { 'format': 'round1', 'unit': 's' },

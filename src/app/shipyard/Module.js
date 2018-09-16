@@ -1,7 +1,7 @@
 import * as ModuleUtils from './ModuleUtils';
 import { Modifications } from 'coriolis-data/dist';
 import React from 'react';
-import { STATS_FORMATING, SI_PREFIXES } from './StatsFormating';
+import { STATS_FORMATTING, SI_PREFIXES } from './StatsFormatting';
 
 /**
  * Module - active module in a ship's buildout
@@ -44,13 +44,7 @@ export default class Module {
   getModValue(name, raw) {
     let result = this.mods  && this.mods[name] ? this.mods[name] : null;
 
-    // Calculate the percentage change for a synthetic value
-    if (STATS_FORMATING[name] && STATS_FORMATING[name].synthetic) {
-      const statGetter = this[STATS_FORMATING[name].synthetic];
-      let unmodifiedStat = statGetter.call(this, false);
-      let modifiedStat = statGetter.call(this, true);
-      result = (modifiedStat / unmodifiedStat - 1)  * 10000;
-    } else if ((!raw) && this.blueprint && this.blueprint.special) {
+    if ((!raw) && this.blueprint && this.blueprint.special) {
       // This module has a special effect, see if we need to alter our returned value
       const modifierActions = Modifications.modifierActions[this.blueprint.special.edname];
       if (modifierActions && modifierActions[name]) {
@@ -80,6 +74,15 @@ export default class Module {
           result = (((1 + result / multiplier) * (1 + mod)) - 1) * multiplier;
         }
       }
+    }
+
+    // Resistance modding for hull reinforcement packages has additional
+    // diminishing returns implemented. The mod value gets lowered by
+    // the amount of base resistance the hrp has.
+    if (!isNaN(result) && this.grp === 'hr' &&
+      (name === 'kinres' || name === 'thermres' || name === 'explres')) {
+        let baseRes = this[name];
+        result = result * (1 - baseRes);
     }
 
     // Sanitise the resultant value to 4dp equivalent
@@ -141,7 +144,7 @@ export default class Module {
    * @param {Number} modified Whether to return the raw or modified value
    * @return {Number} The value queried
    */
-  _getValue(name, modified) {
+  get(name, modified = true) {
     let val;
     if (modified) {
       val = this._getModifiedValue(name);
@@ -149,6 +152,85 @@ export default class Module {
       val = this[name];
     }
     return isNaN(val) ? null : val;
+  }
+
+  /**
+   * Sets mod values such that the overall result for the given stat equals value
+   * @param {String} name The name of the modification
+   * @param {Number} value The value to effectively set
+   * @param {Boolean} valueIsWithSpecial True when value includes an special
+   *                                     effects
+   */
+  set(name, value, valueIsWithSpecial) {
+    const modification = Modifications.modifications[name];
+    if (!modification || isNaN(value)) {
+      // TODO: throw?
+      return;
+    }
+
+    let baseValue = this[name];
+    let modValue = 0;
+    if (modification.method === 'overwrite') {
+      modValue = value;
+    } else if (modification.method === 'additive') {
+      // additive modifications can be given without a base value
+      if (!baseValue) {
+        baseValue = 0;
+      }
+      modValue = value - baseValue;
+      if (this.grp === 'hr' &&
+        (name === 'kinres' || name === 'thermres' || name === 'explres')) {
+          modValue = modValue / (1 - baseValue);
+      }
+    } else if (name === 'shieldboost' || name === 'hullboost') {
+      modValue = (1 + value) / (1 + baseValue) - 1;
+    } else { // multiplicative
+      modValue = value / baseValue - 1;
+    }
+
+    if (modification.type === 'percentage') {
+      modValue = modValue * 10000;
+    } else if (modification.type === 'numeric' && name !== 'burst' &&
+      name !== 'burstrof') {
+        modValue = modValue * 100;
+    }
+
+    this.setModValue(name, modValue, valueIsWithSpecial);
+  }
+
+  /**
+   * Returns a value for a given modification in pretty format, i.e. percentages
+   * are returned as 90 not as 0.9.
+   * @param {String} name Name of the modification to get the value for
+   * @param {Boolean} [modified = true] If set to false, the raw value of the
+   *                                    raw value of the stat is returned
+   * @param {Number} [places = 2] Number of decimal places to round
+   * @return {Number} Value for given stat
+   */
+  getPretty(name, modified = true, places = 2) {
+    const formattingOptions = STATS_FORMATTING[name];
+    let val = this.get(name, modified) || 0;
+    if (formattingOptions && formattingOptions.format.startsWith('pct')) {
+      return 100 * val;
+    }
+    // Round to two decimal places
+    let precisionMult = 10 ** places;
+    return Math.round(val * precisionMult) / precisionMult;
+  }
+
+  /**
+   * Same as {@see Module#set} but values expects value that are percentages to
+   * come in format 90 as opposed to 0.9.
+   * @param {String} name The name of the modification
+   * @param {Number} value The value to effectively set
+   * @param {Boolean} valueIsWithSpecial True when value includes an special
+   */
+  setPretty(name, value, valueIsWithSpecial) {
+    const formattingOptions = STATS_FORMATTING[name];
+    if (formattingOptions && formattingOptions.format.startsWith('pct')) {
+      value = value / 100;
+    }
+    this.set(name, value, valueIsWithSpecial);
   }
 
   /**
@@ -172,34 +254,27 @@ export default class Module {
           modValue = this.getModValue(name);
         }
         if (modValue) {
-        if (!result && modification.method === 'additive') {
-          // If the modification is additive and no value is given by default we
-          // start at zero
-          result = 0;
-        }
-
-        if (result !== undefined) {
-          if (modification.method === 'additive') {
-            // Resistance modding for hull reinforcement packages has additional
-            // diminishing returns implemented. The mod value gets lowered by
-            // the amount of base resistance the hrp has.
-            if (this.grp === 'hr' &&
-              (name === 'kinres' || name === 'thermres' || name === 'explres')) {
-                modValue = modValue * (1 - result);
-            }
-            result = result + modValue;
-          } else if (modification.method === 'overwrite') {
-            result = modValue;
-          } else if (name === 'shieldboost' || name === 'hullboost') {
-            result = (1 + result) * (1 + modValue) - 1;
-          } else {
-            result = result * (1 + modValue);
+          if (!result && modification.method === 'additive') {
+            // If the modification is additive and no value is given by default we
+            // start at zero
+            result = 0;
           }
-        } else if (name === 'burst' || name === 'burstrof') {
-          // Burst and burst rate of fire are special, as it can not exist but
-          // have a modification
-          result = modValue / 100;
-      }
+
+          if (result !== undefined) {
+            if (modification.method === 'additive') {
+              result = result + modValue;
+            } else if (modification.method === 'overwrite') {
+              result = modValue;
+            } else if (name === 'shieldboost' || name === 'hullboost') {
+              result = (1 + result) * (1 + modValue) - 1;
+            } else {
+              result = result * (1 + modValue);
+            }
+          } else if (name === 'burst' || name === 'burstrof') {
+            // Burst and burst rate of fire are special, as it can not exist but
+            // have a modification
+            result = modValue / 100;
+        }
       }
     }
 
@@ -210,7 +285,7 @@ export default class Module {
    * Creates a react element that pretty-prints the queried module value
    * @param {String} name     The name of the value
    * @param {object} language Language object holding formats and util functions
-   * @param {String} [unit]   If unit is given not the stat's default formating
+   * @param {String} [unit]   If unit is given not the stat's default formatting
    *                          unit will be applied but the given one taking into
    *                          account SI-prefixes such as kilo, milli, etc.
    * @param {Number} [val]    If val is given, not the modules value but given
@@ -218,10 +293,10 @@ export default class Module {
    * @returns {React.Component} The formated value as component
    */
   formatModifiedValue(name, language, unit, val) {
-    const formatingOptions = STATS_FORMATING[name];
+    const formattingOptions = STATS_FORMATTING[name];
     if (val === undefined) {
-      if (formatingOptions && formatingOptions.synthetic) {
-        val = (this[formatingOptions.synthetic]).call(this, true);
+      if (formattingOptions && formattingOptions.synthetic) {
+        val = (this[formattingOptions.synthetic]).call(this, true);
       } else {
         val = this._getModifiedValue(name);
       }
@@ -229,7 +304,7 @@ export default class Module {
 
     val = val || 0;
 
-    if (!formatingOptions) {
+    if (!formattingOptions) {
       return (
         <span>
           {val}
@@ -237,9 +312,9 @@ export default class Module {
       );
     }
 
-    let { format } = formatingOptions;
-    unit = unit || formatingOptions.unit;
-    let storedUnit = formatingOptions.storedUnit || formatingOptions.unit;
+    let { format } = formattingOptions;
+    unit = unit || formattingOptions.unit;
+    let storedUnit = formattingOptions.storedUnit || formattingOptions.unit;
     let factor = 1;
     if (storedUnit && storedUnit !== unit) {
       // Find out si prefix of storedUnit and unit as si prefixes can only take
@@ -263,9 +338,79 @@ export default class Module {
     return (
       <span>
         {val}
-        {formatingOptions.unit && language.units[formatingOptions.unit]}
+        {formattingOptions.unit && language.units[formattingOptions.unit]}
       </span>
     );
+  }
+
+  /**
+   * Returns the change rate in percentage of a given stat. Change rate can
+   * differ from return value of {@see Module#getModValue} when formatting
+   * options are given.
+   * @param {String} name Name of the value to get the change for
+   * @param {Number} [val] If given not the modules value but this one will be
+   *                       taken as new value
+   * @return {Number} Change rate of the stat according to formatting options
+   */
+  getChange(name, val) {
+    const formattingOptions = STATS_FORMATTING[name];
+
+    if (isNaN(val)) {
+      // Calculate the percentage change for an abstract value
+      if (formattingOptions && formattingOptions.synthetic) {
+        const statGetter = this[formattingOptions.synthetic];
+        let unmodifiedStat = statGetter.call(this, false);
+        let modifiedStat = statGetter.call(this, true);
+        result = (modifiedStat / unmodifiedStat - 1)  * 10000;
+      } else {
+        val = this.getModValue(name);
+      }
+    }
+
+    if (formattingOptions && formattingOptions.change) {
+      let changeFormatting = formattingOptions.change;
+      let baseVal = this[name];
+      let absVal = this._getModifiedValue(name);
+      if (changeFormatting === 'additive') {
+        val = absVal - baseVal;
+      } else if (changeFormatting === 'multiplicative') {
+        val = absVal / baseVal - 1;
+      }
+      val *= 10000;
+    }
+    return val;
+  }
+
+  /**
+   * Returns the the unit key for a given stat. For example '%' for 'kinres'.
+   * @param {String} name Name of the stat
+   * @return {String} Unit key
+   */
+  getUnitFor(name) {
+    const formattingOptions = STATS_FORMATTING[name];
+    if (!formattingOptions || !formattingOptions.unit) {
+      if (formattingOptions.format && formattingOptions.format.startsWith('pct')) {
+        return 'pct';
+      }
+      return '';
+    }
+
+    return formattingOptions.unit;
+  }
+
+  /**
+   * Same as {@see Module#getUnitFor} but returns the unit in which the stat is
+   * stored. For example 'm' for 'range' as opposed to 'km' which is the unit
+   * 'range' is usually displayed.
+   * @param {String} name Name of the stat
+   * @return {String} Unit key
+   */
+  getStoredUnitFor(name) {
+    const formattingOptions = STATS_FORMATTING[name];
+    if (!formattingOptions || !formattingOptions.storedUnit) {
+      return this.getUnitFor(name);
+    }
+    return formattingOptions.storedUnit;
   }
 
   /**
@@ -274,7 +419,7 @@ export default class Module {
    * @return {Number} the power generation of this module
    */
   getPowerGeneration(modified = true) {
-    return this._getValue('pgen', modified);
+    return this.get('pgen', modified);
   }
 
   /**
@@ -283,7 +428,7 @@ export default class Module {
    * @return {Number} the power usage of this module
    */
   getPowerUsage(modified = true) {
-    return this._getValue('power', modified);
+    return this.get('power', modified);
   }
 
   /**
@@ -292,7 +437,7 @@ export default class Module {
    * @return {Number} the integrity of this module
    */
   getIntegrity(modified = true) {
-    return this._getValue('integrity', modified);
+    return this.get('integrity', modified);
   }
 
   /**
@@ -301,7 +446,7 @@ export default class Module {
    * @return {Number} the mass of this module
    */
   getMass(modified = true) {
-    return this._getValue('mass', modified);
+    return this.get('mass', modified);
   }
 
   /**
@@ -310,7 +455,7 @@ export default class Module {
    * @return {Number} the thermal efficiency of this module
    */
   getThermalEfficiency(modified = true) {
-    return this._getValue('eff', modified);
+    return this.get('eff', modified);
   }
 
   /**
@@ -319,7 +464,7 @@ export default class Module {
    * @return {Number} the maximum fuel per jump of this module
    */
   getMaxFuelPerJump(modified = true) {
-    return this._getValue('maxfuel', modified);
+    return this.get('maxfuel', modified);
   }
 
   /**
@@ -328,7 +473,7 @@ export default class Module {
    * @return {Number} the systems capacity of this module
    */
   getSystemsCapacity(modified = true) {
-    return this._getValue('syscap', modified);
+    return this.get('syscap', modified);
   }
 
   /**
@@ -337,7 +482,7 @@ export default class Module {
    * @return {Number} the engines capacity of this module
    */
   getEnginesCapacity(modified = true) {
-    return this._getValue('engcap', modified);
+    return this.get('engcap', modified);
   }
 
   /**
@@ -346,7 +491,7 @@ export default class Module {
    * @return {Number} the weapons capacity of this module
    */
   getWeaponsCapacity(modified = true) {
-    return this._getValue('wepcap', modified);
+    return this.get('wepcap', modified);
   }
 
   /**
@@ -355,7 +500,7 @@ export default class Module {
    * @return {Number} the systems recharge rate of this module
    */
   getSystemsRechargeRate(modified = true) {
-    return this._getValue('sysrate', modified);
+    return this.get('sysrate', modified);
   }
 
   /**
@@ -364,7 +509,7 @@ export default class Module {
    * @return {Number} the engines recharge rate of this module
    */
   getEnginesRechargeRate(modified = true) {
-    return this._getValue('engrate', modified);
+    return this.get('engrate', modified);
   }
 
   /**
@@ -373,7 +518,7 @@ export default class Module {
    * @return {Number} the weapons recharge rate of this module
    */
   getWeaponsRechargeRate(modified = true) {
-    return this._getValue('weprate', modified);
+    return this.get('weprate', modified);
   }
 
   /**
@@ -382,7 +527,7 @@ export default class Module {
    * @return {Number} the kinetic resistance of this module
    */
   getKineticResistance(modified = true) {
-    return this._getValue('kinres', modified);
+    return this.get('kinres', modified);
   }
 
   /**
@@ -391,7 +536,7 @@ export default class Module {
    * @return {Number} the thermal resistance of this module
    */
   getThermalResistance(modified = true) {
-    return this._getValue('thermres', modified);
+    return this.get('thermres', modified);
   }
 
   /**
@@ -400,7 +545,7 @@ export default class Module {
    * @return {Number} the explosive resistance of this module
    */
   getExplosiveResistance(modified = true) {
-    return this._getValue('explres', modified);
+    return this.get('explres', modified);
   }
 
   /**
@@ -409,7 +554,7 @@ export default class Module {
    * @return {Number} the caustic resistance of this module
    */
   getCausticResistance(modified = true) {
-    return this._getValue('causres', modified);
+    return this.get('causres', modified);
   }
 
   /**
@@ -418,7 +563,7 @@ export default class Module {
    * @return {Number} the regeneration rate of this module
    */
   getRegenerationRate(modified = true) {
-    return this._getValue('regen', modified);
+    return this.get('regen', modified);
   }
 
   /**
@@ -427,7 +572,7 @@ export default class Module {
    * @return {Number} the broken regeneration rate of this module
    */
   getBrokenRegenerationRate(modified = true) {
-    return this._getValue('brokenregen', modified);
+    return this.get('brokenregen', modified);
   }
 
   /**
@@ -436,7 +581,7 @@ export default class Module {
    * @return {Number} the range rate of this module
    */
   getRange(modified = true) {
-    return this._getValue('range', modified);
+    return this.get('range', modified);
   }
 
   /**
@@ -447,7 +592,7 @@ export default class Module {
   getFalloff(modified = true) {
     if (!modified) {
       const range = this.getRange(false);
-      const falloff = this._getValue('falloff', false);
+      const falloff = this.get('falloff', false);
       return (falloff > range ? range : falloff);
     }
 
@@ -473,7 +618,7 @@ export default class Module {
    * @return {Number} the range of this module
    */
   getRangeT(modified = true) {
-    return this._getValue('ranget', modified);
+    return this.get('ranget', modified);
   }
 
   /**
@@ -482,7 +627,7 @@ export default class Module {
    * @return {Number} the scan time of this module
    */
   getScanTime(modified = true) {
-    return this._getValue('scantime', modified);
+    return this.get('scantime', modified);
   }
 
   /**
@@ -491,7 +636,7 @@ export default class Module {
    * @return {Number} the capture arc of this module
    */
   getCaptureArc(modified = true) {
-    return this._getValue('arc', modified);
+    return this.get('arc', modified);
   }
 
   /**
@@ -500,7 +645,7 @@ export default class Module {
    * @return {Number} the hull reinforcement of this module
    */
   getHullReinforcement(modified = true) {
-    return this._getValue('hullreinforcement', modified);
+    return this.get('hullreinforcement', modified);
   }
 
   /**
@@ -509,7 +654,7 @@ export default class Module {
    * @return {Number} the protection of this module
    */
   getProtection(modified = true) {
-    return this._getValue('protection', modified);
+    return this.get('protection', modified);
   }
 
   /**
@@ -518,7 +663,7 @@ export default class Module {
    * @return {Number} the delay of this module
    */
   getDelay(modified = true) {
-    return this._getValue('delay', modified);
+    return this.get('delay', modified);
   }
 
   /**
@@ -527,7 +672,7 @@ export default class Module {
    * @return {Number} the duration of this module
    */
   getDuration(modified = true) {
-    return this._getValue('duration', modified);
+    return this.get('duration', modified);
   }
 
   /**
@@ -536,7 +681,7 @@ export default class Module {
    * @return {Number} the shield boost of this module
    */
   getShieldBoost(modified = true) {
-    return this._getValue('shieldboost', modified);
+    return this.get('shieldboost', modified);
   }
 
   /**
@@ -563,7 +708,7 @@ export default class Module {
    * @return {Number} the optimum mass of this module
    */
   getOptMass(modified = true) {
-    return this._getValue('optmass', modified);
+    return this.get('optmass', modified);
   }
 
   /**
@@ -654,7 +799,7 @@ export default class Module {
    * @return {Number} the damage of this module
    */
   getDamage(modified = true) {
-    return this._getValue('damage', modified);
+    return this.get('damage', modified);
   }
 
   /**
@@ -663,7 +808,7 @@ export default class Module {
    * @return {Number} the distributor draw of this module
    */
   getDistDraw(modified = true) {
-    return this._getValue('distdraw', modified);
+    return this.get('distdraw', modified);
   }
 
   /**
@@ -672,7 +817,7 @@ export default class Module {
    * @return {Number} the thermal load of this module
    */
   getThermalLoad(modified = true) {
-    return this._getValue('thermload', modified);
+    return this.get('thermload', modified);
   }
 
   /**
@@ -681,7 +826,7 @@ export default class Module {
    * @return {Number} the rounds per shot of this module
    */
   getRoundsPerShot(modified = true) {
-    return this._getValue('roundspershot', modified);
+    return this.get('roundspershot', modified);
   }
 
   /**
@@ -763,7 +908,7 @@ export default class Module {
    */
   getClip(modified = true) {
     // Clip size is always rounded up
-    let result = this._getValue('clip', modified);
+    let result = this.get('clip', modified);
     if (result) { result = Math.ceil(result); }
     return result;
   }
@@ -774,7 +919,7 @@ export default class Module {
    * @return {Number} the ammo size of this module
    */
   getAmmo(modified = true) {
-    return this._getValue('ammo', modified);
+    return this.get('ammo', modified);
   }
 
   /**
@@ -783,7 +928,7 @@ export default class Module {
    * @return {Number} the reload time of this module
    */
   getReload(modified = true) {
-    return this._getValue('reload', modified);
+    return this.get('reload', modified);
   }
 
   /**
@@ -792,7 +937,7 @@ export default class Module {
    * @return {Number} the burst size of this module
    */
   getBurst(modified = true) {
-    return this._getValue('burst', modified);
+    return this.get('burst', modified);
   }
 
   /**
@@ -801,7 +946,7 @@ export default class Module {
    * @return {Number} the burst rate of fire of this module
    */
   getBurstRoF(modified = true) {
-    return this._getValue('burstrof', modified);
+    return this.get('burstrof', modified);
   }
 
   /**
@@ -816,7 +961,7 @@ export default class Module {
   getRoF(modified = true) {
     const burst = this.getBurst(modified) || 1;
     const burstRoF = this.getBurstRoF(modified) || 1;
-    const intRoF = this._getValue('rof', modified);
+    const intRoF = this.get('rof', modified);
 
     return burst / (((burst - 1) / burstRoF) + 1 / intRoF);
   }
@@ -827,7 +972,7 @@ export default class Module {
    * @return {Number} the facing limit for this module
    */
   getFacingLimit(modified = true) {
-    return this._getValue('facinglimit', modified);
+    return this.get('facinglimit', modified);
   }
 
   /**
@@ -836,7 +981,7 @@ export default class Module {
    * @return {Number} the hull boost for this module
    */
   getHullBoost(modified = true) {
-    return this._getValue('hullboost', modified);
+    return this.get('hullboost', modified);
   }
 
   /**
@@ -845,7 +990,7 @@ export default class Module {
    * @return {Number} the shield reinforcement for this module
    */
   getShieldReinforcement(modified = true) {
-    return this._getValue('shieldreinforcement', modified);
+    return this.get('shieldreinforcement', modified);
   }
 
   /**
@@ -854,7 +999,7 @@ export default class Module {
    * @return {Number} the shield addition for this module
    */
   getShieldAddition(modified = true) {
-    return this._getValue('shieldaddition', modified);
+    return this.get('shieldaddition', modified);
   }
 
   /**
@@ -863,7 +1008,7 @@ export default class Module {
    * @return {Number} the jump range boost for this module
    */
   getJumpBoost(modified = true) {
-    return this._getValue('jumpboost', modified);
+    return this.get('jumpboost', modified);
   }
 
   /**
@@ -872,7 +1017,7 @@ export default class Module {
    * @return {Number} the piercing for this module
    */
   getPiercing(modified = true) {
-    return this._getValue('piercing', modified);
+    return this.get('piercing', modified);
   }
 
   /**
@@ -881,7 +1026,7 @@ export default class Module {
    * @return {Number} the bays for this module
    */
   getBays(modified) {
-    return this._getValue('bays', modified);
+    return this.get('bays', modified);
   }
 
   /**
@@ -890,7 +1035,7 @@ export default class Module {
    * @return {Number} the rebuilds per bay for this module
    */
   getRebuildsPerBay(modified = true) {
-    return this._getValue('rebuildsperbay', modified);
+    return this.get('rebuildsperbay', modified);
   }
 
   /**
@@ -899,7 +1044,7 @@ export default class Module {
    * @return {Number} the jitter for this module
    */
   getJitter(modified = true) {
-    return this._getValue('jitter', modified);
+    return this.get('jitter', modified);
   }
 
   /**
@@ -917,7 +1062,7 @@ export default class Module {
    * @return {string} the shot speed for this module
    */
   getShotSpeed(modified = true) {
-    return this._getValue('shotspeed', modified);
+    return this.get('shotspeed', modified);
   }
 
   /**
@@ -926,7 +1071,7 @@ export default class Module {
    * @return {string} the spinup for this module
    */
   getSpinup(modified = true) {
-    return this._getValue('spinup', modified);
+    return this.get('spinup', modified);
   }
 
   /**
@@ -935,7 +1080,7 @@ export default class Module {
    * @return {string} the time for this module
    */
   getTime(modified = true) {
-    return this._getValue('time', modified);
+    return this.get('time', modified);
   }
 
   /**
@@ -944,7 +1089,7 @@ export default class Module {
    * @return {string} the time for this module
    */
   getHackTime(modified = true) {
-    return this._getValue('hacktime', modified);
+    return this.get('hacktime', modified);
   }
 
 }

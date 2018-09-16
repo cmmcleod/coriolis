@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import cn from 'classnames';
 import NumberEditor from 'react-number-editor';
+import { isValueBeneficial } from '../utils/BlueprintFunctions';
 
 /**
  * Modification
@@ -38,22 +39,9 @@ export default class Modification extends TranslatedComponent {
    *                       in a value by hand
    */
   _updateValue(value) {
-    const name = this.props.name;
-    let scaledValue = Math.round(Number(value) * 100);
-    // Limit to +1000% / -99.99%
-    if (scaledValue > 100000) {
-      scaledValue = 100000;
-      value = 1000;
-    }
-    if (scaledValue < -9999) {
-      scaledValue = -9999;
-      value = -99.99;
-    }
-
-    let m = this.props.m;
-    let ship = this.props.ship;
-    ship.setModification(m, name, scaledValue, true);
-
+    let { m, name, ship } = this.props;
+    value = Math.max(Math.min(value, 50000), -50000);
+    ship.setModification(m, name, value, true, true);
     this.setState({ value });
   }
 
@@ -75,52 +63,46 @@ export default class Modification extends TranslatedComponent {
    * @return {React.Component} modification
    */
   render() {
-    let translate = this.context.language.translate;
-    let formats = this.context.language.formats;
+    let { translate, formats, units } = this.context.language;
     let { m, name } = this.props;
+    let modValue = m.getChange(name);
 
     if (name === 'damagedist') {
       // We don't show damage distribution
       return null;
     }
 
-    let symbol;
-    if (name === 'jitter') {
-      symbol = '°';
-    } else if (name !== 'burst' && name != 'burstrof') {
-      symbol = '%';
-    }
-    if (symbol) {
-      symbol = ' (' + symbol + ')';
-    }
-
     return (
-      <div onBlur={this._updateFinished.bind(this)} className={'cb'} key={name} ref={ modItem => this.props.modItems[name] = modItem }>
-        <div className={'cb'}>{translate(name, m.grp)}{symbol}</div>
+      <div onBlur={this._updateFinished.bind(this)} key={name}
+        className={cn('cb', 'modification-container')}
+        ref={ modItem => this.props.modItems[name] = modItem }>
+        <span className={'cb'}>{translate(name, m.grp)}</span>
+        <span className={'header-adjuster'}></span>
         <table style={{ width: '100%' }}>
           <tbody>
             <tr>
-              <td style={{ width: '50%' }}>
-                {/* thermload doesn't have any values set therefore we ignore it */}
-                <div>{this.props.name !== 'thermload' &&
-                  this.props.m.formatModifiedValue(
-                    this.props.name,
-                    this.context.language
-                  )
-                }</div>
-              </td>
-              <td style={{ width: '50%' }}>
-                {this.props.editable ?
-                  <NumberEditor className={'cb'} value={this.state.value}
-                    style={{ textAlign: 'center' }}
-                    step={0.01} stepModifier={1} decimals={2}
-                    onValueChange={this._updateValue.bind(this)}
-                    onKeyDown={ this.props.onKeyDown } /> :
-                  <div>
+              <td className={'input-container'}>
+                <span>
+                  {this.props.editable ?
+                    <NumberEditor className={'cb'} value={this.state.value}
+                      decimals={2} style={{ textAlign: 'right' }} step={0.01}
+                      stepModifier={1} onKeyDown={ this.props.onKeyDown }
+                      onValueChange={this._updateValue.bind(this)} /> :
                     <input type="text" value={formats.f2(this.state.value)}
-                      disabled style={{ textAlign: 'center', cursor: 'inherit' }}/>
-                  </div>
-                }
+                      disabled className={'number-editor'}
+                      style={{ textAlign: 'right', cursor: 'inherit' }}/>
+                  }
+                  <span className={'unit-container'}>
+                      {units[m.getStoredUnitFor(name)]}
+                  </span>
+                </span>
+              </td>
+              <td style={{ textAlign: 'center' }} className={
+                  modValue ?
+                    isValueBeneficial(name, modValue) ? 'secondary': 'warning':
+                    ''
+                }>
+                {formats.f2(modValue / 100) || 0}%
               </td>
             </tr>
           </tbody>

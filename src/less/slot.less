@@ -37,6 +37,35 @@
     text-overflow: ellipsis;
   }
 
+  .modification-container {
+    @input-container-width: 75%;
+    td {
+      width: 100% - @input-container-width;
+      text-align: center;
+    }
+
+    .input-container {
+      width: @input-container-width;
+      text-align: right;
+    }
+
+    input {
+      width: 80%;
+    }
+
+    .unit-container {
+      width: 30px;
+      padding: 3px;
+      text-align: left;
+      display: inline-block;
+    }
+
+    .header-adjuster {
+      width: 100% - @input-container-width;
+      display: inline-block;
+    }
+  }
+
   .cb {
     overflow: hidden;
   }

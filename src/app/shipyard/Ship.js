@@ -7,6 +7,7 @@ import LZString from 'lz-string';
 import * as _ from 'lodash';
 import isEqual from 'lodash/lang';
 import { Ships, Modifications } from 'coriolis-data/dist';
+import { chain } from 'lodash';
 const zlib = require('zlib');
 
 const UNIQUE_MODULES = ['psg', 'sg', 'bsg', 'rf', 'fs', 'fh', 'gfsb'];
@@ -493,68 +494,62 @@ export default class Ship {
    * @param {Object} name       The name of the modification to change
    * @param {Number} value The new value of the modification.  The value of the modification is scaled to provide two decimal places of precision in an integer.  For example 1.23% is stored as 123
    * @param {bool}   sentfromui True if this update was sent from the UI
+   * @param {bool}   isAbsolute True if value is an absolute value and not a
+   *                            modification value
    */
-  setModification(m, name, value, sentfromui) {
+  setModification(m, name, value, sentfromui, isAbsolute) {
     if (isNaN(value)) {
       // Value passed is invalid; reset it to 0
       value = 0;
     }
+
+    if (isAbsolute) {
+      m.setPretty(name, value, sentfromui);
+    } else {
+      m.setModValue(name, value, sentfromui);
+    }
+
     // Handle special cases
     if (name === 'pgen') {
       // Power generation
-      m.setModValue(name, value, sentfromui);
       this.updatePowerGenerated();
     } else if (name === 'power') {
       // Power usage
-      m.setModValue(name, value, sentfromui);
       this.updatePowerUsed();
     } else if (name === 'mass') {
       // Mass
-      m.setModValue(name, value, sentfromui);
       this.recalculateMass();
       this.updateMovement();
       this.updateJumpStats();
     } else if (name === 'maxfuel') {
-      m.setModValue(name, value, sentfromui);
       this.updateJumpStats();
     } else if (name === 'optmass') {
-      m.setModValue(name, value, sentfromui);
       // Could be for any of thrusters, FSD or shield
       this.updateMovement();
       this.updateJumpStats();
       this.recalculateShield();
     } else if (name === 'optmul') {
-      m.setModValue(name, value, sentfromui);
       // Could be for any of thrusters, FSD or shield
       this.updateMovement();
       this.updateJumpStats();
       this.recalculateShield();
     } else if (name === 'shieldboost') {
-      m.setModValue(name, value, sentfromui);
       this.recalculateShield();
     } else if (name === 'hullboost' || name === 'hullreinforcement' || name === 'modulereinforcement') {
-      m.setModValue(name, value, sentfromui);
       this.recalculateArmour();
     } else if (name === 'shieldreinforcement') {
-      m.setModValue(name, value, sentfromui);
       this.recalculateShieldCells();
     } else if (name === 'burst' || name == 'burstrof' || name === 'clip' || name === 'damage' || name === 'distdraw' || name === 'jitter' || name === 'piercing' || name === 'range' || name === 'reload' || name === 'rof' || name === 'thermload') {
-      m.setModValue(name, value, sentfromui);
       this.recalculateDps();
       this.recalculateHps();
       this.recalculateEps();
     } else if (name === 'explres' || name === 'kinres' || name === 'thermres') {
-      m.setModValue(name, value, sentfromui);
       // Could be for shields or armour
       this.recalculateArmour();
       this.recalculateShield();
     } else if (name === 'engcap') {
-      m.setModValue(name, value, sentfromui);
       // Might have resulted in a change in boostability
       this.updateMovement();
-    } else {
-      // Generic
-      m.setModValue(name, value, sentfromui);
     }
   }
 
@@ -1187,38 +1182,35 @@ export default class Ship {
 
     unladenMass += this.bulkheads.m.getMass();
 
-    for (let slotNum in this.standard) {
-      const slot = this.standard[slotNum];
-      if (slot.m) {
-        unladenMass += slot.m.getMass();
-        if (slot.m.grp === 'ft') {
-          fuelCapacity += slot.m.fuel;
-        }
-      }
-    }
+    let slots = this.standard.concat(this.internal, this.hardpoints);
+    // TODO: create class for slot and also add slot.get
+    // handle unladen mass
+    unladenMass += chain(slots)
+      .map(slot => slot.m ? slot.m.get('mass') : null)
+      .filter()
+      .reduce((sum, mass) => sum + mass)
+      .value();
 
-    for (let slotNum in this.internal) {
-      const slot = this.internal[slotNum];
-      if (slot.m) {
-        unladenMass += slot.m.getMass();
-        if (slot.m.grp === 'ft') {
-          fuelCapacity += slot.m.fuel;
-        } else if (slot.m.grp === 'cr') {
-          cargoCapacity += slot.m.cargo;
-        } else if (slot.m.grp.slice(0,2) === 'pc') {
-          if (slot.m.passengers) {
-            passengerCapacity += slot.m.passengers;
-          }
-        }
-      }
-    }
+    // handle fuel capacity
+    fuelCapacity += chain(slots)
+      .map(slot => slot.m ? slot.m.get('fuel') : null)
+      .filter()
+      .reduce((sum, fuel) => sum + fuel)
+      .value();
 
-    for (let slotNum in this.hardpoints) {
-      const slot = this.hardpoints[slotNum];
-      if (slot.m) {
-        unladenMass += slot.m.getMass();
-      }
-    }
+    // handle cargo capacity
+    cargoCapacity += chain(slots)
+      .map(slot => slot.m ? slot.m.get('cargo') : null)
+      .filter()
+      .reduce((sum, cargo) => sum + cargo)
+      .value();
+
+      // handle passenger capacity
+    passengerCapacity += chain(slots)
+      .map(slot => slot.m ? slot.m.get('passengers') : null)
+      .filter()
+      .reduce((sum, passengers) => sum + passengers)
+      .value();
 
     // Update global stats
     this.unladenMass = unladenMass;
