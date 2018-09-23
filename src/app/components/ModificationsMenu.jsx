@@ -15,6 +15,10 @@ import {
   specialToolTip
 } from '../utils/BlueprintFunctions';
 
+const MODIFICATIONS_COMPARATOR = (mod1, mod2) => {
+  return mod1.props.name.localeCompare(mod2.props.name);
+};
+
 /**
  * Modifications menu
  */
@@ -124,7 +128,7 @@ export default class ModificationsMenu extends TranslatedComponent {
           // Initial modification menu
           event.preventDefault();
           this.modItems[this.lastModId].focus();
-          return;        
+          return;
         } else  if (event.currentTarget.className.indexOf('button-inline-menu') >= 0 && event.currentTarget.previousElementSibling == null && this.lastNeId != null && this.modItems[this.lastNeId] != null) {
           // shift-tab on first element in modifications menu. set focus to last number editor field if open
           event.preventDefault();
@@ -205,15 +209,26 @@ export default class ModificationsMenu extends TranslatedComponent {
    */
   _renderModifications(props) {
     const { m, onChange, ship } = props;
+    const modifiableModifications = [];
     const modifications = [];
     for (const modName of Modifications.modules[m.grp].modifications) {
       if (!Modifications.modifications[modName].hidden) {
         const key = modName + (m.getModValue(modName) / 100 || 0);
+        const editable = modName !== 'fallofffromrange' &&
+          m.blueprint.grades[m.blueprint.grade].features[modName];
         this.lastNeId = modName;
-        modifications.push(<Modification key={ key } ship={ ship } m={ m } name={ modName } value={ m.getModValue(modName) / 100 || 0 } onChange={ onChange } onKeyDown={ this._keyDown } modItems={ this.modItems } handleModChange = {this._handleModChange} />);
+        (editable ? modifiableModifications : modifications).push(
+          <Modification key={ key } ship={ ship } m={ m }
+            value={m.getPretty(modName) || 0} modItems={this.modItems}
+            onChange={onChange} onKeyDown={this._keyDown} name={modName}
+            editable={editable} handleModChange = {this._handleModChange} />
+        );
       }
     }
-    return modifications;
+
+    modifiableModifications.sort(MODIFICATIONS_COMPARATOR);
+    modifications.sort(MODIFICATIONS_COMPARATOR);
+    return modifiableModifications.concat(modifications);
   }
 
   /**

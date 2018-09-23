@@ -134,9 +134,9 @@ export default class Coriolis extends React.Component {
     console && console.error && console.error(arguments); // eslint-disable-line no-console
     if (errObj) {
       if (errObj instanceof Error) {
-        bugsnagClient.notify(errObj) // eslint-disable-line
+        bugsnagClient.notify(errObj); // eslint-disable-line
       } else if (errObj instanceof String) {
-        bugsnagClient.notify(msg, errObj) // eslint-disable-line
+        bugsnagClient.notify(msg, errObj); // eslint-disable-line
       }
     }
     this.setState({
@@ -180,13 +180,13 @@ export default class Coriolis extends React.Component {
       case 72:     // 'h'
         if (e.ctrlKey || e.metaKey) { // CTRL/CMD + h
           e.preventDefault();
-          this._showModal(<ModalHelp />);
+          this._showModal(<ModalHelp/>);
         }
         break;
       case 73:     // 'i'
         if (e.ctrlKey || e.metaKey) { // CTRL/CMD + i
           e.preventDefault();
-          this._showModal(<ModalImport />);
+          this._showModal(<ModalImport/>);
         }
         break;
       case 79:  // 'o'
@@ -208,7 +208,7 @@ export default class Coriolis extends React.Component {
    * @param  {React.Component} content Modal Content
    */
   _showModal(content) {
-    let modal = <div className='modal-bg' onClick={(e) => this._hideModal() }>{content}</div>;
+    let modal = <div className='modal-bg' onClick={(e) => this._hideModal()}>{content}</div>;
     this.setState({ modal });
   }
 
@@ -286,7 +286,7 @@ export default class Coriolis extends React.Component {
     return this.emitter.addListener('windowResize', listener);
   }
 
-    /**
+  /**
    * Add a listener to global commands such as save,
    * @param  {Function} listener Listener callback
    * @return {Object}            Subscription token
@@ -323,45 +323,57 @@ export default class Coriolis extends React.Component {
   componentWillMount() {
     // Listen for appcache updated event, present refresh to update view
     // Check that service workers are registered
+    if (navigator.storage && navigator.storage.persist) {
+      window.addEventListener('load', () => {
+        navigator.storage.persist().then(granted => {
+          if (granted)
+            console.log('Storage will not be cleared except by explicit user action');
+          else
+            console.log('Storage may be cleared by the UA under storage pressure.');
+        });
+      });
+    }
     if ('serviceWorker' in navigator) {
-      // Your service-worker.js *must* be located at the top-level directory relative to your site.
-      // It won't be able to control pages unless it's located at the same level or higher than them.
-      // *Don't* register service worker file in, e.g., a scripts/ sub-directory!
-      // See https://github.com/slightlyoff/ServiceWorker/issues/468
-      const self = this;
-      navigator.serviceWorker.register('/service-worker.js').then(function(reg) {
-        // updatefound is fired if service-worker.js changes.
-        reg.onupdatefound = function() {
-          // The updatefound event implies that reg.installing is set; see
-          // https://slightlyoff.github.io/ServiceWorker/spec/service_worker/index.html#service-worker-container-updatefound-event
-          var installingWorker = reg.installing;
+      window.addEventListener('load', () => {
+        // Your service-worker.js *must* be located at the top-level directory relative to your site.
+        // It won't be able to control pages unless it's located at the same level or higher than them.
+        // *Don't* register service worker file in, e.g., a scripts/ sub-directory!
+        // See https://github.com/slightlyoff/ServiceWorker/issues/468
+        const self = this;
+        navigator.serviceWorker.register('/service-worker.js').then(function(reg) {
+          // updatefound is fired if service-worker.js changes.
+          reg.onupdatefound = function() {
+            // The updatefound event implies that reg.installing is set; see
+            // https://slightlyoff.github.io/ServiceWorker/spec/service_worker/index.html#service-worker-container-updatefound-event
+            var installingWorker = reg.installing;
 
-          installingWorker.onstatechange = function() {
-            switch (installingWorker.state) {
-              case 'installed':
-                if (navigator.serviceWorker.controller) {
-                  // At this point, the old content will have been purged and the fresh content will
-                  // have been added to the cache.
-                  // It's the perfect time to display a "New content is available; please refresh."
-                  // message in the page's interface.
-                  console.log('New or updated content is available.');
-                  self.setState({ appCacheUpdate: true }); // Browser downloaded a new app cache.
-                } else {
-                  // At this point, everything has been precached.
-                  // It's the perfect time to display a "Content is cached for offline use." message.
-                  console.log('Content is now available offline!');
-                  self.setState({ appCacheUpdate: true }); // Browser downloaded a new app cache.
-                }
-                break;
+            installingWorker.onstatechange = function() {
+              switch (installingWorker.state) {
+                case 'installed':
+                  if (navigator.serviceWorker.controller) {
+                    // At this point, the old content will have been purged and the fresh content will
+                    // have been added to the cache.
+                    // It's the perfect time to display a "New content is available; please refresh."
+                    // message in the page's interface.
+                    console.log('New or updated content is available.');
+                    self.setState({ appCacheUpdate: true }); // Browser downloaded a new app cache.
+                  } else {
+                    // At this point, everything has been precached.
+                    // It's the perfect time to display a "Content is cached for offline use." message.
+                    console.log('Content is now available offline!');
+                    self.setState({ appCacheUpdate: true }); // Browser downloaded a new app cache.
+                  }
+                  break;
 
-              case 'redundant':
-                console.error('The installing service worker became redundant.');
-                break;
-            }
+                case 'redundant':
+                  console.error('The installing service worker became redundant.');
+                  break;
+              }
+            };
           };
-        };
-      }).catch(function(e) {
-        console.error('Error during service worker registration:', e);
+        }).catch(function(e) {
+          console.error('Error during service worker registration:', e);
+        });
       });
     }
     window.onerror = this._onError.bind(this);
@@ -381,16 +393,22 @@ export default class Coriolis extends React.Component {
   render() {
     let currentMenu = this.state.currentMenu;
 
-    return <div style={{ minHeight: '100%' }} onClick={this._closeMenu} className={ this.state.noTouch ? 'no-touch' : null }>
-      <Header appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu} />
-      { this.state.error ? this.state.error : this.state.page ? React.createElement(this.state.page, { currentMenu }) : <NotFoundPage/> }
-      { this.state.modal }
-      { this.state.tooltip }
+    return <div style={{ minHeight: '100%' }} onClick={this._closeMenu}
+                className={this.state.noTouch ? 'no-touch' : null}>
+      <Header appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu}/>
+      {this.state.error ? this.state.error : this.state.page ? React.createElement(this.state.page, { currentMenu }) :
+        <NotFoundPage/>}
+      {this.state.modal}
+      {this.state.tooltip}
       <footer>
         <div className="right cap">
-          <a href="https://github.com/EDCD/coriolis" target="_blank" title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
+          <a href="https://github.com/EDCD/coriolis" target="_blank"
+             title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
           <br/>
-          <a href={'https://github.com/EDCD/coriolis/compare/edcd:develop@{' + window.CORIOLIS_DATE + '}...edcd:develop'} target="_blank" title={'Coriolis Commits since' + window.CORIOLIS_DATE}>Commits since last release ({window.CORIOLIS_DATE})</a>
+          <a
+            href={'https://github.com/EDCD/coriolis/compare/edcd:develop@{' + window.CORIOLIS_DATE + '}...edcd:develop'}
+            target="_blank" title={'Coriolis Commits since' + window.CORIOLIS_DATE}>Commits since last release
+            ({window.CORIOLIS_DATE})</a>
         </div>
       </footer>
     </div>;
