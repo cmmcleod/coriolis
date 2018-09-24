@@ -43,6 +43,7 @@
     "PHRASE_SHIELD_DAMAGE": "Breakdown of sources for sustained DPS against shields",
     "PHRASE_ARMOUR_DAMAGE": "Breakdown of sources for sustained DPS against armour",
     "PHRASE_TIME_TO_REMOVE_SHIELDS": "Will remove shields in",
+    "PHRASE_MULTI_CREW_CAPACITOR_POINTS": "Right click a capacitor to assign multi-crew capacitor points.",
     "TT_TIME_TO_REMOVE_SHIELDS": "With sustained fire by all weapons",
     "PHRASE_TIME_TO_REMOVE_ARMOUR": "Will remove armour in",
     "TT_TIME_TO_REMOVE_ARMOUR": "With sustained fire by all weapons",

@@ -104,6 +104,7 @@
     "workbox-webpack-plugin": "^3.4.1"
   },
   "dependencies": {
+    "auto-bind": "^1.2.1",
     "babel-polyfill": "*",
     "browserify-zlib-next": "^1.0.1",
     "classnames": "^2.2.5",

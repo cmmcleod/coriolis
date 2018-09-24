@@ -100,7 +100,7 @@ export default class OutfittingPage extends Page {
     this._getTitle = getTitle.bind(this, data.properties.name);
 
     // Obtain ship control from code
-    const { sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, opponentSys, opponentEng, opponentWep, engagementRange } = this._obtainControlFromCode(ship, code);
+    const { sys, eng, wep, mcSys, mcEng, mcWep, boost, fuel, cargo, opponent, opponentBuild, opponentSys, opponentEng, opponentWep, engagementRange } = this._obtainControlFromCode(ship, code);
     return {
       error: null,
       title: this._getTitle(buildName),
@@ -114,6 +114,9 @@ export default class OutfittingPage extends Page {
       sys,
       eng,
       wep,
+      mcSys,
+      mcEng,
+      mcWep,
       boost,
       fuel,
       cargo,
@@ -176,6 +179,9 @@ export default class OutfittingPage extends Page {
     let sys = 2;
     let eng = 2;
     let wep = 2;
+    let mcSys = 0;
+    let mcEng = 0;
+    let mcWep = 0;
     let boost = false;
     let fuel = ship.fuelCapacity;
     let cargo = ship.cargoCapacity;
@@ -222,20 +228,31 @@ export default class OutfittingPage extends Page {
           }
         }
         engagementRange = parseInt(control[8]);
+
+        // Multi-crew pips were introduced later on so assign default values
+        // because those values might not be present.
+        mcSys = parseInt(control[9]) || mcSys;
+        mcEng = parseInt(control[10]) || mcEng;
+        mcWep = parseInt(control[11]) || mcWep;
       }
     }
 
-    return { sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, opponentSys, opponentEng, opponentWep, engagementRange };
+    return { sys, eng, wep, mcSys, mcEng, mcWep, boost, fuel, cargo, opponent, opponentBuild, opponentSys, opponentEng, opponentWep, engagementRange };
   }
 
   /**
-   * Triggered when pips have been updated
+   * Triggered when pips have been updated. Multi-crew pips are already included
+   * in sys, eng and wep but mcSys, mcEng and mcWep make clear where each pip
+   * comes from.
    * @param {number} sys    SYS pips
    * @param {number} eng    ENG pips
    * @param {number} wep    WEP pips
+   * @param {number} mcSys  SYS pips from multi-crew
+   * @param {number} mcEng  ENG pips from multi-crew
+   * @param {number} mcWep  WEP pips from multi-crew
    */
-  _pipsUpdated(sys, eng, wep) {
-    this.setState({ sys, eng, wep }, () =>  this._updateRouteOnControlChange());
+  _pipsUpdated(sys, eng, wep, mcSys, mcEng, mcWep) {
+    this.setState({ sys, eng, wep, mcSys, mcEng, mcWep }, () =>  this._updateRouteOnControlChange());
   }
 
   /**
@@ -309,8 +326,8 @@ export default class OutfittingPage extends Page {
    * @returns {string}        The control code
    */
   _controlCode(fuel, cargo) {
-    const { sys, eng, wep, boost, opponent, opponentBuild, engagementRange } = this.state;
-    const code = `${sys}/${eng}/${wep}/${boost ? 1 : 0}/${fuel || this.state.fuel}/${cargo || this.state.cargo}/${opponent.id}/${opponentBuild ? opponentBuild : ''}/${engagementRange}`;
+    const { sys, eng, wep, mcSys, mcEng, mcWep, boost, opponent, opponentBuild, engagementRange } = this.state;
+    const code = `${sys}/${eng}/${wep}/${boost ? 1 : 0}/${fuel || this.state.fuel}/${cargo || this.state.cargo}/${opponent.id}/${opponentBuild ? opponentBuild : ''}/${engagementRange}/${mcSys}/${mcEng}/${mcWep}`;
     return code;
   }
 
@@ -373,12 +390,15 @@ export default class OutfittingPage extends Page {
     ship.buildWith(Ships[shipId].defaults);
     // Reset controls
     const code = ship.toString();
-    const { sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, engagementRange } = this._obtainControlFromCode(ship, code);
+    const { sys, eng, wep, mcSys, mcEng, mcWep, boost, fuel, cargo, opponent, opponentBuild, engagementRange } = this._obtainControlFromCode(ship, code);
     // Update state, and refresh the ship
     this.setState({
       sys,
       eng,
       wep,
+      mcSys,
+      mcEng,
+      mcWep,
       boost,
       fuel,
       cargo,
@@ -430,12 +450,15 @@ export default class OutfittingPage extends Page {
     this.state.ship.buildFrom(code);
 
     // Obtain controls from the code
-    const { sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, engagementRange } = this._obtainControlFromCode(ship, code);
+    const { sys, eng, wep, mcSys, mcEng, mcWep, boost, fuel, cargo, opponent, opponentBuild, engagementRange } = this._obtainControlFromCode(ship, code);
     // Update state, and refresh the route when complete
     this.setState({
       sys,
       eng,
       wep,
+      mcSys,
+      mcEng,
+      mcWep,
       boost,
       fuel,
       cargo,
@@ -567,7 +590,7 @@ export default class OutfittingPage extends Page {
     let state = this.state,
         { language, termtip, tooltip, sizeRatio, onWindowResize } = this.context,
         { translate, units, formats } = language,
-        { ship, code, savedCode, buildName, newBuildName, sys, eng, wep, boost, fuel, cargo, opponent, opponentBuild, opponentSys, opponentEng, opponentWep, engagementRange } = state,
+        { ship, code, savedCode, buildName, newBuildName, sys, eng, wep, mcSys, mcEng, mcWep, boost, fuel, cargo, opponent, opponentBuild, opponentSys, opponentEng, opponentWep, engagementRange } = state,
         hide = tooltip.bind(null, null),
         menu = this.props.currentMenu,
         shipUpdated = this._shipUpdated,
@@ -671,7 +694,7 @@ export default class OutfittingPage extends Page {
           </div>
         </div>
         <div className='group quarter'>
-          <Pips sys={sys} eng={eng} wep={wep} onChange={this._pipsUpdated} />
+          <Pips sys={sys} eng={eng} wep={wep} mcSys={mcSys} mcEng={mcEng} mcWep={mcWep} onChange={this._pipsUpdated} />
         </div>
         <div className='group quarter'>
           <Fuel fuelCapacity={ship.fuelCapacity} fuel={fuel} onChange={this._fuelUpdated}/>

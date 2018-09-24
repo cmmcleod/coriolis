@@ -1,13 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
-import { Ships } from 'coriolis-data/dist';
-import { nameComparator } from '../utils/SlotFunctions';
 import { Pip } from './SvgIcons';
-import LineChart from '../components/LineChart';
-import Slider from '../components/Slider';
-import * as ModuleUtils from '../shipyard/ModuleUtils';
-import Module from '../shipyard/Module';
+import autoBind from 'auto-bind';
 
 /**
  * Pips displays SYS/ENG/WEP pips and allows users to change them with key presses by clicking on the relevant area.
@@ -18,6 +13,9 @@ export default class Pips extends TranslatedComponent {
     sys: PropTypes.number.isRequired,
     eng: PropTypes.number.isRequired,
     wep: PropTypes.number.isRequired,
+    mcSys: PropTypes.number.isRequired,
+    mcEng: PropTypes.number.isRequired,
+    mcWep: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired
   };
 
@@ -28,9 +26,7 @@ export default class Pips extends TranslatedComponent {
    */
   constructor(props, context) {
     super(props);
-    const { sys, eng, wep } = props;
-
-    this._keyDown = this._keyDown.bind(this);
+    autoBind(this);
   }
 
   /**
@@ -75,29 +71,20 @@ export default class Pips extends TranslatedComponent {
   }
 
   /**
-   * Handle a click
-   * @param {string} which  Which item was clicked
-   */
-  onClick(which) {
-    if (which == 'SYS') {
-      this._incSys();
-    } else if (which == 'ENG') {
-      this._incEng();
-    } else if (which == 'WEP') {
-      this._incWep();
-    } else if (which == 'RST') {
-      this._reset();
-    }
-  }
-
-  /**
    * Reset the capacitor
    */
-  _reset() {
-    let { sys, eng, wep } = this.props;
-    if (sys != 2 || eng != 2 || wep != 2) {
+  _reset(isMc) {
+    let { sys, eng, wep, mcSys, mcEng, mcWep } = this.props;
+    if (isMc) {
+      if (mcSys || mcEng || mcWep) {
+        sys -= mcSys;
+        eng -= mcEng;
+        wep -= mcWep;
+        this.props.onChange(sys, eng, wep, 0, 0, 0);
+      }
+    } else if (sys != 2 || eng != 2 || wep != 2) {
       sys = eng = wep = 2;
-      this.props.onChange(sys, eng, wep);
+      this.props.onChange(sys + mcSys, eng + mcEng, wep + mcWep, mcSys, mcEng, mcWep);
     }
   }
 
@@ -105,151 +92,133 @@ export default class Pips extends TranslatedComponent {
    * Increment the SYS capacitor
    */
   _incSys() {
-    let { sys, eng, wep } = this.props;
-
-    const required = Math.min(1, 4 - sys);
-    if (required > 0) {
-      if (required == 0.5) {
-        // Take from whichever is larger
-        if (eng > wep) {
-          eng -= 0.5;
-          sys += 0.5;
-        } else {
-          wep -= 0.5;
-          sys += 0.5;
-        }
-      } else {
-        // Required is 1 - take from both if possible
-        if (eng == 0) {
-          wep -= 1;
-          sys += 1;
-        } else if (wep == 0) {
-          eng -= 1;
-          sys += 1;
-        } else {
-          eng -= 0.5;
-          wep -= 0.5;
-          sys += 1;
-        }
-      }
-      this.props.onChange(sys, eng, wep);
-    }
+    this._inc('sys', false);
   }
 
   /**
    * Increment the ENG capacitor
    */
   _incEng() {
-    let { sys, eng, wep } = this.props;
-
-    const required = Math.min(1, 4 - eng);
-    if (required > 0) {
-      if (required == 0.5) {
-        // Take from whichever is larger
-        if (sys > wep) {
-          sys -= 0.5;
-          eng += 0.5;
-        } else {
-          wep -= 0.5;
-          eng += 0.5;
-        }
-      } else {
-        // Required is 1 - take from both if possible
-        if (sys == 0) {
-          wep -= 1;
-          eng += 1;
-        } else if (wep == 0) {
-          sys -= 1;
-          eng += 1;
-        } else {
-          sys -= 0.5;
-          wep -= 0.5;
-          eng += 1;
-        }
-      }
-      this.props.onChange(sys, eng, wep);
-    }
+    this._inc('eng', false);
   }
 
   /**
    * Increment the WEP capacitor
    */
   _incWep() {
-    let { sys, eng, wep } = this.props;
+    this._inc('wep', false);
+  }
 
-    const required = Math.min(1, 4 - wep);
-    if (required > 0) {
-      if (required == 0.5) {
-        // Take from whichever is larger
-        if (sys > eng) {
-          sys -= 0.5;
-          wep += 0.5;
-        } else {
-          eng -= 0.5;
-          wep += 0.5;
-        }
+  _wrapMcClick(key) {
+    return (event) => {
+      event.stopPropagation();
+      event.preventDefault();
+      if (key == 'rst') {
+        this._reset(true);
       } else {
-        // Required is 1 - take from both if possible
-        if (sys == 0) {
-          eng -= 1;
-          wep += 1;
-        } else if (eng == 0) {
-          sys -= 1;
-          wep += 1;
+        this._inc(key, true);
+      }
+    };
+  }
+
+  /**
+   * Increases a given capacitor
+   * @param {String} key Pip name to increase (one of 'sys', 'eng', 'wep')
+   * @param {Boolean} isMc True when increase is by multi crew
+   */
+  _inc(key, isMc) {
+    if (!['sys', 'eng', 'wep'].includes(key)) {
+      return;
+    }
+
+    let { sys, eng, wep, mcSys, mcEng, mcWep } = this.props;
+    let mc = key == 'sys' ? mcSys : (key == 'eng' ? mcEng : mcWep);
+    let pips = this.props[key] - mc;
+    let other1 = key == 'sys' ? eng - mcEng : sys - mcSys;
+    let other2 = key == 'wep' ? eng - mcEng : wep - mcWep;
+
+    const required = Math.min(1, 4 - mc - pips);
+    if (isMc) {
+      // We can only set full pips in multi-crew also we can only set two pips
+      if (required > 0.5 && mcSys + mcEng + mcWep < 2) {
+        if (key == 'sys') {
+          mcSys += 1;
+        } else if (key == 'eng') {
+          mcEng += 1;
         } else {
-          sys -= 0.5;
-          eng -= 0.5;
-          wep += 1;
+          mcWep += 1;
         }
       }
-      this.props.onChange(sys, eng, wep);
+    } else if (required > 0) {
+      if (required == 0.5) {
+        // Take from whichever is larger
+        if (other1 > other2) {
+          other1 -= 0.5;
+        } else {
+          other2 -= 0.5;
+        }
+        pips += 0.5;
+      } else {
+        // Required is 1 - take from both if possible
+        if (other1 == 0) {
+          other2 -= 1;
+        } else if (other2 == 0) {
+          other1 -= 1;
+        } else {
+          other1 -= 0.5;
+          other2 -= 0.5;
+        }
+        pips += 1;
+      }
     }
+
+    sys = mcSys + (key == 'sys' ? pips : other1);
+    eng = mcEng + (key == 'eng' ? pips : (key == 'sys' ? other1 : other2));
+    wep = mcWep + (key == 'wep' ? pips : other2);
+    this.props.onChange(sys, eng, wep, mcSys, mcEng, mcWep);
   }
 
   /**
    * Set up the rendering for pips
-   * @param   {int}     sys the SYS pips
-   * @param   {int}     eng the ENG pips
-   * @param   {int}     wep the WEP pips
+   * @param   {Number}     sys the SYS pips
+   * @param   {Number}     eng the ENG pips
+   * @param   {Number}     wep the WEP pips
+   * @param   {Number}     mcSys SYS pips from multi-crew
+   * @param   {Number}     mcEng ENG pips from multi-crew
+   * @param   {Number}     mcWep WEP pips from multi-crew
    * @returns {Object}      Object containing the rendering for the pips
    */
-  _renderPips(sys, eng, wep) {
-    const pipsSvg = {};
+  _renderPips(sys, eng, wep, mcSys, mcEng, mcWep) {
+    const pipsSvg = {
+      SYS: [],
+      ENG: [],
+      WEP: [],
+    };
 
-    // SYS
-    pipsSvg['SYS'] = [];
-    for (let i = 0; i < Math.floor(sys); i++) {
-      pipsSvg['SYS'].push(<Pip className='full' key={i} />);
-    }
-    if (sys > Math.floor(sys)) {
-      pipsSvg['SYS'].push(<Pip className='half' key={'half'} />);
-    }
-    for (let i = Math.floor(sys + 0.5); i < 4; i++) {
-      pipsSvg['SYS'].push(<Pip className='empty' key={i} />);
-    }
+    // Multi-crew pipsSettings actually are included in the overall pip count therefore
+    // we can consider [0, sys - mcSys] as normal pipsSettings whilst [sys - mcSys, sys]
+    // are the multi-crew pipsSettings in what follows.
 
-    // ENG
-    pipsSvg['ENG'] = [];
-    for (let i = 0; i < Math.floor(eng); i++) {
-      pipsSvg['ENG'].push(<Pip className='full' key={i} />);
-    }
-    if (eng > Math.floor(eng)) {
-      pipsSvg['ENG'].push(<Pip className='half' key={'half'} />);
-    }
-    for (let i = Math.floor(eng + 0.5); i < 4; i++) {
-      pipsSvg['ENG'].push(<Pip className='empty' key={i} />);
-    }
+    let pipsSettings = {
+      SYS: [sys, mcSys],
+      ENG: [eng, mcEng],
+      WEP: [wep, mcWep],
+    };
 
-    // WEP
-    pipsSvg['WEP'] = [];
-    for (let i = 0; i < Math.floor(wep); i++) {
-      pipsSvg['WEP'].push(<Pip className='full' key={i} />);
-    }
-    if (wep > Math.floor(wep)) {
-      pipsSvg['WEP'].push(<Pip className='half' key={'half'} />);
-    }
-    for (let i = Math.floor(wep + 0.5); i < 4; i++) {
-      pipsSvg['WEP'].push(<Pip className='empty' key={i} />);
+    for (let pipName in pipsSettings) {
+      let [pips, mcPips] = pipsSettings[pipName];
+      for (let i = 0; i < Math.floor(pips - mcPips); i++) {
+        pipsSvg[pipName].push(<Pip key={i} className='full' />);
+      }
+      if (pips > Math.floor(pips)) {
+        pipsSvg[pipName].push(<Pip className='half' key={'half'} />);
+      }
+      for (let i = pips - mcPips; i < Math.floor(pips); i++) {
+        pipsSvg[pipName].push(<Pip key={i} className='mc' />);
+      }
+      for (let i = Math.floor(pips + 0.5); i < 4; i++) {
+        pipsSvg[pipName].push(<Pip className='empty' key={i} />);
+      }
     }
 
     return pipsSvg;
@@ -260,15 +229,11 @@ export default class Pips extends TranslatedComponent {
    * @return {React.Component} contents
    */
   render() {
+    const { tooltip, termtip } = this.context;
     const { formats, translate, units } = this.context.language;
-    const { sys, eng, wep } = this.props;
+    const { sys, eng, wep, mcSys, mcEng, mcWep } = this.props;
 
-    const onSysClicked = this.onClick.bind(this, 'SYS');
-    const onEngClicked = this.onClick.bind(this, 'ENG');
-    const onWepClicked = this.onClick.bind(this, 'WEP');
-    const onRstClicked = this.onClick.bind(this, 'RST');
-
-    const pipsSvg = this._renderPips(sys, eng, wep);
+    const pipsSvg = this._renderPips(sys, eng, wep, mcSys, mcEng, mcWep);
     return (
       <span id='pips'>
         <table>
@@ -276,20 +241,38 @@ export default class Pips extends TranslatedComponent {
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td className='clickable' onClick={onEngClicked}>{pipsSvg['ENG']}</td>
+              <td className='clickable' onClick={() => this._inc('eng')}
+                onContextMenu={this._wrapMcClick('eng')}>{pipsSvg['ENG']}</td>
               <td>&nbsp;</td>
             </tr>
             <tr>
               <td>&nbsp;</td>
-              <td className='clickable' onClick={onSysClicked}>{pipsSvg['SYS']}</td>
-              <td className='clickable' onClick={onEngClicked}>{translate('ENG')}</td>
-              <td className='clickable' onClick={onWepClicked}>{pipsSvg['WEP']}</td>
+              <td className='clickable' onClick={this._incSys}
+                onContextMenu={this._wrapMcClick('sys')}>{pipsSvg['SYS']}</td>
+              <td className='clickable' onClick={this._incEng}
+                onContextMenu={this._wrapMcClick('eng')}>{translate('ENG')}</td>
+              <td className='clickable' onClick={this._incWep}
+                onContextMenu={this._wrapMcClick('wep')}>{pipsSvg['WEP']}</td>
             </tr>
             <tr>
               <td>&nbsp;</td>
-              <td className='clickable' onClick={onSysClicked}>{translate('SYS')}</td>
-              <td className='clickable' onClick={onRstClicked}>{translate('RST')}</td>
-              <td className='clickable' onClick={onWepClicked}>{translate('WEP')}</td>
+              <td className='clickable' onClick={this._incSys}
+                onContextMenu={this._wrapMcClick('sys')}>{translate('SYS')}</td>
+              <td className='clickable' onClick={this._reset.bind(this, false)}>
+                {translate('RST')}
+              </td>
+              <td className='clickable' onClick={this._incWep}
+                onContextMenu={this._wrapMcClick('wep')}>{translate('WEP')}</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td className='clickable secondary' onClick={this._wrapMcClick('rst')}
+                onMouseEnter={termtip.bind(null, 'PHRASE_MULTI_CREW_CAPACITOR_POINTS')}
+                onMouseLeave={tooltip.bind(null, null)}>
+                {translate('RST')}
+              </td>
+              <td>&nbsp;</td>
             </tr>
           </tbody>
         </table>
