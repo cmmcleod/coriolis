@@ -104,7 +104,6 @@
     "workbox-webpack-plugin": "^3.4.1"
   },
   "dependencies": {
-    "auto-bind": "^1.2.1",
     "babel-polyfill": "*",
     "browserify-zlib-next": "^1.0.1",
     "classnames": "^2.2.5",
@@ -118,6 +117,7 @@
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-extras": "^0.7.1",
     "react-ga": "^2.5.3",
     "react-number-editor": "Athanasius/react-number-editor.git#miggy",
     "recharts": "^0.22.3",
