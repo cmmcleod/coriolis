@@ -24,7 +24,7 @@ module.exports = {
   },
   mode: 'production',
   optimization: {
-    minimize: false,
+    minimize: true,
     splitChunks: {
       chunks: 'all'
     }
