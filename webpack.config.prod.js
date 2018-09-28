@@ -11,7 +11,7 @@ const buildDate = new Date();
 module.exports = {
   devtool: 'source-map',
   entry: {
-    main: ['babel-polyfill', './src/app/index.js']
+    main: ['./src/app/index.js']
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.less']
