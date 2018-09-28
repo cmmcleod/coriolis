@@ -270,7 +270,7 @@ export default class Module {
             } else {
               result = result * (1 + modValue);
             }
-          } else if (name === 'burst' || name === 'burstrof') {
+          } else if (name === 'burstrof') {
             // Burst and burst rate of fire are special, as it can not exist but
             // have a modification
             result = modValue / 100;
