@@ -198,12 +198,12 @@ export default class OutfittingPage extends Page {
       if (parts.length >= 5) {
         // We have control information in the code
         const control = LZString.decompressFromBase64(Utils.fromUrlSafe(parts[4])).split('/');
-        sys = parseFloat(control[0]);
-        eng = parseFloat(control[1]);
-        wep = parseFloat(control[2]);
+        sys = parseFloat(control[0]) || sys;
+        eng = parseFloat(control[1]) || eng;
+        wep = parseFloat(control[2]) || wep;
         boost = control[3] == 1 ? true : false;
-        fuel = parseFloat(control[4]);
-        cargo = parseInt(control[5]);
+        fuel = parseFloat(control[4]) || fuel;
+        cargo = parseInt(control[5]) || cargo;
         if (control[6]) {
           const shipId = control[6];
           opponent = new Ship(shipId, Ships[shipId].properties, Ships[shipId].slots);
@@ -217,9 +217,9 @@ export default class OutfittingPage extends Page {
               const opponentParts = opponentCode.split('.');
               if (opponentParts.length >= 5) {
                 const opponentControl = LZString.decompressFromBase64(Utils.fromUrlSafe(opponentParts[4])).split('/');
-                opponentSys = parseFloat(opponentControl[0]);
-                opponentEng = parseFloat(opponentControl[1]);
-                opponentWep = parseFloat(opponentControl[2]);
+                opponentSys = parseFloat(opponentControl[0]) || opponentSys;
+                opponentEng = parseFloat(opponentControl[1]) || opponentEng;
+                opponentWep = parseFloat(opponentControl[2]) || opponentWep;
               }
             }
           } else {
@@ -227,7 +227,7 @@ export default class OutfittingPage extends Page {
             opponent.buildWith(Ships[shipId].defaults);
           }
         }
-        engagementRange = parseInt(control[8]);
+        engagementRange = parseInt(control[8]) || engagementRange;
 
         // Multi-crew pips were introduced later on so assign default values
         // because those values might not be present.
