@@ -1,63 +1,42 @@
 const path = require('path');
-const exec = require('child_process').exec;
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { InjectManifest } = require('workbox-webpack-plugin');
-
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { BugsnagSourceMapUploaderPlugin } = require('webpack-bugsnag-plugins');
 const pkgJson = require('./package');
 const buildDate = new Date();
-function CopyDirPlugin(source, destination) {
-  this.source = source;
-  this.destination = destination;
-}
-
-CopyDirPlugin.prototype.apply = function(compiler) {
-  compiler.plugin('done', () => {
-    console.log(compiler.outputPath, this.destination);
-    exec('cp -r ' + this.source + ' ' + path.join(compiler.outputPath, this.destination));
-  });
-};
 
 module.exports = {
-  cache: true,
   devtool: 'source-map',
   entry: {
-    app: ['babel-polyfill', path.resolve(__dirname, 'src/app/index')],
-    lib: ['d3', 'react', 'react-dom', 'classnames', 'fbemitter', 'lz-string']
+    main: ['babel-polyfill', './src/app/index.js']
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.less']
   },
   output: {
     path: path.join(__dirname, 'build'),
-    filename: '[name].[chunkhash:6].js',
-    chunkFilename: '[name].[chunkhash:6]',
-    publicPath: '/'
+    filename: '[name].[hash].js',
+    publicPath: '/',
+    globalObject: 'this'
+  },
+  mode: 'production',
+  optimization: {
+    minimize: false,
+    splitChunks: {
+      chunks: 'all'
+    }
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      'screw-ie8': true,
-      sourceMap: true
-    }),
+    new CopyWebpackPlugin(['src/.htaccess', { from: 'src/schemas', to: 'schemas' }, 'src/images/logo/*']),
     // new webpack.optimize.CommonsChunkPlugin({
     //  name: 'lib',
     //  filename: 'lib.[chunkhash:6].js'
     // }),
     new HtmlWebpackPlugin({
-      inject: false,
-      appCache: 'coriolis.appcache',
-      minify: {
-        collapseBooleanAttributes: true,
-        collapseWhitespace: true,
-        removeAttributeQuotes: true,
-        removeComments: true,
-        removeEmptyAttributes: true,
-        removeRedundantAttributes: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true
-      },
+      inject: true,
       template: path.join(__dirname, 'src/index.ejs'),
       uaTracking: process.env.CORIOLIS_UA_TRACKING || '',
       gapiKey: process.env.CORIOLIS_GAPI_KEY || '',
@@ -65,17 +44,14 @@ module.exports = {
       version: pkgJson.version
     }),
     new ExtractTextPlugin({
-      filename: '[contenthash:6].css',
+      filename: '[hash:6].css',
       disable: false,
       allChunks: true
     }),
-    new BugsnagSourceMapUploaderPlugin({
-      apiKey: 'ba9fae819372850fb660755341fa6ef5',
-      appVersion: `${pkgJson.version}-${buildDate.toISOString()}`
-    }),
-    new CopyDirPlugin(path.join(__dirname, 'src/schemas'), 'schemas'),
-    new CopyDirPlugin(path.join(__dirname, 'src/images/logo/*'), ''),
-    new CopyDirPlugin(path.join(__dirname, 'src/.htaccess'), ''),
+    // new BugsnagSourceMapUploaderPlugin({
+    //   apiKey: 'ba9fae819372850fb660755341fa6ef5',
+    //   appVersion: `${pkgJson.version}-${buildDate.toISOString()}`
+    // }),
     new InjectManifest({
       swSrc: './src/sw.js',
       importWorkboxFrom: 'cdn',
