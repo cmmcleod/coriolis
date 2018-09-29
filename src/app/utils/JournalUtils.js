@@ -147,80 +147,77 @@ export function shipFromLoadoutJSON(json) {
         break;
       default:
     }
-    for (const module of json.Modules) {
-      if (module.Slot.toLowerCase().search(/hardpoint/) !== -1) {
-        // Add hardpoints
-        let hardpoint;
-        let hardpointClassNum = -1;
-        let hardpointSlotNum = -1;
-        let hardpointArrayNum = 0;
-        for (let i in shipTemplate.slots.hardpoints) {
-          if (shipTemplate.slots.hardpoints[i] === hardpointClassNum) {
-            // Another slot of the same class
-            hardpointSlotNum++;
-          } else {
-            // The first slot of a new class
-            hardpointClassNum = shipTemplate.slots.hardpoints[i];
-            hardpointSlotNum = 1;
-          }
-
-          // Now that we know what we're looking for, find it
-          const hardpointName = HARDPOINT_NUM_TO_CLASS[hardpointClassNum] + 'Hardpoint' + hardpointSlotNum;
-          const hardpointSlot = json.Modules.find(elem => elem.Slot.toLowerCase() === hardpointName.toLowerCase());
-          if (!hardpointSlot) {
-            // This can happen with old imports that don't contain new hardpoints
-          } else if (!hardpointSlot) {
-            // No module
-          } else {
-            hardpoint = _moduleFromFdName(hardpointSlot.Item);
-            ship.use(ship.hardpoints[hardpointArrayNum], hardpoint, true);
-            ship.hardpoints[hardpointArrayNum].enabled = hardpointSlot.On;
-            ship.hardpoints[hardpointArrayNum].priority = hardpointSlot.Priority;
-            modsToAdd.push({ coriolisMod: hardpoint, json: hardpointSlot });
-          }
-          hardpointArrayNum++;
+    if (module.Slot.toLowerCase().search(/hardpoint/) !== -1) {
+      // Add hardpoints
+      let hardpoint;
+      let hardpointClassNum = -1;
+      let hardpointSlotNum = -1;
+      let hardpointArrayNum = 0;
+      for (let i in shipTemplate.slots.hardpoints) {
+        if (shipTemplate.slots.hardpoints[i] === hardpointClassNum) {
+          // Another slot of the same class
+          hardpointSlotNum++;
+        } else {
+          // The first slot of a new class
+          hardpointClassNum = shipTemplate.slots.hardpoints[i];
+          hardpointSlotNum = 1;
         }
-      }
-      if (module.Slot.toLowerCase().search(/slot\d/) !== -1) {
-        let internalSlotNum = 1;
-        let militarySlotNum = 1;
-        for (let i in shipTemplate.slots.internal) {
-          if (!shipTemplate.slots.internal.hasOwnProperty(i)) {
-            continue;
-          }
-          const isMilitary = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].name = 'military' : false;
 
-          // The internal slot might be a standard or a military slot.  Military slots have a different naming system
-          let internalSlot = null;
-          if (isMilitary) {
-            const internalName = 'Military0' + militarySlotNum;
-            internalSlot = json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase());
-            militarySlotNum++;
-          } else {
-            // Slot numbers are not contiguous so handle skips.
-            while (internalSlot === null && internalSlotNum < 99) {
-              // Slot sizes have no relationship to the actual size, either, so check all possibilities
-              for (let slotsize = 0; slotsize < 9; slotsize++) {
-                const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '0') + internalSlotNum + '_Size' + slotsize;
-                if (json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase())) {
-                  internalSlot = json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase());
-                  break;
-                }
+        // Now that we know what we're looking for, find it
+        const hardpointName = HARDPOINT_NUM_TO_CLASS[hardpointClassNum] + 'Hardpoint' + hardpointSlotNum;
+        const hardpointSlot = json.Modules.find(elem => elem.Slot.toLowerCase() === hardpointName.toLowerCase());
+        if (!hardpointSlot) {
+          // This can happen with old imports that don't contain new hardpoints
+        } else if (!hardpointSlot) {
+          // No module
+        } else {
+          hardpoint = _moduleFromFdName(hardpointSlot.Item);
+          ship.use(ship.hardpoints[hardpointArrayNum], hardpoint, true);
+          ship.hardpoints[hardpointArrayNum].enabled = hardpointSlot.On;
+          ship.hardpoints[hardpointArrayNum].priority = hardpointSlot.Priority;
+          modsToAdd.push({ coriolisMod: hardpoint, json: hardpointSlot });
+        }
+        hardpointArrayNum++;
+      }
+    }
+    if (module.Slot.toLowerCase().search(/slot\d/) !== -1) {
+      let internalSlotNum = 0;
+      let militarySlotNum = 1;
+      for (let i in shipTemplate.slots.internal) {
+        if (!shipTemplate.slots.internal.hasOwnProperty(i)) {
+          continue;
+        }
+        const isMilitary = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].name == 'military' : false;
+
+        // The internal slot might be a standard or a military slot.  Military slots have a different naming system
+        let internalSlot = null;
+        if (isMilitary) {
+          const internalName = 'Military0' + militarySlotNum;
+          internalSlot = json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase());
+          militarySlotNum++;
+        } else {
+          // Slot numbers are not contiguous so handle skips.
+          for (; internalSlot === null && internalSlotNum < 99; internalSlotNum++) {
+            // Slot sizes have no relationship to the actual size, either, so check all possibilities
+            for (let slotsize = 0; slotsize < 9; slotsize++) {
+              const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '') + internalSlotNum + '_Size' + slotsize;
+              if (json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase())) {
+                internalSlot = json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase());
+                break;
               }
-              internalSlotNum++;
             }
           }
+        }
 
-          if (!internalSlot) {
-            // This can happen with old imports that don't contain new slots
-          } else {
-            const internalJson = internalSlot;
-            const internal = _moduleFromFdName(internalJson.Item);
-            ship.use(ship.internal[i], internal, true);
-            ship.internal[i].enabled = internalJson.On === true;
-            ship.internal[i].priority = internalJson.Priority;
-            modsToAdd.push({ coriolisMod: internal, json: internalSlot });
-          }
+        if (!internalSlot) {
+          // This can happen with old imports that don't contain new slots
+        } else {
+          const internalJson = internalSlot;
+          const internal = _moduleFromFdName(internalJson.Item);
+          ship.use(ship.internal[i], internal, true);
+          ship.internal[i].enabled = internalJson.On === true;
+          ship.internal[i].priority = internalJson.Priority;
+          modsToAdd.push({ coriolisMod: internal, json: internalSlot });
         }
       }
     }

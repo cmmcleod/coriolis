@@ -72,6 +72,11 @@ export default class Modification extends TranslatedComponent {
       return null;
     }
 
+    let inputClassNames = {
+      'cb': true,
+      'greyed-out': !this.props.highlight
+    };
+
     return (
       <div onBlur={this._updateFinished.bind(this)} key={name}
         className={cn('cb', 'modification-container')}
@@ -84,12 +89,12 @@ export default class Modification extends TranslatedComponent {
               <td className={'input-container'}>
                 <span>
                   {this.props.editable ?
-                    <NumberEditor className={'cb'} value={this.state.value}
+                    <NumberEditor className={cn(inputClassNames)} value={this.state.value}
                       decimals={2} style={{ textAlign: 'right' }} step={0.01}
                       stepModifier={1} onKeyDown={ this.props.onKeyDown }
                       onValueChange={this._updateValue.bind(this)} /> :
                     <input type="text" value={formats.f2(this.state.value)}
-                      disabled className={'number-editor'}
+                      disabled className={cn('number-editor', 'greyed-out')}
                       style={{ textAlign: 'right', cursor: 'inherit' }}/>
                   }
                   <span className={'unit-container'}>

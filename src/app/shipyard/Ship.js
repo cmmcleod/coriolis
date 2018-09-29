@@ -1187,28 +1187,28 @@ export default class Ship {
     // handle unladen mass
     unladenMass += chain(slots)
       .map(slot => slot.m ? slot.m.get('mass') : null)
-      .filter()
+      .map(mass => mass || 0)
       .reduce((sum, mass) => sum + mass)
       .value();
 
     // handle fuel capacity
     fuelCapacity += chain(slots)
       .map(slot => slot.m ? slot.m.get('fuel') : null)
-      .filter()
+      .map(fuel => fuel || 0)
       .reduce((sum, fuel) => sum + fuel)
       .value();
 
     // handle cargo capacity
     cargoCapacity += chain(slots)
       .map(slot => slot.m ? slot.m.get('cargo') : null)
-      .filter()
+      .map(cargo => cargo || 0)
       .reduce((sum, cargo) => sum + cargo)
       .value();
 
       // handle passenger capacity
     passengerCapacity += chain(slots)
       .map(slot => slot.m ? slot.m.get('passengers') : null)
-      .filter()
+      .map(passengers => passengers || 0)
       .reduce((sum, passengers) => sum + passengers)
       .value();
 
