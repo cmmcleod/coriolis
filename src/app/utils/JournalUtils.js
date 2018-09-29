@@ -200,7 +200,7 @@ export function shipFromLoadoutJSON(json) {
           for (; internalSlot === null && internalSlotNum < 99; internalSlotNum++) {
             // Slot sizes have no relationship to the actual size, either, so check all possibilities
             for (let slotsize = 0; slotsize < 9; slotsize++) {
-              const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '0') + internalSlotNum + '_Size' + slotsize;
+              const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '') + internalSlotNum + '_Size' + slotsize;
               if (json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase())) {
                 internalSlot = json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase());
                 break;
