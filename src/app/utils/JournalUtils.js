@@ -181,7 +181,7 @@ export function shipFromLoadoutJSON(json) {
       }
     }
     if (module.Slot.toLowerCase().search(/slot\d/) !== -1) {
-      let internalSlotNum = 1;
+      let internalSlotNum = 0;
       let militarySlotNum = 1;
       for (let i in shipTemplate.slots.internal) {
         if (!shipTemplate.slots.internal.hasOwnProperty(i)) {
