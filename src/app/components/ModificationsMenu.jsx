@@ -214,11 +214,11 @@ export default class ModificationsMenu extends TranslatedComponent {
     for (const modName of Modifications.modules[m.grp].modifications) {
       if (!Modifications.modifications[modName].hidden) {
         const key = modName + (m.getModValue(modName) / 100 || 0);
-        const editable = modName !== 'fallofffromrange' &&
-          m.blueprint.grades[m.blueprint.grade].features[modName];
+        const editable = modName !== 'fallofffromrange';
+        const highlight = m.blueprint.grades[m.blueprint.grade].features[modName];
         this.lastNeId = modName;
-        (editable ? modifiableModifications : modifications).push(
-          <Modification key={ key } ship={ ship } m={ m }
+        (editable && highlight ? modifiableModifications : modifications).push(
+          <Modification key={ key } ship={ ship } m={ m } highlight={highlight}
             value={m.getPretty(modName) || 0} modItems={this.modItems}
             onChange={onChange} onKeyDown={this._keyDown} name={modName}
             editable={editable} handleModChange = {this._handleModChange} />
