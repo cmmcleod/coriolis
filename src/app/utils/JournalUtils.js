@@ -180,46 +180,45 @@ export function shipFromLoadoutJSON(json) {
         hardpointArrayNum++;
       }
     }
-    if (module.Slot.toLowerCase().search(/slot\d/) !== -1) {
-      let internalSlotNum = 0;
-      let militarySlotNum = 1;
-      for (let i in shipTemplate.slots.internal) {
-        if (!shipTemplate.slots.internal.hasOwnProperty(i)) {
-          continue;
-        }
-        const isMilitary = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].name == 'military' : false;
+  }
 
-        // The internal slot might be a standard or a military slot.  Military slots have a different naming system
-        let internalSlot = null;
-        if (isMilitary) {
-          const internalName = 'Military0' + militarySlotNum;
-          internalSlot = json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase());
-          militarySlotNum++;
-        } else {
-          // Slot numbers are not contiguous so handle skips.
-          for (; internalSlot === null && internalSlotNum < 99; internalSlotNum++) {
-            // Slot sizes have no relationship to the actual size, either, so check all possibilities
-            for (let slotsize = 0; slotsize < 9; slotsize++) {
-              const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '') + internalSlotNum + '_Size' + slotsize;
-              if (json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase())) {
-                internalSlot = json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase());
-                break;
-              }
-            }
+  let internalSlotNum = 0;
+  let militarySlotNum = 1;
+  for (let i in shipTemplate.slots.internal) {
+    if (!shipTemplate.slots.internal.hasOwnProperty(i)) {
+      continue;
+    }
+    const isMilitary = isNaN(shipTemplate.slots.internal[i]) ? shipTemplate.slots.internal[i].name == 'Military' : false;
+
+    // The internal slot might be a standard or a military slot.  Military slots have a different naming system
+    let internalSlot = null;
+    if (isMilitary) {
+      const internalName = 'Military0' + militarySlotNum;
+      internalSlot = json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase());
+      militarySlotNum++;
+    } else {
+      // Slot numbers are not contiguous so handle skips.
+      for (; internalSlot === null && internalSlotNum < 99; internalSlotNum++) {
+        // Slot sizes have no relationship to the actual size, either, so check all possibilities
+        for (let slotsize = 0; slotsize < 9; slotsize++) {
+          const internalName = 'Slot' + (internalSlotNum <= 9 ? '0' : '') + internalSlotNum + '_Size' + slotsize;
+          if (json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase())) {
+            internalSlot = json.Modules.find(elem => elem.Slot.toLowerCase() === internalName.toLowerCase());
+            break;
           }
         }
-
-        if (!internalSlot) {
-          // This can happen with old imports that don't contain new slots
-        } else {
-          const internalJson = internalSlot;
-          const internal = _moduleFromFdName(internalJson.Item);
-          ship.use(ship.internal[i], internal, true);
-          ship.internal[i].enabled = internalJson.On === true;
-          ship.internal[i].priority = internalJson.Priority;
-          modsToAdd.push({ coriolisMod: internal, json: internalSlot });
-        }
       }
+    }
+
+    if (!internalSlot) {
+      // This can happen with old imports that don't contain new slots
+    } else {
+      const internalJson = internalSlot;
+      const internal = _moduleFromFdName(internalJson.Item);
+      ship.use(ship.internal[i], internal, true);
+      ship.internal[i].enabled = internalJson.On === true;
+      ship.internal[i].priority = internalJson.Priority;
+      modsToAdd.push({ coriolisMod: internal, json: internalSlot });
     }
   }
 
