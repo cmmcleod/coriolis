@@ -1,7 +1,6 @@
 import React from 'react';
 import SlotSection from './SlotSection';
 import HardpointSlot from './HardpointSlot';
-import cn from 'classnames';
 import { MountFixed, MountGimballed, MountTurret } from '../components/SvgIcons';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
 

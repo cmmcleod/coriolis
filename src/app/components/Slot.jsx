@@ -6,7 +6,6 @@ import AvailableModulesMenu from './AvailableModulesMenu';
 import ModificationsMenu from './ModificationsMenu';
 import { diffDetails } from '../utils/SlotFunctions';
 import { wrapCtxMenu } from '../utils/UtilityFunctions';
-import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
 /**
  * Abstract Slot

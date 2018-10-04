@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import TranslatedComponent from './TranslatedComponent';
-import { isEmpty, stopCtxPropagation } from '../utils/UtilityFunctions';
+import { stopCtxPropagation } from '../utils/UtilityFunctions';
 import cn from 'classnames';
 import { Modifications } from 'coriolis-data/dist';
 import Modification from './Modification';

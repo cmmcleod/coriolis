@@ -5,7 +5,6 @@ import * as Calc from '../shipyard/Calculations';
 import PieChart from './PieChart';
 import { nameComparator } from '../utils/SlotFunctions';
 import { MountFixed, MountGimballed, MountTurret } from './SvgIcons';
-import VerticalBarChart from './VerticalBarChart';
 
 /**
  * Generates an internationalization friendly weapon comparator that will

@@ -1,5 +1,4 @@
 import React from 'react';
-import cn from 'classnames';
 import SlotSection from './SlotSection';
 import HardpointSlot from './HardpointSlot';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
