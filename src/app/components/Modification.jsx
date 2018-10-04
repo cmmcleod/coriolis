@@ -9,7 +9,6 @@ import { isValueBeneficial } from '../utils/BlueprintFunctions';
  * Modification
  */
 export default class Modification extends TranslatedComponent {
-
   static propTypes = {
     ship: PropTypes.object.isRequired,
     m: PropTypes.object.isRequired,
@@ -98,15 +97,15 @@ export default class Modification extends TranslatedComponent {
                       style={{ textAlign: 'right', cursor: 'inherit' }}/>
                   }
                   <span className={'unit-container'}>
-                      {units[m.getStoredUnitFor(name)]}
+                    {units[m.getStoredUnitFor(name)]}
                   </span>
                 </span>
               </td>
               <td style={{ textAlign: 'center' }} className={
-                  modValue ?
-                    isValueBeneficial(name, modValue) ? 'secondary': 'warning':
-                    ''
-                }>
+                modValue ?
+                  isValueBeneficial(name, modValue) ? 'secondary' : 'warning' :
+                  ''
+              }>
                 {formats.f2(modValue / 100) || 0}%
               </td>
             </tr>

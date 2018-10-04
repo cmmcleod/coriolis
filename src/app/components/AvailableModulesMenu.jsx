@@ -98,7 +98,7 @@ const CATEGORIES = {
   'defence': ['ch', 'po', 'ec'],
   'scanners': ['sc', 'ss', 'cs', 'kw', 'ws'], // Overloaded with internal scanners
   // Experimental
-  'experimental': ['axmc', 'axmr', 'rfl', 'tbrfl', 'tbsc', 'tbem', 'xs', 'sfn', 'rcpl', 'dtl', 'rsl', 'mahr', ],
+  'experimental': ['axmc', 'axmr', 'rfl', 'tbrfl', 'tbsc', 'tbem', 'xs', 'sfn', 'rcpl', 'dtl', 'rsl', 'mahr',],
 
   // Guardian
   'guardian': ['gpp', 'gpd', 'gpc', 'ggc', 'gsrp', 'gfsb', 'ghrp', 'gmrp', 'gsc']
@@ -108,7 +108,6 @@ const CATEGORIES = {
  * Available modules menu
  */
 export default class AvailableModulesMenu extends TranslatedComponent {
-
   static propTypes = {
     modules: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
     onSelect: PropTypes.func.isRequired,
@@ -159,7 +158,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         this._hideDiff(event);
         onSelect(m);
       }
-   );
+    );
 
     if (modules instanceof Array) {
       list = buildGroup(modules[0].grp, modules);
@@ -502,14 +501,13 @@ export default class AvailableModulesMenu extends TranslatedComponent {
   render() {
     return (
       <div ref={node => this.node = node}
-          className={cn('select', this.props.className)}
-          onScroll={this._hideDiff}
-          onClick={(e) => e.stopPropagation() }
-          onContextMenu={stopCtxPropagation}
+        className={cn('select', this.props.className)}
+        onScroll={this._hideDiff}
+        onClick={(e) => e.stopPropagation() }
+        onContextMenu={stopCtxPropagation}
       >
         {this.state.list}
       </div>
     );
   }
-
 }

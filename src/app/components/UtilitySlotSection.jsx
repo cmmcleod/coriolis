@@ -8,7 +8,6 @@ import { stopCtxPropagation } from '../utils/UtilityFunctions';
  * Utility Slot Section
  */
 export default class UtilitySlotSection extends SlotSection {
-
   /**
    * Constructor
    * @param  {Object} props   React Component properties
@@ -133,5 +132,4 @@ export default class UtilitySlotSection extends SlotSection {
       </ul>
     </div>;
   }
-
 }

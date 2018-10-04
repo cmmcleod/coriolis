@@ -10,7 +10,6 @@ import { outfitURL } from '../utils/UrlGenerators';
  * Comparison Table
  */
 export default class ComparisonTable extends TranslatedComponent {
-
   static propTypes = {
     facets: PropTypes.array.isRequired,
     builds: PropTypes.array.isRequired,

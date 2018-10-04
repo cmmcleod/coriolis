@@ -27,7 +27,6 @@ const zlib = require('pako');
  * Coriolis App
  */
 export default class Coriolis extends React.Component {
-
   static childContextTypes = {
     closeMenu: PropTypes.func.isRequired,
     hideModal: PropTypes.func.isRequired,
@@ -394,7 +393,7 @@ export default class Coriolis extends React.Component {
     let currentMenu = this.state.currentMenu;
 
     return <div style={{ minHeight: '100%' }} onClick={this._closeMenu}
-                className={this.state.noTouch ? 'no-touch' : null}>
+      className={this.state.noTouch ? 'no-touch' : null}>
       <Header appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu}/>
       {this.state.error ? this.state.error : this.state.page ? React.createElement(this.state.page, { currentMenu }) :
         <NotFoundPage/>}
@@ -403,7 +402,7 @@ export default class Coriolis extends React.Component {
       <footer>
         <div className="right cap">
           <a href="https://github.com/EDCD/coriolis" target="_blank"
-             title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
+            title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
           <br/>
           <a
             href={'https://github.com/EDCD/coriolis/compare/edcd:develop@{' + window.CORIOLIS_DATE + '}...edcd:develop'}

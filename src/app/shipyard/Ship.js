@@ -71,7 +71,6 @@ function reduceToIDs(idArray, slot, slotIndex) {
  * Ship Model - Encapsulates and models in-game ship behavior
  */
 export default class Ship {
-
   /**
    * @param {String} id         Unique ship Id / Key
    * @param {Object} properties Basic ship properties such as name, manufacturer, mass, etc
@@ -416,16 +415,16 @@ export default class Ship {
   clearModifications(m) {
     m.mods = {};
     this.updatePowerGenerated()
-        .updatePowerUsed()
-        .recalculateMass()
-        .updateJumpStats()
-        .recalculateShield()
-        .recalculateShieldCells()
-        .recalculateArmour()
-        .recalculateDps()
-        .recalculateEps()
-        .recalculateHps()
-        .updateMovement();
+      .updatePowerUsed()
+      .recalculateMass()
+      .updateJumpStats()
+      .recalculateShield()
+      .recalculateShieldCells()
+      .recalculateArmour()
+      .recalculateDps()
+      .recalculateEps()
+      .recalculateHps()
+      .updateMovement();
   }
 
   /**
@@ -696,16 +695,16 @@ export default class Ship {
     // Update aggragated stats
     if (comps) {
       this.updatePowerGenerated()
-          .updatePowerUsed()
-          .recalculateMass()
-          .updateJumpStats()
-          .recalculateShield()
-          .recalculateShieldCells()
-          .recalculateArmour()
-          .recalculateDps()
-          .recalculateEps()
-          .recalculateHps()
-          .updateMovement();
+        .updatePowerUsed()
+        .recalculateMass()
+        .updateJumpStats()
+        .recalculateShield()
+        .recalculateShieldCells()
+        .recalculateArmour()
+        .recalculateDps()
+        .recalculateEps()
+        .recalculateHps()
+        .updateMovement();
     }
 
     return this.updatePowerPrioritesString().updatePowerEnabledString().updateModificationsString();
@@ -1205,7 +1204,7 @@ export default class Ship {
       .reduce((sum, cargo) => sum + cargo)
       .value();
 
-      // handle passenger capacity
+    // handle passenger capacity
     passengerCapacity += chain(slots)
       .map(slot => slot.m ? slot.m.get('passengers') : null)
       .map(passengers => passengers || 0)
@@ -1683,11 +1682,11 @@ export default class Ship {
         updated;
 
     this.useBulkhead(0)
-        .use(standard[2], fsd)   // FSD
-        .use(standard[3], ls)    // Life Support
-        .use(standard[5], s)     // Sensors
-        .use(standard[4], pd)    // Power Distributor
-        .use(standard[6], ft);   // Fuel Tank
+      .use(standard[2], fsd)   // FSD
+      .use(standard[3], ls)    // Life Support
+      .use(standard[5], s)     // Sensors
+      .use(standard[4], pd)    // Power Distributor
+      .use(standard[6], ft);   // Fuel Tank
 
     // Turn off nearly everything
     if (m.fsdDisabled) this.setSlotEnabled(this.standard[2], false);

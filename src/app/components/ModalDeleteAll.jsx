@@ -6,7 +6,6 @@ import Persist from '../stores/Persist';
  * Delete All saved data modal
  */
 export default class ModalDeleteAll extends TranslatedComponent {
-
   /**
    * Delete everything and hide the modal
    */

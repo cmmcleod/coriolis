@@ -69,7 +69,7 @@ export default class FSDProfile extends TranslatedComponent {
     const { formats, translate, units } = language;
     const { ship, cargo, fuel } = this.props;
 
-    
+
     // Calculate bounds for our line chart - use thruster info for X
     const thrusters = ship.standard[1].m;
     const fsd = ship.standard[2].m;

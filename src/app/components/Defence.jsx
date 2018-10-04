@@ -226,26 +226,26 @@ export default class Defence extends TranslatedComponent {
     return (
       <span id='defence'>
         {shield.total ? <span>
-        <div className='group quarter'>
-          <h2>{translate('shield metrics')}</h2>
-          <br/>
-          <h2 onMouseOver={termtip.bind(null, <div>{shieldSourcesTt}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('raw shield strength')}<br/>{formats.int(shield.total)}{units.MJ}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_SHIELDS')}<br/>{shielddamage.totalsdps == 0 ? translate('ever') : formats.time(Calc.timeToDeplete(shield.total, shielddamage.totalsdps, shielddamage.totalseps, pd.getWeaponsCapacity(), pd.getWeaponsRechargeRate() * opponentWep / 4))}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECOVER'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECOVER_SHIELDS')}<br/>{shield.recover === Math.Inf ? translate('never') : formats.time(shield.recover)}</h2>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECHARGE'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECHARGE_SHIELDS')}<br/>{shield.recharge === Math.Inf ? translate('never') : formats.time(shield.recharge)}</h2>
-        </div>
-        <div className='group quarter'>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SHIELD_SOURCES'))} onMouseOut={tooltip.bind(null, null)}>{translate('shield sources')}</h2>
-          <PieChart data={shieldSourcesData} />
-        </div>
-        <div className='group quarter'>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_DAMAGE_TAKEN'))} onMouseOut={tooltip.bind(null, null)}>{translate('damage taken')}(%)</h2>
-          <VerticalBarChart data={shieldDamageTakenData} yMax={140} />
-        </div>
-        <div className='group quarter'>
-          <h2 onMouseOver={termtip.bind(null, translate('PHRASE_EFFECTIVE_SHIELD'))} onMouseOut={tooltip.bind(null, null)}>{translate('effective shield')}(MJ)</h2>
-          <VerticalBarChart data={effectiveShieldData} yMax={maxEffectiveShield}/>
-        </div>
+          <div className='group quarter'>
+            <h2>{translate('shield metrics')}</h2>
+            <br/>
+            <h2 onMouseOver={termtip.bind(null, <div>{shieldSourcesTt}</div>)} onMouseOut={tooltip.bind(null, null)} className='summary'>{translate('raw shield strength')}<br/>{formats.int(shield.total)}{units.MJ}</h2>
+            <h2 onMouseOver={termtip.bind(null, translate('TT_TIME_TO_LOSE_SHIELDS'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_LOSE_SHIELDS')}<br/>{shielddamage.totalsdps == 0 ? translate('ever') : formats.time(Calc.timeToDeplete(shield.total, shielddamage.totalsdps, shielddamage.totalseps, pd.getWeaponsCapacity(), pd.getWeaponsRechargeRate() * opponentWep / 4))}</h2>
+            <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECOVER'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECOVER_SHIELDS')}<br/>{shield.recover === Math.Inf ? translate('never') : formats.time(shield.recover)}</h2>
+            <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SG_RECHARGE'))} onMouseOut={tooltip.bind(null, null)}>{translate('PHRASE_TIME_TO_RECHARGE_SHIELDS')}<br/>{shield.recharge === Math.Inf ? translate('never') : formats.time(shield.recharge)}</h2>
+          </div>
+          <div className='group quarter'>
+            <h2 onMouseOver={termtip.bind(null, translate('PHRASE_SHIELD_SOURCES'))} onMouseOut={tooltip.bind(null, null)}>{translate('shield sources')}</h2>
+            <PieChart data={shieldSourcesData} />
+          </div>
+          <div className='group quarter'>
+            <h2 onMouseOver={termtip.bind(null, translate('PHRASE_DAMAGE_TAKEN'))} onMouseOut={tooltip.bind(null, null)}>{translate('damage taken')}(%)</h2>
+            <VerticalBarChart data={shieldDamageTakenData} yMax={140} />
+          </div>
+          <div className='group quarter'>
+            <h2 onMouseOver={termtip.bind(null, translate('PHRASE_EFFECTIVE_SHIELD'))} onMouseOut={tooltip.bind(null, null)}>{translate('effective shield')}(MJ)</h2>
+            <VerticalBarChart data={effectiveShieldData} yMax={maxEffectiveShield}/>
+          </div>
         </span> : null }
 
         <div className='group quarter'>

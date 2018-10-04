@@ -203,9 +203,9 @@ export default class Offence extends TranslatedComponent {
 
 
     let totalSEps = 0;
-    let totalSDpsObject = {'absolute': 0, 'explosive': 0, 'kinetic': 0, 'thermal': 0};
-    let shieldsSDpsObject = {'absolute': 0, 'explosive': 0, 'kinetic': 0, 'thermal': 0};
-    let armourSDpsObject = {'absolute': 0, 'explosive': 0, 'kinetic': 0, 'thermal': 0};
+    let totalSDpsObject = { 'absolute': 0, 'explosive': 0, 'kinetic': 0, 'thermal': 0 };
+    let shieldsSDpsObject = { 'absolute': 0, 'explosive': 0, 'kinetic': 0, 'thermal': 0 };
+    let armourSDpsObject = { 'absolute': 0, 'explosive': 0, 'kinetic': 0, 'thermal': 0 };
 
     const rows = [];
     for (let i = 0; i < damage.length; i++) {
@@ -267,22 +267,22 @@ export default class Offence extends TranslatedComponent {
     return (
       <span id='offence'>
         <div className='group full'>
-        <table>
-          <thead>
-          <tr className='main'>
-            <th rowSpan='2' className='sortable' onClick={sortOrder.bind(this, 'n')}>{translate('weapon')}</th>
-            <th colSpan='1'>{translate('overall')}</th>
-            <th colSpan='2'>{translate('opponent\'s shields')}</th>
-            <th colSpan='2'>{translate('opponent\'s armour')}</th>
-          </tr>
-          <tr>
-            <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_SHIELDS')} onMouseOut={tooltip.bind(null, null)} onClick={sortOrder.bind(this, 'esdpss')}>{'sdps'}</th>
-            <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_SHIELDS')} onMouseOut={tooltip.bind(null, null)} onClick={sortOrder.bind(this, 'esdpss')}>{'sdps'}</th>
-            <th className='sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVENESS_SHIELDS')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'es')}>{'eft'}</th>
-            <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_ARMOUR')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'esdpsh')}>{'sdps'}</th>
-            <th className='sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVENESS_ARMOUR')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'eh')}>{'eft'}</th>
-          </tr>
-          </thead>
+          <table>
+            <thead>
+              <tr className='main'>
+                <th rowSpan='2' className='sortable' onClick={sortOrder.bind(this, 'n')}>{translate('weapon')}</th>
+                <th colSpan='1'>{translate('overall')}</th>
+                <th colSpan='2'>{translate('opponent\'s shields')}</th>
+                <th colSpan='2'>{translate('opponent\'s armour')}</th>
+              </tr>
+              <tr>
+                <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_SHIELDS')} onMouseOut={tooltip.bind(null, null)} onClick={sortOrder.bind(this, 'esdpss')}>{'sdps'}</th>
+                <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_SHIELDS')} onMouseOut={tooltip.bind(null, null)} onClick={sortOrder.bind(this, 'esdpss')}>{'sdps'}</th>
+                <th className='sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVENESS_SHIELDS')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'es')}>{'eft'}</th>
+                <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_ARMOUR')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'esdpsh')}>{'sdps'}</th>
+                <th className='sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVENESS_ARMOUR')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'eh')}>{'eft'}</th>
+              </tr>
+            </thead>
             <tbody>
               {rows}
               {rows.length > 0 &&
@@ -296,7 +296,7 @@ export default class Offence extends TranslatedComponent {
                 </tr>
               }
             </tbody>
-        </table>
+          </table>
         </div>
         <div className='group quarter'>
           <h2>{translate('offence metrics')}</h2>

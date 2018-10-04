@@ -32,7 +32,6 @@ function bandText(val, index, wattScale) {
  * Renders the SVG to simulate in-game power bands
  */
 export default class PowerBands extends TranslatedComponent {
-
   static propTypes = {
     bands: PropTypes.array.isRequired,
     available: PropTypes.number.isRequired,
