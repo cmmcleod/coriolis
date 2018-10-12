@@ -1,8 +1,6 @@
 console.log('Hello from sw.js');
 
 if (workbox) {
-  workbox.skipWaiting();
-  workbox.clientsClaim();
   console.log('Yay! Workbox is loaded 🎉');
   workbox.routing.registerRoute(
     new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
@@ -44,3 +42,31 @@ if (workbox) {
 } else {
   console.log('Boo! Workbox didn\'t load 😬');
 }
+(async() => {
+  if (event.request.mode === 'navigate' && registration.waiting) {
+    if ((await clients.matchAll()).length < 2) {
+      registration.waiting.postMessage('skipWaiting');
+    }
+  }
+})();
+
+addEventListener('message', messageEvent => {
+  if (messageEvent.data === 'skipWaiting') return skipWaiting();
+});
+
+addEventListener('fetch', event => {
+  event.respondWith(
+    (async() => {
+      if (
+        event.request.mode === 'navigate' &&
+        event.request.method === 'GET' &&
+        registration.waiting &&
+        (await clients.matchAll()).length < 2
+      ) {
+        registration.waiting.postMessage('skipWaiting');
+        return new Response('', { headers: { Refresh: '0' } });
+      }
+      return (await caches.match(event.request)) || fetch(event.request);
+    })()
+  );
+});
