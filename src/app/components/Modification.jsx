@@ -39,10 +39,24 @@ export default class Modification extends TranslatedComponent {
    *                       in a value by hand
    */
   _updateValue(value) {
-    let { m, name, ship } = this.props;
-    value = Math.max(Math.min(value, 50000), -50000);
-    ship.setModification(m, name, value, true, true);
     this.setState({ value });
+    let reCast = String(Number(value));
+    if (reCast.endsWith(value) || reCast.startsWith(value)) {
+      let { m, name, ship } = this.props;
+      value = Math.max(Math.min(value, 50000), -50000);
+      ship.setModification(m, name, value, true, true);
+    }
+  }
+
+  /**
+   * Triggered when a key is pressed down with focus on the number editor.
+   * @param {SyntheticEvent} event Key down event
+   */
+  _keyDown(event) {
+    if (event.key == 'Enter') {
+      this._updateFinished();
+    }
+    this.props.onKeyDown(event);
   }
 
   /**
@@ -91,7 +105,7 @@ export default class Modification extends TranslatedComponent {
                   {this.props.editable ?
                     <NumberEditor className={cn(inputClassNames)} value={this.state.value}
                       decimals={2} style={{ textAlign: 'right' }} step={0.01}
-                      stepModifier={1} onKeyDown={ this.props.onKeyDown }
+                      stepModifier={1} onKeyDown={this._keyDown.bind(this)}
                       onValueChange={this._updateValue.bind(this)} /> :
                     <input type="text" value={formats.f2(this.state.value)}
                       disabled className={cn('number-editor', 'greyed-out')}
