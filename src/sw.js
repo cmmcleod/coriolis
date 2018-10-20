@@ -42,31 +42,39 @@ if (workbox) {
 } else {
   console.log('Boo! Workbox didn\'t load 😬');
 }
-(async() => {
-  if (event.request.mode === 'navigate' && registration.waiting) {
-    if ((await clients.matchAll()).length < 2) {
-      registration.waiting.postMessage('skipWaiting');
-    }
-  }
-})();
 
-addEventListener('message', messageEvent => {
-  if (messageEvent.data === 'skipWaiting') return skipWaiting();
+
+self.addEventListener('message', event => {
+	if (!event.data) {
+		return;
+	}
+
+	switch (event.data) {
+		case 'skipWaiting':
+			self.skipWaiting();
+			break;
+		default:
+			// NOOP
+			break;
+	}
 });
 
-addEventListener('fetch', event => {
-  event.respondWith(
-    (async() => {
-      if (
-        event.request.mode === 'navigate' &&
-        event.request.method === 'GET' &&
-        registration.waiting &&
-        (await clients.matchAll()).length < 2
-      ) {
-        registration.waiting.postMessage('skipWaiting');
-        return new Response('', { headers: { Refresh: '0' } });
-      }
-      return (await caches.match(event.request)) || fetch(event.request);
-    })()
-  );
+self.addEventListener('fetch', function(event) {
+	console.log('Handling fetch event for', event.request.url);
+
+	event.respondWith(
+		caches.match(event.request).then(function(response) {
+			if (response) {
+				return response;
+			}
+
+			return fetch(event.request)
+				.then(function(response) {
+					return response;
+				})
+				.catch(function(error) {
+					return caches.match(OFFLINE_URL);
+				});
+		})
+	);
 });

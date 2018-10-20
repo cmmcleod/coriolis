@@ -81,6 +81,7 @@ export default class Header extends TranslatedComponent {
     this._getAnnouncementsMenu = this._getAnnouncementsMenu.bind(this);
     this._openSettings = this._openMenu.bind(this, 'settings');
     this._showHelp = this._showHelp.bind(this);
+    this.update = this.update.bind(this);
     this.languageOptions = [];
     this.insuranceOptions = [];
     this.state = {
@@ -560,6 +561,15 @@ export default class Header extends TranslatedComponent {
     }
   }
 
+  async update() {
+    const reg = await navigator.serviceWorker.getRegistration();
+    if (!reg || !reg.waiting) {
+      return;
+    }
+    reg.waiting.postMessage('skipWaiting');
+    window.location.reload();
+  }
+
   /**
    * Render the header
    * @return {React.Component} Header
@@ -570,7 +580,7 @@ export default class Header extends TranslatedComponent {
     let hasBuilds = Persist.hasBuilds();
     return (
       <header>
-        {this.props.appCacheUpdate && <div id="app-update" onClick={() => window.location.reload() }>{translate('PHRASE_UPDATE_RDY')}</div>}
+        {this.props.appCacheUpdate && <div id="app-update" onClick={this.update}>{translate('PHRASE_UPDATE_RDY')}</div>}
         {this.props.appCacheUpdate ? <a className={'view-changes'} href={'https://github.com/EDCD/coriolis/compare/edcd:develop@{' + window.CORIOLIS_DATE + '}...edcd:develop'} target="_blank">
           {'View Release Changes'}
         </a> : null}
