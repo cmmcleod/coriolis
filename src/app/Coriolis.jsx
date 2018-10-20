@@ -22,6 +22,7 @@ import ShipyardPage from './pages/ShipyardPage';
 import ErrorDetails from './pages/ErrorDetails';
 
 const zlib = require('pako');
+const request = require('superagent');
 
 /**
  * Coriolis App
@@ -65,11 +66,12 @@ export default class Coriolis extends React.Component {
     this.state = {
       noTouch: !('ontouchstart' in window || navigator.msMaxTouchPoints || navigator.maxTouchPoints),
       page: null,
+      announcements: [],
       language: getLanguage(Persist.getLangCode()),
       route: {},
       sizeRatio: Persist.getSizeRatio()
     };
-
+    this._getAnnouncements()
     Router('', (r) => this._setPage(ShipyardPage, r));
     Router('/import?', (r) => this._importBuild(r));
     Router('/import/:data', (r) => this._importBuild(r));
@@ -106,6 +108,14 @@ export default class Coriolis extends React.Component {
     } catch (err) {
       this._onError('Failed to import ship', r.path, 0, 0, err);
     }
+  }
+
+  _getAnnouncements() {
+    return request.get('https://orbis.zone/api/announcement')
+    .query({showInCoriolis: true})
+    .then(announces => {
+      this.setState({ announcements: announces.body })
+    })
   }
 
   /**
@@ -394,7 +404,7 @@ export default class Coriolis extends React.Component {
 
     return <div style={{ minHeight: '100%' }} onClick={this._closeMenu}
       className={this.state.noTouch ? 'no-touch' : null}>
-      <Header appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu}/>
+      <Header announcements={this.state.announcements} appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu}/>
       {this.state.error ? this.state.error : this.state.page ? React.createElement(this.state.page, { currentMenu }) :
         <NotFoundPage/>}
       {this.state.modal}
