@@ -30,7 +30,7 @@ module.exports = {
     }
   },
   plugins: [
-    new CopyWebpackPlugin(['src/.htaccess', { from: 'src/schemas', to: 'schemas' }, 'src/images/logo/*']),
+    new CopyWebpackPlugin(['src/.htaccess', { from: 'src/schemas', to: 'schemas' }, {from: 'src/images/logo/*', flatten: true, to: ''}]),
     // new webpack.optimize.CommonsChunkPlugin({
     //  name: 'lib',
     //  filename: 'lib.[chunkhash:6].js'
