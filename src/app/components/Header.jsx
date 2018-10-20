@@ -564,7 +564,7 @@ export default class Header extends TranslatedComponent {
   async update() {
     const reg = await navigator.serviceWorker.getRegistration();
     if (!reg || !reg.waiting) {
-      return;
+      return window.location.reload();
     }
     reg.waiting.postMessage('skipWaiting');
     window.location.reload();
