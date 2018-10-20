@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Router from './Router';
+import { register } from 'register-service-worker'
 import { EventEmitter } from 'fbemitter';
 import { getLanguage } from './i18n/Language';
 import Persist from './stores/Persist';
@@ -349,39 +350,29 @@ export default class Coriolis extends React.Component {
         // *Don't* register service worker file in, e.g., a scripts/ sub-directory!
         // See https://github.com/slightlyoff/ServiceWorker/issues/468
         const self = this;
-        navigator.serviceWorker.register('/service-worker.js').then(function(reg) {
-          // updatefound is fired if service-worker.js changes.
-          reg.onupdatefound = function() {
-            // The updatefound event implies that reg.installing is set; see
-            // https://slightlyoff.github.io/ServiceWorker/spec/service_worker/index.html#service-worker-container-updatefound-event
-            var installingWorker = reg.installing;
-
-            installingWorker.onstatechange = function() {
-              switch (installingWorker.state) {
-                case 'installed':
-                  if (navigator.serviceWorker.controller) {
-                    // At this point, the old content will have been purged and the fresh content will
-                    // have been added to the cache.
-                    // It's the perfect time to display a "New content is available; please refresh."
-                    // message in the page's interface.
-                    console.log('New or updated content is available.');
-                    self.setState({ appCacheUpdate: true }); // Browser downloaded a new app cache.
-                  } else {
-                    // At this point, everything has been precached.
-                    // It's the perfect time to display a "Content is cached for offline use." message.
-                    console.log('Content is now available offline!');
-                    self.setState({ appCacheUpdate: true }); // Browser downloaded a new app cache.
-                  }
-                  break;
-
-                case 'redundant':
-                  console.error('The installing service worker became redundant.');
-                  break;
-              }
-            };
-          };
-        }).catch(function(e) {
-          console.error('Error during service worker registration:', e);
+        register('/service-worker.js', {
+          ready (registration) {
+            console.log('Service worker is active.')
+          },
+          registered (registration) {
+            console.log('Service worker has been registered.')
+          },
+          cached (registration) {
+            console.log('Content has been cached for offline use.')
+          },
+          updatefound (registration) {
+            console.log('New content is downloading.')
+          },
+          updated (registration) {
+            self.setState({ appCacheUpdate: true });
+            console.log('New content is available; please refresh.')
+          },
+          offline () {
+            console.log('No internet connection found. App is running in offline mode.')
+          },
+          error (error) {
+            console.error('Error during service worker registration:', error)
+          }
         });
       });
     }

@@ -139,6 +139,7 @@
     "react-ga": "^2.5.3",
     "react-number-editor": "Athanasius/react-number-editor.git#miggy",
     "recharts": "^1.2.0",
+    "register-service-worker": "^1.5.2",
     "superagent": "^3.8.3"
   }
 }
