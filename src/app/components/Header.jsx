@@ -16,6 +16,7 @@ import ModalExport from './ModalExport';
 import ModalHelp from './ModalHelp';
 import ModalImport from './ModalImport';
 import Slider from './Slider';
+import Announcement from './Announcement';
 import { outfitURL } from '../utils/UrlGenerators';
 
 const SIZE_MIN = 0.65;
@@ -76,8 +77,11 @@ export default class Header extends TranslatedComponent {
     this._openShips = this._openMenu.bind(this, 's');
     this._openBuilds = this._openMenu.bind(this, 'b');
     this._openComp = this._openMenu.bind(this, 'comp');
+    this._openAnnounce = this._openMenu.bind(this, 'announce');
+    this._getAnnouncementsMenu = this._getAnnouncementsMenu.bind(this);
     this._openSettings = this._openMenu.bind(this, 'settings');
     this._showHelp = this._showHelp.bind(this);
+    this.update = this.update.bind(this);
     this.languageOptions = [];
     this.insuranceOptions = [];
     this.state = {
@@ -412,6 +416,29 @@ export default class Header extends TranslatedComponent {
   }
 
   /**
+   * Generate the announcement menu
+   * @return {React.Component} Menu
+   */
+  _getAnnouncementsMenu() {
+    let announcements;
+    let translate = this.context.language.translate;
+
+    if (this.props.announcements) {
+      announcements = [];
+      for (let announce of this.props.announcements) {
+        announcements.push(<Announcement text={announce.message} />);
+        announcements.push(<hr/>);
+      }
+    }
+    return (
+      <div className='menu-list' onClick={ (e) => e.stopPropagation() } style={{ whiteSpace: 'nowrap' }}>
+        {announcements}
+        <hr />
+      </div>
+    );
+  }
+
+  /**
    * Generate the settings menu
    * @return {React.Component} Menu
    */
@@ -534,6 +561,15 @@ export default class Header extends TranslatedComponent {
     }
   }
 
+  async update() {
+    const reg = await navigator.serviceWorker.getRegistration();
+    if (!reg || !reg.waiting) {
+      return window.location.reload();
+    }
+    reg.waiting.postMessage('skipWaiting');
+    window.location.reload();
+  }
+
   /**
    * Render the header
    * @return {React.Component} Header
@@ -544,7 +580,7 @@ export default class Header extends TranslatedComponent {
     let hasBuilds = Persist.hasBuilds();
     return (
       <header>
-        {this.props.appCacheUpdate && <div id="app-update" onClick={() => window.location.reload() }>{translate('PHRASE_UPDATE_RDY')}</div>}
+        {this.props.appCacheUpdate && <div id="app-update" onClick={this.update}>{translate('PHRASE_UPDATE_RDY')}</div>}
         {this.props.appCacheUpdate ? <a className={'view-changes'} href={'https://github.com/EDCD/coriolis/compare/edcd:develop@{' + window.CORIOLIS_DATE + '}...edcd:develop'} target="_blank">
           {'View Release Changes'}
         </a> : null}
@@ -569,6 +605,13 @@ export default class Header extends TranslatedComponent {
             <StatsBars className={cn('warning', { 'warning-disabled': !hasBuilds })} /><span className='menu-item-label'>{translate('compare')}</span>
           </div>
           {openedMenu == 'comp' ? this._getComparisonsMenu() : null}
+        </div>
+
+        <div className='l menu'>
+          <div className={cn('menu-header', { selected: openedMenu == 'announce', disabled: this.props.announcements.length === 0})} onClick={this.props.announcements.length !== 0 && this._openAnnounce}>
+            <span className='menu-item-label'>{translate('announcements')}</span>
+          </div>
+          {openedMenu == 'announce' ? this._getAnnouncementsMenu() : null}
         </div>
 
         {window.location.origin.search('.edcd.io') >= 0 ?

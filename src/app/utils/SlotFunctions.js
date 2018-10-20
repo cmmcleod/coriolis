@@ -1,7 +1,4 @@
 import React from 'react';
-import cn from 'classnames';
-import Module from '../shipyard/Module';
-import { Infinite } from '../components/SvgIcons';
 import Persist from '../stores/Persist';
 import * as ModuleUtils from '../shipyard/ModuleUtils';
 

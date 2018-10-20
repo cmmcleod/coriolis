@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import TranslatedComponent from './TranslatedComponent';
-import { isEmpty, stopCtxPropagation } from '../utils/UtilityFunctions';
+import { stopCtxPropagation } from '../utils/UtilityFunctions';
 import cn from 'classnames';
 import { Modifications } from 'coriolis-data/dist';
 import Modification from './Modification';
@@ -23,7 +23,6 @@ const MODIFICATIONS_COMPARATOR = (mod1, mod2) => {
  * Modifications menu
  */
 export default class ModificationsMenu extends TranslatedComponent {
-
   static propTypes = {
     ship: PropTypes.object.isRequired,
     m: PropTypes.object.isRequired,
@@ -214,11 +213,11 @@ export default class ModificationsMenu extends TranslatedComponent {
     for (const modName of Modifications.modules[m.grp].modifications) {
       if (!Modifications.modifications[modName].hidden) {
         const key = modName + (m.getModValue(modName) / 100 || 0);
-        const editable = modName !== 'fallofffromrange' &&
-          m.blueprint.grades[m.blueprint.grade].features[modName];
+        const editable = modName !== 'fallofffromrange';
+        const highlight = m.blueprint.grades[m.blueprint.grade].features[modName];
         this.lastNeId = modName;
-        (editable ? modifiableModifications : modifications).push(
-          <Modification key={ key } ship={ ship } m={ m }
+        (editable && highlight ? modifiableModifications : modifications).push(
+          <Modification key={ key } ship={ ship } m={ m } highlight={highlight}
             value={m.getPretty(modName) || 0} modItems={this.modItems}
             onChange={onChange} onKeyDown={this._keyDown} name={modName}
             editable={editable} handleModChange = {this._handleModChange} />
@@ -461,10 +460,10 @@ export default class ModificationsMenu extends TranslatedComponent {
     }
     return (
       <div
-          className={cn('select', this.props.className)}
-          onClick={(e) => e.stopPropagation() }
-          onContextMenu={stopCtxPropagation}
-          ref={modItem => this.modItems['modMainDiv'] = modItem}
+        className={cn('select', this.props.className)}
+        onClick={(e) => e.stopPropagation() }
+        onContextMenu={stopCtxPropagation}
+        ref={modItem => this.modItems['modMainDiv'] = modItem}
       >
         { showBlueprintsMenu | showSpecialsMenu ? '' : haveBlueprint ?
           <div tabIndex="0" className={ cn('section-menu button-inline-menu', { selected: blueprintMenuOpened })} style={{ cursor: 'pointer' }} onMouseOver={termtip.bind(null, blueprintTt)} onMouseOut={tooltip.bind(null, null)} onClick={_toggleBlueprintsMenu} onKeyDown={ this._keyDown } ref={modItems => this.modItems[this.firstBPLabel] = modItems}>{blueprintLabel}</div> :
@@ -473,11 +472,11 @@ export default class ModificationsMenu extends TranslatedComponent {
         { showSpecial & !showSpecialsMenu ? <div tabIndex="0" className={ cn('section-menu button-inline-menu', { selected: specialMenuOpened })} style={{ cursor: 'pointer' }} onMouseOver={specialTt ? termtip.bind(null, specialTt) : null} onMouseOut={specialTt ? tooltip.bind(null, null) : null}  onClick={_toggleSpecialsMenu} onKeyDown={ this._keyDown }>{specialLabel}</div> : null }
         { showSpecialsMenu ? specials : null }
         { showReset ? <div tabIndex="0" className={'section-menu button-inline-menu warning'} style={{ cursor: 'pointer' }} onClick={_reset} onKeyDown={ this._keyDown } onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RESET')} onMouseOut={tooltip.bind(null, null)}> { translate('reset') } </div> : null }
-		{ showRolls ?
+        { showRolls ?
 
-            <table style={{ width: '100%', backgroundColor: 'transparent' }}>
-              <tbody>
-          { showRolls ?
+          <table style={{ width: '100%', backgroundColor: 'transparent' }}>
+            <tbody>
+              { showRolls ?
                 <tr>
                   <td tabIndex="0" className={ cn('section-menu button-inline-menu', { active: false }) }> { translate('roll') }: </td>
                   <td tabIndex="0" className={ cn('section-menu button-inline-menu', { active: blueprintCv ===    0 }) } style={{ cursor: 'pointer' }} onClick={_rollWorst} onKeyDown={ this._keyDown } onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_WORST')} onMouseOut={tooltip.bind(null, null)}> { translate('0%') } </td>
@@ -485,7 +484,7 @@ export default class ModificationsMenu extends TranslatedComponent {
                   <td tabIndex="0" className={ cn('section-menu button-inline-menu', { active: blueprintCv ===  100 })} style={{ cursor: 'pointer' }} onClick={_rollFull} onKeyDown={ this._keyDown } onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_BEST')} onMouseOut={tooltip.bind(null, null)}> { translate('100%') } </td>
                   <td tabIndex="0" className={ cn('section-menu button-inline-menu', { active: blueprintCv === null || blueprintCv % 50 != 0 })} style={{ cursor: 'pointer' }} onClick={_rollRandom} onKeyDown={ this._keyDown } onMouseOver={termtip.bind(null, 'PHRASE_BLUEPRINT_RANDOM')} onMouseOut={tooltip.bind(null, null)}> { translate('random') } </td>
                 </tr> : null }
-              </tbody>
+            </tbody>
           </table> : null }
         { showMods ? <hr /> : null }
         { showMods ?

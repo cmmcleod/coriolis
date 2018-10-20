@@ -1,5 +1,4 @@
 import React from 'react';
-import cn from 'classnames';
 import SlotSection from './SlotSection';
 import HardpointSlot from './HardpointSlot';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
@@ -8,7 +7,6 @@ import { stopCtxPropagation } from '../utils/UtilityFunctions';
  * Utility Slot Section
  */
 export default class UtilitySlotSection extends SlotSection {
-
   /**
    * Constructor
    * @param  {Object} props   React Component properties
@@ -133,5 +131,4 @@ export default class UtilitySlotSection extends SlotSection {
       </ul>
     </div>;
   }
-
 }

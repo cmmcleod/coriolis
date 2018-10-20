@@ -6,7 +6,6 @@ import AvailableModulesMenu from './AvailableModulesMenu';
 import ModificationsMenu from './ModificationsMenu';
 import { diffDetails } from '../utils/SlotFunctions';
 import { wrapCtxMenu } from '../utils/UtilityFunctions';
-import { stopCtxPropagation } from '../utils/UtilityFunctions';
 
 /**
  * Abstract Slot
@@ -88,7 +87,7 @@ export default class Slot extends TranslatedComponent {
       if(event.target.className == 'r') {
         this._toggleModifications();
       }
-      this.props.onOpen(event); 
+      this.props.onOpen(event);
     }
   }
   /**

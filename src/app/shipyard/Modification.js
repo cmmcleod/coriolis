@@ -2,7 +2,6 @@
  * Modification - a modification and its value
  */
 export default class Modification {
-
   /**
    * @param {String} id         Unique modification ID
    * @param {Number} value      Value of the modification
@@ -11,5 +10,4 @@ export default class Modification {
     this.id = id;
     this.value = value;
   }
-
 }

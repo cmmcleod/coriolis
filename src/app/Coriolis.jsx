@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Router from './Router';
+import { register } from 'register-service-worker'
 import { EventEmitter } from 'fbemitter';
 import { getLanguage } from './i18n/Language';
 import Persist from './stores/Persist';
@@ -22,12 +23,12 @@ import ShipyardPage from './pages/ShipyardPage';
 import ErrorDetails from './pages/ErrorDetails';
 
 const zlib = require('pako');
+const request = require('superagent');
 
 /**
  * Coriolis App
  */
 export default class Coriolis extends React.Component {
-
   static childContextTypes = {
     closeMenu: PropTypes.func.isRequired,
     hideModal: PropTypes.func.isRequired,
@@ -66,11 +67,12 @@ export default class Coriolis extends React.Component {
     this.state = {
       noTouch: !('ontouchstart' in window || navigator.msMaxTouchPoints || navigator.maxTouchPoints),
       page: null,
+      announcements: [],
       language: getLanguage(Persist.getLangCode()),
       route: {},
       sizeRatio: Persist.getSizeRatio()
     };
-
+    this._getAnnouncements()
     Router('', (r) => this._setPage(ShipyardPage, r));
     Router('/import?', (r) => this._importBuild(r));
     Router('/import/:data', (r) => this._importBuild(r));
@@ -107,6 +109,14 @@ export default class Coriolis extends React.Component {
     } catch (err) {
       this._onError('Failed to import ship', r.path, 0, 0, err);
     }
+  }
+
+  _getAnnouncements() {
+    return request.get('https://orbis.zone/api/announcement')
+    .query({showInCoriolis: true})
+    .then(announces => {
+      this.setState({ announcements: announces.body })
+    })
   }
 
   /**
@@ -340,39 +350,29 @@ export default class Coriolis extends React.Component {
         // *Don't* register service worker file in, e.g., a scripts/ sub-directory!
         // See https://github.com/slightlyoff/ServiceWorker/issues/468
         const self = this;
-        navigator.serviceWorker.register('/service-worker.js').then(function(reg) {
-          // updatefound is fired if service-worker.js changes.
-          reg.onupdatefound = function() {
-            // The updatefound event implies that reg.installing is set; see
-            // https://slightlyoff.github.io/ServiceWorker/spec/service_worker/index.html#service-worker-container-updatefound-event
-            var installingWorker = reg.installing;
-
-            installingWorker.onstatechange = function() {
-              switch (installingWorker.state) {
-                case 'installed':
-                  if (navigator.serviceWorker.controller) {
-                    // At this point, the old content will have been purged and the fresh content will
-                    // have been added to the cache.
-                    // It's the perfect time to display a "New content is available; please refresh."
-                    // message in the page's interface.
-                    console.log('New or updated content is available.');
-                    self.setState({ appCacheUpdate: true }); // Browser downloaded a new app cache.
-                  } else {
-                    // At this point, everything has been precached.
-                    // It's the perfect time to display a "Content is cached for offline use." message.
-                    console.log('Content is now available offline!');
-                    self.setState({ appCacheUpdate: true }); // Browser downloaded a new app cache.
-                  }
-                  break;
-
-                case 'redundant':
-                  console.error('The installing service worker became redundant.');
-                  break;
-              }
-            };
-          };
-        }).catch(function(e) {
-          console.error('Error during service worker registration:', e);
+        register('/service-worker.js', {
+          ready (registration) {
+            console.log('Service worker is active.')
+          },
+          registered (registration) {
+            console.log('Service worker has been registered.')
+          },
+          cached (registration) {
+            console.log('Content has been cached for offline use.')
+          },
+          updatefound (registration) {
+            console.log('New content is downloading.')
+          },
+          updated (registration) {
+            self.setState({ appCacheUpdate: true });
+            console.log('New content is available; please refresh.')
+          },
+          offline () {
+            console.log('No internet connection found. App is running in offline mode.')
+          },
+          error (error) {
+            console.error('Error during service worker registration:', error)
+          }
         });
       });
     }
@@ -394,8 +394,8 @@ export default class Coriolis extends React.Component {
     let currentMenu = this.state.currentMenu;
 
     return <div style={{ minHeight: '100%' }} onClick={this._closeMenu}
-                className={this.state.noTouch ? 'no-touch' : null}>
-      <Header appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu}/>
+      className={this.state.noTouch ? 'no-touch' : null}>
+      <Header announcements={this.state.announcements} appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu}/>
       {this.state.error ? this.state.error : this.state.page ? React.createElement(this.state.page, { currentMenu }) :
         <NotFoundPage/>}
       {this.state.modal}
@@ -403,7 +403,7 @@ export default class Coriolis extends React.Component {
       <footer>
         <div className="right cap">
           <a href="https://github.com/EDCD/coriolis" target="_blank"
-             title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
+            title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
           <br/>
           <a
             href={'https://github.com/EDCD/coriolis/compare/edcd:develop@{' + window.CORIOLIS_DATE + '}...edcd:develop'}

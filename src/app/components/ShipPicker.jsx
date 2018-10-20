@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
-import Ship from '../shipyard/Ship';
 import { Ships } from 'coriolis-data/dist';
 import { Rocket } from './SvgIcons';
 import Persist from '../stores/Persist';

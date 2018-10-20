@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import { Ships } from 'coriolis-data/dist';
-import Ship from '../shipyard/Ship';
 import Persist from '../stores/Persist';
 import TranslatedComponent from './TranslatedComponent';
 import PowerManagement from './PowerManagement';

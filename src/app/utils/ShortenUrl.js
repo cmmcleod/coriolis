@@ -113,7 +113,7 @@ const API_ORBIS = 'https://orbis.zone/api/builds/add';
  * @return {Promise<any>} Either a URL or error message.
  */
 export function orbisUpload(ship, creds) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async(resolve, reject) => {
     if (window.navigator.onLine) {
       try {
         agent

@@ -70,7 +70,6 @@ function _delete(key) {
  * export is an instance (see end of this file).
  */
 export class Persist extends EventEmitter {
-
   /**
    * Create an instance
    */

@@ -17,7 +17,6 @@ function filter(arr, maxClass, minClass, mass) {
  * The available module set for a specific ship
  */
 export default class ModuleSet {
-
   /**
    * Instantiate the module set
    * @param  {Object} modules        All Modules

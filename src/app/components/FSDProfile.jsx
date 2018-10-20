@@ -1,12 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
-import { Ships } from 'coriolis-data/dist';
-import { nameComparator } from '../utils/SlotFunctions';
 import LineChart from '../components/LineChart';
-import Slider from '../components/Slider';
-import * as ModuleUtils from '../shipyard/ModuleUtils';
-import Module from '../shipyard/Module';
 import * as Calc from '../shipyard/Calculations';
 
 /**
@@ -69,7 +64,7 @@ export default class FSDProfile extends TranslatedComponent {
     const { formats, translate, units } = language;
     const { ship, cargo, fuel } = this.props;
 
-    
+
     // Calculate bounds for our line chart - use thruster info for X
     const thrusters = ship.standard[1].m;
     const fsd = ship.standard[2].m;

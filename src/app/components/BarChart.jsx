@@ -38,7 +38,6 @@ function insertLinebreaks(d) {
  * Bar Chart
  */
 export default class BarChart extends TranslatedComponent {
-
   static defaultProps = {
     colors: ['#7b6888', '#6b486b', '#3182bd', '#a05d56', '#d0743c'],
     labels: null,

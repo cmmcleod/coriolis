@@ -9,7 +9,6 @@ import { isValueBeneficial } from '../utils/BlueprintFunctions';
  * Modification
  */
 export default class Modification extends TranslatedComponent {
-
   static propTypes = {
     ship: PropTypes.object.isRequired,
     m: PropTypes.object.isRequired,
@@ -39,10 +38,24 @@ export default class Modification extends TranslatedComponent {
    *                       in a value by hand
    */
   _updateValue(value) {
-    let { m, name, ship } = this.props;
-    value = Math.max(Math.min(value, 50000), -50000);
-    ship.setModification(m, name, value, true, true);
     this.setState({ value });
+    let reCast = String(Number(value));
+    if (reCast.endsWith(value) || reCast.startsWith(value)) {
+      let { m, name, ship } = this.props;
+      value = Math.max(Math.min(value, 50000), -50000);
+      ship.setModification(m, name, value, true, true);
+    }
+  }
+
+  /**
+   * Triggered when a key is pressed down with focus on the number editor.
+   * @param {SyntheticEvent} event Key down event
+   */
+  _keyDown(event) {
+    if (event.key == 'Enter') {
+      this._updateFinished();
+    }
+    this.props.onKeyDown(event);
   }
 
   /**
@@ -72,6 +85,11 @@ export default class Modification extends TranslatedComponent {
       return null;
     }
 
+    let inputClassNames = {
+      'cb': true,
+      'greyed-out': !this.props.highlight
+    };
+
     return (
       <div onBlur={this._updateFinished.bind(this)} key={name}
         className={cn('cb', 'modification-container')}
@@ -84,24 +102,24 @@ export default class Modification extends TranslatedComponent {
               <td className={'input-container'}>
                 <span>
                   {this.props.editable ?
-                    <NumberEditor className={'cb'} value={this.state.value}
+                    <NumberEditor className={cn(inputClassNames)} value={this.state.value}
                       decimals={2} style={{ textAlign: 'right' }} step={0.01}
-                      stepModifier={1} onKeyDown={ this.props.onKeyDown }
+                      stepModifier={1} onKeyDown={this._keyDown.bind(this)}
                       onValueChange={this._updateValue.bind(this)} /> :
                     <input type="text" value={formats.f2(this.state.value)}
-                      disabled className={'number-editor'}
+                      disabled className={cn('number-editor', 'greyed-out')}
                       style={{ textAlign: 'right', cursor: 'inherit' }}/>
                   }
                   <span className={'unit-container'}>
-                      {units[m.getStoredUnitFor(name)]}
+                    {units[m.getStoredUnitFor(name)]}
                   </span>
                 </span>
               </td>
               <td style={{ textAlign: 'center' }} className={
-                  modValue ?
-                    isValueBeneficial(name, modValue) ? 'secondary': 'warning':
-                    ''
-                }>
+                modValue ?
+                  isValueBeneficial(name, modValue) ? 'secondary' : 'warning' :
+                  ''
+              }>
                 {formats.f2(modValue / 100) || 0}%
               </td>
             </tr>

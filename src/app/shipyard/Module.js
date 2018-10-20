@@ -7,7 +7,6 @@ import { STATS_FORMATTING, SI_PREFIXES } from './StatsFormatting';
  * Module - active module in a ship's buildout
  */
 export default class Module {
-
   /**
    * Construct a new module
    * @param {Object} params   Module parameters.  Either grp/id or template
@@ -81,8 +80,8 @@ export default class Module {
     // the amount of base resistance the hrp has.
     if (!isNaN(result) && this.grp === 'hr' &&
       (name === 'kinres' || name === 'thermres' || name === 'explres')) {
-        let baseRes = this[name];
-        result = result * (1 - baseRes);
+      let baseRes = this[name];
+      result = result * (1 - baseRes);
     }
 
     // Sanitise the resultant value to 4dp equivalent
@@ -180,7 +179,7 @@ export default class Module {
       modValue = value - baseValue;
       if (this.grp === 'hr' &&
         (name === 'kinres' || name === 'thermres' || name === 'explres')) {
-          modValue = modValue / (1 - baseValue);
+        modValue = modValue / (1 - baseValue);
       }
     } else if (name === 'shieldboost' || name === 'hullboost') {
       modValue = (1 + value) / (1 + baseValue) - 1;
@@ -192,7 +191,7 @@ export default class Module {
       modValue = modValue * 10000;
     } else if (modification.type === 'numeric' && name !== 'burst' &&
       name !== 'burstrof') {
-        modValue = modValue * 100;
+      modValue = modValue * 100;
     }
 
     this.setModValue(name, modValue, valueIsWithSpecial);
@@ -242,38 +241,38 @@ export default class Module {
     const modification = Modifications.modifications[name];
     let result = this[name];
 
-      if (modification) {
-        // We store percentages as decimals, so to get them back we need to divide by 10000.  Otherwise
-        // we divide by 100.  Both ways we end up with a value with two decimal places
-        let modValue;
-        if (modification.type === 'percentage') {
-          modValue = this.getModValue(name) / 10000;
-        } else if (modification.type === 'numeric') {
-          modValue = this.getModValue(name) / 100;
-        } else {
-          modValue = this.getModValue(name);
+    if (modification) {
+      // We store percentages as decimals, so to get them back we need to divide by 10000.  Otherwise
+      // we divide by 100.  Both ways we end up with a value with two decimal places
+      let modValue;
+      if (modification.type === 'percentage') {
+        modValue = this.getModValue(name) / 10000;
+      } else if (modification.type === 'numeric') {
+        modValue = this.getModValue(name) / 100;
+      } else {
+        modValue = this.getModValue(name);
+      }
+      if (modValue) {
+        if (!result && modification.method === 'additive') {
+          // If the modification is additive and no value is given by default we
+          // start at zero
+          result = 0;
         }
-        if (modValue) {
-          if (!result && modification.method === 'additive') {
-            // If the modification is additive and no value is given by default we
-            // start at zero
-            result = 0;
-          }
 
-          if (result !== undefined) {
-            if (modification.method === 'additive') {
-              result = result + modValue;
-            } else if (modification.method === 'overwrite') {
-              result = modValue;
-            } else if (name === 'shieldboost' || name === 'hullboost') {
-              result = (1 + result) * (1 + modValue) - 1;
-            } else {
-              result = result * (1 + modValue);
-            }
-          } else if (name === 'burst' || name === 'burstrof') {
-            // Burst and burst rate of fire are special, as it can not exist but
-            // have a modification
-            result = modValue / 100;
+        if (result !== undefined) {
+          if (modification.method === 'additive') {
+            result = result + modValue;
+          } else if (modification.method === 'overwrite') {
+            result = modValue;
+          } else if (name === 'shieldboost' || name === 'hullboost') {
+            result = (1 + result) * (1 + modValue) - 1;
+          } else {
+            result = result * (1 + modValue);
+          }
+        } else if (name === 'burstrof') {
+          // Burst and burst rate of fire are special, as it can not exist but
+          // have a modification
+          result = modValue / 100;
         }
       }
     }
@@ -1091,5 +1090,4 @@ export default class Module {
   getHackTime(modified = true) {
     return this.get('hacktime', modified);
   }
-
 }

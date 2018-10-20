@@ -1,13 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
-import { Ships } from 'coriolis-data/dist';
-import { nameComparator } from '../utils/SlotFunctions';
-import { CollapseSection, ExpandSection, MountFixed, MountGimballed, MountTurret } from './SvgIcons';
 import LineChart from '../components/LineChart';
-import Slider from '../components/Slider';
 import * as Calc from '../shipyard/Calculations';
-import Module from '../shipyard/Module';
 
 const DAMAGE_DEALT_COLORS = ['#FFFFFF', '#FF0000', '#00FF00', '#7777FF', '#FFFF00', '#FF00FF', '#00FFFF', '#777777'];
 
