@@ -17,7 +17,6 @@ const merge = function(one, two) {
  * A vertical bar chart
  */
 export default class VerticalBarChart extends TranslatedComponent {
-
   static propTypes = {
     data : PropTypes.array.isRequired,
     yMax : PropTypes.number

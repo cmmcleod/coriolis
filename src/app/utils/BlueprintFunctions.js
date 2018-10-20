@@ -19,7 +19,7 @@ export function specialToolTip(translate, blueprint, grp, m, specialName) {
     // We also add in any benefits from specials that aren't covered above
     if (m.blueprint) {
       for (const feature in Modifications.modifierActions[specialName]) {
-          // if (!blueprint.features[feature] && !m.mods.feature) {
+        // if (!blueprint.features[feature] && !m.mods.feature) {
         const featureDef = Modifications.modifications[feature];
         if (featureDef && !featureDef.hidden) {
           let symbol = '';
@@ -37,14 +37,14 @@ export function specialToolTip(translate, blueprint, grp, m, specialName) {
           const currentIsBeneficial = isValueBeneficial(feature, current);
 
           effects.push(
-                  <tr key={feature + '_specialTT'}>
-                    <td style={{ textAlign: 'left' }}>{translate(feature, grp)}</td>
-                    <td>&nbsp;</td>
-                    <td className={current === 0 ? '' : currentIsBeneficial ? 'secondary' : 'warning'}
-                        style={{ textAlign: 'right' }}>{current}{symbol}</td>
-                    <td>&nbsp;</td>
-                  </tr>
-                );
+            <tr key={feature + '_specialTT'}>
+              <td style={{ textAlign: 'left' }}>{translate(feature, grp)}</td>
+              <td>&nbsp;</td>
+              <td className={current === 0 ? '' : currentIsBeneficial ? 'secondary' : 'warning'}
+                style={{ textAlign: 'right' }}>{current}{symbol}</td>
+              <td>&nbsp;</td>
+            </tr>
+          );
         }
       }
     }
@@ -54,7 +54,7 @@ export function specialToolTip(translate, blueprint, grp, m, specialName) {
     <div>
       <table width='100%'>
         <tbody>
-        {effects}
+          {effects}
         </tbody>
       </table>
     </div>
@@ -215,12 +215,12 @@ export function blueprintTooltip(translate, blueprint, engineers, grp, m) {
     <div>
       <table width='100%'>
         <thead>
-         <tr>
-           <td>{translate('feature')}</td>
-           <td>{translate('worst')}</td>
+          <tr>
+            <td>{translate('feature')}</td>
+            <td>{translate('worst')}</td>
             {m ? <td>{translate('current')}</td> : null }
-           <td>{translate('best')}</td>
-         </tr>
+            <td>{translate('best')}</td>
+          </tr>
         </thead>
         <tbody>
           {effects}
@@ -228,10 +228,10 @@ export function blueprintTooltip(translate, blueprint, engineers, grp, m) {
       </table>
       { components ?  <table width='100%'>
         <thead>
-         <tr>
-           <td>{translate('component')}</td>
-           <td>{translate('amount')}</td>
-         </tr>
+          <tr>
+            <td>{translate('component')}</td>
+            <td>{translate('amount')}</td>
+          </tr>
         </thead>
         <tbody>
           {components}
@@ -239,9 +239,9 @@ export function blueprintTooltip(translate, blueprint, engineers, grp, m) {
       </table> : null }
       { engineersList ? <table width='100%'>
         <thead>
-         <tr>
-           <td>{translate('engineers')}</td>
-         </tr>
+          <tr>
+            <td>{translate('engineers')}</td>
+          </tr>
         </thead>
         <tbody>
           {engineersList}

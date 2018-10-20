@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
-import { Ships } from 'coriolis-data/dist';
 import Slider from '../components/Slider';
 
 /**

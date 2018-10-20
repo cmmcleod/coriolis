@@ -7,7 +7,6 @@ import { STATS_FORMATTING, SI_PREFIXES } from './StatsFormatting';
  * Module - active module in a ship's buildout
  */
 export default class Module {
-
   /**
    * Construct a new module
    * @param {Object} params   Module parameters.  Either grp/id or template
@@ -1091,5 +1090,4 @@ export default class Module {
   getHackTime(modified = true) {
     return this.get('hacktime', modified);
   }
-
 }

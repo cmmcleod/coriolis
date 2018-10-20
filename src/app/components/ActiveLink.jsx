@@ -16,7 +16,6 @@ function isActive(href) {
  * Active Link - Highlighted when URL matches window location
  */
 export default class ActiveLink extends Link {
-
   /**
    * Renders the component
    * @return {React.Component} The active link
@@ -29,5 +28,4 @@ export default class ActiveLink extends Link {
 
     return <a {...this.props} className={className} onClick={this.handler}>{this.props.children}</a>;
   }
-
 }

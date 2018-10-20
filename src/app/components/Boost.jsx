@@ -1,13 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
-import { Ships } from 'coriolis-data/dist';
-import { nameComparator } from '../utils/SlotFunctions';
-import { Pip } from './SvgIcons';
-import LineChart from '../components/LineChart';
-import Slider from '../components/Slider';
-import * as ModuleUtils from '../shipyard/ModuleUtils';
-import Module from '../shipyard/Module';
 
 /**
  * Boost displays a boost button that toggles bosot

@@ -1,5 +1,4 @@
 import React from 'react';
-import cn from 'classnames';
 import SlotSection from './SlotSection';
 import InternalSlot from './InternalSlot';
 import * as ModuleUtils from '../shipyard/ModuleUtils';

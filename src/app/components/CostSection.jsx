@@ -13,7 +13,6 @@ import { ShoppingIcon } from '../components/SvgIcons';
  * Cost Section
  */
 export default class CostSection extends TranslatedComponent {
-
   static propTypes = {
     ship: PropTypes.object.isRequired,
     code: PropTypes.string.isRequired,
@@ -361,11 +360,11 @@ export default class CostSection extends TranslatedComponent {
       for (let i = 0, l = retrofitCosts.length; i < l; i++) {
         let item = retrofitCosts[i];
         rows.push(<tr key={i} className={cn('highlight', { disabled: !item.retroItem.incCost })} onClick={this._toggleRetrofitCost.bind(this, item)}>
-            <td className='ptr' style={{ width: '1em' }}>{item.sellClassRating}</td>
-            <td className='le ptr shorten cap'>{translate(item.sellName)}</td>
-            <td className='ptr' style={{ width: '1em' }}>{item.buyClassRating}</td>
-            <td className='le ptr shorten cap'>{translate(item.buyName)}</td>
-            <td colSpan='2' className={cn('ri ptr', item.retroItem.incCost ? item.netCost > 0 ? 'warning' : 'secondary-disabled' : 'disabled')}>{int(item.netCost)}{units.CR}</td>
+          <td className='ptr' style={{ width: '1em' }}>{item.sellClassRating}</td>
+          <td className='le ptr shorten cap'>{translate(item.sellName)}</td>
+          <td className='ptr' style={{ width: '1em' }}>{item.buyClassRating}</td>
+          <td className='le ptr shorten cap'>{translate(item.buyName)}</td>
+          <td colSpan='2' className={cn('ri ptr', item.retroItem.incCost ? item.netCost > 0 ? 'warning' : 'secondary-disabled' : 'disabled')}>{int(item.netCost)}{units.CR}</td>
         </tr>);
       }
     } else {
