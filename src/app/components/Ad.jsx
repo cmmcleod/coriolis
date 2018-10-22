@@ -31,7 +31,6 @@ export default class Ad extends Component {
           style={{ display: 'block' }}
           data-ad-client={this.props.client}
           data-ad-slot={this.props.slot}
-          data-ad-format={this.props.format}
         />
       </div>
     );
