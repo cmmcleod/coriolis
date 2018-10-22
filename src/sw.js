@@ -58,7 +58,7 @@ self.addEventListener('message', event => {
 			break;
 	}
 });
-
+const OFFLINE_URL = '/';
 self.addEventListener('fetch', function(event) {
 	console.log('Handling fetch event for', event.request.url);
 
