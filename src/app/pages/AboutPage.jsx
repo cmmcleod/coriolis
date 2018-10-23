@@ -1,7 +1,6 @@
 import React from 'react';
 import Page from './Page';
 import { CoriolisLogo, GitHub } from '../components/SvgIcons';
-import AdSense from 'react-adsense';
 
 /**
  * About Page
@@ -128,12 +127,6 @@ export default class AboutPage extends Page {
             height="1"
           />
         </form>
-        <AdSense.Google
-          client="ca-pub-3709458261881414"
-          slot="4156867783"
-          format="auto"
-          responsive="true"
-        />
       </div>
     );
   }

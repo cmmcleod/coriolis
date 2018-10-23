@@ -6,7 +6,6 @@ import Ship from '../shipyard/Ship';
 import * as ModuleUtils from '../shipyard/ModuleUtils';
 import { SizeMap } from '../shipyard/Constants';
 import Link from '../components/Link';
-import AdSense from 'react-adsense';
 
 /**
  * Counts the hardpoints by class/size
@@ -614,12 +613,6 @@ export default class ShipyardPage extends Page {
             </table>
           </div>
         </div>
-        <AdSense.Google
-          client="ca-pub-3709458261881414"
-          slot="4156867783"
-          format="auto"
-          responsive="true"
-        />
       </div>
     );
   }

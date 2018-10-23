@@ -23,7 +23,6 @@ import {
 } from '../components/SvgIcons';
 import LZString from 'lz-string';
 import ShipSummaryTable from '../components/ShipSummaryTable';
-import AdSense from 'react-adsense';
 import StandardSlotSection from '../components/StandardSlotSection';
 import HardpointSlotSection from '../components/HardpointSlotSection';
 import InternalSlotSection from '../components/InternalSlotSection';
@@ -1095,12 +1094,6 @@ export default class OutfittingPage extends Page {
           opponentSys={opponentSys}
           opponentEng={opponentEng}
           opponentWep={opponentWep}
-        />
-        <AdSense.Google
-          client="ca-pub-3709458261881414"
-          slot="4156867783"
-          format="auto"
-          responsive="true"
         />
       </div>
     );

@@ -22,7 +22,6 @@ import {
   LinkIcon
 } from '../components/SvgIcons';
 import ShortenUrl from '../utils/ShortenUrl';
-import AdSense from 'react-adsense';
 import { comparisonBBCode } from '../utils/BBCode';
 const browser = require('detect-browser');
 
@@ -622,12 +621,6 @@ export default class ComparisonPage extends Page {
             </div>
           ))
         )}
-        <AdSense.Google
-          client="ca-pub-3709458261881414"
-          slot="4156867783"
-          format="auto"
-          responsive="true"
-        />
       </div>
     );
   }
