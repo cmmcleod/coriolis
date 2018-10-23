@@ -32,10 +32,6 @@
       window.CORIOLIS_DATE = '<%- htmlWebpackPlugin.options.date.toISOString().slice(0, 10)  %>';
       window.BUGSNAG_VERSION = '<%- htmlWebpackPlugin.options.version + '-' + htmlWebpackPlugin.options.date.toISOString()  %>';
     </script>
-    <script async
-      src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-    </script>
     <% if (htmlWebpackPlugin.options.uaTracking) { %>
       <script>
       window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
