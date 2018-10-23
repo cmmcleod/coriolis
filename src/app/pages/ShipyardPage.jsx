@@ -612,14 +612,14 @@ export default class ShipyardPage extends Page {
                 {detailRows}
               </tbody>
             </table>
-            <AdSense.Google
-              client="ca-pub-3709458261881414"
-              slot="4156867783"
-              format="auto"
-              responsive="true"
-            />
           </div>
         </div>
+        <AdSense.Google
+          client="ca-pub-3709458261881414"
+          slot="4156867783"
+          format="auto"
+          responsive="true"
+        />
       </div>
     );
   }

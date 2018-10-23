@@ -13,8 +13,16 @@ import ModalCompare from '../components/ModalCompare';
 import ModalExport from '../components/ModalExport';
 import ModalPermalink from '../components/ModalPermalink';
 import ModalImport from '../components/ModalImport';
-import { FloppyDisk, Bin, Download, Embed, Rocket, LinkIcon } from '../components/SvgIcons';
+import {
+  FloppyDisk,
+  Bin,
+  Download,
+  Embed,
+  Rocket,
+  LinkIcon
+} from '../components/SvgIcons';
 import ShortenUrl from '../utils/ShortenUrl';
+import AdSense from 'react-adsense';
 import { comparisonBBCode } from '../utils/BBCode';
 const browser = require('detect-browser');
 
@@ -42,7 +50,6 @@ function sortBy(predicate) {
  * Comparison Page
  */
 export default class ComparisonPage extends Page {
-
   /**
    * Constructor
    * @param  {Object} props   React Component properties
@@ -81,7 +88,13 @@ export default class ComparisonPage extends Page {
         for (let shipId in allBuilds) {
           for (let buildName in allBuilds[shipId]) {
             if (buildName && allBuilds[shipId][buildName]) {
-              builds.push(this._createBuild(shipId, buildName, allBuilds[shipId][buildName]));
+              builds.push(
+                this._createBuild(
+                  shipId,
+                  buildName,
+                  allBuilds[shipId][buildName]
+                )
+              );
             }
           }
         }
@@ -89,7 +102,9 @@ export default class ComparisonPage extends Page {
         let comparisonData = Persist.getComparison(name);
         if (comparisonData) {
           defaultFacets = comparisonData.facets;
-          comparisonData.builds.forEach((b) => builds.push(this._createBuild(b.shipId, b.buildName)));
+          comparisonData.builds.forEach(b =>
+            builds.push(this._createBuild(b.shipId, b.buildName))
+          );
           saved = true;
           newName = name;
         }
@@ -101,7 +116,7 @@ export default class ComparisonPage extends Page {
         newName = name = comparisonData.n;
         predicate = comparisonData.p;
         desc = comparisonData.d;
-        comparisonData.b.forEach((build) => {
+        comparisonData.b.forEach(build => {
           builds.push(this._createBuild(build.s, build.n, build.c));
           if (!importObj[build.s]) {
             importObj[build.s] = {};
@@ -118,9 +133,9 @@ export default class ComparisonPage extends Page {
     let selectedFacets = new Array(selectedLength);
 
     for (let i = 0; i < ShipFacets.length; i++) {
-      let facet = Object.assign({ }, ShipFacets[i]);
+      let facet = Object.assign({}, ShipFacets[i]);
       let defaultIndex = defaultFacets.indexOf(facet.i);
-      if(defaultIndex == -1) {
+      if (defaultIndex == -1) {
         facets.push(facet);
       } else {
         facet.active = true;
@@ -155,17 +170,18 @@ export default class ComparisonPage extends Page {
   _createBuild(id, name, code) {
     code = code ? code : Persist.getBuild(id, name); // Retrieve build code if not passed
 
-    if (!code) {  // No build found
+    if (!code) {
+      // No build found
       return;
     }
 
-    let data = Ships[id];   // Get ship properties
+    let data = Ships[id]; // Get ship properties
     let b = new Ship(id, data.properties, data.slots); // Create a new Ship instance
-    b.buildFrom(code);  // Populate components from code
+    b.buildFrom(code); // Populate components from code
     b.buildName = name;
     b.applyDiscounts(Persist.getShipDiscount(), Persist.getModuleDiscount());
     return b;
-  };
+  }
 
   /**
    * Update state with the specified sort predicates
@@ -184,13 +200,18 @@ export default class ComparisonPage extends Page {
     }
 
     this.setState({ predicate, desc });
-  };
+  }
 
   /**
    * Show selected builds modal
    */
   _selectBuilds() {
-    this.context.showModal(<ModalCompare onSelect={this._buildsSelected} builds={this.state.builds} />);
+    this.context.showModal(
+      <ModalCompare
+        onSelect={this._buildsSelected}
+        builds={this.state.builds}
+      />
+    );
   }
 
   /**
@@ -224,7 +245,7 @@ export default class ComparisonPage extends Page {
   _facetDrag(e) {
     this.nodeAfter = false;
     this.dragged = e.currentTarget;
-    let placeholder = this.placeholder = document.createElement('li');
+    let placeholder = (this.placeholder = document.createElement('li'));
     placeholder.style.width = Math.round(this.dragged.offsetWidth) + 'px';
     placeholder.className = 'facet-placeholder';
     if (!browser || (browser.name !== 'edge' && browser.name !== 'ie')) {
@@ -262,7 +283,7 @@ export default class ComparisonPage extends Page {
   _facetDragOver(e) {
     e.preventDefault();
 
-    if(e.target.className == 'facet-placeholder') {
+    if (e.target.className == 'facet-placeholder') {
       return;
     } else if (e.target != e.currentTarget) {
       this.over = e.target;
@@ -272,7 +293,7 @@ export default class ComparisonPage extends Page {
       let parent = e.target.parentNode;
 
       if (parent == e.currentTarget) {
-        if(relX > width && this.dragged != e.target) {
+        if (relX > width && this.dragged != e.target) {
           this.nodeAfter = true;
           parent.insertBefore(this.placeholder, e.target.nextElementSibling);
         } else {
@@ -321,7 +342,7 @@ export default class ComparisonPage extends Page {
     let { newName, builds, facets } = this.state;
     let selectedFacets = [];
 
-    facets.forEach((f) => {
+    facets.forEach(f => {
       if (f.active) {
         selectedFacets.unshift(f.i);
       }
@@ -348,14 +369,20 @@ export default class ComparisonPage extends Page {
 
     let code = fromComparison(name, builds, selectedFacets, predicate, desc);
     let loc = window.location;
-    return loc.protocol + '//' + loc.host + '/comparison?code=' + encodeURIComponent(code);
+    return (
+      loc.protocol +
+      '//' +
+      loc.host +
+      '/comparison?code=' +
+      encodeURIComponent(code)
+    );
   }
 
   /**
    * Generates the long permalink URL
    */
   _genPermalink() {
-    this.context.showModal(<ModalPermalink url={this._buildUrl()}/>);
+    this.context.showModal(<ModalPermalink url={this._buildUrl()} />);
   }
 
   /**
@@ -365,18 +392,25 @@ export default class ComparisonPage extends Page {
     let { translate, formats } = this.context.language;
     let { facets, builds } = this.state;
 
-    let generator = (callback) => {
+    let generator = callback => {
       let url = this._buildUrl();
-      ShortenUrl(url,
-        (shortenedUrl) => callback(comparisonBBCode(translate, formats, facets, builds, shortenedUrl)),
-        (error) => callback(comparisonBBCode(translate, formats, facets, builds, url))
+      ShortenUrl(
+        url,
+        shortenedUrl =>
+          callback(
+            comparisonBBCode(translate, formats, facets, builds, shortenedUrl)
+          ),
+        error =>
+          callback(comparisonBBCode(translate, formats, facets, builds, url))
       );
     };
 
-    this.context.showModal(<ModalExport
-      title={translate('forum') + ' BBCode'}
-      generator={generator}
-    />);
+    this.context.showModal(
+      <ModalExport
+        title={translate('forum') + ' BBCode'}
+        generator={generator}
+      />
+    );
   }
 
   /**
@@ -409,7 +443,8 @@ export default class ComparisonPage extends Page {
    * @param  {Object} nextContext Incoming/Next conext
    */
   componentWillReceiveProps(nextProps, nextContext) {
-    if (this.context.route !== nextContext.route) {  // Only reinit state if the route has changed
+    if (this.context.route !== nextContext.route) {
+      // Only reinit state if the route has changed
       this.setState(this._initState(nextContext));
     }
   }
@@ -419,7 +454,10 @@ export default class ComparisonPage extends Page {
    */
   componentWillMount() {
     this.resizeListener = this.context.onWindowResize(this._updateDimensions);
-    this.persistListener = Persist.addListener('discounts', this._updateDiscounts);
+    this.persistListener = Persist.addListener(
+      'discounts',
+      this._updateDiscounts
+    );
   }
 
   /**
@@ -444,65 +482,132 @@ export default class ComparisonPage extends Page {
   renderPage() {
     let translate = this.context.language.translate;
     let compareHeader;
-    let { newName, name, saved, builds, facets, predicate, desc, chartWidth } = this.state;
+    let {
+      newName,
+      name,
+      saved,
+      builds,
+      facets,
+      predicate,
+      desc,
+      chartWidth
+    } = this.state;
 
     if (this.state.compareMode) {
-      compareHeader = <tr>
-        <td className='head'>{translate('comparison')}</td>
-        <td>
-          <input value={newName} onChange={this._onNameChange} placeholder={translate('Enter Name')} maxLength='50' />
-          <button onClick={this._save} disabled={!newName || newName == 'all' || saved}>
-            <FloppyDisk  className='lg'/><span className='button-lbl'>{translate('save')}</span>
-          </button>
-          <button onClick={this._delete} disabled={name == 'all' || !saved}><Bin className='lg warning'/></button>
-          <button onClick={this._selectBuilds}>
-            <Rocket className='lg'/><span className='button-lbl'>{translate('builds')}</span>
-          </button>
-          <button className='r' onClick={this._genPermalink} disabled={builds.length == 0}>
-            <LinkIcon className='lg'/><span className='button-lbl'>{translate('permalink')}</span>
-          </button>
-          <button className='r' onClick={this._genBBcode} disabled={builds.length == 0}>
-            <Embed className='lg'/><span className='button-lbl'>{translate('forum')}</span>
-          </button>
-        </td>
-      </tr>;
+      compareHeader = (
+        <tr>
+          <td className="head">{translate('comparison')}</td>
+          <td>
+            <input
+              value={newName}
+              onChange={this._onNameChange}
+              placeholder={translate('Enter Name')}
+              maxLength="50"
+            />
+            <button
+              onClick={this._save}
+              disabled={!newName || newName == 'all' || saved}
+            >
+              <FloppyDisk className="lg" />
+              <span className="button-lbl">{translate('save')}</span>
+            </button>
+            <button onClick={this._delete} disabled={name == 'all' || !saved}>
+              <Bin className="lg warning" />
+            </button>
+            <button onClick={this._selectBuilds}>
+              <Rocket className="lg" />
+              <span className="button-lbl">{translate('builds')}</span>
+            </button>
+            <button
+              className="r"
+              onClick={this._genPermalink}
+              disabled={builds.length == 0}
+            >
+              <LinkIcon className="lg" />
+              <span className="button-lbl">{translate('permalink')}</span>
+            </button>
+            <button
+              className="r"
+              onClick={this._genBBcode}
+              disabled={builds.length == 0}
+            >
+              <Embed className="lg" />
+              <span className="button-lbl">{translate('forum')}</span>
+            </button>
+          </td>
+        </tr>
+      );
     } else {
-      compareHeader = <tr>
-        <td className='head'>{translate('comparison')}</td>
-        <td>
-          <h3>{name}</h3>
-          <button className='r' onClick={this._import}><Download className='lg'/>{translate('import')}</button>
-        </td>
-      </tr>;
+      compareHeader = (
+        <tr>
+          <td className="head">{translate('comparison')}</td>
+          <td>
+            <h3>{name}</h3>
+            <button className="r" onClick={this._import}>
+              <Download className="lg" />
+              {translate('import')}
+            </button>
+          </td>
+        </tr>
+      );
     }
 
     return (
-      <div className={'page'} style={{ fontSize: this.context.sizeRatio + 'em' }}>
-        <table id='comparison'>
+      <div
+        className={'page'}
+        style={{ fontSize: this.context.sizeRatio + 'em' }}
+      >
+        <table id="comparison">
           <tbody>
             {compareHeader}
-            <tr key='facets'>
-              <td className='head'>{translate('compare')}</td>
+            <tr key="facets">
+              <td className="head">{translate('compare')}</td>
               <td>
-                <ul id='facet-container' onDragOver={this._facetDragOver}>
-                  {facets.map((f, i) =>
-                    <li key={f.title} data-i={i} draggable='true' onDragStart={this._facetDrag} onDragEnd={this._facetDrop} className={cn('facet', { active: f.active })} onClick={this._toggleFacet.bind(this, f)}>
+                <ul id="facet-container" onDragOver={this._facetDragOver}>
+                  {facets.map((f, i) => (
+                    <li
+                      key={f.title}
+                      data-i={i}
+                      draggable="true"
+                      onDragStart={this._facetDrag}
+                      onDragEnd={this._facetDrop}
+                      className={cn('facet', { active: f.active })}
+                      onClick={this._toggleFacet.bind(this, f)}
+                    >
                       {'↔  ' + translate(f.title)}
                     </li>
-                  )}
+                  ))}
                 </ul>
               </td>
             </tr>
           </tbody>
         </table>
 
-        <ComparisonTable builds={builds} facets={facets} onSort={this._sortShips} predicate={predicate} desc={desc} />
+        <ComparisonTable
+          builds={builds}
+          facets={facets}
+          onSort={this._sortShips}
+          predicate={predicate}
+          desc={desc}
+        />
 
-        {!builds.length ?
-          <div className='chart' ref={node => this.chartRef = node}>{translate('PHRASE_NO_BUILDS')}</div> :
-          facets.filter((f) => f.active).map((f, i) =>
-            <div key={f.title} className='chart' ref={ i == 0 ? node => this.chartRef = node : null}>
-              <h3 className='ptr' onClick={this._sortShips.bind(this, f.props[0])}>{translate(f.title)}</h3>
+        {!builds.length ? (
+          <div className="chart" ref={node => (this.chartRef = node)}>
+            {translate('PHRASE_NO_BUILDS')}
+          </div>
+        ) : (
+          facets.filter(f => f.active).map((f, i) => (
+            <div
+              key={f.title}
+              className="chart"
+              ref={i == 0 ? node => (this.chartRef = node) : null}
+            >
+              <h3
+                className="ptr"
+                onClick={this._sortShips.bind(this, f.props[0])}
+              >
+                {translate(f.title)}
+              </h3>
               <BarChart
                 width={chartWidth}
                 data={builds}
@@ -515,8 +620,14 @@ export default class ComparisonPage extends Page {
                 desc={desc}
               />
             </div>
+          ))
         )}
-
+        <AdSense.Google
+          client="ca-pub-3709458261881414"
+          slot="4156867783"
+          format="auto"
+          responsive="true"
+        />
       </div>
     );
   }
