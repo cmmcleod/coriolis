@@ -1,7 +1,7 @@
 import TranslatedComponent from './TranslatedComponent';
 import React, { PropTypes } from 'react';
 import ContainerDimensions from 'react-container-dimensions';
-import { BarChart, Bar, XAxis, YAxis } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, LabelList } from 'recharts';
 
 const CORIOLIS_COLOURS = ['#FF8C0D', '#1FB0FF', '#71A052', '#D5D54D'];
 const LABEL_COLOUR = '#000000';
@@ -53,7 +53,9 @@ export default class VerticalBarChart extends TranslatedComponent {
             <BarChart width={width} height={width * ASPECT} data={this.props.data} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
               <XAxis interval={0} fontSize='0.8em' stroke={AXIS_COLOUR} dataKey='label' />
               <YAxis interval={'preserveStart'} tickCount={11} fontSize='0.8em' stroke={AXIS_COLOUR} type='number' domain={[0, localMax]}/>
-              <Bar dataKey='value' label={<ValueLabel />} fill={CORIOLIS_COLOURS[0]} isAnimationActive={false} onMouseOver={this._termtip} onMouseOut={tooltip.bind(null, null)}/>
+              <Bar dataKey='value' fill={CORIOLIS_COLOURS[0]} isAnimationActive={false} onMouseOver={this._termtip} onMouseOut={tooltip.bind(null, null)}>
+                <LabelList dataKey='value' position='insideTop'/>
+              </Bar>
             </BarChart>
           </div>
         )}
@@ -76,29 +78,3 @@ export default class VerticalBarChart extends TranslatedComponent {
     }
   }
 }
-
-/**
- * A label that displays the value within the bar of the chart
- */
-class ValueLabel extends React.Component {
-  static propTypes = {
-    x: PropTypes.number,
-    y: PropTypes.number,
-    payload: PropTypes.object,
-    value: PropTypes.number
-  };
-
-  /**
-   * Render offence
-   * @return {React.Component} contents
-   */
-  render() {
-    const { x, y, payload, value } = this.props;
-
-    const em = value < 1000 ? '1em' : value < 1000 ? '0.8em' : '0.7em';
-
-    return (
-      <text x={x} y={y} fill="#000000" textAnchor="middle" dy={20} style={{ fontSize: em }}>{value}</text>
-    );
-  }
-};
