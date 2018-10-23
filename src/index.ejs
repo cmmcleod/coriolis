@@ -5,12 +5,15 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[0] %>">
     <!-- Standard headers -->
-    <meta name="description" content="A ship builder, outfitting and comparison tool for Elite Dangerous">
+    <meta name="description" content="A ship builder, outfitting and comparison
+      tool for Elite Dangerous">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0, user-scalable=0">
     <link rel="manifest" href="/manifest.json">
     <link rel="shortcut icon" href=/favicon2.ico>
-    <link rel="icon" sizes="152x152 192x192" type="image/png" href="/192x192.png">
+    <link rel="icon" sizes="152x152 192x192" type="image/png"
+      href="/192x192.png">
 
     <!-- Apple/iOS headers -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -29,21 +32,21 @@
       window.CORIOLIS_DATE = '<%- htmlWebpackPlugin.options.date.toISOString().slice(0, 10)  %>';
       window.BUGSNAG_VERSION = '<%- htmlWebpackPlugin.options.version + '-' + htmlWebpackPlugin.options.date.toISOString()  %>';
     </script>
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script async
+      src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
     <% if (htmlWebpackPlugin.options.uaTracking) { %>
-    <script>
+      <script>
       window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
       ga('create', '<%- htmlWebpackPlugin.options.uaTracking %>', 'auto');
       ga('send', 'pageview');
     </script>
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-    <% } %>
+      <script async src='https://www.google-analytics.com/analytics.js'></script>
+      <% } %>
 
-    <!-- Piwik -->
-   <!-- <script type="text/javascript">
+        <!-- Piwik -->
+        <!-- <script type="text/javascript">
       var _paq = _paq || [];
       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
       _paq.push(["setCookieDomain", "*.coriolis.edcd.io"]);
@@ -57,18 +60,19 @@
         g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
       })();
     </script>-->
-    <!-- End Piwik Code -->
+        <!-- End Piwik Code -->
 
-    <!-- Bugsnag -->
-    <script src="//d2wy8f7a9ursnm.cloudfront.net/v4/bugsnag.min.js"></script>
-    <script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-plugins/v1/bugsnag-react.min.js"></script>
-    <script>
+        <!-- Bugsnag -->
+        <script src="//d2wy8f7a9ursnm.cloudfront.net/v4/bugsnag.min.js"></script>
+        <script
+          src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-plugins/v1/bugsnag-react.min.js"></script>
+        <script>
       window.bugsnagClient = bugsnag('ba9fae819372850fb660755341fa6ef5', {appVersion: window.BUGSNAG_VERSION || undefined})
       window.Bugsnag = window.bugsnagClient
     </script>
-  </head>
-  <body style="background-color:#000;">
-    <section id="coriolis"></section>
+      </head>
+      <body style="background-color:#000;">
+        <section id="coriolis"></section>
 
-  </body>
-</html>
+      </body>
+    </html>

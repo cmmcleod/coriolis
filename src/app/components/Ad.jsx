@@ -12,11 +12,7 @@ export default class Ad extends Component {
   }
   // This code is ran when the component mounts
   componentDidMount() {
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (err) {
-      console.error(err);
-    }
+
   }
 
   // an outer div for styling purposes
