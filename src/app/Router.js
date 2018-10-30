@@ -1,5 +1,6 @@
 import Persist from './stores/Persist';
 import ReactGA from 'react-ga';
+
 ReactGA.initialize('UA-55840909-18');
 let standalone = undefined;
 

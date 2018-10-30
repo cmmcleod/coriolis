@@ -14,7 +14,6 @@ import ModalImport from './components/ModalImport';
 import ModalPermalink from './components/ModalPermalink';
 import * as CompanionApiUtils from './utils/CompanionApiUtils';
 import * as JournalUtils from './utils/JournalUtils';
-
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
 import OutfittingPage from './pages/OutfittingPage';
@@ -393,9 +392,21 @@ export default class Coriolis extends React.Component {
 
     return <div style={{ minHeight: '100%' }} onClick={this._closeMenu}
       className={this.state.noTouch ? 'no-touch' : null}>
-      <Header announcements={this.state.announcements} appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu}/>
+      <Header announcements={this.state.announcements} appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu} />
+      <div className="halloween">
+        <div className="head">
+          <div className="skull">
+            <div className="eyes">
+              <div className="eye eye-left"></div>
+              <div className="eye eye-right"></div>
+            </div>
+          </div>
+        </div>
+        <div className="body"></div>
+        <div className="legs"></div>
+      </div>
       {this.state.error ? this.state.error : this.state.page ? React.createElement(this.state.page, { currentMenu }) :
-        <NotFoundPage/>}
+        <NotFoundPage />}
       {this.state.modal}
       {this.state.tooltip}
       <footer>
