@@ -393,18 +393,6 @@ export default class Coriolis extends React.Component {
     return <div style={{ minHeight: '100%' }} onClick={this._closeMenu}
       className={this.state.noTouch ? 'no-touch' : null}>
       <Header announcements={this.state.announcements} appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu} />
-      <div className="halloween">
-        <div className="head">
-          <div className="skull">
-            <div className="eyes">
-              <div className="eye eye-left"></div>
-              <div className="eye eye-right"></div>
-            </div>
-          </div>
-        </div>
-        <div className="body"></div>
-        <div className="legs"></div>
-      </div>
       {this.state.error ? this.state.error : this.state.page ? React.createElement(this.state.page, { currentMenu }) :
         <NotFoundPage />}
       {this.state.modal}
