@@ -451,10 +451,10 @@ export default class ShipyardPage extends Page {
                   <th className="sortable" onClick={sortShips('maxCargo')}>
                     {translate('cargo')}
                   </th>
-                  <th className="sortable" onClick={sortShips('maxPassengers')}>
+                  <th className="sortable" onClick={sortShips('maxPassengers')} onMouseEnter={termtip.bind(null, 'passenger capacity')}
+                    onMouseLeave={hide}>
                     {translate('pax')}
                   </th>
-
                   <th className="lft" colSpan={7}>
                     {translate('core module classes')}
                   </th>

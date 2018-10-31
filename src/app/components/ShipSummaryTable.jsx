@@ -78,7 +78,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
                 <th rowSpan={2}>{translate('TTD')}</th>
                 {/* <th onMouseEnter={termtip.bind(null, 'heat per second')} onMouseLeave={hide} rowSpan={2}>{translate('HPS')}</th> */}
                 <th rowSpan={2}>{translate('cargo')}</th>
-                <th rowSpan={2}>{translate('pax')}</th>
+                <th rowSpan={2} onMouseEnter={termtip.bind(null, 'passenger capacity', { cap: 0 })} onMouseLeave={hide}>{translate('pax')}</th>
                 <th rowSpan={2}>{translate('fuel')}</th>
                 <th colSpan={3}>{translate('mass')}</th>
                 <th onMouseEnter={termtip.bind(null, 'hull hardness', { cap: 0 })} onMouseLeave={hide} rowSpan={2}>{translate('hrd')}</th>
