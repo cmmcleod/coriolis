@@ -30,6 +30,7 @@ export const SHIP_FD_NAME_TO_CORIOLIS_NAME = {
   'Hauler': 'hauler',
   'Independant_Trader': 'keelback',
   'Krait_MkII': 'krait_mkii',
+  'Mamba': 'mamba',
   'Orca': 'orca',
   'Python': 'python',
   'SideWinder': 'sidewinder',
