@@ -32,7 +32,7 @@ module.exports = {
     publicPath: '/'
   },
   plugins: [
-    new CopyWebpackPlugin(['src/.htaccess']),
+    new CopyWebpackPlugin(['src/.htaccess', 'src/iframe.html', 'src/xdLocalStoragePostMessageApi.min.js']),
     // new webpack.optimize.CommonsChunkPlugin({
     //   name: 'lib',
     //   filename: 'lib.js'
