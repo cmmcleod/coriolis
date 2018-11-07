@@ -2,6 +2,7 @@ console.log('Hello from sw.js');
 
 if (workbox) {
   console.log('Yay! Workbox is loaded 🎉');
+  workbox.precaching.precacheAndRoute(self.__precacheManifest);
   workbox.routing.registerRoute(
     new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
     workbox.strategies.cacheFirst({
