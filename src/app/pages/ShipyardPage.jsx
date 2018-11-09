@@ -61,6 +61,7 @@ function shipSummary(shipId, shipData) {
     id: shipId,
     hpCount: 0,
     intCount: 0,
+    beta: shipData.beta,
     maxCargo: 0,
     maxPassengers: 0,
     hp: [0, 0, 0, 0, 0], // Utility, Small, Medium, Large, Huge
@@ -318,7 +319,7 @@ export default class ShipyardPage extends Page {
           onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
         >
           <td className="le">
-            <Link href={'/outfit/' + s.id}>{s.name}</Link>
+            <Link href={'/outfit/' + s.id}>{s.name} {s.beta === true ? '(Beta)' : null}</Link>
           </td>
         </tr>
       );
