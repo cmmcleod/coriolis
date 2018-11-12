@@ -3,6 +3,14 @@ console.log('Hello from sw.js');
 if (workbox) {
   console.log('Yay! Workbox is loaded 🎉');
   workbox.precaching.precacheAndRoute(self.__precacheManifest);
+
+  workbox.routing.registerNavigationRoute('/index.html');
+
+  workbox.routing.registerRoute(
+    new RegExp('/(.*?)'),
+    workbox.strategies.staleWhileRevalidate()
+  );
+
   workbox.routing.registerRoute(
     new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
     workbox.strategies.cacheFirst({
@@ -40,24 +48,4 @@ self.addEventListener('message', event => {
       // NOOP
       break;
   }
-});
-const OFFLINE_URL = '/';
-self.addEventListener('fetch', function(event) {
-  console.log('Handling fetch event for', event.request.url);
-
-  event.respondWith(
-    caches.match(event.request).then(function(response) {
-      if (response) {
-        return response;
-      }
-
-      return fetch(event.request)
-        .then(function(response) {
-          return response;
-        })
-        .catch(function(error) {
-          return caches.match(OFFLINE_URL);
-        });
-    })
-  );
 });
