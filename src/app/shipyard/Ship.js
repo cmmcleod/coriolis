@@ -505,6 +505,11 @@ export default class Ship {
     if (isAbsolute) {
       m.setPretty(name, value, sentfromui);
     } else {
+      // Resistance modifiers scale with the base value
+      if (name == 'kinres' || name == 'thermres' || name == 'causres' || name == 'explres') {
+        let baseValue = m.get(name, false);
+        value = (1 - baseValue) * value;
+      }
       m.setModValue(name, value, sentfromui);
     }
 
