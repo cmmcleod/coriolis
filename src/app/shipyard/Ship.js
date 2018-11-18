@@ -1514,6 +1514,7 @@ export default class Ship {
       }
 
       this.serialized.modifications = zlib.gzipSync(buffer).toString('base64');
+      console.log(this.serialized.modifications)
     } else {
       this.serialized.modifications = null;
     }
