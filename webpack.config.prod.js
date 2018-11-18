@@ -48,10 +48,10 @@ module.exports = {
       disable: false,
       allChunks: true
     }),
-    // new BugsnagSourceMapUploaderPlugin({
-    //   apiKey: 'ba9fae819372850fb660755341fa6ef5',
-    //   appVersion: `${pkgJson.version}-${buildDate.toISOString()}`
-    // }),
+    new BugsnagSourceMapUploaderPlugin({
+      apiKey: 'ba9fae819372850fb660755341fa6ef5',
+      appVersion: `${pkgJson.version}-${buildDate.toISOString()}`
+    }),
     new InjectManifest({
       swSrc: './src/sw.js',
       importWorkboxFrom: 'cdn',
