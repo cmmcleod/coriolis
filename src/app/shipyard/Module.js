@@ -41,6 +41,7 @@ export default class Module {
    * @return {object}     The value of the modification. If it is a numeric value then it is returned as an integer value scaled so that 1.23% == 123
    */
   getModValue(name, raw) {
+    let baseVal = this[name];
     let result = this.mods  && this.mods[name] ? this.mods[name] : null;
 
     if ((!raw) && this.blueprint && this.blueprint.special) {
@@ -51,13 +52,8 @@ export default class Module {
         const modification = Modifications.modifications[name];
         const multiplier = modification.type === 'percentage' ? 10000 : 100;
         if (name === 'explres' || name === 'kinres' || name === 'thermres' || name === 'causres') {
-          // Resistance modifications in itself are additive, however their
-          // special effects are multiplicative. They affect the overall result
-          // by (special effect resistance) * (damage mult after modification),
-          // i. e. we need to apply the special effect as a multiplier to the
-          // overall result and then calculate the difference.
-          let baseMult = this[name] ? 1 - this[name] : 1;
-          result = (baseMult - (baseMult - result / multiplier) * (1 - modifierActions[name] / 100)) * multiplier;
+          // Apply resistance modding mechanisms to special effects subsequently
+          result = result + modifierActions[name] * (1 - (this[name] + result / multiplier)) * 100;
         } else if (modification.method === 'additive') {
           result = result + modifierActions[name] * 100;
         } else if (modification.method === 'overwrite') {
@@ -73,15 +69,6 @@ export default class Module {
           result = (((1 + result / multiplier) * (1 + mod)) - 1) * multiplier;
         }
       }
-    }
-
-    // Resistance modding for hull reinforcement packages has additional
-    // diminishing returns implemented. The mod value gets lowered by
-    // the amount of base resistance the hrp has.
-    if (!isNaN(result) && this.grp === 'hr' &&
-      (name === 'kinres' || name === 'thermres' || name === 'explres')) {
-      let baseRes = this[name];
-      result = result * (1 - baseRes);
     }
 
     // Sanitise the resultant value to 4dp equivalent
@@ -108,11 +95,11 @@ export default class Module {
         // This special effect modifies the value being set, so we need to revert it prior to storing the value
         const modification = Modifications.modifications[name];
         if (name === 'explres' || name === 'kinres' || name === 'thermres' || name === 'causres') {
-          // Resistance modifications in itself are additive but their
-          // experimentals are applied multiplicatively therefor we must handle
-          // them differently here (cf. documentation in getModValue).
-          let baseMult = (this[name] ? 1 - this[name] : 1);
-          value = ((baseMult - value / 10000) / (1 - modifierActions[name] / 100) - baseMult) * -10000;
+          let res = (this[name] ? this[name] : 0) + value / 10000;
+          let experimental = modifierActions[name] / 100;
+          value = (experimental - res) / (experimental - 1) - this[name];
+          value *= 10000;
+          // value = ((baseMult - value / 10000) / (1 - modifierActions[name] / 100) - baseMult) * -10000;
         } else if (modification.method === 'additive') {
           value = value - modifierActions[name];
         } else if (modification.method === 'overwrite') {
@@ -177,10 +164,6 @@ export default class Module {
         baseValue = 0;
       }
       modValue = value - baseValue;
-      if (this.grp === 'hr' &&
-        (name === 'kinres' || name === 'thermres' || name === 'explres')) {
-        modValue = modValue / (1 - baseValue);
-      }
     } else if (name === 'shieldboost' || name === 'hullboost') {
       modValue = (1 + value) / (1 + baseValue) - 1;
     } else { // multiplicative
