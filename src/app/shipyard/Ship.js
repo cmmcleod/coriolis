@@ -505,6 +505,11 @@ export default class Ship {
     if (isAbsolute) {
       m.setPretty(name, value, sentfromui);
     } else {
+      // Resistance modifiers scale with the base value
+      if (name == 'kinres' || name == 'thermres' || name == 'causres' || name == 'explres') {
+        let baseValue = m.get(name, false);
+        value = (1 - baseValue) * value;
+      }
       m.setModValue(name, value, sentfromui);
     }
 
@@ -1501,7 +1506,7 @@ export default class Ship {
             } else {
               buffer.writeInt32LE(slotMod.value, curpos);
             }
-            // const modification = _.find(Modifications.modifications, function(o) { return o.id === slotMod.id; });
+            const modification = _.find(Modifications.modifications, function(o) { return o.id === slotMod.id; });
             // console.log('ENCODE Slot ' + i + ': ' + modification.name + ' = ' + slotMod.value);
             curpos += 4;
           }
@@ -1514,6 +1519,7 @@ export default class Ship {
       }
 
       this.serialized.modifications = zlib.gzipSync(buffer).toString('base64');
+      // console.log(this.serialized.modifications)
     } else {
       this.serialized.modifications = null;
     }

@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { InjectManifest } = require('workbox-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { BugsnagSourceMapUploaderPlugin } = require('webpack-bugsnag-plugins');
+const { BugsnagSourceMapUploaderPlugin, BugsnagBuildReporterPlugin } = require('webpack-bugsnag-plugins');
 const pkgJson = require('./package');
 const buildDate = new Date();
 
@@ -48,10 +48,15 @@ module.exports = {
       disable: false,
       allChunks: true
     }),
-    // new BugsnagSourceMapUploaderPlugin({
-    //   apiKey: 'ba9fae819372850fb660755341fa6ef5',
-    //   appVersion: `${pkgJson.version}-${buildDate.toISOString()}`
-    // }),
+    new BugsnagBuildReporterPlugin({
+      apiKey: 'ba9fae819372850fb660755341fa6ef5',
+      appVersion: `${pkgJson.version}-${buildDate.toISOString()}`
+    }, { /* opts */ }),
+    new BugsnagSourceMapUploaderPlugin({
+      apiKey: 'ba9fae819372850fb660755341fa6ef5',
+      overwrite: true,
+      appVersion: `${pkgJson.version}-${buildDate.toISOString()}`
+    }),
     new InjectManifest({
       swSrc: './src/sw.js',
       importWorkboxFrom: 'cdn',

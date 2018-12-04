@@ -52,6 +52,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
     const boostTooltip = canBoost ? 'TT_SUMMARY_BOOST' : canThrust ? 'TT_SUMMARY_BOOST_NONFUNCTIONAL' : 'TT_SUMMARY_SPEED_NONFUNCTIONAL';
     const sgMetrics = Calc.shieldMetrics(ship, pips.sys);
     const shipBoost = canBoost ?  Calc.calcBoost(ship) : 'No Boost';
+    const restingHeat = Math.sqrt(((ship.standard[0].m.pgen * ship.standard[0].m.eff) / ship.heatCapacity) / 0.2);
     const armourMetrics = Calc.armourMetrics(ship);
     let shieldColour = 'blue';
     if (shieldGenerator && shieldGenerator.m.grp === 'psg') {
@@ -85,6 +86,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
                 <th rowSpan={2}>{translate('crew')}</th>
                 <th onMouseEnter={termtip.bind(null, 'mass lock factor', { cap: 0 })} onMouseLeave={hide} rowSpan={2}>{translate('MLF')}</th>
                 <th onMouseEnter={termtip.bind(null, 'TT_SUMMARY_BOOST_TIME', { cap: 0 })} onMouseLeave={hide} rowSpan={2}>{translate('boost time')}</th>
+                <th rowSpan={2}>{translate('resting heat (Beta)')}</th>
               </tr>
               <tr>
                 <th className='lft'>{translate('max')}</th>
@@ -122,6 +124,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
                 <td>{ship.crew}</td>
                 <td>{ship.masslock}</td>
                 <td>{shipBoost !== 'No Boost' ? formats.time(shipBoost) : 'No Boost'}</td>
+                <td>{formats.pct(restingHeat)}</td>
               </tr>
             </tbody>
           </table>

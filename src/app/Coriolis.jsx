@@ -6,6 +6,7 @@ import { EventEmitter } from 'fbemitter';
 import { getLanguage } from './i18n/Language';
 import Persist from './stores/Persist';
 
+import Announcement from './components/Announcement';
 import Header from './components/Header';
 import Tooltip from './components/Tooltip';
 import ModalExport from './components/ModalExport';
@@ -395,6 +396,7 @@ export default class Coriolis extends React.Component {
     return <div style={{ minHeight: '100%' }} onClick={this._closeMenu}
       className={this.state.noTouch ? 'no-touch' : null}>
       <Header announcements={this.state.announcements} appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu} />
+      <div className="announcement-container">{this.state.announcements.map(a => <Announcement text={a.message}/>)}</div>
       {this.state.error ? this.state.error : this.state.page ? React.createElement(this.state.page, { currentMenu }) :
         <NotFoundPage />}
       {this.state.modal}

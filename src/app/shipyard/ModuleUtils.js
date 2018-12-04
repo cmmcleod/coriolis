@@ -63,7 +63,10 @@ export function standard(type, id) {
   if (!isNaN(type)) {
     type = StandardArray[type];
   }
-  let s = Modules.standard[type].find(e => e.id == id || (e.class == id.charAt(0) && e.rating == id.charAt(1)));
+  let s = Modules.standard[type].find(e => e.id === id);
+  if (!s) {
+    s = Modules.standard[type].find(e => (e.class == id.charAt(0) && e.rating == id.charAt(1)));
+  }
   if (s) {
     s = new Module({ template: s });
   }

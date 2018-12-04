@@ -25,7 +25,7 @@ export default class Announcement extends React.Component {
    * @return {React.Component} A href element
    */
   render() {
-    return <p>{this.props.text}</p>;
+    return <div className="announcement" >{this.props.text}</div>;
   }
 
 }

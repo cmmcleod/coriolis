@@ -23,8 +23,10 @@ export default class ModalOrbis extends TranslatedComponent {
     this.state = {
       orbisCreds: Persist.getOrbisCreds(),
       orbisUrl: '...',
+      ship: this.props.ship,
       authenticatedStatus: 'Checking...'
     };
+    this.orbisCategory = this.orbisCategory.bind(this);
   }
 
   /**
@@ -89,6 +91,17 @@ export default class ModalOrbis extends TranslatedComponent {
   }
 
   /**
+   * Handler for changing category
+   * @param {SyntheticEvent} e React Event
+   */
+  orbisCategory(e) {
+    let ship = this.state.ship;
+    let cat = e.target.value;
+    ship.category = cat;
+    this.setState({ship});
+  }
+
+  /**
    * Render the modal
    * @return {React.Component} Modal Content
    */
@@ -105,6 +118,17 @@ export default class ModalOrbis extends TranslatedComponent {
       <input value={this.state.authenticatedStatus} readOnly size={25} onFocus={ (e) => e.target.select() }/>
       <br/><br/>
       <a className='button' href="https://orbis.zone/api/auth">Log in / signup to Orbis</a>
+      <br/><br/>
+      <h3>Category</h3>
+      <select onChange={this.orbisCategory}>
+        <option value="">No Category</option>
+        <option>Combat</option>
+        <option>Mining</option>
+        <option>Trading</option>
+        <option>Exploration</option>
+        <option>Passenger Liner</option>
+        <option>PvP</option>
+      </select>
       <br/><br/>
       <h3 >{translate('Orbis link')}</h3>
       <input value={this.state.orbisUrl} readOnly size={25} onFocus={ (e) => e.target.select() }/>

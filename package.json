@@ -135,6 +135,7 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-extras": "^0.7.1",
+    "react-fuzzy": "^0.5.2",
     "react-ga": "^2.5.3",
     "react-number-editor": "Athanasius/react-number-editor.git#miggy",
     "recharts": "^1.2.0",

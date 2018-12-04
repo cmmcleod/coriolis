@@ -240,6 +240,7 @@
     "shieldboost": "Shield boost",
     "shieldreinforcement": "Shield reinforcement",
     "shotspeed": "Shot speed",
+    "shotdmg": "Damage Per Shot",
     "spinup": "Spin up time",
     "syscap": "Systems capacity",
     "sysrate": "Systems recharge rate",

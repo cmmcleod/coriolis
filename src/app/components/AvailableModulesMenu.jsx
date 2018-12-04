@@ -5,6 +5,7 @@ import TranslatedComponent from './TranslatedComponent';
 import { stopCtxPropagation } from '../utils/UtilityFunctions';
 import cn from 'classnames';
 import { MountFixed, MountGimballed, MountTurret } from './SvgIcons';
+import FuzzySearch from 'react-fuzzy';
 
 const PRESS_THRESHOLD = 500; // mouse/touch down threshold
 
@@ -39,7 +40,7 @@ const GRPCAT = {
   'mc': 'projectiles',
   'axmc': 'experimental',
   'fc': 'projectiles',
-  'rfl':  'experimental',
+  'rfl': 'experimental',
   'pa': 'projectiles',
   'rg': 'projectiles',
   'mr': 'ordnance',
@@ -133,6 +134,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
   constructor(props, context) {
     super(props);
     this._hideDiff = this._hideDiff.bind(this);
+    this._showSearch = this._showSearch.bind(this);
     this.state = this._initState(props, context);
     this.slotItems = [];// Array to hold <li> refs.
   }
@@ -159,7 +161,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         onSelect(m);
       }
     );
-
+    let fuzzy = [];
     if (modules instanceof Array) {
       list = buildGroup(modules[0].grp, modules);
     } else {
@@ -167,9 +169,11 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       // At present time slots with grouped options (Hardpoints and Internal) can be empty
       if (m) {
         let emptyId = 'empty';
-        if(this.firstSlotId == null) this.firstSlotId = emptyId;
+        if (this.firstSlotId == null) this.firstSlotId = emptyId;
         let keyDown = this._keyDown.bind(this, onSelect);
-        list.push(<div className='empty-c upp' key={emptyId} data-id={emptyId} onClick={onSelect.bind(null, null)} onKeyDown={keyDown} tabIndex="0" ref={slotItem => this.slotItems[emptyId] = slotItem} >{translate('empty')}</div>);
+        list.push(<div className='empty-c upp' key={emptyId} data-id={emptyId} onClick={onSelect.bind(null, null)}
+                       onKeyDown={keyDown} tabIndex="0"
+                       ref={slotItem => this.slotItems[emptyId] = slotItem}>{translate('empty')}</div>);
       }
 
       // Need to regroup the modules by our own categorisation
@@ -197,7 +201,8 @@ export default class AvailableModulesMenu extends TranslatedComponent {
               if (categories.length === 1) {
                 // Show category header instead of group header
                 if (m && grp == m.grp) {
-                  list.push(<div ref={(elem) => this.groupElem = elem} key={category} className={'select-category upp'}>{translate(category)}</div>);
+                  list.push(<div ref={(elem) => this.groupElem = elem} key={category}
+                                 className={'select-category upp'}>{translate(category)}</div>);
                 } else {
                   list.push(<div key={category} className={'select-category upp'}>{translate(category)}</div>);
                 }
@@ -208,19 +213,23 @@ export default class AvailableModulesMenu extends TranslatedComponent {
                   categoryHeader = true;
                 }
                 if (m && grp == m.grp) {
-                  list.push(<div ref={(elem) => this.groupElem = elem} key={grp} className={'select-group cap'}>{translate(grp)}</div>);
+                  list.push(<div ref={(elem) => this.groupElem = elem} key={grp}
+                                 className={'select-group cap'}>{translate(grp)}</div>);
                 } else {
                   list.push(<div key={grp} className={'select-group cap'}>{translate(grp)}</div>);
                 }
               }
               list.push(buildGroup(grp, modules[grp]));
+              for (const i of modules[grp]) {
+                fuzzy.push({ grp, m: i, name: `${i.class}${i.rating} ${translate(grp)} ${i.mount ? i.mount : ''}` });
+              }
             }
           }
         }
       }
     }
     let trackingFocus = false;
-    return { list, currentGroup, trackingFocus };
+    return { list, currentGroup, fuzzy, trackingFocus };
   }
 
   /**
@@ -242,9 +251,11 @@ export default class AvailableModulesMenu extends TranslatedComponent {
 
     const sortedModules = modules.sort(this._moduleOrder);
 
-
     // Calculate the number of items per class.  Used so we don't have long lists with only a few items in each row
-    const tmp = sortedModules.map((v, i) => v['class']).reduce((count, cls) => { count[cls] = ++count[cls] || 1; return count; }, {});
+    const tmp = sortedModules.map((v, i) => v['class']).reduce((count, cls) => {
+      count[cls] = ++count[cls] || 1;
+      return count;
+    }, {});
     const itemsPerClass = Math.max.apply(null, Object.keys(tmp).map(key => tmp[key]));
 
     let itemsOnThisRow = 0;
@@ -297,22 +308,29 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         };
       }
 
-      switch(m.mount) {
-        case 'F': mount = <MountFixed className={'lg'} />; break;
-        case 'G': mount = <MountGimballed className={'lg'}/>; break;
-        case 'T': mount = <MountTurret className={'lg'}/>; break;
+      switch (m.mount) {
+        case 'F':
+          mount = <MountFixed className={'lg'}/>;
+          break;
+        case 'G':
+          mount = <MountGimballed className={'lg'}/>;
+          break;
+        case 'T':
+          mount = <MountTurret className={'lg'}/>;
+          break;
       }
       if (m.name && m.name === prevName) {
         // elems.push(<br key={'b' + m.grp + i} />);
         itemsOnThisRow = 0;
       }
       if (itemsOnThisRow == 6 || i > 0 && sortedModules.length > 3 && itemsPerClass > 2 && m.class != prevClass && (m.rating != prevRating || m.mount)) {
-        elems.push(<br key={'b' + m.grp + i} />);
+        elems.push(<br key={'b' + m.grp + i}/>);
         itemsOnThisRow = 0;
       }
       let tbIdx = (classes.indexOf('disabled') < 0) ? 0 : undefined;
       elems.push(
-        <li key={m.id} data-id={m.id} className={classes} {...eventHandlers} tabIndex={tbIdx} ref={slotItem => this.slotItems[m.id] = slotItem}>
+        <li key={m.id} data-id={m.id} className={classes} {...eventHandlers} tabIndex={tbIdx}
+            ref={slotItem => this.slotItems[m.id] = slotItem}>
           {mount}
           {(mount ? ' ' : '') + m.class + m.rating + (m.missile ? '/' + m.missile : '') + (m.name ? ' ' + translate(m.name) : '')}
         </li>
@@ -338,6 +356,36 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       this.touchTimeout = null;
       this.context.tooltip(this.props.diffDetails(m, mm), rect);
     }
+  }
+
+  /**
+   * Generate tooltip content for the difference between the
+   * mounted module and the hovered modules
+   */
+  _showSearch() {
+    return (
+      <FuzzySearch
+        list={this.state.fuzzy}
+        keys={['grp', 'name']}
+        className={'input'}
+        width={'100%'}
+        style={{ padding: 0 }}
+        onSelect={e => this.props.onSelect.bind(null, e.m)()}
+        resultsTemplate={(props, state, styles, clickHandler) => {
+          return state.results.map((val, i) => {
+            return (
+              <div
+                key={i}
+                className={'lc'}
+                onClick={() => clickHandler(i)}
+              >
+                {val.name}
+              </div>
+            );
+          });
+        }}
+      />
+    );
   }
 
   /**
@@ -405,7 +453,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    * @param {Function}  select Select module callback
    * @param {SytheticEvent} event Event
    */
-  _keyUp(select,event) {
+  _keyUp(select, event) {
     // nothing here yet
   }
 
@@ -475,12 +523,13 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       this.slotItems[this.firstSlotId].focus();
     }
   }
+
   /**
    * Handle focus if the component updates
    *
    */
   componentWillUnmount() {
-    if(this.props.slotDiv) {
+    if (this.props.slotDiv) {
       this.props.slotDiv.focus();
     }
   }
@@ -501,11 +550,12 @@ export default class AvailableModulesMenu extends TranslatedComponent {
   render() {
     return (
       <div ref={node => this.node = node}
-        className={cn('select', this.props.className)}
-        onScroll={this._hideDiff}
-        onClick={(e) => e.stopPropagation() }
-        onContextMenu={stopCtxPropagation}
+           className={cn('select', this.props.className)}
+           onScroll={this._hideDiff}
+           onClick={(e) => e.stopPropagation()}
+           onContextMenu={stopCtxPropagation}
       >
+        {this._showSearch()}
         {this.state.list}
       </div>
     );
