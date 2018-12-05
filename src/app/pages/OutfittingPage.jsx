@@ -224,9 +224,12 @@ export default class OutfittingPage extends Page {
         const control = LZString.decompressFromBase64(
           Utils.fromUrlSafe(parts[4])
         ).split('/');
-        sys = parseFloat(control[0]) || sys;
-        eng = parseFloat(control[1]) || eng;
-        wep = parseFloat(control[2]) || wep;
+        sys = parseFloat(control[0]);
+        eng = parseFloat(control[1]);
+        wep = parseFloat(control[2]);
+        if (sys + eng + wep > 6) {
+          sys = eng = wep = 2;
+        }
         boost = control[3] == 1 ? true : false;
         fuel = parseFloat(control[4]) || fuel;
         cargo = parseInt(control[5]) || cargo;
