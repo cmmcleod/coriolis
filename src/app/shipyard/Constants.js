@@ -94,6 +94,7 @@ export const ModuleGroupToName = {
   gsc: 'Guardian Shard Cannon',
   tbem: 'Enzyme Missile Rack',
   tbrfl: 'Remote Release Flechette Launcher',
+  pwa: 'Pulse Wave Analyser',
 };
 
 let GrpNameToCodeMap = {};

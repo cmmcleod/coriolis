@@ -1073,4 +1073,31 @@ export default class Module {
   getHackTime(modified = true) {
     return this.get('hacktime', modified);
   }
+
+  /**
+   * Get the scan range for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
+   * @return {string} the time for this module
+   */
+  getScanRange(modified = true) {
+    return this.get('scanrange', modified);
+  }
+
+  /**
+   * Get the scan angle for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
+   * @return {string} the time for this module
+   */
+  getScanAngle(modified = true) {
+    return this.get('scanangle', modified);
+  }
+
+  /**
+   * Get the max angle for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
+   * @return {string} the time for this module
+   */
+  getMaxAngle(modified = true) {
+    return this.get('maxangle', modified);
+  }
 }
