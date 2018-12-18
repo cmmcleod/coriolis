@@ -98,12 +98,14 @@ const CATEGORIES = {
   'sb': ['sb'],
   'hs': ['hs'],
   'defence': ['ch', 'po', 'ec'],
-  'scanners': ['sc', 'ss', 'cs', 'kw', 'ws', 'pwa'], // Overloaded with internal scanners
+  'scanners': ['sc', 'ss', 'cs', 'kw', 'ws'], // Overloaded with internal scanners
   // Experimental
   'experimental': ['axmc', 'axmr', 'rfl', 'tbrfl', 'tbsc', 'tbem', 'xs', 'sfn', 'rcpl', 'dtl', 'rsl', 'mahr',],
 
   // Guardian
-  'guardian': ['gpp', 'gpd', 'gpc', 'ggc', 'gsrp', 'gfsb', 'ghrp', 'gmrp', 'gsc']
+  'guardian': ['gpp', 'gpd', 'gpc', 'ggc', 'gsrp', 'gfsb', 'ghrp', 'gmrp', 'gsc'],
+
+  'mining': ['scl', 'pwa'],
 };
 
 /**
