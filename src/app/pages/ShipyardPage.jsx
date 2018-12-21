@@ -169,10 +169,9 @@ export default class ShipyardPage extends Page {
    * @param  {Object} u           Localized unit map
    * @param  {Function} fInt      Localized integer formatter
    * @param  {Function} fRound    Localized round formatter
-   * @param  {Boolean} highlight  Should this row be highlighted
    * @return {React.Component}    Table Row
    */
-  _shipRowElement(s, translate, u, fInt, fRound, highlight) {
+  _shipRowElement(s, translate, u, fInt, fRound) {
     let noTouch = this.context.noTouch;
 
     return (
@@ -181,7 +180,6 @@ export default class ShipyardPage extends Page {
         style={{ height: '1.5em' }}
         className={cn({
           highlighted: noTouch && this.state.shipId === s.id,
-          alt: highlight
         })}
         onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
       >
@@ -286,27 +284,13 @@ export default class ShipyardPage extends Page {
     let shipRows = new Array(shipSummaries.length);
     let detailRows = new Array(shipSummaries.length);
 
-    let lastShipSortValue = null;
-    let backgroundHighlight = false;
-
     for (let s of shipSummaries) {
-      let shipSortValue = s[shipPredicate];
-      if (shipPredicateIndex != undefined) {
-        shipSortValue = shipSortValue[shipPredicateIndex];
-      }
-
-      if (shipSortValue != lastShipSortValue) {
-        backgroundHighlight = !backgroundHighlight;
-        lastShipSortValue = shipSortValue;
-      }
-
       detailRows[i] = this._shipRowElement(
         s,
         translate,
         units,
         fInt,
         formats.f1,
-        backgroundHighlight
       );
       shipRows[i] = (
         <tr
@@ -314,7 +298,6 @@ export default class ShipyardPage extends Page {
           style={{ height: '1.5em' }}
           className={cn({
             highlighted: noTouch && this.state.shipId === s.id,
-            alt: backgroundHighlight
           })}
           onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
         >
