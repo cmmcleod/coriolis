@@ -14,7 +14,7 @@ module.exports = {
   },
   mode: 'development',
   entry: {
-    main: './src/app/index.js'
+    main: './src/app/index.js',
   },
   resolve: {
     // When requiring, you don't need to add these extensions
@@ -22,13 +22,11 @@ module.exports = {
   },
   optimization: {
     minimize: false,
-    splitChunks: {
-      chunks: 'all'
-    }
+    usedExports: true
   },
   output: {
     path: path.join(__dirname, 'build'),
-    filename: 'app.js',
+    chunkFilename: '[name].bundle.js',
     publicPath: '/'
   },
   plugins: [
@@ -56,7 +54,10 @@ module.exports = {
   module: {
     rules: [
       { test: /\.css$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' }) },
-      { test: /\.less$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!less-loader' }) },
+      {
+        test: /\.less$/,
+        loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!less-loader' })
+      },
       { test: /\.(js|jsx)$/, loaders: ['babel-loader'], include: path.join(__dirname, 'src') },
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
       { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Router from './Router';
-import { register } from 'register-service-worker'
+import { register } from 'register-service-worker';
 import { EventEmitter } from 'fbemitter';
 import { getLanguage } from './i18n/Language';
 import Persist from './stores/Persist';
@@ -15,11 +15,7 @@ import ModalImport from './components/ModalImport';
 import ModalPermalink from './components/ModalPermalink';
 import * as CompanionApiUtils from './utils/CompanionApiUtils';
 import * as JournalUtils from './utils/JournalUtils';
-import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
-import OutfittingPage from './pages/OutfittingPage';
-import ComparisonPage from './pages/ComparisonPage';
-import ShipyardPage from './pages/ShipyardPage';
 import ErrorDetails from './pages/ErrorDetails';
 
 const zlib = require('pako');
@@ -72,17 +68,57 @@ export default class Coriolis extends React.Component {
       route: {},
       sizeRatio: Persist.getSizeRatio()
     };
-    this._getAnnouncements()
-    Router('', (r) => this._setPage(ShipyardPage, r));
+    this._getAnnouncements();
+    Router('', (r) => {
+      return import(/* webpackChunkName: "shipyard" */ './pages/ShipyardPage')
+        .then(ShipyardPage => {
+          return this._setPage(ShipyardPage.default, r);
+        })
+    });
     Router('/import?', (r) => this._importBuild(r));
     Router('/import/:data', (r) => this._importBuild(r));
-    Router('/outfit/?', (r) => this._setPage(OutfittingPage, r));
-    Router('/outfit/:ship/?', (r) => this._setPage(OutfittingPage, r));
-    Router('/outfit/:ship/:code?', (r) => this._setPage(OutfittingPage, r));
-    Router('/compare/:name?', (r) => this._setPage(ComparisonPage, r));
-    Router('/comparison?', (r) => this._setPage(ComparisonPage, r));
-    Router('/comparison/:code', (r) => this._setPage(ComparisonPage, r));
-    Router('/about', (r) => this._setPage(AboutPage, r));
+    Router('/outfit/?', (r) => {
+      return import(/* webpackChunkName: "outfit" */ './pages/OutfittingPage')
+        .then(OutfittingPage => {
+          return this._setPage(OutfittingPage.default, r);
+        })
+    });
+    Router('/outfit/:ship/?', (r) => {
+      return import(/* webpackChunkName: "outfit" */ './pages/OutfittingPage')
+        .then(OutfittingPage => {
+          return this._setPage(OutfittingPage.default, r);
+        })
+    });
+    Router('/outfit/:ship/:code?', (r) => {
+      return import(/* webpackChunkName: "outfit" */ './pages/OutfittingPage')
+        .then(OutfittingPage => {
+          return this._setPage(OutfittingPage.default, r);
+        })
+    });
+    Router('/compare/:name?', (r) => {
+      return import(/* webpackChunkName: "compare" */ './pages/ComparisonPage')
+        .then(ComparisonPage => {
+          return this._setPage(ComparisonPage.default, r);
+        })
+    });
+    Router('/comparison?', (r) => {
+      return import(/* webpackChunkName: "compare" */ './pages/ComparisonPage')
+        .then(ComparisonPage => {
+          return this._setPage(ComparisonPage.default, r);
+        })
+    });
+    Router('/comparison/:code', (r) => {
+      return import(/* webpackChunkName: "compare" */ './pages/ComparisonPage')
+        .then(ComparisonPage => {
+          return this._setPage(ComparisonPage.default, r);
+        })
+    });
+    Router('/about', (r) => {
+      return import(/* webpackChunkName: "about" */ './pages/AboutPage')
+        .then(AboutPage => {
+          return this._setPage(AboutPage.default, r);
+        })
+    });
     Router('*', (r) => this._setPage(null, r));
   }
 
@@ -105,7 +141,10 @@ export default class Coriolis extends React.Component {
       }
       r.params.ship = ship.id;
       r.params.code = ship.toString();
-      this._setPage(OutfittingPage, r);
+      return import(/* webpackChunkName: "outfit" */ './pages/OutfittingPage')
+        .then(AboutPage => {
+          return this._setPage(AboutPage.default, r);
+        })
     } catch (err) {
       this._onError('Failed to import ship', r.path, 0, 0, err);
     }
@@ -113,10 +152,10 @@ export default class Coriolis extends React.Component {
 
   _getAnnouncements() {
     return request.get('https://orbis.zone/api/announcement')
-    .query({showInCoriolis: true})
-    .then(announces => {
-      this.setState({ announcements: announces.body })
-    })
+      .query({ showInCoriolis: true })
+      .then(announces => {
+        this.setState({ announcements: announces.body });
+      });
   }
 
   /**
@@ -351,27 +390,27 @@ export default class Coriolis extends React.Component {
       const self = this;
       if (process.env.NODE_ENV === 'production') {
         register('/service-worker.js', {
-          ready (registration) {
-            console.log('Service worker is active.')
+          ready(registration) {
+            console.log('Service worker is active.');
           },
-          registered (registration) {
-            console.log('Service worker has been registered.')
+          registered(registration) {
+            console.log('Service worker has been registered.');
           },
-          cached (registration) {
-            console.log('Content has been cached for offline use.')
+          cached(registration) {
+            console.log('Content has been cached for offline use.');
           },
-          updatefound (registration) {
-            console.log('New content is downloading.')
+          updatefound(registration) {
+            console.log('New content is downloading.');
           },
-          updated (registration) {
+          updated(registration) {
             self.setState({ appCacheUpdate: true });
-            console.log('New content is available; please refresh.')
+            console.log('New content is available; please refresh.');
           },
-          offline () {
-            console.log('No internet connection found. App is running in offline mode.')
+          offline() {
+            console.log('No internet connection found. App is running in offline mode.');
           },
-          error (error) {
-            console.error('Error during service worker registration:', error)
+          error(error) {
+            console.error('Error during service worker registration:', error);
           }
         });
       }
@@ -394,21 +433,24 @@ export default class Coriolis extends React.Component {
     let currentMenu = this.state.currentMenu;
 
     return <div style={{ minHeight: '100%' }} onClick={this._closeMenu}
-      className={this.state.noTouch ? 'no-touch' : null}>
-      <Header announcements={this.state.announcements} appCacheUpdate={this.state.appCacheUpdate} currentMenu={currentMenu} />
-      <div className="announcement-container">{this.state.announcements.map(a => <Announcement text={a.message}/>)}</div>
+                className={this.state.noTouch ? 'no-touch' : null}>
+      <Header announcements={this.state.announcements} appCacheUpdate={this.state.appCacheUpdate}
+              currentMenu={currentMenu}/>
+      <div className="announcement-container">{this.state.announcements.map(a => <Announcement
+        text={a.message}/>)}</div>
       {this.state.error ? this.state.error : this.state.page ? React.createElement(this.state.page, { currentMenu }) :
-        <NotFoundPage />}
+        <NotFoundPage/>}
       {this.state.modal}
       {this.state.tooltip}
       <footer>
         <div className="right cap">
           <a href="https://github.com/EDCD/coriolis" target="_blank" rel="noopener noreferrer"
-            title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
+             title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
           <br/>
           <a
             href={'https://github.com/EDCD/coriolis/compare/edcd:develop@{' + window.CORIOLIS_DATE + '}...edcd:develop'}
-            target="_blank" rel="noopener noreferrer" title={'Coriolis Commits since' + window.CORIOLIS_DATE}>Commits since last release
+            target="_blank" rel="noopener noreferrer" title={'Coriolis Commits since' + window.CORIOLIS_DATE}>Commits
+            since last release
             ({window.CORIOLIS_DATE})</a>
         </div>
       </footer>

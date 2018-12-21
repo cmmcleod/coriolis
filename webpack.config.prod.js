@@ -11,26 +11,28 @@ const buildDate = new Date();
 module.exports = {
   devtool: 'source-map',
   entry: {
-    main: ['./src/app/index.js']
+    main: './src/app/index.js'
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.less']
   },
   output: {
     path: path.join(__dirname, 'build'),
-    filename: '[name].[hash].js',
+    chunkFilename: '[name].bundle.js',
     publicPath: '/',
     globalObject: 'this'
   },
   mode: 'production',
   optimization: {
     minimize: true,
-    splitChunks: {
-      chunks: 'all'
-    }
+    usedExports: true
   },
   plugins: [
-    new CopyWebpackPlugin(['src/.htaccess', { from: 'src/schemas', to: 'schemas' }, {from: 'src/images/logo/*', flatten: true, to: ''}, 'src/iframe.html', 'src/xdLocalStoragePostMessageApi.min.js']),
+    new CopyWebpackPlugin(['src/.htaccess', { from: 'src/schemas', to: 'schemas' }, {
+      from: 'src/images/logo/*',
+      flatten: true,
+      to: ''
+    }, 'src/iframe.html', 'src/xdLocalStoragePostMessageApi.min.js']),
     // new webpack.optimize.CommonsChunkPlugin({
     //  name: 'lib',
     //  filename: 'lib.[chunkhash:6].js'
@@ -66,7 +68,10 @@ module.exports = {
   module: {
     rules: [
       { test: /\.css$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' }) },
-      { test: /\.less$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!less-loader' }) },
+      {
+        test: /\.less$/,
+        loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!less-loader' })
+      },
       { test: /\.(js|jsx)$/, loader: 'babel-loader?cacheDirectory=true', include: path.join(__dirname, 'src') },
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
       { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
