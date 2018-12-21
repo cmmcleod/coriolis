@@ -96,6 +96,7 @@ export const ModuleGroupToName = {
   tbrfl: 'Remote Release Flechette Launcher',
   pwa: 'Pulse Wave Analyser',
   scl: 'Seismic Charge Launcher',
+  sdm: 'Sub-Surface Displacement Missile',
 };
 
 let GrpNameToCodeMap = {};

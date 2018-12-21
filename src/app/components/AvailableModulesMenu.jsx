@@ -56,7 +56,6 @@ const GRPCAT = {
   'nl': 'ordnance',
   'sc': 'scanners',
   'ss': 'scanners',
-  'pwa': 'scanners',
   // Utilities
   'cs': 'scanners',
   'kw': 'scanners',
@@ -74,7 +73,12 @@ const GRPCAT = {
   'gfsb': 'guardian',
   'gmrp': 'guardian',
   'gsc': 'guardian',
-  'ghrp': 'guardian'
+  'ghrp': 'guardian',
+
+  // Mining
+  'scl': 'mining',
+  'pwa': 'mining',
+  'sdm': 'mining'
 };
 // Order here is the order in which items will be shown in the modules menu
 const CATEGORIES = {
@@ -105,7 +109,7 @@ const CATEGORIES = {
   // Guardian
   'guardian': ['gpp', 'gpd', 'gpc', 'ggc', 'gsrp', 'gfsb', 'ghrp', 'gmrp', 'gsc'],
 
-  'mining': ['scl', 'pwa'],
+  'mining': ['scl', 'pwa', 'sdm'],
 };
 
 /**
