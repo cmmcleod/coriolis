@@ -50,15 +50,15 @@ module.exports = {
       disable: false,
       allChunks: true
     }),
-    new BugsnagBuildReporterPlugin({
-      apiKey: 'ba9fae819372850fb660755341fa6ef5',
-      appVersion: `${pkgJson.version}-${buildDate.toISOString()}`
-    }, { /* opts */ }),
-    new BugsnagSourceMapUploaderPlugin({
-      apiKey: 'ba9fae819372850fb660755341fa6ef5',
-      overwrite: true,
-      appVersion: `${pkgJson.version}-${buildDate.toISOString()}`
-    }),
+    // new BugsnagBuildReporterPlugin({
+    //   apiKey: 'ba9fae819372850fb660755341fa6ef5',
+    //   appVersion: `${pkgJson.version}-${buildDate.toISOString()}`
+    // }, { /* opts */ }),
+    // new BugsnagSourceMapUploaderPlugin({
+    //   apiKey: 'ba9fae819372850fb660755341fa6ef5',
+    //   overwrite: true,
+    //   appVersion: `${pkgJson.version}-${buildDate.toISOString()}`
+    // }),
     new InjectManifest({
       swSrc: './src/sw.js',
       importWorkboxFrom: 'cdn',
