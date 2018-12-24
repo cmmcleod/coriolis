@@ -95,7 +95,7 @@ const CATEGORIES = {
   'structural reinforcement': ['hr', 'mrp'],
   'dc': ['dc'],
   // Hardpoints
-  'lasers': ['pl', 'ul', 'bl', 'ml'],
+  'lasers': ['pl', 'ul', 'bl'],
   'projectiles': ['mc', 'c', 'fc', 'pa', 'rg'],
   'ordnance': ['mr', 'tp', 'nl'],
   // Utilities
@@ -109,7 +109,7 @@ const CATEGORIES = {
   // Guardian
   'guardian': ['gpp', 'gpd', 'gpc', 'ggc', 'gsrp', 'gfsb', 'ghrp', 'gmrp', 'gsc'],
 
-  'mining': ['scl', 'pwa', 'sdm'],
+  'mining': ['ml', 'scl', 'pwa', 'sdm'],
 };
 
 /**
