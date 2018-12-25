@@ -109,7 +109,7 @@ const CATEGORIES = {
   // Guardian
   'guardian': ['gpp', 'gpd', 'gpc', 'ggc', 'gsrp', 'gfsb', 'ghrp', 'gmrp', 'gsc'],
 
-  'mining': ['ml', 'scl', 'pwa', 'sdm'],
+  'mining': ['ml', 'scl', 'pwa', 'sdm', 'abl'],
 };
 
 /**
