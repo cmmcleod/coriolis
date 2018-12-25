@@ -16,6 +16,7 @@ import ModalPermalink from './components/ModalPermalink';
 import * as CompanionApiUtils from './utils/CompanionApiUtils';
 import * as JournalUtils from './utils/JournalUtils';
 import NotFoundPage from './pages/NotFoundPage';
+import ShipyardPage from './pages/ShipyardPage';
 import ErrorDetails from './pages/ErrorDetails';
 
 const zlib = require('pako');
@@ -69,12 +70,7 @@ export default class Coriolis extends React.Component {
       sizeRatio: Persist.getSizeRatio()
     };
     this._getAnnouncements();
-    Router('', (r) => {
-      return import(/* webpackChunkName: "shipyard" */ './pages/ShipyardPage')
-        .then(ShipyardPage => {
-          return this._setPage(ShipyardPage.default, r);
-        })
-    });
+    Router('', (r) => this._setPage(ShipyardPage, r));
     Router('/import?', (r) => this._importBuild(r));
     Router('/import/:data', (r) => this._importBuild(r));
     Router('/outfit/?', (r) => {
