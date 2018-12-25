@@ -6,29 +6,28 @@ WORKDIR /src/app
 RUN mkdir -p /src/app/coriolis
 RUN mkdir -p /src/app/coriolis-data
 
-COPY ./coriolis/ /src/app/coriolis
-COPY ./coriolis-data/ /src/app/coriolis-data
+RUN apk add --update git
 
-RUN apk update
-RUN apk add git
+COPY . /src/app/coriolis
 
 RUN npm i -g npm
 
 # Set up coriolis-data
 WORKDIR /src/app/coriolis-data
-RUN git fetch --all
+RUN git clone https://github.com/EDCD/coriolis-data.git .
+RUN git checkout ${BRANCH}
 RUN npm install --no-package-lock
 RUN npm start
 
+# Set up coriolis
 WORKDIR /src/app/coriolis
-RUN git fetch --all
 RUN npm install --no-package-lock
 RUN npm run build
 
 
 ### STAGE 2: Production Environment ###
-FROM nginx:1.13.12-alpine as web
-COPY coriolis/.docker/nginx.conf /etc/nginx/nginx.conf
+FROM fholzer/nginx-brotli as web
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /src/app/coriolis/build /usr/share/nginx/html
 WORKDIR /usr/share/nginx/html
 EXPOSE 80

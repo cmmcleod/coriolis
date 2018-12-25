@@ -73,7 +73,12 @@ const GRPCAT = {
   'gfsb': 'guardian',
   'gmrp': 'guardian',
   'gsc': 'guardian',
-  'ghrp': 'guardian'
+  'ghrp': 'guardian',
+
+  // Mining
+  'scl': 'mining',
+  'pwa': 'mining',
+  'sdm': 'mining'
 };
 // Order here is the order in which items will be shown in the modules menu
 const CATEGORIES = {
@@ -90,7 +95,7 @@ const CATEGORIES = {
   'structural reinforcement': ['hr', 'mrp'],
   'dc': ['dc'],
   // Hardpoints
-  'lasers': ['pl', 'ul', 'bl', 'ml'],
+  'lasers': ['pl', 'ul', 'bl'],
   'projectiles': ['mc', 'c', 'fc', 'pa', 'rg'],
   'ordnance': ['mr', 'tp', 'nl'],
   // Utilities
@@ -102,7 +107,9 @@ const CATEGORIES = {
   'experimental': ['axmc', 'axmr', 'rfl', 'tbrfl', 'tbsc', 'tbem', 'xs', 'sfn', 'rcpl', 'dtl', 'rsl', 'mahr',],
 
   // Guardian
-  'guardian': ['gpp', 'gpd', 'gpc', 'ggc', 'gsrp', 'gfsb', 'ghrp', 'gmrp', 'gsc']
+  'guardian': ['gpp', 'gpd', 'gpc', 'ggc', 'gsrp', 'gfsb', 'ghrp', 'gmrp', 'gsc'],
+
+  'mining': ['ml', 'scl', 'pwa', 'sdm'],
 };
 
 /**

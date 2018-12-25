@@ -126,6 +126,9 @@ export default class HardpointSlot extends Slot {
             className={'l'}>{translate('shotspeed')}: {formats.int(m.getShotSpeed())}{u.mps}</div> : null}
           {m.getPiercing() ? <div className={'l'}>{translate('piercing')}: {formats.int(m.getPiercing())}</div> : null}
           {m.getJitter() ? <div className={'l'}>{translate('jitter')}: {formats.f2(m.getJitter())}°</div> : null}
+          {m.getScanAngle() ? <div className={'l'}>{translate('scan angle')}: {formats.f2(m.getScanAngle())}°</div> : null}
+          {m.getScanRange() ? <div className={'l'}>{translate('scan range')}: {formats.int(m.getScanRange())}{u.m}</div> : null}
+          {m.getMaxAngle() ? <div className={'l'}>{translate('max angle')}: {formats.f2(m.getMaxAngle())}°</div> : null}
           {showModuleResistances && m.getExplosiveResistance() ? <div
             className='l'>{translate('explres')}: {formats.pct(m.getExplosiveResistance())}</div> : null}
           {showModuleResistances && m.getKineticResistance() ? <div
