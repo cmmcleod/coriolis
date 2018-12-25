@@ -25,52 +25,6 @@
 @import 'defence';
 @import 'offence';
 
-// Christmas Start
-
-html {
-  height: 100%;
-  background: linear-gradient(#123 30%, #667);
-  overflow: hidden;
-}
-
-.snow, .snow:before, .snow:after {
-  position: absolute;
-  top: -600px;
-  left: 0;
-  bottom: 0;
-  pointer-events: none;
-  right: 0;
-  background-image: radial-gradient(5px 5px at 227px 385px, white 50%, rgba(0, 0, 0, 0)), radial-gradient(3px 3px at 388px 387px, rgba(255, 255, 255, 0.7) 50%, rgba(0, 0, 0, 0)), radial-gradient(5px 5px at 11px 408px, rgba(255, 255, 255, 0.8) 50%, rgba(0, 0, 0, 0)), radial-gradient(4px 4px at 545px 477px, rgba(255, 255, 255, 0.6) 50%, rgba(0, 0, 0, 0)), radial-gradient(5px 5px at 43px 589px, rgba(255, 255, 255, 0.6) 50%, rgba(0, 0, 0, 0)), radial-gradient(3px 3px at 220px 6px, rgba(255, 255, 255, 0.7) 50%, rgba(0, 0, 0, 0)), radial-gradient(6px 6px at 436px 94px, rgba(255, 255, 255, 0.8) 50%, rgba(0, 0, 0, 0)), radial-gradient(3px 3px at 297px 106px, rgba(255, 255, 255, 0.7) 50%, rgba(0, 0, 0, 0)), radial-gradient(5px 5px at 290px 61px, rgba(255, 255, 255, 0.6) 50%, rgba(0, 0, 0, 0)), radial-gradient(5px 5px at 228px 436px, rgba(255, 255, 255, 0.8) 50%, rgba(0, 0, 0, 0)), radial-gradient(6px 6px at 474px 16px, rgba(255, 255, 255, 0.7) 50%, rgba(0, 0, 0, 0)), radial-gradient(5px 5px at 378px 280px, rgba(255, 255, 255, 0.6) 50%, rgba(0, 0, 0, 0)), radial-gradient(3px 3px at 74px 393px, white 50%, rgba(0, 0, 0, 0)), radial-gradient(3px 3px at 394px 405px, rgba(255, 255, 255, 0.6) 50%, rgba(0, 0, 0, 0)), radial-gradient(6px 6px at 408px 358px, rgba(255, 255, 255, 0.6) 50%, rgba(0, 0, 0, 0)), radial-gradient(4px 4px at 468px 576px, rgba(255, 255, 255, 0.6) 50%, rgba(0, 0, 0, 0)), radial-gradient(3px 3px at 455px 318px, white 50%, rgba(0, 0, 0, 0)), radial-gradient(3px 3px at 486px 482px, white 50%, rgba(0, 0, 0, 0)), radial-gradient(6px 6px at 471px 20px, rgba(255, 255, 255, 0.8) 50%, rgba(0, 0, 0, 0)), radial-gradient(6px 6px at 266px 567px, rgba(255, 255, 255, 0.7) 50%, rgba(0, 0, 0, 0)), radial-gradient(3px 3px at 71px 270px, rgba(255, 255, 255, 0.6) 50%, rgba(0, 0, 0, 0)), radial-gradient(5px 5px at 432px 26px, rgba(255, 255, 255, 0.6) 50%, rgba(0, 0, 0, 0)), radial-gradient(6px 6px at 374px 93px, white 50%, rgba(0, 0, 0, 0)), radial-gradient(5px 5px at 57px 86px, rgba(255, 255, 255, 0.7) 50%, rgba(0, 0, 0, 0)), radial-gradient(6px 6px at 426px 41px, white 50%, rgba(0, 0, 0, 0)), radial-gradient(4px 4px at 81px 32px, rgba(255, 255, 255, 0.7) 50%, rgba(0, 0, 0, 0)), radial-gradient(3px 3px at 332px 187px, rgba(255, 255, 255, 0.8) 50%, rgba(0, 0, 0, 0)), radial-gradient(3px 3px at 523px 200px, rgba(255, 255, 255, 0.7) 50%, rgba(0, 0, 0, 0)), radial-gradient(5px 5px at 64px 66px, white 50%, rgba(0, 0, 0, 0)), radial-gradient(5px 5px at 445px 263px, rgba(255, 255, 255, 0.6) 50%, rgba(0, 0, 0, 0)), radial-gradient(5px 5px at 591px 190px, rgba(255, 255, 255, 0.7) 50%, rgba(0, 0, 0, 0)), radial-gradient(6px 6px at 509px 46px, rgba(255, 255, 255, 0.9) 50%, rgba(0, 0, 0, 0)), radial-gradient(5px 5px at 283px 515px, rgba(255, 255, 255, 0.8) 50%, rgba(0, 0, 0, 0)), radial-gradient(3px 3px at 233px 178px, rgba(255, 255, 255, 0.7) 50%, rgba(0, 0, 0, 0)), radial-gradient(3px 3px at 453px 103px, rgba(255, 255, 255, 0.7) 50%, rgba(0, 0, 0, 0));
-  background-size: 600px 600px;
-  animation: snow 3s linear infinite;
-  content: "";
-}
-
-.snow:after {
-  margin-left: -200px;
-  opacity: .4;
-  animation-duration: 6s;
-  animation-direction: reverse;
-  filter: blur(3px);
-}
-
-.snow:before {
-  animation-duration: 9s;
-  animation-direction: reverse;
-  margin-left: -300px;
-  opacity: .65;
-  filter: blur(1.5px);
-}
-
-@keyframes snow {
-  to {
-    transform: translateY(600px);
-  }
-}
-
-// Christmas End
-
-
 html, body {
   height: 100%;
   width: 100%;
