@@ -1,6 +1,6 @@
 {
   "$schema":            "http://json-schema.org/draft-04/schema#",
-  "id":                 "https://coriolis.edcd.io/schemas/ship-loadout/1.json#",
+  "id":                 "https://coriolis.io/schemas/ship-loadout/1.json#",
   "title":              "Ship Loadout",
   "type":               "object",
   "description":        "The details for a specific ship build/loadout. DEPRECATED in favor of Version 3",
