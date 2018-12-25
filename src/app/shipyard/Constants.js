@@ -95,6 +95,7 @@ export const ModuleGroupToName = {
   tbem: 'Enzyme Missile Rack',
   tbrfl: 'Remote Release Flechette Launcher',
   pwa: 'Pulse Wave Analyser',
+  abl: 'Abrasion Blaster',
   scl: 'Seismic Charge Launcher',
   sdm: 'Sub-Surface Displacement Missile',
 };
