@@ -238,6 +238,7 @@
     "rof": "Rate of fire",
     "angle": "Scan angle",
     "scanrate": "Scan rate",
+    "proberadius": "Probe Radius",
     "scantime": "Scan time",
     "shield": "Shield",
     "armour": "Armour",

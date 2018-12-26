@@ -78,5 +78,6 @@ export const STATS_FORMATTING = {
   'thermres': { 'format': 'pct' },
   'wepcap': { 'format': 'round1', 'unit': 'MJ' },
   'weprate': { 'format': 'round1', 'unit': 'MW' },
-  'jumpboost': { 'format': 'round1', 'unit': 'LY' }
+  'jumpboost': { 'format': 'round1', 'unit': 'LY' },
+  'proberadius': { 'format': 'pct1', 'unit': 'pct' },
 };
