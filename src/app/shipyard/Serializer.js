@@ -85,12 +85,12 @@ export function toDetailedBuild(buildName, ship) {
       code = ship.toString();
 
   let data = {
-    $schema: 'https://coriolis.edcd.io/schemas/ship-loadout/4.json#',
+    $schema: 'https://coriolis.io/schemas/ship-loadout/4.json#',
     name: buildName,
     ship: ship.name,
     references: [{
       name: 'Coriolis.io',
-      url: 'https://coriolis.edcd.io' + outfitURL(ship.id, code, buildName),
+      url: 'https://coriolis.io' + outfitURL(ship.id, code, buildName),
       code,
       shipId: ship.id
     }],

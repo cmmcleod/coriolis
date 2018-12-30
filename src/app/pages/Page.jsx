@@ -71,6 +71,13 @@ export default class Page extends React.Component {
   }
 
   /**
+   * Update the window title upon mount
+   */
+  componentDidMount() {
+    document.title = this.state.title || 'Coriolis';
+  }
+
+  /**
    * Updates the title upon change
    * @param  {Object} newProps  Incoming properties
    * @param  {Object} newState  Incoming state

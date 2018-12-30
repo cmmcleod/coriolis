@@ -35,7 +35,7 @@
           "title": "Coriolis",
           "description": "Coriolis Shipyard for Elite Dangerous",
           "repository": "https://github.com/EDCD/coriolis",
-          "site": "https://coriolis.edcd.io",
+          "site": "https://coriolis.io",
           "author": "https://github.com/edcd",
           "image": "./src/images/logo/192x192.png"
         }
@@ -81,7 +81,7 @@
           "title": "Coriolis",
           "description": "Coriolis Shipyard for Elite Dangerous",
           "repository": "https://github.com/EDCD/coriolis",
-          "site": "https://coriolis.edcd.io",
+          "site": "https://coriolis.io",
           "author": "https://github.com/edcd",
           "image": "./src/images/logo/192x192.png"
         }

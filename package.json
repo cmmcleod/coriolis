@@ -5,7 +5,7 @@
     "type": "git",
     "url": "https://github.com/EDCD/coriolis"
   },
-  "homepage": "https://coriolis.edcd.io",
+  "homepage": "https://coriolis.io",
   "bugs": "https://github.com/EDCD/coriolis/issues",
   "private": true,
   "engine": "node >= 4.8.1",
