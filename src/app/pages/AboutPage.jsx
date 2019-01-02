@@ -103,7 +103,7 @@ export default class AboutPage extends Page {
             patreon.com/coriolis_elite
           </a>
           , which will be used to keep Coriolis up to date and the servers
-          running. I also run ads, which are also used for development and hosting.
+          running.
         </p>
         <form
           action="https://www.paypal.com/cgi-bin/webscr"
