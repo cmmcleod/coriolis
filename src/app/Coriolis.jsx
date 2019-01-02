@@ -15,7 +15,10 @@ import ModalImport from './components/ModalImport';
 import ModalPermalink from './components/ModalPermalink';
 import * as CompanionApiUtils from './utils/CompanionApiUtils';
 import * as JournalUtils from './utils/JournalUtils';
+import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
+import OutfittingPage from './pages/OutfittingPage';
+import ComparisonPage from './pages/ComparisonPage';
 import ShipyardPage from './pages/ShipyardPage';
 import ErrorDetails from './pages/ErrorDetails';
 
@@ -73,48 +76,13 @@ export default class Coriolis extends React.Component {
     Router('', (r) => this._setPage(ShipyardPage, r));
     Router('/import?', (r) => this._importBuild(r));
     Router('/import/:data', (r) => this._importBuild(r));
-    Router('/outfit/?', (r) => {
-      return import(/* webpackChunkName: "outfit" */ './pages/OutfittingPage')
-        .then(OutfittingPage => {
-          return this._setPage(OutfittingPage.default, r);
-        })
-    });
-    Router('/outfit/:ship/?', (r) => {
-      return import(/* webpackChunkName: "outfit" */ './pages/OutfittingPage')
-        .then(OutfittingPage => {
-          return this._setPage(OutfittingPage.default, r);
-        })
-    });
-    Router('/outfit/:ship/:code?', (r) => {
-      return import(/* webpackChunkName: "outfit" */ './pages/OutfittingPage')
-        .then(OutfittingPage => {
-          return this._setPage(OutfittingPage.default, r);
-        })
-    });
-    Router('/compare/:name?', (r) => {
-      return import(/* webpackChunkName: "compare" */ './pages/ComparisonPage')
-        .then(ComparisonPage => {
-          return this._setPage(ComparisonPage.default, r);
-        })
-    });
-    Router('/comparison?', (r) => {
-      return import(/* webpackChunkName: "compare" */ './pages/ComparisonPage')
-        .then(ComparisonPage => {
-          return this._setPage(ComparisonPage.default, r);
-        })
-    });
-    Router('/comparison/:code', (r) => {
-      return import(/* webpackChunkName: "compare" */ './pages/ComparisonPage')
-        .then(ComparisonPage => {
-          return this._setPage(ComparisonPage.default, r);
-        })
-    });
-    Router('/about', (r) => {
-      return import(/* webpackChunkName: "about" */ './pages/AboutPage')
-        .then(AboutPage => {
-          return this._setPage(AboutPage.default, r);
-        })
-    });
+    Router('/outfit/?', (r) => this._setPage(OutfittingPage, r));
+    Router('/outfit/:ship/?', (r) => this._setPage(OutfittingPage, r));
+    Router('/outfit/:ship/:code?', (r) => this._setPage(OutfittingPage, r));
+    Router('/compare/:name?', (r) => this._setPage(ComparisonPage, r));
+    Router('/comparison?', (r) => this._setPage(ComparisonPage, r));
+    Router('/comparison/:code', (r) => this._setPage(ComparisonPage, r));
+    Router('/about', (r) => this._setPage(AboutPage, r));
     Router('*', (r) => this._setPage(null, r));
   }
 
@@ -137,10 +105,7 @@ export default class Coriolis extends React.Component {
       }
       r.params.ship = ship.id;
       r.params.code = ship.toString();
-      return import(/* webpackChunkName: "outfit" */ './pages/OutfittingPage')
-        .then(AboutPage => {
-          return this._setPage(AboutPage.default, r);
-        })
+      this._setPage(OutfittingPage, r)
     } catch (err) {
       this._onError('Failed to import ship', r.path, 0, 0, err);
     }
