@@ -146,12 +146,14 @@ export default class Coriolis extends React.Component {
     }
   }
 
-  _getAnnouncements() {
-    return request.get('https://orbis.zone/api/announcement')
-      .query({ showInCoriolis: true })
-      .then(announces => {
-        this.setState({ announcements: announces.body });
-      });
+  async _getAnnouncements() {
+    try {
+      const announces = await request.get('https://orbis.zone/api/announcement')
+        .query({ showInCoriolis: true });
+      this.setState({ announcements: announces.body });
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   /**
