@@ -8,7 +8,13 @@ if (workbox) {
 
   workbox.routing.registerRoute(
     new RegExp('/(.*?)'),
-    workbox.strategies.staleWhileRevalidate()
+    workbox.strategies.staleWhileRevalidate({
+      plugins: [
+        new workbox.cacheableResponse.Plugin({
+          statuses: [0, 200]
+        })
+      ]
+    })
   );
 
   workbox.routing.registerRoute(
