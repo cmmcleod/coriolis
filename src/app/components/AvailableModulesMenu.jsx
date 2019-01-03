@@ -228,7 +228,16 @@ export default class AvailableModulesMenu extends TranslatedComponent {
               }
               list.push(buildGroup(grp, modules[grp]));
               for (const i of modules[grp]) {
-                fuzzy.push({ grp, m: i, name: `${i.class}${i.rating} ${translate(grp)} ${i.mount ? i.mount : ''}` });
+                let mount = '';
+                if (i.mount === 'F') {
+                  mount = 'Fixed';
+                } else if (i.mount === 'G') {
+                  mount = 'Gimballed';
+                } else if (i.mount === 'T') {
+                  mount = 'Turreted';
+                }
+                const fuzz = { grp, m: i, name: `${i.class}${i.rating}${mount ? ' '  + mount : ''} ${translate(grp)}` };
+                fuzzy.push(fuzz);
               }
             }
           }
@@ -370,10 +379,14 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    * mounted module and the hovered modules
    */
   _showSearch() {
+    if (this.props.modules instanceof Array) {
+      return;
+    }
     return (
       <FuzzySearch
         list={this.state.fuzzy}
         keys={['grp', 'name']}
+        tokenize={true}
         className={'input'}
         width={'100%'}
         style={{ padding: 0 }}
