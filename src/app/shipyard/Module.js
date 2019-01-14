@@ -167,7 +167,7 @@ export default class Module {
     } else if (name === 'shieldboost' || name === 'hullboost') {
       modValue = (1 + value) / (1 + baseValue) - 1;
     } else { // multiplicative
-      modValue = value / baseValue - 1;
+      modValue = baseValue == 0 ? 0 : value / baseValue - 1;
     }
 
     if (modification.type === 'percentage') {
@@ -703,8 +703,8 @@ export default class Module {
     let result = 0;
     if (this['maxmass']) {
       result = this['maxmass'];
-      // max mass is only modified for non-shield boosters
-      if (result && modified && this.grp !== 'sg') {
+      // max mass is only modified for shield generators
+      if (result && modified && this.grp === 'sg') {
         let mult = this.getModValue('optmass') / 10000;
         if (mult) { result = result * (1 + mult); }
       }
