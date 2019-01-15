@@ -703,8 +703,7 @@ export default class Module {
     let result = 0;
     if (this['maxmass']) {
       result = this['maxmass'];
-      // max mass is only modified for shield generators
-      if (result && modified && this.grp === 'sg') {
+      if (result && modified) {
         let mult = this.getModValue('optmass') / 10000;
         if (mult) { result = result * (1 + mult); }
       }
