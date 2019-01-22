@@ -15,5 +15,5 @@ docker build:
 docker push:
   stage: Push to Docker Hub
   script:
-  - echo "$REGISTRY_PASSWORD" | docker login -u "$REGISTRY_USER" --password-stdin
+  - echo "$REGISTRY_PASSWORD" | docker login --username "$REGISTRY_USER" --password-stdin
   - docker push edcd/coriolis:$CI_COMMIT_REF_NAME
