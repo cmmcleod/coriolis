@@ -4,16 +4,11 @@ services:
 
 stages:
   - Build image
-  - Push to Docker Hub
 
 docker build:
   stage: Build image
   script:
   - docker info
   - docker build --build-arg branch=$CI_COMMIT_REF_NAME -t edcd/coriolis:$CI_COMMIT_REF_NAME .
-
-docker push:
-  stage: Push to Docker Hub
-  script:
   - echo "$REGISTRY_PASSWORD" | docker login --username "$REGISTRY_USER" --password-stdin
   - docker push edcd/coriolis:$CI_COMMIT_REF_NAME
