@@ -10,6 +10,8 @@ services:
     - web
     labels:
     - "traefik.docker.network=web"
+    - "traefik.frontend.redirect.regex=^https:\/\/coriolis\.edcd\.io\/(.*)"
+    - "traefik.frontend.redirect.replacement=https://coriolis.io/$1"
     - "traefik.enable=true"
     - "traefik.basic.frontend.rule=Host:coriolis.io,coriolis.edcd.io"
     - "traefik.basic.port=80"
@@ -25,6 +27,8 @@ services:
     labels:
     - "traefik.docker.network=web"
     - "traefik.enable=true"
+    - "traefik.frontend.redirect.regex=^https:\/\/beta\.coriolis\.edcd\.io\/(.*)"
+    - "traefik.frontend.redirect.replacement=https://beta.coriolis.io/$1"
     - "traefik.basic.frontend.rule=Host:beta.coriolis.io,beta.coriolis.edcd.io"
     - "traefik.basic.port=80"
     - "traefik.basic.protocol=http"
