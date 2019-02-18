@@ -8,7 +8,6 @@ stages:
 docker build:
   stage: Build image
   script:
-  - docker info
-  - docker build --build-arg branch=$CI_COMMIT_REF_NAME -t edcd/coriolis:$CI_COMMIT_REF_NAME .
-  - echo "$REGISTRY_PASSWORD" | docker login --username "$REGISTRY_USER" --password-stdin
-  - docker push edcd/coriolis:$CI_COMMIT_REF_NAME
+  - img build --build-arg branch=$CI_COMMIT_REF_NAME -t edcd/coriolis:$CI_COMMIT_REF_NAME .
+  - echo "$REGISTRY_PASSWORD" | img login --username "$REGISTRY_USER" --password-stdin
+  - img push edcd/coriolis:$CI_COMMIT_REF_NAME
