@@ -21,6 +21,7 @@ RUN npm start
 
 # Set up coriolis
 WORKDIR /src/app/coriolis
+RUN git checkout ${BRANCH}
 RUN npm install --no-package-lock
 RUN npm run build
 
