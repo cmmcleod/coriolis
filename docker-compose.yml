@@ -3,6 +3,10 @@ version: '2.2'
 services:
   coriolis_prod:
     image: edcd/coriolis:master
+    build:
+      dockerfile: Dockerfile
+      args:
+        branch: master
     restart: always
     volumes:
     - ./nginx.conf:/etc/nginx/nginx.conf
@@ -19,6 +23,10 @@ services:
 
   coriolis_dev:
     image: edcd/coriolis:develop
+    build:
+      dockerfile: Dockerfile
+      args:
+        branch: develop
     restart: always
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
