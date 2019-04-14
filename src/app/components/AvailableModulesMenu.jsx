@@ -81,8 +81,8 @@ const GRPCAT = {
   'sdm': 'mining',
 
   // Assists
-  'dc': 'assists',
-  'sua': 'assists',
+  'dc': 'flight assists',
+  'sua': 'flight assists',
 };
 // Order here is the order in which items will be shown in the modules menu
 const CATEGORIES = {
@@ -97,7 +97,7 @@ const CATEGORIES = {
   'rf': ['rf'],
   'shields': ['sg', 'bsg', 'psg', 'scb'],
   'structural reinforcement': ['hr', 'mrp'],
-  'assists': ['dc', 'sua'],
+  'flight assists': ['dc', 'sua'],
 
   // Hardpoints
   'lasers': ['pl', 'ul', 'bl'],
