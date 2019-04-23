@@ -13,6 +13,8 @@ import { Download } from './SvgIcons';
 import { outfitURL } from '../utils/UrlGenerators';
 import * as CompanionApiUtils from '../utils/CompanionApiUtils';
 
+const zlib = require('pako');
+
 const textBuildRegex = new RegExp('^\\[([\\w \\-]+)\\]\n');
 const lineRegex = new RegExp('^([\\dA-Z]{1,2}): (\\d)([A-I])[/]?([FGT])?([SD])? ([\\w\\- ]+)');
 const mountMap = { 'H': 4, 'L': 3, 'M': 2, 'S': 1, 'U': 0 };
@@ -99,6 +101,7 @@ export default class ModalImport extends TranslatedComponent {
     this.state = {
       builds: props.builds,
       canEdit: !props.builds,
+      loadoutEvent: null,
       comparisons: null,
       shipDiscount: null,
       moduleDiscount: null,
@@ -111,10 +114,26 @@ export default class ModalImport extends TranslatedComponent {
     this._process = this._process.bind(this);
     this._import = this._import.bind(this);
     this._importBackup = this._importBackup.bind(this);
+    this._importLoadout = this._importLoadout.bind(this);
     this._importDetailedArray = this._importDetailedArray.bind(this);
     this._importTextBuild = this._importTextBuild.bind(this);
     this._importCompanionApiBuild = this._importCompanionApiBuild.bind(this);
     this._validateImport = this._validateImport.bind(this);
+  }
+
+  /**
+   * Import a Loadout event from Elite: Dangerous journal files
+   * @param  {Object} data Loadout event
+   * @throws {string} If import fails
+   */
+  _importLoadout(data) {
+    if (data && data.Ship && data.Modules) {
+      const deflated = zlib.deflate(JSON.stringify(data), { to: 'string' });
+      let compressed = btoa(deflated);
+      this.setState({loadoutEvent: compressed});
+    } else {
+      throw 'Loadout event must contain Ship and Modules';
+    }
   }
 
   /**
@@ -345,12 +364,14 @@ export default class ModalImport extends TranslatedComponent {
         } else if (importData.ship && typeof importData.name !== undefined) { // Using JSON from a single ship build export
           this._importDetailedArray([importData]); // Convert to array with singleobject
           this.setState({ singleBuild: true });
+        } else if (importData.Modules != null && importData.Modules[0] != null) {
+          this._importLoadout(importData);
         } else { // Using Backup JSON
           this._importBackup(importData);
         }
       }
     } catch (e) {
-      // console.log(e.stack);
+      console.log(e);
       this.setState({ errorMsg: (typeof e == 'string') ? e : 'Cannot Parse the data!' });
       return;
     }
@@ -363,6 +384,10 @@ export default class ModalImport extends TranslatedComponent {
    */
   _process() {
     let builds = null, comparisons = null;
+
+    if (this.state.loadoutEvent) {
+      return Router.go(`/import?data=${this.state.loadoutEvent}`);
+    }
 
     // If only importing a single build go straight to the outfitting page
     if (this.state.singleBuild) {
@@ -480,7 +505,7 @@ export default class ModalImport extends TranslatedComponent {
     if (!state.processed) {
       importStage = (
         <div>
-          <textarea className='cb json' ref={node => this.importField = node} onChange={this._validateImport} defaultValue={this.state.importString} placeholder={translate('PHRASE_IMPORT')} />
+          <textarea spellCheck={false} className='cb json' ref={node => this.importField = node} onChange={this._validateImport} defaultValue={this.state.importString} placeholder={translate('PHRASE_IMPORT')} />
           <button id='proceed' className='l cap' onClick={this._process} disabled={!state.importValid} >{translate('proceed')}</button>
           <div className='l warning' style={{ marginLeft:'3em' }}>{state.errorMsg}</div>
         </div>
