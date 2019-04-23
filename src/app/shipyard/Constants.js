@@ -57,6 +57,7 @@ export const ModuleGroupToName = {
   ghrp: 'Guardian Hull Reinforcement Package',
   gmrp: 'Guardian Module Reinforcement Package',
   mahr: 'Meta Alloy Hull Reinforcement Package',
+  sua: 'Supercruise Assist',
 
   // Hard Points
   bl: 'Beam Laser',
