@@ -41,24 +41,26 @@
       <script async src='https://www.google-analytics.com/analytics.js'></script>
       <% } %>
 
-        <!-- Piwik -->
-        <!-- <script type="text/javascript">
-      var _paq = _paq || [];
+    <!-- Matomo -->
+    <script type="text/javascript">
+      var _paq = window._paq || [];
       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-      _paq.push(["setCookieDomain", "*.coriolis.edcd.io"]);
+      _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+      _paq.push(["setCookieDomain", "*.coriolis.io"]);
       _paq.push(['trackPageView']);
       _paq.push(['enableLinkTracking']);
       (function() {
-        var u="//stats.isadankme.me/";
-        _paq.push(['setTrackerUrl', u+'piwik.php']);
-        _paq.push(['setSiteId', '4']);
+        var u="//stats.willb.dev/";
+        _paq.push(['setTrackerUrl', u+'matomo.php']);
+        _paq.push(['setSiteId', '1']);
         var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
       })();
-    </script>-->
-        <!-- End Piwik Code -->
+    </script>
+    <!-- End Matomo Code -->
 
-        <!-- Bugsnag -->
+
+    <!-- Bugsnag -->
         <script src="https://d2wy8f7a9ursnm.cloudfront.net/v5.0.0/bugsnag.min.js"></script>
         <script>
       window.bugsnagClient = bugsnag('ba9fae819372850fb660755341fa6ef5', {appVersion: window.BUGSNAG_VERSION || undefined})
