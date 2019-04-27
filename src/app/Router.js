@@ -269,6 +269,8 @@ function gaTrack(path) {
     }
   }
   ReactGA.pageview(path);
+  const _paq = window._paq || [];
+  _paq.push(['trackPageView']);
 }
 
 /**
