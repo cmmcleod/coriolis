@@ -7,8 +7,8 @@ if (workbox) {
   workbox.routing.registerNavigationRoute('/index.html');
 
   workbox.routing.registerRoute(
-    new RegExp('/(.*?)'),
-    workbox.strategies.staleWhileRevalidate({
+    /\.(?:png|jpg|jpeg|svg|gif)$/,
+    new workbox.strategies.CacheFirst({
       plugins: [
         new workbox.cacheableResponse.Plugin({
           statuses: [0, 200]
@@ -18,8 +18,15 @@ if (workbox) {
   );
 
   workbox.routing.registerRoute(
+    /\.(?:js|css)$/,
+    new workbox.strategies.StaleWhileRevalidate({
+      cacheName: 'static-resources',
+    })
+  );
+
+  workbox.routing.registerRoute(
     new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
-    workbox.strategies.cacheFirst({
+    new workbox.strategies.CacheFirst({
       cacheName: 'google-fonts',
       plugins: [
         new workbox.expiration.Plugin({
@@ -31,12 +38,6 @@ if (workbox) {
       ]
     })
   );
-
-  try {
-    workbox.googleAnalytics.initialize();
-  } catch (e) {
-    console.log('Probably an ad-blocker');
-  }
 } else {
   console.log('Boo! Workbox didn\'t load 😬');
 }
