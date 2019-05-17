@@ -15,7 +15,7 @@ export function jumpRange(mass, fsd, fuel, ship) {
   let jumpAddition = 0;
   if (ship) {
     for (const module of ship.internal) {
-      if (module && module.m && module.m.grp === 'gfsb') {
+      if (module && module.m && module.m.grp === 'gfsb' && ship.getSlotStatus(module) == 3) {
         jumpAddition += module.m.getJumpBoost();
       }
     }
