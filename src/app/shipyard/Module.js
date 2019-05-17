@@ -59,15 +59,7 @@ export default class Module {
         } else if (modification.method === 'overwrite') {
           result = modifierActions[name];
         } else {
-          // Rate of fire modifiers are special as they actually are modifiers
-          // for fire interval. Translate them accordingly here:
-          let mod = null;
-          if (name === 'rof') {
-            mod = 1 / (1 + modifierActions[name]) - 1;
-          } else {
-            mod = modifierActions[name];
-          }
-          result = (((1 + result / multiplier) * (1 + mod)) - 1) * multiplier;
+          result = (((1 + result / multiplier) * (1 + modifierActions[name])) - 1) * multiplier;
         }
       }
     }
