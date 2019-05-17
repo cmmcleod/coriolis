@@ -1014,7 +1014,10 @@ export function timeToDrainWep(ship, wep) {
  */
 export function timeToDeplete(amount, dps, eps, capacity, recharge) {
   const drainPerSecond = eps - recharge;
-  if (drainPerSecond <= 0) {
+  // If there is nothing to remove, we're don instantly
+  if (!amount) {
+    return 0;
+  } if (drainPerSecond <= 0) {
     // Simple result
     return amount / dps;
   } else {
