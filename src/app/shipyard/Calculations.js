@@ -15,7 +15,7 @@ export function jumpRange(mass, fsd, fuel, ship) {
   let jumpAddition = 0;
   if (ship) {
     for (const module of ship.internal) {
-      if (module && module.m && module.m.grp === 'gfsb') {
+      if (module && module.m && module.m.grp === 'gfsb' && ship.getSlotStatus(module) == 3) {
         jumpAddition += module.m.getJumpBoost();
       }
     }
@@ -1014,7 +1014,10 @@ export function timeToDrainWep(ship, wep) {
  */
 export function timeToDeplete(amount, dps, eps, capacity, recharge) {
   const drainPerSecond = eps - recharge;
-  if (drainPerSecond <= 0) {
+  // If there is nothing to remove, we're don instantly
+  if (!amount) {
+    return 0;
+  } if (drainPerSecond <= 0) {
     // Simple result
     return amount / dps;
   } else {
