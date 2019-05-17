@@ -824,15 +824,18 @@ export default class Module {
    */
   getSDps(modified = true) {
     let dps = this.getDps(modified);
-    if (this.getClip(modified)) {
-      let clipSize = this.getClip(modified);
+    let clipSize = this.getClip(modified);
+    if (clipSize) {
       // If auto-loader is applied, effective clip size will be nearly doubled
       // as you get one reload for every two shots fired.
       if (this.blueprint && this.blueprint.special && this.blueprint.special.edname === 'special_auto_loader' && modified) {
         clipSize += clipSize - 1;
       }
-      let timeToDeplete = clipSize / this.getRoF(modified);
-      return dps * timeToDeplete / (timeToDeplete + this.getReload(modified));
+
+      let volleys = clipSize / (this.get('burst', modified) || 1);
+      let rof = this.getRoF(modified);
+      let srof = volleys / ((volleys - 1) / rof + this.getReload(modified));
+      return dps * srof / rof;
     } else {
       return dps;
     }
