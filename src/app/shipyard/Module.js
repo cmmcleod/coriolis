@@ -263,10 +263,10 @@ export default class Module {
             }
             result = result * (1 + modValue);
           }
-        } else if (name === 'burstrof') {
+        } else if (name === 'burstrof' || name === 'burst') {
           // Burst and burst rate of fire are special, as it can not exist but
           // have a modification
-          result = modValue / 100;
+          result = modValue;
         }
       }
     }
@@ -832,9 +832,12 @@ export default class Module {
         clipSize += clipSize - 1;
       }
 
-      let volleys = clipSize / (this.get('burst', modified) || 1);
+      let burstSize = this.get('burst', modified) || 1;
       let rof = this.getRoF(modified);
-      let srof = volleys / ((volleys - 1) / rof + this.getReload(modified));
+      // rof averages burstfire + pause until next interval but for sustained
+      // rof we need to take another burst without pause into account
+      let burstOverhead = (burstSize - 1) / (this.get('burstrof', modified) || 1);
+      let srof = clipSize / ((clipSize - burstSize) / rof + burstOverhead + this.getReload(modified));
       return dps * srof / rof;
     } else {
       return dps;
