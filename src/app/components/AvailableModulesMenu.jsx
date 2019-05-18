@@ -348,7 +348,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         // elems.push(<br key={'b' + m.grp + i} />);
         itemsOnThisRow = 0;
       }
-      if (itemsOnThisRow == 6 || i > 0 && sortedModules.length > 3 && itemsPerClass > 2 && m.class != prevClass && (m.rating != prevRating || m.mount)) {
+      if (itemsOnThisRow == 4 || i > 0 && sortedModules.length > 3 && itemsPerClass > 2 && m.class != prevClass && (m.rating != prevRating || m.mount)) {
         elems.push(<br key={'b' + m.grp + i}/>);
         itemsOnThisRow = 0;
       }
