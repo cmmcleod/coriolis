@@ -8,20 +8,6 @@ import { diffDetails } from '../utils/SlotFunctions';
 import { wrapCtxMenu } from '../utils/UtilityFunctions';
 
 /**
- * Returns a function that checks that a given module does not exceed the limit
- * of experimental modules.
- * @param {Ship} ship Ship to check experimentals for
- * @return {Function} Checker function that returns true if the number of
- * experimentals is exceeded
- */
-function experimentalTracker(ship) {
-  return (m) => {
-    return m.experimental &&
-      4 <= ship.hardpoints.reduce((r, o) => o.m && o.m.experimental ? r + 1 : r, 0);
-  };
-}
-
-/**
  * Abstract Slot
  */
 export default class Slot extends TranslatedComponent {
@@ -147,7 +133,6 @@ export default class Slot extends TranslatedComponent {
           warning={warning}
           diffDetails={diffDetails.bind(ship, this.context.language)}
           slotDiv = {this.slotDiv}
-          disable={experimentalTracker(ship)}
         />;
       }
     }

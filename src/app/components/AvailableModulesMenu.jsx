@@ -128,7 +128,6 @@ export default class AvailableModulesMenu extends TranslatedComponent {
     m: PropTypes.object,
     shipMass: PropTypes.number,
     warning: PropTypes.func,
-    disable: PropTypes.func,
     firstSlotId: PropTypes.string,
     lastSlotId: PropTypes.string,
     activeSlotId: PropTypes.string,
@@ -160,7 +159,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    */
   _initState(props, context) {
     let translate = context.language.translate;
-    let { m, warning, disable, shipMass, onSelect, modules, firstSlotId, lastSlotId } = props;
+    let { m, warning, shipMass, onSelect, modules, firstSlotId, lastSlotId } = props;
     let list, currentGroup;
 
     let buildGroup = this._buildGroup.bind(
@@ -168,7 +167,6 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       translate,
       m,
       warning,
-      disable,
       shipMass - (m && m.mass ? m.mass : 0),
       (m, event) => {
         this._hideDiff(event);
@@ -260,7 +258,6 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    * @param  {Function} translate   Translate function
    * @param  {Object} mountedModule Mounted Module
    * @param  {Function} warningFunc Warning function
-   * @param  {Function} disableFunc Function when selection should be disabled
    * @param  {number} mass          Mass
    * @param  {function} onSelect    Select/Mount callback
    * @param  {string} grp           Group name
@@ -269,7 +266,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
    * @param  {string} lastSlotId    id of last slot item
    * @return {React.Component}      Available Module Group contents
    */
-  _buildGroup(translate, mountedModule, warningFunc, disableFunc, mass, onSelect, grp, modules, firstSlotId, lastSlotId) {
+  _buildGroup(translate, mountedModule, warningFunc, mass, onSelect, grp, modules, firstSlotId, lastSlotId) {
     let prevClass = null, prevRating = null, prevName;
     let elems = [];
 
@@ -287,7 +284,6 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       let m = sortedModules[i];
       let mount = null;
       let disabled = false;
-      let softDisabled = disableFunc && disableFunc(m);
       prevName = m.name;
       if (ModuleUtils.isShieldGenerator(m.grp)) {
         // Shield generators care about maximum hull mass
@@ -298,7 +294,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       }
       let active = mountedModule && mountedModule.id === m.id;
       let classes = cn(m.name ? 'lc' : 'c', {
-        warning: !disabled && (softDisabled || (warningFunc && warningFunc(m))),
+        warning: !disabled && warningFunc && warningFunc(m),
         active,
         disabled
       });
@@ -320,7 +316,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
         this.lastSlotId = sortedModules[i].id;
 
         let showDiff = this._showDiff.bind(this, mountedModule, m);
-        let select = softDisabled ? () => {} : onSelect.bind(null, m);
+        let select = onSelect.bind(null, m);
 
         eventHandlers = {
           onMouseEnter: this._over.bind(this, showDiff),
