@@ -195,6 +195,15 @@ export default class SlotSection extends TranslatedComponent {
         if (targetSlot && canMount(this.props.ship, targetSlot, m.grp, m.class)) {
           const mCopy = m.clone();
           this.props.ship.use(targetSlot, mCopy, false);
+          let experimentalNum = this.props.ship.hardpoints
+            .filter(s => s.m && s.m.experimental).length;
+          // Remove the module on the last slot if we now exceed the number of
+          // experimentals allowed
+          if (m.experimental && 4 < experimentalNum) {
+            this.props.ship.updateStats(originSlot, null, originSlot.m);
+            originSlot.m = null;  // Empty the slot
+            originSlot.discountedCost = 0;
+          }
           // Copy power info
           targetSlot.enabled = originSlot.enabled;
           targetSlot.priority = originSlot.priority;
