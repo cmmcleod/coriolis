@@ -282,7 +282,9 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       if (ModuleUtils.isShieldGenerator(m.grp)) {
         // Shield generators care about maximum hull mass
         disabled = ship.hullMass > m.maxmass;
-      } else if (m.experimental) {
+      // If the mounted module is experimental as well, we can replace it so
+      // the maximum does not apply
+      } else if (m.experimental && (!mountedModule || !mountedModule.experimental)) {
         disabled = 4 <= ship.hardpoints.filter(o => o.m && o.m.experimental).length;
       }
       let active = mountedModule && mountedModule.id === m.id;
