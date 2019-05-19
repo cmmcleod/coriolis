@@ -109,8 +109,8 @@ export default class StandardSlot extends TranslatedComponent {
         menu = <AvailableModulesMenu
           className='standard'
           modules={modules}
-          shipMass={ModuleUtils.isShieldGenerator(m.grp) ? ship.hullMass : ship.unladenMass}
           m={m}
+          ship={ship}
           onSelect={onSelect}
           warning={warning}
           diffDetails={diffDetails.bind(ship, this.context.language)}

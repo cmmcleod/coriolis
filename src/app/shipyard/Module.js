@@ -59,14 +59,7 @@ export default class Module {
         } else if (modification.method === 'overwrite') {
           result = modifierActions[name];
         } else {
-          // rate of fire is special, as it's really burst interval.  Handle that here
-          let mod = null;
-          if (name === 'rof') {
-            mod = 1 / (1 + modifierActions[name]) - 1;
-          } else {
-            mod = modifierActions[name];
-          }
-          result = (((1 + result / multiplier) * (1 + mod)) - 1) * multiplier;
+          result = (((1 + result / multiplier) * (1 + modifierActions[name])) - 1) * multiplier;
         }
       }
     }
@@ -105,13 +98,6 @@ export default class Module {
         } else if (modification.method === 'overwrite') {
           value = null;
         } else {
-          // rate of fire is special, as it's really burst interval.  Handle that here
-          let mod = null;
-          if (name === 'rof') {
-            mod = 1 / (1 + modifierActions[name]) - 1;
-          } else {
-            mod = modifierActions[name];
-          }
           value = ((value / 10000 + 1) / (1 + mod) - 1) * 10000;
         }
       }
@@ -131,6 +117,13 @@ export default class Module {
    * @return {Number} The value queried
    */
   get(name, modified = true) {
+    if (name == 'rof' && isNaN(this[name])) {
+      let fireint = this['fireint'];
+      if (!isNaN(fireint)) {
+        this['rof'] = 1 / fireint;
+      }
+    }
+
     let val;
     if (modified) {
       val = this._getModifiedValue(name);
@@ -166,14 +159,20 @@ export default class Module {
       modValue = value - baseValue;
     } else if (name === 'shieldboost' || name === 'hullboost') {
       modValue = (1 + value) / (1 + baseValue) - 1;
+    } else if (name === 'rof') {
+      let burst = this.get('burst', true) || 1;
+      let burstInt = 1 / (this.get('burstrof', true) / 1);
+
+      let interval = burst / value;
+      let newFireint = (interval - (burst - 1) * burstInt);
+      modValue = newFireint / this['fireint'] - 1;
     } else { // multiplicative
       modValue = baseValue == 0 ? 0 : value / baseValue - 1;
     }
 
     if (modification.type === 'percentage') {
       modValue = modValue * 10000;
-    } else if (modification.type === 'numeric' && name !== 'burst' &&
-      name !== 'burstrof') {
+    } else if (modification.type === 'numeric') {
       modValue = modValue * 100;
     }
 
@@ -191,7 +190,14 @@ export default class Module {
    */
   getPretty(name, modified = true, places = 2) {
     const formattingOptions = STATS_FORMATTING[name];
-    let val = this.get(name, modified) || 0;
+    let val;
+    if (formattingOptions && formattingOptions.synthetic) {
+      val = (this[formattingOptions.synthetic]).call(this, modified);
+    } else {
+      val = this.get(name, modified);
+    }
+    val = val || 0;
+
     if (formattingOptions && formattingOptions.format.startsWith('pct')) {
       return 100 * val;
     }
@@ -250,12 +256,17 @@ export default class Module {
           } else if (name === 'shieldboost' || name === 'hullboost') {
             result = (1 + result) * (1 + modValue) - 1;
           } else {
+            // Rate of fire modifiers are special as they actually are modifiers
+            // for fire interval. Translate them accordingly here:
+            if (name == 'rof') {
+              modValue = 1 / (1 + modValue) - 1;
+            }
             result = result * (1 + modValue);
           }
-        } else if (name === 'burstrof') {
+        } else if (name === 'burstrof' || name === 'burst') {
           // Burst and burst rate of fire are special, as it can not exist but
           // have a modification
-          result = modValue / 100;
+          result = modValue;
         }
       }
     }
@@ -277,11 +288,7 @@ export default class Module {
   formatModifiedValue(name, language, unit, val) {
     const formattingOptions = STATS_FORMATTING[name];
     if (val === undefined) {
-      if (formattingOptions && formattingOptions.synthetic) {
-        val = (this[formattingOptions.synthetic]).call(this, true);
-      } else {
-        val = this._getModifiedValue(name);
-      }
+      val = this.getPretty(name, true);
     }
 
     val = val || 0;
@@ -351,14 +358,18 @@ export default class Module {
 
     if (formattingOptions && formattingOptions.change) {
       let changeFormatting = formattingOptions.change;
-      let baseVal = this[name];
+      let baseVal = this[name] || 0;
       let absVal = this._getModifiedValue(name);
       if (changeFormatting === 'additive') {
         val = absVal - baseVal;
       } else if (changeFormatting === 'multiplicative') {
         val = absVal / baseVal - 1;
       }
-      val *= 10000;
+      if (Modifications.modifications[name].method === 'overwrite') {
+        val *= 100;
+      } else {
+        val *= 10000;
+      }
     }
     return val;
   }
@@ -813,15 +824,21 @@ export default class Module {
    */
   getSDps(modified = true) {
     let dps = this.getDps(modified);
-    if (this.getClip(modified)) {
-      let clipSize = this.getClip(modified);
+    let clipSize = this.getClip(modified);
+    if (clipSize) {
       // If auto-loader is applied, effective clip size will be nearly doubled
       // as you get one reload for every two shots fired.
       if (this.blueprint && this.blueprint.special && this.blueprint.special.edname === 'special_auto_loader' && modified) {
         clipSize += clipSize - 1;
       }
-      let timeToDeplete = clipSize / this.getRoF(modified);
-      return dps * timeToDeplete / (timeToDeplete + this.getReload(modified));
+
+      let burstSize = this.get('burst', modified) || 1;
+      let rof = this.getRoF(modified);
+      // rof averages burstfire + pause until next interval but for sustained
+      // rof we need to take another burst without pause into account
+      let burstOverhead = (burstSize - 1) / (this.get('burstrof', modified) || 1);
+      let srof = clipSize / ((clipSize - burstSize) / rof + burstOverhead + this.getReload(modified));
+      return dps * srof / rof;
     } else {
       return dps;
     }

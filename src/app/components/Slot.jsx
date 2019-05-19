@@ -127,8 +127,8 @@ export default class Slot extends TranslatedComponent {
         menu = <AvailableModulesMenu
           className={this._getClassNames()}
           modules={availableModules()}
-          shipMass={ship.hullMass}
           m={m}
+          ship={ship}
           onSelect={onSelect}
           warning={warning}
           diffDetails={diffDetails.bind(ship, this.context.language)}

@@ -32,15 +32,6 @@
       window.CORIOLIS_DATE = '<%- htmlWebpackPlugin.options.date.toISOString().slice(0, 10)  %>';
       window.BUGSNAG_VERSION = '<%- htmlWebpackPlugin.options.version + '-' + htmlWebpackPlugin.options.date.toISOString()  %>';
     </script>
-    <% if (htmlWebpackPlugin.options.uaTracking) { %>
-      <script>
-      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-      ga('create', '<%- htmlWebpackPlugin.options.uaTracking %>', 'auto');
-      ga('send', 'pageview');
-    </script>
-      <script async src='https://www.google-analytics.com/analytics.js'></script>
-      <% } %>
-
     <!-- Matomo -->
     <script type="text/javascript">
       var _paq = window._paq || [];
