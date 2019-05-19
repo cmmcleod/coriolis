@@ -282,9 +282,6 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       if (ModuleUtils.isShieldGenerator(m.grp)) {
         // Shield generators care about maximum hull mass
         disabled = ship.hullMass > m.maxmass;
-      } else if (m.maxmass) {
-        // Thrusters care about total mass
-        disabled = ship.unladenMass + m.mass > m.maxmass;
       } else if (m.experimental) {
         disabled = 4 <= ship.hardpoints.filter(o => o.m && o.m.experimental).length;
       }
