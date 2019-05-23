@@ -98,7 +98,7 @@ export default class Module {
         } else if (modification.method === 'overwrite') {
           value = null;
         } else {
-          value = ((value / 10000 + 1) / (1 + mod) - 1) * 10000;
+          value = ((value / 10000 + 1) / (1 + modifierActions[name]) - 1) * 10000;
         }
       }
     }
