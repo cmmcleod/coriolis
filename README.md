@@ -29,6 +29,8 @@ Also see [the documentation site.](https://coriolis.willb.info/)
 
 See the [Data wiki](https://github.com/cmmcleod/coriolis-data/wiki) for details on structure, etc.
 
+You can find hosted and compiled versions of these data-jsons under https://coriolis.io/data/ and https://beta.coriolis.io/data/.
+You might want to load these as depedency instead of reyling on the npm-dependency.
 
 ## License
 
