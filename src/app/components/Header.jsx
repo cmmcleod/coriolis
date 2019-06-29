@@ -636,12 +636,6 @@ export default class Header extends TranslatedComponent {
             <Help className='xl warning'/>
           </div>
         </div>
-
-        <div className='r'>
-          <div className={cn('menu-header')}>
-            <span className='menu-item-label'>Rest in Peace, CMDR Michael Holyland</span>
-          </div>
-        </div>
       </header>
     );
   }
