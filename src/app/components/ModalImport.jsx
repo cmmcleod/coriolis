@@ -178,7 +178,7 @@ export default class ModalImport extends TranslatedComponent {
     }
     // Check for module discount
     if (!isNaN(importData.moduleDiscount)) {
-      this.setState({ shipDiscount: importData.moduleDiscount * 1 });
+      this.setState({ moduleDiscount: importData.moduleDiscount * 1 });
     }
 
     if (typeof importData.insurance == 'string') {
