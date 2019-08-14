@@ -583,20 +583,9 @@ export default class Module {
    * @return {Number} the falloff of this module
    */
   getFalloff(modified = true) {
-    if (!modified) {
-      const range = this.getRange(false);
-      const falloff = this.get('falloff', false);
-      return (falloff > range ? range : falloff);
-    }
-
     // Falloff from range is mapped to range
-    if (this.mods && this.mods['fallofffromrange']) {
+    if (modified && this.mods && this.mods['fallofffromrange']) {
       return this.getRange();
-    // Need to find out if we have a focused modification, in which case our
-    // falloff is scaled to range
-    } else if (this.blueprint && this.blueprint.name === 'Focused') {
-      const rangeMod = this.getModValue('range') / 10000;
-      return this.falloff * (1 + rangeMod);
     // Standard falloff calculation
     } else {
       const range = this.getRange();
