@@ -191,7 +191,7 @@ export default class ShipyardPage extends Page {
         style={{ height: '1.5em' }}
         className={cn({
           highlighted: noTouch && this.state.shipId === s.id,
-          "compare-highlight": this.state.compare[s.id],
+          comparehighlight: this.state.compare[s.id],
         })}
         onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
         onClick={() => this._toggleCompare(s.id)}
@@ -311,7 +311,7 @@ export default class ShipyardPage extends Page {
           style={{ height: '1.5em' }}
           className={cn({
             highlighted: noTouch && this.state.shipId === s.id,
-            "compare-highlight": this.state.compare[s.id],
+            comparehighlight: this.state.compare[s.id],
           })}
           onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
           onClick={() => this._toggleCompare(s.id)}
