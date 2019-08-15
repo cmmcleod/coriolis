@@ -2,6 +2,7 @@
 @bgDarken: 40%;
 @disabledDarken: 15%;
 @bgTransparency: 10%;
+@bgHighlight: 5%;
 
 // Foreground colors
 @fg: #CCC;
@@ -21,8 +22,11 @@
 @bgBlack: #000;
 @primary-bg: fadeout(darken(@primary, 47%), 15%);
 @alt-primary-bg: fadeout(darken(@primary, 42%), 15%); // Lighter brown background
-@secondary-bg: fadeout(darken(@secondary, @bgDarken), @bgTransparency); // Brown background
+@secondary-bg: fadeout(darken(@secondary, @bgDarken), @bgTransparency); // Blue background
 @warning-bg: fadeout(darken(@warning, @bgDarken), @bgTransparency); // Dark Red
+
+@alt-primary-bg-highlighted: lighten(@alt-primary-bg, @bgHighlight);
+
 
 
 .fg {
