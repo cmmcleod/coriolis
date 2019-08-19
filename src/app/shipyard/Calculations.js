@@ -400,7 +400,7 @@ export function shieldMetrics(ship, sys) {
     let shieldAddition = 0;
     if (ship) {
       for (const module of ship.internal) {
-        if (module && module.m && module.m.grp === 'gsrp') {
+        if (module && module.m && module.m.grp === 'gsrp' && module.enabled) {
           shieldAddition += module.m.getShieldAddition();
         }
       }
@@ -574,7 +574,7 @@ export function armourMetrics(ship) {
   // };
   // Armour from HRPs and module armour from MRPs
   for (let slot of ship.internal) {
-    if (slot.m && (slot.m.grp === 'hr' || slot.m.grp === 'ghrp' || slot.m.grp == 'mahr')) {
+    if (slot.m && slot.enabled && (slot.m.grp === 'hr' || slot.m.grp === 'ghrp' || slot.m.grp == 'mahr')) {
       armourReinforcement += slot.m.getHullReinforcement();
       // Hull boost for HRPs is applied against the ship's base armour
       armourReinforcement += ship.baseArmour * slot.m.getModValue('hullboost') / 10000;
@@ -586,7 +586,7 @@ export function armourMetrics(ship) {
       hullThermDmg = hullThermDmg * (1 - slot.m.getThermalResistance());
       hullCausDmg = hullCausDmg * (1 - slot.m.getCausticResistance());
     }
-    if (slot.m && (slot.m.grp == 'mrp' || slot.m.grp == 'gmrp')) {
+    if (slot.m && slot.enabled && (slot.m.grp == 'mrp' || slot.m.grp == 'gmrp')) {
       moduleArmour += slot.m.getIntegrity();
       moduleProtection = moduleProtection * (1 - slot.m.getProtection());
     }
