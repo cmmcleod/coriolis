@@ -86,7 +86,7 @@ export default class ShipSummaryTable extends TranslatedComponent {
                 <th onMouseEnter={termtip.bind(null, 'hull hardness', { cap: 0 })} onMouseLeave={hide} rowSpan={2}>{translate('hrd')}</th>
                 <th rowSpan={2}>{translate('crew')}</th>
                 <th onMouseEnter={termtip.bind(null, 'mass lock factor', { cap: 0 })} onMouseLeave={hide} rowSpan={2}>{translate('MLF')}</th>
-                <th onMouseEnter={termtip.bind(null, 'TT_SUMMARY_BOOST_TIME', { cap: 0 })} onMouseLeave={hide} rowSpan={2}>{translate('boost time')}</th>
+                <th onMouseEnter={termtip.bind(null, 'TT_SUMMARY_BOOST_INTERVAL', { cap: 0 })} onMouseLeave={hide} rowSpan={2}>{translate('boost interval')}</th>
                 <th rowSpan={2}>{translate('resting heat (Beta)')}</th>
               </tr>
               <tr>
