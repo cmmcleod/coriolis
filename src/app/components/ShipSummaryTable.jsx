@@ -160,10 +160,10 @@ export default class ShipSummaryTable extends TranslatedComponent {
               <td>{formats.pct1(ship.shieldThermRes)}</td>
               <td></td>
 
-              <td>{int(ship && ship.shield > 0 ? ship.shield : 0)}{u.MJ}</td>
-              <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldExplRes)))) : 0)}{u.MJ}</td>
-              <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldKinRes)))) : 0)}{u.MJ}</td>
-              <td>{int(ship && ship.shield > 0 ? ship.shield * ((1 / (1 - (ship.shieldThermRes)))) : 0)}{u.MJ}</td>
+              <td>{int(ship && sgMetrics.summary > 0 ? sgMetrics.summary : 0)}{u.MJ}</td>
+              <td>{int(ship && sgMetrics.summary > 0 ? sgMetrics.summary / sgMetrics.explosive.base : 0)}{u.MJ}</td>
+              <td>{int(ship && sgMetrics.summary ? sgMetrics.summary / sgMetrics.kinetic.base : 0)}{u.MJ}</td>
+              <td>{int(ship && sgMetrics.summary ? sgMetrics.summary / sgMetrics.thermal.base : 0)}{u.MJ}</td>
               <td></td>
               <td>{sgMetrics && sgMetrics.recover === Math.Inf ? translate('Never') : formats.time(sgMetrics.recover)}</td>
               <td>{sgMetrics && sgMetrics.recharge === Math.Inf ? translate('Never') : formats.time(sgMetrics.recharge)}</td>
@@ -198,11 +198,11 @@ export default class ShipSummaryTable extends TranslatedComponent {
                 <td>{formats.pct1(ship.hullKinRes)}</td>
                 <td>{formats.pct1(ship.hullThermRes)}</td>
                 <td>{formats.pct1(ship.hullCausRes)}</td>
-                <td>{int(ship.armour)}</td>
-                <td>{int(ship.armour * ((1 / (1 - (ship.hullExplRes)))))}</td>
-                <td>{int(ship.armour * ((1 / (1 - (ship.hullKinRes)))))}</td>
-                <td>{int(ship.armour * ((1 / (1 - (ship.hullThermRes)))))}</td>
-                <td>{int(ship.armour * ((1 / (1 - (ship.hullCausRes)))))}</td>
+                <td>{int(armourMetrics.total)}</td>
+                <td>{int(armourMetrics.total / armourMetrics.explosive.total)}</td>
+                <td>{int(armourMetrics.total/ armourMetrics.kinetic.total)}</td>
+                <td>{int(armourMetrics.total / armourMetrics.thermal.total)}</td>
+                <td>{int(armourMetrics.total/ armourMetrics.caustic.total)}</td>
                 <td>{int(armourMetrics.modulearmour)}</td>
                 <td>{int(armourMetrics.moduleprotection * 100) + '%'}</td>
 

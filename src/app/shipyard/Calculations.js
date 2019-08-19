@@ -465,6 +465,7 @@ export function shieldMetrics(ship, sys) {
       boosters: boostersStrength,
       addition: shieldAddition,
       cells: ship.shieldCells,
+      summary: generatorStrength + boostersStrength + shieldAddition,
       total: generatorStrength + boostersStrength + ship.shieldCells + shieldAddition,
       recover,
       recharge,
