@@ -78,7 +78,6 @@ export default class InternalSlot extends Slot {
           { m.rangeLS ? <div className={'l'}>{translate('range')}: {m.rangeLS}{u.Ls}</div> : null }
           { m.rangeLS === null ? <div className={'l'}>∞{u.Ls}</div> : null }
           { m.rangeRating ? <div className={'l'}>{translate('range')}: {m.rangeRating}</div> : null }
-          { m.maximum ? <div className={'l'}>{translate('max')}: {(m.maximum)}</div> : null }
           { m.passengers ? <div className={'l'}>{translate('passengers')}: {m.passengers}</div> : null }
           { m.getRegenerationRate() ? <div className='l'>{translate('regen')}: {formats.round1(m.getRegenerationRate())}{u.ps}</div> : null }
           { m.getBrokenRegenerationRate() ? <div className='l'>{translate('brokenregen')}: {formats.round1(m.getBrokenRegenerationRate())}{u.ps}</div> : null }
