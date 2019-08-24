@@ -104,10 +104,10 @@ export default class HardpointSlot extends Slot {
                                 onMouseOut={tooltip.bind(null, null)}>{translate('shotdmg')}: {formats.round1(m.getDamage())}</div> : null}
           {m.getEps() ? <div className={'l'} onMouseOver={termtip.bind(null, m.getClip() ? 'epsseps' : 'eps')}
                              onMouseOut={tooltip.bind(null, null)}>{translate('EPS')}: {formats.round1(m.getEps())}{u.MW} {m.getClip() ?
-            <span>({formats.round1(m.getEps() / m.getDps() * m.getSDps())}{u.MW})</span> : null}</div> : null}
+            <span>({formats.round1(m.getEps() * m.getSustainedFactor())}{u.MW})</span> : null}</div> : null}
           {m.getHps() ? <div className={'l'} onMouseOver={termtip.bind(null, m.getClip() ? 'hpsshps' : 'hps')}
                              onMouseOut={tooltip.bind(null, null)}>{translate('HPS')}: {formats.round1(m.getHps())} {m.getClip() ?
-            <span>({formats.round1(m.getHps() / m.getDps() * m.getSDps())})</span> : null}</div> : null}
+            <span>({formats.round1(m.getHps() * m.getSustainedFactor())})</span> : null}</div> : null}
           {m.getDps() && m.getEps() ? <div className={'l'} onMouseOver={termtip.bind(null, 'dpe')}
                                            onMouseOut={tooltip.bind(null, null)}>{translate('DPE')}: {formats.f1(m.getDps() / m.getEps())}</div> : null}
           {m.getRoF() ? <div className={'l'} onMouseOver={termtip.bind(null, 'rof')}
