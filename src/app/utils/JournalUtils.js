@@ -274,6 +274,9 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
     if (value === Infinity) {
       value = modifiers[i].Value * 100;
     }
+    if (modifiers[i].Label.search('DamageFalloffRange') >= 0) {
+      value = (modifiers[i].Value / module.range - 1) * 100;
+    }
     if (modifiers[i].Label.search('Resistance') >= 0) {
       value = (modifiers[i].Value * 100) - (modifiers[i].OriginalValue * 100);
     }
