@@ -51,19 +51,6 @@ export default class Page extends React.Component {
   }
 
   /**
-   * Pages are 'pure' components that only render when props, state, or context changes.
-   * This method performs a shallow comparison to determine change.
-   *
-   * @param  {Object} np  Next/Incoming properties
-   * @param  {Object} ns  Next/Incoming state
-   * @param  {Object} nc  Next/Incoming context
-   * @return {Boolean}    True if props, state, or context has changed
-   */
-  shouldComponentUpdate(np, ns, nc) {
-    return !shallowEqual(this.props, np) || !shallowEqual(this.state, ns) || !shallowEqual(this.context, nc);
-  }
-
-  /**
    * Update the window title upon mount
    */
   componentWillMount() {

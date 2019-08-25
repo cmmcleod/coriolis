@@ -126,18 +126,29 @@ export default class ShipyardPage extends Page {
       title: 'Coriolis EDCD Edition - Shipyard',
       shipPredicate: 'name',
       shipDesc: true,
-      shipSummaries: ShipyardPage.cachedShipSummaries
+      shipSummaries: ShipyardPage.cachedShipSummaries,
+      compare: {},
     };
   }
 
   /**
-   * Higlight the current ship in the table
+   * Higlight the current ship in the table on mouse over
    * @param  {String} shipId Ship Id
    * @param  {SyntheticEvent} event  Event
    */
   _highlightShip(shipId, event) {
     event.stopPropagation();
     this.setState({ shipId });
+  }
+
+  /**
+   * Toggle compare highlighting for ships in the table
+   * @param {String} shipId Ship Id
+   */
+  _toggleCompare(shipId) {
+    let compare = this.state.compare;
+    compare[shipId] = !compare[shipId];
+    this.setState({ compare });
   }
 
   /**
@@ -180,8 +191,10 @@ export default class ShipyardPage extends Page {
         style={{ height: '1.5em' }}
         className={cn({
           highlighted: noTouch && this.state.shipId === s.id,
+          comparehighlight: this.state.compare[s.id],
         })}
         onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
+        onClick={() => this._toggleCompare(s.id)}
       >
         <td className="ri">{s.manufacturer}</td>
         <td className="ri">{fInt(s.retailCost)}</td>
@@ -298,8 +311,10 @@ export default class ShipyardPage extends Page {
           style={{ height: '1.5em' }}
           className={cn({
             highlighted: noTouch && this.state.shipId === s.id,
+            comparehighlight: this.state.compare[s.id],
           })}
           onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
+          onClick={() => this._toggleCompare(s.id)}
         >
           <td className="le">
             <Link href={'/outfit/' + s.id}>{s.name} {s.beta === true ? '(Beta)' : null}</Link>
@@ -321,7 +336,7 @@ export default class ShipyardPage extends Page {
             maxWidth: '100%'
           }}
         >
-          <table style={{ width: '12em', position: 'absolute', zIndex: 1 }}>
+          <table style={{ width: '12em', position: 'absolute', zIndex: 1 }} className="shipyard-table">
             <thead>
               <tr>
                 <th className="le rgt">&nbsp;</th>
@@ -340,7 +355,7 @@ export default class ShipyardPage extends Page {
             </tbody>
           </table>
           <div style={{ overflowX: 'scroll', maxWidth: '100%' }}>
-            <table style={{ marginLeft: 'calc(12em - 1px)', zIndex: 0 }}>
+            <table style={{ marginLeft: 'calc(12em - 1px)', zIndex: 0 }} className="shipyard-table">
               <thead>
                 <tr className="main">
                   <th

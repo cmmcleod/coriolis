@@ -52,7 +52,7 @@ tbody tr {
   }
 
   .no-touch &.highlight:hover, .no-touch &.highlighted {
-    background-color: @warning-bg;
+    background-color: @alt-primary-bg-highlighted; //@warning-bg;
   }
 
   &:nth-child(odd){
@@ -82,5 +82,12 @@ td {
 
   &.tc {
     text-align: center;
+  }
+}
+
+table.shipyard-table{
+  tbody tr.comparehighlight{
+    background-color: @secondary-bg;
+    color: @fg-highlighted;
   }
 }
