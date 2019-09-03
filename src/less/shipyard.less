@@ -50,3 +50,43 @@ a.ship {
     float: right;
   }
 }
+
+.shipyard-table-wrapper {
+  white-space: nowrap;
+  margin: 0 auto;
+  font-size: 0.8em;
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+table.shipyard-table{
+  tbody tr.comparehighlight{
+    background-color: @secondary-bg;
+    color: @fg-highlighted;
+  }
+}
+
+.shipyard-table-wrapper {
+  border-bottom: 1px solid @primary-darker;
+}
+
+.shipyard-table-wrapper div .shipyard-table td:last-child {
+  border-right: 1px solid @primary-darker;
+}
+.shipyard-table-wrapper > .shipyard-table td:first-child {
+  border-left: 1px solid @primary-darker;
+}
+
+.content-wrapper{
+  display: inline-block;
+  margin: 0 auto;
+}
+
+.table-tools{
+  text-align: left;
+  color: @primary;
+  label{
+    cursor: pointer;
+  }
+}

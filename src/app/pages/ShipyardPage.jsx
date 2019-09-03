@@ -128,6 +128,7 @@ export default class ShipyardPage extends Page {
       shipDesc: true,
       shipSummaries: ShipyardPage.cachedShipSummaries,
       compare: {},
+      groupCompared: false,
     };
   }
 
@@ -149,6 +150,14 @@ export default class ShipyardPage extends Page {
     let compare = this.state.compare;
     compare[shipId] = !compare[shipId];
     this.setState({ compare });
+  }
+
+  /**
+   * Toggle grouping of compared ships in the table
+   * @private
+   */
+  _toggleGroupCompared() {
+    this.setState({groupCompared: !this.state.groupCompared})
   }
 
   /**
@@ -247,7 +256,7 @@ export default class ShipyardPage extends Page {
     let hide = this.context.tooltip.bind(null, null);
     let fInt = formats.int;
     let fRound = formats.round;
-    let { shipSummaries, shipPredicate, shipPredicateIndex } = this.state;
+    let { shipSummaries, shipPredicate, shipPredicateIndex, compare, groupCompared } = this.state;
     let sortShips = (predicate, index) =>
       this._sortShips.bind(this, predicate, index);
 
@@ -278,6 +287,15 @@ export default class ShipyardPage extends Page {
         let val = valA;
         valA = valB;
         valB = val;
+      }
+
+      if (groupCompared) {
+        if (compare[a.id] && !compare[b.id]) {
+          return -1;
+        }
+        if (!compare[a.id] && compare[b.id]) {
+          return 1;
+        }
       }
 
       if (valA == valB) {
@@ -325,18 +343,10 @@ export default class ShipyardPage extends Page {
     }
 
     return (
-      <div className="page" style={{ fontSize: sizeRatio + 'em' }}>
-        <div
-          style={{
-            whiteSpace: 'nowrap',
-            margin: '0 auto',
-            fontSize: '0.8em',
-            position: 'relative',
-            display: 'inline-block',
-            maxWidth: '100%'
-          }}
-        >
-          <table style={{ width: '12em', position: 'absolute', zIndex: 1 }} className="shipyard-table">
+      <div className="page" style={{fontSize: sizeRatio + 'em'}}>
+        <div className="content-wrapper">
+        <div className="shipyard-table-wrapper">
+          <table style={{width: '12em', position: 'absolute', zIndex: 1}} className="shipyard-table">
             <thead>
               <tr>
                 <th className="le rgt">&nbsp;</th>
@@ -611,6 +621,10 @@ export default class ShipyardPage extends Page {
               </tbody>
             </table>
           </div>
+        </div>
+        <div className="table-tools" >
+          <label><input type="checkbox" checked={this.state.groupCompared} onClick={() => this._toggleGroupCompared()}/>Group highlighted ships</label>
+        </div>
         </div>
       </div>
     );
