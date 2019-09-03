@@ -364,7 +364,7 @@ export default class ShipyardPage extends Page {
               {shipRows}
             </tbody>
           </table>
-          <div style={{ overflowX: 'scroll', maxWidth: '100%' }}>
+          <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
             <table style={{ marginLeft: 'calc(12em - 1px)', zIndex: 0 }} className="shipyard-table">
               <thead>
                 <tr className="main">
