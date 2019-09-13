@@ -249,6 +249,13 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
   if (!modifiers) return;
   let special;
   if (specialModifications) {
+    if (specialModifications == 'special_plasma_slug') {
+      if (module.symbol.match(/PlasmaAccelerator/i)) {
+        specialModifications = 'special_plasma_slug_pa';
+      } else {
+        specialModifications = 'special_plasma_slug_cooled';
+      }
+    }
     special = Modifications.specials[specialModifications];
   }
   // Add the blueprint definition, grade and special
