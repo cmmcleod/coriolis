@@ -249,6 +249,13 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
   if (!modifiers) return;
   let special;
   if (specialModifications) {
+    if (specialModifications == 'special_plasma_slug') {
+      if (module.symbol.match(/PlasmaAccelerator/i)) {
+        specialModifications = 'special_plasma_slug_pa';
+      } else {
+        specialModifications = 'special_plasma_slug_cooled';
+      }
+    }
     special = Modifications.specials[specialModifications];
   }
   // Add the blueprint definition, grade and special
@@ -273,6 +280,9 @@ function _addModifications(module, modifiers, blueprint, grade, specialModificat
     let value = (modifiers[i].Value / modifiers[i].OriginalValue * 100 - 100)  * 100;
     if (value === Infinity) {
       value = modifiers[i].Value * 100;
+    }
+    if (modifiers[i].Label.search('DamageFalloffRange') >= 0) {
+      value = (modifiers[i].Value / module.range - 1) * 100;
     }
     if (modifiers[i].Label.search('Resistance') >= 0) {
       value = (modifiers[i].Value * 100) - (modifiers[i].OriginalValue * 100);

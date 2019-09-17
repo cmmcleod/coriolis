@@ -583,20 +583,9 @@ export default class Module {
    * @return {Number} the falloff of this module
    */
   getFalloff(modified = true) {
-    if (!modified) {
-      const range = this.getRange(false);
-      const falloff = this.get('falloff', false);
-      return (falloff > range ? range : falloff);
-    }
-
     // Falloff from range is mapped to range
-    if (this.mods && this.mods['fallofffromrange']) {
+    if (modified && this.mods && this.mods['fallofffromrange']) {
       return this.getRange();
-    // Need to find out if we have a focused modification, in which case our
-    // falloff is scaled to range
-    } else if (this.blueprint && this.blueprint.name === 'Focused') {
-      const rangeMod = this.getModValue('range') / 10000;
-      return this.falloff * (1 + rangeMod);
     // Standard falloff calculation
     } else {
       const range = this.getRange();
@@ -818,12 +807,11 @@ export default class Module {
   }
 
   /**
-   * Get the SDPS for this module
+   * Return the factor that gets applied when calculating certain "sustained"
+   * values, e.g. `SDPS = this.getSustainedFactor() * DPS`.
    * @param {Boolean} [modified=true] Whether to take modifications into account
-   * @return {Number} The SDPS of this module
    */
-  getSDps(modified = true) {
-    let dps = this.getDps(modified);
+  getSustainedFactor(modified = true) {
     let clipSize = this.getClip(modified);
     if (clipSize) {
       // If auto-loader is applied, effective clip size will be nearly doubled
@@ -838,10 +826,19 @@ export default class Module {
       // rof we need to take another burst without pause into account
       let burstOverhead = (burstSize - 1) / (this.get('burstrof', modified) || 1);
       let srof = clipSize / ((clipSize - burstSize) / rof + burstOverhead + this.getReload(modified));
-      return dps * srof / rof;
+      return srof / rof;
     } else {
-      return dps;
+      return 1;
     }
+  }
+
+  /**
+   * Get the SDPS for this module
+   * @param {Boolean} [modified=true] Whether to take modifications into account
+   * @return {Number} The SDPS of this module
+   */
+  getSDps(modified = true) {
+    return this.getDps(modified) * this.getSustainedFactor(modified);
   }
 
   /**
