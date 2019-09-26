@@ -45,6 +45,10 @@ module.exports = {
       date: buildDate,
       version: pkgJson.version
     }),
+    new HtmlWebpackPlugin({
+      inject: true,
+      template: path.join(__dirname, 'src/migrate.html')
+    }),
     new ExtractTextPlugin({
       filename: '[hash:6].css',
       disable: false,
