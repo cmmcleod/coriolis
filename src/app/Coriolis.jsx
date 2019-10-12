@@ -115,7 +115,7 @@ export default class Coriolis extends React.Component {
     try {
       const announces = await request.get('https://api.orbis.zone/announcements')
         .query({ coriolis: true });
-      this.setState({ announcements: announces });
+      this.setState({ announcements: announces.body });
     } catch (err) {
       console.error(err)
     }
@@ -394,13 +394,13 @@ export default class Coriolis extends React.Component {
    */
   render() {
     let currentMenu = this.state.currentMenu;
-
+    console.log(this.state)
     return <div style={{ minHeight: '100%' }} onClick={this._closeMenu}
                 className={this.state.noTouch ? 'no-touch' : null}>
       <Header announcements={this.state.announcements} appCacheUpdate={this.state.appCacheUpdate}
               currentMenu={currentMenu}/>
       <div className="announcement-container">{this.state.announcements.map(a => <Announcement
-        text={a.message}/>)}</div>
+        text={a.text}/>)}</div>
       {this.state.error ? this.state.error : this.state.page ? React.createElement(this.state.page, { currentMenu }) :
         <NotFoundPage/>}
       {this.state.modal}
