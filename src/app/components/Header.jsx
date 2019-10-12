@@ -426,7 +426,10 @@ export default class Header extends TranslatedComponent {
     if (this.props.announcements) {
       announcements = [];
       for (let announce of this.props.announcements) {
-        announcements.push(<Announcement text={announce.message} />);
+        if (announce.expiry < Date.now()) {
+          continue;
+        }
+        announcements.push(<Announcement text={announce.text} />);
         announcements.push(<hr/>);
       }
     }

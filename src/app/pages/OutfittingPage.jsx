@@ -686,13 +686,12 @@ export default class OutfittingPage extends Page {
   _genOrbis() {
     const data = {};
     const ship = this.state.ship;
-    ship.coriolisId = ship.id;
-    data.coriolisShip = ship;
-    data.url = window.location.href;
     data.title = this.state.buildName || ship.id;
     data.description = this.state.buildName || ship.id;
-    data.ShipName = ship.id;
-    data.Ship = ship.id;
+    data.body = ship;
+    data.url = `https://coriolis.io${outfitURL(ship.id, ship.toString(), data.title)}`;
+    ship.type = ship.id;
+
     console.log(data);
     this.context.showModal(<ModalOrbis ship={data} />);
   }

@@ -113,9 +113,9 @@ export default class Coriolis extends React.Component {
 
   async _getAnnouncements() {
     try {
-      const announces = await request.get('https://orbis.zone/api/announcement')
-        .query({ showInCoriolis: true });
-      this.setState({ announcements: announces.body });
+      const announces = await request.get('https://api.orbis.zone/announcements')
+        .query({ coriolis: true });
+      this.setState({ announcements: announces });
     } catch (err) {
       console.error(err)
     }
