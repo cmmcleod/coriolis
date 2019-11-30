@@ -694,7 +694,7 @@ export default class Module {
     let result = 0;
     if (this['maxmass']) {
       result = this['maxmass'];
-      if (result && modified) {
+      if (result && modified && !ModuleUtils.isShieldGenerator(this['grp'])) {
         let mult = this.getModValue('optmass') / 10000;
         if (mult) { result = result * (1 + mult); }
       }
