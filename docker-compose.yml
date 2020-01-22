@@ -22,7 +22,7 @@ services:
   coriolis_dev:
     image: edcd/coriolis:develop
     build:
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       args:
         branch: develop
     restart: always
