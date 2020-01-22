@@ -1,14 +1,11 @@
 ### STAGE 1: Build ###
 FROM node:9.11.1-alpine as builder
-ARG branch=develop
-ENV BRANCH=$branch
+ENV BRANCH=master
 WORKDIR /src/app
 RUN mkdir -p /src/app/coriolis
 RUN mkdir -p /src/app/coriolis-data
 
 RUN apk add --update git
-
-COPY . /src/app/coriolis
 
 RUN npm i -g npm
 
@@ -21,6 +18,7 @@ RUN npm start
 
 # Set up coriolis
 WORKDIR /src/app/coriolis
+RUN git clone https://github.com/EDCD/coriolis.git .
 RUN git checkout ${BRANCH}
 RUN npm install --no-package-lock
 RUN npm run build
