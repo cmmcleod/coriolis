@@ -1,55 +1,43 @@
 version: '2'
 
 services:
-  coriolis_prod:
+  master:
     image: edcd/coriolis:master
     build:
       dockerfile: Dockerfile
+      context: .
       args:
         branch: master
     restart: always
     volumes:
-    - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf
     networks:
-    - web
+      - web
     labels:
-    - "traefik.docker.network=web"
-    - "traefik.enable=true"
-    - "traefik.basic.frontend.rule=Host:coriolis.io,coriolis.edcd.io"
-    - "traefik.basic.port=80"
-    - "traefik.basic.protocol=http"
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.basic.frontend.rule=Host:coriolis.io,coriolis.edcd.io"
+      - "traefik.basic.port=80"
+      - "traefik.basic.protocol=http"
 
-  coriolis_dev:
+  develop:
     image: edcd/coriolis:develop
     build:
       dockerfile: Dockerfile.dev
+      context: .
       args:
         branch: develop
     restart: always
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     networks:
-    - web
+      - web
     labels:
-    - "traefik.docker.network=web"
-    - "traefik.enable=true"
-    - "traefik.basic.frontend.rule=Host:beta.coriolis.io,beta.coriolis.edcd.io"
-    - "traefik.basic.port=80"
-    - "traefik.basic.protocol=http"
-
-  coriolis_dw2:
-    image: edcd/coriolis:dw2
-    restart: always
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-    networks:
-    - web
-    labels:
-    - "traefik.docker.network=web"
-    - "traefik.enable=true"
-    - "traefik.basic.frontend.rule=Host:dw2.coriolis.io"
-    - "traefik.basic.port=80"
-    - "traefik.basic.protocol=http"
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.basic.frontend.rule=Host:beta.coriolis.io,beta.coriolis.edcd.io"
+      - "traefik.basic.port=80"
+      - "traefik.basic.protocol=http"
 
 networks:
   web:
