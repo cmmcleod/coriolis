@@ -22,6 +22,7 @@ import ComparisonPage from './pages/ComparisonPage';
 import ShipyardPage from './pages/ShipyardPage';
 import ErrorDetails from './pages/ErrorDetails';
 
+
 const zlib = require('pako');
 const request = require('superagent');
 
@@ -72,7 +73,7 @@ export default class Coriolis extends React.Component {
       route: {},
       sizeRatio: Persist.getSizeRatio()
     };
-    this._getAnnouncements();
+    // this._getAnnouncements();
     Router('', (r) => this._setPage(ShipyardPage, r));
     Router('/import?', (r) => this._importBuild(r));
     Router('/import/:data', (r) => this._importBuild(r));
@@ -394,7 +395,6 @@ export default class Coriolis extends React.Component {
    */
   render() {
     let currentMenu = this.state.currentMenu;
-    console.log(this.state)
     return <div style={{ minHeight: '100%' }} onClick={this._closeMenu}
                 className={this.state.noTouch ? 'no-touch' : null}>
       <Header announcements={this.state.announcements} appCacheUpdate={this.state.appCacheUpdate}
@@ -406,6 +406,7 @@ export default class Coriolis extends React.Component {
       {this.state.modal}
       {this.state.tooltip}
       <footer>
+
         <div className="right cap">
           <a href="https://github.com/EDCD/coriolis" target="_blank" rel="noopener noreferrer"
              title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>
