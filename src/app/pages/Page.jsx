@@ -62,6 +62,14 @@ export default class Page extends React.Component {
    */
   componentDidMount() {
     document.title = this.state.title || 'Coriolis';
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-3709458261881414",
+        enable_page_level_ads: true
+      });
+    } catch (error) {
+
+    }
   }
 
   /**
