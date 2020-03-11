@@ -105,7 +105,7 @@ export default class AboutPage extends Page {
           , which will be used to keep Coriolis up to date and the servers
           running.
         </p>
-        <a href="https://paypal.me/willb321"><img src="https://www.paypalobjects.com/en_AU/i/btn/btn_donate_SM.gif"></a>
+        <a href="https://paypal.me/willb321"><img src="https://www.paypalobjects.com/en_AU/i/btn/btn_donate_SM.gif" /></a>
       </div>
     );
   }
