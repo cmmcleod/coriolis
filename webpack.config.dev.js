@@ -42,11 +42,6 @@ module.exports = {
       date: buildDate,
       gapiKey: process.env.CORIOLIS_GAPI_KEY || ''
     }),
-    new HtmlWebpackPlugin({
-      inject: false,
-      template: path.join(__dirname, 'src/migrate.html'),
-      filename: 'migrate.html'
-    }),
     new ExtractTextPlugin({
       filename: 'app.css',
       disable: false,
