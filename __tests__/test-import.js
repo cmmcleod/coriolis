@@ -206,7 +206,7 @@ describe('Import Modal', function() {
     });
   });
 
-  describe('Import Detaild Builds Array', function() {
+  describe('Import Detailed Builds Array', function() {
 
     beforeEach(reset);
 
@@ -328,4 +328,41 @@ describe('Import Modal', function() {
     });
   });
 
+  describe('Imports SLEF data', () => {
+    beforeEach(reset);
+
+    it('imports a single valid SLEF build', () => {
+      const importData = require('./fixtures/slef-single-build.json');
+      pasteText(JSON.stringify(importData));
+
+      expect(modal.state.importValid).toBeTruthy();
+      expect(modal.state.errorMsg).toEqual(null);
+      expect(modal.state.singleBuild).toBe(true);
+      clickProceed();
+      expect(MockRouter.go.mock.calls.length).toBe(1);
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/krait_mkii?code=A2pptkFflidussf52l1o1o2g2g020g040405051Ofr45C9C91oP3.Iw18eQ%3D%3D.AwRgzKIkA%3D%3D%3D.&bn=Imported%20pancake%20hammer');
+    });
+
+    it('imports multiple SLEF builds', () => {
+      const importData = require('./fixtures/slef-multiple-builds.json');
+      const expectedBuilds = require('./fixtures/slef-multiple-expected-builds.json');
+      pasteText(JSON.stringify(importData));
+
+      expect(modal.state.importValid).toBeTruthy();
+      expect(modal.state.errorMsg).toEqual(null);
+      expect(modal.state.singleBuild).toBe(false);
+      clickProceed();
+      expect(modal.state.processed).toBeTruthy();
+      clickImport();
+
+      const builds = Persist.getBuilds();
+
+      for (const shipModel in builds) {
+        for (const buildName in builds[shipModel]) {
+          expect(builds[shipModel][buildName])
+            .toEqual(expectedBuilds[shipModel][buildName]);
+        }
+      }
+    });
+  });
 });
