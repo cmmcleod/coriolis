@@ -18,13 +18,13 @@ describe('Import Modal', function() {
   const mockContext = {
     language: getLanguage('en'),
     sizeRatio: 1,
-    openMenu: jest.genMockFunction(),
-    closeMenu: jest.genMockFunction(),
-    showModal: jest.genMockFunction(),
-    hideModal: jest.genMockFunction(),
-    tooltip: jest.genMockFunction(),
-    termtip: jest.genMockFunction(),
-    onWindowResize: jest.genMockFunction()
+    openMenu: jest.fn(),
+    closeMenu: jest.fn(),
+    showModal: jest.fn(),
+    hideModal: jest.fn(),
+    tooltip: jest.fn(),
+    termtip: jest.fn(),
+    onWindowResize: jest.fn()
   };
 
   let modal, render, ContextProvider = Utils.createContextProvider(mockContext);
