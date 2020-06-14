@@ -110,21 +110,25 @@ describe('Import Modal', function() {
     it('catches an invalid backup', function() {
       const importData = require('./fixtures/valid-backup');
       let invalidImportData = Object.assign({}, importData);
-      //invalidImportData.builds.asp = null;   // Remove Asp Miner build used in comparison
+      // Remove Asp Miner build used in comparison
       delete(invalidImportData.builds.asp);
 
       pasteText('"this is not valid"');
       expect(modal.state.importValid).toBeFalsy();
       expect(modal.state.errorMsg).toEqual('Must be an object or array!');
+
       pasteText('{ "builds": "Should not be a string" }');
       expect(modal.state.importValid).toBeFalsy();
       expect(modal.state.errorMsg).toEqual('builds must be an object!');
-      pasteText(JSON.stringify(importData).replace('anaconda', 'invalid_ship'));
+
+      pasteText(JSON.stringify(importData).replace(/anaconda/g, 'invalid_ship'));
       expect(modal.state.importValid).toBeFalsy();
-      expect(modal.state.errorMsg).toEqual('"invalid_ship" is not a valid Ship Id!');
+      expect(Object.keys(modal.state.builds)).not.toContain('anaconda');
+
       pasteText(JSON.stringify(importData).replace('Dream', ''));
       expect(modal.state.importValid).toBeFalsy();
-      expect(modal.state.errorMsg).toEqual('Imperial Clipper build "" must be a string at least 1 character long!');
+      expect(Object.keys(modal.state.builds.imperial_clipper).length).toEqual(3);
+
       pasteText(JSON.stringify(invalidImportData));
       expect(modal.state.importValid).toBeFalsy();
       expect(modal.state.errorMsg).toEqual('asp build "Miner" data is missing!');
@@ -144,7 +148,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda?code=A4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04---0303326b.AwRj4zNLaA%3D%3D.CwBhCYzBGW9qCTSqq5xA.&bn=Test%20My%20Ship');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda?code=A4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04---0303326b-.AwRj4zNLeI%3D%3D.CwBhCYzBGW9qCTSqq5JA.&bn=Test%20My%20Ship');
     });
 
     it('catches an invalid build', function() {
@@ -169,7 +173,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda?code=A4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04---0303326b.AwRj4zNLaA%3D%3D.CwBhCYzBGW9qCTSqq5xA.H4sIAAAAAAAAA2MUe8HMwPD%2FPwMAAGvB0AkAAAA%3D&bn=Test%20My%20Ship');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/anaconda?code=A4putkFklkdzsuf52c0o0o0o1m1m0q0q0404-0l0b0100034k5n052d04---0303326b-.AwRj4zNLeI%3D%3D.CwBhCYzBGW9qCTSqq5JA.H4sIAAAAAAAAE2MUe8HMwPD%2FPwMAAGvB0AkAAAA%3D&bn=Test%20My%20Ship');
     });
   });
 
@@ -186,7 +190,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/asp?code=A0pftiFflfddsnf5------020202033c044002v62f2i.AwRj4yvI.CwRgDBldHnJA.H4sIAAAAAAAAA2P858DAwPCXEUhwHPvx%2F78YG5AltB7I%2F8%2F0TwImJboDSPJ%2F%2B%2Ff%2Fv%2FKlX%2F%2F%2Fi3AwMTBIfARK%2FGf%2BJwVSxArStVAYqOjvz%2F%2F%2FJVo5GRhE2IBc4SKQSSz%2FDGEmCa398P8%2F%2F2%2BgTf%2F%2FA7kMAExxqlSAAAAA&bn=Multi-purpose%20Asp%20Explorer');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/asp?code=A0pftiFflfddsnf5------020202033c044002v6-2i-.AwRj4yvYg%3D%3D%3D.CwRgDBldHn5A.H4sIAAAAAAAAE2P858DAwPCXEUhwHPvx%2F78YG5AltB7I%2F8%2F0TwImJboDSPJ%2F%2B%2Ff%2Fv%2FKlX%2F%2F%2Fi3AwMTBIfARK%2FGf%2BJwVSxArStVAYqOjvz%2F%2F%2FJVo5GRhE2IBc4SKQSSz%2FDGEmCa398P8%2F%2F2%2BgTf%2F%2FA7kMAExxqlSAAAAA&bn=Multi-purpose%20Asp%20Explorer');
     });
 
     it('imports a valid v4 build with modifications', function() {
@@ -198,7 +202,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/imperial_courier?code=A0patzF5l0das8f31a1a270202000e402t0101-2f.AwRj4zKA.CwRgDBldLiQ%3D.H4sIAAAAAAAAA12OPUvDYBSFT1OTfkRJjUkbbC3Yj8mlODgUISAtdOlety5ODv0Vgji7O7kJ%2FgzBQX%2BEY7Gg0NKhfY%2FnHQLFDBdynufe9%2BRMCmCb06g29oCgacjiRx6gY6oWKUT8UgLaszqQfHmSnpVFN1uSeXNsJVcj%2FA2EHlZkspIUpUc6UjTXGT85qwHuSEuVc%2F16r99kDQeSSjvSbSjpyUpNK10uJJ3aYqk6smwm1lQ9bOxw71TMm8VanEqq9JW1r3Qo%2BREOLnQHvbWmb7rZIu5VLIyGQGOukPv%2F0WQk5LeEAjPOUDwtAP6bShy2HKAz0HPO%2B5KsP25I79O2I7LvD%2Bz4Il1XAQAA&bn=Multi-purpose%20Imperial%20Courier');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/imperial_courier?code=A0patzF5l0das8f31a1a270202000e402t0101----.AwRj4zOYg%3D%3D%3D.CwRgDBldLuZA.H4sIAAAAAAAAE12OPUvDYBSFT1OTfkRJjUkbbC3Yj8mlODgUISAtdOlety5ODv0Vgji7O7kJ%2FgzBQX%2BEY7Gg0NKhfY%2FnHQLFDBdynufe9%2BRMCmCb06g29oCgacjiRx6gY6oWKUT8UgLaszqQfHmSnpVFN1uSeXNsJVcj%2FA2EHlZkspIUpUc6UjTXGT85qwHuSEuVc%2F16r99kDQeSSjvSbSjpyUpNK10uJJ3aYqk6smwm1lQ9bOxw71TMm8VanEqq9JW1r3Qo%2BREOLnQHvbWmb7rZIu5VLIyGQGOukPv%2F0WQk5LeEAjPOUDwtAP6bShy2HKAz0HPO%2B5KsP25I79O2I7LvD%2Bz4Il1XAQAA&bn=Multi-purpose%20Imperial%20Courier');
     });
   });
 
@@ -240,7 +244,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/federal_corvette?code=A2putsFklndzsxf50x0x7l28281919040404040402020l06p05sf63c5ifr--v66g2f.AwRj4zNaqA%3D%3D.CwRgDBldUExuBiIlUA%3D%3D.H4sIAAAAAAAAA12STy8DURTFb1szU53Ga8dg2qqqDmJDIoKFxJImumYjVrVqfAALC4lNbcUnkLCoDbEQu0bSlQVhI8JHsJBIQ73rXMkwMYuT9%2Bb87nl%2F7ovoRSL6ikD6TYNINZg5XsWUo7pfrBikr2USlRyXyDuLAhr6ZHanNLOzD5tjOiskysk5dOBvfTB7bjeRW0MNG3ohSBq1bKKxKwyLLUAjmwjpPu4wJx4xVbNI57heDfbUKUAy2xaRUQZpllHoHMHxKqjhhF4LgjtJiFHDmqbrEeVnUJOax7%2FSdRfRwBNotv9wo5kAuZMD2egKyDYcdYl1OBki6z%2BZQjaFnBPyFCM1LefF%2BcgrY0es9FKwbW8ZYj9gmBbxRVRdglMh6BNqnwsk4ouoO4HSIehNoBuBRHwR1QOmsBvHmk6IfMbd2fdCEka%2BjNSexPWGoEkcyX6CnxbxRZQtd%2BPpym%2B31xFtn0iSFPkf%2BBkttZlzB9KDFyBuFRfAGV0Ogoff8SSsCfjjD5hGWtLIwZB%2FgX5Zt%2BLHMI9My7sp6nzgZzekswTxVvCOkq%2FSXqb%2F3zfLxh6HrwIAAA%3D%3D&bn=Imported%20Federal%20Corvette');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/federal_corvette?code=A2putsFklndzsxf50x0x7l28281919040404040402020l06p05sf63c5ifr--v66g--.AwRj4zNapI%3D%3D.CwRgDBldUExuBiIlWIA%3D.&bn=Imported%20Federal%20Corvette');
     });
 
     it('imports a valid companion API build', function() {
@@ -252,7 +256,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/beluga?code=A0pktsFplCdpsnf70t0t2727270004040404043c4fmimlmm04mc0iv62i2f.AwRj4yukg%3D%3D%3D.CwRgDBldHi8IUA%3D%3D.H4sIAAAAAAAAA2P8Z8%2FAwPCXEUiIKTMxMPCv%2F%2Ff%2FP8cFIPGf6Z8YTEr0GjMDg%2FJWICERBOTzn%2Fn7%2F7%2FIO5Ai5n9SIEWsQEIoSxAolfbt%2F3%2BJPk4GBhE7YQYGYVmgcuVnf4Aq%2FwOVAAAyiFctbgAAAA%3D%3D&bn=Imported%20Beluga%20Liner');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/beluga?code=A0pktsFplCdpsnf70t0t2727270004040404043c4fmimlmm04mc0iv62i--.AwRj4yusg%3D%3D%3D.CwRgDBldHi8IWIA%3D.&bn=Imported%20Beluga%20Liner');
     });
 
     it('imports a valid companion API build', function() {
@@ -264,7 +268,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/type_7_transport?code=A0patfFflidasdf5----0404040005050504044d2402.AwRj4yrI.CwRgDBlVK7EiA%3D%3D%3D.&bn=Imported%20Type-7%20Transporter');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/type_7_transport?code=A0patfFflidasdf5----0404040005050504044d2402--.AwRj4yoo.CwRgDBlVK7HjEA%3D%3D.&bn=Imported%20Type-7%20Transporter');
     });
 
     it('imports a valid companion API build', function() {
@@ -276,7 +280,7 @@ describe('Import Modal', function() {
       expect(modal.state.singleBuild).toBe(true);
       clickProceed();
       expect(MockRouter.go.mock.calls.length).toBe(1);
-      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/cobra_mk_iii?code=A0p0tdFaldd3sdf4------34---2f2i.AwRj4yKA.CwRgDMYExrezBUg%3D.&bn=Imported%20Cobra%20Mk%20III');
+      expect(MockRouter.go.mock.calls[0][0]).toBe('/outfit/cobra_mk_iii?code=A0p0tdFaldd3sdf4------34----2i--.AwRj4yqA.CwRgDMYExrezBig%3D.&bn=Imported%20Cobra%20Mk%20III');
     });
   });
 
