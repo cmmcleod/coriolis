@@ -11,7 +11,8 @@ import * as ModuleUtils from '../shipyard/ModuleUtils';
 import { fromDetailedBuild } from '../shipyard/Serializer';
 import { Download } from './SvgIcons';
 import { outfitURL } from '../utils/UrlGenerators';
-import * as CompanionApiUtils from '../utils/CompanionApiUtils';
+import { shipFromJson, shipModelFromJson } from '../utils/CompanionApiUtils';
+import { shipFromLoadoutJSON } from '../utils/JournalUtils';
 
 const zlib = require('pako');
 
@@ -214,8 +215,8 @@ export default class ModalImport extends TranslatedComponent {
    * @throws {string} if parse/import fails
    */
   _importCompanionApiBuild(build) {
-    const shipModel = CompanionApiUtils.shipModelFromJson(build);
-    const ship = CompanionApiUtils.shipFromJson(build);
+    const shipModel = shipModelFromJson(build);
+    const ship = shipFromJson(build);
 
     let builds = {};
     builds[shipModel] = {};
@@ -322,6 +323,30 @@ export default class ModalImport extends TranslatedComponent {
   }
 
   /**
+   * Import SLEF formatted builds. Sets state to a map of the builds on success
+   * and flags if there was only a single build.
+   *
+   * @param  {string} importData - Array of the list of builds.
+   * @throws {string} If parse / import fails
+   */
+  _importSlefBuilds(importData) {
+    const builds = importData.reduce((memo, { data }) => {
+      const shipModel = shipModelFromJson(data);
+      const ship = shipFromLoadoutJSON(data);
+      const shipTemplate = Ships[shipModel];
+      const shipName = data.ShipName || shipTemplate.properties.name;
+
+      const key = `Imported ${shipName}`;
+      memo[shipModel] = {};
+      memo[shipModel][key] = ship.toString();
+
+      return memo;
+    }, {});
+
+    this.setState({ builds, singleBuild: Object.keys(builds).length === 1 });
+  }
+
+  /**
    * Validate the import string / text box contents
    * @param  {SyntheticEvent} event Event
    * @throws {string} If validation fails
@@ -355,8 +380,10 @@ export default class ModalImport extends TranslatedComponent {
           throw 'Must be an object or array!';
         }
 
-        if (importData.modules != null && importData.modules.Armour != null) { // Only the companion API has this information
-          this._importCompanionApiBuild(importData); // Single sihp definition
+        if (importData?.[0]?.header?.appName) { // has SLEF envelope?
+          this._importSlefBuilds(importData);
+        } else if (importData.modules != null && importData.modules.Armour != null) { // Only the companion API has this information
+          this._importCompanionApiBuild(importData); // Single ship definition
         } else if (importData.ship != null && importData.ship.modules != null && importData.ship.modules.Armour != null) { // Only the companion API has this information
           this._importCompanionApiBuild(importData.ship); // Complete API dump
         } else if (importData instanceof Array) {   // Must be detailed export json
@@ -542,7 +569,7 @@ export default class ModalImport extends TranslatedComponent {
               {comparisonRows}
             </tbody>
           </table>
-          );
+        );
       }
 
       if(this.state.canEdit) {
