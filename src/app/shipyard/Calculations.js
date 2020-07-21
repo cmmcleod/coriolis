@@ -982,7 +982,6 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
 
   weapon.effectiveness.shields.dpe = weapon.damage.shields.total / m.getEps();
   weapon.effectiveness.armour.dpe =  weapon.damage.armour.total / m.getEps();
-  console.log(weapon.damage.shields.dpe);
 
 
   return weapon;
