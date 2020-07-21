@@ -904,12 +904,14 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
       shields: {
         range: 1,
         sys: opponentHasShields ? opponentShields.absolute.sys : 1,
-        resistance: 1
+        resistance: 1,
+        dpe: 1
       },
       armour: {
         range: 1,
         hardness: 1,
-        resistance: 1
+        resistance: 1,
+        dpe: 1
       }
     }
   };
@@ -969,11 +971,20 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
   weapon.damage.shields.total = weapon.damage.shields.absolute + weapon.damage.shields.explosive + weapon.damage.shields.kinetic + weapon.damage.shields.thermal;
   weapon.damage.armour.total = weapon.damage.armour.absolute + weapon.damage.armour.explosive + weapon.damage.armour.kinetic + weapon.damage.armour.thermal;
 
+
+
   weapon.effectiveness.shields.resistance *= shieldsResistance;
   weapon.effectiveness.armour.resistance *= armourResistance;
 
+
   weapon.effectiveness.shields.total = weapon.effectiveness.shields.range * weapon.effectiveness.shields.sys * weapon.effectiveness.shields.resistance;
   weapon.effectiveness.armour.total = weapon.effectiveness.armour.range * weapon.effectiveness.armour.resistance * weapon.effectiveness.armour.hardness;
+
+  weapon.effectiveness.shields.dpe = weapon.damage.shields.total / m.getEps();
+  weapon.effectiveness.armour.dpe =  weapon.damage.armour.total / m.getEps();
+  console.log(weapon.damage.shields.dpe);
+
+
   return weapon;
 }
 
