@@ -243,8 +243,13 @@ export default class Offence extends TranslatedComponent {
           <td className='ri'><span onMouseOver={termtip.bind(null, baseSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.f1(weapon.sdps.base.total)}</span></td>
           <td className='ri'><span onMouseOver={termtip.bind(null, effectiveShieldsSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.f1(weapon.sdps.shields.total)}</span></td>
           <td className='ri'><span onMouseOver={termtip.bind(null, effectivenessShieldsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(weapon.effectiveness.shields.total)}</span></td>
+
+          <td className='ri'><span>{formats.f1(weapon.effectiveness.shields.dpe)}</span></td>
+
           <td className='ri'><span onMouseOver={termtip.bind(null, effectiveArmourSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.f1(weapon.sdps.armour.total)}</span></td>
           <td className='ri'><span onMouseOver={termtip.bind(null, effectivenessArmourTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>{formats.pct1(weapon.effectiveness.armour.total)}</span></td>
+
+          <td className='ri'><span>{formats.f1(weapon.effectiveness.armour.dpe)}</span></td>
         </tr>);
     }
 
@@ -271,15 +276,20 @@ export default class Offence extends TranslatedComponent {
               <tr className='main'>
                 <th rowSpan='2' className='sortable' onClick={sortOrder.bind(this, 'n')}>{translate('weapon')}</th>
                 <th colSpan='1'>{translate('overall')}</th>
-                <th colSpan='2'>{translate('opponent\'s shields')}</th>
-                <th colSpan='2'>{translate('opponent\'s armour')}</th>
+                <th colSpan='3'>{translate('opponent\'s shields')}</th>
+                <th colSpan='3'>{translate('opponent\'s armour')}</th>
               </tr>
               <tr>
                 <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_SHIELDS')} onMouseOut={tooltip.bind(null, null)} onClick={sortOrder.bind(this, 'esdpss')}>{'sdps'}</th>
                 <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_SHIELDS')} onMouseOut={tooltip.bind(null, null)} onClick={sortOrder.bind(this, 'esdpss')}>{'sdps'}</th>
                 <th className='sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVENESS_SHIELDS')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'es')}>{'eft'}</th>
+
+                <th className='sortable'>{'dpe'}</th>
+
                 <th className='lft sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVE_SDPS_ARMOUR')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'esdpsh')}>{'sdps'}</th>
                 <th className='sortable' onMouseOver={termtip.bind(null, 'TT_EFFECTIVENESS_ARMOUR')} onMouseOut={tooltip.bind(null, null)}onClick={sortOrder.bind(this, 'eh')}>{'eft'}</th>
+
+                <th className='sortable'>{'dpe'}</th> 
               </tr>
             </thead>
             <tbody>
@@ -290,7 +300,9 @@ export default class Offence extends TranslatedComponent {
                   <td className='ri'><span onMouseOver={termtip.bind(null, totalSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>={formats.f1(totalSDps)}</span></td>
                   <td className='ri'><span onMouseOver={termtip.bind(null, totalShieldsSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>={formats.f1(totalShieldsSDps)}</span></td>
                   <td></td>
+                  <td></td>
                   <td className='ri'><span onMouseOver={termtip.bind(null, totalArmourSDpsTooltipDetails)} onMouseOut={tooltip.bind(null, null)}>={formats.f1(totalArmourSDps)}</span></td>
+                  <td></td>
                   <td></td>
                 </tr>
               }
