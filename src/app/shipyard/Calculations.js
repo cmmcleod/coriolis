@@ -14,6 +14,7 @@ export function jumpRange(mass, fsd, fuel, ship) {
   const fsdOptimalMass = fsd instanceof Module ? fsd.getOptMass() : fsd.optmass;
   let jumpAddition = 0;
   if (ship) {
+    mass += ship.reserveFuelCapacity || 0;
     for (const module of ship.internal) {
       if (module && module.m && module.m.grp === 'gfsb' && ship.getSlotStatus(module) == 3) {
         jumpAddition += module.m.getJumpBoost();
