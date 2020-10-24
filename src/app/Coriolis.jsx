@@ -99,14 +99,16 @@ export default class Coriolis extends React.Component {
       console.info('Ship import data: ');
       console.info(json);
       let ship;
-      if (json && json.modules) {
+      if (json && json[0] && json[0].data) {
+        ship = JournalUtils.shipFromLoadoutJSON(json[0].data);
+      } else if (json && json.modules) {
         ship = CompanionApiUtils.shipFromJson(json);
       } else if (json && json.Modules) {
         ship = JournalUtils.shipFromLoadoutJSON(json);
       }
       r.params.ship = ship.id;
       r.params.code = ship.toString();
-      this._setPage(OutfittingPage, r)
+      this._setPage(OutfittingPage, r);
     } catch (err) {
       this._onError('Failed to import ship', r.path, 0, 0, err);
     }
