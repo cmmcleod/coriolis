@@ -98,17 +98,30 @@ export default class Coriolis extends React.Component {
       const json = JSON.parse(data);
       console.info('Ship import data: ');
       console.info(json);
-      let ship;
-      if (json && json[0] && json[0].data) {
-        ship = JournalUtils.shipFromLoadoutJSON(json[0].data);
-      } else if (json && json.modules) {
-        ship = CompanionApiUtils.shipFromJson(json);
-      } else if (json && json.Modules) {
-        ship = JournalUtils.shipFromLoadoutJSON(json);
+      let ship, importString;
+      if (json) {
+        if (json.length && json[0].data) { // SLEF
+          if (json.length > 1) { // Multiple builds, open modal
+            importString = data;
+          } else { // Single build, import directly
+            ship = JournalUtils.shipFromLoadoutJSON(json[0].data);
+          }
+        } else { // not SLEF
+          if (json.modules) {
+            ship = CompanionApiUtils.shipFromJson(json);
+          } else if (json.Modules) {
+            ship = JournalUtils.shipFromLoadoutJSON(json);
+          }
+        }
       }
-      r.params.ship = ship.id;
-      r.params.code = ship.toString();
-      this._setPage(OutfittingPage, r);
+      if (ship) {
+        r.params.ship = ship.id;
+        r.params.code = ship.toString();
+        this._setPage(OutfittingPage, r);
+      } else if (importString) {
+        this._setPage(ShipyardPage, r);
+        this._showModal(<ModalImport importString={data}/>);
+      }
     } catch (err) {
       this._onError('Failed to import ship', r.path, 0, 0, err);
     }

@@ -89,6 +89,7 @@ export default class ModalImport extends TranslatedComponent {
 
 
   static propTypes = {
+    importString: PropTypes.string, // Optional: Default data for import modal
     builds: PropTypes.object,  // Optional: Import object
   };
 
@@ -107,7 +108,7 @@ export default class ModalImport extends TranslatedComponent {
       shipDiscount: null,
       moduleDiscount: null,
       errorMsg: null,
-      importString: null,
+      importString: props.importString || null,
       importValid: false,
       insurance: null
     };
