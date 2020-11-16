@@ -356,9 +356,6 @@ export function shieldMetrics(ship, sys) {
     let boosterExplDmg = 1;
     let boosterKinDmg = 1;
     let boosterThermDmg = 1;
-    // const explDim = dimReturnLine(shieldGenerator.explres);
-    // const thermDim = dimReturnLine(shieldGenerator.thermres);
-    // const kinDim = dimReturnLine(shieldGenerator.kinres);
     for (let slot of ship.hardpoints) {
       if (slot.enabled && slot.m && slot.m.grp == 'sb') {
         boost += slot.m.getShieldBoost();
@@ -369,35 +366,14 @@ export function shieldMetrics(ship, sys) {
         boosterKinDmg = boosterKinDmg * (1 - slot.m.getKineticResistance());
         boosterThermDmg = boosterThermDmg * (1 - slot.m.getThermalResistance());
       }
-      if (slot.m && slot.m.grp == 'gsrp') {
-
-      }
     }
     // Calculate diminishing returns for boosters
     // Diminishing returns not currently in-game
     // boost = Math.min(boost, (1 - Math.pow(Math.E, -0.7 * boost)) * 2.5);
 
-
     // Remove base shield generator strength
     boost -= 1;
 
-    // if (res.expl > explDim) {
-    //   const overage = (res.expl - explDim) * 0.5;
-    //   res.expl = explDim + overage;
-    //   boosterExplDmg = explDim + overage;
-    // }
-    //
-    // if (res.therm > thermDim) {
-    //   const overage = (res.therm - thermDim) * 0.5;
-    //   res.therm = thermDim + overage;
-    //   boosterThermDmg = thermDim + overage;
-    // }
-    //
-    // if (res.kin > kinDim) {
-    //   const overage = (res.kin - kinDim) * 0.5;
-    //   res.kin = kinDim + overage;
-    //   boosterKinDmg = kinDim + overage;
-    // }
     let shieldAddition = 0;
     if (ship) {
       for (const module of ship.internal) {
@@ -499,7 +475,7 @@ export function shieldMetrics(ship, sys) {
      */
 
     let sgExplosiveDmg = 1 - shieldGenerator.getExplosiveResistance();
-    let sgSbExplosiveDmg = diminishDamageMult(sgExplosiveDmg * 0.7, (1 - shieldGenerator.getExplosiveResistance()) * boosterExplDmg);
+    let sgSbExplosiveDmg = diminishingReturnsShields(sgExplosiveDmg, sgExplosiveDmg * boosterExplDmg);
     /** @type {ShieldDamageMults} */
     shield.explosive = {
       generator: sgExplosiveDmg,
@@ -511,7 +487,7 @@ export function shieldMetrics(ship, sys) {
     };
 
     let sgKineticDmg = 1 - shieldGenerator.getKineticResistance();
-    let sgSbKineticDmg = diminishDamageMult(sgKineticDmg * 0.7, (1 - shieldGenerator.getKineticResistance()) * boosterKinDmg);
+    let sgSbKineticDmg = diminishingReturnsShields(sgKineticDmg, sgKineticDmg * boosterKinDmg);
     /** @type {ShieldDamageMults} */
     shield.kinetic = {
       generator: sgKineticDmg,
@@ -523,7 +499,7 @@ export function shieldMetrics(ship, sys) {
     };
 
     let sgThermalDmg = 1 - shieldGenerator.getThermalResistance();
-    let sgSbThermalDmg = diminishDamageMult(sgThermalDmg * 0.7, (1 - shieldGenerator.getThermalResistance()) * boosterThermDmg);
+    let sgSbThermalDmg = diminishingReturnsShields(sgThermalDmg , sgThermalDmg * boosterThermDmg);
     /** @type {ShieldDamageMults} */
     shield.thermal = {
       generator: sgThermalDmg,
@@ -563,16 +539,10 @@ export function armourMetrics(ship) {
   let moduleArmour = 0;
   let moduleProtection = 1;
   const bulkheads = ship.bulkheads.m;
-  let hullExplDmg = 1;
-  let hullKinDmg = 1;
-  let hullThermDmg = 1;
-  let hullCausDmg = 1;
-  // const dimReturnLine = (res) => 1 - (1 - res) * 0.7;
-  // let res = {
-  //   kin: 0,
-  //   therm: 0,
-  //   expl: 0
-  // };
+  let hullExplDmgs = [];
+  let hullKinDmgs = [];
+  let hullThermDmgs = [];
+  let hullCausDmgs = [];
   // Armour from HRPs and module armour from MRPs
   for (let slot of ship.internal) {
     if (slot.m && slot.enabled && (slot.m.grp === 'hr' || slot.m.grp === 'ghrp' || slot.m.grp == 'mahr')) {
@@ -582,10 +552,10 @@ export function armourMetrics(ship) {
       // res.expl += slot.m.getExplosiveResistance();
       // res.kin += slot.m.getKineticResistance();
       // res.therm += slot.m.getThermalResistance();
-      hullExplDmg = hullExplDmg * (1 - slot.m.getExplosiveResistance());
-      hullKinDmg = hullKinDmg * (1 - slot.m.getKineticResistance());
-      hullThermDmg = hullThermDmg * (1 - slot.m.getThermalResistance());
-      hullCausDmg = hullCausDmg * (1 - slot.m.getCausticResistance());
+      hullExplDmgs.push(1 - slot.m.getExplosiveResistance());
+      hullKinDmgs.push(1 - slot.m.getKineticResistance());
+      hullThermDmgs.push(1 - slot.m.getThermalResistance());
+      hullCausDmgs.push(1 - slot.m.getCausticResistance());
     }
     if (slot.m && slot.enabled && (slot.m.grp == 'mrp' || slot.m.grp == 'gmrp')) {
       moduleArmour += slot.m.getIntegrity();
@@ -593,27 +563,6 @@ export function armourMetrics(ship) {
     }
   }
   moduleProtection = 1 - moduleProtection;
-
-  // const explDim = dimReturnLine(bulkheads.explres);
-  // const thermDim = dimReturnLine(bulkheads.thermres);
-  // const kinDim = dimReturnLine(bulkheads.kinres);
-  // if (res.expl > explDim) {
-  //   const overage = (res.expl - explDim) * 0.5;
-  //   res.expl = explDim + overage;
-  //   hullExplDmg = explDim + overage;
-  // }
-  //
-  // if (res.therm > thermDim) {
-  //   const overage = (res.therm - thermDim) * 0.5;
-  //   res.therm = thermDim + overage;
-  //   hullThermDmg = thermDim + overage;
-  // }
-  //
-  // if (res.kin > kinDim) {
-  //   const overage = (res.kin - kinDim) * 0.5;
-  //   res.kin = kinDim + overage;
-  //   hullKinDmg = kinDim + overage;
-  // }
 
   const armour = {
     bulkheads: armourBulkheads,
@@ -631,8 +580,8 @@ export function armourMetrics(ship) {
     total: 1
   };
 
-  let armourExplDmg = diminishDamageMult(0.7, 1 - ship.bulkheads.m.getExplosiveResistance());
-  let armourReinforcedExplDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getExplosiveResistance()) * hullExplDmg);
+  let armourExplDmg = 1 - ship.bulkheads.m.getExplosiveResistance();
+  let armourReinforcedExplDmg = diminishingReturnsArmour(armourExplDmg, ...hullExplDmgs);
   armour.explosive = {
     bulkheads: armourExplDmg,
     reinforcement: armourReinforcedExplDmg / armourExplDmg,
@@ -640,8 +589,8 @@ export function armourMetrics(ship) {
     res: 1 - armourReinforcedExplDmg
   };
 
-  let armourKinDmg = diminishDamageMult(0.7, 1 - ship.bulkheads.m.getKineticResistance());
-  let armourReinforcedKinDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getKineticResistance()) * hullKinDmg);
+  let armourKinDmg = 1 - ship.bulkheads.m.getKineticResistance();
+  let armourReinforcedKinDmg = diminishingReturnsArmour(armourKinDmg, ...hullKinDmgs);
   armour.kinetic = {
     bulkheads: armourKinDmg,
     reinforcement: armourReinforcedKinDmg / armourKinDmg,
@@ -649,8 +598,8 @@ export function armourMetrics(ship) {
     res: 1 - armourReinforcedKinDmg
   };
 
-  let armourThermDmg = diminishDamageMult(0.7, 1 - ship.bulkheads.m.getThermalResistance());
-  let armourReinforcedThermDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getThermalResistance()) * hullThermDmg);
+  let armourThermDmg = 1 - ship.bulkheads.m.getThermalResistance();
+  let armourReinforcedThermDmg = diminishingReturnsArmour(armourThermDmg, ...hullThermDmgs);
   armour.thermal = {
     bulkheads: armourThermDmg,
     reinforcement: armourReinforcedThermDmg / armourThermDmg,
@@ -658,8 +607,8 @@ export function armourMetrics(ship) {
     res: 1 - armourReinforcedThermDmg
   };
 
-  let armourCausDmg = diminishDamageMult(0.7, 1 - ship.bulkheads.m.getCausticResistance());
-  let armourReinforcedCausDmg = diminishDamageMult(0.7, (1 - ship.bulkheads.m.getCausticResistance()) * hullCausDmg);
+  let armourCausDmg = 1 - ship.bulkheads.m.getCausticResistance();
+  let armourReinforcedCausDmg = diminishingReturnsArmour(armourCausDmg, ...hullCausDmgs);
   armour.caustic = {
     bulkheads: armourCausDmg,
     reinforcement: armourReinforcedCausDmg / armourCausDmg,
@@ -1048,15 +997,50 @@ export function timeToDeplete(amount, dps, eps, capacity, recharge) {
 }
 
 /**
- * Applies diminishing returns to resistances.
- * @param {number} diminishFrom The base resistance up to which no diminishing returns are applied.
- * @param {number} damageMult Resistance as damage multiplier
- * @returns {number} Actual damage multiplier
+ * Checks whether diminishing returns should be applied to shield damage
+ * multipliers and does so if necessary.
+ * @param {number} shieldMult Damage multiplier of shield generator
+ * @param {number} combinedMult Damage multiplier of shields and shield boosters
+ * @returns {number} Overall damage multiplier
  */
-export function diminishDamageMult(diminishFrom, damageMult) {
-  if (damageMult > diminishFrom) {
-    return damageMult;
+export function diminishingReturnsShields(shieldMult, combinedMult) {
+  let max = shieldMult * 0.7;
+  if (combinedMult < max) {
+    return mapIntoDiminishingRange(max / 2, max, combinedMult);
   } else {
-    return (diminishFrom / 2) + 0.5 * damageMult;
+    return combinedMult;
   }
+}
+
+/**
+ * Checks whether diminishing returns should be applied to armour damage
+ * multipliers and does so if necessary.
+ * @param  {...any} mults Damage multipliers of alloys and hull reinforcement
+ * packages
+ * @returns {number} Overall damage multiplier
+ */
+export function diminishingReturnsArmour(...mults) {
+  let max = Math.min(0.7, ...mults);
+  let combined = mults.reduce((aggr, v) => aggr * v);
+  let diminished = mapIntoDiminishingRange(0.35, max, combined);
+  if (diminished < 0.7) {
+    return diminished;
+  } else {
+    return combined;
+  }
+}
+
+/**
+ * Applies diminishing returns to a damage multiplier. Effictively, the range
+ * [`0`, `max`]` is mapped into the range [`min`, `max`] for the value `now`.
+ * It can also happen, that `now` is outside of the range [`min`, `max`], then
+ * `now` is actually improved, i.e. enlarged.
+ * @param {number} min Best theoretical damage multiplier
+ * @param {number} max Damage multiplier from which diminishing returns start to
+ * be applied
+ * @param {number} now The current damage multiplier
+ * @returns {number} Remapped damage multiplier
+ */
+export function mapIntoDiminishingRange(min, max, now) {
+  return min + (max - min) * (now / max);
 }
