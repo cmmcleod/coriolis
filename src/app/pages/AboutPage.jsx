@@ -94,18 +94,6 @@ export default class AboutPage extends Page {
           </a>
           .
         </p>
-
-        <h3>Supporting Coriolis</h3>
-        <p>
-          Coriolis is an open source project, and I work on it in my free time.
-          I have set up a patreon at{' '}
-          <a href="https://www.patreon.com/coriolis_elite">
-            patreon.com/coriolis_elite
-          </a>
-          , which will be used to keep Coriolis up to date and the servers
-          running.
-        </p>
-        <a href="https://paypal.me/willb321"><img src="https://www.paypalobjects.com/en_AU/i/btn/btn_donate_SM.gif" /></a>
       </div>
     );
   }
