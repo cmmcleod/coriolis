@@ -72,6 +72,7 @@ Router.go = function(path, state) {
   gaTrack(path);
   let ctx = new Context(path, state);
   Router.dispatch(ctx);
+
   if (!ctx.unhandled) {
     if (isStandAlone()) {
       Persist.setState(ctx);

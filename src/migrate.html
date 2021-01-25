@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Coriolis EDCD Edition</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[0] %>" />
+    <!-- Standard headers -->
+    <meta
+      name="description"
+      content="A ship builder, outfitting and comparison
+      tool for Elite Dangerous"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href=/favicon2.ico>
+    <link
+      rel="icon"
+      sizes="152x152 192x192"
+      type="image/png"
+      href="/192x192.png"
+    />
+    <!-- Bugsnag -->
+    <script src="https://d2wy8f7a9ursnm.cloudfront.net/v5.0.0/bugsnag.min.js"></script>
+    <script>
+      window.bugsnagClient = bugsnag('ba9fae819372850fb660755341fa6ef5', {appVersion: window.BUGSNAG_VERSION || undefined})
+      window.Bugsnag = window.bugsnagClient
+    </script>
+
+    <!-- Apple/iOS headers -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Coriolis" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <!-- Microsoft Windows Phone/Tablet headers -->
+    <meta name="msapplication-TileColor" content="#000000" />
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    <meta name="theme-color" content="#000000" />
+  </head>
+  <body>
+    <body style="background-color:#000;">
+      <section id="coriolis">
+        <div class="modal">
+          <h2>
+            Please migrate to <a href="https://coriolis.io">coriolis.io</a>
+          </h2>
+          You are currently on coriolis.<strong>.edcd</strong>.io This domain is
+          considered deprecated. To migrate your builds, copy the below text and
+          go to
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://coriolis.io"
+            >this link</a
+          >, press ctrl + i and then paste in the data. (If you are on mobile,
+          you can go to the settings and hit import)
+          <div>
+            <textarea id="data" class="cb json"></textarea>
+          </div>
+        </div>
+      </section>
+    </body>
+    <script>
+      const LS = localStorage;
+      /**
+       * Safe localstorage get string
+       * @param  {String} key key
+       * @return {String} The stored string
+       */
+      function _getString(key) {
+        return LS ? LS.getItem(key) : null;
+      }
+
+      /**
+       * Safe localstorage get
+       * @param  {String} key key
+       * @return {object | number} The stored data
+       */
+      function _get(key) {
+        let str = _getString(key);
+        try {
+          return str ? JSON.parse(str) : null;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      const textarea = document.querySelector("#data");
+      const data = {
+        builds: _get("builds") || {},
+        comparisons: _get("comparisons") || {},
+        insurance: _get("insurance") || "standard",
+        shipDiscount: _get("shipDiscount") || 0,
+        moduleDiscount: _get("moduleDiscount") || 0
+      };
+      textarea.textContent = JSON.stringify(data, null, 2);
+    </script>
+  </body>
+</html>

@@ -22,6 +22,7 @@ import ComparisonPage from './pages/ComparisonPage';
 import ShipyardPage from './pages/ShipyardPage';
 import ErrorDetails from './pages/ErrorDetails';
 
+
 const zlib = require('pako');
 const request = require('superagent');
 
@@ -72,7 +73,7 @@ export default class Coriolis extends React.Component {
       route: {},
       sizeRatio: Persist.getSizeRatio()
     };
-    this._getAnnouncements();
+    // this._getAnnouncements();
     Router('', (r) => this._setPage(ShipyardPage, r));
     Router('/import?', (r) => this._importBuild(r));
     Router('/import/:data', (r) => this._importBuild(r));
@@ -97,15 +98,30 @@ export default class Coriolis extends React.Component {
       const json = JSON.parse(data);
       console.info('Ship import data: ');
       console.info(json);
-      let ship;
-      if (json && json.modules) {
-        ship = CompanionApiUtils.shipFromJson(json);
-      } else if (json && json.Modules) {
-        ship = JournalUtils.shipFromLoadoutJSON(json);
+      let ship, importString;
+      if (json) {
+        if (json.length && json[0].data) { // SLEF
+          if (json.length > 1) { // Multiple builds, open modal
+            importString = data;
+          } else { // Single build, import directly
+            ship = JournalUtils.shipFromLoadoutJSON(json[0].data);
+          }
+        } else { // not SLEF
+          if (json.modules) {
+            ship = CompanionApiUtils.shipFromJson(json);
+          } else if (json.Modules) {
+            ship = JournalUtils.shipFromLoadoutJSON(json);
+          }
+        }
       }
-      r.params.ship = ship.id;
-      r.params.code = ship.toString();
-      this._setPage(OutfittingPage, r)
+      if (ship) {
+        r.params.ship = ship.id;
+        r.params.code = ship.toString();
+        this._setPage(OutfittingPage, r);
+      } else if (importString) {
+        this._setPage(ShipyardPage, r);
+        this._showModal(<ModalImport importString={data}/>);
+      }
     } catch (err) {
       this._onError('Failed to import ship', r.path, 0, 0, err);
     }
@@ -113,8 +129,8 @@ export default class Coriolis extends React.Component {
 
   async _getAnnouncements() {
     try {
-      const announces = await request.get('https://orbis.zone/api/announcement')
-        .query({ showInCoriolis: true });
+      const announces = await request.get('https://api.orbis.zone/announcements')
+        .query({ coriolis: true });
       this.setState({ announcements: announces.body });
     } catch (err) {
       console.error(err)
@@ -394,18 +410,18 @@ export default class Coriolis extends React.Component {
    */
   render() {
     let currentMenu = this.state.currentMenu;
-
     return <div style={{ minHeight: '100%' }} onClick={this._closeMenu}
                 className={this.state.noTouch ? 'no-touch' : null}>
       <Header announcements={this.state.announcements} appCacheUpdate={this.state.appCacheUpdate}
               currentMenu={currentMenu}/>
       <div className="announcement-container">{this.state.announcements.map(a => <Announcement
-        text={a.message}/>)}</div>
+        text={a.text}/>)}</div>
       {this.state.error ? this.state.error : this.state.page ? React.createElement(this.state.page, { currentMenu }) :
         <NotFoundPage/>}
       {this.state.modal}
       {this.state.tooltip}
       <footer>
+
         <div className="right cap">
           <a href="https://github.com/EDCD/coriolis" target="_blank" rel="noopener noreferrer"
              title="Coriolis Github Project">{window.CORIOLIS_VERSION} - {window.CORIOLIS_DATE}</a>

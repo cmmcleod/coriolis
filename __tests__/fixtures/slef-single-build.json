@@ -1,0 +1,188 @@
+[
+  {
+    "header": {
+      "appName": "Inara",
+      "appVersion": "1.0",
+      "appURL": "https:\/\/inara.cz\/cmdr-fleet\/123\/123\/",
+      "appCustomProperties": {
+        "inaraCommanderID": 123,
+        "inaraShipID": 123
+      }
+    },
+    "data": {
+      "Ship": "krait_mkii",
+      "ShipID": 7,
+      "ShipName": "pancake hammer",
+      "ShipIdent": "PH-01",
+      "HullValue": 44160710,
+      "ModulesValue": 111274094,
+      "Rebuy": 7771743,
+      "Modules": [
+        {
+          "Slot": "largehardpoint1",
+          "Item": "hpt_mininglaser_fixed_small",
+          "On": true
+        },
+        {
+          "Slot": "largehardpoint2",
+          "Item": "hpt_cannon_gimbal_large",
+          "On": true,
+          "Engineering": {
+            "BlueprintName": "weapon_overcharged",
+            "Level": 2,
+            "Quality": 1,
+            "ExperimentalEffect": "special_auto_loader"
+          }
+        },
+        {
+          "Slot": "largehardpoint3",
+          "Item": "hpt_cannon_gimbal_large",
+          "On": true,
+          "Engineering": {
+            "BlueprintName": "weapon_overcharged",
+            "Level": 2,
+            "Quality": 1,
+            "ExperimentalEffect": "special_auto_loader"
+          }
+        },
+        {
+          "Slot": "mediumhardpoint1",
+          "Item": "hpt_basicmissilerack_fixed_medium",
+          "On": true,
+          "Engineering": {
+            "BlueprintName": "weapon_highcapacity",
+            "Level": 5,
+            "Quality": 1
+          }
+        },
+        {
+          "Slot": "mediumhardpoint2",
+          "Item": "hpt_basicmissilerack_fixed_medium",
+          "On": true
+        },
+        {
+          "Slot": "tinyhardpoint1",
+          "Item": "hpt_heatsinklauncher_turret_tiny",
+          "On": true
+        },
+        {
+          "Slot": "tinyhardpoint2",
+          "Item": "hpt_cloudscanner_size0_class3",
+          "On": true
+        },
+        {
+          "Slot": "tinyhardpoint3",
+          "Item": "hpt_shieldbooster_size0_class5",
+          "On": true
+        },
+        {
+          "Slot": "tinyhardpoint4",
+          "Item": "hpt_shieldbooster_size0_class5",
+          "On": true,
+          "Priority": 1
+        },
+        {
+          "Slot": "slot01_size6",
+          "Item": "int_cargorack_size6_class1",
+          "On": true,
+          "Priority": 1
+        },
+        {
+          "Slot": "slot02_size6",
+          "Item": "int_cargorack_size6_class1",
+          "On": true,
+          "Priority": 1
+        },
+        {
+          "Slot": "slot03_size5",
+          "Item": "int_guardianfsdbooster_size5",
+          "On": true
+        },
+        {
+          "Slot": "slot04_size5",
+          "Item": "int_fighterbay_size5_class1",
+          "On": true
+        },
+        {
+          "Slot": "slot05_size4",
+          "Item": "int_shieldgenerator_size4_class5",
+          "On": true
+        },
+        {
+          "Slot": "slot06_size3",
+          "Item": "int_dronecontrol_collection_size3_class4",
+          "On": true
+        },
+        {
+          "Slot": "slot07_size3",
+          "Item": "int_dronecontrol_collection_size3_class4",
+          "On": true
+        },
+        {
+          "Slot": "slot08_size2",
+          "Item": "int_refinery_size2_class2",
+          "On": true
+        },
+        {
+          "Slot": "slot09_size1",
+          "Item": "int_dronecontrol_prospector_size1_class4",
+          "On": true
+        },
+        {
+          "Slot": "powerplant",
+          "Item": "int_powerplant_size7_class5",
+          "On": true,
+          "Priority": 1
+        },
+        {
+          "Slot": "mainengines",
+          "Item": "int_engine_size6_class5",
+          "On": true
+        },
+        {
+          "Slot": "frameshiftdrive",
+          "Item": "int_hyperdrive_size5_class5",
+          "On": true,
+          "Engineering": {
+            "BlueprintName": "fsd_longrange",
+            "Level": 2,
+            "Quality": 0.861
+          }
+        },
+        {
+          "Slot": "lifesupport",
+          "Item": "int_lifesupport_size4_class2",
+          "On": true,
+          "Priority": 3
+        },
+        {
+          "Slot": "powerdistributor",
+          "Item": "int_powerdistributor_size7_class5",
+          "On": true
+        },
+        {
+          "Slot": "radar",
+          "Item": "int_sensors_size6_class2",
+          "On": true
+        },
+        {
+          "Slot": "fueltank",
+          "Item": "int_fueltank_size5_class3",
+          "On": true,
+          "Priority": 1
+        },
+        {
+          "Slot": "armour",
+          "Item": "krait_mkii_armour_grade3",
+          "On": true,
+          "Priority": 1,
+          "Engineering": {
+            "BlueprintName": "armour_heavyduty",
+            "Level": 5,
+            "Quality": 1
+          }
+        }
+      ]
+    }
+  }
+]

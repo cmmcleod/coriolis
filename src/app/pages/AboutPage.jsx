@@ -94,39 +94,6 @@ export default class AboutPage extends Page {
           </a>
           .
         </p>
-
-        <h3>Supporting Coriolis</h3>
-        <p>
-          Coriolis is an open source project, and I work on it in my free time.
-          I have set up a patreon at{' '}
-          <a href="https://www.patreon.com/coriolis_elite">
-            patreon.com/coriolis_elite
-          </a>
-          , which will be used to keep Coriolis up to date and the servers
-          running.
-        </p>
-        <form
-          action="https://www.paypal.com/cgi-bin/webscr"
-          method="post"
-          target="_top"
-        >
-          <input type="hidden" name="cmd" value="_s-xclick" />
-          <input type="hidden" name="hosted_button_id" value="SJBKT2SWEEU68" />
-          <input
-            type="image"
-            src="https://www.paypalobjects.com/en_AU/i/btn/btn_donate_SM.gif"
-            border="0"
-            name="submit"
-            alt="PayPal – The safer, easier way to pay online!"
-          />
-          <img
-            alt=""
-            border="0"
-            src="https://www.paypalobjects.com/en_AU/i/scr/pixel.gif"
-            width="1"
-            height="1"
-          />
-        </form>
       </div>
     );
   }
