@@ -10,7 +10,6 @@ import { Ships } from 'coriolis-data/dist';
 import Persist from '../stores/Persist';
 import { toDetailedExport } from '../shipyard/Serializer';
 import Ship from '../shipyard/Ship';
-import ModalBatchOrbis from './ModalBatchOrbis';
 import ModalDeleteAll from './ModalDeleteAll';
 import ModalExport from './ModalExport';
 import ModalHelp from './ModalHelp';
@@ -242,43 +241,6 @@ export default class Header extends TranslatedComponent {
   };
 
   /**
-   * Uploads all ship-builds to orbis
-   * @param {e} e Event
-   */
-  _uploadAllBuildsToOrbis(e) {
-    e.preventDefault();
-    const data = Persist.getBuilds();
-    let postObject = [];
-    for (const ship in data) {
-      for (const code in data[ship]) {
-        const shipModel = ship;
-        if (!shipModel) {
-          throw 'No such ship found: "' + ship + '"';
-        }
-        const shipTemplate = Ships[shipModel];
-        const shipPostObject = {};
-        let shipInstance = new Ship(shipModel, shipTemplate.properties, shipTemplate.slots);
-        shipInstance.buildWith(null);
-        shipInstance.buildFrom(data[ship][code]);
-        shipPostObject.coriolisId = shipInstance.id;
-        shipPostObject.coriolisShip = shipInstance;
-
-        shipPostObject.coriolisShip.url = window.location.origin + outfitURL(shipModel, data[ship][code], code);
-        shipPostObject.title = code || shipInstance.id;
-        shipPostObject.description = code || shipInstance.id;
-        shipPostObject.ShipName = shipInstance.id;
-        shipPostObject.Ship = shipInstance.id;
-        postObject.push(shipPostObject);
-      }
-    }
-    console.log(postObject);
-
-    this.context.showModal(<ModalBatchOrbis
-      ships={postObject}
-    />);
-  }
-
-  /**
    * Show export modal with detailed export
    * @param  {SyntheticEvent} e Event
    */
@@ -499,7 +461,6 @@ export default class Header extends TranslatedComponent {
           {translate('builds')} & {translate('comparisons')}
           <li><Link href="#" className='block' onClick={this._showBackup.bind(this)}>{translate('backup')}</Link></li>
           <li><Link href="#" className='block' onClick={this._showDetailedExport.bind(this)}>{translate('detailed export')}</Link></li>
-          <li><Link href="#" className='block' onClick={this._uploadAllBuildsToOrbis.bind(this)}>{translate('upload all builds to orbis')}</Link></li>
           <li><Link href="#" className='block' onClick={this._showImport.bind(this)}>{translate('import')}</Link></li>
           <li><Link href="#" className='block' onClick={this._showDeleteAll.bind(this)}>{translate('delete all')}</Link></li>
         </ul>
