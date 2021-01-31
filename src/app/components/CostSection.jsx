@@ -306,8 +306,8 @@ export default class CostSection extends TranslatedComponent {
           <tr className='main'>
             <th colSpan='2' className='sortable le' onClick={this._sortCostBy.bind(this,'m')}>
               {translate('module')}
-              {shipDiscount ? <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('ship')} -${formats.pct(shipDiscount)}]`}</u> : null}
-              {moduleDiscount ? <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('modules')} -${formats.pct(moduleDiscount)}]`}</u> : null}
+              {shipDiscount ? <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('ship')} ${formats.pct(-1 * shipDiscount)}]`}</u> : null}
+              {moduleDiscount ? <u className='cap optional-hide' style={{ marginLeft: '0.5em' }}>{`[${translate('modules')} ${formats.pct(-1 * moduleDiscount)}]`}</u> : null}
             </th>
             <th className='sortable le' onClick={this._sortCostBy.bind(this, 'cr')} >{translate('credits')}</th>
           </tr>
