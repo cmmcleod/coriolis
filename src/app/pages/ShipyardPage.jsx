@@ -205,7 +205,6 @@ export default class ShipyardPage extends Page {
         onMouseEnter={noTouch && this._highlightShip.bind(this, s.id)}
         onClick={() => this._toggleCompare(s.id)}
       >
-        <td className="ri">{s.manufacturer}</td>
         <td className="ri">{fInt(s.retailCost)}</td>
         <td className="ri cap">{translate(SizeMap[s.class])}</td>
         <td className="ri">{fInt(s.crew)}</td>
@@ -368,13 +367,6 @@ export default class ShipyardPage extends Page {
             <table style={{ marginLeft: 'calc(12em - 1px)', zIndex: 0 }} className="shipyard-table">
               <thead>
                 <tr className="main">
-                  <th
-                    rowSpan={3}
-                    className="sortable"
-                    onClick={sortShips('manufacturer')}
-                  >
-                    {translate('manufacturer')}
-                  </th>
                   <th>&nbsp;</th>
                   <th
                     rowSpan={3}
