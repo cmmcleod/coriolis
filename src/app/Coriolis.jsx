@@ -73,7 +73,6 @@ export default class Coriolis extends React.Component {
       route: {},
       sizeRatio: Persist.getSizeRatio()
     };
-    // this._getAnnouncements();
     Router('', (r) => this._setPage(ShipyardPage, r));
     Router('/import?', (r) => this._importBuild(r));
     Router('/import/:data', (r) => this._importBuild(r));
@@ -124,16 +123,6 @@ export default class Coriolis extends React.Component {
       }
     } catch (err) {
       this._onError('Failed to import ship', r.path, 0, 0, err);
-    }
-  }
-
-  async _getAnnouncements() {
-    try {
-      const announces = await request.get('https://api.orbis.zone/announcements')
-        .query({ coriolis: true });
-      this.setState({ announcements: announces.body });
-    } catch (err) {
-      console.error(err)
     }
   }
 
