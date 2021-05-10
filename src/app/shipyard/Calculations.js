@@ -341,16 +341,10 @@ export function shieldMetrics(ship, sys) {
   const maxSysResistance = this.sysResistance(4);
 
   let shield = {};
-  const dimReturnLine = (res) => 1 - (1 - res) * 0.7;
 
   const shieldGeneratorSlot = ship.findInternalByGroup('sg');
   if (shieldGeneratorSlot && shieldGeneratorSlot.enabled && shieldGeneratorSlot.m) {
     const shieldGenerator = shieldGeneratorSlot.m;
-    let res = {
-      kin: shieldGenerator.kinres,
-      therm: shieldGenerator.thermres,
-      expl: shieldGenerator.explres
-    };
     // Boosters
     let boost = 1;
     let boosterExplDmg = 1;
@@ -359,9 +353,6 @@ export function shieldMetrics(ship, sys) {
     for (let slot of ship.hardpoints) {
       if (slot.enabled && slot.m && slot.m.grp == 'sb') {
         boost += slot.m.getShieldBoost();
-        res.expl += slot.m.getExplosiveResistance();
-        res.kin += slot.m.getKineticResistance();
-        res.therm += slot.m.getThermalResistance();
         boosterExplDmg = boosterExplDmg * (1 - slot.m.getExplosiveResistance());
         boosterKinDmg = boosterKinDmg * (1 - slot.m.getKineticResistance());
         boosterThermDmg = boosterThermDmg * (1 - slot.m.getThermalResistance());
@@ -549,9 +540,6 @@ export function armourMetrics(ship) {
       armourReinforcement += slot.m.getHullReinforcement();
       // Hull boost for HRPs is applied against the ship's base armour
       armourReinforcement += ship.baseArmour * slot.m.getModValue('hullboost') / 10000;
-      // res.expl += slot.m.getExplosiveResistance();
-      // res.kin += slot.m.getKineticResistance();
-      // res.therm += slot.m.getThermalResistance();
       hullExplDmgs.push(1 - slot.m.getExplosiveResistance());
       hullKinDmgs.push(1 - slot.m.getKineticResistance());
       hullThermDmgs.push(1 - slot.m.getThermalResistance());

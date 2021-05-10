@@ -19,7 +19,6 @@ import {
   LinkIcon,
   ShoppingIcon,
   MatIcon,
-  OrbisIcon
 } from '../components/SvgIcons';
 import LZString from 'lz-string';
 import ShipSummaryTable from '../components/ShipSummaryTable';
@@ -37,7 +36,6 @@ import OutfittingSubpages from '../components/OutfittingSubpages';
 import ModalExport from '../components/ModalExport';
 import ModalPermalink from '../components/ModalPermalink';
 import ModalShoppingList from '../components/ModalShoppingList';
-import ModalOrbis from '../components/ModalOrbis';
 
 /**
  * Document Title Generator
@@ -681,22 +679,6 @@ export default class OutfittingPage extends Page {
   }
 
   /**
-   * Generate Orbis link
-   */
-  _genOrbis() {
-    const data = {};
-    const ship = this.state.ship;
-    data.title = this.state.buildName || ship.id;
-    data.description = this.state.buildName || ship.id;
-    data.body = ship;
-    data.url = `https://coriolis.io${outfitURL(ship.id, ship.toString(), data.title)}`;
-    ship.type = ship.id;
-
-    console.log(data);
-    this.context.showModal(<ModalOrbis ship={data} />);
-  }
-
-  /**
    * Open up a window for EDDB with a shopping list of our components
    */
   _eddbShoppingList() {
@@ -944,13 +926,6 @@ export default class OutfittingPage extends Page {
               onMouseOut={hide}
             >
               <LinkIcon className="lg" />
-            </button>
-            <button
-              onClick={this._genOrbis}
-              onMouseOver={termtip.bind(null, 'PHASE_UPLOAD_ORBIS')}
-              onMouseOut={hide}
-            >
-              <OrbisIcon className="lg" />
             </button>
             <button
               onClick={this._genShoppingList}
