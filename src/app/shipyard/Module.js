@@ -1,8 +1,7 @@
 import * as ModuleUtils from './ModuleUtils';
 import { Modifications } from 'coriolis-data/dist';
 import React from 'react';
-import { SI_PREFIXES, STATS_FORMATTING } from './StatsFormatting';
-import { includes } from 'lodash';
+import { STATS_FORMATTING, SI_PREFIXES } from './StatsFormatting';
 
 /**
  * Module - active module in a ship's buildout
@@ -42,7 +41,8 @@ export default class Module {
    * @return {object}     The value of the modification. If it is a numeric value then it is returned as an integer value scaled so that 1.23% == 123
    */
   getModValue(name, raw) {
-    let result = this.mods && this.mods[name] ? this.mods[name] : null;
+    let baseVal = this[name];
+    let result = this.mods  && this.mods[name] ? this.mods[name] : null;
 
     if ((!raw) && this.blueprint && this.blueprint.special) {
       // This module has a special effect, see if we need to alter our returned value
@@ -51,8 +51,7 @@ export default class Module {
         // this special effect modifies our returned value
         const modification = Modifications.modifications[name];
         const multiplier = modification.type === 'percentage' ? 10000 : 100;
-
-        if (includes(['explres', 'kinres', 'thermres', 'causres'], name)) {
+        if (name === 'explres' || name === 'kinres' || name === 'thermres' || name === 'causres') {
           // Apply resistance modding mechanisms to special effects subsequently
           result = result + modifierActions[name] * (1 - (this[name] + result / multiplier)) * 100;
         } else if (modification.method === 'additive') {
@@ -60,7 +59,7 @@ export default class Module {
         } else if (modification.method === 'overwrite') {
           result = modifierActions[name];
         } else {
-          result = result + modifierActions[name] * multiplier;
+          result = (((1 + result / multiplier) * (1 + modifierActions[name])) - 1) * multiplier;
         }
       }
     }
