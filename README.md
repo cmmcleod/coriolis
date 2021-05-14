@@ -1,4 +1,4 @@
-![Latest Release](https://img.shields.io/github/release/EDCD/coriolis.svg) [![Build Status](https://travis-ci.org/EDCD/coriolis.svg?branch=master)](https://travis-ci.org/EDCD/coriolis) [![Chat to us on Discord](https://img.shields.io/badge/Discord-EDCD%20%23coriolis-blue.svg?style=social)](https://discord.gg/0uwCh6R62aPRjk9w)
+[![Chat to us on Discord](https://img.shields.io/badge/Discord-EDCD%20%23coriolis-blue.svg?style=social)](https://discord.gg/0uwCh6R62aPRjk9w)
 
 ## About
 
@@ -8,46 +8,25 @@ Coriolis was created using assets and imagery from Elite: Dangerous, with the pe
 
 ## Contributing
 
-Please [submit issues](https://github.com/EDCD/coriolis/issues), or better yet [pull requests](https://github.com/EDCD/coriolis/pulls) for any corrections or additions to the database or the code.
-
-### Feature Requests, Suggestions & Bugs
-
-Chat to us on [Discord](https://discord.gg/0uwCh6R62aPRjk9w)!
+- [Submit issues](https://github.com/EDCD/coriolis/issues)
+- [Submit pull requests](https://github.com/EDCD/coriolis/pulls) targetting `develop` branch
+- Chat to us on [Discord](https://discord.gg/0uwCh6R62aPRjk9w)!
 
 ## Development
 
-See the [Developer's Guide](https://github.com/EDCD/coriolis/wiki/Developing-for-Coriolis) in the wiki.
+To get a local instance of coriolis running, perform the following steps in a shell:
+```sh
+> git clone https://github.com/EDCD/coriolis.git
+> git clone https://github.com/EDCD/coriolis-data.git
+> cd ./coriolis-data
+> npm install
+> cd ../coriolis
+> npm install
+> npm start
+```
+
+You will then have a development server running on `localhost:3300`.
 
 ### Ship and Module Database
 
 See the [Data wiki](https://github.com/cmmcleod/coriolis-data/wiki) for details on structure, etc.
-
-You can find hosted and compiled versions of these data-jsons under https://coriolis.io/data/ and https://beta.coriolis.io/data/.
-You might want to load these as depedency instead of reyling on the npm-dependency.
-
-## License
-
-All Data and [associated JSON](https://github.com/EDCD/coriolis-data) files are intellectual property and copyright of Frontier Developments plc ('Frontier', 'Frontier Developments') and are subject to their
-[terms and conditions](https://www.frontierstore.net/terms-and-conditions/).
-
-The code (Javascript, CSS, HTML, and SVG files only) specificially for Coriolis.io is released under the MIT License.
-
-Copyright (c) 2015 Coriolis.io, Colin McLeod
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software (Javascript, CSS, HTML, and SVG files only), and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
