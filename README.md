@@ -27,6 +27,10 @@ To get a local instance of coriolis running, perform the following steps in a sh
 
 You will then have a development server running on `localhost:3300`.
 
+Alternatively, instead of `npm start` you can run `npm run build`
+after the `npm install` step and then enable web server access to the
+`build/` directory, or copy it somewhere that is served.
+
 ### Ship and Module Database
 
 See the [Data wiki](https://github.com/cmmcleod/coriolis-data/wiki) for details on structure, etc.
