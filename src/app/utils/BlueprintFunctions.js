@@ -378,23 +378,6 @@ export function setRandom(ship, m) {
 }
 
 /**
- * Set a modification feature value
- * @param {Object}      ship          The ship for which to perform the modifications
- * @param {Object}      m             The module for which to perform the modifications
- * @param {string}      featureName   The feature being set
- * @param {number}      value         The value being set for the feature
- */
-function _setValue(ship, m, featureName, value) {
-  if (Modifications.modifications[featureName].type == 'percentage') {
-    ship.setModification(m, featureName, value * 10000);
-  } else if (Modifications.modifications[featureName].type == 'numeric') {
-    ship.setModification(m, featureName, value * 100);
-  } else {
-    ship.setModification(m, featureName, value);
-  }
-}
-
-/**
  * Provide 'percent' primary query
  * @param {Object}      m         The module for which to perform the query
  * @returns {Number} percent The percentage indicator of current applied values.
