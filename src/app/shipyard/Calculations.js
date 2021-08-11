@@ -918,8 +918,8 @@ export function _weaponSustainedDps(m, opponent, opponentShields, opponentArmour
   weapon.effectiveness.shields.total = weapon.effectiveness.shields.range * weapon.effectiveness.shields.sys * weapon.effectiveness.shields.resistance;
   weapon.effectiveness.armour.total = weapon.effectiveness.armour.range * weapon.effectiveness.armour.resistance * weapon.effectiveness.armour.hardness;
 
-  weapon.effectiveness.shields.dpe = weapon.damage.shields.total / m.getEps();
-  weapon.effectiveness.armour.dpe =  weapon.damage.armour.total / m.getEps();
+  weapon.effectiveness.shields.dpe = weapon.damage.shields.total / m.getEps() / m.getSustainedFactor();
+  weapon.effectiveness.armour.dpe =  weapon.damage.armour.total / m.getEps() / m.getSustainedFactor();
 
 
   return weapon;
