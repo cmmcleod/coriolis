@@ -297,9 +297,6 @@ function _addModifications(module, modifiers, quality, blueprint, grade, special
       }
     }
   } else if (quality) {
-    setQualityCB(module.blueprint, quality, (featureName, value) => {
-      // The resistance values of bulkheads need an extra adjustment.
-      module.setModValue(featureName, value, false);
-    });
+    setQualityCB(module.blueprint, quality, (featureName, value) => module.setModValue(featureName, value, false));
   }
 }
