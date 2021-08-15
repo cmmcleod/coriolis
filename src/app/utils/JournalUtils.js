@@ -293,20 +293,12 @@ function _addModifications(module, modifiers, quality, blueprint, grade, special
 
       // Carry out the required changes
       for (const action in modifierActions) {
-        if (isNaN(modifierActions[action])) {
-          module.setModValue(action, modifierActions[action]);
-        } else {
-          module.setModValue(action, value, true);
-        }
+        module.setModValue(action, value, true);
       }
     }
   } else if (quality) {
     setQualityCB(module.blueprint, quality, (featureName, value) => {
       // The resistance values of bulkheads need an extra adjustment.
-      if (featureName === 'kinres' || featureName === 'thermres' || featureName === 'causres' || featureName === 'explres') {
-        let baseValue = module.get(featureName, false);
-        value = (1 - baseValue) * value;
-      }
       module.setModValue(featureName, value, false);
     });
   }
