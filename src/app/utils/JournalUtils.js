@@ -293,7 +293,11 @@ function _addModifications(module, modifiers, quality, blueprint, grade, special
 
       // Carry out the required changes
       for (const action in modifierActions) {
-        module.setModValue(action, value, true);
+        if (isNaN(modifierActions[action])) {
+          module.setModValue(action, modifierActions[action]);
+        } else {
+          module.setModValue(action, value, true);
+        }
       }
     }
   } else if (quality) {
