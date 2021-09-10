@@ -492,25 +492,18 @@ export default class Ship {
    * @param {Object} m          The module to change
    * @param {Object} name       The name of the modification to change
    * @param {Number} value The new value of the modification.  The value of the modification is scaled to provide two decimal places of precision in an integer.  For example 1.23% is stored as 123
-   * @param {bool}   sentfromui True if this update was sent from the UI
-   * @param {bool}   isAbsolute True if value is an absolute value and not a
-   *                            modification value
+   * @param {boolean}   isAbsolute True if value is an absolute value and not a modification value
    */
-  setModification(m, name, value, sentfromui, isAbsolute) {
+  setModification(m, name, value, isAbsolute = false) {
     if (isNaN(value)) {
       // Value passed is invalid; reset it to 0
       value = 0;
     }
 
     if (isAbsolute) {
-      m.setPretty(name, value, sentfromui);
+      m.setPretty(name, value, isAbsolute);
     } else {
-      // Resistance modifiers scale with the base value
-      if (name == 'kinres' || name == 'thermres' || name == 'causres' || name == 'explres') {
-        let baseValue = m.get(name, false);
-        value = (1 - baseValue) * value;
-      }
-      m.setModValue(name, value, sentfromui);
+      m.setModValue(name, value, false);
     }
 
     // Handle special cases
@@ -543,7 +536,7 @@ export default class Ship {
       this.recalculateArmour();
     } else if (name === 'shieldreinforcement') {
       this.recalculateShieldCells();
-    } else if (name === 'burst' || name == 'burstrof' || name === 'clip' || name === 'damage' || name === 'distdraw' || name === 'jitter' || name === 'piercing' || name === 'range' || name === 'reload' || name === 'rof' || name === 'thermload') {
+    } else if (name === 'burst' || name === 'burstrof' || name === 'clip' || name === 'damage' || name === 'distdraw' || name === 'jitter' || name === 'piercing' || name === 'range' || name === 'reload' || name === 'rof' || name === 'thermload') {
       this.recalculateDps();
       this.recalculateHps();
       this.recalculateEps();

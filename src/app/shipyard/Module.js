@@ -70,7 +70,7 @@ export default class Module {
 
   /**
    * Set a value for a given modification ID
-   * @param {Number} name                 The name of the modification
+   * @param {String} name                 The name of the modification
    * @param {object} value  The value of the modification. If it is a numeric value then it should be an integer scaled so that -2.34% == -234
    * @param {Boolean}   valueiswithspecial   true if the value includes the special effect (when coming from a UI component)
    */
@@ -81,7 +81,13 @@ export default class Module {
     if (!this.origVals) {
       this.origVals = {};
     }
-    if (valueiswithspecial && this.blueprint && this.blueprint.special) {
+    if (!valueiswithspecial) {
+      // Resistance modifiers scale with the base value.
+      if (name === 'kinres' || name === 'thermres' || name === 'causres' || name === 'explres') {
+        let baseValue = this.get(name, false);
+        value = (1 - baseValue) * value;
+      }
+    } else if (valueiswithspecial && this.blueprint && this.blueprint.special) {
       // This module has a special effect, see if we need to alter the stored value
       const modifierActions = Modifications.modifierActions[this.blueprint.special.edname];
       if (modifierActions && modifierActions[name]) {
@@ -113,7 +119,7 @@ export default class Module {
   /**
    * Helper to obtain a module's value.
    * @param {String} name     The name of the modifier to obtain
-   * @param {Number} modified Whether to return the raw or modified value
+   * @param {Boolean} modified Whether to return the raw or modified value
    * @return {Number} The value queried
    */
   get(name, modified = true) {

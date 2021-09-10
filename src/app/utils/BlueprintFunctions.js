@@ -327,26 +327,43 @@ export function setPercent(ship, m, percent) {
   ship.clearModifications(m);
   // Pick given value as multiplier
   const mult = percent / 100;
-  const features = m.blueprint.grades[m.blueprint.grade].features;
+  setQualityCB(m.blueprint, mult, (featureName, value) => ship.setModification(m, featureName, value));
+}
+
+/**
+ * Sets the blueprint quality and fires a callback for each property affected.
+ * @param {Object}   blueprint  The ship for which to perform the modifications
+ * @param {Number}   quality    The quality to apply - float number 0 to 1.
+ * @param {Function} cb         The Callback to run for each property. Function (featureName, value)
+ */
+export function setQualityCB(blueprint, quality, cb) {
+  // Pick given value as multiplier
+  const features = blueprint.grades[blueprint.grade].features;
   for (const featureName in features) {
     let value;
     if (Modifications.modifications[featureName].higherbetter) {
       // Higher is better, but is this making it better or worse?
       if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
-        value = features[featureName][1] + ((features[featureName][0] - features[featureName][1]) * mult);
+        value = features[featureName][1] + ((features[featureName][0] - features[featureName][1]) * quality);
       } else {
-        value = features[featureName][0] + ((features[featureName][1] - features[featureName][0]) * mult);
+        value = features[featureName][0] + ((features[featureName][1] - features[featureName][0]) * quality);
       }
     } else {
       // Higher is worse, but is this making it better or worse?
       if (features[featureName][0] < 0 || (features[featureName][0] === 0 && features[featureName][1] < 0)) {
-        value = features[featureName][0] + ((features[featureName][1] - features[featureName][0]) * mult);
+        value = features[featureName][0] + ((features[featureName][1] - features[featureName][0]) * quality);
       } else {
-        value = features[featureName][1] + ((features[featureName][0] - features[featureName][1]) * mult);
+        value = features[featureName][1] + ((features[featureName][0] - features[featureName][1]) * quality);
       }
     }
 
-    _setValue(ship, m, featureName, value);
+    if (Modifications.modifications[featureName].type == 'percentage') {
+      value = value * 10000;
+    } else if (Modifications.modifications[featureName].type == 'numeric') {
+      value = value * 100;
+    }
+
+    cb(featureName, value);
   }
 }
 
@@ -358,23 +375,6 @@ export function setPercent(ship, m, percent) {
 export function setRandom(ship, m) {
   // Pick a single value for our randomness
   setPercent(ship, m, Math.random() * 100);
-}
-
-/**
- * Set a modification feature value
- * @param {Object}      ship          The ship for which to perform the modifications
- * @param {Object}      m             The module for which to perform the modifications
- * @param {string}      featureName   The feature being set
- * @param {number}      value         The value being set for the feature
- */
-function _setValue(ship, m, featureName, value) {
-  if (Modifications.modifications[featureName].type == 'percentage') {
-    ship.setModification(m, featureName, value * 10000);
-  } else if (Modifications.modifications[featureName].type == 'numeric') {
-    ship.setModification(m, featureName, value * 100);
-  } else {
-    ship.setModification(m, featureName, value);
-  }
 }
 
 /**

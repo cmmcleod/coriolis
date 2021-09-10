@@ -4,7 +4,7 @@ import { Ships } from 'coriolis-data/dist';
 import Module from '../shipyard/Module';
 import { Modules } from 'coriolis-data/dist';
 import { Modifications } from 'coriolis-data/dist';
-import { getBlueprint } from './BlueprintFunctions';
+import { getBlueprint, setQualityCB } from './BlueprintFunctions';
 
 /**
  * Obtain a module given its FD Name
@@ -168,8 +168,6 @@ export function shipFromLoadoutJSON(json) {
         const hardpointSlot = json.Modules.find(elem => elem.Slot.toLowerCase() === hardpointName.toLowerCase());
         if (!hardpointSlot) {
           // This can happen with old imports that don't contain new hardpoints
-        } else if (!hardpointSlot) {
-          // No module
         } else {
           hardpoint = _moduleFromFdName(hardpointSlot.Item);
           ship.use(ship.hardpoints[hardpointArrayNum], hardpoint, true);
@@ -303,20 +301,6 @@ function _addModifications(module, modifiers, quality, blueprint, grade, special
       }
     }
   } else if (quality) {
-    if (module.blueprint.grades) {
-      const features = module.blueprint.grades[Number(grade)].features;
-      Object.keys(features).map(featureKey => {
-        /*
-          Here we compute the value to use for this feature based on the range and quality.
-          We do this by finding the difference between the low and high ends of the range.
-          This gives us the maximum increase at 100% quality. Then we multiply this number by
-          the quality to determine the actual increase. Lastly we add the actual increase to
-          the low end of the range back in to determine the final value.
-          Value = ((High End of Range - Low End of Range) * Quality) + Low End of Range
-        */
-        let value = (((features[featureKey][1] * 100) - (features[featureKey][0] * 100) * Number(quality)) + (features[featureKey][0] * 100)) * 100;
-        module.setModValue(featureKey, value, true);
-      });
-    }
+    setQualityCB(module.blueprint, quality, (featureName, value) => module.setModValue(featureName, value, false));
   }
 }
