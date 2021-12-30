@@ -286,7 +286,7 @@ export default class AvailableModulesMenu extends TranslatedComponent {
       // the maximum does not apply
       } else if (m.experimental && (!mountedModule || !mountedModule.experimental)) {
         disabled = 4 <= ship.hardpoints.filter(o => o.m && o.m.experimental).length;
-      } else if (m.grp === 'mlc' && mountedModule.grp !== 'mlc') {
+      } else if (m.grp === 'mlc' && (!mountedModule || mountedModule.grp !== 'mlc')) {
         disabled = 1 <= ship.internal.filter(o => o.m && o.m.grp === 'mlc').length;
       }
       let active = mountedModule && mountedModule.id === m.id;
