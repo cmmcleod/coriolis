@@ -29,7 +29,7 @@ You will then have a development server running on `localhost:3300`.
 
 ### Ship and Module Database
 
-See the [Data wiki](https://github.com/cmmcleod/coriolis-data/wiki) for details on structure, etc.
+See the [Data wiki](https://github.com/EDCD/coriolis-data/wiki) for details on structure, etc.
 
 ## Deployment
 
