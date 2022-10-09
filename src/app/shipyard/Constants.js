@@ -58,6 +58,8 @@ export const ModuleGroupToName = {
   gmrp: 'Guardian Module Reinforcement Package',
   mahr: 'Meta Alloy Hull Reinforcement Package',
   sua: 'Supercruise Assist',
+  mlc: "Multi Limpet Controller",
+  rpl: "Repair Limpet Controller",
 
   // Hard Points
   bl: 'Beam Laser',
