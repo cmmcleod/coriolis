@@ -177,6 +177,16 @@ export default class ModalShoppingList extends TranslatedComponent {
               mats[i] = module.m.blueprint.grades[g].components[i] * this.state.matsPerGrade[g];
             }
           }
+          for (const j in module.m.blueprint.special.components) {
+            if (!module.m.blueprint.special.components.hasOwnProperty(j)) {
+              continue;
+            }
+            if (mats[j]) {
+              mats[j] += module.m.blueprint.special.components[j];
+            } else {
+              mats[j] = module.m.blueprint.special.components[j];
+            }
+          }
         }
       }
     }
