@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import { Pip } from './SvgIcons';
-import { autoBind } from 'react-extras';
+import autoBind from 'auto-bind';
 
 /**
  * Pips displays SYS/ENG/WEP pips and allows users to change them with key presses by clicking on the relevant area.

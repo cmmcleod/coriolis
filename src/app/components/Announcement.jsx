@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { autoBind } from 'react-extras';
+import autoBind from 'auto-bind';
 
 /**
  * Announcement component
