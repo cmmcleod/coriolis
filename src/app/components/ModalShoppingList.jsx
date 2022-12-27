@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import TranslatedComponent from './TranslatedComponent';
 import request from 'superagent';
 import Persist from '../stores/Persist';
+const zlib = require('zlib');
+const base64url = require('base64url');
 
 /**
  * Permalink modal
@@ -56,7 +58,6 @@ export default class ModalShoppingList extends TranslatedComponent {
           continue;
         }
         if (module.m.blueprint.special) {
-          console.log(module.m.blueprint.special);
           blueprints.push({ uuid: module.m.blueprint.special.uuid, number: 1 });
         }
         for (const g in module.m.blueprint.grades) {
@@ -144,6 +145,64 @@ export default class ModalShoppingList extends TranslatedComponent {
           }
         });
     }
+  }
+
+  /**
+ * Send all blueprints to EDOMH. This is a modified copy of registerBPs because this.state.blueprints was empty when I tried to modify sendToEDEng and I couldn't figure out why
+ * @param {Event} event React event
+ */
+  sendToEDOMH(event) {
+    event.preventDefault();
+    const ship = this.props.ship;
+    let blueprints = [];
+
+    //create the json
+    for (const module of ship.costList) {
+      if (module.type === 'SHIP') {
+        continue;
+      }
+      if (module.m && module.m.blueprint) {
+        if (!module.m.blueprint.grade || !module.m.blueprint.grades) {
+          continue;
+        }
+        if (module.m.blueprint.special) {
+          blueprints.push({
+            "item": module.m.symbol,
+            "blueprint": module.m.blueprint.special.edname
+          });
+        }
+        for (const g in module.m.blueprint.grades) {
+          if (!module.m.blueprint.grades.hasOwnProperty(g)) {
+            continue;
+          }
+          if (g < module.m.blueprint.grade) {
+            continue;
+          }
+          blueprints.push({
+            "item": module.m.symbol,
+            "blueprint": module.m.blueprint.fdname,
+            "grade": module.m.blueprint.grade,
+            "highestGradePercentage":1.0
+          });
+        }
+      }
+    }
+
+    //create JSON to encode
+    let baseJson = {
+      "version":1,
+      "name":ship.name, // TO-DO: Import build name and put that here correctly
+      "items": blueprints
+    }      
+    
+    let JSONString = JSON.stringify(baseJson)
+    let deflated = zlib.deflateSync(JSONString)
+    
+    //actually encode
+    let link = base64url.encode(deflated)
+    link = "edomh://coriolis/?" + link;
+
+    window.open(link, "_self")
   }
 
   /**
@@ -241,6 +300,7 @@ export default class ModalShoppingList extends TranslatedComponent {
     const compatible = this.checkBrowserIsCompatible();
     this.cmdrChangeHandler = this.cmdrChangeHandler.bind(this);
     this.sendToEDEng = this.sendToEDEng.bind(this);
+    this.sendToEDOMH = this.sendToEDOMH.bind(this);
     return <div className='modal' onClick={ (e) => e.stopPropagation() }>
       <h2>{translate('PHRASE_SHOPPING_MATS')}</h2>
       <label>{translate('Grade 1 rolls ')}</label>
@@ -269,6 +329,7 @@ export default class ModalShoppingList extends TranslatedComponent {
       <p hidden={!this.state.failed} id={'failed'} className={'l'}>{translate('PHRASE_FAIL_EDENGINEER')}</p>
       <p hidden={compatible} id={'browserbad'} className={'l'}>{translate('PHRASE_FIREFOX_EDENGINEER')}</p>
       <button className={'l cb dismiss cap'} disabled={!!this.state.failed || !compatible} onClick={this.sendToEDEng}>{translate('Send to EDEngineer')}</button>
+      <button style={{marginTop: 5}} className={'l cb dismiss cap'} disabled={!!this.state.failed} onClick={this.sendToEDOMH}>{translate('Send to EDOMH')}</button>
       <button className={'r dismiss cap'} onClick={this.context.hideModal}>{translate('close')}</button>
     </div>;
   }

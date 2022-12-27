@@ -398,6 +398,7 @@
   "No modded components.": "没有改装的部件",
   "Sending...": "发送中...",
   "Send to EDEngineer": "发送至EDEngineer",
+  "Send to EDOMH": "发送至EDOMH",
   "PHASE_UPLOAD_ORBIS": "上传到orbis.zone（测试阶段）",
   "orbis username": "orbis.zone的Email或用户名",
   "orbis password": "orbis.zone的密码",
