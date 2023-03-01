@@ -93,7 +93,7 @@ export default class Coriolis extends React.Component {
   _importBuild(r) {
     try {
       // Need to decode and gunzip the data, then build the ship
-      const data = zlib.inflate(new Buffer(r.params.data, 'base64'), { to: 'string' });
+      const data = zlib.inflate(new Buffer.from(r.params.data, 'base64'), { to: 'string' });
       const json = JSON.parse(data);
       console.info('Ship import data: ');
       console.info(json);
@@ -149,13 +149,6 @@ export default class Coriolis extends React.Component {
    */
   _onError(msg, scriptUrl, line, col, errObj) {
     console && console.error && console.error(arguments); // eslint-disable-line no-console
-    if (errObj) {
-      if (errObj instanceof Error) {
-        bugsnagClient.notify(errObj); // eslint-disable-line
-      } else if (errObj instanceof String) {
-        bugsnagClient.notify(msg, errObj); // eslint-disable-line
-      }
-    }
     this.setState({
       error: <ErrorDetails error={{ message: msg, details: { scriptUrl, line, col, error: JSON.stringify(errObj) } }}/>,
       page: null,

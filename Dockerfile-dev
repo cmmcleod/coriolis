@@ -1,0 +1,23 @@
+#syntax=docker/dockerfile:1.4
+# Run this from within this directory. Change the location of coriolis-data repo and image name/tag as needed.
+# docker buildx build --build-context data=../coriolis-data --tag coriolis -f ./Dockerfile-dev .
+
+FROM node:18-alpine
+
+WORKDIR /app
+ADD . .
+COPY --from=data . /coriolis-data/
+
+# Install git & any other desired in-container dev tools
+# Git is required before install if any modules (like coriolis-data) are loaded from github
+RUN apk update
+RUN apk add git
+
+WORKDIR /app/coriolis-data
+RUN npm install
+WORKDIR /app
+RUN npm install
+
+
+CMD ["npm", "start"]
+EXPOSE 3300

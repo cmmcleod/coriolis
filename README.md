@@ -14,7 +14,16 @@ Coriolis was created using assets and imagery from Elite: Dangerous, with the pe
 
 ## Development
 
-To get a local instance of coriolis running, perform the following steps in a shell:
+This release includes the ability to run the app as a Docker container.
+```sh
+> git clone https://github.com/EDCD/coriolis.git
+> git clone https://github.com/EDCD/coriolis-data.git
+> cd coriolis
+> docker buildx build --build-context data=../coriolis-data --tag coriolis .
+> docker run -d -p 3300:3300 coriolis
+```
+
+Or to run an instance of coriolis without Docker Desktop, perform the following steps in a shell:
 ```sh
 > git clone https://github.com/EDCD/coriolis.git
 > git clone https://github.com/EDCD/coriolis-data.git

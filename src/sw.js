@@ -1,46 +1,54 @@
+import {precacheAndRoute, createHandlerBoundToURL} from 'workbox-precaching';
+import {NavigationRoute, registerRoute} from 'workbox-routing';
+import {StaleWhileRevalidate, CacheFirst} from 'workbox-strategies';
+import {CacheableResponsePlugin} from 'workbox-cacheable-response'
+import {ExpirationPlugin} from 'workbox-expiration';
+
 console.log('Hello from sw.js');
 
-if (workbox) {
-  console.log('Yay! Workbox is loaded 🎉');
-  workbox.precaching.precacheAndRoute(self.__precacheManifest);
+// See https://developer.chrome.com/docs/workbox/migration/migrate-from-v4/ for guide to changes made
+console.log('Yay! Workbox is loaded 🎉');
+precacheAndRoute(self.__WB_MANIFEST || []);
 
-  workbox.routing.registerNavigationRoute('/index.html');
+const handler = createHandlerBoundToURL('/index.html');
+const navigationRoute = new NavigationRoute(handler
+  // , {allowlist: [...], denylist: [...],}
+);
+registerRoute(navigationRoute);
 
-  workbox.routing.registerRoute(
-    /\.(?:png|jpg|jpeg|svg|gif)$/,
-    new workbox.strategies.CacheFirst({
-      plugins: [
-        new workbox.cacheableResponse.Plugin({
-          statuses: [0, 200]
-        })
-      ]
-    })
-  );
 
-  workbox.routing.registerRoute(
-    /\.(?:js|css)$/,
-    new workbox.strategies.StaleWhileRevalidate({
-      cacheName: 'static-resources',
-    })
-  );
+registerRoute(
+  /\.(?:png|jpg|jpeg|svg|gif)$/,
+  new CacheFirst({
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200]
+      })
+    ]
+  })
+);
 
-  workbox.routing.registerRoute(
-    new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
-    new workbox.strategies.CacheFirst({
-      cacheName: 'google-fonts',
-      plugins: [
-        new workbox.expiration.Plugin({
-          maxEntries: 30
-        }),
-        new workbox.cacheableResponse.Plugin({
-          statuses: [0, 200]
-        })
-      ]
-    })
-  );
-} else {
-  console.log('Boo! Workbox didn\'t load 😬');
-}
+registerRoute(
+  /\.(?:js|css)$/,
+  new StaleWhileRevalidate({
+    cacheName: 'static-resources',
+  })
+);
+
+registerRoute(
+  new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
+  new CacheFirst({
+    cacheName: 'google-fonts',
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 30
+      }),
+      new CacheableResponsePlugin({
+        statuses: [0, 200]
+      })
+    ]
+  })
+);
 
 self.addEventListener('message', event => {
   if (!event.data) {

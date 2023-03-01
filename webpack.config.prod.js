@@ -1,54 +1,37 @@
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const { InjectManifest } = require('workbox-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { BugsnagSourceMapUploaderPlugin, BugsnagBuildReporterPlugin } = require('webpack-bugsnag-plugins');
-const pkgJson = require('./package');
-const buildDate = new Date();
+const { merge } = require('webpack-merge');
+const common = require('./webpack.common.js');
 
-module.exports = {
-  devtool: 'source-map',
-  entry: {
-    main: './src/app/index.js'
-  },
-  resolve: {
-    extensions: ['.js', '.jsx', '.json', '.less']
-  },
-  output: {
-    path: path.join(__dirname, 'build'),
-    chunkFilename: '[name].bundle.js',
-    publicPath: '/',
-    globalObject: 'this'
-  },
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { InjectManifest } = require('workbox-webpack-plugin');
+
+module.exports = merge(common, {
+  // devtool: 'source-map',
   mode: 'production',
   optimization: {
     minimize: true,
-    usedExports: true
+  },
+  output: {
+    globalObject: 'this'
   },
   plugins: [
-    new CopyWebpackPlugin(['src/.htaccess', { from: 'src/schemas', to: 'schemas' }, {
-      from: 'src/images/logo/*',
-      flatten: true,
-      to: ''
-    }, 'src/iframe.html', 'src/xdLocalStoragePostMessageApi.min.js']),
-    // new webpack.optimize.CommonsChunkPlugin({
-    //  name: 'lib',
-    //  filename: 'lib.[chunkhash:6].js'
-    // }),
-    new HtmlWebpackPlugin({
-      inject: true,
-      template: path.join(__dirname, 'src/index.ejs'),
-      uaTracking: process.env.CORIOLIS_UA_TRACKING || '',
-      gapiKey: process.env.CORIOLIS_GAPI_KEY || '',
-      date: buildDate,
-      version: pkgJson.version
-    }),
-    new ExtractTextPlugin({
-      filename: '[hash:6].css',
-      disable: false,
-      allChunks: true
+    new CopyWebpackPlugin({
+      patterns: [
+        'src/.htaccess', 
+        'src/iframe.html', 
+        'src/xdLocalStoragePostMessageApi.min.js',  
+        { from: 'src/schemas', to: 'schemas' },
+        {
+          from: 'src/images/logo/*',
+          to: '[name][ext]'
+        }
+    ]}),
+    /* new HtmlWebpackPlugin({
+      // uaTracking: process.env.CORIOLIS_UA_TRACKING || '',
+    }), */
+    new MiniCssExtractPlugin({
+      filename: '[contenthash:6].css',
     }),
     // new BugsnagBuildReporterPlugin({
     //   apiKey: 'ba9fae819372850fb660755341fa6ef5',
@@ -59,25 +42,11 @@ module.exports = {
     //   overwrite: true,
     //   appVersion: `${pkgJson.version}-${buildDate.toISOString()}`
     // }),
+    
     new InjectManifest({
       swSrc: './src/sw.js',
-      importWorkboxFrom: 'cdn',
       swDest: 'service-worker.js'
     }),
-  ],
-  module: {
-    rules: [
-      { test: /\.css$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' }) },
-      {
-        test: /\.less$/,
-        loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!less-loader' })
-      },
-      { test: /\.(js|jsx)$/, loader: 'babel-loader?cacheDirectory=true', include: path.join(__dirname, 'src') },
-      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
-      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml' }
-    ]
-  }
-};
+    
+  ]
+});
