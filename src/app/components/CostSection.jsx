@@ -32,7 +32,7 @@ export default class CostSection extends TranslatedComponent {
     this._buildRetrofitShip = this._buildRetrofitShip.bind(this);
     this._onBaseRetrofitChange = this._onBaseRetrofitChange.bind(this);
     this._defaultRetrofitName = this._defaultRetrofitName.bind(this);
-    this._eddbShoppingList = this._eddbShoppingList.bind(this);
+    this._eddbShoppingList = this._inaraShoppingList.bind(this);
 
     let data = Ships[props.ship.id];   // Retrieve the basic ship properties, slots and defaults
     let retrofitName = this._defaultRetrofitName(props.ship.id, props.buildName);
@@ -328,9 +328,9 @@ export default class CostSection extends TranslatedComponent {
   }
 
   /**
-   * Open up a window for EDDB with a shopping list of our retrofit components
+   * Open up a window for inara with a shopping list of our retrofit components
    */
-  _eddbShoppingList() {
+  _inaraShoppingList() {
     const { retrofitCosts } = this.state;
     const { ship } = this.props;
 
@@ -338,7 +338,7 @@ export default class CostSection extends TranslatedComponent {
     const modIds = retrofitCosts.filter(item => item.retroItem.incCost && item.buyId && !item.buyPp).map(item => item.buyId).filter((v, i, a) => a.indexOf(v) === i);
 
     // Open up the relevant URL
-    window.open('https://eddb.io/station?m=' + modIds.join(','));
+    window.open('https://inara.cz/inapi/corisearch.php?m=' + modIds.join(','));
   }
 
   /**
@@ -387,7 +387,7 @@ export default class CostSection extends TranslatedComponent {
           <tbody>
             {rows}
             <tr className='ri'>
-              <td className='lbl' ><button onClick={this._eddbShoppingList} onMouseOver={termtip.bind(null, 'PHRASE_REFIT_SHOPPING_LIST')} onMouseOut={tooltip.bind(null, null)}><ShoppingIcon className='lg' style={{ fill: 'black' }}/></button></td>
+              <td className='lbl' ><button onClick={this._inaraShoppingList} onMouseOver={termtip.bind(null, 'PHRASE_REFIT_SHOPPING_LIST')} onMouseOut={tooltip.bind(null, null)}><ShoppingIcon className='lg' style={{ fill: 'black' }}/></button></td>
               <td colSpan='3' className='lbl' >{translate('cost')}</td>
               <td colSpan='2' className={cn('val', retrofitTotal > 0 ? 'warning' : 'secondary-disabled')} style={{ borderBottom:'none' }}>
                 {int(retrofitTotal)}{units.CR}

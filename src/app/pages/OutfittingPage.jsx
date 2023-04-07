@@ -677,9 +677,9 @@ export default class OutfittingPage extends Page {
   }
 
   /**
-   * Open up a window for EDDB with a shopping list of our components
+   * Open up a window for inara with a shopping list of our components
    */
-  _eddbShoppingList() {
+  _inaraShoppingList() {
     const ship = this.state.ship;
 
     const shipId = Ships[ship.id].eddbID;
@@ -692,7 +692,7 @@ export default class OutfittingPage extends Page {
 
     // Open up the relevant URL
     window.open(
-      'https://eddb.io/station?s=' + shipId + '&m=' + modIds.join(',')
+      'https://inara.cz/inapi/corisearch.php?s=' + shipId + '&m=' + modIds.join(',')
     );
   }
 
@@ -912,7 +912,7 @@ export default class OutfittingPage extends Page {
               <Download className="lg" />
             </button>
             <button
-              onClick={this._eddbShoppingList}
+              onClick={this._inaraShoppingList}
               onMouseOver={termtip.bind(null, 'PHRASE_SHOPPING_LIST')}
               onMouseOut={hide}
             >
